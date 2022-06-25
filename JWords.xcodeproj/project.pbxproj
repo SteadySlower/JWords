@@ -14,6 +14,7 @@
 		06CEF2592866F1CB00A620CC /* JWordsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2582866F1CB00A620CC /* JWordsTests.swift */; };
 		06CEF2632866F1CB00A620CC /* JWordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2622866F1CB00A620CC /* JWordsUITests.swift */; };
 		06CEF2652866F1CB00A620CC /* JWordsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2642866F1CB00A620CC /* JWordsUITestsLaunchTests.swift */; };
+		06CEF2782866F32700A620CC /* JWordsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,13 @@
 			remoteGlobalIDString = 06CEF2422866F1C800A620CC;
 			remoteInfo = JWords;
 		};
+		06CEF2792866F32700A620CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06CEF23B2866F1C800A620CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06CEF2422866F1C800A620CC;
+			remoteInfo = JWords;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -40,11 +48,14 @@
 		06CEF24A2866F1CB00A620CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		06CEF24D2866F1CB00A620CC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		06CEF24F2866F1CB00A620CC /* JWords.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JWords.entitlements; sourceTree = "<group>"; };
-		06CEF2542866F1CB00A620CC /* JWordsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		06CEF2542866F1CB00A620CC /* JWordsUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2582866F1CB00A620CC /* JWordsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsTests.swift; sourceTree = "<group>"; };
 		06CEF25E2866F1CB00A620CC /* JWordsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2622866F1CB00A620CC /* JWordsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsUITests.swift; sourceTree = "<group>"; };
 		06CEF2642866F1CB00A620CC /* JWordsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsAcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
+		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,15 +80,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		06CEF2722866F32700A620CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		06CEF23A2866F1C800A620CC = {
 			isa = PBXGroup;
 			children = (
+				06CEF27E2866F38500A620CC /* README.md */,
 				06CEF2452866F1C800A620CC /* JWords */,
-				06CEF2572866F1CB00A620CC /* JWordsTests */,
+				06CEF2572866F1CB00A620CC /* JWordsUnitTests */,
 				06CEF2612866F1CB00A620CC /* JWordsUITests */,
+				06CEF2762866F32700A620CC /* JWordsAcceptanceTests */,
 				06CEF2442866F1C800A620CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,8 +106,9 @@
 			isa = PBXGroup;
 			children = (
 				06CEF2432866F1C800A620CC /* JWords.app */,
-				06CEF2542866F1CB00A620CC /* JWordsTests.xctest */,
+				06CEF2542866F1CB00A620CC /* JWordsUnitTests.xctest */,
 				06CEF25E2866F1CB00A620CC /* JWordsUITests.xctest */,
+				06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,12 +133,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		06CEF2572866F1CB00A620CC /* JWordsTests */ = {
+		06CEF2572866F1CB00A620CC /* JWordsUnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				06CEF2582866F1CB00A620CC /* JWordsTests.swift */,
 			);
-			path = JWordsTests;
+			path = JWordsUnitTests;
 			sourceTree = "<group>";
 		};
 		06CEF2612866F1CB00A620CC /* JWordsUITests */ = {
@@ -127,6 +148,14 @@
 				06CEF2642866F1CB00A620CC /* JWordsUITestsLaunchTests.swift */,
 			);
 			path = JWordsUITests;
+			sourceTree = "<group>";
+		};
+		06CEF2762866F32700A620CC /* JWordsAcceptanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */,
+			);
+			path = JWordsAcceptanceTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,9 +178,9 @@
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
 			productType = "com.apple.product-type.application";
 		};
-		06CEF2532866F1CB00A620CC /* JWordsTests */ = {
+		06CEF2532866F1CB00A620CC /* JWordsUnitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 06CEF26B2866F1CB00A620CC /* Build configuration list for PBXNativeTarget "JWordsTests" */;
+			buildConfigurationList = 06CEF26B2866F1CB00A620CC /* Build configuration list for PBXNativeTarget "JWordsUnitTests" */;
 			buildPhases = (
 				06CEF2502866F1CB00A620CC /* Sources */,
 				06CEF2512866F1CB00A620CC /* Frameworks */,
@@ -162,9 +191,9 @@
 			dependencies = (
 				06CEF2562866F1CB00A620CC /* PBXTargetDependency */,
 			);
-			name = JWordsTests;
+			name = JWordsUnitTests;
 			productName = JWordsTests;
-			productReference = 06CEF2542866F1CB00A620CC /* JWordsTests.xctest */;
+			productReference = 06CEF2542866F1CB00A620CC /* JWordsUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		06CEF25D2866F1CB00A620CC /* JWordsUITests */ = {
@@ -184,6 +213,24 @@
 			productName = JWordsUITests;
 			productReference = 06CEF25E2866F1CB00A620CC /* JWordsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		06CEF2742866F32700A620CC /* JWordsAcceptanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06CEF27D2866F32700A620CC /* Build configuration list for PBXNativeTarget "JWordsAcceptanceTests" */;
+			buildPhases = (
+				06CEF2712866F32700A620CC /* Sources */,
+				06CEF2722866F32700A620CC /* Frameworks */,
+				06CEF2732866F32700A620CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				06CEF27A2866F32700A620CC /* PBXTargetDependency */,
+			);
+			name = JWordsAcceptanceTests;
+			productName = JWordsAcceptanceTests;
+			productReference = 06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -206,6 +253,10 @@
 						CreatedOnToolsVersion = 13.4.1;
 						TestTargetID = 06CEF2422866F1C800A620CC;
 					};
+					06CEF2742866F32700A620CC = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = 06CEF2422866F1C800A620CC;
+					};
 				};
 			};
 			buildConfigurationList = 06CEF23E2866F1C800A620CC /* Build configuration list for PBXProject "JWords" */;
@@ -215,6 +266,8 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
+				ja,
 			);
 			mainGroup = 06CEF23A2866F1C800A620CC;
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
@@ -222,8 +275,9 @@
 			projectRoot = "";
 			targets = (
 				06CEF2422866F1C800A620CC /* JWords */,
-				06CEF2532866F1CB00A620CC /* JWordsTests */,
+				06CEF2532866F1CB00A620CC /* JWordsUnitTests */,
 				06CEF25D2866F1CB00A620CC /* JWordsUITests */,
+				06CEF2742866F32700A620CC /* JWordsAcceptanceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -246,6 +300,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		06CEF25C2866F1CB00A620CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06CEF2732866F32700A620CC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -281,6 +342,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		06CEF2712866F32700A620CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06CEF2782866F32700A620CC /* JWordsAcceptanceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -293,6 +362,11 @@
 			isa = PBXTargetDependency;
 			target = 06CEF2422866F1C800A620CC /* JWords */;
 			targetProxy = 06CEF25F2866F1CB00A620CC /* PBXContainerItemProxy */;
+		};
+		06CEF27A2866F32700A620CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06CEF2422866F1C800A620CC /* JWords */;
+			targetProxy = 06CEF2792866F32700A620CC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -536,6 +610,40 @@
 			};
 			name = Release;
 		};
+		06CEF27B2866F32700A620CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZX72355299;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = JW.JWordsAcceptanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JWords.app/Contents/MacOS/JWords";
+			};
+			name = Debug;
+		};
+		06CEF27C2866F32700A620CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZX72355299;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = JW.JWordsAcceptanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JWords.app/Contents/MacOS/JWords";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -557,7 +665,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		06CEF26B2866F1CB00A620CC /* Build configuration list for PBXNativeTarget "JWordsTests" */ = {
+		06CEF26B2866F1CB00A620CC /* Build configuration list for PBXNativeTarget "JWordsUnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				06CEF26C2866F1CB00A620CC /* Debug */,
@@ -571,6 +679,15 @@
 			buildConfigurations = (
 				06CEF26F2866F1CB00A620CC /* Debug */,
 				06CEF2702866F1CB00A620CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		06CEF27D2866F32700A620CC /* Build configuration list for PBXNativeTarget "JWordsAcceptanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06CEF27B2866F32700A620CC /* Debug */,
+				06CEF27C2866F32700A620CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
