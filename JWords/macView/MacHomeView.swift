@@ -11,7 +11,7 @@ struct MacHomeView: View {
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
-                BookAddNavigationView()
+                BookListNavigationView()
                 WordAddNavigationView()
             }
         }
@@ -19,7 +19,7 @@ struct MacHomeView: View {
     }
 }
 
-private struct BookAddNavigationView: View {
+private struct BookListNavigationView: View {
     var body: some View {
         NavigationLink {
             MacAddBookView()

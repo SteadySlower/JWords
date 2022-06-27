@@ -11,7 +11,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack(spacing: 32) {
+                VStack(spacing: 8) {
                     ForEach(0..<20) { _ in
                         HomeCell()
                     }
@@ -19,6 +19,7 @@ struct HomeView: View {
             }
         }
         .navigationTitle("단어장 목록")
+        .navigationViewStyle(.automatic)
     }
 }
 

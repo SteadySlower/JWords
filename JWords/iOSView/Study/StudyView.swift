@@ -9,12 +9,10 @@ import SwiftUI
 
 struct StudyView: View {
     var body: some View {
-        NavigationView {
-            ScrollView {
-                LazyVStack(spacing: 32) {
-                    ForEach(0..<20) { _ in
-                        WordCell()
-                    }
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEach(0..<20) { _ in
+                    WordCell()
                 }
             }
         }

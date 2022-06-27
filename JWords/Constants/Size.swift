@@ -23,5 +23,12 @@ enum Constants {
             NSApplication.shared.windows.first?.frame.width ?? 300
             #endif
         }
+        static var deviceHeight: CGFloat {
+            #if os(iOS)
+            UIScreen.main.bounds.height
+            #elseif os(macOS)
+            NSApplication.shared.windows.first?.frame.height ?? 300
+            #endif
+        }
     }
 }

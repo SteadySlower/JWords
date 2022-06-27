@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+#if os(macOS)
 struct MacAddWordView: View {
     @State private var frontText: String = ""
     @State private var frontImage: NSImage?
     @State private var backText: String = ""
     @State private var backImage: NSImage?
+    
+    let bookList = ["A", "B", "C"]
+    @State var selectedBook: String = ""
     
     private var isSaveButtonUnable: Bool {
         return (frontText.isEmpty && frontImage == nil) || (backText.isEmpty && backImage == nil)
@@ -20,6 +24,11 @@ struct MacAddWordView: View {
     var body: some View {
         VStack {
             VStack {
+                Picker("단어장 선택", selection: $selectedBook) {
+                    ForEach(bookList, id: \.self) { book in
+                        Text(book)
+                    }
+                }
                 Text("앞면 입력")
                 TextField("앞면 텍스트", text: $frontText)
                     .padding()
@@ -71,9 +80,17 @@ struct MacAddWordView: View {
     }
 }
 
+#elseif os(iOS)
+struct MacAddWordView: View {
+    var body: some View {
+        EmptyView()
+    }
+}
+
 
 struct MacAddWordView_Previews: PreviewProvider {
     static var previews: some View {
         MacAddWordView()
     }
 }
+#endif

@@ -11,20 +11,22 @@ struct HomeCell: View {
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
     var body: some View {
-        NavigationLink {
-            StudyView()
-        } label: {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("2과 단어장")
-                    Text("2020/07/01")
+        ZStack {
+            NavigationLink {
+                StudyView()
+            } label: {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("2과 단어장")
+                        Text("2020/07/01")
+                    }
+                    Spacer()
                 }
-                .padding(.leading, 20)
-                Spacer()
+                .padding(12)
             }
-            .frame(height: 100)
-            .border(.gray, width: 1)
         }
+        .border(.gray, width: 1)
+        .frame(height: 50)
     }
 }
 
