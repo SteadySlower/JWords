@@ -71,6 +71,7 @@ struct MacAddWordView: View {
         }
     }
     
+    // TODO: 클립보드에서 복사해오는 법
     func getImageFromPasteBoard() -> NSImage? {
         let pb = NSPasteboard.general
         let type = NSPasteboard.PasteboardType.tiff

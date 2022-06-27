@@ -217,7 +217,6 @@
 		5A67DC1D286942E800AC156C /* iOSView */ = {
 			isa = PBXGroup;
 			children = (
-				5A67DC362869730300AC156C /* AddViews */,
 				5A67DC2E2869491E00AC156C /* items */,
 				5A67DC28286946DF00AC156C /* Study */,
 				5A67DC212869439D00AC156C /* Home */,
@@ -266,13 +265,6 @@
 				5A67DC342869566600AC156C /* MacAddWordView.swift */,
 			);
 			path = macView;
-			sourceTree = "<group>";
-		};
-		5A67DC362869730300AC156C /* AddViews */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AddViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
