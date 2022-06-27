@@ -10,9 +10,21 @@ import SwiftUI
 // TODO: pasteboard에 있는 이미지를 가져오는 코드
 struct MacAddBookView: View {
     @State private var bookName: String = ""
+    private var isSaveButtonUnable: Bool {
+        !bookName.isEmpty
+    }
     
     var body: some View {
-        TextField("단어장 이름", text: $bookName)
+        VStack {
+            TextField("단어장 이름", text: $bookName)
+                .padding()
+            Button {
+                // 뷰모델에서 저장
+            } label: {
+                Text("저장")
+            }
+            .disabled(isSaveButtonUnable)
+        }
     }
 }
 
