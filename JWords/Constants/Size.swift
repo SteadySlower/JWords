@@ -19,7 +19,7 @@ enum Constants {
             #if os(iOS)
             UIScreen.main.bounds.width
             #elseif os(macOS)
-            NSScreen.main?.visibleFrame.width ?? 300.0
+            NSWindow.frame.width ?? 300.0
             #endif
         }
     }

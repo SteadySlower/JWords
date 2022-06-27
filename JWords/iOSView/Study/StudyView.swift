@@ -19,7 +19,9 @@ struct StudyView: View {
             }
         }
         .navigationTitle("2과 단어장")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 
