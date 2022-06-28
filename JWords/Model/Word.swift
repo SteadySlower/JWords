@@ -14,7 +14,7 @@ enum StudyState: Int, Codable {
     case undefined = 0, success, fail
 }
 
-struct Word: Identifiable, Codable {
+struct Word: Identifiable, Codable, Hashable{
     @DocumentID var id: String?
     var frontText: String?
     var frontImageURL: String?
@@ -25,9 +25,9 @@ struct Word: Identifiable, Codable {
 }
 
 struct WordInput {
-    let frontText: String?
+    let frontText: String
     let frontImage: NSImage?
-    let backText: String?
+    let backText: String
     let backImage: NSImage?
     let studyState: StudyState = .undefined
     let timestamp: Timestamp = Timestamp(date: Date())

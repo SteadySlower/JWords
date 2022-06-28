@@ -10,8 +10,21 @@ import Firebase
 typealias FireStoreCompletion = ((Error?) -> Void)?
 
 class WordService {
+    static func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
+        Constants.Collections.wordBooks.getDocuments { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+            }
+            guard let documents = snapshot?.documents else { return }
+            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
+            completionHandler(wordBooks, nil)
+        }
+    }
+    
     static func saveBook(title: String, completionHandler: FireStoreCompletion) {
-        let data = ["title": title]
+        let data: [String : Any] = [
+            "title": title,
+            "timestamp": Timestamp(date: Date())]
         Constants.Collections.wordBooks.addDocument(data: data, completion: completionHandler)
     }
     
@@ -34,9 +47,9 @@ class WordService {
         
         group.notify(queue: .global()) {
             let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
-                                        "frontText": wordInput.frontText ?? "",
+                                        "frontText": wordInput.frontText,
                                         "frontImageURL": frontImageURL,
-                                        "backText": wordInput.backText ?? "",
+                                        "backText": wordInput.backText,
                                         "backImageURL": backImageURL,
                                         "studyState": wordInput.studyState.rawValue]
             Constants.Collections.word(wordBookID).addDocument(data: data, completion: completionHandler)

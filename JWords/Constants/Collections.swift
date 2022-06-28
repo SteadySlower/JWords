@@ -10,7 +10,6 @@ import Firebase
 extension Constants {
     enum Collections {
         static let wordBooks = Firestore.firestore().collection("books")
-        static func word(_ bookID: String) -> CollectionReference { Firestore.firestore().collection("books").document(bookID).collection("words")
-        }
+        static func word(_ bookID: String) -> CollectionReference { Firestore.firestore().collection("books").document(bookID).collection("words") }
     }
 }

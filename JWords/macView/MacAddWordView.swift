@@ -9,37 +9,33 @@ import SwiftUI
 
 #if os(macOS)
 struct MacAddWordView: View {
-    @State private var frontText: String = ""
-    @State private var frontImage: NSImage?
-    @State private var backText: String = ""
-    @State private var backImage: NSImage?
     
-    let bookList = ["A", "B", "C"]
-    @State var selectedBook: String = ""
-    
-    private var isSaveButtonUnable: Bool {
-        return (frontText.isEmpty && frontImage == nil) || (backText.isEmpty && backImage == nil)
-    }
+    @StateObject private var viewModel = ViewModel()
     
     var body: some View {
         VStack {
             VStack {
-                Picker("단어장 선택", selection: $selectedBook) {
-                    ForEach(bookList, id: \.self) { book in
-                        Text(book)
+                if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
+                    // TODO: Picker는 Hashable을 필요로 함
+                    Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장: \(viewModel.bookList[viewModel.selectedBookIndex].title ?? "없음")")) {
+                        ForEach(0..<viewModel.bookList.count) { index in
+                            Text(viewModel.bookList[index].title)
+                        }
                     }
+                    .pickerStyle(.radioGroup)
+                    .padding()
                 }
                 Text("앞면 입력")
-                TextField("앞면 텍스트", text: $frontText)
+                TextField("앞면 텍스트", text: $viewModel.frontText)
                     .padding()
-                if let frontImage = frontImage {
+                if let frontImage = viewModel.frontImage {
                     Image(nsImage: frontImage)
                         .resizable()
                         .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { self.frontImage = nil }
+                        .onTapGesture { viewModel.frontImage = nil }
                 } else {
                     Button {
-                        self.frontImage = getImageFromPasteBoard()
+                        viewModel.frontImage = getImageFromPasteBoard()
                     } label: {
                         Text("앞면 이미지")
                     }
@@ -47,28 +43,29 @@ struct MacAddWordView: View {
             }
             VStack {
                 Text("뒷면 입력")
-                TextField("뒷면 텍스트", text: $backText)
+                TextField("뒷면 텍스트", text: $viewModel.backText)
                     .padding()
-                if let backImage = backImage {
+                if let backImage = viewModel.backImage {
                     Image(nsImage: backImage)
                         .resizable()
                         .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { self.backImage = nil }
+                        .onTapGesture { viewModel.backImage = nil }
                 } else {
                     Button {
-                        self.backImage = getImageFromPasteBoard()
+                        viewModel.backImage = getImageFromPasteBoard()
                     } label: {
                         Text("뒷면 이미지")
                     }
                 }
             }
             Button {
-                // 뷰모델에서 저장
+                viewModel.saveWord()
             } label: {
                 Text("저장")
             }
-            .disabled(isSaveButtonUnable)
+            .disabled(viewModel.isSaveButtonUnable)
         }
+        .onAppear { viewModel.getWordBooks() }
     }
     
     // TODO: 클립보드에서 복사해오는 법
@@ -78,6 +75,53 @@ struct MacAddWordView: View {
         guard let imgData = pb.data(forType: type) else { return nil }
        
         return NSImage(data: imgData)
+    }
+}
+
+extension MacAddWordView {
+    final class ViewModel: ObservableObject {
+        @Published var frontText: String = ""
+        @Published var frontImage: NSImage?
+        @Published var backText: String = ""
+        @Published var backImage: NSImage?
+        @Published var bookList: [WordBook] = []
+        @Published var selectedBookIndex = 0
+        @Published var didBooksFetched: Bool = false
+        @Published var isUploading: Bool = false
+        
+        var isSaveButtonUnable: Bool {
+            return (frontText.isEmpty && frontImage == nil) || (backText.isEmpty && backImage == nil) || isUploading
+        }
+        
+        func getWordBooks() {
+            WordService.getWordBooks { [weak self] wordBooks, error in
+                if let error = error {
+                    print("디버그: \(error.localizedDescription)")
+                    return
+                }
+                guard let wordBooks = wordBooks else { return }
+                self?.bookList = wordBooks
+                self?.didBooksFetched = true
+            }
+        }
+        
+        func saveWord() {
+            isUploading = true
+            let wordInput = WordInput(frontText: frontText, frontImage: frontImage, backText: backText, backImage: backImage)
+            guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
+            WordService.saveWord(wordInput: wordInput, wordBookID: selectedBookID) { [weak self] error in
+                if let error = error { print("디버그: \(error)"); return }
+                self?.clearInputs()
+                self?.isUploading = false
+            }
+        }
+        
+        private func clearInputs() {
+            frontText = ""
+            frontImage = nil
+            backText = ""
+            backImage = nil
+        }
     }
 }
 

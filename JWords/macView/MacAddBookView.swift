@@ -30,12 +30,12 @@ extension MacAddBookView {
         @Published var bookName: String = ""
         
         var isSaveButtonUnable: Bool {
-            !bookName.isEmpty
+            bookName.isEmpty
         }
         
         func saveBook() {
             WordService.saveBook(title: bookName) { [weak self] error in
-                if let error = error { print(error.localizedDescription); return }
+                if let error = error { print("디버그 \(error.localizedDescription)"); return }
                 self?.bookName = ""
             }
         }
