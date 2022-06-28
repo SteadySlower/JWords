@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-private enum StudyState {
-    case undefined, success, fail
-}
-
 struct WordCell: View {
     @State private var isFront = true
     @State private var studyState: StudyState = .undefined
