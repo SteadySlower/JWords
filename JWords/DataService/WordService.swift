@@ -21,6 +21,17 @@ class WordService {
         }
     }
     
+    static func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void) {
+        Constants.Collections.word(id).getDocuments { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+            }
+            guard let documents = snapshot?.documents else { return }
+            let words = documents.compactMap({ try? $0.data(as: Word.self) })
+            completionHandler(words, nil)
+        }
+    }
+    
     static func saveBook(title: String, completionHandler: FireStoreCompletion) {
         let data: [String : Any] = [
             "title": title,
@@ -54,6 +65,5 @@ class WordService {
                                         "studyState": wordInput.studyState.rawValue]
             Constants.Collections.word(wordBookID).addDocument(data: data, completion: completionHandler)
         }
-        
     }
 }

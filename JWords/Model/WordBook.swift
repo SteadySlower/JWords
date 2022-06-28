@@ -12,6 +12,5 @@ import Firebase
 struct WordBook: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
     var title: String
-    var words: [Word]?
     let timestamp: Timestamp
 }

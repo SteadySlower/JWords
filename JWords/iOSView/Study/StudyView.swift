@@ -8,23 +8,46 @@
 import SwiftUI
 
 struct StudyView: View {
+    @ObservedObject private var viewModel: ViewModel
+    
+    init(wordBook: WordBook) {
+        self.viewModel = ViewModel(wordBook: wordBook)
+    }
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEach(0..<20) { _ in
-                    WordCell()
+                ForEach(viewModel.words) { word in
+                    WordCell(word: word)
                 }
             }
         }
-        .navigationTitle("2과 단어장")
+        .navigationTitle(viewModel.wordBook.title)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .onAppear{ viewModel.updateWords() }
     }
 }
 
-struct StudyView_Previews: PreviewProvider {
-    static var previews: some View {
-        StudyView()
+extension StudyView {
+    final class ViewModel: ObservableObject {
+        let wordBook: WordBook
+        @Published var words: [Word] = []
+        
+        init(wordBook: WordBook) {
+            self.wordBook = wordBook
+        }
+        
+        func updateWords() {
+            WordService.getWords(wordBookID: wordBook.id!) { [weak self] words, error in
+                if let error = error {
+                    print("디버그: \(error)")
+                }
+                guard let words = words else { return }
+                self?.words = words
+            }
+        }
     }
 }
+

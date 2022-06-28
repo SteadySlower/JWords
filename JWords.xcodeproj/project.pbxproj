@@ -180,6 +180,7 @@
 		06CEF2452866F1C800A620CC /* JWords */ = {
 			isa = PBXGroup;
 			children = (
+				5A5FF633286ADF53000150A7 /* extensions */,
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
 				5ACE0A6F2869985F00A57660 /* DataService */,
@@ -235,6 +236,13 @@
 				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		5A5FF633286ADF53000150A7 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = extensions;
 			sourceTree = "<group>";
 		};
 		5A67DC1D286942E800AC156C /* iOSView */ = {

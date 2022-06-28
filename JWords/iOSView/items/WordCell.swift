@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct WordCell: View {
+    @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
     @State private var studyState: StudyState = .undefined
     @State private var dragWidth: CGFloat = 0
+    
+    init(word: Word) {
+        self.viewModel = ViewModel(word: word)
+    }
     
     var body: some View {
         GeometryReader { proxy in
@@ -18,13 +23,13 @@ struct WordCell: View {
                 CellColor(state: $studyState)
                 if isFront {
                     VStack {
-                        Text("안녕")
-                        Image(systemName: "pencil")
+                        if !viewModel.word.frontText.isEmpty { Text(viewModel.word.frontText) }
+                        if !viewModel.word.frontImageURL.isEmpty { Text(viewModel.word.frontImageURL) }
                     }
                 } else {
                     VStack {
-                        Text("hello")
-                        Image(systemName: "house")
+                        if !viewModel.word.backText.isEmpty { Text(viewModel.word.backText) }
+                        if !viewModel.word.backImageURL.isEmpty { Text(viewModel.word.backImageURL) }
                     }
                 }
             }
@@ -60,11 +65,14 @@ struct WordCell: View {
             }
         }
     }
-    
 }
 
-struct WordCell_Previews: PreviewProvider {
-    static var previews: some View {
-        WordCell()
+extension WordCell {
+    final class ViewModel: ObservableObject {
+        var word: Word
+        
+        init(word: Word) {
+            self.word = word
+        }
     }
 }

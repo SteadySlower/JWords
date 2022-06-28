@@ -24,10 +24,10 @@ enum StudyState: Int, Codable {
 
 struct Word: Identifiable, Codable, Hashable{
     @DocumentID var id: String?
-    var frontText: String?
-    var frontImageURL: String?
-    var backText: String?
-    var backImageURL: String?
+    var frontText: String = ""
+    var frontImageURL: String = ""
+    var backText: String = ""
+    var backImageURL: String = ""
     var studyState: StudyState
     let timestamp: Timestamp
 }
