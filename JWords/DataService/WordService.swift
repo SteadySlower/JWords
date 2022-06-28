@@ -10,6 +10,11 @@ import Firebase
 typealias FireStoreCompletion = ((Error?) -> Void)?
 
 class WordService {
+    static func saveBook(title: String, completionHandler: FireStoreCompletion) {
+        let data = ["title": title]
+        Constants.Collections.wordBooks.addDocument(data: data, completion: completionHandler)
+    }
+    
     static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: FireStoreCompletion) {
         let group = DispatchGroup()
         var frontImageURL = ""
