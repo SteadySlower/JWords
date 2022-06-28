@@ -6,17 +6,14 @@
 //
 
 import Foundation
-import Cocoa
 import FirebaseStorage
 
 struct ImageUploader {
     // SwiftUI의 Image는 아직 jpeg으로 압축할 수 없음. (UIImage 필요함)
-    static func uploadImage(image: NSImage, group: DispatchGroup, completionHandler: @escaping(String) -> Void) {
+    static func uploadImage(image: InputImageType, group: DispatchGroup, completionHandler: @escaping(String) -> Void) {
         group.enter()
         // 이미지 압축하기
-        let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-        let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-        let jpegData = bitmapRep.representation(using: NSBitmapImageRep.FileType.jpeg, properties: [:])!
+        let jpegData = ImageCompressor.compressImageToJPEG(image: image)
 
         // 이미지 경로 정하기
         let ref = Storage.storage().reference(withPath: "/card_images/\(NSUUID().uuidString)")

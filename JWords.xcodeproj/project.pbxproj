@@ -28,6 +28,7 @@
 		06CEF2902866F86700A620CC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF28F2866F86700A620CC /* FirebaseFirestoreSwift */; };
 		06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF2912866F86700A620CC /* FirebaseStorage */; };
 		5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF62E286A8F68000150A7 /* ImageUploader.swift */; };
+		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
 		5A67DC1C2869426600AC156C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A67DC1B2869426500AC156C /* GoogleService-Info.plist */; };
 		5A67DC20286942FE00AC156C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC1F286942FE00AC156C /* HomeView.swift */; };
 		5A67DC23286943A900AC156C /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC22286943A800AC156C /* HomeCell.swift */; };
@@ -84,6 +85,7 @@
 		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
 		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5A5FF62E286A8F68000150A7 /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		5A5FF631286AD79E000150A7 /* ImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressor.swift; sourceTree = "<group>"; };
 		5A67DC1B2869426500AC156C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A67DC1F286942FE00AC156C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		5A67DC22286943A800AC156C /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		06CEF2452866F1C800A620CC /* JWords */ = {
 			isa = PBXGroup;
 			children = (
+				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
 				5ACE0A6F2869985F00A57660 /* DataService */,
 				5A67DC2F2869527A00AC156C /* macView */,
@@ -224,6 +227,14 @@
 				06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */,
 			);
 			path = JWordsAcceptanceTests;
+			sourceTree = "<group>";
+		};
+		5A5FF630286AD746000150A7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		5A67DC1D286942E800AC156C /* iOSView */ = {
@@ -486,6 +497,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,

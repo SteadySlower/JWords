@@ -18,8 +18,6 @@ struct HomeView: View {
                 }
             }
         }
-        .navigationTitle("단어장 목록")
-        .navigationViewStyle(.automatic)
     }
 }
 

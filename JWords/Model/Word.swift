@@ -7,7 +7,15 @@
 
 import FirebaseFirestoreSwift
 import Firebase
+
+#if os(iOS)
+import UIKit
+typealias InputImageType = UIImage
+#elseif os(macOS)
 import Cocoa
+typealias InputImageType = NSImage
+#endif
+
 
 
 enum StudyState: Int, Codable {
@@ -26,9 +34,9 @@ struct Word: Identifiable, Codable, Hashable{
 
 struct WordInput {
     let frontText: String
-    let frontImage: NSImage?
+    let frontImage: InputImageType?
     let backText: String
-    let backImage: NSImage?
+    let backImage: InputImageType?
     let studyState: StudyState = .undefined
     let timestamp: Timestamp = Timestamp(date: Date())
 }
