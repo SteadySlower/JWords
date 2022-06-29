@@ -16,16 +16,15 @@ struct StudyView: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 32) {
+            VStack {}
+            .frame(height: Constants.Size.deviceHeight / 5)
+            VStack(spacing: 32) {
                 ForEach(viewModel.words) { word in
                     WordCell(word: word)
                 }
             }
         }
         .navigationTitle(viewModel.wordBook.title)
-        #if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
-        #endif
         .onAppear{ viewModel.updateWords() }
     }
 }

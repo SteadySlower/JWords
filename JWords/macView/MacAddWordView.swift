@@ -22,7 +22,6 @@ struct MacAddWordView: View {
                             Text(viewModel.bookList[index].title)
                         }
                     }
-                    .pickerStyle(.radioGroup)
                     .padding()
                 }
                 Text("앞면 입력")
