@@ -27,6 +27,7 @@
 		06CEF28E2866F86700A620CC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF28D2866F86700A620CC /* FirebaseFirestore */; };
 		06CEF2902866F86700A620CC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF28F2866F86700A620CC /* FirebaseFirestoreSwift */; };
 		06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF2912866F86700A620CC /* FirebaseStorage */; };
+		5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5328C2286C126C0080D500 /* Kingfisher */; };
 		5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF62E286A8F68000150A7 /* ImageUploader.swift */; };
 		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
 		5A67DC1C2869426600AC156C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A67DC1B2869426500AC156C /* GoogleService-Info.plist */; };
@@ -108,6 +109,7 @@
 			files = (
 				06CEF28C2866F86700A620CC /* FirebaseDatabaseSwift in Frameworks */,
 				06CEF2882866F86700A620CC /* FirebaseAuth in Frameworks */,
+				5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */,
 				06CEF2902866F86700A620CC /* FirebaseFirestoreSwift in Frameworks */,
 				06CEF28A2866F86700A620CC /* FirebaseDatabase in Frameworks */,
 				06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */,
@@ -340,6 +342,7 @@
 				06CEF28D2866F86700A620CC /* FirebaseFirestore */,
 				06CEF28F2866F86700A620CC /* FirebaseFirestoreSwift */,
 				06CEF2912866F86700A620CC /* FirebaseStorage */,
+				5A5328C2286C126C0080D500 /* Kingfisher */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -453,6 +456,7 @@
 				06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */,
 				06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */,
+				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
 			projectDirPath = "";
@@ -693,10 +697,11 @@
 		06CEF2692866F1CB00A620CC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JWords/JWords.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -705,6 +710,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
@@ -728,10 +734,11 @@
 		06CEF26A2866F1CB00A620CC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JWords/JWords.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -740,6 +747,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
@@ -945,6 +953,14 @@
 				kind = branch;
 			};
 		};
+		5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1007,6 +1023,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		5A5328C2286C126C0080D500 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

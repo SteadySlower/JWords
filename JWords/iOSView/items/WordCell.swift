@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
-    @State private var studyState: StudyState = .undefined
     @State private var dragWidth: CGFloat = 0
     
     init(word: Word) {
@@ -20,21 +20,41 @@ struct WordCell: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                CellColor(state: $studyState)
+                CellColor(state: $viewModel.word.studyState)
                 if isFront {
                     VStack {
-                        if !viewModel.word.frontText.isEmpty { Text(viewModel.word.frontText) }
-                        if !viewModel.word.frontImageURL.isEmpty { Text(viewModel.word.frontImageURL) }
+                        if !viewModel.word.frontText.isEmpty {
+                            Text(viewModel.word.frontText)
+                        }
+                        if !viewModel.word.frontImageURL.isEmpty {
+                            KFImage(viewModel.frontImageURL)
+                                .resizable()
+                                .frame(width: proxy.frame(in: .local).width * 0.9)
+                                .aspectRatio(contentMode: .fill)
+                        }
                     }
                 } else {
                     VStack {
-                        if !viewModel.word.backText.isEmpty { Text(viewModel.word.backText) }
-                        if !viewModel.word.backImageURL.isEmpty { Text(viewModel.word.backImageURL) }
+                        if !viewModel.word.backText.isEmpty {
+                            Text(viewModel.word.backText)
+                        }
+                        if !viewModel.word.backImageURL.isEmpty {
+                            KFImage(viewModel.backImageURL)
+                                .resizable()
+                                .frame(width: proxy.frame(in: .local).width * 0.9)
+                                .aspectRatio(contentMode: .fill)
+                        }
                     }
                 }
             }
             .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
-            .onTapGesture { isFront.toggle() }
+            // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
+            .simultaneousGesture(TapGesture(count: 2).onEnded {
+                viewModel.word.studyState = .undefined
+            })
+            .gesture(TapGesture().onEnded {
+                isFront.toggle()
+            })
             // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
             .gesture(DragGesture(minimumDistance: 30, coordinateSpace: .global)
                 .onChanged({ value in
@@ -43,9 +63,9 @@ struct WordCell: View {
                 .onEnded({ value in
                     self.dragWidth = 0
                     if value.translation.width < 0 {
-                        self.studyState = .success
+                        self.viewModel.word.studyState = .success
                     } else {
-                        self.studyState = .fail
+                        self.viewModel.word.studyState = .fail
                     }
                 }))
         }
@@ -73,6 +93,14 @@ extension WordCell {
         
         init(word: Word) {
             self.word = word
+        }
+        
+        var frontImageURL: URL? {
+            URL(string: word.frontImageURL)
+        }
+        
+        var backImageURL: URL? {
+            URL(string: word.backImageURL)
         }
     }
 }
