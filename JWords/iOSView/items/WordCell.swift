@@ -12,6 +12,13 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
     @State private var dragWidth: CGFloat = 0
+    private var hasImage: Bool {
+        if isFront {
+            return viewModel.word.frontImageURL.isEmpty ? false : true
+        } else {
+            return viewModel.word.backImageURL.isEmpty ? false : true
+        }
+    }
     
     init(word: Word) {
         self.viewModel = ViewModel(word: word)
@@ -25,24 +32,24 @@ struct WordCell: View {
                     VStack {
                         if !viewModel.word.frontText.isEmpty {
                             Text(viewModel.word.frontText)
+                                .font(.system(size: 48))
                         }
                         if !viewModel.word.frontImageURL.isEmpty {
                             KFImage(viewModel.frontImageURL)
                                 .resizable()
-                                .frame(width: proxy.frame(in: .local).width * 0.9)
-                                .aspectRatio(contentMode: .fill)
+                                .scaledToFit()
                         }
                     }
                 } else {
                     VStack {
                         if !viewModel.word.backText.isEmpty {
                             Text(viewModel.word.backText)
+                                .font(.system(size: 48))
                         }
                         if !viewModel.word.backImageURL.isEmpty {
                             KFImage(viewModel.backImageURL)
                                 .resizable()
-                                .frame(width: proxy.frame(in: .local).width * 0.9)
-                                .aspectRatio(contentMode: .fill)
+                                .scaledToFit()
                         }
                     }
                 }
@@ -89,7 +96,7 @@ struct WordCell: View {
 
 extension WordCell {
     final class ViewModel: ObservableObject {
-        var word: Word
+        @Published var word: Word
         
         init(word: Word) {
             self.word = word

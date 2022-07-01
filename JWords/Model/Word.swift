@@ -30,6 +30,10 @@ struct Word: Identifiable, Codable, Hashable{
     var backImageURL: String = ""
     var studyState: StudyState
     let timestamp: Timestamp
+    
+    var hasImage: Bool {
+        return !frontImageURL.isEmpty || !backImageURL.isEmpty
+    }
 }
 
 struct WordInput {
