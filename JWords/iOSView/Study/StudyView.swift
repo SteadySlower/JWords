@@ -29,10 +29,12 @@ struct StudyView: View {
         }
         .navigationTitle(viewModel.wordBook.title)
         .onAppear{ viewModel.updateWords() }
+        #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             self.deviceWidth = Constants.Size.deviceWidth
         }
+        #endif
     }
 }
 
