@@ -20,8 +20,8 @@ struct WordCell: View {
         }
     }
     
-    init(word: Word) {
-        self.viewModel = ViewModel(word: word)
+    init(wordBook: WordBook, word: Word) {
+        self.viewModel = ViewModel(wordBook: wordBook, word: word)
     }
     
     var body: some View {
@@ -57,7 +57,7 @@ struct WordCell: View {
             .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
             // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
             .simultaneousGesture(TapGesture(count: 2).onEnded {
-                viewModel.word.studyState = .undefined
+                viewModel.updateToUndefined()
             })
             .gesture(TapGesture().onEnded {
                 isFront.toggle()
@@ -70,9 +70,9 @@ struct WordCell: View {
                 .onEnded({ value in
                     self.dragWidth = 0
                     if value.translation.width < 0 {
-                        self.viewModel.word.studyState = .success
+                        viewModel.updateToSuccess()
                     } else {
-                        self.viewModel.word.studyState = .fail
+                        viewModel.updateToFail()
                     }
                 }))
         }
@@ -96,9 +96,11 @@ struct WordCell: View {
 
 extension WordCell {
     final class ViewModel: ObservableObject {
+        let wordBook: WordBook
         @Published var word: Word
         
-        init(word: Word) {
+        init(wordBook: WordBook, word: Word) {
+            self.wordBook = wordBook
             self.word = word
         }
         
@@ -108,6 +110,36 @@ extension WordCell {
         
         var backImageURL: URL? {
             URL(string: word.backImageURL)
+        }
+        
+        func updateToSuccess() {
+            guard let wordBookID = wordBook.id else { return }
+            guard let wordID = word.id else { return }
+            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .success) { error in
+                // FIXME: handle error
+                if let error = error { return }
+                self.word.studyState = .success
+            }
+        }
+        
+        func updateToFail() {
+            guard let wordBookID = wordBook.id else { return }
+            guard let wordID = word.id else { return }
+            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .fail) { error in
+                // FIXME: handle error
+                if let error = error { return }
+                self.word.studyState = .fail
+            }
+        }
+        
+        func updateToUndefined() {
+            guard let wordBookID = wordBook.id else { return }
+            guard let wordID = word.id else { return }
+            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .undefined) { error in
+                // FIXME: handle error
+                if let error = error { return }
+                self.word.studyState = .undefined
+            }
         }
     }
 }

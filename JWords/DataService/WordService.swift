@@ -66,4 +66,10 @@ class WordService {
             Constants.Collections.word(wordBookID).addDocument(data: data, completion: completionHandler)
         }
     }
+    
+    static func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
+        Constants.Collections.word(wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
+            completionHandler(error)
+        }
+    }
 }

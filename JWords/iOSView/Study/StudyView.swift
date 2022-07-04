@@ -22,7 +22,7 @@ struct StudyView: View {
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(viewModel.words) { word in
-                    WordCell(word: word)
+                    WordCell(wordBook: viewModel.wordBook, word: word)
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }
             }
