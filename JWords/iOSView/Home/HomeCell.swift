@@ -8,17 +8,21 @@
 import SwiftUI
 
 struct HomeCell: View {
+    @ObservedObject private var viewModel: ViewModel
     private let cellWidth = Constants.Size.deviceWidth * 0.9
+    
+    init(wordBook: WordBook) {
+        self.viewModel = ViewModel(wordBook: wordBook)
+    }
     
     var body: some View {
         ZStack {
             NavigationLink {
-                StudyView()
+                StudyView(wordBook: viewModel.wordBook)
             } label: {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text("2과 단어장")
-                        Text("2020/07/01")
+                        Text(viewModel.wordBook.title)
                     }
                     Spacer()
                 }
@@ -30,8 +34,12 @@ struct HomeCell: View {
     }
 }
 
-struct HomeCell_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeCell()
+extension HomeCell {
+    final class ViewModel: ObservableObject {
+        let wordBook: WordBook
+        
+        init(wordBook: WordBook) {
+            self.wordBook = wordBook
+        }
     }
 }

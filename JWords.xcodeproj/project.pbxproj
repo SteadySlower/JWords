@@ -27,6 +27,9 @@
 		06CEF28E2866F86700A620CC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF28D2866F86700A620CC /* FirebaseFirestore */; };
 		06CEF2902866F86700A620CC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF28F2866F86700A620CC /* FirebaseFirestoreSwift */; };
 		06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF2912866F86700A620CC /* FirebaseStorage */; };
+		5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5328C2286C126C0080D500 /* Kingfisher */; };
+		5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF62E286A8F68000150A7 /* ImageUploader.swift */; };
+		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
 		5A67DC1C2869426600AC156C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A67DC1B2869426500AC156C /* GoogleService-Info.plist */; };
 		5A67DC20286942FE00AC156C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC1F286942FE00AC156C /* HomeView.swift */; };
 		5A67DC23286943A900AC156C /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC22286943A800AC156C /* HomeCell.swift */; };
@@ -36,6 +39,10 @@
 		5A67DC312869529700AC156C /* MacHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC302869529700AC156C /* MacHomeView.swift */; };
 		5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC322869565A00AC156C /* MacAddBookView.swift */; };
 		5A67DC352869566600AC156C /* MacAddWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC342869566600AC156C /* MacAddWordView.swift */; };
+		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
+		5ACE0A73286998F800A57660 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A72286998F800A57660 /* Collections.swift */; };
+		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
+		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +85,8 @@
 		06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsAcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
 		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5A5FF62E286A8F68000150A7 /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		5A5FF631286AD79E000150A7 /* ImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressor.swift; sourceTree = "<group>"; };
 		5A67DC1B2869426500AC156C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A67DC1F286942FE00AC156C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		5A67DC22286943A800AC156C /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
@@ -87,6 +96,10 @@
 		5A67DC302869529700AC156C /* MacHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacHomeView.swift; sourceTree = "<group>"; };
 		5A67DC322869565A00AC156C /* MacAddBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookView.swift; sourceTree = "<group>"; };
 		5A67DC342869566600AC156C /* MacAddWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddWordView.swift; sourceTree = "<group>"; };
+		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
+		5ACE0A72286998F800A57660 /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
+		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
+		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +109,7 @@
 			files = (
 				06CEF28C2866F86700A620CC /* FirebaseDatabaseSwift in Frameworks */,
 				06CEF2882866F86700A620CC /* FirebaseAuth in Frameworks */,
+				5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */,
 				06CEF2902866F86700A620CC /* FirebaseFirestoreSwift in Frameworks */,
 				06CEF28A2866F86700A620CC /* FirebaseDatabase in Frameworks */,
 				06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */,
@@ -168,6 +182,10 @@
 		06CEF2452866F1C800A620CC /* JWords */ = {
 			isa = PBXGroup;
 			children = (
+				5A5FF633286ADF53000150A7 /* extensions */,
+				5A5FF630286AD746000150A7 /* Utilities */,
+				5ACE0A7428699B9600A57660 /* Model */,
+				5ACE0A6F2869985F00A57660 /* DataService */,
 				5A67DC2F2869527A00AC156C /* macView */,
 				5A67DC24286944EF00AC156C /* Constants */,
 				5A67DC1D286942E800AC156C /* iOSView */,
@@ -214,10 +232,24 @@
 			path = JWordsAcceptanceTests;
 			sourceTree = "<group>";
 		};
+		5A5FF630286AD746000150A7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		5A5FF633286ADF53000150A7 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = extensions;
+			sourceTree = "<group>";
+		};
 		5A67DC1D286942E800AC156C /* iOSView */ = {
 			isa = PBXGroup;
 			children = (
-				5A67DC362869730300AC156C /* AddViews */,
 				5A67DC2E2869491E00AC156C /* items */,
 				5A67DC28286946DF00AC156C /* Study */,
 				5A67DC212869439D00AC156C /* Home */,
@@ -238,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC26286944FF00AC156C /* Size.swift */,
+				5ACE0A72286998F800A57660 /* Collections.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -268,11 +301,22 @@
 			path = macView;
 			sourceTree = "<group>";
 		};
-		5A67DC362869730300AC156C /* AddViews */ = {
+		5ACE0A6F2869985F00A57660 /* DataService */ = {
 			isa = PBXGroup;
 			children = (
+				5ACE0A702869986F00A57660 /* WordService.swift */,
+				5A5FF62E286A8F68000150A7 /* ImageUploader.swift */,
 			);
-			path = AddViews;
+			path = DataService;
+			sourceTree = "<group>";
+		};
+		5ACE0A7428699B9600A57660 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5ACE0A7528699BAD00A57660 /* WordBook.swift */,
+				5ACE0A7728699BB400A57660 /* Word.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +342,7 @@
 				06CEF28D2866F86700A620CC /* FirebaseFirestore */,
 				06CEF28F2866F86700A620CC /* FirebaseFirestoreSwift */,
 				06CEF2912866F86700A620CC /* FirebaseStorage */,
+				5A5328C2286C126C0080D500 /* Kingfisher */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -411,6 +456,7 @@
 				06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */,
 				06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */,
+				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
 			projectDirPath = "";
@@ -463,9 +509,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
+				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
+				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
+				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,
 				5A67DC20286942FE00AC156C /* HomeView.swift in Sources */,
 				5A67DC312869529700AC156C /* MacHomeView.swift in Sources */,
+				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
+				5ACE0A73286998F800A57660 /* Collections.swift in Sources */,
 				5A67DC2D2869470C00AC156C /* WordCell.swift in Sources */,
 				06CEF2492866F1C800A620CC /* ContentView.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
@@ -649,6 +701,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JWords/JWords.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -657,7 +710,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = "no screen";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -683,6 +739,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JWords/JWords.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -691,7 +748,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = "no screen";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -895,6 +955,14 @@
 				kind = branch;
 			};
 		};
+		5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -957,6 +1025,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		5A5328C2286C126C0080D500 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

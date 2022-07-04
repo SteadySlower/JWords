@@ -9,11 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        #if os(iOS)
-        HomeView()
-        #elseif os(macOS)
-        MacHomeView()
-        #endif
+        Group {
+            #if os(iOS)
+            HomeView()
+            #elseif os(macOS)
+            MacHomeView()
+            #endif
+        }
     }
 }
 
