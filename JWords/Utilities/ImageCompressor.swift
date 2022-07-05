@@ -7,6 +7,9 @@
 
 import Foundation
 import FirebaseStorage
+#if os(macOS)
+import Cocoa
+#endif
 
 class ImageCompressor {
     static func compressImageToJPEG(image: InputImageType) -> Data {
