@@ -17,8 +17,8 @@ struct MacAddWordView: View {
             VStack {
                 if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
                     // TODO: Picker는 Hashable을 필요로 함 + selection에 Int아니고 실제 type을 넣으니까 안됨
-                    Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장: \(viewModel.bookList[viewModel.selectedBookIndex].title ?? "없음")")) {
-                        ForEach(0..<viewModel.bookList.count) { index in
+                    Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장: \(viewModel.bookList[viewModel.selectedBookIndex].title)")) {
+                        ForEach(0..<viewModel.bookList.count, id: \.self) { index in
                             Text(viewModel.bookList[index].title)
                         }
                     }
@@ -57,12 +57,16 @@ struct MacAddWordView: View {
                     }
                 }
             }
-            Button {
-                viewModel.saveWord()
-            } label: {
-                Text("저장")
+            if viewModel.isUploading {
+                ProgressView()
+            } else {
+                Button {
+                    viewModel.saveWord()
+                } label: {
+                    Text("저장")
+                }
+                .disabled(viewModel.isSaveButtonUnable)
             }
-            .disabled(viewModel.isSaveButtonUnable)
         }
         .onAppear { viewModel.getWordBooks() }
     }
@@ -105,12 +109,12 @@ extension MacAddWordView {
         }
         
         func saveWord() {
+            clearInputs()
             isUploading = true
             let wordInput = WordInput(frontText: frontText, frontImage: frontImage, backText: backText, backImage: backImage)
             guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
             WordService.saveWord(wordInput: wordInput, wordBookID: selectedBookID) { [weak self] error in
                 if let error = error { print("디버그: \(error)"); return }
-                self?.clearInputs()
                 self?.isUploading = false
             }
         }
