@@ -72,7 +72,13 @@ extension StudyView {
         }
         
         func shuffleWords() {
-            words.shuffle()
+            WordService.getWords(wordBookID: wordBook.id!) { [weak self] words, error in
+                if let error = error {
+                    print("디버그: \(error)")
+                }
+                guard let words = words else { return }
+                self?.words = words.shuffled()
+            }
         }
     }
 }
