@@ -22,7 +22,7 @@ class WordService {
     }
     
     static func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void) {
-        Constants.Collections.word(id).getDocuments { snapshot, error in
+        Constants.Collections.word(id).order(by: "timestamp").getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
             }

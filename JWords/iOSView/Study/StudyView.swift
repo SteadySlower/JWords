@@ -37,6 +37,13 @@ struct StudyView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             resetDeviceWidth()
         }
+        .toolbar {
+            ToolbarItem {
+                Button("랜덤") {
+                    viewModel.shuffleWords()
+                }
+            }
+        }
         #endif
     }
     
@@ -62,6 +69,10 @@ extension StudyView {
                 guard let words = words else { return }
                 self?.words = words
             }
+        }
+        
+        func shuffleWords() {
+            words.shuffle()
         }
     }
 }
