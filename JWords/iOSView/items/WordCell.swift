@@ -22,6 +22,7 @@ struct WordCell: View {
     
     init(wordBook: WordBook, word: Binding<Word>) {
         self.viewModel = ViewModel(wordBook: wordBook, word: word)
+        viewModel.prefetchImage()
     }
     
     var body: some View {
@@ -136,7 +137,7 @@ extension WordCell {
             guard let wordID = word.id else { return }
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .success) { error in
                 // FIXME: handle error
-                if let error = error { return }
+                if let error = error { print(error); return }
                 self.word.studyState = .success
             }
         }
@@ -146,7 +147,7 @@ extension WordCell {
             guard let wordID = word.id else { return }
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .fail) { error in
                 // FIXME: handle error
-                if let error = error { return }
+                if let error = error { print(error); return }
                 self.word.studyState = .fail
             }
         }
@@ -156,9 +157,22 @@ extension WordCell {
             guard let wordID = word.id else { return }
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .undefined) { error in
                 // FIXME: handle error
-                if let error = error { return }
+                if let error = error { print(error); return }
                 self.word.studyState = .undefined
             }
+        }
+        
+        func prefetchImage() {
+            guard word.hasImage == true else { return }
+            print("디버그: 이미지 있어서 prefetch")
+            var urls = [URL]()
+            if !word.frontImageURL.isEmpty { urls.append(URL(string: word.frontImageURL)!) }
+            if !word.backImageURL.isEmpty { urls.append(URL(string: word.backImageURL)!) }
+            let prefetcher = ImagePrefetcher(urls: urls) {
+                skippedResources, failedResources, completedResources in
+                print("prefetched image: \(completedResources)")
+            }
+            prefetcher.start()
         }
     }
 }
