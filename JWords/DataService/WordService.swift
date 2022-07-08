@@ -72,4 +72,15 @@ class WordService {
             completionHandler(error)
         }
     }
+    
+    static func checkIfOverlap(wordBookID: String, frontText: String, completionHandler: @escaping ((Bool?, Error?) -> Void)) {
+        Constants.Collections.word(wordBookID).whereField("frontText", isEqualTo: frontText).getDocuments { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard let documents = snapshot?.documents else { return }
+            completionHandler(documents.count != 0 ? true : false, nil)
+        }
+    }
 }

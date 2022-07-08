@@ -31,6 +31,12 @@ struct MacAddWordView: View {
                 TextEditor(text: $viewModel.frontText)
                     .frame(height: Constants.Size.deviceHeight / 8)
                     .padding(.horizontal)
+                Button {
+                    viewModel.checkIfOverlap()
+                } label: {
+                    Text(viewModel.overlapCheckButtonTitle)
+                }
+                .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
                 if let frontImage = viewModel.frontImage {
                     Image(nsImage: frontImage)
                         .resizable()
@@ -78,7 +84,7 @@ struct MacAddWordView: View {
         .onAppear { viewModel.getWordBooks() }
     }
     
-    // TODO: 클립보드에서 복사해오는 법
+    // TODO: 클립보드에서 복사해오는 법 (비지니스 로직인가 뷰인가)
     func getImageFromPasteBoard() -> NSImage? {
         let pb = NSPasteboard.general
         let type = NSPasteboard.PasteboardType.tiff
@@ -90,7 +96,11 @@ struct MacAddWordView: View {
 
 extension MacAddWordView {
     final class ViewModel: ObservableObject {
-        @Published var frontText: String = ""
+        @Published var frontText: String = "" {
+            didSet {
+                isOverlapped = nil
+            }
+        }
         @Published var frontImage: NSImage?
         @Published var backText: String = ""
         @Published var backImage: NSImage?
@@ -101,6 +111,18 @@ extension MacAddWordView {
         
         var isSaveButtonUnable: Bool {
             return (frontText.isEmpty && frontImage == nil) || (backText.isEmpty && backImage == nil) || isUploading
+        }
+        
+        @Published var isCheckingOverlap: Bool = false
+        @Published var isOverlapped: Bool? = nil
+        var overlapCheckButtonTitle: String {
+            if isCheckingOverlap {
+                return "중복 검사중"
+            }
+            guard let isOverlapped = isOverlapped else {
+                return "중복체크"
+            }
+            return isOverlapped ? "중복됨" : "중복 아님"
         }
         
         func getWordBooks() {
@@ -124,6 +146,16 @@ extension MacAddWordView {
             WordService.saveWord(wordInput: wordInput, wordBookID: selectedBookID) { [weak self] error in
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
+            }
+        }
+        
+        func checkIfOverlap() {
+            isCheckingOverlap = true
+            guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
+            WordService.checkIfOverlap(wordBookID: selectedBookID, frontText: frontText) { [weak self] isOverlapped, error in
+                if let error = error { print("디버그: \(error)"); return }
+                self?.isOverlapped = isOverlapped ?? false
+                self?.isCheckingOverlap = false
             }
         }
         
