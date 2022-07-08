@@ -20,7 +20,7 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Word) {
+    init(wordBook: WordBook, word: Binding<Word>) {
         self.viewModel = ViewModel(wordBook: wordBook, word: word)
     }
     
@@ -116,11 +116,11 @@ struct WordCell: View {
 extension WordCell {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
-        @Published var word: Word
+        @Binding var word: Word
         
-        init(wordBook: WordBook, word: Word) {
+        init(wordBook: WordBook, word: Binding<Word>) {
             self.wordBook = wordBook
-            self.word = word
+            self._word = word
         }
         
         var frontImageURL: URL? {

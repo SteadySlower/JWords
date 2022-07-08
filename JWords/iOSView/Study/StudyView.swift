@@ -21,9 +21,9 @@ struct StudyView: View {
             VStack {}
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
-                ForEach(viewModel.words) { word in
-                    WordCell(wordBook: viewModel.wordBook, word: word)
-                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                ForEach(0..<viewModel.words.count, id: \.self) { index in
+                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index])
+                        .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
         }
@@ -72,13 +72,7 @@ extension StudyView {
         }
         
         func shuffleWords() {
-            WordService.getWords(wordBookID: wordBook.id!) { [weak self] words, error in
-                if let error = error {
-                    print("디버그: \(error)")
-                }
-                guard let words = words else { return }
-                self?.words = words.shuffled()
-            }
+            words.shuffle()
         }
     }
 }
