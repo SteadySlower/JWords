@@ -27,11 +27,7 @@ struct HomeView: View {
 
 extension HomeView {
     final class ViewModel: ObservableObject {
-        @Published private(set) var wordBooks: [WordBook] = [] {
-            didSet {
-                print(wordBooks)
-            }
-        }
+        @Published private(set) var wordBooks: [WordBook] = []
         private var isFetched: Bool = false
         
         func fetchWordBooks() {

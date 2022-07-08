@@ -21,20 +21,34 @@ struct StudyView: View {
             VStack {}
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
-                ForEach(viewModel.words) { word in
-                    WordCell(wordBook: viewModel.wordBook, word: word)
-                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                ForEach(0..<viewModel.words.count, id: \.self) { index in
+                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index])
+                        .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
         }
         .navigationTitle(viewModel.wordBook.title)
-        .onAppear{ viewModel.updateWords() }
+        .onAppear{
+            viewModel.updateWords()
+            resetDeviceWidth()
+        }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-            self.deviceWidth = Constants.Size.deviceWidth
+            resetDeviceWidth()
+        }
+        .toolbar {
+            ToolbarItem {
+                Button("랜덤") {
+                    viewModel.shuffleWords()
+                }
+            }
         }
         #endif
+    }
+    
+    private func resetDeviceWidth() {
+        self.deviceWidth = Constants.Size.deviceWidth
     }
 }
 
@@ -55,6 +69,10 @@ extension StudyView {
                 guard let words = words else { return }
                 self?.words = words
             }
+        }
+        
+        func shuffleWords() {
+            words.shuffle()
         }
     }
 }
