@@ -46,7 +46,9 @@ struct WordCell: View {
                         VStack {
                             if !viewModel.word.frontText.isEmpty {
                                 Text(viewModel.word.frontText)
+                                    .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
+                                    .lineLimit(3)
                             }
                             if !viewModel.word.frontImageURL.isEmpty {
                                 KFImage(viewModel.frontImageURL)
@@ -58,7 +60,9 @@ struct WordCell: View {
                         VStack {
                             if !viewModel.word.backText.isEmpty {
                                 Text(viewModel.word.backText)
+                                    .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
+                                    .lineLimit(3)
                             }
                             if !viewModel.word.backImageURL.isEmpty {
                                 KFImage(viewModel.backImageURL)
