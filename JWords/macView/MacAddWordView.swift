@@ -109,10 +109,11 @@ extension MacAddWordView {
         }
         
         func saveWord() {
-            clearInputs()
             isUploading = true
             let wordInput = WordInput(frontText: frontText, frontImage: frontImage, backText: backText, backImage: backImage)
             guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
+            
+            clearInputs()
             WordService.saveWord(wordInput: wordInput, wordBookID: selectedBookID) { [weak self] error in
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
