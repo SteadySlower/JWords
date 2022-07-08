@@ -27,55 +27,70 @@ struct WordCell: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                CellColor(state: $viewModel.word.studyState)
-                if isFront {
-                    VStack {
-                        if !viewModel.word.frontText.isEmpty {
-                            Text(viewModel.word.frontText)
-                                .font(.system(size: 48))
+                HStack {
+                    let imageHeight = proxy.frame(in: .local).height * 0.8
+                    Image(systemName: "circle")
+                        .resizable()
+                        .frame(width: imageHeight, height: imageHeight)
+                        .foregroundColor(.blue)
+                    Spacer()
+                    Image(systemName: "x.circle")
+                        .resizable()
+                        .frame(width: imageHeight, height: imageHeight)
+                        .foregroundColor(.red)
+                    
+                }
+                ZStack {
+                    CellColor(state: $viewModel.word.studyState)
+                    if isFront {
+                        VStack {
+                            if !viewModel.word.frontText.isEmpty {
+                                Text(viewModel.word.frontText)
+                                    .font(.system(size: 48))
+                            }
+                            if !viewModel.word.frontImageURL.isEmpty {
+                                KFImage(viewModel.frontImageURL)
+                                    .resizable()
+                                    .scaledToFit()
+                            }
                         }
-                        if !viewModel.word.frontImageURL.isEmpty {
-                            KFImage(viewModel.frontImageURL)
-                                .resizable()
-                                .scaledToFit()
-                        }
-                    }
-                } else {
-                    VStack {
-                        if !viewModel.word.backText.isEmpty {
-                            Text(viewModel.word.backText)
-                                .font(.system(size: 48))
-                        }
-                        if !viewModel.word.backImageURL.isEmpty {
-                            KFImage(viewModel.backImageURL)
-                                .resizable()
-                                .scaledToFit()
+                    } else {
+                        VStack {
+                            if !viewModel.word.backText.isEmpty {
+                                Text(viewModel.word.backText)
+                                    .font(.system(size: 48))
+                            }
+                            if !viewModel.word.backImageURL.isEmpty {
+                                KFImage(viewModel.backImageURL)
+                                    .resizable()
+                                    .scaledToFit()
+                            }
                         }
                     }
                 }
-            }
-            .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
-            // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
-            .simultaneousGesture(TapGesture(count: 2).onEnded {
-                viewModel.updateToUndefined()
-            })
-            .gesture(TapGesture().onEnded {
-                isFront.toggle()
-            })
-            // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
-            .gesture(DragGesture(minimumDistance: 30, coordinateSpace: .global)
-                .onChanged({ value in
-                    self.dragWidth =  value.translation.width
+                .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
+                // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
+                .simultaneousGesture(TapGesture(count: 2).onEnded {
+                    viewModel.updateToUndefined()
                 })
-                .onEnded({ value in
-                    self.dragWidth = 0
-                    if value.translation.width < 0 {
-                        viewModel.updateToSuccess()
-                    } else {
-                        viewModel.updateToFail()
-                    }
-                }))
-        }
+                .gesture(TapGesture().onEnded {
+                    isFront.toggle()
+                })
+                // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
+                .gesture(DragGesture(minimumDistance: 30, coordinateSpace: .global)
+                    .onChanged({ value in
+                        self.dragWidth =  value.translation.width
+                    })
+                    .onEnded({ value in
+                        self.dragWidth = 0
+                        if value.translation.width > 0 {
+                            viewModel.updateToSuccess()
+                        } else {
+                            viewModel.updateToFail()
+                        }
+                    }))
+            }
+            }
     }
     
     private struct CellColor: View {
