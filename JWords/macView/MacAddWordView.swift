@@ -24,9 +24,13 @@ struct MacAddWordView: View {
                     }
                     .padding()
                 }
+            }
+            VStack {
                 Text("앞면 입력")
-                TextField("앞면 텍스트", text: $viewModel.frontText)
-                    .padding()
+                    .font(.system(size: 20))
+                TextEditor(text: $viewModel.frontText)
+                    .frame(height: Constants.Size.deviceHeight / 8)
+                    .padding(.horizontal)
                 if let frontImage = viewModel.frontImage {
                     Image(nsImage: frontImage)
                         .resizable()
@@ -40,10 +44,13 @@ struct MacAddWordView: View {
                     }
                 }
             }
+            .padding(.bottom)
             VStack {
                 Text("뒷면 입력")
-                TextField("뒷면 텍스트", text: $viewModel.backText)
-                    .padding()
+                    .font(.system(size: 20))
+                TextEditor(text: $viewModel.backText)
+                    .frame(height: Constants.Size.deviceHeight / 8)
+                    .padding(.horizontal)
                 if let backImage = viewModel.backImage {
                     Image(nsImage: backImage)
                         .resizable()
