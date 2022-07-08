@@ -164,10 +164,7 @@ extension WordCell {
         
         func prefetchImage() {
             guard word.hasImage == true else { return }
-            print("디버그: 이미지 있어서 prefetch")
-            var urls = [URL]()
-            if !word.frontImageURL.isEmpty { urls.append(URL(string: word.frontImageURL)!) }
-            if !word.backImageURL.isEmpty { urls.append(URL(string: word.backImageURL)!) }
+            let urls = [word.frontImageURL, word.backImageURL].compactMap { URL(string: $0) }
             let prefetcher = ImagePrefetcher(urls: urls) {
                 skippedResources, failedResources, completedResources in
                 print("prefetched image: \(completedResources)")
