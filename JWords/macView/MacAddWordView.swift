@@ -29,6 +29,7 @@ struct MacAddWordView: View {
                 Text("앞면 입력")
                     .font(.system(size: 20))
                 TextEditor(text: $viewModel.frontText)
+                    .font(.system(size: 30))
                     .frame(height: Constants.Size.deviceHeight / 8)
                     .padding(.horizontal)
                 Button {
@@ -55,6 +56,7 @@ struct MacAddWordView: View {
                 Text("뒷면 입력")
                     .font(.system(size: 20))
                 TextEditor(text: $viewModel.backText)
+                    .font(.system(size: 30))
                     .frame(height: Constants.Size.deviceHeight / 8)
                     .padding(.horizontal)
                 if let backImage = viewModel.backImage {
