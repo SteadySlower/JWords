@@ -74,13 +74,6 @@ struct WordCell: View {
                     }
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
-                // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
-                .gesture(TapGesture(count: 2).onEnded {
-                    viewModel.updateToUndefined()
-                })
-                .gesture(TapGesture().onEnded {
-                    isFront.toggle()
-                })
                 // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
                 .gesture(DragGesture(minimumDistance: 30, coordinateSpace: .global)
                     .onChanged({ value in
@@ -93,9 +86,17 @@ struct WordCell: View {
                         } else {
                             viewModel.updateToFail()
                         }
-                    }))
+                    })
+                )
+                // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
+                .gesture(TapGesture(count: 2).onEnded {
+                    viewModel.updateToUndefined()
+                })
+                .gesture(TapGesture().onEnded {
+                    isFront.toggle()
+                })
             }
-            }
+        }
     }
     
     private struct CellColor: View {
