@@ -17,7 +17,7 @@ struct MacAddWordView: View {
             VStack {
                 if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
                     // TODO: Picker는 Hashable을 필요로 함 + selection에 Int아니고 실제 type을 넣으니까 안됨
-                    Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장: \(viewModel.bookList[viewModel.selectedBookIndex].title)")) {
+                    Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
                         ForEach(0..<viewModel.bookList.count, id: \.self) { index in
                             Text(viewModel.bookList[index].title)
                         }
