@@ -10,7 +10,7 @@ import Kingfisher
 
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
-    @State private var isFront = true
+    @Binding private var isFront: Bool
     @State private var dragWidth: CGFloat = 0
     private var hasImage: Bool {
         if isFront {
@@ -20,8 +20,9 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Binding<Word>) {
+    init(wordBook: WordBook, word: Binding<Word>, isFront: Binding<Bool>) {
         self.viewModel = ViewModel(wordBook: wordBook, word: word)
+        self._isFront = isFront
         viewModel.prefetchImage()
     }
     

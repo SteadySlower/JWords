@@ -22,7 +22,7 @@ struct StudyView: View {
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(0..<viewModel.words.count, id: \.self) { index in
-                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index])
+                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], isFront: $viewModel.isFrontArray[index])
                         .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
@@ -56,6 +56,7 @@ extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
         @Published var words: [Word] = []
+        @Published var isFrontArray: [Bool] = []
         
         init(wordBook: WordBook) {
             self.wordBook = wordBook
@@ -68,11 +69,13 @@ extension StudyView {
                 }
                 guard let words = words else { return }
                 self?.words = words
+                self?.isFrontArray = Array(repeating: true, count: words.count)
             }
         }
         
         func shuffleWords() {
             words.shuffle()
+            isFrontArray = Array(repeating: true, count: words.count)
         }
     }
 }
