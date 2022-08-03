@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Kingfisher
+import Combine
 
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
-    @Binding private var isFront: Bool
+    @State private var isFront = true
     @State private var dragWidth: CGFloat = 0
+    private let shufflePublisher: PassthroughSubject<Void, Never>
+    
     private var hasImage: Bool {
         if isFront {
             return viewModel.word.frontImageURL.isEmpty ? false : true
@@ -20,9 +23,9 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Binding<Word>, isFront: Binding<Bool>) {
+    init(wordBook: WordBook, word: Binding<Word>, shuffleProvider: PassthroughSubject<Void, Never>) {
         self.viewModel = ViewModel(wordBook: wordBook, word: word)
-        self._isFront = isFront
+        self.shufflePublisher = shuffleProvider
         viewModel.prefetchImage()
     }
     
@@ -73,6 +76,9 @@ struct WordCell: View {
                             }
                         }
                     }
+                }
+                .onReceive(shufflePublisher) {
+                    isFront = true
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
                 // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
