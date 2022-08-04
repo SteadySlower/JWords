@@ -11,7 +11,7 @@ typealias FireStoreCompletion = ((Error?) -> Void)?
 
 class WordService {
     static func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
-        Constants.Collections.wordBooks.getDocuments { snapshot, error in
+        Constants.Collections.wordBooks.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
             }

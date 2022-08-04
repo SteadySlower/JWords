@@ -11,77 +11,90 @@ import SwiftUI
 struct MacAddWordView: View {
     
     @StateObject private var viewModel = ViewModel()
+    @FocusState private var isFrontFinishEditing: Bool
     
     var body: some View {
-        VStack {
+        ZStack {
             VStack {
-                if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
-                    // TODO: Picker는 Hashable을 필요로 함 + selection에 Int아니고 실제 type을 넣으니까 안됨
-                    Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장: \(viewModel.bookList[viewModel.selectedBookIndex].title)")) {
-                        ForEach(0..<viewModel.bookList.count, id: \.self) { index in
-                            Text(viewModel.bookList[index].title)
+                VStack {
+                    if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
+                        // TODO: Picker는 Hashable을 필요로 함 + selection에 Int아니고 실제 type을 넣으니까 안됨
+                        Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
+                            ForEach(0..<viewModel.bookList.count, id: \.self) { index in
+                                Text(viewModel.bookList[index].title)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+                VStack {
+                    Text("앞면 입력")
+                        .font(.system(size: 20))
+                    TextEditor(text: $viewModel.frontText)
+                        .font(.system(size: 30))
+                        .frame(height: Constants.Size.deviceHeight / 8)
+                        .padding(.horizontal)
+                    Button {
+                        viewModel.checkIfOverlap()
+                    } label: {
+                        Text(viewModel.overlapCheckButtonTitle)
+                    }
+                    .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
+                    if let frontImage = viewModel.frontImage {
+                        Image(nsImage: frontImage)
+                            .resizable()
+                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                            .onTapGesture { viewModel.frontImage = nil }
+                    } else {
+                        Button {
+                            viewModel.frontImage = getImageFromPasteBoard()
+                        } label: {
+                            Text("앞면 이미지")
                         }
                     }
-                    .padding()
                 }
-            }
-            VStack {
-                Text("앞면 입력")
-                    .font(.system(size: 20))
-                TextEditor(text: $viewModel.frontText)
-                    .frame(height: Constants.Size.deviceHeight / 8)
-                    .padding(.horizontal)
-                Button {
-                    viewModel.checkIfOverlap()
-                } label: {
-                    Text(viewModel.overlapCheckButtonTitle)
-                }
-                .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-                if let frontImage = viewModel.frontImage {
-                    Image(nsImage: frontImage)
-                        .resizable()
-                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.frontImage = nil }
-                } else {
-                    Button {
-                        viewModel.frontImage = getImageFromPasteBoard()
-                    } label: {
-                        Text("앞면 이미지")
+                .padding(.bottom)
+                VStack {
+                    Text("뒷면 입력")
+                        .font(.system(size: 20))
+                    TextEditor(text: $viewModel.backText)
+                        .font(.system(size: 30))
+                        .frame(height: Constants.Size.deviceHeight / 8)
+                        .padding(.horizontal)
+                        .focused($isFrontFinishEditing, equals: true)
+                    if let backImage = viewModel.backImage {
+                        Image(nsImage: backImage)
+                            .resizable()
+                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                            .onTapGesture { viewModel.backImage = nil }
+                    } else {
+                        Button {
+                            viewModel.backImage = getImageFromPasteBoard()
+                        } label: {
+                            Text("뒷면 이미지")
+                        }
                     }
                 }
-            }
-            .padding(.bottom)
-            VStack {
-                Text("뒷면 입력")
-                    .font(.system(size: 20))
-                TextEditor(text: $viewModel.backText)
-                    .frame(height: Constants.Size.deviceHeight / 8)
-                    .padding(.horizontal)
-                if let backImage = viewModel.backImage {
-                    Image(nsImage: backImage)
-                        .resizable()
-                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.backImage = nil }
+                if viewModel.isUploading {
+                    ProgressView()
                 } else {
                     Button {
-                        viewModel.backImage = getImageFromPasteBoard()
+                        viewModel.saveWord()
                     } label: {
-                        Text("뒷면 이미지")
+                        Text("저장")
                     }
+                    .disabled(viewModel.isSaveButtonUnable)
                 }
             }
-            if viewModel.isUploading {
-                ProgressView()
-            } else {
-                Button {
-                    viewModel.saveWord()
-                } label: {
-                    Text("저장")
+            .onAppear { viewModel.getWordBooks() }
+            .onChange(of: viewModel.frontText) { newValue in
+                guard let last = newValue.last else { return }
+                if last == "\t" {
+                    viewModel.frontText.removeLast()
+                    isFrontFinishEditing = true
                 }
-                .disabled(viewModel.isSaveButtonUnable)
             }
         }
-        .onAppear { viewModel.getWordBooks() }
     }
     
     // TODO: 클립보드에서 복사해오는 법 (비지니스 로직인가 뷰인가)
