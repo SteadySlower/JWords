@@ -13,7 +13,7 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
     @State private var dragWidth: CGFloat = 0
-    private let shufflePublisher: PassthroughSubject<Void, Never>
+    private let toFrontPublisher: PassthroughSubject<Void, Never>
     
     private var hasImage: Bool {
         if isFront {
@@ -23,9 +23,9 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Binding<Word>, shuffleProvider: PassthroughSubject<Void, Never>) {
-        self.viewModel = ViewModel(wordBook: wordBook, word: word)
-        self.shufflePublisher = shuffleProvider
+    init(wordBook: WordBook, word: Binding<Word>, toFrontPublisher: PassthroughSubject<Void, Never>, didUpdateState: @escaping (String?, StudyState) -> Void) {
+        self.viewModel = ViewModel(wordBook: wordBook, word: word, didUpdateState: didUpdateState)
+        self.toFrontPublisher = toFrontPublisher
         viewModel.prefetchImage()
     }
     
@@ -77,7 +77,7 @@ struct WordCell: View {
                         }
                     }
                 }
-                .onReceive(shufflePublisher) {
+                .onReceive(toFrontPublisher) {
                     isFront = true
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
@@ -126,10 +126,12 @@ extension WordCell {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
         @Binding var word: Word
+        var didUpdateState: (String?, StudyState) -> Void
         
-        init(wordBook: WordBook, word: Binding<Word>) {
+        init(wordBook: WordBook, word: Binding<Word>, didUpdateState: @escaping (String?, StudyState) -> Void) {
             self.wordBook = wordBook
             self._word = word
+            self.didUpdateState = didUpdateState
         }
         
         var frontImageURL: URL? {
@@ -146,7 +148,7 @@ extension WordCell {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .success) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.word.studyState = .success
+                self.didUpdateState(wordID, .success)
             }
         }
         
@@ -156,7 +158,7 @@ extension WordCell {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .fail) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.word.studyState = .fail
+                self.didUpdateState(wordID, .fail)
             }
         }
         
@@ -166,7 +168,7 @@ extension WordCell {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .undefined) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.word.studyState = .undefined
+                self.didUpdateState(wordID, .undefined)
             }
         }
         

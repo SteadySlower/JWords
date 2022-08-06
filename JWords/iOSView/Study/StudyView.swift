@@ -8,6 +8,17 @@
 import SwiftUI
 import Combine
 
+enum StudyMode {
+    case all, excludeSuccess
+    
+    var toggleButtonTitle: String {
+        switch self {
+        case .all: return "O제외"
+        case .excludeSuccess: return "전부"
+        }
+    }
+}
+
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var deviceWidth: CGFloat
@@ -23,7 +34,7 @@ struct StudyView: View {
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(0..<viewModel.words.count, id: \.self) { index in
-                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], shuffleProvider: viewModel.shufflePublisher)
+                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], toFrontPublisher: viewModel.toFrontPublisher, didUpdateState: viewModel.wordDidUpdateState)
                         .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
@@ -40,8 +51,13 @@ struct StudyView: View {
         }
         .toolbar {
             ToolbarItem {
-                Button("랜덤") {
-                    viewModel.shuffleWords()
+                HStack {
+                    Button("랜덤") {
+                        viewModel.shuffleWords()
+                    }
+                    Button(viewModel.studyMode.toggleButtonTitle) {
+                        viewModel.toggleStudyMode()
+                    }
                 }
             }
         }
@@ -56,10 +72,11 @@ struct StudyView: View {
 extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
+        private var rawWords: [Word] = []
         @Published var words: [Word] = []
-        var shufflePublisher = PassthroughSubject<Void, Never>()
+        @Published private(set) var studyMode: StudyMode = .all
+        private(set) var toFrontPublisher = PassthroughSubject<Void, Never>()
 
-        
         init(wordBook: WordBook) {
             self.wordBook = wordBook
         }
@@ -70,13 +87,37 @@ extension StudyView {
                     print("디버그: \(error)")
                 }
                 guard let words = words else { return }
-                self?.words = words
+                self?.rawWords = words
+                self?.filterWords()
             }
         }
         
         func shuffleWords() {
-            words.shuffle()
-            shufflePublisher.send()
+            rawWords.shuffle()
+            filterWords()
+            toFrontPublisher.send()
+        }
+        
+        func toggleStudyMode() {
+            studyMode = studyMode == .all ? .excludeSuccess : .all
+            filterWords()
+            toFrontPublisher.send()
+        }
+        
+        func wordDidUpdateState(wordID: String?, studyState: StudyState) {
+            guard let id = wordID else { return }
+            guard let index = rawWords.firstIndex(where: { $0.id == id }) else { return }
+            rawWords[index].studyState = studyState
+            filterWords()
+        }
+        
+        private func filterWords() {
+            switch studyMode {
+            case .all:
+                words = rawWords
+            case .excludeSuccess:
+                words = rawWords.filter { $0.studyState != .success }
+            }
         }
     }
 }
