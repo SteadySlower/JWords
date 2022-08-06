@@ -9,6 +9,13 @@ import SwiftUI
 import Kingfisher
 import Combine
 
+protocol WordCellDelegate: AnyObject {
+    var toFrontPublisher: PassthroughSubject<Void, Never> { get }
+    
+    func didUpdateState(id: String?, state: StudyState)
+    func showEditModal(id: String?)
+}
+
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
@@ -23,9 +30,9 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Binding<Word>, toFrontPublisher: PassthroughSubject<Void, Never>, didUpdateState: @escaping (String?, StudyState) -> Void) {
-        self.viewModel = ViewModel(wordBook: wordBook, word: word, didUpdateState: didUpdateState)
-        self.toFrontPublisher = toFrontPublisher
+    init(wordBook: WordBook, word: Binding<Word>, delegate: WordCellDelegate) {
+        self.viewModel = ViewModel(wordBook: wordBook, word: word, delegate: delegate)
+        self.toFrontPublisher = delegate.toFrontPublisher
         viewModel.prefetchImage()
     }
     
@@ -102,6 +109,10 @@ struct WordCell: View {
                 .gesture(TapGesture().onEnded {
                     isFront.toggle()
                 })
+                .onLongPressGesture {
+                    // FIXME: this is about view!!! not about logic
+                    viewModel.showEditModal()
+                }
             }
         }
     }
@@ -126,12 +137,12 @@ extension WordCell {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
         @Binding var word: Word
-        var didUpdateState: (String?, StudyState) -> Void
+        private let delegate: WordCellDelegate
         
-        init(wordBook: WordBook, word: Binding<Word>, didUpdateState: @escaping (String?, StudyState) -> Void) {
+        init(wordBook: WordBook, word: Binding<Word>, delegate: WordCellDelegate) {
             self.wordBook = wordBook
             self._word = word
-            self.didUpdateState = didUpdateState
+            self.delegate = delegate
         }
         
         var frontImageURL: URL? {
@@ -148,7 +159,7 @@ extension WordCell {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .success) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.didUpdateState(wordID, .success)
+                self.delegate.didUpdateState(id: wordID, state: .success)
             }
         }
         
@@ -158,7 +169,7 @@ extension WordCell {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .fail) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.didUpdateState(wordID, .fail)
+                self.delegate.didUpdateState(id: wordID, state: .fail)
             }
         }
         
@@ -168,7 +179,7 @@ extension WordCell {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .undefined) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.didUpdateState(wordID, .undefined)
+                self.delegate.didUpdateState(id: wordID, state: .undefined)
             }
         }
         
@@ -180,6 +191,10 @@ extension WordCell {
                 print("prefetched image: \(completedResources)")
             }
             prefetcher.start()
+        }
+        
+        func showEditModal() {
+            delegate.showEditModal(id: word.id)
         }
     }
 }

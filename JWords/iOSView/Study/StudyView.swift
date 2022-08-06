@@ -22,6 +22,7 @@ enum StudyMode {
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var deviceWidth: CGFloat
+    @State private var showEditModal: Bool = false
     
     init(wordBook: WordBook) {
         self.viewModel = ViewModel(wordBook: wordBook)
@@ -34,7 +35,7 @@ struct StudyView: View {
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(0..<viewModel.words.count, id: \.self) { index in
-                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], toFrontPublisher: viewModel.toFrontPublisher, didUpdateState: viewModel.wordDidUpdateState)
+                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], delegate: viewModel)
                         .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
@@ -104,11 +105,10 @@ extension StudyView {
             toFrontPublisher.send()
         }
         
-        func wordDidUpdateState(wordID: String?, studyState: StudyState) {
-            guard let id = wordID else { return }
+        func updateWordState(id: String?, state: StudyState) {
+            guard let id = id else { return }
             guard let index = rawWords.firstIndex(where: { $0.id == id }) else { return }
-            rawWords[index].studyState = studyState
-            filterWords()
+            
         }
         
         private func filterWords() {
@@ -121,4 +121,19 @@ extension StudyView {
         }
     }
 }
+
+extension StudyView.ViewModel: WordCellDelegate {
+    func didUpdateState(id: String?, state: StudyState) {
+        guard let id = id else { return }
+        guard let index = rawWords.firstIndex(where: { $0.id == id }) else { return }
+        rawWords[index].studyState = state
+        filterWords()
+    }
+    
+    func showEditModal(id: String?) {
+        
+    }
+}
+
+
 

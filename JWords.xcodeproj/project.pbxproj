@@ -13,6 +13,7 @@
 		06A1F4E628670DB6003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E528670DB6003440B0 /* Nimble */; };
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
+		06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordEditView.swift */; };
 		06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2462866F1C800A620CC /* JWordsApp.swift */; };
 		06CEF2492866F1C800A620CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2482866F1C800A620CC /* ContentView.swift */; };
 		06CEF24B2866F1CB00A620CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06CEF24A2866F1CB00A620CC /* Assets.xcassets */; };
@@ -85,6 +86,7 @@
 
 /* Begin PBXFileReference section */
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		06A564D5289E9C5100DBC2E0 /* WordEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEditView.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2462866F1C800A620CC /* JWordsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsApp.swift; sourceTree = "<group>"; };
 		06CEF2482866F1C800A620CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC29286946F800AC156C /* StudyView.swift */,
+				06A564D5289E9C5100DBC2E0 /* WordEditView.swift */,
 			);
 			path = Study;
 			sourceTree = "<group>";
@@ -538,6 +541,7 @@
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A67DC352869566600AC156C /* MacAddWordView.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
+				06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
 			);
