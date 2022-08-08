@@ -8,9 +8,21 @@
 import SwiftUI
 import Combine
 
+enum StudyMode {
+    case all, excludeSuccess
+    
+    var toggleButtonTitle: String {
+        switch self {
+        case .all: return "O제외"
+        case .excludeSuccess: return "전부"
+        }
+    }
+}
+
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var deviceWidth: CGFloat
+    @State private var showEditModal: Bool = false
     
     init(wordBook: WordBook) {
         self.viewModel = ViewModel(wordBook: wordBook)
@@ -19,11 +31,9 @@ struct StudyView: View {
     
     var body: some View {
         ScrollView {
-            VStack {}
-            .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(0..<viewModel.words.count, id: \.self) { index in
-                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], shuffleProvider: viewModel.shufflePublisher)
+                    WordCell(word: viewModel.words[index], eventPublisher: viewModel.eventPublisher)
                         .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
@@ -38,10 +48,18 @@ struct StudyView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             resetDeviceWidth()
         }
+        .onReceive(viewModel.eventPublisher) { event in
+            viewModel.handleEvent(event)
+        }
         .toolbar {
             ToolbarItem {
-                Button("랜덤") {
-                    viewModel.shuffleWords()
+                HStack {
+                    Button("랜덤") {
+                        viewModel.shuffleWords()
+                    }
+                    Button(viewModel.studyMode.toggleButtonTitle) {
+                        viewModel.toggleStudyMode()
+                    }
                 }
             }
         }
@@ -56,10 +74,11 @@ struct StudyView: View {
 extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
+        private var rawWords: [Word] = []
         @Published var words: [Word] = []
-        var shufflePublisher = PassthroughSubject<Void, Never>()
+        @Published private(set) var studyMode: StudyMode = .all
+        private(set) var eventPublisher = PassthroughSubject<Event, Never>()
 
-        
         init(wordBook: WordBook) {
             self.wordBook = wordBook
         }
@@ -70,14 +89,53 @@ extension StudyView {
                     print("디버그: \(error)")
                 }
                 guard let words = words else { return }
-                self?.words = words
+                self?.rawWords = words
+                self?.filterWords()
             }
         }
         
         func shuffleWords() {
-            words.shuffle()
-            shufflePublisher.send()
+            rawWords.shuffle()
+            filterWords()
+            eventPublisher.send(StudyViewEvent.toFront)
+        }
+        
+        func toggleStudyMode() {
+            studyMode = studyMode == .all ? .excludeSuccess : .all
+            filterWords()
+            eventPublisher.send(StudyViewEvent.toFront)
+        }
+        
+        func handleEvent(_ event: Event) {
+            guard let event = event as? CellEvent else { return }
+            switch event {
+            case .studyStateUpdate(let id, let state):
+                updateStudyState(id: id, state: state)
+            }
+        }
+        
+        private func updateStudyState(id: String?, state: StudyState) {
+            guard let wordBookID = wordBook.id else { return }
+            guard let wordID = id else { return }
+            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { [weak self] error in
+                // FIXME: handle error
+                if let error = error { print(error); return }
+                guard let index = self?.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
+                self?.rawWords[index].studyState = state
+                self?.filterWords()
+            }
+        }
+        
+        private func filterWords() {
+            switch studyMode {
+            case .all:
+                words = rawWords
+            case .excludeSuccess:
+                words = rawWords.filter { $0.studyState != .success }
+            }
         }
     }
 }
+
+
 

@@ -13,7 +13,7 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
     @State private var dragWidth: CGFloat = 0
-    private let shufflePublisher: PassthroughSubject<Void, Never>
+    private let eventPublisher: PassthroughSubject<Event, Never>
     
     private var hasImage: Bool {
         if isFront {
@@ -23,9 +23,9 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Binding<Word>, shuffleProvider: PassthroughSubject<Void, Never>) {
-        self.viewModel = ViewModel(wordBook: wordBook, word: word)
-        self.shufflePublisher = shuffleProvider
+    init(word: Word, eventPublisher: PassthroughSubject<Event, Never>) {
+        self.viewModel = ViewModel(word: word, eventPublisher: eventPublisher)
+        self.eventPublisher = eventPublisher
         viewModel.prefetchImage()
     }
     
@@ -77,8 +77,8 @@ struct WordCell: View {
                         }
                     }
                 }
-                .onReceive(shufflePublisher) {
-                    isFront = true
+                .onReceive(eventPublisher) { event in
+                    handleEvent(event)
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
                 // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
@@ -89,19 +89,22 @@ struct WordCell: View {
                     .onEnded({ value in
                         self.dragWidth = 0
                         if value.translation.width > 0 {
-                            viewModel.updateToSuccess()
+                            viewModel.updateStudyState(to: .success)
                         } else {
-                            viewModel.updateToFail()
+                            viewModel.updateStudyState(to: .fail)
                         }
                     })
                 )
                 // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
                 .gesture(TapGesture(count: 2).onEnded {
-                    viewModel.updateToUndefined()
+                    viewModel.updateStudyState(to: .undefined)
                 })
                 .gesture(TapGesture().onEnded {
                     isFront.toggle()
                 })
+                .onLongPressGesture {
+                    // FIXME: this is about view!!! not about logic
+                }
             }
         }
     }
@@ -120,16 +123,24 @@ struct WordCell: View {
             }
         }
     }
+    
+    private func handleEvent(_ event: Event) {
+        guard let event = event as? StudyViewEvent else { return }
+        switch event {
+        case .toFront:
+            isFront = true
+        }
+    }
 }
 
 extension WordCell {
     final class ViewModel: ObservableObject {
-        let wordBook: WordBook
-        @Binding var word: Word
+        @Published var word: Word
+        private let eventPublisher: PassthroughSubject<Event, Never>
         
-        init(wordBook: WordBook, word: Binding<Word>) {
-            self.wordBook = wordBook
-            self._word = word
+        init(word: Word, eventPublisher: PassthroughSubject<Event, Never>) {
+            self.word = word
+            self.eventPublisher = eventPublisher
         }
         
         var frontImageURL: URL? {
@@ -140,34 +151,8 @@ extension WordCell {
             URL(string: word.backImageURL)
         }
         
-        func updateToSuccess() {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .success) { error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                self.word.studyState = .success
-            }
-        }
-        
-        func updateToFail() {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .fail) { error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                self.word.studyState = .fail
-            }
-        }
-        
-        func updateToUndefined() {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .undefined) { error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                self.word.studyState = .undefined
-            }
+        func updateStudyState(to state: StudyState) {
+            eventPublisher.send(CellEvent.studyStateUpdate(id: word.id, state: state))
         }
         
         func prefetchImage() {
