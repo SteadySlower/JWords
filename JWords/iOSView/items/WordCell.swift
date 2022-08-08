@@ -96,15 +96,15 @@ struct WordCell: View {
                     .onEnded({ value in
                         self.dragWidth = 0
                         if value.translation.width > 0 {
-                            viewModel.updateToSuccess()
+                            viewModel.updateStudyState(to: .success)
                         } else {
-                            viewModel.updateToFail()
+                            viewModel.updateStudyState(to: .fail)
                         }
                     })
                 )
                 // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
                 .gesture(TapGesture(count: 2).onEnded {
-                    viewModel.updateToUndefined()
+                    viewModel.updateStudyState(to: .undefined)
                 })
                 .gesture(TapGesture().onEnded {
                     isFront.toggle()
@@ -153,33 +153,13 @@ extension WordCell {
             URL(string: word.backImageURL)
         }
         
-        func updateToSuccess() {
+        func updateStudyState(to state: StudyState) {
             guard let wordBookID = wordBook.id else { return }
             guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .success) { error in
+            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                self.delegate.didUpdateState(id: wordID, state: .success)
-            }
-        }
-        
-        func updateToFail() {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .fail) { error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                self.delegate.didUpdateState(id: wordID, state: .fail)
-            }
-        }
-        
-        func updateToUndefined() {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: .undefined) { error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                self.delegate.didUpdateState(id: wordID, state: .undefined)
+                self.delegate.didUpdateState(id: wordID, state: state)
             }
         }
         
