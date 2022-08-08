@@ -31,8 +31,6 @@ struct StudyView: View {
     
     var body: some View {
         ScrollView {
-            VStack {}
-            .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(0..<viewModel.words.count, id: \.self) { index in
                     WordCell(word: viewModel.words[index], eventPublisher: viewModel.eventPublisher)
