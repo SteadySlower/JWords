@@ -35,7 +35,7 @@ struct StudyView: View {
             .frame(height: Constants.Size.deviceHeight / 6)
             LazyVStack(spacing: 32) {
                 ForEach(0..<viewModel.words.count, id: \.self) { index in
-                    WordCell(wordBook: viewModel.wordBook, word: $viewModel.words[index], delegate: viewModel)
+                    WordCell(word: viewModel.words[index], eventPublisher: viewModel.eventPublisher)
                         .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
                 }
             }
@@ -49,6 +49,9 @@ struct StudyView: View {
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
             resetDeviceWidth()
+        }
+        .onReceive(viewModel.eventPublisher) { event in
+            viewModel.handleEvent(event)
         }
         .toolbar {
             ToolbarItem {
@@ -76,7 +79,7 @@ extension StudyView {
         private var rawWords: [Word] = []
         @Published var words: [Word] = []
         @Published private(set) var studyMode: StudyMode = .all
-        private(set) var toFrontPublisher = PassthroughSubject<Void, Never>()
+        private(set) var eventPublisher = PassthroughSubject<Event, Never>()
 
         init(wordBook: WordBook) {
             self.wordBook = wordBook
@@ -96,19 +99,33 @@ extension StudyView {
         func shuffleWords() {
             rawWords.shuffle()
             filterWords()
-            toFrontPublisher.send()
+            eventPublisher.send(StudyViewEvent.toFront)
         }
         
         func toggleStudyMode() {
             studyMode = studyMode == .all ? .excludeSuccess : .all
             filterWords()
-            toFrontPublisher.send()
+            eventPublisher.send(StudyViewEvent.toFront)
         }
         
-        func updateWordState(id: String?, state: StudyState) {
-            guard let id = id else { return }
-            guard let index = rawWords.firstIndex(where: { $0.id == id }) else { return }
-            
+        func handleEvent(_ event: Event) {
+            guard let event = event as? CellEvent else { return }
+            switch event {
+            case .studyStateUpdate(let id, let state):
+                updateStudyState(id: id, state: state)
+            }
+        }
+        
+        private func updateStudyState(id: String?, state: StudyState) {
+            guard let wordBookID = wordBook.id else { return }
+            guard let wordID = id else { return }
+            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { [weak self] error in
+                // FIXME: handle error
+                if let error = error { print(error); return }
+                guard let index = self?.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
+                self?.rawWords[index].studyState = state
+                self?.filterWords()
+            }
         }
         
         private func filterWords() {
@@ -119,19 +136,6 @@ extension StudyView {
                 words = rawWords.filter { $0.studyState != .success }
             }
         }
-    }
-}
-
-extension StudyView.ViewModel: WordCellDelegate {
-    func didUpdateState(id: String?, state: StudyState) {
-        guard let id = id else { return }
-        guard let index = rawWords.firstIndex(where: { $0.id == id }) else { return }
-        rawWords[index].studyState = state
-        filterWords()
-    }
-    
-    func showEditModal(id: String?) {
-        
     }
 }
 

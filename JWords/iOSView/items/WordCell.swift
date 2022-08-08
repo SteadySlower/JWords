@@ -9,18 +9,11 @@ import SwiftUI
 import Kingfisher
 import Combine
 
-protocol WordCellDelegate: AnyObject {
-    var toFrontPublisher: PassthroughSubject<Void, Never> { get }
-    
-    func didUpdateState(id: String?, state: StudyState)
-    func showEditModal(id: String?)
-}
-
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var isFront = true
     @State private var dragWidth: CGFloat = 0
-    private let toFrontPublisher: PassthroughSubject<Void, Never>
+    private let eventPublisher: PassthroughSubject<Event, Never>
     
     private var hasImage: Bool {
         if isFront {
@@ -30,9 +23,9 @@ struct WordCell: View {
         }
     }
     
-    init(wordBook: WordBook, word: Binding<Word>, delegate: WordCellDelegate) {
-        self.viewModel = ViewModel(wordBook: wordBook, word: word, delegate: delegate)
-        self.toFrontPublisher = delegate.toFrontPublisher
+    init(word: Word, eventPublisher: PassthroughSubject<Event, Never>) {
+        self.viewModel = ViewModel(word: word, eventPublisher: eventPublisher)
+        self.eventPublisher = eventPublisher
         viewModel.prefetchImage()
     }
     
@@ -84,8 +77,8 @@ struct WordCell: View {
                         }
                     }
                 }
-                .onReceive(toFrontPublisher) {
-                    isFront = true
+                .onReceive(eventPublisher) { event in
+                    handleEvent(event)
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
                 // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
@@ -111,7 +104,6 @@ struct WordCell: View {
                 })
                 .onLongPressGesture {
                     // FIXME: this is about view!!! not about logic
-                    viewModel.showEditModal()
                 }
             }
         }
@@ -131,18 +123,24 @@ struct WordCell: View {
             }
         }
     }
+    
+    private func handleEvent(_ event: Event) {
+        guard let event = event as? StudyViewEvent else { return }
+        switch event {
+        case .toFront:
+            isFront = true
+        }
+    }
 }
 
 extension WordCell {
     final class ViewModel: ObservableObject {
-        let wordBook: WordBook
-        @Binding var word: Word
-        private let delegate: WordCellDelegate
+        @Published var word: Word
+        private let eventPublisher: PassthroughSubject<Event, Never>
         
-        init(wordBook: WordBook, word: Binding<Word>, delegate: WordCellDelegate) {
-            self.wordBook = wordBook
-            self._word = word
-            self.delegate = delegate
+        init(word: Word, eventPublisher: PassthroughSubject<Event, Never>) {
+            self.word = word
+            self.eventPublisher = eventPublisher
         }
         
         var frontImageURL: URL? {
@@ -154,13 +152,7 @@ extension WordCell {
         }
         
         func updateStudyState(to state: StudyState) {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                self.delegate.didUpdateState(id: wordID, state: state)
-            }
+            eventPublisher.send(CellEvent.studyStateUpdate(id: word.id, state: state))
         }
         
         func prefetchImage() {
@@ -171,10 +163,6 @@ extension WordCell {
                 print("prefetched image: \(completedResources)")
             }
             prefetcher.start()
-        }
-        
-        func showEditModal() {
-            delegate.showEditModal(id: word.id)
         }
     }
 }

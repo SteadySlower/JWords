@@ -7,10 +7,10 @@
 
 import Combine
 
-protocol Event { }
+protocol Event {}
 
 enum CellEvent: Event {
-    case StudyStateUpdate(to: StudyState)
+    case studyStateUpdate(id: String?, state: StudyState)
 }
 
 enum StudyViewEvent: Event {
