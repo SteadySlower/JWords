@@ -24,15 +24,17 @@ enum StudyState: Int, Codable {
 
 struct Word: Identifiable, Codable, Hashable{
     @DocumentID var id: String?
-    var frontText: String = ""
-    var frontImageURL: String = ""
-    var backText: String = ""
-    var backImageURL: String = ""
+    var meaningText: String = ""
+    var meaningImageURL: String = ""
+    var ganaText: String = ""
+    var ganaImageURL: String = ""
+    var kanjiText: String = ""
+    var kanjiImageURL: String = ""
     var studyState: StudyState
     let timestamp: Timestamp
-    
+
     var hasImage: Bool {
-        return !frontImageURL.isEmpty || !backImageURL.isEmpty
+        return !meaningImageURL.isEmpty || !ganaImageURL.isEmpty || !kanjiImageURL.isEmpty
     }
 }
 

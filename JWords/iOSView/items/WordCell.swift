@@ -17,9 +17,9 @@ struct WordCell: View {
     
     private var hasImage: Bool {
         if isFront {
-            return viewModel.word.frontImageURL.isEmpty ? false : true
+            return viewModel.word.meaningImageURL.isEmpty ? false : true
         } else {
-            return viewModel.word.backImageURL.isEmpty ? false : true
+            return viewModel.word.ganaImageURL.isEmpty ? false : true
         }
     }
     
@@ -49,13 +49,13 @@ struct WordCell: View {
                     CellColor(state: $viewModel.word.studyState)
                     if isFront {
                         VStack {
-                            if !viewModel.word.frontText.isEmpty {
-                                Text(viewModel.word.frontText)
+                            if !viewModel.word.meaningText.isEmpty {
+                                Text(viewModel.word.meaningText)
                                     .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
                                     .lineLimit(3)
                             }
-                            if !viewModel.word.frontImageURL.isEmpty {
+                            if !viewModel.word.meaningImageURL.isEmpty {
                                 KFImage(viewModel.frontImageURL)
                                     .resizable()
                                     .scaledToFit()
@@ -63,13 +63,13 @@ struct WordCell: View {
                         }
                     } else {
                         VStack {
-                            if !viewModel.word.backText.isEmpty {
-                                Text(viewModel.word.backText)
+                            if !viewModel.word.ganaText.isEmpty {
+                                Text(viewModel.word.ganaText)
                                     .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
                                     .lineLimit(3)
                             }
-                            if !viewModel.word.backImageURL.isEmpty {
+                            if !viewModel.word.ganaImageURL.isEmpty {
                                 KFImage(viewModel.backImageURL)
                                     .resizable()
                                     .scaledToFit()
@@ -145,11 +145,11 @@ extension WordCell {
         }
         
         var frontImageURL: URL? {
-            URL(string: word.frontImageURL)
+            URL(string: word.meaningImageURL)
         }
         
         var backImageURL: URL? {
-            URL(string: word.backImageURL)
+            URL(string: word.ganaImageURL)
         }
         
         func updateStudyState(to state: StudyState) {
@@ -158,7 +158,7 @@ extension WordCell {
         
         func prefetchImage() {
             guard word.hasImage == true else { return }
-            let urls = [word.frontImageURL, word.backImageURL].compactMap { URL(string: $0) }
+            let urls = [word.meaningImageURL, word.ganaImageURL].compactMap { URL(string: $0) }
             let prefetcher = ImagePrefetcher(urls: urls) {
                 skippedResources, failedResources, completedResources in
                 print("prefetched image: \(completedResources)")

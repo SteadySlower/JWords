@@ -16,8 +16,8 @@ struct WordEditView: View {
     
     var body: some View {
         VStack {
-            TextEditor(text: $viewModel.word.frontText)
-            TextEditor(text: $viewModel.word.backText)
+            TextEditor(text: $viewModel.word.meaningText)
+            TextEditor(text: $viewModel.word.ganaText)
             Button("수정") {
                 print("EditButton Pressed")
             }
