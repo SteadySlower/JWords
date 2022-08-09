@@ -39,10 +39,12 @@ struct Word: Identifiable, Codable, Hashable{
 }
 
 struct WordInput {
-    let frontText: String
-    let frontImage: InputImageType?
-    let backText: String
-    let backImage: InputImageType?
+    let meaningText: String
+    let meaningImage: InputImageType?
+    let ganaText: String
+    let ganaImage: InputImageType?
+    let kanjiText: String
+    let kanjiImage: InputImageType?
     let studyState: StudyState = .undefined
     let timestamp: Timestamp = Timestamp(date: Date())
 }

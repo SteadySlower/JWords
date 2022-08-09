@@ -9,7 +9,8 @@ import Firebase
 
 extension Constants {
     enum Collections {
-        static let wordBooks = Firestore.firestore()
+        static let wordBooks =
+            Firestore.firestore()
             .collection("develop")
             .document("data")
             .collection("wordBooks")
