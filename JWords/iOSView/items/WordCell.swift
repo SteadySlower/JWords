@@ -127,8 +127,9 @@ struct WordCell: View {
     private func handleEvent(_ event: Event) {
         guard let event = event as? StudyViewEvent else { return }
         switch event {
-        case .toFront:
-            isFront = true
+        case .toFront(let id):
+            guard let id = id else { isFront = true; return }
+            if id == viewModel.word.id { isFront = true }
         }
     }
 }

@@ -97,13 +97,13 @@ extension StudyView {
         func shuffleWords() {
             rawWords.shuffle()
             filterWords()
-            eventPublisher.send(StudyViewEvent.toFront)
+            eventPublisher.send(StudyViewEvent.toFront(id: nil))
         }
         
         func toggleStudyMode() {
             studyMode = studyMode == .all ? .excludeSuccess : .all
             filterWords()
-            eventPublisher.send(StudyViewEvent.toFront)
+            eventPublisher.send(StudyViewEvent.toFront(id: nil))
         }
         
         func handleEvent(_ event: Event) {
@@ -122,6 +122,10 @@ extension StudyView {
                 if let error = error { print(error); return }
                 guard let index = self?.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
                 self?.rawWords[index].studyState = state
+                // 필터된 리스트에서는 아래 위치한 단어가 올라오기 때문에 다시 뒤집어 주어야 한다.
+                if self?.studyMode == .excludeSuccess {
+                    self?.eventPublisher.send(StudyViewEvent.toFront(id: wordID))
+                }
                 self?.filterWords()
             }
         }
