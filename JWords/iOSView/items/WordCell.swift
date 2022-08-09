@@ -11,20 +11,11 @@ import Combine
 
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
-    @State private var isFront = true
     @State private var dragWidth: CGFloat = 0
     private let eventPublisher: PassthroughSubject<Event, Never>
     
-    private var hasImage: Bool {
-        if isFront {
-            return viewModel.word.meaningImageURL.isEmpty ? false : true
-        } else {
-            return viewModel.word.ganaImageURL.isEmpty ? false : true
-        }
-    }
-    
-    init(word: Word, eventPublisher: PassthroughSubject<Event, Never>) {
-        self.viewModel = ViewModel(word: word, eventPublisher: eventPublisher)
+    init(wordDisplay: Binding<WordDisplay>, eventPublisher: PassthroughSubject<Event, Never>) {
+        self.viewModel = ViewModel(wordDisplay: wordDisplay, eventPublisher: eventPublisher)
         self.eventPublisher = eventPublisher
         viewModel.prefetchImage()
     }
@@ -46,39 +37,44 @@ struct WordCell: View {
                     
                 }
                 ZStack {
-                    CellColor(state: $viewModel.word.studyState)
-                    if isFront {
+                    CellColor(state: $viewModel.wordDisplay.word.studyState)
+                    if viewModel.wordDisplay.isFront {
                         VStack {
-                            if !viewModel.word.meaningText.isEmpty {
-                                Text(viewModel.word.meaningText)
+                            if !viewModel.wordDisplay.frontText.isEmpty {
+                                Text(viewModel.wordDisplay.frontText)
                                     .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
                                     .lineLimit(3)
                             }
-                            if !viewModel.word.meaningImageURL.isEmpty {
-                                KFImage(viewModel.frontImageURL)
-                                    .resizable()
-                                    .scaledToFit()
+                            if !viewModel.frontImageURLs.isEmpty {
+                                VStack {
+                                    ForEach(viewModel.frontImageURLs, id: \.self) { url in
+                                        KFImage(url)
+                                            .resizable()
+                                            .scaledToFit()
+                                    }
+                                }
                             }
                         }
                     } else {
                         VStack {
-                            if !viewModel.word.ganaText.isEmpty {
-                                Text(viewModel.word.ganaText)
+                            if !viewModel.wordDisplay.backText.isEmpty {
+                                Text(viewModel.wordDisplay.backText)
                                     .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
                                     .lineLimit(3)
                             }
-                            if !viewModel.word.ganaImageURL.isEmpty {
-                                KFImage(viewModel.backImageURL)
-                                    .resizable()
-                                    .scaledToFit()
+                            if !viewModel.backImageURLs.isEmpty {
+                                VStack {
+                                    ForEach(viewModel.backImageURLs, id: \.self) { url in
+                                        KFImage(url)
+                                            .resizable()
+                                            .scaledToFit()
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                .onReceive(eventPublisher) { event in
-                    handleEvent(event)
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
                 // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
@@ -100,7 +96,7 @@ struct WordCell: View {
                     viewModel.updateStudyState(to: .undefined)
                 })
                 .gesture(TapGesture().onEnded {
-                    isFront.toggle()
+                    viewModel.wordDisplay.isFront.toggle()
                 })
                 .onLongPressGesture {
                     // FIXME: this is about view!!! not about logic
@@ -123,42 +119,35 @@ struct WordCell: View {
             }
         }
     }
-    
-    private func handleEvent(_ event: Event) {
-        guard let event = event as? StudyViewEvent else { return }
-        switch event {
-        case .toFront(let id):
-            guard let id = id else { isFront = true; return }
-            if id == viewModel.word.id { isFront = true }
-        }
-    }
 }
 
 extension WordCell {
     final class ViewModel: ObservableObject {
-        @Published var word: Word
+        @Binding var wordDisplay: WordDisplay
         private let eventPublisher: PassthroughSubject<Event, Never>
         
-        init(word: Word, eventPublisher: PassthroughSubject<Event, Never>) {
-            self.word = word
+        init(wordDisplay: Binding<WordDisplay>, eventPublisher: PassthroughSubject<Event, Never>) {
+            self._wordDisplay = wordDisplay
             self.eventPublisher = eventPublisher
         }
         
-        var frontImageURL: URL? {
-            URL(string: word.meaningImageURL)
+        var frontImageURLs: [URL] {
+            wordDisplay.frontImageURLs.compactMap { URL(string: $0) }
         }
         
-        var backImageURL: URL? {
-            URL(string: word.ganaImageURL)
+        var backImageURLs: [URL] {
+            wordDisplay.backImages.compactMap { URL(string: $0) }
         }
         
         func updateStudyState(to state: StudyState) {
-            eventPublisher.send(CellEvent.studyStateUpdate(id: word.id, state: state))
+            guard wordDisplay.word.studyState != state else { return }
+            wordDisplay.word.studyState = state
+            eventPublisher.send(CellEvent.studyStateUpdate(id: wordDisplay.word.id, state: state))
         }
         
         func prefetchImage() {
-            guard word.hasImage == true else { return }
-            let urls = [word.meaningImageURL, word.ganaImageURL].compactMap { URL(string: $0) }
+            guard wordDisplay.hasImage == true else { return }
+            let urls = frontImageURLs + backImageURLs
             let prefetcher = ImagePrefetcher(urls: urls) {
                 skippedResources, failedResources, completedResources in
                 print("prefetched image: \(completedResources)")

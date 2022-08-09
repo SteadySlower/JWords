@@ -32,10 +32,6 @@ struct Word: Identifiable, Codable, Hashable{
     var kanjiImageURL: String = ""
     var studyState: StudyState
     let timestamp: Timestamp
-
-    var hasImage: Bool {
-        return !meaningImageURL.isEmpty || !ganaImageURL.isEmpty || !kanjiImageURL.isEmpty
-    }
 }
 
 struct WordInput {

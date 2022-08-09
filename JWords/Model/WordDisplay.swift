@@ -27,30 +27,36 @@ struct WordDisplay {
         }
     }
     
-    var frontImageURL: String {
+    var frontImageURLs: [String] {
         switch frontType {
         case .meaning:
-            return word.meaningImageURL
+            return [word.meaningImageURL].filter { $0.isEmpty }
         case .kanji:
-            return word.kanjiImageURL
+            return [word.kanjiImageURL].filter { $0.isEmpty }
         }
     }
     
     var backText: String {
         switch frontType {
         case .meaning:
-            return "\(word.ganaText)\n\(word.kanjiText)"
+            let changeLine = (!word.ganaText.isEmpty && !word.kanjiText.isEmpty) ? "\n" : ""
+            return "\(word.ganaText)\(changeLine)\(word.kanjiText)"
         case .kanji:
-            return "\(word.ganaText)\n\(word.meaningText)"
+            let changeLine = (!word.ganaText.isEmpty && !word.meaningText.isEmpty) ? "\n" : ""
+            return "\(word.ganaText)\(changeLine)\(word.meaningText)"
         }
     }
     
     var backImages: [String] {
         switch frontType {
         case .meaning:
-            return [word.kanjiImageURL, word.ganaImageURL]
+            return [word.kanjiImageURL, word.ganaImageURL].filter { $0.isEmpty }
         case .kanji:
-            return [word.ganaImageURL, word.meaningImageURL]
+            return [word.ganaImageURL, word.meaningImageURL].filter { $0.isEmpty }
         }
+    }
+    
+    var hasImage: Bool {
+        return !word.meaningImageURL.isEmpty || !word.ganaImageURL.isEmpty || !word.kanjiImageURL.isEmpty
     }
 }
