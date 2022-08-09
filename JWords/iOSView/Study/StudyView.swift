@@ -60,6 +60,9 @@ struct StudyView: View {
                     Button(viewModel.studyMode.toggleButtonTitle) {
                         viewModel.toggleStudyMode()
                     }
+                    Button(viewModel.frontType.toggleButtonTitle) {
+                        viewModel.toggleFrontType()
+                    }
                 }
             }
         }
@@ -102,6 +105,11 @@ extension StudyView {
         
         func toggleStudyMode() {
             studyMode = studyMode == .all ? .excludeSuccess : .all
+            filterWords()
+        }
+        
+        func toggleFrontType() {
+            frontType = frontType == .meaning ? .kanji : .meaning
             filterWords()
         }
         

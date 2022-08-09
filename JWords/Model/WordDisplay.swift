@@ -10,6 +10,15 @@ import Foundation
 enum FrontType {
     case meaning
     case kanji
+    
+    var toggleButtonTitle: String {
+        switch self {
+        case .meaning:
+            return "漢"
+        case .kanji:
+            return "한"
+        }
+    }
 }
 
 struct WordDisplay {
