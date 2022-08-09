@@ -103,7 +103,7 @@ struct WordCell: View {
                     isFront.toggle()
                 })
                 .onLongPressGesture {
-                    
+                    // FIXME: this is about view!!! not about logic
                 }
             }
         }
