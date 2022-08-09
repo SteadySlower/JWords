@@ -41,27 +41,36 @@ class WordService {
     
     static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: FireStoreCompletion) {
         let group = DispatchGroup()
-        var frontImageURL = ""
-        var backImageURL = ""
+        var meaningImageURL = ""
+        var ganaImageURL = ""
+        var kanjiImageURL = ""
         
-        if let frontImage = wordInput.frontImage {
-            ImageUploader.uploadImage(image: frontImage, group: group) { url in
-                frontImageURL = url
+        if let meaningImage = wordInput.meaningImage {
+            ImageUploader.uploadImage(image: meaningImage, group: group) { url in
+                meaningImageURL = url
             }
         }
         
-        if let backImage = wordInput.backImage {
-            ImageUploader.uploadImage(image: backImage, group: group) { url in
-                backImageURL = url
+        if let ganaImage = wordInput.ganaImage {
+            ImageUploader.uploadImage(image: ganaImage, group: group) { url in
+                ganaImageURL = url
+            }
+        }
+        
+        if let kanjiImage = wordInput.kanjiImage {
+            ImageUploader.uploadImage(image: kanjiImage, group: group) { url in
+                kanjiImageURL = url
             }
         }
         
         group.notify(queue: .global()) {
             let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
-                                        "frontText": wordInput.frontText,
-                                        "frontImageURL": frontImageURL,
-                                        "backText": wordInput.backText,
-                                        "backImageURL": backImageURL,
+                                        "meaningText": wordInput.meaningText,
+                                        "meaningImageURL": meaningImageURL,
+                                        "ganaText": wordInput.ganaText,
+                                        "ganaImageURL": ganaImageURL,
+                                        "kanjiText": wordInput.kanjiText,
+                                        "kanjiImageURL": kanjiImageURL,
                                         "studyState": wordInput.studyState.rawValue]
             Constants.Collections.word(wordBookID).addDocument(data: data, completion: completionHandler)
         }
@@ -73,8 +82,8 @@ class WordService {
         }
     }
     
-    static func checkIfOverlap(wordBookID: String, frontText: String, completionHandler: @escaping ((Bool?, Error?) -> Void)) {
-        Constants.Collections.word(wordBookID).whereField("frontText", isEqualTo: frontText).getDocuments { snapshot, error in
+    static func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping ((Bool?, Error?) -> Void)) {
+        Constants.Collections.word(wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
                 return

@@ -32,9 +32,9 @@ struct StudyView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEach(0..<viewModel.words.count, id: \.self) { index in
-                    WordCell(word: viewModel.words[index], eventPublisher: viewModel.eventPublisher)
-                        .frame(width: deviceWidth * 0.9, height: viewModel.words[index].hasImage ? 200 : 100)
+                ForEach(0..<viewModel.displays.count, id: \.self) { index in
+                    WordCell(wordDisplay: $viewModel.displays[index], eventPublisher: viewModel.eventPublisher)
+                        .frame(width: deviceWidth * 0.9, height: viewModel.displays[index].hasImage ? 200 : 100)
                 }
             }
         }
@@ -60,6 +60,9 @@ struct StudyView: View {
                     Button(viewModel.studyMode.toggleButtonTitle) {
                         viewModel.toggleStudyMode()
                     }
+                    Button(viewModel.frontType.toggleButtonTitle) {
+                        viewModel.toggleFrontType()
+                    }
                 }
             }
         }
@@ -74,9 +77,10 @@ struct StudyView: View {
 extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
-        private var rawWords: [Word] = []
-        @Published var words: [Word] = []
+        private var words: [Word] = []
+        @Published var displays: [WordDisplay] = []
         @Published private(set) var studyMode: StudyMode = .all
+        @Published private(set) var frontType: FrontType = .meaning
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
 
         init(wordBook: WordBook) {
@@ -89,21 +93,24 @@ extension StudyView {
                     print("디버그: \(error)")
                 }
                 guard let words = words else { return }
-                self?.rawWords = words
+                self?.words = words
                 self?.filterWords()
             }
         }
         
         func shuffleWords() {
-            rawWords.shuffle()
+            words.shuffle()
             filterWords()
-            eventPublisher.send(StudyViewEvent.toFront(id: nil))
         }
         
         func toggleStudyMode() {
             studyMode = studyMode == .all ? .excludeSuccess : .all
             filterWords()
-            eventPublisher.send(StudyViewEvent.toFront(id: nil))
+        }
+        
+        func toggleFrontType() {
+            frontType = frontType == .meaning ? .kanji : .meaning
+            filterWords()
         }
         
         func handleEvent(_ event: Event) {
@@ -120,22 +127,24 @@ extension StudyView {
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { [weak self] error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
-                guard let index = self?.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
-                self?.rawWords[index].studyState = state
-                // 필터된 리스트에서는 아래 위치한 단어가 올라오기 때문에 다시 뒤집어 주어야 한다.
-                if self?.studyMode == .excludeSuccess {
-                    self?.eventPublisher.send(StudyViewEvent.toFront(id: wordID))
+                guard let self = self else { return }
+                guard let index = self.words.firstIndex(where: { $0.id == wordID }) else { return }
+                self.words[index].studyState = state
+                if self.studyMode == .excludeSuccess && state == .success {
+                    self.displays = self.displays.filter { $0.word.id != wordID }
                 }
-                self?.filterWords()
             }
         }
         
         private func filterWords() {
             switch studyMode {
             case .all:
-                words = rawWords
+                displays = words
+                            .map { WordDisplay(wordBook: wordBook, word: $0, frontType: frontType) }
             case .excludeSuccess:
-                words = rawWords.filter { $0.studyState != .success }
+                displays = words
+                            .filter { $0.studyState != .success }
+                            .map { WordDisplay(wordBook: wordBook, word: $0, frontType: frontType) }
             }
         }
     }

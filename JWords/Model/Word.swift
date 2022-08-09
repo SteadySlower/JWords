@@ -24,23 +24,23 @@ enum StudyState: Int, Codable {
 
 struct Word: Identifiable, Codable, Hashable{
     @DocumentID var id: String?
-    var frontText: String = ""
-    var frontImageURL: String = ""
-    var backText: String = ""
-    var backImageURL: String = ""
+    var meaningText: String = ""
+    var meaningImageURL: String = ""
+    var ganaText: String = ""
+    var ganaImageURL: String = ""
+    var kanjiText: String = ""
+    var kanjiImageURL: String = ""
     var studyState: StudyState
     let timestamp: Timestamp
-    
-    var hasImage: Bool {
-        return !frontImageURL.isEmpty || !backImageURL.isEmpty
-    }
 }
 
 struct WordInput {
-    let frontText: String
-    let frontImage: InputImageType?
-    let backText: String
-    let backImage: InputImageType?
+    let meaningText: String
+    let meaningImage: InputImageType?
+    let ganaText: String
+    let ganaImage: InputImageType?
+    let kanjiText: String
+    let kanjiImage: InputImageType?
     let studyState: StudyState = .undefined
     let timestamp: Timestamp = Timestamp(date: Date())
 }
