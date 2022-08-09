@@ -97,13 +97,13 @@ extension StudyView {
         func shuffleWords() {
             rawWords.shuffle()
             filterWords()
-            eventPublisher.send(StudyViewEvent.toFront)
+            eventPublisher.send(StudyViewEvent.toFront(id: nil))
         }
         
         func toggleStudyMode() {
             studyMode = studyMode == .all ? .excludeSuccess : .all
             filterWords()
-            eventPublisher.send(StudyViewEvent.toFront)
+            eventPublisher.send(StudyViewEvent.toFront(id: nil))
         }
         
         func handleEvent(_ event: Event) {
@@ -123,6 +123,7 @@ extension StudyView {
                 guard let index = self?.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
                 self?.rawWords[index].studyState = state
                 self?.filterWords()
+                self?.eventPublisher.send(StudyViewEvent.toFront(id: wordID))
             }
         }
         

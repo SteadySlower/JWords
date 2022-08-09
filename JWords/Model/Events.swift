@@ -14,5 +14,6 @@ enum CellEvent: Event {
 }
 
 enum StudyViewEvent: Event {
-    case toFront
+    // 모든 단어가 앞면이 되어야 하면 nil
+    case toFront(id: String?)
 }
