@@ -39,9 +39,9 @@ struct WordDisplay {
     var frontImageURLs: [String] {
         switch frontType {
         case .meaning:
-            return [word.meaningImageURL].filter { $0.isEmpty }
+            return [word.meaningImageURL].filter { !$0.isEmpty }
         case .kanji:
-            return [word.kanjiImageURL].filter { $0.isEmpty }
+            return [word.kanjiImageURL].filter { !$0.isEmpty }
         }
     }
     
@@ -59,9 +59,9 @@ struct WordDisplay {
     var backImages: [String] {
         switch frontType {
         case .meaning:
-            return [word.kanjiImageURL, word.ganaImageURL].filter { $0.isEmpty }
+            return [word.kanjiImageURL, word.ganaImageURL].filter { !$0.isEmpty }
         case .kanji:
-            return [word.ganaImageURL, word.meaningImageURL].filter { $0.isEmpty }
+            return [word.ganaImageURL, word.meaningImageURL].filter { !$0.isEmpty }
         }
     }
     
