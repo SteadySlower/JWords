@@ -8,5 +8,9 @@
 protocol Event {}
 
 enum CellEvent: Event {
-    case studyStateUpdate(id: String?, state: StudyState)
+    case studyStateUpdate(word: Word, state: StudyState)
+}
+
+enum StudyViewEvent: Event {
+    case toFront
 }

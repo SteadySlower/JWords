@@ -12,11 +12,10 @@ import Combine
 struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var dragWidth: CGFloat = 0
-    private let eventPublisher: PassthroughSubject<Event, Never>
+    @State private var isFront = true
     
-    init(wordDisplay: Binding<WordDisplay>, eventPublisher: PassthroughSubject<Event, Never>) {
-        self.viewModel = ViewModel(wordDisplay: wordDisplay, eventPublisher: eventPublisher)
-        self.eventPublisher = eventPublisher
+    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
+        self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
         viewModel.prefetchImage()
     }
     
@@ -37,11 +36,11 @@ struct WordCell: View {
                     
                 }
                 ZStack {
-                    CellColor(state: $viewModel.wordDisplay.word.studyState)
-                    if viewModel.wordDisplay.isFront {
+                    CellColor(state: $viewModel.word.studyState)
+                    if isFront {
                         VStack {
-                            if !viewModel.wordDisplay.frontText.isEmpty {
-                                Text(viewModel.wordDisplay.frontText)
+                            if !viewModel.frontText.isEmpty {
+                                Text(viewModel.frontText)
                                     .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
                                     .lineLimit(3)
@@ -58,8 +57,8 @@ struct WordCell: View {
                         }
                     } else {
                         VStack {
-                            if !viewModel.wordDisplay.backText.isEmpty {
-                                Text(viewModel.wordDisplay.backText)
+                            if !viewModel.backText.isEmpty {
+                                Text(viewModel.backText)
                                     .minimumScaleFactor(0.5)
                                     .font(.system(size: 48))
                                     .lineLimit(3)
@@ -96,7 +95,7 @@ struct WordCell: View {
                     viewModel.updateStudyState(to: .undefined)
                 })
                 .gesture(TapGesture().onEnded {
-                    viewModel.wordDisplay.isFront.toggle()
+                    isFront.toggle()
                 })
                 .onLongPressGesture {
                     // FIXME: this is about view!!! not about logic
@@ -119,34 +118,85 @@ struct WordCell: View {
             }
         }
     }
+    
+    private func handleEvent(_ event: Event) {
+        guard let event = event as? StudyViewEvent else { return }
+        switch event {
+        case .toFront:
+            isFront = true; return
+        }
+    }
 }
 
 extension WordCell {
     final class ViewModel: ObservableObject {
-        @Binding var wordDisplay: WordDisplay
-        private let eventPublisher: PassthroughSubject<Event, Never>
+        @Published var word: Word
+        private let frontType: FrontType
+        private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
-        init(wordDisplay: Binding<WordDisplay>, eventPublisher: PassthroughSubject<Event, Never>) {
-            self._wordDisplay = wordDisplay
+        init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
+            self.word = word
+            self.frontType = frontType
             self.eventPublisher = eventPublisher
         }
         
+        var frontText: String {
+            switch frontType {
+            case .meaning:
+                return word.meaningText
+            case .kanji:
+                return word.kanjiText
+            }
+        }
+        
         var frontImageURLs: [URL] {
-            wordDisplay.frontImageURLs.compactMap { URL(string: $0) }
+            switch frontType {
+            case .meaning:
+                return [word.meaningImageURL]
+                    .filter { !$0.isEmpty }
+                    .compactMap { URL(string: $0) }
+            case .kanji:
+                return [word.kanjiImageURL]
+                    .filter { !$0.isEmpty }
+                    .compactMap { URL(string: $0) }
+            }
+        }
+        
+        // frontText를 제외한 두 가지 text에서 빈 text를 제외하고 띄어쓰기
+        var backText: String {
+            switch frontType {
+            case .meaning:
+                return [word.ganaText, word.kanjiText]
+                    .filter { !$0.isEmpty }
+                    .joined(separator: "\n")
+            case .kanji:
+                return [word.ganaText, word.meaningText]
+                    .filter { !$0.isEmpty }
+                    .joined(separator: "\n")
+            }
         }
         
         var backImageURLs: [URL] {
-            wordDisplay.backImages.compactMap { URL(string: $0) }
+            switch frontType {
+            case .meaning:
+                return [word.kanjiImageURL, word.ganaImageURL]
+                    .filter { !$0.isEmpty }
+                    .compactMap { URL(string: $0) }
+            case .kanji:
+                return [word.ganaImageURL, word.meaningImageURL]
+                    .filter { !$0.isEmpty }
+                    .compactMap { URL(string: $0) }
+            }
+            
         }
         
         func updateStudyState(to state: StudyState) {
-            guard wordDisplay.word.studyState != state else { return }
-            wordDisplay.word.studyState = state
-            eventPublisher.send(CellEvent.studyStateUpdate(id: wordDisplay.word.id, state: state))
+            word.studyState = state
+            eventPublisher.send(CellEvent.studyStateUpdate(word: word, state: state))
         }
         
         func prefetchImage() {
-            guard wordDisplay.hasImage == true else { return }
+            guard word.hasImage == true else { return }
             let urls = frontImageURLs + backImageURLs
             let prefetcher = ImagePrefetcher(urls: urls) {
                 skippedResources, failedResources, completedResources in

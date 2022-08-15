@@ -19,6 +19,20 @@ enum StudyMode {
     }
 }
 
+enum FrontType {
+    case meaning
+    case kanji
+    
+    var toggleButtonTitle: String {
+        switch self {
+        case .meaning:
+            return "漢"
+        case .kanji:
+            return "한"
+        }
+    }
+}
+
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var deviceWidth: CGFloat
@@ -32,9 +46,9 @@ struct StudyView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEach(0..<viewModel.displays.count, id: \.self) { index in
-                    WordCell(wordDisplay: $viewModel.displays[index], eventPublisher: viewModel.eventPublisher)
-                        .frame(width: deviceWidth * 0.9, height: viewModel.displays[index].hasImage ? 200 : 100)
+                ForEach(viewModel.words) { word in
+                    WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }
             }
         }
@@ -77,8 +91,8 @@ struct StudyView: View {
 extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
-        private var words: [Word] = []
-        @Published var displays: [WordDisplay] = []
+        private var rawWords: [Word] = []
+        @Published var words: [Word] = []
         @Published private(set) var studyMode: StudyMode = .all
         @Published private(set) var frontType: FrontType = .meaning
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
@@ -93,7 +107,7 @@ extension StudyView {
                     print("디버그: \(error)")
                 }
                 guard let words = words else { return }
-                self?.words = words
+                self?.rawWords = words
                 self?.filterWords()
             }
         }
@@ -101,37 +115,41 @@ extension StudyView {
         func shuffleWords() {
             words.shuffle()
             filterWords()
+            eventPublisher.send(StudyViewEvent.toFront)
         }
         
         func toggleStudyMode() {
             studyMode = studyMode == .all ? .excludeSuccess : .all
             filterWords()
+            eventPublisher.send(StudyViewEvent.toFront)
         }
         
         func toggleFrontType() {
             frontType = frontType == .meaning ? .kanji : .meaning
             filterWords()
+            eventPublisher.send(StudyViewEvent.toFront)
         }
         
         func handleEvent(_ event: Event) {
             guard let event = event as? CellEvent else { return }
             switch event {
-            case .studyStateUpdate(let id, let state):
-                updateStudyState(id: id, state: state)
+            case .studyStateUpdate(let word, let state):
+                updateStudyState(word: word, state: state)
             }
         }
         
-        private func updateStudyState(id: String?, state: StudyState) {
+        func updateStudyState(word: Word, state: StudyState) {
             guard let wordBookID = wordBook.id else { return }
-            guard let wordID = id else { return }
+            guard let wordID = word.id else { return }
             WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { [weak self] error in
                 // FIXME: handle error
                 if let error = error { print(error); return }
                 guard let self = self else { return }
-                guard let index = self.words.firstIndex(where: { $0.id == wordID }) else { return }
-                self.words[index].studyState = state
+                guard let index = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
+                self.rawWords[index].studyState = state
+                // 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해야 한다. filtering을 해야 한다
                 if self.studyMode == .excludeSuccess && state == .success {
-                    self.displays = self.displays.filter { $0.word.id != wordID }
+                    self.filterWords()
                 }
             }
         }
@@ -139,12 +157,10 @@ extension StudyView {
         private func filterWords() {
             switch studyMode {
             case .all:
-                displays = words
-                            .map { WordDisplay(wordBook: wordBook, word: $0, frontType: frontType) }
+                words = rawWords
             case .excludeSuccess:
-                displays = words
+                words = rawWords
                             .filter { $0.studyState != .success }
-                            .map { WordDisplay(wordBook: wordBook, word: $0, frontType: frontType) }
             }
         }
     }
