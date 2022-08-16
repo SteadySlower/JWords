@@ -40,8 +40,7 @@ struct WordCell: View {
     
     // body
     var body: some View {
-        ContentView(isFront: isFront, viewModel: viewModel)
-            .offset(dragAmount)
+        ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
             .onReceive(viewModel.eventPublisher) { handleEvent($0) }
             .gesture(dragGesture)
             .gesture(doubleTapGesture)
@@ -54,10 +53,12 @@ struct WordCell: View {
     private struct ContentView: View {
         private let isFront: Bool
         private let viewModel: ViewModel
+        private var cellFaceOffset: CGSize
         
-        init(isFront: Bool, viewModel: ViewModel) {
+        init(isFront: Bool, viewModel: ViewModel, cellFaceOffset: CGSize) {
             self.isFront = isFront
             self.viewModel = viewModel
+            self.cellFaceOffset = cellFaceOffset
         }
 
         var body: some View {
@@ -72,6 +73,7 @@ struct WordCell: View {
                             WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
                         }
                     }
+                    .offset(cellFaceOffset)
                 }
             }
         }
