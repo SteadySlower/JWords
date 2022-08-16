@@ -10,12 +10,12 @@ import Kingfisher
 import Combine
 
 struct WordCell: View {
-    // Properties
+    // MARK: Properties
     @ObservedObject private var viewModel: ViewModel
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
     
-    // Gestures
+    // MARK: Gestures
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .global)
             .onEnded { onDragEnd($0) }
@@ -32,13 +32,13 @@ struct WordCell: View {
             .onEnded { viewModel.updateStudyState(to: .undefined) }
     }
     
-    // initializer
+    // MARK: Initializer
     init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
         viewModel.prefetchImage()
     }
     
-    // body
+    // MARK: Body
     var body: some View {
         ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
             .onReceive(viewModel.eventPublisher) { handleEvent($0) }
@@ -48,8 +48,11 @@ struct WordCell: View {
             // TODO: show WordEditView
             .onLongPressGesture { }
     }
-    
-    // Sub-views
+}
+
+// MARK: SubViews
+
+extension WordCell {
     private struct ContentView: View {
         private let isFront: Bool
         private let viewModel: ViewModel
@@ -132,8 +135,11 @@ struct WordCell: View {
             }
         }
     }
-    
-    // View Methods
+}
+
+// MARK: View Methods
+
+extension WordCell {
     private func handleEvent(_ event: Event) {
         guard let event = event as? StudyViewEvent else { return }
         switch event {
@@ -150,6 +156,8 @@ struct WordCell: View {
         }
     }
 }
+
+// MARK: ViewModel
 
 extension WordCell {
     final class ViewModel: ObservableObject {
