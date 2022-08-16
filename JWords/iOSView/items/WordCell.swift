@@ -12,14 +12,14 @@ import Combine
 struct WordCell: View {
     // Properties
     @ObservedObject private var viewModel: ViewModel
-    @State private var dragWidth: CGFloat = 0
+    @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
     
     // Gestures
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .global)
             .onEnded { onDragEnd($0) }
-            .onChanged { onDragChange($0) }
+            .updating($dragAmount) { value, state, _ in state.width = value.translation.width }
     }
     
     private var tapGesture: some Gesture {
@@ -32,37 +32,53 @@ struct WordCell: View {
             .onEnded { viewModel.updateStudyState(to: .undefined) }
     }
     
-    
+    // initializer
     init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
         viewModel.prefetchImage()
     }
     
+    // body
     var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
+        ContentView(isFront: isFront, viewModel: viewModel)
+            .offset(dragAmount)
+            .onReceive(viewModel.eventPublisher) { handleEvent($0) }
+            .gesture(dragGesture)
+            .gesture(doubleTapGesture)
+            .gesture(tapGesture)
+            // TODO: show WordEditView
+            .onLongPressGesture { }
+    }
+    
+    // Sub-views
+    private struct ContentView: View {
+        private let isFront: Bool
+        private let viewModel: ViewModel
+        
+        init(isFront: Bool, viewModel: ViewModel) {
+            self.isFront = isFront
+            self.viewModel = viewModel
+        }
+
+        var body: some View {
+            GeometryReader { proxy in
                 ZStack {
-                    CellColor(state: $viewModel.word.studyState)
-                    if isFront {
-                        WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
-                    } else {
-                        WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
+                    WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
+                    ZStack {
+                        CellColor(state: viewModel.word.studyState)
+                        if isFront {
+                            WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
+                        } else {
+                            WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
+                        }
                     }
                 }
-                .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
-                .gesture(dragGesture)
-                .gesture(doubleTapGesture)
-                .gesture(tapGesture)
-                // TODO: show WordEditView
-                .onLongPressGesture { }
             }
         }
     }
     
-    // Custom Views
     private struct CellColor: View {
-        @Binding var state: StudyState
+        let state: StudyState
         
         var body: some View {
             switch state {
@@ -124,12 +140,7 @@ struct WordCell: View {
         }
     }
     
-    private func onDragChange(_ value: DragGesture.Value) {
-        dragWidth =  value.translation.width
-    }
-    
     private func onDragEnd(_ value: DragGesture.Value) {
-        dragWidth = 0
         if value.translation.width > 0 {
             viewModel.updateStudyState(to: .success)
         } else {
