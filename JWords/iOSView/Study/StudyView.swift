@@ -114,7 +114,6 @@ extension StudyView {
         
         func shuffleWords() {
             words.shuffle()
-            filterWords()
             eventPublisher.send(StudyViewEvent.toFront)
         }
         
