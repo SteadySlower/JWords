@@ -10,9 +10,28 @@ import Kingfisher
 import Combine
 
 struct WordCell: View {
+    // Properties
     @ObservedObject private var viewModel: ViewModel
     @State private var dragWidth: CGFloat = 0
     @State private var isFront = true
+    
+    // Gestures
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 30, coordinateSpace: .global)
+            .onEnded { onDragEnd($0) }
+            .onChanged { onDragChange($0) }
+    }
+    
+    private var tapGesture: some Gesture {
+        TapGesture()
+            .onEnded { isFront.toggle() }
+    }
+    
+    private var doubleTapGesture: some Gesture {
+        TapGesture(count: 2)
+            .onEnded { viewModel.updateStudyState(to: .undefined) }
+    }
+    
     
     init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
@@ -22,88 +41,26 @@ struct WordCell: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                HStack {
-                    let imageHeight = proxy.frame(in: .local).height * 0.8
-                    Image(systemName: "circle")
-                        .resizable()
-                        .frame(width: imageHeight, height: imageHeight)
-                        .foregroundColor(.blue)
-                    Spacer()
-                    Image(systemName: "x.circle")
-                        .resizable()
-                        .frame(width: imageHeight, height: imageHeight)
-                        .foregroundColor(.red)
-                    
-                }
+                WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
                 ZStack {
                     CellColor(state: $viewModel.word.studyState)
                     if isFront {
-                        VStack {
-                            if !viewModel.frontText.isEmpty {
-                                Text(viewModel.frontText)
-                                    .minimumScaleFactor(0.5)
-                                    .font(.system(size: 48))
-                                    .lineLimit(3)
-                            }
-                            if !viewModel.frontImageURLs.isEmpty {
-                                VStack {
-                                    ForEach(viewModel.frontImageURLs, id: \.self) { url in
-                                        KFImage(url)
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                            }
-                        }
+                        WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
                     } else {
-                        VStack {
-                            if !viewModel.backText.isEmpty {
-                                Text(viewModel.backText)
-                                    .minimumScaleFactor(0.5)
-                                    .font(.system(size: 48))
-                                    .lineLimit(3)
-                            }
-                            if !viewModel.backImageURLs.isEmpty {
-                                VStack {
-                                    ForEach(viewModel.backImageURLs, id: \.self) { url in
-                                        KFImage(url)
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                            }
-                        }
+                        WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
                     }
                 }
                 .position(x: proxy.frame(in: .local).midX + dragWidth, y: proxy.frame(in: .local).midY)
-                // TODO: Drag 제스처에 대해서 (List의 swipe action에 대해서도!)
-                .gesture(DragGesture(minimumDistance: 30, coordinateSpace: .global)
-                    .onChanged({ value in
-                        self.dragWidth =  value.translation.width
-                    })
-                    .onEnded({ value in
-                        self.dragWidth = 0
-                        if value.translation.width > 0 {
-                            viewModel.updateStudyState(to: .success)
-                        } else {
-                            viewModel.updateStudyState(to: .fail)
-                        }
-                    })
-                )
-                // TODO: 더블탭이랑 탭이랑 같이 쓸 때 더블탭을 위에 놓아야 함(https://stackoverflow.com/questions/58539015/swiftui-respond-to-tap-and-double-tap-with-different-actions)
-                .gesture(TapGesture(count: 2).onEnded {
-                    viewModel.updateStudyState(to: .undefined)
-                })
-                .gesture(TapGesture().onEnded {
-                    isFront.toggle()
-                })
-                .onLongPressGesture {
-                    // FIXME: this is about view!!! not about logic
-                }
+                .gesture(dragGesture)
+                .gesture(doubleTapGesture)
+                .gesture(tapGesture)
+                // TODO: show WordEditView
+                .onLongPressGesture { }
             }
         }
     }
     
+    // Custom Views
     private struct CellColor: View {
         @Binding var state: StudyState
         
@@ -119,11 +76,64 @@ struct WordCell: View {
         }
     }
     
+    private struct WordCellBackground: View {
+        let imageHeight: CGFloat
+        
+        var body: some View {
+            HStack {
+                Image(systemName: "circle")
+                    .resizable()
+                    .frame(width: imageHeight, height: imageHeight)
+                    .foregroundColor(.blue)
+                Spacer()
+                Image(systemName: "x.circle")
+                    .resizable()
+                    .frame(width: imageHeight, height: imageHeight)
+                    .foregroundColor(.red)
+                
+            }
+        }
+    }
+    
+    private struct WordCellFace: View {
+        let text: String
+        let imageURLs: [URL]
+        
+        var body: some View {
+            VStack {
+                Text(text)
+                    .minimumScaleFactor(0.5)
+                    .font(.system(size: 48))
+                VStack {
+                    ForEach(imageURLs, id: \.self) { url in
+                        KFImage(url)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+            }
+        }
+    }
+    
+    // View Methods
     private func handleEvent(_ event: Event) {
         guard let event = event as? StudyViewEvent else { return }
         switch event {
         case .toFront:
             isFront = true; return
+        }
+    }
+    
+    private func onDragChange(_ value: DragGesture.Value) {
+        dragWidth =  value.translation.width
+    }
+    
+    private func onDragEnd(_ value: DragGesture.Value) {
+        dragWidth = 0
+        if value.translation.width > 0 {
+            viewModel.updateStudyState(to: .success)
+        } else {
+            viewModel.updateStudyState(to: .fail)
         }
     }
 }
