@@ -7,21 +7,24 @@
 
 import SwiftUI
 
+
 #if os(macOS)
 struct MacAddWordView: View {
+    // MARK: Enum
     private enum EditFocus: Hashable {
         case meaning, gana, kanji
     }
     
+    // MARK: Properties
     @StateObject private var viewModel = ViewModel()
     @FocusState private var editFocus: EditFocus?
     
+    // MARK: Body
     var body: some View {
         ScrollView {
             VStack {
                 VStack {
                     if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
-                        // TODO: Picker는 Hashable을 필요로 함 + selection에 Int아니고 실제 type을 넣으니까 안됨
                         Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
                             ForEach(0..<viewModel.bookList.count, id: \.self) { index in
                                 Text(viewModel.bookList[index].title)
@@ -134,13 +137,24 @@ struct MacAddWordView: View {
         let pb = NSPasteboard.general
         let type = NSPasteboard.PasteboardType.tiff
         guard let imgData = pb.data(forType: type) else { return nil }
-       
         return NSImage(data: imgData)
     }
 }
 
+// MARK: SubViews
+extension MacAddWordView {
+    
+}
+
+// MARK: Methods
+extension MacAddWordView {
+    
+}
+
+// MARK: ViewModel
 extension MacAddWordView {
     final class ViewModel: ObservableObject {
+        // Properties
         @Published var meaningText: String = "" {
             didSet {
                 isOverlapped = nil
@@ -163,6 +177,7 @@ extension MacAddWordView {
         
         @Published var isCheckingOverlap: Bool = false
         @Published var isOverlapped: Bool? = nil
+        
         var overlapCheckButtonTitle: String {
             if isCheckingOverlap {
                 return "중복 검사중"
@@ -172,6 +187,8 @@ extension MacAddWordView {
             }
             return isOverlapped ? "중복됨" : "중복 아님"
         }
+        
+        // public methods
         
         func getWordBooks() {
             WordService.getWordBooks { [weak self] wordBooks, error in
