@@ -33,39 +33,16 @@ struct MacAddWordView: View {
             VStack {
                 WordBookPickerView(viewModel: viewModel)
                 VStack {
-                    Text("뜻 입력")
-                        .font(.system(size: 20))
-                    TextEditor(text: $viewModel.meaningText)
-                        .font(.system(size: 30))
-                        .frame(height: Constants.Size.deviceHeight / 8)
-                        .padding(.horizontal)
-                    Button {
-                        viewModel.checkIfOverlap()
-                    } label: {
-                        Text(viewModel.overlapCheckButtonTitle)
-                    }
-                    .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
+                    TextInputView(inputType: .meaning, editFocus: $editFocus, viewModel: viewModel)
                     ImageInputView(inputType: .meaning, viewModel: viewModel)
                 }
                 .padding(.bottom)
                 VStack {
-                    Text("가나 입력")
-                        .font(.system(size: 20))
-                    TextEditor(text: $viewModel.ganaText)
-                        .font(.system(size: 30))
-                        .frame(height: Constants.Size.deviceHeight / 8)
-                        .padding(.horizontal)
-                        .focused($editFocus, equals: .gana)
+                    TextInputView(inputType: .gana, editFocus: $editFocus, viewModel: viewModel)
                     ImageInputView(inputType: .gana, viewModel: viewModel)
                 }
                 VStack {
-                    Text("한자 입력")
-                        .font(.system(size: 20))
-                    TextEditor(text: $viewModel.kanjiText)
-                        .font(.system(size: 30))
-                        .frame(height: Constants.Size.deviceHeight / 8)
-                        .padding(.horizontal)
-                        .focused($editFocus, equals: .kanji)
+                    TextInputView(inputType: .kanji, editFocus: $editFocus, viewModel: viewModel)
                     ImageInputView(inputType: .kanji, viewModel: viewModel)
                 }
                 if viewModel.isUploading {
@@ -117,6 +94,48 @@ extension MacAddWordView {
                 }
                 .padding()
             }
+        }
+    }
+    
+    struct TextInputView: View {
+        private let inputType: InputType
+        @ObservedObject private var viewModel: ViewModel
+        private var editFocus: FocusState<InputType?>.Binding
+        
+        init(inputType: InputType, editFocus: FocusState<InputType?>.Binding, viewModel: ViewModel) {
+            self.inputType = inputType
+            self.editFocus = editFocus
+            self.viewModel = viewModel
+        }
+        
+        var bindingText: Binding<String> {
+            switch inputType {
+            case .meaning: return $viewModel.meaningText
+            case .gana: return $viewModel.ganaText
+            case .kanji: return $viewModel.kanjiText
+            }
+        }
+        
+        var body: some View {
+            Text("\(inputType.description) 입력")
+                .font(.system(size: 20))
+            TextEditor(text: bindingText)
+                .font(.system(size: 30))
+                .frame(height: Constants.Size.deviceHeight / 8)
+                .padding(.horizontal)
+                .focused(editFocus, equals: inputType)
+            if inputType == .meaning {
+                OverlapCheckButton
+            }
+        }
+        
+        private var OverlapCheckButton: some View {
+            Button {
+                viewModel.checkIfOverlap()
+            } label: {
+                Text(viewModel.overlapCheckButtonTitle)
+            }
+            .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
         }
     }
     
