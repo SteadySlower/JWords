@@ -127,11 +127,11 @@ extension MacAddWordView {
                 .padding(.horizontal)
                 .focused(editFocus, equals: inputType)
             if inputType == .meaning {
-                OverlapCheckButton
+                overlapCheckButton
             }
         }
         
-        private var OverlapCheckButton: some View {
+        private var overlapCheckButton: some View {
             Button {
                 viewModel.checkIfOverlap()
             } label: {
