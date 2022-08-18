@@ -11,13 +11,21 @@ import SwiftUI
 #if os(macOS)
 struct MacAddWordView: View {
     // MARK: Enum
-    private enum EditFocus: Hashable {
+    enum InputType: Hashable {
         case meaning, gana, kanji
+        
+        var description: String {
+            switch self {
+            case .meaning: return "뜻"
+            case .gana: return "가나"
+            case .kanji: return "한자"
+            }
+        }
     }
     
     // MARK: Properties
     @StateObject private var viewModel = ViewModel()
-    @FocusState private var editFocus: EditFocus?
+    @FocusState private var editFocus: InputType?
     
     // MARK: Body
     var body: some View {
@@ -46,18 +54,7 @@ struct MacAddWordView: View {
                         Text(viewModel.overlapCheckButtonTitle)
                     }
                     .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-                    if let frontImage = viewModel.meaningImage {
-                        Image(nsImage: frontImage)
-                            .resizable()
-                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                            .onTapGesture { viewModel.meaningImage = nil }
-                    } else {
-                        Button {
-                            viewModel.meaningImage = getImageFromPasteBoard()
-                        } label: {
-                            Text("뜻 이미지")
-                        }
-                    }
+                    ImageInputView(inputType: .meaning, viewModel: viewModel)
                 }
                 .padding(.bottom)
                 VStack {
@@ -68,18 +65,7 @@ struct MacAddWordView: View {
                         .frame(height: Constants.Size.deviceHeight / 8)
                         .padding(.horizontal)
                         .focused($editFocus, equals: .gana)
-                    if let backImage = viewModel.ganaImage {
-                        Image(nsImage: backImage)
-                            .resizable()
-                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                            .onTapGesture { viewModel.ganaImage = nil }
-                    } else {
-                        Button {
-                            viewModel.ganaImage = getImageFromPasteBoard()
-                        } label: {
-                            Text("가나 이미지")
-                        }
-                    }
+                    ImageInputView(inputType: .gana, viewModel: viewModel)
                 }
                 VStack {
                     Text("한자 입력")
@@ -89,18 +75,7 @@ struct MacAddWordView: View {
                         .frame(height: Constants.Size.deviceHeight / 8)
                         .padding(.horizontal)
                         .focused($editFocus, equals: .kanji)
-                    if let backImage = viewModel.kanjiImage {
-                        Image(nsImage: backImage)
-                            .resizable()
-                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                            .onTapGesture { viewModel.kanjiImage = nil }
-                    } else {
-                        Button {
-                            viewModel.kanjiImage = getImageFromPasteBoard()
-                        } label: {
-                            Text("한자 이미지")
-                        }
-                    }
+                    ImageInputView(inputType: .kanji, viewModel: viewModel)
                 }
                 if viewModel.isUploading {
                     ProgressView()
@@ -131,19 +106,49 @@ struct MacAddWordView: View {
             }
         }
     }
-    
-    // TODO: 클립보드에서 복사해오는 법 (비지니스 로직인가 뷰인가)
-    func getImageFromPasteBoard() -> NSImage? {
-        let pb = NSPasteboard.general
-        let type = NSPasteboard.PasteboardType.tiff
-        guard let imgData = pb.data(forType: type) else { return nil }
-        return NSImage(data: imgData)
-    }
 }
 
 // MARK: SubViews
 extension MacAddWordView {
-    
+    struct ImageInputView: View {
+        private let inputType: InputType
+        @ObservedObject private var viewModel: ViewModel
+        
+        private var image: NSImage? {
+            switch inputType {
+            case .meaning: return viewModel.meaningImage
+            case .gana: return viewModel.ganaImage
+            case .kanji: return viewModel.kanjiImage
+            }
+        }
+        
+        private var pasteBoardImage: NSImage? {
+            let pb = NSPasteboard.general
+            let type = NSPasteboard.PasteboardType.tiff
+            guard let imgData = pb.data(forType: type) else { return nil }
+            return NSImage(data: imgData)
+        }
+        
+        init(inputType: InputType, viewModel: ViewModel) {
+            self.inputType = inputType
+            self.viewModel = viewModel
+        }
+        
+        var body: some View {
+            if let image = image {
+                Image(nsImage: image)
+                    .resizable()
+                    .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                    .onTapGesture { viewModel.clearImageInput(inputType) }
+            } else {
+                Button {
+                    viewModel.insertImage(of: inputType, image: pasteBoardImage)
+                } label: {
+                    Text("\(inputType.description) 이미지")
+                }
+            }
+        }
+    }
 }
 
 // MARK: Methods
@@ -160,11 +165,11 @@ extension MacAddWordView {
                 isOverlapped = nil
             }
         }
-        @Published var meaningImage: NSImage?
+        @Published private(set) var meaningImage: NSImage?
         @Published var ganaText: String = ""
-        @Published var ganaImage: NSImage?
+        @Published private(set) var ganaImage: NSImage?
         @Published var kanjiText: String = ""
-        @Published var kanjiImage: NSImage?
+        @Published private(set) var kanjiImage: NSImage?
         
         @Published var bookList: [WordBook] = []
         @Published var selectedBookIndex = 0
@@ -221,6 +226,28 @@ extension MacAddWordView {
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isOverlapped = isOverlapped ?? false
                 self?.isCheckingOverlap = false
+            }
+        }
+        
+        func insertImage(of inputType: InputType, image: NSImage?) {
+            switch inputType {
+            case .meaning:
+                meaningImage = image
+            case .gana:
+                ganaImage = image
+            case .kanji:
+                kanjiImage = image
+            }
+        }
+        
+        func clearImageInput(_ inputType: InputType) {
+            switch inputType {
+            case .meaning:
+                meaningImage = nil
+            case .gana:
+                ganaImage = nil
+            case .kanji:
+                kanjiImage = nil
             }
         }
         
