@@ -23,67 +23,75 @@ struct MacAddWordView: View {
         }
     }
     
-    // MARK: Properties
-    @StateObject private var viewModel = ViewModel()
-    @FocusState private var editFocus: InputType?
-    
-    // MARK: Body
     var body: some View {
-        ScrollView {
-            VStack {
-                WordBookPickerView(viewModel: viewModel)
+        ContentView()
+            .environmentObject(ViewModel())
+    }
+    
+}
+
+// MARK: ContentView
+extension MacAddWordView {
+    struct ContentView: View {
+        // MARK: Properties
+        @EnvironmentObject private var viewModel: ViewModel
+        @FocusState private var editFocus: InputType?
+        
+        // MARK: Body
+        var body: some View {
+            ScrollView {
                 VStack {
-                    TextInputView(inputType: .meaning, editFocus: $editFocus, viewModel: viewModel)
-                    ImageInputView(inputType: .meaning, viewModel: viewModel)
-                }
-                .padding(.bottom)
-                VStack {
-                    TextInputView(inputType: .gana, editFocus: $editFocus, viewModel: viewModel)
-                    ImageInputView(inputType: .gana, viewModel: viewModel)
-                }
-                VStack {
-                    TextInputView(inputType: .kanji, editFocus: $editFocus, viewModel: viewModel)
-                    ImageInputView(inputType: .kanji, viewModel: viewModel)
-                }
-                if viewModel.isUploading {
-                    ProgressView()
-                } else {
-                    Button {
-                        viewModel.saveWord()
-                    } label: {
-                        Text("저장")
+                    WordBookPickerView()
+                    VStack {
+                        TextInputView(inputType: .meaning, editFocus: $editFocus)
+                        ImageInputView(inputType: .meaning)
                     }
-                    .disabled(viewModel.isSaveButtonUnable)
+                    .padding(.bottom)
+                    VStack {
+                        TextInputView(inputType: .gana, editFocus: $editFocus)
+                        ImageInputView(inputType: .gana)
+                    }
+                    VStack {
+                        TextInputView(inputType: .kanji, editFocus: $editFocus)
+                        ImageInputView(inputType: .kanji)
+                    }
+                    if viewModel.isUploading {
+                        ProgressView()
+                    } else {
+                        Button {
+                            viewModel.saveWord()
+                        } label: {
+                            Text("저장")
+                        }
+                        .disabled(viewModel.isSaveButtonUnable)
+                    }
                 }
-            }
-            .padding(.top, 50)
-            .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { newValue in
-                guard let last = newValue.last else { return }
-                if last == "\t" {
-                    viewModel.meaningText.removeLast()
-                    editFocus = .gana
+                .padding(.top, 50)
+                .onAppear { viewModel.getWordBooks() }
+                .onChange(of: viewModel.meaningText) { newValue in
+                    guard let last = newValue.last else { return }
+                    if last == "\t" {
+                        viewModel.meaningText.removeLast()
+                        editFocus = .gana
+                    }
                 }
-            }
-            .onChange(of: viewModel.ganaText) { newValue in
-                guard let last = newValue.last else { return }
-                if last == "\t" {
-                    viewModel.ganaText.removeLast()
-                    editFocus = .kanji
+                .onChange(of: viewModel.ganaText) { newValue in
+                    guard let last = newValue.last else { return }
+                    if last == "\t" {
+                        viewModel.ganaText.removeLast()
+                        editFocus = .kanji
+                    }
                 }
             }
         }
+
     }
 }
 
 // MARK: SubViews
 extension MacAddWordView {
     struct WordBookPickerView: View {
-        @ObservedObject private var viewModel: ViewModel
-        
-        init(viewModel: ViewModel) {
-            self.viewModel = viewModel
-        }
+        @EnvironmentObject private var viewModel: ViewModel
         
         var body: some View {
             if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
@@ -99,13 +107,12 @@ extension MacAddWordView {
     
     struct TextInputView: View {
         private let inputType: InputType
-        @ObservedObject private var viewModel: ViewModel
+        @EnvironmentObject private var viewModel: ViewModel
         private var editFocus: FocusState<InputType?>.Binding
         
-        init(inputType: InputType, editFocus: FocusState<InputType?>.Binding, viewModel: ViewModel) {
+        init(inputType: InputType, editFocus: FocusState<InputType?>.Binding) {
             self.inputType = inputType
             self.editFocus = editFocus
-            self.viewModel = viewModel
         }
         
         var bindingText: Binding<String> {
@@ -141,7 +148,7 @@ extension MacAddWordView {
     
     struct ImageInputView: View {
         private let inputType: InputType
-        @ObservedObject private var viewModel: ViewModel
+        @EnvironmentObject private var viewModel: ViewModel
         
         private var image: NSImage? {
             switch inputType {
@@ -158,9 +165,8 @@ extension MacAddWordView {
             return NSImage(data: imgData)
         }
         
-        init(inputType: InputType, viewModel: ViewModel) {
+        init(inputType: InputType) {
             self.inputType = inputType
-            self.viewModel = viewModel
         }
         
         var body: some View {
