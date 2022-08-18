@@ -55,16 +55,7 @@ extension MacAddWordView {
                         TextInputView(inputType: .kanji, editFocus: $editFocus)
                         ImageInputView(inputType: .kanji)
                     }
-                    if viewModel.isUploading {
-                        ProgressView()
-                    } else {
-                        Button {
-                            viewModel.saveWord()
-                        } label: {
-                            Text("저장")
-                        }
-                        .disabled(viewModel.isSaveButtonUnable)
-                    }
+                    SaveButton()
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
@@ -181,6 +172,23 @@ extension MacAddWordView {
                 } label: {
                     Text("\(inputType.description) 이미지")
                 }
+            }
+        }
+    }
+    
+    struct SaveButton: View {
+        @EnvironmentObject private var viewModel: ViewModel
+        
+        var body: some View {
+            if viewModel.isUploading {
+                ProgressView()
+            } else {
+                Button {
+                    viewModel.saveWord()
+                } label: {
+                    Text("저장")
+                }
+                .disabled(viewModel.isSaveButtonUnable)
             }
         }
     }
