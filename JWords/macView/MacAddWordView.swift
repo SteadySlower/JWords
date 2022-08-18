@@ -31,16 +31,7 @@ struct MacAddWordView: View {
     var body: some View {
         ScrollView {
             VStack {
-                VStack {
-                    if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
-                        Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
-                            ForEach(0..<viewModel.bookList.count, id: \.self) { index in
-                                Text(viewModel.bookList[index].title)
-                            }
-                        }
-                        .padding()
-                    }
-                }
+                WordBookPickerView(viewModel: viewModel)
                 VStack {
                     Text("뜻 입력")
                         .font(.system(size: 20))
@@ -110,6 +101,25 @@ struct MacAddWordView: View {
 
 // MARK: SubViews
 extension MacAddWordView {
+    struct WordBookPickerView: View {
+        @ObservedObject private var viewModel: ViewModel
+        
+        init(viewModel: ViewModel) {
+            self.viewModel = viewModel
+        }
+        
+        var body: some View {
+            if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
+                Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
+                    ForEach(0..<viewModel.bookList.count, id: \.self) { index in
+                        Text(viewModel.bookList[index].title)
+                    }
+                }
+                .padding()
+            }
+        }
+    }
+    
     struct ImageInputView: View {
         private let inputType: InputType
         @ObservedObject private var viewModel: ViewModel
