@@ -59,20 +59,24 @@ extension MacAddWordView {
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
-                .onChange(of: viewModel.meaningText) { newValue in
-                    guard let last = newValue.last else { return }
-                    if last == "\t" {
-                        viewModel.meaningText.removeLast()
-                        editFocus = .gana
-                    }
-                }
-                .onChange(of: viewModel.ganaText) { newValue in
-                    guard let last = newValue.last else { return }
-                    if last == "\t" {
-                        viewModel.ganaText.removeLast()
-                        editFocus = .kanji
-                    }
-                }
+                .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
+                .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
+            }
+        }
+        
+        private func moveCursorToGanaWhenTap(_ text: String) {
+            guard let last = text.last else { return }
+            if last == "\t" {
+                viewModel.meaningText.removeLast()
+                editFocus = .gana
+            }
+        }
+        
+        private func moveCursorToKanjiWhenTap(_ text: String) {
+            guard let last = text.last else { return }
+            if last == "\t" {
+                viewModel.ganaText.removeLast()
+                editFocus = .kanji
             }
         }
 
@@ -192,11 +196,6 @@ extension MacAddWordView {
             }
         }
     }
-}
-
-// MARK: Methods
-extension MacAddWordView {
-    
 }
 
 // MARK: ViewModel
