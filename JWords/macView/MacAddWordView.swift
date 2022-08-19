@@ -43,16 +43,19 @@ extension MacAddWordView {
                 VStack {
                     WordBookPickerView()
                     VStack {
-                        TextInputView(inputType: .meaning, editFocus: $editFocus)
+                        TextInputView(inputType: .meaning)
+                            .focused($editFocus, equals: .meaning)
                         ImageInputView(inputType: .meaning)
                     }
                     .padding(.bottom)
                     VStack {
-                        TextInputView(inputType: .gana, editFocus: $editFocus)
+                        TextInputView(inputType: .gana)
+                            .focused($editFocus, equals: .gana)
                         ImageInputView(inputType: .gana)
                     }
                     VStack {
-                        TextInputView(inputType: .kanji, editFocus: $editFocus)
+                        TextInputView(inputType: .kanji)
+                            .focused($editFocus, equals: .kanji)
                         ImageInputView(inputType: .kanji)
                     }
                     SaveButton()
@@ -103,11 +106,9 @@ extension MacAddWordView {
     struct TextInputView: View {
         private let inputType: InputType
         @EnvironmentObject private var viewModel: ViewModel
-        private var editFocus: FocusState<InputType?>.Binding
         
-        init(inputType: InputType, editFocus: FocusState<InputType?>.Binding) {
+        init(inputType: InputType) {
             self.inputType = inputType
-            self.editFocus = editFocus
         }
         
         var bindingText: Binding<String> {
@@ -119,15 +120,16 @@ extension MacAddWordView {
         }
         
         var body: some View {
-            Text("\(inputType.description) 입력")
-                .font(.system(size: 20))
-            TextEditor(text: bindingText)
-                .font(.system(size: 30))
-                .frame(height: Constants.Size.deviceHeight / 8)
-                .padding(.horizontal)
-                .focused(editFocus, equals: inputType)
-            if inputType == .meaning {
-                overlapCheckButton
+            VStack {
+                Text("\(inputType.description) 입력")
+                    .font(.system(size: 20))
+                TextEditor(text: bindingText)
+                    .font(.system(size: 30))
+                    .frame(height: Constants.Size.deviceHeight / 8)
+                    .padding(.horizontal)
+                if inputType == .meaning {
+                    overlapCheckButton
+                }
             }
         }
         
