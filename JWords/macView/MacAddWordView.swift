@@ -7,150 +7,211 @@
 
 import SwiftUI
 
+
 #if os(macOS)
 struct MacAddWordView: View {
-    private enum EditFocus: Hashable {
+    // MARK: Enum
+    enum InputType: Hashable {
         case meaning, gana, kanji
+        
+        var description: String {
+            switch self {
+            case .meaning: return "뜻"
+            case .gana: return "가나"
+            case .kanji: return "한자"
+            }
+        }
     }
     
-    @StateObject private var viewModel = ViewModel()
-    @FocusState private var editFocus: EditFocus?
-    
     var body: some View {
-        ScrollView {
-            VStack {
+        ContentView()
+            .environmentObject(ViewModel())
+    }
+    
+}
+
+// MARK: ContentView
+extension MacAddWordView {
+    struct ContentView: View {
+        // MARK: Properties
+        @EnvironmentObject private var viewModel: ViewModel
+        @FocusState private var editFocus: InputType?
+        
+        // MARK: Body
+        var body: some View {
+            ScrollView {
                 VStack {
-                    if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
-                        // TODO: Picker는 Hashable을 필요로 함 + selection에 Int아니고 실제 type을 넣으니까 안됨
-                        Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
-                            ForEach(0..<viewModel.bookList.count, id: \.self) { index in
-                                Text(viewModel.bookList[index].title)
-                            }
-                        }
-                        .padding()
+                    WordBookPickerView()
+                    VStack {
+                        TextInputView(inputType: .meaning, editFocus: $editFocus)
+                        ImageInputView(inputType: .meaning)
                     }
+                    .padding(.bottom)
+                    VStack {
+                        TextInputView(inputType: .gana, editFocus: $editFocus)
+                        ImageInputView(inputType: .gana)
+                    }
+                    VStack {
+                        TextInputView(inputType: .kanji, editFocus: $editFocus)
+                        ImageInputView(inputType: .kanji)
+                    }
+                    SaveButton()
                 }
-                VStack {
-                    Text("뜻 입력")
-                        .font(.system(size: 20))
-                    TextEditor(text: $viewModel.meaningText)
-                        .font(.system(size: 30))
-                        .frame(height: Constants.Size.deviceHeight / 8)
-                        .padding(.horizontal)
-                    Button {
-                        viewModel.checkIfOverlap()
-                    } label: {
-                        Text(viewModel.overlapCheckButtonTitle)
-                    }
-                    .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-                    if let frontImage = viewModel.meaningImage {
-                        Image(nsImage: frontImage)
-                            .resizable()
-                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                            .onTapGesture { viewModel.meaningImage = nil }
-                    } else {
-                        Button {
-                            viewModel.meaningImage = getImageFromPasteBoard()
-                        } label: {
-                            Text("뜻 이미지")
-                        }
-                    }
-                }
-                .padding(.bottom)
-                VStack {
-                    Text("가나 입력")
-                        .font(.system(size: 20))
-                    TextEditor(text: $viewModel.ganaText)
-                        .font(.system(size: 30))
-                        .frame(height: Constants.Size.deviceHeight / 8)
-                        .padding(.horizontal)
-                        .focused($editFocus, equals: .gana)
-                    if let backImage = viewModel.ganaImage {
-                        Image(nsImage: backImage)
-                            .resizable()
-                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                            .onTapGesture { viewModel.ganaImage = nil }
-                    } else {
-                        Button {
-                            viewModel.ganaImage = getImageFromPasteBoard()
-                        } label: {
-                            Text("가나 이미지")
-                        }
-                    }
-                }
-                VStack {
-                    Text("한자 입력")
-                        .font(.system(size: 20))
-                    TextEditor(text: $viewModel.kanjiText)
-                        .font(.system(size: 30))
-                        .frame(height: Constants.Size.deviceHeight / 8)
-                        .padding(.horizontal)
-                        .focused($editFocus, equals: .kanji)
-                    if let backImage = viewModel.kanjiImage {
-                        Image(nsImage: backImage)
-                            .resizable()
-                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                            .onTapGesture { viewModel.kanjiImage = nil }
-                    } else {
-                        Button {
-                            viewModel.kanjiImage = getImageFromPasteBoard()
-                        } label: {
-                            Text("한자 이미지")
-                        }
-                    }
-                }
-                if viewModel.isUploading {
-                    ProgressView()
-                } else {
-                    Button {
-                        viewModel.saveWord()
-                    } label: {
-                        Text("저장")
-                    }
-                    .disabled(viewModel.isSaveButtonUnable)
-                }
+                .padding(.top, 50)
+                .onAppear { viewModel.getWordBooks() }
+                .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
+                .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
             }
-            .padding(.top, 50)
-            .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { newValue in
-                guard let last = newValue.last else { return }
-                if last == "\t" {
-                    viewModel.meaningText.removeLast()
-                    editFocus = .gana
-                }
+        }
+        
+        private func moveCursorToGanaWhenTap(_ text: String) {
+            guard let last = text.last else { return }
+            if last == "\t" {
+                viewModel.meaningText.removeLast()
+                editFocus = .gana
             }
-            .onChange(of: viewModel.ganaText) { newValue in
-                guard let last = newValue.last else { return }
-                if last == "\t" {
-                    viewModel.ganaText.removeLast()
-                    editFocus = .kanji
+        }
+        
+        private func moveCursorToKanjiWhenTap(_ text: String) {
+            guard let last = text.last else { return }
+            if last == "\t" {
+                viewModel.ganaText.removeLast()
+                editFocus = .kanji
+            }
+        }
+
+    }
+}
+
+// MARK: SubViews
+extension MacAddWordView {
+    struct WordBookPickerView: View {
+        @EnvironmentObject private var viewModel: ViewModel
+        
+        var body: some View {
+            if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
+                Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
+                    ForEach(0..<viewModel.bookList.count, id: \.self) { index in
+                        Text(viewModel.bookList[index].title)
+                    }
+                }
+                .padding()
+            }
+        }
+    }
+    
+    struct TextInputView: View {
+        private let inputType: InputType
+        @EnvironmentObject private var viewModel: ViewModel
+        private var editFocus: FocusState<InputType?>.Binding
+        
+        init(inputType: InputType, editFocus: FocusState<InputType?>.Binding) {
+            self.inputType = inputType
+            self.editFocus = editFocus
+        }
+        
+        var bindingText: Binding<String> {
+            switch inputType {
+            case .meaning: return $viewModel.meaningText
+            case .gana: return $viewModel.ganaText
+            case .kanji: return $viewModel.kanjiText
+            }
+        }
+        
+        var body: some View {
+            Text("\(inputType.description) 입력")
+                .font(.system(size: 20))
+            TextEditor(text: bindingText)
+                .font(.system(size: 30))
+                .frame(height: Constants.Size.deviceHeight / 8)
+                .padding(.horizontal)
+                .focused(editFocus, equals: inputType)
+            if inputType == .meaning {
+                overlapCheckButton
+            }
+        }
+        
+        private var overlapCheckButton: some View {
+            Button {
+                viewModel.checkIfOverlap()
+            } label: {
+                Text(viewModel.overlapCheckButtonTitle)
+            }
+            .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
+        }
+    }
+    
+    struct ImageInputView: View {
+        private let inputType: InputType
+        @EnvironmentObject private var viewModel: ViewModel
+        
+        private var image: NSImage? {
+            switch inputType {
+            case .meaning: return viewModel.meaningImage
+            case .gana: return viewModel.ganaImage
+            case .kanji: return viewModel.kanjiImage
+            }
+        }
+        
+        private var pasteBoardImage: NSImage? {
+            let pb = NSPasteboard.general
+            let type = NSPasteboard.PasteboardType.tiff
+            guard let imgData = pb.data(forType: type) else { return nil }
+            return NSImage(data: imgData)
+        }
+        
+        init(inputType: InputType) {
+            self.inputType = inputType
+        }
+        
+        var body: some View {
+            if let image = image {
+                Image(nsImage: image)
+                    .resizable()
+                    .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                    .onTapGesture { viewModel.clearImageInput(inputType) }
+            } else {
+                Button {
+                    viewModel.insertImage(of: inputType, image: pasteBoardImage)
+                } label: {
+                    Text("\(inputType.description) 이미지")
                 }
             }
         }
     }
     
-    // TODO: 클립보드에서 복사해오는 법 (비지니스 로직인가 뷰인가)
-    func getImageFromPasteBoard() -> NSImage? {
-        let pb = NSPasteboard.general
-        let type = NSPasteboard.PasteboardType.tiff
-        guard let imgData = pb.data(forType: type) else { return nil }
-       
-        return NSImage(data: imgData)
+    struct SaveButton: View {
+        @EnvironmentObject private var viewModel: ViewModel
+        
+        var body: some View {
+            if viewModel.isUploading {
+                ProgressView()
+            } else {
+                Button {
+                    viewModel.saveWord()
+                } label: {
+                    Text("저장")
+                }
+                .disabled(viewModel.isSaveButtonUnable)
+            }
+        }
     }
 }
 
+// MARK: ViewModel
 extension MacAddWordView {
     final class ViewModel: ObservableObject {
+        // Properties
         @Published var meaningText: String = "" {
             didSet {
                 isOverlapped = nil
             }
         }
-        @Published var meaningImage: NSImage?
+        @Published private(set) var meaningImage: NSImage?
         @Published var ganaText: String = ""
-        @Published var ganaImage: NSImage?
+        @Published private(set) var ganaImage: NSImage?
         @Published var kanjiText: String = ""
-        @Published var kanjiImage: NSImage?
+        @Published private(set) var kanjiImage: NSImage?
         
         @Published var bookList: [WordBook] = []
         @Published var selectedBookIndex = 0
@@ -163,6 +224,7 @@ extension MacAddWordView {
         
         @Published var isCheckingOverlap: Bool = false
         @Published var isOverlapped: Bool? = nil
+        
         var overlapCheckButtonTitle: String {
             if isCheckingOverlap {
                 return "중복 검사중"
@@ -172,6 +234,8 @@ extension MacAddWordView {
             }
             return isOverlapped ? "중복됨" : "중복 아님"
         }
+        
+        // public methods
         
         func getWordBooks() {
             WordService.getWordBooks { [weak self] wordBooks, error in
@@ -204,6 +268,28 @@ extension MacAddWordView {
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isOverlapped = isOverlapped ?? false
                 self?.isCheckingOverlap = false
+            }
+        }
+        
+        func insertImage(of inputType: InputType, image: NSImage?) {
+            switch inputType {
+            case .meaning:
+                meaningImage = image
+            case .gana:
+                ganaImage = image
+            case .kanji:
+                kanjiImage = image
+            }
+        }
+        
+        func clearImageInput(_ inputType: InputType) {
+            switch inputType {
+            case .meaning:
+                meaningImage = nil
+            case .gana:
+                ganaImage = nil
+            case .kanji:
+                kanjiImage = nil
             }
         }
         
