@@ -92,4 +92,9 @@ class WordService {
             completionHandler(documents.count != 0 ? true : false, nil)
         }
     }
+    
+    static func closeWordBook(_ id: String, completionHandler: FireStoreCompletion) {
+        let field = ["_closed": true]
+        Constants.Collections.wordBooks.document(id).updateData(field, completion: completionHandler)
+    }
 }
