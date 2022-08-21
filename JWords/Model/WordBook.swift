@@ -13,4 +13,10 @@ struct WordBook: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
     var title: String
     let timestamp: Timestamp
+    private let _closed: Bool?
+    
+    var closed: Bool {
+        if let closed = _closed { return closed }
+        return false
+    }
 }
