@@ -80,6 +80,11 @@ struct StudyView: View {
                 }
             }
         }
+        .toolbar() {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("닫기") {  }
+            }
+        }
         #endif
     }
     
