@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		068D4CFC28B2189300F44F6E /* WordBookCloseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordBookCloseViewModel.swift */; };
+		068D4CFC28B2189300F44F6E /* WordBookCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */; };
 		06A1F4E028670D97003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4DF28670D97003440B0 /* Quick */; };
 		06A1F4E228670DA8003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E128670DA8003440B0 /* Quick */; };
 		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
@@ -88,7 +88,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		068D4CFB28B2189300F44F6E /* WordBookCloseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookCloseViewModel.swift; sourceTree = "<group>"; };
+		068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookCloseView.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEditView.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -302,7 +302,7 @@
 			children = (
 				5A67DC29286946F800AC156C /* StudyView.swift */,
 				06A564D5289E9C5100DBC2E0 /* WordEditView.swift */,
-				068D4CFB28B2189300F44F6E /* WordBookCloseViewModel.swift */,
+				068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */,
 			);
 			path = Study;
 			sourceTree = "<group>";
@@ -544,7 +544,7 @@
 				5A67DC312869529700AC156C /* MacHomeView.swift in Sources */,
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
-				068D4CFC28B2189300F44F6E /* WordBookCloseViewModel.swift in Sources */,
+				068D4CFC28B2189300F44F6E /* WordBookCloseView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5ACE0A73286998F800A57660 /* Collections.swift in Sources */,

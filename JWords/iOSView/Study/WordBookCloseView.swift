@@ -13,52 +13,50 @@ struct WordBookCloseView: View {
     
     init(wordBook: WordBook) {
         self.viewModel = ViewModel(toClose: wordBook)
-//        viewModel.getWordBooks()
+        // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
+        viewModel.getWordBooks()
     }
     
     var body: some View {
         VStack {
             Text("틀린 단어들을 이동할 단어장을 골라주세요.")
             Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
-                if viewModel.wordBooks.isEmpty {
-                    Text("로딩중")
-                        .tag(nil as String?)
-                }
-                ForEach(viewModel.wordBooks, id: \.id) { wordbook in
-                    Text(wordbook.title)
-                        .tag(wordbook.id as String?)
+                Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                    .tag(nil as String?)
+                ForEach(viewModel.wordBooks) {
+                    Text($0.title)
+                        .tag($0.id as String?)
                 }
             }
             .pickerStyle(.wheel)
         }
-        .onAppear { viewModel.getWordBooks() }
     }
+    
 }
 
 extension WordBookCloseView {
     final class ViewModel: ObservableObject {
         private let toClose: WordBook
         @Published var wordBooks = [WordBook]()
-        @Published var selectedID: String?
+        var selectedID: String?
         
         init(toClose: WordBook) {
             self.toClose = toClose
         }
         
         func getWordBooks() {
-            WordService.getWordBooks { wordBooks, error in
+            WordService.getWordBooks { [weak self] books, error in
                 if let error = error {
                     print(error)
                     return
                 }
                 
-                guard let wordBooks = wordBooks else {
-                    print("Debug: No wordBook Found")
+                guard let books = books else {
+                    print("Debug: No wordbook Found")
                     return
                 }
-
-                self.wordBooks = wordBooks
-                print("디버그: \(self.wordBooks)")
+                
+                self?.wordBooks = books
             }
         }
     }
