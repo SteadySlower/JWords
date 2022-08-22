@@ -64,6 +64,7 @@ extension MacAddWordView {
                 .onAppear { viewModel.getWordBooks() }
                 .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
                 .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
+                .onChange(of: viewModel.ganaText) { viewModel.trimInput($0) }
             }
         }
         
@@ -282,6 +283,15 @@ extension MacAddWordView {
             case .kanji:
                 kanjiImage = image
             }
+        }
+        
+        func trimInput(_ input: String) {
+            guard input.contains("[") else { return }
+            var strings = input.split(separator: " ")
+            guard strings.count == 2 else { return }
+            strings[1] = strings[1].filter { !["[", "]"].contains($0) }
+            ganaText = String(strings[0])
+            kanjiText = String(strings[1])
         }
         
         func clearImageInput(_ inputType: InputType) {
