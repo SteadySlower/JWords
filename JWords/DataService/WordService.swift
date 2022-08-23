@@ -104,11 +104,13 @@ class WordService {
         
     }
     
+    // 단어장의 _closed field를 업데이트하는 함수
     static private func closeBook(_ id: String, completionHandler: FireStoreCompletion) {
         let field = ["_closed": true]
         Constants.Collections.wordBooks.document(id).updateData(field, completion: completionHandler)
     }
     
+    // 단어 여러개를 copy하는 기능 (dispatch group)
     static private func copyWords(_ words: [Word], to id: String, completionHandler: @escaping () -> Void) {
         let group = DispatchGroup()
         for word in words {
@@ -119,6 +121,7 @@ class WordService {
         }
     }
     
+    // 단어 1개 이동하는 기능
     static private func copyWord(_ word: Word, to id: String, group: DispatchGroup) {
         group.enter()
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
