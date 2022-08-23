@@ -21,9 +21,7 @@ struct HomeCell: View {
                 StudyView(wordBook: viewModel.wordBook)
             } label: {
                 HStack {
-                    VStack(alignment: .leading) {
-                        Text(viewModel.wordBook.title)
-                    }
+                    Text(viewModel.wordBook.title)
                     Spacer()
                 }
                 .padding(12)
