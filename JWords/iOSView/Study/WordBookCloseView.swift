@@ -29,6 +29,14 @@ struct WordBookCloseView: View {
                 }
             }
             .pickerStyle(.wheel)
+            HStack {
+                Button("취소") {
+                    dismiss()
+                }
+                Button("이동") {
+                    
+                }
+            }
         }
     }
     
