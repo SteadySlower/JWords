@@ -10,6 +10,7 @@ import SwiftUI
 struct WordBookCloseView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showProgressView = false
     
     init(wordBook: WordBook, toMoveWords: [Word]) {
         self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords)
@@ -18,23 +19,29 @@ struct WordBookCloseView: View {
     }
     
     var body: some View {
-        VStack {
-            Text("\(viewModel.toMoveWords.count)개의 틀린 단어들을 이동할 단어장을 골라주세요.")
-            Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
-                Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
-                    .tag(nil as String?)
-                ForEach(viewModel.wordBooks) {
-                    Text($0.title)
-                        .tag($0.id as String?)
-                }
+        ZStack {
+            if showProgressView {
+                ProgressView()
             }
-            .pickerStyle(.wheel)
-            HStack {
-                Button("취소") {
-                    dismiss()
+            VStack {
+                Text("\(viewModel.toMoveWords.count)개의 틀린 단어들을 이동할 단어장을 골라주세요.")
+                Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
+                    Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                        .tag(nil as String?)
+                    ForEach(viewModel.wordBooks) {
+                        Text($0.title)
+                            .tag($0.id as String?)
+                    }
                 }
-                Button("이동") {
-                    
+                .pickerStyle(.wheel)
+                HStack {
+                    Button("취소") {
+                        dismiss()
+                    }
+                    Button(viewModel.selectedID != nil ? "이동" : "닫기") {
+                        showProgressView = true
+                        viewModel.closeBook { dismiss() }
+                    }
                 }
             }
         }
@@ -48,7 +55,7 @@ extension WordBookCloseView {
         let toMoveWords: [Word]
         
         @Published var wordBooks = [WordBook]()
-        var selectedID: String?
+        @Published var selectedID: String?
         
         init(toClose: WordBook, toMoveWords: [Word]) {
             self.toClose = toClose
@@ -68,6 +75,14 @@ extension WordBookCloseView {
                 }
                 
                 self?.wordBooks = books
+            }
+        }
+        
+        func closeBook(completionHandler: @escaping () -> Void) {
+            guard let id = toClose.id else { return }
+            WordService.closeWordBook(of: id, to: selectedID, toMoveWords: toMoveWords) { error in
+                if let error = error { print(error) }
+                completionHandler()
             }
         }
     }
