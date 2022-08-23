@@ -59,7 +59,7 @@ struct StudyView: View {
             viewModel.updateWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showCloseModal) { WordBookCloseView(wordBook: viewModel.wordBook) }
+        .sheet(isPresented: $showCloseModal) { WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords) }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
@@ -107,6 +107,10 @@ extension StudyView {
 
         init(wordBook: WordBook) {
             self.wordBook = wordBook
+        }
+        
+        var toMoveWords: [Word] {
+            rawWords.filter { $0.studyState != .success }
         }
         
         func updateWords() {
