@@ -11,9 +11,11 @@ struct WordBookCloseView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showProgressView = false
+    @Binding private var didClosed: Bool
     
-    init(wordBook: WordBook, toMoveWords: [Word]) {
+    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>) {
         self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords)
+        self._didClosed = didClosed
         // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
         viewModel.getWordBooks()
     }
@@ -36,11 +38,15 @@ struct WordBookCloseView: View {
                 .pickerStyle(.wheel)
                 HStack {
                     Button("취소") {
+                        didClosed = false
                         dismiss()
                     }
                     Button(viewModel.selectedID != nil ? "이동" : "닫기") {
                         showProgressView = true
-                        viewModel.closeBook { dismiss() }
+                        viewModel.closeBook {
+                            didClosed = true
+                            dismiss()
+                        }
                     }
                 }
             }
