@@ -40,7 +40,7 @@ struct StudyView: View {
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
     @State private var showCloseModal: Bool = false
-    @State private var didClosed: Bool = false
+    @State private var showDismiss: Bool = false
     
     init(wordBook: WordBook) {
         self.viewModel = ViewModel(wordBook: wordBook)
@@ -61,9 +61,9 @@ struct StudyView: View {
             resetDeviceWidth()
         }
         .sheet(isPresented: $showCloseModal, onDismiss: {
-            if didClosed { dismiss() }
+            if showDismiss { dismiss() }
         }) {
-            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $didClosed)
+            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $showDismiss)
         }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
