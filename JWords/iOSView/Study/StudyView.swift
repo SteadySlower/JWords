@@ -165,14 +165,6 @@ extension StudyView {
             }
         }
         
-        func closeWordBook(completionHandler: @escaping () -> Void) {
-            guard let id = wordBook.id else { return }
-            WordService.closeWordBook(id) { error in
-                if let error = error { print(error); return }
-                completionHandler()
-            }
-        }
-        
         private func filterWords() {
             switch studyMode {
             case .all:
