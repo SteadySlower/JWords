@@ -93,7 +93,7 @@ class WordService {
         }
     }
     
-    static func closeWordBook(of id: String, to to: String?, toMoveWords: [Word], completionHandler: FireStoreCompletion) {
+    static func closeWordBook(of id: String, to: String?, toMoveWords: [Word], completionHandler: FireStoreCompletion) {
         if let to = to {
             copyWords(toMoveWords, to: to) {
                 closeBook(id, completionHandler: completionHandler)
