@@ -63,7 +63,7 @@ extension HomeView {
             WordService.getWordBooks { [weak self] wordBooks, error in
                 if let error = error { print("디버그: \(error.localizedDescription)"); return }
                 if let wordBooks = wordBooks {
-                    self?.wordBooks = wordBooks
+                    self?.wordBooks = wordBooks.filter { $0.closed == false }
                 }
             }
         }
