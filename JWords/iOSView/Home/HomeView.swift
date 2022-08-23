@@ -35,7 +35,7 @@ struct HomeView: View {
 extension HomeView {
     private struct WordBookAddModal: View {
         @State var WordBookTitle: String = ""
-        @Environment(\.presentationMode) var mode
+        @Environment(\.dismiss) var dismiss
         private let viewModel: ViewModel
         
         init(viewModel: ViewModel) {
@@ -52,24 +52,18 @@ extension HomeView {
             }
             .padding()
         }
-        
-        private func dismiss() {
-            mode.wrappedValue.dismiss()
-        }
     }
 }
 
 extension HomeView {
     final class ViewModel: ObservableObject {
         @Published private(set) var wordBooks: [WordBook] = []
-        private var isFetched: Bool = false
         
         func fetchWordBooks() {
-            if isFetched { return }
             WordService.getWordBooks { [weak self] wordBooks, error in
                 if let error = error { print("디버그: \(error.localizedDescription)"); return }
                 if let wordBooks = wordBooks {
-                    self?.wordBooks = wordBooks
+                    self?.wordBooks = wordBooks.filter { $0.closed == false }
                 }
             }
         }

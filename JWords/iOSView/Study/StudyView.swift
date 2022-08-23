@@ -35,12 +35,15 @@ enum FrontType {
 
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
-    @State private var deviceWidth: CGFloat
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
+    @State private var showCloseModal: Bool = false
+    @State private var showDismiss: Bool = false
     
     init(wordBook: WordBook) {
         self.viewModel = ViewModel(wordBook: wordBook)
-        self.deviceWidth = Constants.Size.deviceWidth
     }
     
     var body: some View {
@@ -53,9 +56,14 @@ struct StudyView: View {
             }
         }
         .navigationTitle(viewModel.wordBook.title)
-        .onAppear{
+        .onAppear {
             viewModel.updateWords()
             resetDeviceWidth()
+        }
+        .sheet(isPresented: $showCloseModal, onDismiss: {
+            if showDismiss { dismiss() }
+        }) {
+            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $showDismiss)
         }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
@@ -80,6 +88,11 @@ struct StudyView: View {
                 }
             }
         }
+        .toolbar() {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("닫기") { showCloseModal = true }
+            }
+        }
         #endif
     }
     
@@ -99,6 +112,10 @@ extension StudyView {
 
         init(wordBook: WordBook) {
             self.wordBook = wordBook
+        }
+        
+        var toMoveWords: [Word] {
+            rawWords.filter { $0.studyState != .success }
         }
         
         func updateWords() {
