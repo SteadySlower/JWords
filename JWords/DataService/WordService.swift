@@ -93,8 +93,47 @@ class WordService {
         }
     }
     
-    static func closeWordBook(_ id: String, completionHandler: FireStoreCompletion) {
+    static func closeWordBook(of id: String, to to: String?, toMoveWords: [Word], completionHandler: FireStoreCompletion) {
+        if let to = to {
+            copyWords(toMoveWords, to: to) {
+                closeBook(id, completionHandler: completionHandler)
+            }
+        } else {
+            closeBook(id, completionHandler: completionHandler)
+        }
+        
+    }
+    
+    static private func closeBook(_ id: String, completionHandler: FireStoreCompletion) {
         let field = ["_closed": true]
         Constants.Collections.wordBooks.document(id).updateData(field, completion: completionHandler)
     }
+    
+    static private func copyWords(_ words: [Word], to id: String, completionHandler: @escaping () -> Void) {
+        let group = DispatchGroup()
+        for word in words {
+            copyWord(word, to: id, group: group)
+        }
+        group.notify(queue: .global()) {
+            completionHandler()
+        }
+    }
+    
+    static private func copyWord(_ word: Word, to id: String, group: DispatchGroup) {
+        group.enter()
+        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
+                                    "meaningText": word.meaningText,
+                                    "meaningImageURL": word.meaningImageURL,
+                                    "ganaText": word.ganaText,
+                                    "ganaImageURL": word.ganaImageURL,
+                                    "kanjiText": word.kanjiText,
+                                    "kanjiImageURL": word.kanjiImageURL,
+                                    "studyState": StudyState.undefined.rawValue]
+        Constants.Collections.word(id).addDocument(data: data) { error in
+            //TODO: handle error
+            if let error = error { print(error) }
+            group.leave()
+        }
+    }
+
 }
