@@ -35,7 +35,9 @@ struct WordBookCloseView: View {
                             .tag($0.id as String?)
                     }
                 }
+                #if os(iOS)
                 .pickerStyle(.wheel)
+                #endif
                 HStack {
                     Button("취소") {
                         didClosed = false
