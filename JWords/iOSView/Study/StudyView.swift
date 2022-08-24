@@ -130,7 +130,8 @@ extension StudyView {
         }
         
         func shuffleWords() {
-            words.shuffle()
+            rawWords.shuffle()
+            filterWords()
             eventPublisher.send(StudyViewEvent.toFront)
         }
         
@@ -161,9 +162,13 @@ extension StudyView {
                 // FIXME: handle error
                 if let error = error { print(error); return }
                 guard let self = self else { return }
-                guard let index = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
-                self.rawWords[index].studyState = state
-                // 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해야 한다. filtering을 해야 한다
+                
+                // rawWords만 수정한다.
+                    // words까지 수정하면 전체 list가 re-render되므로 낭비 (어차피 cell color는 WordCell 객체가 처리하니까)
+                guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
+                self.rawWords[rawIndex].studyState = state
+                
+                // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words를 수정해야 한다.
                 if self.studyMode == .excludeSuccess && state == .success {
                     self.filterWords()
                 }
@@ -175,8 +180,7 @@ extension StudyView {
             case .all:
                 words = rawWords
             case .excludeSuccess:
-                words = rawWords
-                            .filter { $0.studyState != .success }
+                words = rawWords.filter { $0.studyState != .success }
             }
         }
     }
