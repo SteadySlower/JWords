@@ -161,11 +161,16 @@ extension StudyView {
                 // FIXME: handle error
                 if let error = error { print(error); return }
                 guard let self = self else { return }
-                guard let index = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
-                self.rawWords[index].studyState = state
-                // 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해야 한다. filtering을 해야 한다
+                
+                // rawWords와 words의 state를 모두 수정한다.
+                guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
+                self.rawWords[rawIndex].studyState = state
+                guard let index = self.words.firstIndex(where: { $0.id == wordID }) else { return }
+                self.words[index].studyState = state
+                
+                // 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해야 한다.
                 if self.studyMode == .excludeSuccess && state == .success {
-                    self.filterWords()
+                    self.words = self.words.filter { $0.studyState != .success }
                 }
             }
         }
@@ -175,8 +180,7 @@ extension StudyView {
             case .all:
                 words = rawWords
             case .excludeSuccess:
-                words = rawWords
-                            .filter { $0.studyState != .success }
+                words = rawWords.filter { $0.studyState != .success }
             }
         }
     }
