@@ -83,11 +83,10 @@ extension WordCell {
     }
     
     private struct CellColor: View {
-        let state: StudyState
+        private let state: StudyState
         
         init(state: StudyState) {
             self.state = state
-            print("디버그: init of CellColor of which state is \(state)")
         }
         
         var body: some View {
