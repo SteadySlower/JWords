@@ -55,7 +55,7 @@ struct WordCell: View {
 extension WordCell {
     private struct ContentView: View {
         private let isFront: Bool
-        private let viewModel: ViewModel
+        @ObservedObject private var viewModel: ViewModel
         private var cellFaceOffset: CGSize
         
         init(isFront: Bool, viewModel: ViewModel, cellFaceOffset: CGSize) {
@@ -84,6 +84,11 @@ extension WordCell {
     
     private struct CellColor: View {
         let state: StudyState
+        
+        init(state: StudyState) {
+            self.state = state
+            print("디버그: init of CellColor of which state is \(state)")
+        }
         
         var body: some View {
             switch state {
