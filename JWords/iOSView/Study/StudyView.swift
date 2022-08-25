@@ -61,20 +61,14 @@ struct StudyView: View {
             viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showCloseModal, onDismiss: {
-            if shouldDismiss { dismiss() }
-        }) {
+        .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
             WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss)
         }
         .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-            resetDeviceWidth()
-        }
-        .onReceive(viewModel.eventPublisher) { event in
-            viewModel.handleEvent(event)
-        }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
+        .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
         .toolbar {
             ToolbarItem {
                 HStack {
@@ -90,7 +84,7 @@ struct StudyView: View {
                 }
             }
         }
-        .toolbar() {
+        .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("닫기") { showCloseModal = true }
             }
@@ -170,7 +164,7 @@ extension StudyView {
                 guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
                 self.rawWords[rawIndex].studyState = state
                 
-                // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words를 수정해야 한다.
+                // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words에 반영해야 한다.
                 if self.studyMode == .excludeSuccess && state == .success {
                     self.filterWords()
                 }
