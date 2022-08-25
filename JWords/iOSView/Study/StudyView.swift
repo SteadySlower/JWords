@@ -36,11 +36,12 @@ enum FrontType {
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) var scenePhase
     
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
     @State private var showCloseModal: Bool = false
-    @State private var showDismiss: Bool = false
+    @State private var shouldDismiss: Bool = false
     
     init(wordBook: WordBook) {
         self.viewModel = ViewModel(wordBook: wordBook)
@@ -57,22 +58,17 @@ struct StudyView: View {
         }
         .navigationTitle(viewModel.wordBook.title)
         .onAppear {
-            viewModel.updateWords()
+            viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showCloseModal, onDismiss: {
-            if showDismiss { dismiss() }
-        }) {
-            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $showDismiss)
+        .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
+            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss)
         }
+        .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-            resetDeviceWidth()
-        }
-        .onReceive(viewModel.eventPublisher) { event in
-            viewModel.handleEvent(event)
-        }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
+        .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
         .toolbar {
             ToolbarItem {
                 HStack {
@@ -88,7 +84,7 @@ struct StudyView: View {
                 }
             }
         }
-        .toolbar() {
+        .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("닫기") { showCloseModal = true }
             }
@@ -118,7 +114,7 @@ extension StudyView {
             rawWords.filter { $0.studyState != .success }
         }
         
-        func updateWords() {
+        func fetchWords() {
             WordService.getWords(wordBookID: wordBook.id!) { [weak self] words, error in
                 if let error = error {
                     print("디버그: \(error)")
@@ -168,10 +164,17 @@ extension StudyView {
                 guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
                 self.rawWords[rawIndex].studyState = state
                 
-                // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words를 수정해야 한다.
+                // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words에 반영해야 한다.
                 if self.studyMode == .excludeSuccess && state == .success {
                     self.filterWords()
                 }
+            }
+        }
+        
+        func updateWordState() {
+            for i in 0..<words.count {
+                guard let newState = rawWords.first(where: { $0.id == words[i].id })?.studyState else { continue }
+                words[i].studyState = newState
             }
         }
         
