@@ -57,10 +57,9 @@ struct StudyView: View {
         }
         .navigationTitle(viewModel.wordBook.title)
         .onAppear {
-            viewModel.updateWords()
+            viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .onDisappear { print("디버그: StudyView onDisapper") }
         .sheet(isPresented: $showCloseModal, onDismiss: {
             if shouldDismiss { dismiss() }
         }) {
@@ -119,7 +118,7 @@ extension StudyView {
             rawWords.filter { $0.studyState != .success }
         }
         
-        func updateWords() {
+        func fetchWords() {
             WordService.getWords(wordBookID: wordBook.id!) { [weak self] words, error in
                 if let error = error {
                     print("디버그: \(error)")
