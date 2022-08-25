@@ -36,6 +36,7 @@ enum FrontType {
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) var scenePhase
     
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
@@ -65,6 +66,7 @@ struct StudyView: View {
         }) {
             WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss)
         }
+        .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
@@ -172,6 +174,13 @@ extension StudyView {
                 if self.studyMode == .excludeSuccess && state == .success {
                     self.filterWords()
                 }
+            }
+        }
+        
+        func updateWordState() {
+            for i in 0..<words.count {
+                guard let newState = rawWords.first(where: { $0.id == words[i].id })?.studyState else { continue }
+                words[i].studyState = newState
             }
         }
         
