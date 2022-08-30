@@ -5,10 +5,10 @@
 //  Created by Jong Won Moon on 2022/08/09.
 //
 
-//import Firebase
-//
-//class DataResettingScript {
-//    // 전체 데이터를 새로 작성하는 함수
+import Firebase
+
+class DataResettingScript {
+//    // 전체 데이터를 새로 작성하는 함수 (단어장 그대로 옮기기)
 //    static func resetBookData() {
 //        // 기존의 단어장의 데이터를 동일하게 새로운 단어장을 만든다.
 //        WordService.getWordBooks { wordBooks, _ in
@@ -33,20 +33,31 @@
 //            }
 //        }
 //    }
-//    
-//    // 새로운 단어장을 모두 가져온다
-//    private static func getNewWordBooks(wordBook: WordBook, completion: @escaping ([WordBook]) -> Void) {
-//        Firestore.firestore()
-//            .collection("develop")
-//            .document("data")
-//            .collection("wordBooks")
-//            .getDocuments { snapshot, _ in
-//                guard let documents = snapshot?.documents else { return }
-//                let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
-//                completion(wordBooks)
-//            }
-//    }
-//    
+    
+    // 각 단어장에서 추출한 단어들을 wordExamples로 만들어서 옮기는 과정
+    static func moveWordsToWordExamples() {
+        WordService.getWordBooks { books, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+        }
+    }
+    
+    // 새로운 단어장을 모두 가져온다
+    private static func getNewWordBooks(wordBook: WordBook, completion: @escaping ([WordBook]) -> Void) {
+        Firestore.firestore()
+            .collection("develop")
+            .document("data")
+            .collection("wordBooks")
+            .getDocuments { snapshot, _ in
+                guard let documents = snapshot?.documents else { return }
+                let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
+                completion(wordBooks)
+            }
+    }
+    
 //    // 기존 단어장의 단어장을 가져와서 새로운 단어장에 쓴다.
 //    private static func resetWordData(oldID: String, newID: String) {
 //        WordService.getWords(wordBookID: oldID) { words, _ in
@@ -70,4 +81,5 @@
 //            }
 //        }
 //    }
-//}
+    
+}
