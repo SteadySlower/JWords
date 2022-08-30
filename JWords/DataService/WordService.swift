@@ -76,6 +76,18 @@ class WordService {
         }
     }
     
+    static func saveExample(wordInput: WordInput) {
+        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
+                                    "meaningText": wordInput.meaningText,
+                                    "meaningImageURL": "",
+                                    "ganaText": wordInput.ganaText,
+                                    "ganaImageURL": "",
+                                    "kanjiText": wordInput.kanjiText,
+                                    "kanjiImageURL": "",
+                                    "used": 0]
+        Constants.Collections.examples.addDocument(data: data)
+    }
+    
     static func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
         Constants.Collections.word(wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
