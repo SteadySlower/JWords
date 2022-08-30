@@ -104,6 +104,23 @@ class WordService {
         
     }
     
+    // Examples를 검색하는 함수
+    static func fetchExamples(_ query: String, completionHandler: @escaping ([WordExample]?, Error?) -> Void) {
+        Constants.Collections.examples
+            .whereField("meaningText", isGreaterThanOrEqualTo: query)
+            .whereField("meaningText", isLessThan: query + "힣")
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completionHandler(nil, error)
+                }
+                guard let documents = snapshot?.documents else { return }
+                let examples = documents
+                        .compactMap { try? $0.data(as: WordExample.self) }
+                        .sorted(by: { $0.used > $1.used })
+                completionHandler(examples, nil)
+            }
+    }
+    
     // 단어장의 _closed field를 업데이트하는 함수
     static private func closeBook(_ id: String, completionHandler: FireStoreCompletion) {
         let field = ["_closed": true]
