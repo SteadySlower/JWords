@@ -19,4 +19,8 @@ struct WordExample: Identifiable, Codable, Hashable {
     var kanjiImageURL: String = ""
     let timestamp: Timestamp
     let used: Int
+    
+    var hasImage: Bool {
+        !self.meaningImageURL.isEmpty || !self.ganaImageURL.isEmpty || !self.kanjiImageURL.isEmpty
+    }
 }
