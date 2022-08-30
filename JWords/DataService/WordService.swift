@@ -133,6 +133,15 @@ class WordService {
             }
     }
     
+    // Examples 사용되서 used에 + 1하는 함수
+    static func updateUsed(of example: WordExample) {
+        guard let id = example.id else {
+            print("No id of example in updateUsed")
+            return
+        }
+        Constants.Collections.examples.document(id).updateData(["used" : example.used + 1])
+    }
+    
     // 단어장의 _closed field를 업데이트하는 함수
     static private func closeBook(_ id: String, completionHandler: FireStoreCompletion) {
         let field = ["_closed": true]

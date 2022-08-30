@@ -265,8 +265,18 @@ extension MacAddWordView {
         @Published var examples: [WordExample] = []
         @Published var selectedExampleID: String? = nil {
             didSet {
-                updateText(with: selectedExampleID)
+                updateTextWithExample()
             }
+        }
+        private var selectedExample: WordExample? {
+            return examples.first(where: { $0.id == selectedExampleID })
+        }
+        
+        private var didExampleUsed: Bool {
+            guard let selectedExample = selectedExample else { return false }
+            return selectedExample.meaningText == meaningText
+                && selectedExample.ganaText == ganaText
+                && selectedExample.kanjiText == kanjiText ? true : false
         }
         
         var isSaveButtonUnable: Bool {
@@ -304,8 +314,17 @@ extension MacAddWordView {
             isUploading = true
             let wordInput = WordInput(meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
             guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
-            
+            // example이 있는지 확인하고 example과 동일한지 확인하고
+                // 동일하면 example의 used에 + 1
+                // 동일하지 않으면 새로운 example 추가한다.
+            if didExampleUsed,
+               let selectedExample = selectedExample {
+                WordService.updateUsed(of: selectedExample)
+            } else if !wordInput.hasImage {
+                WordService.saveExample(wordInput: wordInput)
+            }
             clearInputs()
+            clearExamples()
             WordService.saveWord(wordInput: wordInput, wordBookID: selectedBookID) { [weak self] error in
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
@@ -374,14 +393,19 @@ extension MacAddWordView {
             kanjiImage = nil
         }
         
-        private func updateText(with exampleID: String?) {
-            guard let example = examples.first(where: { $0.id == exampleID }) else {
+        private func clearExamples() {
+            examples = []
+            selectedExampleID = nil
+        }
+        
+        private func updateTextWithExample() {
+            guard let selectedExample = selectedExample else {
                 clearInputs()
                 return
             }
-            meaningText = example.meaningText
-            ganaText = example.ganaText
-            kanjiText = example.kanjiText
+            meaningText = selectedExample.meaningText
+            ganaText = selectedExample.ganaText
+            kanjiText = selectedExample.kanjiText
         }
     }
 }
