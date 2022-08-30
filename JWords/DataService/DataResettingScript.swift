@@ -5,9 +5,9 @@
 //  Created by Jong Won Moon on 2022/08/09.
 //
 
-import Firebase
-
-class DataResettingScript {
+//import Firebase
+//
+//class DataResettingScript {
 //    // 전체 데이터를 새로 작성하는 함수 (단어장 그대로 옮기기)
 //    static func resetBookData() {
 //        // 기존의 단어장의 데이터를 동일하게 새로운 단어장을 만든다.
@@ -64,10 +64,10 @@ class DataResettingScript {
 //                    }
 //                }
 //            }
-//            
+//
 //        }
 //    }
-//    
+//
 //    // 이미 있는 단어를 examples에 저장하는 함수
 //    static func saveWordExample(_ word: Word) {
 //        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
@@ -120,4 +120,4 @@ class DataResettingScript {
 //        }
 //    }
     
-}
+//}
