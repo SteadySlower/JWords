@@ -22,5 +22,10 @@ extension Constants {
             .document(bookID)
             .collection("words")
         }
+        static let examples =
+            Firestore.firestore()
+            .collection("develop")
+            .document("data")
+            .collection("examples")
     }
 }
