@@ -76,6 +76,18 @@ class WordService {
         }
     }
     
+    static func saveExample(wordInput: WordInput) {
+        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
+                                    "meaningText": wordInput.meaningText,
+                                    "meaningImageURL": "",
+                                    "ganaText": wordInput.ganaText,
+                                    "ganaImageURL": "",
+                                    "kanjiText": wordInput.kanjiText,
+                                    "kanjiImageURL": "",
+                                    "used": 0]
+        Constants.Collections.examples.addDocument(data: data)
+    }
+    
     static func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
         Constants.Collections.word(wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
@@ -102,6 +114,32 @@ class WordService {
             closeBook(id, completionHandler: completionHandler)
         }
         
+    }
+    
+    // Examples를 검색하는 함수
+    static func fetchExamples(_ query: String, completionHandler: @escaping ([WordExample]?, Error?) -> Void) {
+        Constants.Collections.examples
+            .whereField("meaningText", isGreaterThanOrEqualTo: query)
+            .whereField("meaningText", isLessThan: query + "힣")
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completionHandler(nil, error)
+                }
+                guard let documents = snapshot?.documents else { return }
+                let examples = documents
+                        .compactMap { try? $0.data(as: WordExample.self) }
+                        .sorted(by: { $0.used > $1.used })
+                completionHandler(examples, nil)
+            }
+    }
+    
+    // Examples 사용되서 used에 + 1하는 함수
+    static func updateUsed(of example: WordExample) {
+        guard let id = example.id else {
+            print("No id of example in updateUsed")
+            return
+        }
+        Constants.Collections.examples.document(id).updateData(["used" : example.used + 1])
     }
     
     // 단어장의 _closed field를 업데이트하는 함수

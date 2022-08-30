@@ -47,4 +47,8 @@ struct WordInput {
     let kanjiImage: InputImageType?
     let studyState: StudyState = .undefined
     let timestamp: Timestamp = Timestamp(date: Date())
+    
+    var hasImage: Bool {
+        self.meaningImage != nil || self.ganaImage != nil || self.kanjiImage != nil
+    }
 }
