@@ -129,18 +129,55 @@ extension MacAddWordView {
                     .frame(height: Constants.Size.deviceHeight / 8)
                     .padding(.horizontal)
                 if inputType == .meaning {
-                    overlapCheckButton
+                    HStack {
+                        OverlapCheckButton()
+                        SearchExampleButton()
+                        ExamplePicker()
+                    }
+                    .padding(.horizontal)
                 }
             }
         }
         
-        private var overlapCheckButton: some View {
-            Button {
-                viewModel.checkIfOverlap()
-            } label: {
-                Text(viewModel.overlapCheckButtonTitle)
+        private struct OverlapCheckButton: View {
+            @EnvironmentObject private var viewModel: ViewModel
+            
+            var body: some View {
+                Button {
+                    viewModel.checkIfOverlap()
+                } label: {
+                    Text(viewModel.overlapCheckButtonTitle)
+                }
+                .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
             }
-            .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
+        }
+        
+        private struct SearchExampleButton: View {
+            @EnvironmentObject private var viewModel: ViewModel
+            
+            var body: some View {
+                Button {
+                    viewModel.getExamples()
+                } label: {
+                    Text("찾기")
+                }
+                .disabled(viewModel.meaningText.isEmpty)
+            }
+        }
+        
+        private struct ExamplePicker: View {
+            @EnvironmentObject private var viewModel: ViewModel
+            
+            var body: some View {
+                Picker("", selection: $viewModel.selectedExampleID) {
+                    Text(viewModel.examples.isEmpty ? "검색결과 없음" : "미선택")
+                        .tag(nil as String?)
+                    ForEach(viewModel.examples) { example in
+                        Text("뜻: \(example.meaningText)\n가나: \(example.ganaText)\n한자: \(example.kanjiText)")
+                            .tag(example.id as String?)
+                    }
+                }
+            }
         }
     }
     
@@ -205,6 +242,8 @@ extension MacAddWordView {
 extension MacAddWordView {
     final class ViewModel: ObservableObject {
         // Properties
+        
+        // 단어 내용 입력 관련 properties
         @Published var meaningText: String = "" {
             didSet {
                 isOverlapped = nil
@@ -216,10 +255,19 @@ extension MacAddWordView {
         @Published var kanjiText: String = ""
         @Published private(set) var kanjiImage: NSImage?
         
+        // 저장할 단어장 관련 properties
         @Published var bookList: [WordBook] = []
         @Published var selectedBookIndex = 0
         @Published var didBooksFetched: Bool = false
         @Published var isUploading: Bool = false
+        
+        // 예시 관련 properties
+        @Published var examples: [WordExample] = []
+        @Published var selectedExampleID: String? = nil {
+            didSet {
+                updateText(with: selectedExampleID)
+            }
+        }
         
         var isSaveButtonUnable: Bool {
             return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading
@@ -307,6 +355,16 @@ extension MacAddWordView {
             }
         }
         
+        func getExamples() {
+            WordService.fetchExamples(meaningText) { [weak self] examples, error in
+                if let error = error { print(error); return }
+                guard let examples = examples else { print("examples are nil"); return }
+                // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
+                self?.examples = examples.filter({ !$0.hasImage })
+                if !examples.isEmpty { self?.selectedExampleID = examples[0].id }
+            }
+        }
+        
         private func clearInputs() {
             meaningText = ""
             meaningImage = nil
@@ -314,6 +372,16 @@ extension MacAddWordView {
             ganaImage = nil
             kanjiText = ""
             kanjiImage = nil
+        }
+        
+        private func updateText(with exampleID: String?) {
+            guard let example = examples.first(where: { $0.id == exampleID }) else {
+                clearInputs()
+                return
+            }
+            meaningText = example.meaningText
+            ganaText = example.ganaText
+            kanjiText = example.kanjiText
         }
     }
 }
