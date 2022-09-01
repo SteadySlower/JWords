@@ -7,7 +7,8 @@
 
 import Firebase
 
-typealias FireStoreCompletion = ((Error?) -> Void)?
+typealias WordServiceCompletionWithoutData = ((Error?) -> Void)
+typealias WordServiceCompletionWithData<T> = ((T, Error?) -> Void)
 
 protocol WordServiceProtocol {
     func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void)
@@ -30,14 +31,14 @@ class WordService: WordServiceProtocol {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
     
-    static func saveBook(title: String, completionHandler: FireStoreCompletion) {
+    static func saveBook(title: String, completionHandler: WordServiceCompletionWithoutData) {
         let data: [String : Any] = [
             "title": title,
             "timestamp": Timestamp(date: Date())]
         Constants.Collections.wordBooks.addDocument(data: data, completion: completionHandler)
     }
     
-    static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: FireStoreCompletion) {
+    static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: WordServiceCompletion) {
         let group = DispatchGroup()
         var meaningImageURL = ""
         var ganaImageURL = ""
@@ -141,7 +142,7 @@ class WordService: WordServiceProtocol {
     }
     
     // 단어장의 _closed field를 업데이트하는 함수
-    static private func closeBook(_ id: String, completionHandler: FireStoreCompletion) {
+    static private func closeBook(_ id: String, completionHandler: WordServiceCompletion) {
         let field = ["_closed": true]
         Constants.Collections.wordBooks.document(id).updateData(field, completion: completionHandler)
     }
