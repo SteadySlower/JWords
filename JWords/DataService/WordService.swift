@@ -9,20 +9,25 @@ import Firebase
 
 typealias FireStoreCompletion = ((Error?) -> Void)?
 
-class WordService {
-    static func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
-        Firestore.getWordBooks(completionHandler: completionHandler)
+protocol WordServiceProtocol {
+    func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void)
+    func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void)
+}
+
+class WordService: WordServiceProtocol {
+    let shared: WordServiceProtocol = WordService()
+    let db: WordDatabase
+    
+    init(wordDB: WordDatabase = Service.Firestore) {
+        self.db = wordDB
     }
     
-    static func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void) {
-        Constants.Collections.word(id).order(by: "timestamp").getDocuments { snapshot, error in
-            if let error = error {
-                completionHandler(nil, error)
-            }
-            guard let documents = snapshot?.documents else { return }
-            let words = documents.compactMap({ try? $0.data(as: Word.self) })
-            completionHandler(words, nil)
-        }
+    func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
+        db.fetchWordBooks(completionHandler: completionHandler)
+    }
+    
+    func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void) {
+        db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
     
     static func saveBook(title: String, completionHandler: FireStoreCompletion) {
