@@ -49,6 +49,7 @@
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
 		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
 		5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8070A28A0EDE300ADB6F7 /* Events.swift */; };
+		5AFCBD4828C078340055E44E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFCBD4728C078340055E44E /* Service.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -126,6 +127,7 @@
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
 		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		5AD8070A28A0EDE300ADB6F7 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
+		5AFCBD4728C078340055E44E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				5A616D9E28C05A0E0013B5AE /* WordDatabase.swift */,
+				5AFCBD4728C078340055E44E /* Service.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -571,6 +574,7 @@
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				5AFCBD4828C078340055E44E /* Service.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
