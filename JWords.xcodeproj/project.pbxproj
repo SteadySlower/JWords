@@ -208,7 +208,7 @@
 		06CEF2452866F1C800A620CC /* JWords */ = {
 			isa = PBXGroup;
 			children = (
-				5A616D9D28C059FC0013B5AE /* Protocols */,
+				5A616D9D28C059FC0013B5AE /* API */,
 				5A5FF633286ADF53000150A7 /* extensions */,
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
@@ -274,12 +274,12 @@
 			path = extensions;
 			sourceTree = "<group>";
 		};
-		5A616D9D28C059FC0013B5AE /* Protocols */ = {
+		5A616D9D28C059FC0013B5AE /* API */ = {
 			isa = PBXGroup;
 			children = (
 				5A616D9E28C05A0E0013B5AE /* WordDatabase.swift */,
 			);
-			path = Protocols;
+			path = API;
 			sourceTree = "<group>";
 		};
 		5A67DC1D286942E800AC156C /* iOSView */ = {

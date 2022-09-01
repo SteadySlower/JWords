@@ -11,7 +11,7 @@ protocol WordDatabase {
     static func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void)
 }
 
-extension Firestore {
+extension Firestore: WordDatabase {
     static func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
         Constants.Collections.wordBooks.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
             if let error = error {
