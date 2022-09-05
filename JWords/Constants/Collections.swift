@@ -22,7 +22,7 @@ extension Constants {
             .document(bookID)
             .collection("words")
         }
-        static let examples =
+        static let samples =
             Firestore.firestore()
             .collection("develop")
             .document("data")
