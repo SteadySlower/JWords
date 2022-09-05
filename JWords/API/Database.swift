@@ -1,5 +1,5 @@
 //
-//  WordDatabase.swift
+//  Database.swift
 //  JWords
 //
 //  Created by Jong Won Moon on 2022/09/01.
@@ -7,13 +7,14 @@
 
 import Firebase
 
-protocol WordDatabase {
-    func fetchWordBooks(completionHandler: CompletionWithData<WordBook>)
-    func fetchWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
+protocol Database {
+    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
+    func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
+    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
-final class FirestoreWordDB: WordDatabase {
+final class FirestoreDB {
     
     // Firestore singleton
     let firestore = Firestore.firestore()
@@ -41,9 +42,13 @@ final class FirestoreWordDB: WordDatabase {
         .document("data")
         .collection("examples")
     }()
-    
-    // API functions
-    func fetchWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
+}
+
+
+// MARK: API Functions
+extension FirestoreDB: Database {
+   
+    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
         wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
@@ -54,7 +59,7 @@ final class FirestoreWordDB: WordDatabase {
         }
     }
     
-    func fetchWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void) {
+    func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>) {
         wordRef(of: id).order(by: "timestamp").getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
@@ -65,7 +70,10 @@ final class FirestoreWordDB: WordDatabase {
         }
     }
     
-    func saveBook(title: String, completionHandler: @escaping ) {
-        
+    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData) {
+        let data: [String : Any] = [
+            "title": title,
+            "timestamp": Timestamp(date: Date())]
+        wordBookRef.addDocument(data: data, completion: completionHandler)
     }
 }
