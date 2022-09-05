@@ -12,7 +12,7 @@ typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordService {
     func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
-    func saveWord(wordInput: WordInput, to wordBookID: String, completionHandler: @escaping CompletionWithoutData)
+    func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
     func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
@@ -40,7 +40,7 @@ final class WordServiceImpl: WordService {
         db.insertWordBook(title: title, completionHandler: completionHandler)
     }
     
-    func saveWord(wordInput: WordInput, to wordBookID: String, completionHandler: @escaping CompletionWithoutData) {
+    func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
         let group = DispatchGroup()
         
         var wordInput = wordInput
@@ -71,7 +71,7 @@ final class WordServiceImpl: WordService {
             wordInput.ganaImageURL = ganaImageURL
             wordInput.kanjiImageURL = kanjiImageURL
             
-            self?.db.insertWord(wordInput: wordInput, to: wordBookID, completionHandler: completionHandler)
+            self?.db.insertWord(wordInput: wordInput, completionHandler: completionHandler)
         }
     }
     

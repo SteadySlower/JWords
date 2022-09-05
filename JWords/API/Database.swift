@@ -11,7 +11,7 @@ protocol Database {
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
-    func insertWord(wordInput: WordInput, to wordBookID: String, completionHandler: @escaping CompletionWithoutData)
+    func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -81,7 +81,7 @@ extension FirestoreDB: Database {
         wordBookRef.addDocument(data: data, completion: completionHandler)
     }
     
-    func insertWord(wordInput: WordInput, to wordBookID: String, completionHandler: @escaping CompletionWithoutData) {
+    func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
                                     "meaningText": wordInput.meaningText,
                                     "meaningImageURL": wordInput.meaningImageURL,
@@ -91,6 +91,6 @@ extension FirestoreDB: Database {
                                     "kanjiImageURL": wordInput.kanjiImageURL,
                                     "studyState": wordInput.studyState.rawValue]
         
-        wordRef(of: wordBookID).addDocument(data: data, completion: completionHandler)
+        wordRef(of: wordInput.wordBookID).addDocument(data: data, completion: completionHandler)
     }
 }

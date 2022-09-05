@@ -40,6 +40,7 @@ struct Word: Identifiable, Codable, Hashable{
 }
 
 struct WordInput {
+    let wordBookID: String
     let meaningText: String
     let meaningImage: InputImageType?
     let ganaText: String
