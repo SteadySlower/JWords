@@ -11,14 +11,14 @@ typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordService {
-    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<Word>)
-    func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: @escaping CompletionWithoutData)
+    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
+    func saveWord(wordInput: WordInput, to wordBookID: String, completionHandler: @escaping CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
     func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
 }
 
-class WordServiceImpl: WordService {
+final class WordServiceImpl: WordService {
     
     // DB
     let db: Database
@@ -32,7 +32,7 @@ class WordServiceImpl: WordService {
     
     // functions
     
-    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<Word>) {
+    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>) {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
     
@@ -40,42 +40,38 @@ class WordServiceImpl: WordService {
         db.insertWordBook(title: title, completionHandler: completionHandler)
     }
     
-    func
-    
-    static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: WordServiceCompletion) {
+    func saveWord(wordInput: WordInput, to wordBookID: String, completionHandler: @escaping CompletionWithoutData) {
         let group = DispatchGroup()
+        
+        var wordInput = wordInput
         var meaningImageURL = ""
         var ganaImageURL = ""
         var kanjiImageURL = ""
         
         if let meaningImage = wordInput.meaningImage {
-            ImageUploader.uploadImage(image: meaningImage, group: group) { url in
+            iu.uploadImage(image: meaningImage, group: group) { url in
                 meaningImageURL = url
             }
         }
         
         if let ganaImage = wordInput.ganaImage {
-            ImageUploader.uploadImage(image: ganaImage, group: group) { url in
+            iu.uploadImage(image: ganaImage, group: group) { url in
                 ganaImageURL = url
             }
         }
         
         if let kanjiImage = wordInput.kanjiImage {
-            ImageUploader.uploadImage(image: kanjiImage, group: group) { url in
+            iu.uploadImage(image: kanjiImage, group: group) { url in
                 kanjiImageURL = url
             }
         }
         
-        group.notify(queue: .global()) {
-            let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
-                                        "meaningText": wordInput.meaningText,
-                                        "meaningImageURL": meaningImageURL,
-                                        "ganaText": wordInput.ganaText,
-                                        "ganaImageURL": ganaImageURL,
-                                        "kanjiText": wordInput.kanjiText,
-                                        "kanjiImageURL": kanjiImageURL,
-                                        "studyState": wordInput.studyState.rawValue]
-            Constants.Collections.word(wordBookID).addDocument(data: data, completion: completionHandler)
+        group.notify(queue: .global()) { [weak self] in
+            wordInput.meaningImageURL = meaningImageURL
+            wordInput.ganaImageURL = ganaImageURL
+            wordInput.kanjiImageURL = kanjiImageURL
+            
+            self?.db.insertWord(wordInput: wordInput, to: wordBookID, completionHandler: completionHandler)
         }
     }
     
@@ -91,13 +87,13 @@ class WordServiceImpl: WordService {
         Constants.Collections.examples.addDocument(data: data)
     }
     
-    static func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
+    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
         Constants.Collections.word(wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
         }
     }
     
-    static func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping ((Bool?, Error?) -> Void)) {
+    func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping ((Bool?, Error?) -> Void)) {
         Constants.Collections.word(wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
