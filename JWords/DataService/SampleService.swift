@@ -14,15 +14,22 @@ protocol SampleService {
 }
 
 class SampleServiceImpl: SampleService {
+    
+    let db: SampleDatabase
+    
+    init(database: SampleDatabase) {
+        self.db = database
+    }
+    
     func saveSample(wordInput: WordInput) {
-        <#code#>
+        db.insertSample(wordInput)
     }
     
     func getSamples(_ query: String, completionHandler: ([Sample]?, Error?) -> Void) {
-        <#code#>
+        
     }
     
     func updateUsed(of example: Sample) {
-        <#code#>
+        
     }
 }

@@ -21,12 +21,12 @@ protocol WordService {
 final class WordServiceImpl: WordService {
     
     // DB
-    let db: Database
+    let db: WordDatabase
     let iu: ImageUploader
     
     // Initializer
-    init(wordDB: Database, imageUploader: ImageUploader) {
-        self.db = wordDB
+    init(database: WordDatabase, imageUploader: ImageUploader) {
+        self.db = database
         self.iu = imageUploader
     }
     
@@ -34,10 +34,6 @@ final class WordServiceImpl: WordService {
     
     func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>) {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
-    }
-    
-    func saveBook(title: String, completionHandler: @escaping CompletionWithoutData) {
-        db.insertWordBook(title: title, completionHandler: completionHandler)
     }
     
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {

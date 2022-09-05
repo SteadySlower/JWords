@@ -7,12 +7,19 @@
 
 import Firebase
 
-protocol Database {
+protocol WordbookDatabase {
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
-    func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
+}
+
+protocol WordDatabase {
+    func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
+}
+
+protocol SampleDatabase {
+    func insertSample(_ wordInput: WordInput)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -38,7 +45,7 @@ final class FirestoreDB {
         .collection("words")
     }
     
-    private lazy var exampleRef = {
+    private lazy var sampleRef = {
         firestore
         .collection("develop")
         .document("data")
@@ -47,19 +54,8 @@ final class FirestoreDB {
 }
 
 
-// MARK: API Functions
-extension FirestoreDB: Database {
-   
-    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
-        wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
-            if let error = error {
-                completionHandler(nil, error)
-            }
-            guard let documents = snapshot?.documents else { return }
-            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
-            completionHandler(wordBooks, nil)
-        }
-    }
+// MARK: WordbookDatabase
+extension FirestoreDB: WordbookDatabase {
     
     func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>) {
         wordRef(of: id).order(by: "timestamp").getDocuments { snapshot, error in
@@ -73,13 +69,6 @@ extension FirestoreDB: Database {
             }
             completionHandler(words, nil)
         }
-    }
-    
-    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData) {
-        let data: [String : Any] = [
-            "title": title,
-            "timestamp": Timestamp(date: Date())]
-        wordBookRef.addDocument(data: data, completion: completionHandler)
     }
     
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
@@ -110,4 +99,46 @@ extension FirestoreDB: Database {
             completionHandler(error)
         }
     }
+}
+
+// MARK: WordDatabase
+
+extension FirestoreDB: WordDatabase {
+    
+    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
+        wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+            }
+            guard let documents = snapshot?.documents else { return }
+            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
+            completionHandler(wordBooks, nil)
+        }
+    }
+    
+    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData) {
+        let data: [String : Any] = [
+            "title": title,
+            "timestamp": Timestamp(date: Date())]
+        wordBookRef.addDocument(data: data, completion: completionHandler)
+    }
+    
+}
+
+// MARK: SampleDatabase
+
+extension FirestoreDB: SampleDatabase {
+    func insertSample(_ wordInput: WordInput) {
+        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
+                                    "meaningText": wordInput.meaningText,
+                                    "meaningImageURL": "",
+                                    "ganaText": wordInput.ganaText,
+                                    "ganaImageURL": "",
+                                    "kanjiText": wordInput.kanjiText,
+                                    "kanjiImageURL": "",
+                                    "used": 0]
+        sampleRef.addDocument(data: data)
+    }
+    
+    
 }
