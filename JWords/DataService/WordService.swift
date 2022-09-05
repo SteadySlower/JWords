@@ -44,6 +44,8 @@ final class WordServiceImpl: WordService {
         let group = DispatchGroup()
         
         var wordInput = wordInput
+        
+        // 동시성 이슈를 해결하기 위해서 따로 변수를 사용하고 나중에 완료되면 wordInput에 접근하는 것으로
         var meaningImageURL = ""
         var ganaImageURL = ""
         var kanjiImageURL = ""
