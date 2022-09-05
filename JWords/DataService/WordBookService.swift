@@ -6,9 +6,9 @@
 //
 
 protocol WordBookService {
-    func saveBook(title: String, completionHandler: CompletionWithoutData)
-    func getWordBooks(completionHandler: CompletionWithData<WordBook>)
-    func closeWordBook(of id: String, to: String?, toMoveWords: [Word], completionHandler: CompletionWithoutData)
+    func saveBook(title: String, completionHandler: @escaping CompletionWithoutData)
+    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>)
+    func closeWordBook(of id: String, to: String?, toMoveWords: [Word], completionHandler: @escaping CompletionWithoutData)
 }
 
 class WordBookServiceImpl {

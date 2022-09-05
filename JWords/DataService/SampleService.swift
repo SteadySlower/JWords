@@ -9,7 +9,7 @@ import Foundation
 
 protocol SampleService {
     func saveSample(wordInput: WordInput)
-    func getSamples(_ query: String, completionHandler: CompletionWithData<[Sample]>)
+    func getSamples(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func updateUsed(of example: Sample)
 }
 

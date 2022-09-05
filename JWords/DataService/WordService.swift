@@ -11,11 +11,11 @@ typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordService {
-    func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
-    func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: CompletionWithoutData)
+    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<Word>)
+    func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: @escaping CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
-    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: CompletionWithoutData)
-    func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: CompletionWithData<Bool>)
+    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
+    func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
 }
 
 class WordServiceImpl: WordService {
@@ -32,11 +32,11 @@ class WordServiceImpl: WordService {
     
     // functions
     
-    func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>) {
+    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<Word>) {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
     
-    func saveBook(title: String, completionHandler: CompletionWithoutData) {
+    func saveBook(title: String, completionHandler: @escaping CompletionWithoutData) {
         db.insertWordBook(title: title, completionHandler: completionHandler)
     }
     
