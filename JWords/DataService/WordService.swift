@@ -7,21 +7,26 @@
 
 import Firebase
 
-typealias WordServiceCompletionWithoutData = ((Error?) -> Void)
-typealias WordServiceCompletionWithData<T> = ((T, Error?) -> Void)
+typealias CompletionWithoutData = ((Error?) -> Void)
+typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordServiceProtocol {
-    func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void)
-    func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void)
+    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>)
+    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<Word>)
+    func saveBook(title: String, completionHandler: CompletionWithoutData)
 }
 
 class WordService: WordServiceProtocol {
-    let shared: WordServiceProtocol = WordService()
+    
+    // DB
     let db: WordDatabase
     
-    init(wordDB: WordDatabase = Service.Firestore) {
+    // Initializer
+    init(wordDB: WordDatabase) {
         self.db = wordDB
     }
+    
+    // functions
     
     func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
         db.fetchWordBooks(completionHandler: completionHandler)
@@ -31,7 +36,7 @@ class WordService: WordServiceProtocol {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
     
-    static func saveBook(title: String, completionHandler: WordServiceCompletionWithoutData) {
+    static func saveBook(title: String, completionHandler: CompletionWithoutData) {
         let data: [String : Any] = [
             "title": title,
             "timestamp": Timestamp(date: Date())]
