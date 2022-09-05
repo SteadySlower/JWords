@@ -11,20 +11,22 @@ typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordServiceProtocol {
-    func getWordBooks(completionHandler: CompletionWithData<WordBook>)
     func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
     func saveBook(title: String, completionHandler: CompletionWithoutData)
     func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: CompletionWithoutData)
+    // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
+    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: CompletionWithoutData)
+    func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: CompletionWithData<Bool>)
 }
 
 class WordService: WordServiceProtocol {
     
     // DB
-    let db: WordDatabase
+    let db: Database
     let iu: ImageUploader
     
     // Initializer
-    init(wordDB: WordDatabase, imageUploader: ImageUploader) {
+    init(wordDB: Database, imageUploader: ImageUploader) {
         self.db = wordDB
         self.iu = imageUploader
     }
@@ -40,10 +42,7 @@ class WordService: WordServiceProtocol {
     }
     
     func saveBook(title: String, completionHandler: CompletionWithoutData) {
-        let data: [String : Any] = [
-            "title": title,
-            "timestamp": Timestamp(date: Date())]
-        Constants.Collections.wordBooks.addDocument(data: data, completion: completionHandler)
+        db.insertWordBook(title: title, completionHandler: completionHandler)
     }
     
     static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: WordServiceCompletion) {
