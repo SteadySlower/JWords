@@ -12,7 +12,6 @@ typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordServiceProtocol {
     func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
-    func saveBook(title: String, completionHandler: CompletionWithoutData)
     func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
     func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: CompletionWithoutData)
@@ -33,10 +32,6 @@ class WordService: WordServiceProtocol {
     
     // functions
     
-    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>) {
-        db.fetchWordBooks(completionHandler: completionHandler)
-    }
-    
     func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>) {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
@@ -44,6 +39,8 @@ class WordService: WordServiceProtocol {
     func saveBook(title: String, completionHandler: CompletionWithoutData) {
         db.insertWordBook(title: title, completionHandler: completionHandler)
     }
+    
+    func
     
     static func saveWord(wordInput: WordInput, wordBookID: String, completionHandler: WordServiceCompletion) {
         let group = DispatchGroup()
