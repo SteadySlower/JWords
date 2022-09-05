@@ -51,6 +51,7 @@
 		5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8070A28A0EDE300ADB6F7 /* Events.swift */; };
 		5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1DB1928C5D51B006DB89C /* SampleService.swift */; };
 		5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1DB1B28C5D640006DB89C /* WordBookService.swift */; };
+		5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1DB1E28C5E46B006DB89C /* Error.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -130,6 +131,7 @@
 		5AD8070A28A0EDE300ADB6F7 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5AE1DB1928C5D51B006DB89C /* SampleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleService.swift; sourceTree = "<group>"; };
 		5AE1DB1B28C5D640006DB89C /* WordBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookService.swift; sourceTree = "<group>"; };
+		5AE1DB1E28C5E46B006DB89C /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				5A616D9D28C059FC0013B5AE /* API */,
-				5A5FF633286ADF53000150A7 /* extensions */,
+				5A5FF633286ADF53000150A7 /* Helper */,
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
 				5ACE0A6F2869985F00A57660 /* DataService */,
@@ -271,11 +273,12 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		5A5FF633286ADF53000150A7 /* extensions */ = {
+		5A5FF633286ADF53000150A7 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				5AE1DB1E28C5E46B006DB89C /* Error.swift */,
 			);
-			path = extensions;
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		5A616D9D28C059FC0013B5AE /* API */ = {
@@ -579,6 +582,7 @@
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

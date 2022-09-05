@@ -12,6 +12,7 @@ protocol Database {
     func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
+    func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -92,5 +93,21 @@ extension FirestoreDB: Database {
                                     "studyState": wordInput.studyState.rawValue]
         
         wordRef(of: wordInput.wordBookID).addDocument(data: data, completion: completionHandler)
+    }
+    
+    func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData) {
+        guard let wordID = word.id else {
+            print("Failed in Database updateStudyState")
+            let error = AppError.generic(massage: "No ID in Word")
+            completionHandler(error)
+        }
+        guard let wordBookID = word.wordBookID else {
+            print("Failed in Database updateStudyState")
+            let error = AppError.generic(massage: "No WordBookID in Word")
+            completionHandler(error)
+        }
+        wordRef(of: wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
+            completionHandler(error)
+        }
     }
 }

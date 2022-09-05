@@ -14,7 +14,7 @@ protocol WordService {
     func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
-    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
+    func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
 }
 
@@ -75,10 +75,8 @@ final class WordServiceImpl: WordService {
         }
     }
     
-    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
-        Constants.Collections.word(wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
-            completionHandler(error)
-        }
+    func updateStudyState(word: Word, newState: StudyState,  completionHandler: @escaping CompletionWithoutData) {
+        db.updateStudyState(word: word, newState: newState, completionHandler: completionHandler)
     }
     
     
