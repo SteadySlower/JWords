@@ -11,32 +11,35 @@ typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordServiceProtocol {
-    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>)
-    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<Word>)
+    func getWordBooks(completionHandler: CompletionWithData<WordBook>)
+    func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
     func saveBook(title: String, completionHandler: CompletionWithoutData)
+    func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: CompletionWithoutData)
 }
 
 class WordService: WordServiceProtocol {
     
     // DB
     let db: WordDatabase
+    let iu: ImageUploader
     
     // Initializer
-    init(wordDB: WordDatabase) {
+    init(wordDB: WordDatabase, imageUploader: ImageUploader) {
         self.db = wordDB
+        self.iu = imageUploader
     }
     
     // functions
     
-    func getWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void) {
+    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>) {
         db.fetchWordBooks(completionHandler: completionHandler)
     }
     
-    func getWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void) {
+    func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>) {
         db.fetchWords(wordBookID: id, completionHandler: completionHandler)
     }
     
-    static func saveBook(title: String, completionHandler: CompletionWithoutData) {
+    func saveBook(title: String, completionHandler: CompletionWithoutData) {
         let data: [String : Any] = [
             "title": title,
             "timestamp": Timestamp(date: Date())]
@@ -121,7 +124,7 @@ class WordService: WordServiceProtocol {
     }
     
     // Examples를 검색하는 함수
-    static func fetchExamples(_ query: String, completionHandler: @escaping ([WordExample]?, Error?) -> Void) {
+    static func fetchExamples(_ query: String, completionHandler: @escaping ([Sample]?, Error?) -> Void) {
         Constants.Collections.examples
             .whereField("meaningText", isGreaterThanOrEqualTo: query)
             .whereField("meaningText", isLessThan: query + "힣")
@@ -131,14 +134,14 @@ class WordService: WordServiceProtocol {
                 }
                 guard let documents = snapshot?.documents else { return }
                 let examples = documents
-                        .compactMap { try? $0.data(as: WordExample.self) }
+                        .compactMap { try? $0.data(as: Sample.self) }
                         .sorted(by: { $0.used > $1.used })
                 completionHandler(examples, nil)
             }
     }
     
     // Examples 사용되서 used에 + 1하는 함수
-    static func updateUsed(of example: WordExample) {
+    static func updateUsed(of example: Sample) {
         guard let id = example.id else {
             print("No id of example in updateUsed")
             return

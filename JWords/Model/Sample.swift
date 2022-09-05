@@ -9,7 +9,7 @@
 import FirebaseFirestoreSwift
 import Firebase
 
-struct WordExample: Identifiable, Codable, Hashable {
+struct Sample: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
     var meaningText: String = ""
     var meaningImageURL: String = ""

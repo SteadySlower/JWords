@@ -8,8 +8,8 @@
 import Firebase
 
 protocol WordDatabase {
-    func fetchWordBooks(completionHandler: @escaping ([WordBook]?, Error?) -> Void)
-    func fetchWords(wordBookID id: String, completionHandler: @escaping ([Word]?, Error?) -> Void)
+    func fetchWordBooks(completionHandler: CompletionWithData<WordBook>)
+    func fetchWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -63,5 +63,9 @@ final class FirestoreWordDB: WordDatabase {
             let words = documents.compactMap({ try? $0.data(as: Word.self) })
             completionHandler(words, nil)
         }
+    }
+    
+    func saveBook(title: String, completionHandler: @escaping ) {
+        
     }
 }

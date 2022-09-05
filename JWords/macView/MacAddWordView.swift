@@ -262,13 +262,13 @@ extension MacAddWordView {
         @Published var isUploading: Bool = false
         
         // 예시 관련 properties
-        @Published var examples: [WordExample] = []
+        @Published var examples: [Sample] = []
         @Published var selectedExampleID: String? = nil {
             didSet {
                 updateTextWithExample()
             }
         }
-        private var selectedExample: WordExample? {
+        private var selectedExample: Sample? {
             return examples.first(where: { $0.id == selectedExampleID })
         }
         
