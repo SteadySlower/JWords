@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol SampleServiceProtocol {
+protocol SampleService {
     func saveSample(wordInput: WordInput)
     func getSamples(_ query: String, completionHandler: CompletionWithData<[Sample]>)
     func updateUsed(of example: Sample)
 }
 
-class SampleService: SampleServiceProtocol {
+class SampleServiceImpl: SampleService {
     func saveSample(wordInput: WordInput) {
         <#code#>
     }

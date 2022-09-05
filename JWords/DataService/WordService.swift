@@ -10,7 +10,7 @@ import Firebase
 typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
-protocol WordServiceProtocol {
+protocol WordService {
     func getWords(wordBookID id: String, completionHandler: CompletionWithData<Word>)
     func saveWord(wordInput: WordInput, to wordBooksID: String, completionHandler: CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
@@ -18,7 +18,7 @@ protocol WordServiceProtocol {
     func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: CompletionWithData<Bool>)
 }
 
-class WordService: WordServiceProtocol {
+class WordServiceImpl: WordService {
     
     // DB
     let db: Database
