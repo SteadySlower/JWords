@@ -24,6 +24,7 @@ enum StudyState: Int, Codable {
 
 struct Word: Identifiable, Codable, Hashable{
     @DocumentID var id: String?
+    var wordBookID: String?
     var meaningText: String = ""
     var meaningImageURL: String = ""
     var ganaText: String = ""
