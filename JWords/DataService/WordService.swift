@@ -15,7 +15,6 @@ protocol WordService {
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
-    func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
 }
 
 final class WordServiceImpl: WordService {
@@ -77,35 +76,7 @@ final class WordServiceImpl: WordService {
         db.updateStudyState(word: word, newState: newState, completionHandler: completionHandler)
     }
     
-    
-    static func saveExample(wordInput: WordInput) {
-        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
-                                    "meaningText": wordInput.meaningText,
-                                    "meaningImageURL": "",
-                                    "ganaText": wordInput.ganaText,
-                                    "ganaImageURL": "",
-                                    "kanjiText": wordInput.kanjiText,
-                                    "kanjiImageURL": "",
-                                    "used": 0]
-        Constants.Collections.examples.addDocument(data: data)
-    }
-    
-    func updateStudyState(wordBookID: String, wordID: String, newState: StudyState,  completionHandler: @escaping (Error?) -> Void) {
-        Constants.Collections.word(wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
-            completionHandler(error)
-        }
-    }
-    
-    func checkIfOverlap(wordBookID: String, meaningText: String, completionHandler: @escaping ((Bool?, Error?) -> Void)) {
-        Constants.Collections.word(wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
-            if let error = error {
-                completionHandler(nil, error)
-                return
-            }
-            guard let documents = snapshot?.documents else { return }
-            completionHandler(documents.count != 0 ? true : false, nil)
-        }
-    }
+
     
     static func closeWordBook(of id: String, to: String?, toMoveWords: [Word], completionHandler: FireStoreCompletion) {
         if let to = to {
@@ -115,7 +86,6 @@ final class WordServiceImpl: WordService {
         } else {
             closeBook(id, completionHandler: completionHandler)
         }
-        
     }
     
     // Examples를 검색하는 함수
