@@ -15,9 +15,9 @@ protocol SampleService {
 
 class SampleServiceImpl: SampleService {
     
-    let db: SampleDatabase
+    let db: Database
     
-    init(database: SampleDatabase) {
+    init(database: Database) {
         self.db = database
     }
     

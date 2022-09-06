@@ -20,11 +20,11 @@ protocol WordService {
 final class WordServiceImpl: WordService {
     
     // DB
-    let db: WordDatabase
+    let db: Database
     let iu: ImageUploader
     
     // Initializer
-    init(database: WordDatabase, imageUploader: ImageUploader) {
+    init(database: Database, imageUploader: ImageUploader) {
         self.db = database
         self.iu = imageUploader
     }

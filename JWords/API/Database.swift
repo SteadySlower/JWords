@@ -7,28 +7,27 @@
 
 import Firebase
 
-protocol WordbookDatabase {
+protocol Database {
+    // WordBook 관련
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
     func checkIfOverlap(word: Word, completionHandler: @escaping CompletionWithData<Bool>)
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData)
-}
-
-protocol WordDatabase {
+    
+    // Word 관련
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData)
-}
-
-protocol SampleDatabase {
+    
+    // Sample 관련
     func insertSample(_ wordInput: WordInput)
     func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func updateUsed(of sample: Sample, to used: Int)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
-final class FirestoreDB {
+final class FirestoreDB: Database {
     
     // Firestore singleton
     let firestore = Firestore.firestore()
@@ -60,7 +59,7 @@ final class FirestoreDB {
 
 
 // MARK: WordbookDatabase
-extension FirestoreDB: WordbookDatabase {
+extension FirestoreDB {
     
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
         wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
@@ -94,10 +93,8 @@ extension FirestoreDB: WordbookDatabase {
 
 
 // MARK: WordDatabase
-extension FirestoreDB: WordDatabase {
+extension FirestoreDB {
 
-    
-    
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
         guard let id = wordBook.id else {
             let error = AppError.generic(massage: "No wordBook ID")
@@ -193,7 +190,7 @@ extension FirestoreDB: WordDatabase {
 
 // MARK: SampleDatabase
 
-extension FirestoreDB: SampleDatabase {
+extension FirestoreDB {
     func insertSample(_ wordInput: WordInput) {
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
                                     "meaningText": wordInput.meaningText,

@@ -15,7 +15,7 @@ protocol ImageCompressor {
     func compressImageToJPEG(image: InputImageType) -> Data
 }
 
-class ImageCompressorImpl {
+class ImageCompressorImpl: ImageCompressor {
     func compressImageToJPEG(image: InputImageType) -> Data {
         #if os(iOS)
         let jpegData = image.jpegData(compressionQuality: 0.5)!

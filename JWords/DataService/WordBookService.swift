@@ -14,10 +14,10 @@ protocol WordBookService {
 
 class WordBookServiceImpl: WordBookService {
     
-    let db: WordbookDatabase
+    let db: Database
     let wordService: WordService
     
-    init(database: WordbookDatabase, wordService: WordService) {
+    init(database: Database, wordService: WordService) {
         self.db = database
         self.wordService = wordService
     }

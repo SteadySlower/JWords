@@ -44,6 +44,7 @@
 		5A67DC312869529700AC156C /* MacHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC302869529700AC156C /* MacHomeView.swift */; };
 		5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC322869565A00AC156C /* MacAddBookView.swift */; };
 		5A67DC352869566600AC156C /* MacAddWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC342869566600AC156C /* MacAddWordView.swift */; };
+		5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BD9B828C7186D00FF9259 /* Dependency.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A73286998F800A57660 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A72286998F800A57660 /* Collections.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
@@ -124,6 +125,7 @@
 		5A67DC302869529700AC156C /* MacHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacHomeView.swift; sourceTree = "<group>"; };
 		5A67DC322869565A00AC156C /* MacAddBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookView.swift; sourceTree = "<group>"; };
 		5A67DC342869566600AC156C /* MacAddWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddWordView.swift; sourceTree = "<group>"; };
+		5A6BD9B828C7186D00FF9259 /* Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependency.swift; sourceTree = "<group>"; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A72286998F800A57660 /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				5AE1DB1E28C5E46B006DB89C /* Error.swift */,
+				5A6BD9B828C7186D00FF9259 /* Dependency.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
+				5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
