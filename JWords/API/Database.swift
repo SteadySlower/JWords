@@ -149,7 +149,7 @@ extension FirestoreDB: WordDatabase {
             completionHandler(nil, error)
             return
         }
-        wordRef(of: wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
+        wordRef(of: wordBookID).whereField("meaningText", isEqualTo: word.meaningText).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
                 return
