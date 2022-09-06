@@ -25,7 +25,7 @@ class SampleServiceImpl: SampleService {
         db.insertSample(wordInput)
     }
     
-    func getSamples(_ query: String, completionHandler: ([Sample]?, Error?) -> Void) {
+    func getSamples(_ query: String, completionHandler: @escaping ([Sample]?, Error?) -> Void) {
         db.fetchSample(query, completionHandler: completionHandler)
     }
     

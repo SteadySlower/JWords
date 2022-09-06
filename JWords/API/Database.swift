@@ -136,11 +136,13 @@ extension FirestoreDB: WordDatabase {
             print("Failed in Database updateStudyState")
             let error = AppError.generic(massage: "No ID in Word")
             completionHandler(error)
+            return
         }
         guard let wordBookID = word.wordBookID else {
             print("Failed in Database updateStudyState")
             let error = AppError.generic(massage: "No WordBookID in Word")
             completionHandler(error)
+            return
         }
         wordRef(of: wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
