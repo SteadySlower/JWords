@@ -7,7 +7,7 @@
 
 protocol WordBookService {
     func saveBook(title: String, completionHandler: @escaping CompletionWithoutData)
-    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>)
+    func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func checkIfOverlap(word: Word, completionHandler: @escaping CompletionWithData<Bool>)
     func closeWordBook(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData)
 }
@@ -26,8 +26,8 @@ class WordBookServiceImpl: WordBookService {
         db.insertWordBook(title: title, completionHandler: completionHandler)
     }
     
-    func getWordBooks(completionHandler: @escaping CompletionWithData<WordBook>) {
-        <#code#>
+    func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
+        db.fetchWordBooks(completionHandler: completionHandler)
     }
     
     func checkIfOverlap(word: Word, completionHandler: @escaping CompletionWithData<Bool>) {
