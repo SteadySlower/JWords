@@ -11,7 +11,7 @@ protocol Database {
     // WordBook 관련
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
-    func checkIfOverlap(word: Word, completionHandler: @escaping CompletionWithData<Bool>)
+    func checkIfOverlap(wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData)
     
     // Word 관련
@@ -79,6 +79,23 @@ extension FirestoreDB {
         wordBookRef.addDocument(data: data, completion: completionHandler)
     }
     
+    func checkIfOverlap(wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>) {
+        guard let wordBookID = wordBook.id else {
+            // TODO: handle Error
+            let error = AppError.generic(massage: "No id in wordBook")
+            completionHandler(nil, error)
+            return
+        }
+        wordRef(of: wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard let documents = snapshot?.documents else { return }
+            completionHandler(documents.count != 0 ? true : false, nil)
+        }
+    }
+    
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData) {
         guard let id = toClose.id else {
             let error = AppError.generic(massage: "No wordBook ID")
@@ -143,22 +160,6 @@ extension FirestoreDB {
         }
         wordRef(of: wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
-        }
-    }
-    
-    func checkIfOverlap(word: Word, completionHandler: @escaping CompletionWithData<Bool>) {
-        guard let wordBookID = word.wordBookID else {
-            let error = AppError.generic(massage: "No wordBookID in checkIfOverlap")
-            completionHandler(nil, error)
-            return
-        }
-        wordRef(of: wordBookID).whereField("meaningText", isEqualTo: word.meaningText).getDocuments { snapshot, error in
-            if let error = error {
-                completionHandler(nil, error)
-                return
-            }
-            guard let documents = snapshot?.documents else { return }
-            completionHandler(documents.count != 0 ? true : false, nil)
         }
     }
     
