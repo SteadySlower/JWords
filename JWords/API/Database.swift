@@ -18,12 +18,12 @@ protocol WordDatabase {
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
-    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: CompletionWithoutData)
+    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData)
 }
 
 protocol SampleDatabase {
     func insertSample(_ wordInput: WordInput)
-    func fetchSample(_ query: String, completionHandler: CompletionWithData<[Sample]>)
+    func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func updateUsed(of sample: Sample, to used: Int)
 }
 
@@ -95,6 +95,8 @@ extension FirestoreDB: WordbookDatabase {
 
 // MARK: WordDatabase
 extension FirestoreDB: WordDatabase {
+
+    
     
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
         guard let id = wordBook.id else {
@@ -161,7 +163,7 @@ extension FirestoreDB: WordDatabase {
         }
     }
     
-    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: CompletionWithoutData) {
+    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData) {
         guard let wordBookID = wordBook.id else {
             let error = AppError.generic(massage: "No wordBookID")
             completionHandler(error)
@@ -202,7 +204,7 @@ extension FirestoreDB: SampleDatabase {
         sampleRef.addDocument(data: data)
     }
     
-    func fetchSample(_ query: String, completionHandler: CompletionWithData<[Sample]>) {
+    func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>) {
         sampleRef
             .whereField("meaningText", isGreaterThanOrEqualTo: query)
             .whereField("meaningText", isLessThan: query + "힣")
