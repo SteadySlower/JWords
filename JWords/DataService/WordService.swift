@@ -11,10 +11,11 @@ typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 
 protocol WordService {
-    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
+    func getWords(wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
+    func copyWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
 }
 
 final class WordServiceImpl: WordService {
@@ -31,8 +32,8 @@ final class WordServiceImpl: WordService {
     
     // functions
     
-    func getWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>) {
-        db.fetchWords(wordBookID: id, completionHandler: completionHandler)
+    func getWords(wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
+        db.fetchWords(wordBook, completionHandler: completionHandler)
     }
     
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
@@ -76,15 +77,19 @@ final class WordServiceImpl: WordService {
         db.updateStudyState(word: word, newState: newState, completionHandler: completionHandler)
     }
     
-
-    
-    static func closeWordBook(of id: String, to: String?, toMoveWords: [Word], completionHandler: FireStoreCompletion) {
-        if let to = to {
-            copyWords(toMoveWords, to: to) {
-                closeBook(id, completionHandler: completionHandler)
+    func copyWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
+        let group = DispatchGroup()
+        
+        var copyWordError: Error? = nil
+        
+        // word를 옮기는 과정에서 에러가 나면 copyWordError에 할당
+        for word in words {
+            db.copyWord(word, to: wordBook, group: group) { error in
+                copyWordError = error
             }
-        } else {
-            closeBook(id, completionHandler: completionHandler)
+        }
+        group.notify(queue: .global()) {
+            completionHandler(copyWordError)
         }
     }
     
@@ -112,41 +117,6 @@ final class WordServiceImpl: WordService {
             return
         }
         Constants.Collections.examples.document(id).updateData(["used" : example.used + 1])
-    }
-    
-    // 단어장의 _closed field를 업데이트하는 함수
-    static private func closeBook(_ id: String, completionHandler: WordServiceCompletion) {
-        let field = ["_closed": true]
-        Constants.Collections.wordBooks.document(id).updateData(field, completion: completionHandler)
-    }
-    
-    // 단어 여러개를 copy하는 기능 (dispatch group)
-    static private func copyWords(_ words: [Word], to id: String, completionHandler: @escaping () -> Void) {
-        let group = DispatchGroup()
-        for word in words {
-            copyWord(word, to: id, group: group)
-        }
-        group.notify(queue: .global()) {
-            completionHandler()
-        }
-    }
-    
-    // 단어 1개 이동하는 기능
-    static private func copyWord(_ word: Word, to id: String, group: DispatchGroup) {
-        group.enter()
-        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
-                                    "meaningText": word.meaningText,
-                                    "meaningImageURL": word.meaningImageURL,
-                                    "ganaText": word.ganaText,
-                                    "ganaImageURL": word.ganaImageURL,
-                                    "kanjiText": word.kanjiText,
-                                    "kanjiImageURL": word.kanjiImageURL,
-                                    "studyState": StudyState.undefined.rawValue]
-        Constants.Collections.word(id).addDocument(data: data) { error in
-            //TODO: handle error
-            if let error = error { print(error) }
-            group.leave()
-        }
     }
 
 }

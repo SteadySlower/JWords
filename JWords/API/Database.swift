@@ -11,12 +11,14 @@ protocol WordbookDatabase {
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
     func checkIfOverlap(word: Word, completionHandler: @escaping CompletionWithData<Bool>)
+    func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData)
 }
 
 protocol WordDatabase {
-    func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>)
+    func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
+    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: CompletionWithoutData)
 }
 
 protocol SampleDatabase {
@@ -58,7 +60,47 @@ final class FirestoreDB {
 // MARK: WordbookDatabase
 extension FirestoreDB: WordbookDatabase {
     
-    func fetchWords(wordBookID id: String, completionHandler: @escaping CompletionWithData<[Word]>) {
+    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
+        wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+            }
+            guard let documents = snapshot?.documents else { return }
+            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
+            completionHandler(wordBooks, nil)
+        }
+    }
+    
+    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData) {
+        let data: [String : Any] = [
+            "title": title,
+            "timestamp": Timestamp(date: Date())]
+        wordBookRef.addDocument(data: data, completion: completionHandler)
+    }
+    
+    func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData) {
+        guard let id = toClose.id else {
+            let error = AppError.generic(massage: "No wordBook ID")
+            completionHandler(error)
+            return
+        }
+        let field = ["_closed": true]
+        wordBookRef.document(id).updateData(field, completion: completionHandler)
+    }
+    
+}
+
+
+// MARK: WordDatabase
+extension FirestoreDB: WordDatabase {
+    
+    func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
+        guard let id = wordBook.id else {
+            let error = AppError.generic(massage: "No wordBook ID")
+            completionHandler(nil, error)
+            return
+        }
+        
         wordRef(of: id).order(by: "timestamp").getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
@@ -116,30 +158,31 @@ extension FirestoreDB: WordbookDatabase {
             completionHandler(documents.count != 0 ? true : false, nil)
         }
     }
-}
-
-// MARK: WordDatabase
-
-extension FirestoreDB: WordDatabase {
     
-    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
-        wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
-            if let error = error {
-                completionHandler(nil, error)
-            }
-            guard let documents = snapshot?.documents else { return }
-            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
-            completionHandler(wordBooks, nil)
+    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: CompletionWithoutData) {
+        guard let wordBookID = wordBook.id else {
+            let error = AppError.generic(massage: "No wordBookID")
+            completionHandler(error)
+            return
         }
+        
+        group.enter()
+        let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
+                                    "meaningText": word.meaningText,
+                                    "meaningImageURL": word.meaningImageURL,
+                                    "ganaText": word.ganaText,
+                                    "ganaImageURL": word.ganaImageURL,
+                                    "kanjiText": word.kanjiText,
+                                    "kanjiImageURL": word.kanjiImageURL,
+                                    "studyState": StudyState.undefined.rawValue]
+        wordRef(of: wordBookID).addDocument(data: data) { error in
+            if let error = error {
+                completionHandler(error)
+            }
+            group.leave()
+        }
+        
     }
-    
-    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData) {
-        let data: [String : Any] = [
-            "title": title,
-            "timestamp": Timestamp(date: Date())]
-        wordBookRef.addDocument(data: data, completion: completionHandler)
-    }
-    
 }
 
 // MARK: SampleDatabase
