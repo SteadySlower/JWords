@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     var body: some View {
         Group {
             #if os(iOS)
@@ -16,11 +17,5 @@ struct ContentView: View {
             MacHomeView()
             #endif
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

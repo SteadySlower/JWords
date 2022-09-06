@@ -7,16 +7,11 @@
 
 class Dependency {
     
-    let wordBookService: WordBookService
-    let wordService: WordService
-    let sampleService: SampleService
-    
-    init(database: Database) {
-        let database = FirestoreDB()
-        let imageCompressor = ImageCompressorImpl()
-        let imageUploader = FirebaseIU(imageCompressor: imageCompressor)
-        self.wordService = WordServiceImpl(database: database, imageUploader: imageUploader)
-        self.wordBookService = WordBookServiceImpl(database: database, wordService: wordService)
-        self.sampleService = SampleServiceImpl(database: database)
-    }
+    private static let db = FirestoreDB()
+    private static let ic = ImageCompressorImpl()
+    private static let iu = FirebaseIU(imageCompressor: ic)
+
+    static let wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
+    static let wordService = WordServiceImpl(database: db, imageUploader: iu)
+    static let sampleService = SampleServiceImpl(database: db)
 }

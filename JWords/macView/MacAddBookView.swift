@@ -28,22 +28,21 @@ struct MacAddBookView: View {
 extension MacAddBookView {
     final class ViewModel: ObservableObject {
         @Published var bookName: String = ""
+        private let wordBookService: WordBookService
+        
+        init(wordBookService: WordBookService = Dependency.wordBookService) {
+            self.wordBookService = wordBookService
+        }
         
         var isSaveButtonUnable: Bool {
             bookName.isEmpty
         }
         
         func saveBook() {
-            WordService.saveBook(title: bookName) { [weak self] error in
+            wordBookService.saveBook(title: bookName) { [weak self] error in
                 if let error = error { print("디버그 \(error.localizedDescription)"); return }
                 self?.bookName = ""
             }
         }
-    }
-}
-
-struct MacAddBookView_Previews: PreviewProvider {
-    static var previews: some View {
-        MacAddBookView()
     }
 }
