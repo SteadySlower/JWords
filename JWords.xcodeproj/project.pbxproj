@@ -285,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				5A616D9E28C05A0E0013B5AE /* Database.swift */,
+				5A5FF62E286A8F68000150A7 /* ImageUploader.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -350,7 +351,6 @@
 			children = (
 				5ACE0A702869986F00A57660 /* WordService.swift */,
 				5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */,
-				5A5FF62E286A8F68000150A7 /* ImageUploader.swift */,
 				5AE1DB1928C5D51B006DB89C /* SampleService.swift */,
 				5AE1DB1B28C5D640006DB89C /* WordBookService.swift */,
 			);
