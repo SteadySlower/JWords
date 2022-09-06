@@ -13,7 +13,6 @@ typealias CompletionWithData<T> = ((T?, Error?) -> Void)
 protocol WordService {
     func getWords(wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
-    // TODO: 나중에 word 객체에 wordBookID 넣어서 wordBookID argument 삭제
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func copyWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
 }
@@ -92,31 +91,4 @@ final class WordServiceImpl: WordService {
             completionHandler(copyWordError)
         }
     }
-    
-    // Examples를 검색하는 함수
-    static func fetchExamples(_ query: String, completionHandler: @escaping ([Sample]?, Error?) -> Void) {
-        Constants.Collections.examples
-            .whereField("meaningText", isGreaterThanOrEqualTo: query)
-            .whereField("meaningText", isLessThan: query + "힣")
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    completionHandler(nil, error)
-                }
-                guard let documents = snapshot?.documents else { return }
-                let examples = documents
-                        .compactMap { try? $0.data(as: Sample.self) }
-                        .sorted(by: { $0.used > $1.used })
-                completionHandler(examples, nil)
-            }
-    }
-    
-    // Examples 사용되서 used에 + 1하는 함수
-    static func updateUsed(of example: Sample) {
-        guard let id = example.id else {
-            print("No id of example in updateUsed")
-            return
-        }
-        Constants.Collections.examples.document(id).updateData(["used" : example.used + 1])
-    }
-
 }

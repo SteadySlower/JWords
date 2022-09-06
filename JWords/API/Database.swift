@@ -23,6 +23,8 @@ protocol WordDatabase {
 
 protocol SampleDatabase {
     func insertSample(_ wordInput: WordInput)
+    func fetchSample(_ query: String, completionHandler: CompletionWithData<[Sample]>)
+    func updateUsed(of sample: Sample, to used: Int)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -200,5 +202,27 @@ extension FirestoreDB: SampleDatabase {
         sampleRef.addDocument(data: data)
     }
     
+    func fetchSample(_ query: String, completionHandler: CompletionWithData<[Sample]>) {
+        sampleRef
+            .whereField("meaningText", isGreaterThanOrEqualTo: query)
+            .whereField("meaningText", isLessThan: query + "힣")
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completionHandler(nil, error)
+                }
+                guard let documents = snapshot?.documents else { return }
+                let samples = documents
+                        .compactMap { try? $0.data(as: Sample.self) }
+                        .sorted(by: { $0.used > $1.used })
+                completionHandler(samples, nil)
+            }
+    }
     
+    func updateUsed(of sample: Sample, to used: Int) {
+        guard let id = sample.id else {
+            print("No id in sample")
+            return
+        }
+        sampleRef.document(id).updateData(["used" : used])
+    }
 }
