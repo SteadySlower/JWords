@@ -21,10 +21,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct JWordsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
+    private let dependency: Dependency = DependencyImpl()
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                ContentView()
+                ContentView(dependency)
             }
         }
     }
@@ -42,9 +44,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 struct JWordsApp: App {
     @NSApplicationDelegateAdaptor private var delegate: AppDelegate
     
+    private let dependency: Dependency = DependencyImpl()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(dependency)
                 // TODO: mac 앱 만들 때 화면 사이즈 조절하는 방법
                 .frame(minWidth: 800, maxWidth: .infinity, minHeight: 800, maxHeight: .infinity, alignment: .center)
         }

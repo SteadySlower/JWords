@@ -11,8 +11,8 @@ struct ContentView: View {
     
     private let dependency: Dependency
     
-    init() {
-        self.dependency = DependencyImpl()
+    init(_ dependency: Dependency) {
+        self.dependency = dependency
     }
     
     var body: some View {
