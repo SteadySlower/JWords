@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Dependency {
-    var wordBookService: WordService { get }
+    var wordBookService: WordBookService { get }
     var wordService: WordService { get }
     var sampleService: SampleService { get }
 }
@@ -17,7 +17,7 @@ protocol Dependency {
 class DependencyImpl: Dependency {
     
     let wordBookService: WordBookService
-    let wordSerivce: WordService
+    let wordService: WordService
     let sampleService: SampleService
     
     init() {
@@ -25,8 +25,8 @@ class DependencyImpl: Dependency {
         let ic = ImageCompressorImpl()
         let iu = FirebaseIU(imageCompressor: ic)
         
-        self.wordSerivce = WordServiceImpl(database: db, imageUploader: iu)
-        self.wordBookService = WordBookServiceImpl(database: db, wordService: wordSerivce)
+        self.wordService = WordServiceImpl(database: db, imageUploader: iu)
+        self.wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
         self.sampleService = SampleServiceImpl(database: db)
     }
     
