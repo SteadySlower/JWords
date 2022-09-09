@@ -14,6 +14,7 @@ protocol ImageUploader {
 
 final class FirebaseIU: ImageUploader {
     // Storage singleton
+        // lazy var를 사용한 이유는 FirebaseApp.configure()가 실행되고 나서 Firebase 객체를 init해야 하기 때문.
     private lazy var store: Storage = {
         Storage.storage()
     }()
