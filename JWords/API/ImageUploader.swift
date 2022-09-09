@@ -14,7 +14,9 @@ protocol ImageUploader {
 
 final class FirebaseIU: ImageUploader {
     // Storage singleton
-    let store = Storage.storage()
+    private lazy var store: Storage = {
+        Storage.storage()
+    }()
     
     // Image Compressor
     let ic: ImageCompressor

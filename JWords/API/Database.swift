@@ -30,7 +30,9 @@ protocol Database {
 final class FirestoreDB: Database {
     
     // Firestore singleton
-    let firestore = Firestore.firestore()
+    private lazy var firestore: Firestore  = {
+        Firestore.firestore()
+    }()
     
     // CollectionReferences
     private lazy var wordBookRef = {
