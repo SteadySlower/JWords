@@ -5,13 +5,29 @@
 //  Created by Jong Won Moon on 2022/09/06.
 //
 
-class Dependency {
-    
-    private static let db = FirestoreDB()
-    private static let ic = ImageCompressorImpl()
-    private static let iu = FirebaseIU(imageCompressor: ic)
+import Foundation
 
-    static let wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
-    static let wordService = WordServiceImpl(database: db, imageUploader: iu)
-    static let sampleService = SampleServiceImpl(database: db)
+protocol Dependency {
+    var wordBookService: WordService { get }
+    var wordService: WordService { get }
+    var sampleService: SampleService { get }
+}
+
+
+class DependencyImpl: Dependency {
+    
+    let wordBookService: WordBookService
+    let wordSerivce: WordService
+    let sampleService: SampleService
+    
+    init() {
+        let db = FirestoreDB()
+        let ic = ImageCompressorImpl()
+        let iu = FirebaseIU(imageCompressor: ic)
+        
+        self.wordSerivce = WordServiceImpl(database: db, imageUploader: iu)
+        self.wordBookService = WordBookServiceImpl(database: db, wordService: wordSerivce)
+        self.sampleService = SampleServiceImpl(database: db)
+    }
+    
 }
