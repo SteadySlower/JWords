@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel: ViewModel
     @State private var showModal = false
+    
+    private let dependency: Dependency
+    
+    init(_ dependency: Dependency) {
+        self.viewModel = ViewModel(wordBookService: dependency.wordBookService)
+        self.dependency = dependency
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
                 ForEach(viewModel.wordBooks) { wordBook in
-                    HomeCell(wordBook: wordBook)
+                    HomeCell(wordBook: wordBook, dependency: dependency)
                 }
             }
         }
@@ -59,7 +66,7 @@ extension HomeView {
         @Published private(set) var wordBooks: [WordBook] = []
         private let wordBookService: WordBookService
         
-        init(wordBookService: WordBookService = Dependency.wordBookService) {
+        init(wordBookService: WordBookService) {
             self.wordBookService = wordBookService
         }
         

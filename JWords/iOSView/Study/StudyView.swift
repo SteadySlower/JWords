@@ -38,13 +38,16 @@ struct StudyView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) var scenePhase
     
+    private let dependency: Dependency
+    
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
     @State private var showCloseModal: Bool = false
     @State private var shouldDismiss: Bool = false
     
-    init(wordBook: WordBook) {
-        self.viewModel = ViewModel(wordBook: wordBook)
+    init(wordBook: WordBook, dependency: Dependency) {
+        self.viewModel = ViewModel(wordBook: wordBook, wordService: dependency.wordService)
+        self.dependency = dependency
     }
     
     var body: some View {
@@ -62,7 +65,7 @@ struct StudyView: View {
             resetDeviceWidth()
         }
         .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss)
+            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
         .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
@@ -108,7 +111,7 @@ extension StudyView {
         
         private let wordService: WordService
 
-        init(wordBook: WordBook, wordService: WordService = Dependency.wordService) {
+        init(wordBook: WordBook, wordService: WordService) {
             self.wordBook = wordBook
             self.wordService = wordService
         }

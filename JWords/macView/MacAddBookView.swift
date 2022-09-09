@@ -9,7 +9,11 @@ import SwiftUI
 
 // TODO: pasteboard에 있는 이미지를 가져오는 코드
 struct MacAddBookView: View {
-    @ObservedObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel: ViewModel
+    
+    init(_ dependency: Dependency) {
+        self.viewModel = ViewModel(wordBookService: dependency.wordBookService)
+    }
     
     var body: some View {
         VStack {
@@ -30,7 +34,7 @@ extension MacAddBookView {
         @Published var bookName: String = ""
         private let wordBookService: WordBookService
         
-        init(wordBookService: WordBookService = Dependency.wordBookService) {
+        init(wordBookService: WordBookService) {
             self.wordBookService = wordBookService
         }
         

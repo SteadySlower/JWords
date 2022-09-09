@@ -23,9 +23,15 @@ struct MacAddWordView: View {
         }
     }
     
+    private let viewModel: ViewModel
+    
+    init(_ dependency: Dependency) {
+        self.viewModel = ViewModel(dependency)
+    }
+    
     var body: some View {
         ContentView()
-            .environmentObject(ViewModel())
+            .environmentObject(viewModel)
     }
     
 }
@@ -305,13 +311,10 @@ extension MacAddWordView {
         }
         
         // initializer
-        init(wordService: WordService = Dependency.wordService,
-             wordBookService: WordBookService = Dependency.wordBookService,
-             sampleSerivce: SampleService = Dependency.sampleService
-        ) {
-            self.wordService = wordService
-            self.wordBookService = wordBookService
-            self.sampleService = sampleSerivce
+        init(_ dependency: Dependency) {
+            self.wordService = dependency.wordService
+            self.wordBookService = dependency.wordBookService
+            self.sampleService = dependency.sampleService
         }
         
         // public methods
@@ -435,13 +438,6 @@ extension MacAddWordView {
 struct MacAddWordView: View {
     var body: some View {
         EmptyView()
-    }
-}
-
-
-struct MacAddWordView_Previews: PreviewProvider {
-    static var previews: some View {
-        MacAddWordView()
     }
 }
 #endif

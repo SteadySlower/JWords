@@ -9,12 +9,18 @@ import SwiftUI
 
 struct ContentView: View {
     
+    private let dependency: Dependency
+    
+    init() {
+        self.dependency = DependencyImpl()
+    }
+    
     var body: some View {
         Group {
             #if os(iOS)
-            HomeView()
+            HomeView(dependency)
             #elseif os(macOS)
-            MacHomeView()
+            MacHomeView(dependency)
             #endif
         }
     }

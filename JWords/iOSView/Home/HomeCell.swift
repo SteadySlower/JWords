@@ -11,14 +11,17 @@ struct HomeCell: View {
     @ObservedObject private var viewModel: ViewModel
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    init(wordBook: WordBook) {
+    private let dependency: Dependency
+    
+    init(wordBook: WordBook, dependency: Dependency) {
         self.viewModel = ViewModel(wordBook: wordBook)
+        self.dependency = dependency
     }
     
     var body: some View {
         ZStack {
             NavigationLink {
-                StudyView(wordBook: viewModel.wordBook)
+                StudyView(wordBook: viewModel.wordBook, dependency: dependency)
             } label: {
                 HStack {
                     Text(viewModel.wordBook.title)

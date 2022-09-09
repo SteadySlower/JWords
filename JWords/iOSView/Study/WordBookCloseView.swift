@@ -13,8 +13,8 @@ struct WordBookCloseView: View {
     @State private var showProgressView = false
     @Binding private var didClosed: Bool
     
-    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>) {
-        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords)
+    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
+        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords, wordBookService: dependency.wordBookService)
         self._didClosed = didClosed
         // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
         viewModel.getWordBooks()
@@ -74,7 +74,7 @@ extension WordBookCloseView {
             }
         }
         
-        init(toClose: WordBook, toMoveWords: [Word], wordBookService: WordBookService = Dependency.wordBookService) {
+        init(toClose: WordBook, toMoveWords: [Word], wordBookService: WordBookService) {
             self.toClose = toClose
             self.toMoveWords = toMoveWords
             self.wordBookService = wordBookService
