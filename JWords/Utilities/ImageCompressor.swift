@@ -11,8 +11,12 @@ import FirebaseStorage
 import Cocoa
 #endif
 
-class ImageCompressor {
-    static func compressImageToJPEG(image: InputImageType) -> Data {
+protocol ImageCompressor {
+    func compressImageToJPEG(image: InputImageType) -> Data
+}
+
+class ImageCompressorImpl: ImageCompressor {
+    func compressImageToJPEG(image: InputImageType) -> Data {
         #if os(iOS)
         let jpegData = image.jpegData(compressionQuality: 0.5)!
         return jpegData

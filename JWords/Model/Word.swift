@@ -24,6 +24,7 @@ enum StudyState: Int, Codable {
 
 struct Word: Identifiable, Codable, Hashable{
     @DocumentID var id: String?
+    var wordBookID: String?
     var meaningText: String = ""
     var meaningImageURL: String = ""
     var ganaText: String = ""
@@ -39,6 +40,7 @@ struct Word: Identifiable, Codable, Hashable{
 }
 
 struct WordInput {
+    let wordBookID: String
     let meaningText: String
     let meaningImage: InputImageType?
     let ganaText: String
@@ -47,6 +49,10 @@ struct WordInput {
     let kanjiImage: InputImageType?
     let studyState: StudyState = .undefined
     let timestamp: Timestamp = Timestamp(date: Date())
+    
+    var meaningImageURL = ""
+    var ganaImageURL = ""
+    var kanjiImageURL = ""
     
     var hasImage: Bool {
         self.meaningImage != nil || self.ganaImage != nil || self.kanjiImage != nil

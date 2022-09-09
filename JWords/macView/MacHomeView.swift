@@ -6,13 +6,20 @@
 //
 
 import SwiftUI
-
+#if os(macOS)
 struct MacHomeView: View {
+    
+    private let dependency: Dependency
+    
+    init(_ dependency: Dependency) {
+        self.dependency = dependency
+    }
+    
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
-                BookListNavigationView()
-                WordAddNavigationView()
+                BookListNavigationView(dependency)
+                WordAddNavigationView(dependency)
             }
         }
         .navigationViewStyle(.automatic)
@@ -20,9 +27,15 @@ struct MacHomeView: View {
 }
 
 private struct BookListNavigationView: View {
+    private let dependency: Dependency
+    
+    init(_ dependency: Dependency) {
+        self.dependency = dependency
+    }
+    
     var body: some View {
         NavigationLink {
-            MacAddBookView()
+            MacAddBookView(dependency)
         } label: {
             Text("add book")
         }
@@ -30,17 +43,25 @@ private struct BookListNavigationView: View {
 }
 
 private struct WordAddNavigationView: View {
+
+    private let dependency: Dependency
+    
+    init(_ dependency: Dependency) {
+        self.dependency = dependency
+    }
     var body: some View {
         NavigationLink {
-            MacAddWordView()
+            MacAddWordView(dependency)
         } label: {
             Text("add word")
         }
     }
 }
 
-struct MacHomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        MacHomeView()
+#elseif os(iOS)
+struct MacHomeView: View {
+    var body: some View {
+        EmptyView()
     }
 }
+#endif

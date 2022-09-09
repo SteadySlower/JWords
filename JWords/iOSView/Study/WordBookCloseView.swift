@@ -13,8 +13,8 @@ struct WordBookCloseView: View {
     @State private var showProgressView = false
     @Binding private var didClosed: Bool
     
-    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>) {
-        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords)
+    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
+        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords, wordBookService: dependency.wordBookService)
         self._didClosed = didClosed
         // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
         viewModel.getWordBooks()
@@ -61,17 +61,27 @@ extension WordBookCloseView {
     final class ViewModel: ObservableObject {
         private let toClose: WordBook
         let toMoveWords: [Word]
+        private let wordBookService: WordBookService
         
         @Published var wordBooks = [WordBook]()
         @Published var selectedID: String?
         
-        init(toClose: WordBook, toMoveWords: [Word]) {
+        var selectedWordBook: WordBook? {
+            if let selectedID = selectedID {
+                return wordBooks.first(where: { $0.id == selectedID })
+            } else {
+                return nil
+            }
+        }
+        
+        init(toClose: WordBook, toMoveWords: [Word], wordBookService: WordBookService) {
             self.toClose = toClose
             self.toMoveWords = toMoveWords
+            self.wordBookService = wordBookService
         }
         
         func getWordBooks() {
-            WordService.getWordBooks { [weak self] books, error in
+            wordBookService.getWordBooks { [weak self] books, error in
                 if let error = error {
                     print(error)
                     return
@@ -87,8 +97,8 @@ extension WordBookCloseView {
         }
         
         func closeBook(completionHandler: @escaping () -> Void) {
-            guard let id = toClose.id else { return }
-            WordService.closeWordBook(of: id, to: selectedID, toMoveWords: toMoveWords) { error in
+            wordBookService.closeWordBook(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
+                // TODO: Handle Error
                 if let error = error { print(error) }
                 completionHandler()
             }

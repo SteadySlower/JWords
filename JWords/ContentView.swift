@@ -8,19 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    private let dependency: Dependency
+    
+    init(_ dependency: Dependency) {
+        self.dependency = dependency
+    }
+    
     var body: some View {
         Group {
             #if os(iOS)
-            HomeView()
+            HomeView(dependency)
             #elseif os(macOS)
-            MacHomeView()
+            MacHomeView(dependency)
             #endif
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

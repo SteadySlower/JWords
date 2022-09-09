@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    @ObservedObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel: ViewModel
     @State private var showModal = false
+    
+    private let dependency: Dependency
+    
+    init(_ dependency: Dependency) {
+        self.viewModel = ViewModel(wordBookService: dependency.wordBookService)
+        self.dependency = dependency
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
                 ForEach(viewModel.wordBooks) { wordBook in
-                    HomeCell(wordBook: wordBook)
+                    HomeCell(wordBook: wordBook, dependency: dependency)
                 }
             }
         }
@@ -58,9 +64,14 @@ extension HomeView {
 extension HomeView {
     final class ViewModel: ObservableObject {
         @Published private(set) var wordBooks: [WordBook] = []
+        private let wordBookService: WordBookService
+        
+        init(wordBookService: WordBookService) {
+            self.wordBookService = wordBookService
+        }
         
         func fetchWordBooks() {
-            WordService.getWordBooks { [weak self] wordBooks, error in
+            wordBookService.getWordBooks { [weak self] wordBooks, error in
                 if let error = error { print("디버그: \(error.localizedDescription)"); return }
                 if let wordBooks = wordBooks {
                     self?.wordBooks = wordBooks.filter { $0.closed == false }
@@ -69,7 +80,7 @@ extension HomeView {
         }
         
         func AddWordBook(_ title: String) {
-            WordService.saveBook(title: title) { [weak self] error in
+            wordBookService.saveBook(title: title) { [weak self] error in
                 if let error = error {
                     print(error)
                     return
@@ -77,11 +88,5 @@ extension HomeView {
                 self?.fetchWordBooks()
             }
         }
-    }
-}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
     }
 }

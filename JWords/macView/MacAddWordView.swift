@@ -23,9 +23,15 @@ struct MacAddWordView: View {
         }
     }
     
+    private let viewModel: ViewModel
+    
+    init(_ dependency: Dependency) {
+        self.viewModel = ViewModel(dependency)
+    }
+    
     var body: some View {
         ContentView()
-            .environmentObject(ViewModel())
+            .environmentObject(viewModel)
     }
     
 }
@@ -169,10 +175,10 @@ extension MacAddWordView {
             @EnvironmentObject private var viewModel: ViewModel
             
             var body: some View {
-                Picker("", selection: $viewModel.selectedExampleID) {
-                    Text(viewModel.examples.isEmpty ? "검색결과 없음" : "미선택")
+                Picker("", selection: $viewModel.selectedSampleID) {
+                    Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
                         .tag(nil as String?)
-                    ForEach(viewModel.examples) { example in
+                    ForEach(viewModel.samples) { example in
                         Text("뜻: \(example.meaningText)\n가나: \(example.ganaText)\n한자: \(example.kanjiText)")
                             .tag(example.id as String?)
                     }
@@ -243,6 +249,10 @@ extension MacAddWordView {
     final class ViewModel: ObservableObject {
         // Properties
         
+        private let wordService: WordService
+        private let sampleService: SampleService
+        private let wordBookService: WordBookService
+        
         // 단어 내용 입력 관련 properties
         @Published var meaningText: String = "" {
             didSet {
@@ -261,22 +271,26 @@ extension MacAddWordView {
         @Published var didBooksFetched: Bool = false
         @Published var isUploading: Bool = false
         
+        private var selectedBook: WordBook {
+            bookList[selectedBookIndex]
+        }
+        
         // 예시 관련 properties
-        @Published var examples: [WordExample] = []
-        @Published var selectedExampleID: String? = nil {
+        @Published var samples: [Sample] = []
+        @Published var selectedSampleID: String? = nil {
             didSet {
                 updateTextWithExample()
             }
         }
-        private var selectedExample: WordExample? {
-            return examples.first(where: { $0.id == selectedExampleID })
+        private var selectedSample: Sample? {
+            return samples.first(where: { $0.id == selectedSampleID })
         }
         
         private var didExampleUsed: Bool {
-            guard let selectedExample = selectedExample else { return false }
-            return selectedExample.meaningText == meaningText
-                && selectedExample.ganaText == ganaText
-                && selectedExample.kanjiText == kanjiText ? true : false
+            guard let selectedSample = selectedSample else { return false }
+            return selectedSample.meaningText == meaningText
+                && selectedSample.ganaText == ganaText
+                && selectedSample.kanjiText == kanjiText ? true : false
         }
         
         var isSaveButtonUnable: Bool {
@@ -296,10 +310,17 @@ extension MacAddWordView {
             return isOverlapped ? "중복됨" : "중복 아님"
         }
         
+        // initializer
+        init(_ dependency: Dependency) {
+            self.wordService = dependency.wordService
+            self.wordBookService = dependency.wordBookService
+            self.sampleService = dependency.sampleService
+        }
+        
         // public methods
         
         func getWordBooks() {
-            WordService.getWordBooks { [weak self] wordBooks, error in
+            wordBookService.getWordBooks { [weak self] wordBooks, error in
                 if let error = error {
                     print("디버그: \(error.localizedDescription)")
                     return
@@ -312,20 +333,24 @@ extension MacAddWordView {
         
         func saveWord() {
             isUploading = true
-            let wordInput = WordInput(meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
-            guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
+            guard let wordBookID = selectedBook.id else {
+                // TODO: handle Error
+                return
+            }
+            let wordInput = WordInput(wordBookID: wordBookID, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
             // example이 있는지 확인하고 example과 동일한지 확인하고
                 // 동일하면 example의 used에 + 1
                 // 동일하지 않으면 새로운 example 추가한다.
             if didExampleUsed,
-               let selectedExample = selectedExample {
-                WordService.updateUsed(of: selectedExample)
+               let selectedSample = selectedSample {
+                sampleService.addOneToUsed(of: selectedSample)
             } else if !wordInput.hasImage {
-                WordService.saveExample(wordInput: wordInput)
+                sampleService.saveSample(wordInput: wordInput)
             }
             clearInputs()
             clearExamples()
-            WordService.saveWord(wordInput: wordInput, wordBookID: selectedBookID) { [weak self] error in
+            wordService.saveWord(wordInput: wordInput) { [weak self] error in
+                // TODO: handle error
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
             }
@@ -333,8 +358,7 @@ extension MacAddWordView {
         
         func checkIfOverlap() {
             isCheckingOverlap = true
-            guard let selectedBookID = bookList[selectedBookIndex].id else { print("디버그: 선택된 단어장 없음"); return }
-            WordService.checkIfOverlap(wordBookID: selectedBookID, meaningText: meaningText) { [weak self] isOverlapped, error in
+            wordBookService.checkIfOverlap(in: selectedBook, meaningText: meaningText) { [weak self] isOverlapped, error in
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isOverlapped = isOverlapped ?? false
                 self?.isCheckingOverlap = false
@@ -375,12 +399,12 @@ extension MacAddWordView {
         }
         
         func getExamples() {
-            WordService.fetchExamples(meaningText) { [weak self] examples, error in
+            sampleService.getSamples(meaningText) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
-                self?.examples = examples.filter({ !$0.hasImage })
-                if !examples.isEmpty { self?.selectedExampleID = examples[0].id }
+                self?.samples = examples.filter({ !$0.hasImage })
+                if !examples.isEmpty { self?.selectedSampleID = examples[0].id }
             }
         }
         
@@ -394,18 +418,18 @@ extension MacAddWordView {
         }
         
         private func clearExamples() {
-            examples = []
-            selectedExampleID = nil
+            samples = []
+            selectedSampleID = nil
         }
         
         private func updateTextWithExample() {
-            guard let selectedExample = selectedExample else {
+            guard let selectedSample = selectedSample else {
                 clearInputs()
                 return
             }
-            meaningText = selectedExample.meaningText
-            ganaText = selectedExample.ganaText
-            kanjiText = selectedExample.kanjiText
+            meaningText = selectedSample.meaningText
+            ganaText = selectedSample.ganaText
+            kanjiText = selectedSample.kanjiText
         }
     }
 }
@@ -414,13 +438,6 @@ extension MacAddWordView {
 struct MacAddWordView: View {
     var body: some View {
         EmptyView()
-    }
-}
-
-
-struct MacAddWordView_Previews: PreviewProvider {
-    static var previews: some View {
-        MacAddWordView()
     }
 }
 #endif

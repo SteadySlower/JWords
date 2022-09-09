@@ -38,13 +38,16 @@ struct StudyView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) var scenePhase
     
+    private let dependency: Dependency
+    
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
     @State private var showCloseModal: Bool = false
     @State private var shouldDismiss: Bool = false
     
-    init(wordBook: WordBook) {
-        self.viewModel = ViewModel(wordBook: wordBook)
+    init(wordBook: WordBook, dependency: Dependency) {
+        self.viewModel = ViewModel(wordBook: wordBook, wordService: dependency.wordService)
+        self.dependency = dependency
     }
     
     var body: some View {
@@ -62,7 +65,7 @@ struct StudyView: View {
             resetDeviceWidth()
         }
         .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss)
+            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
         .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
@@ -105,9 +108,12 @@ extension StudyView {
         @Published private(set) var studyMode: StudyMode = .all
         @Published private(set) var frontType: FrontType = .meaning
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
+        
+        private let wordService: WordService
 
-        init(wordBook: WordBook) {
+        init(wordBook: WordBook, wordService: WordService) {
             self.wordBook = wordBook
+            self.wordService = wordService
         }
         
         var toMoveWords: [Word] {
@@ -115,7 +121,7 @@ extension StudyView {
         }
         
         func fetchWords() {
-            WordService.getWords(wordBookID: wordBook.id!) { [weak self] words, error in
+            wordService.getWords(wordBook: wordBook) { [weak self] words, error in
                 if let error = error {
                     print("디버그: \(error)")
                 }
@@ -152,22 +158,20 @@ extension StudyView {
         }
         
         func updateStudyState(word: Word, state: StudyState) {
-            guard let wordBookID = wordBook.id else { return }
-            guard let wordID = word.id else { return }
-            WordService.updateStudyState(wordBookID: wordBookID, wordID: wordID, newState: state) { [weak self] error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                guard let self = self else { return }
-                
-                // rawWords만 수정한다.
-                    // words까지 수정하면 전체 list가 re-render되므로 낭비 (어차피 cell color는 WordCell 객체가 처리하니까)
-                guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == wordID }) else { return }
-                self.rawWords[rawIndex].studyState = state
-                
-                // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words에 반영해야 한다.
-                if self.studyMode == .excludeSuccess && state == .success {
-                    self.filterWords()
-                }
+            wordService.updateStudyState(word: word, newState: state) { [weak self] error in
+                    // FIXME: handle error
+                    if let error = error { print(error); return }
+                    guard let self = self else { return }
+                    
+                    // rawWords만 수정한다.
+                        // words까지 수정하면 전체 list가 re-render되므로 낭비 (어차피 cell color는 WordCell 객체가 처리하니까)
+                guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == word.id }) else { return }
+                    self.rawWords[rawIndex].studyState = state
+                    
+                    // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words에 반영해야 한다.
+                    if self.studyMode == .excludeSuccess && state == .success {
+                        self.filterWords()
+                    }
             }
         }
         
