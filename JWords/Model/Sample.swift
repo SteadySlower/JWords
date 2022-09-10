@@ -9,7 +9,21 @@
 import FirebaseFirestoreSwift
 import Firebase
 
-struct Sample: Identifiable, Codable, Hashable {
+protocol Sample {
+    var id: String? { get }
+    var meaningText: String { get }
+    var meaningImageURL: String { get }
+    var ganaText: String { get }
+    var ganaImageURL: String { get }
+    var kanjiText: String { get }
+    var kanjiImageURL: String { get }
+    var timestamp: Timestamp { get }
+    var used: Int { get }
+    
+    var hasImage: Bool { get }
+}
+
+struct SampleImpl: Sample, Codable, Hashable {
     @DocumentID var id: String?
     var meaningText: String = ""
     var meaningImageURL: String = ""

@@ -217,7 +217,7 @@ extension FirestoreDB {
                 }
                 guard let documents = snapshot?.documents else { return }
                 let samples = documents
-                        .compactMap { try? $0.data(as: Sample.self) }
+                        .compactMap { try? $0.data(as: SampleImpl.self) }
                         .sorted(by: { $0.used > $1.used })
                 completionHandler(samples, nil)
             }
