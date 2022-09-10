@@ -53,7 +53,7 @@ struct StudyView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEach(viewModel.words) { word in
+                ForEach(viewModel.words, id: \.id) { word in
                     WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }

@@ -127,7 +127,7 @@ extension FirestoreDB {
                 completionHandler(nil, error)
             }
             guard let documents = snapshot?.documents else { return }
-            var words = documents.compactMap({ try? $0.data(as: Word.self) })
+            var words = documents.compactMap({ try? $0.data(as: WordImpl.self) })
             for i in 0..<words.count {
                 words[i].wordBookID = id
             }
