@@ -8,16 +8,6 @@
 import FirebaseFirestoreSwift
 import Firebase
 
-#if os(iOS)
-import UIKit
-typealias InputImageType = UIImage
-#elseif os(macOS)
-import Cocoa
-typealias InputImageType = NSImage
-#endif
-
-
-
 enum StudyState: Int, Codable {
     case undefined = 0, success, fail
 }
@@ -53,22 +43,4 @@ struct WordImpl: Word, Codable, Hashable{
     }
 }
 
-struct WordInput {
-    let wordBookID: String
-    let meaningText: String
-    let meaningImage: InputImageType?
-    let ganaText: String
-    let ganaImage: InputImageType?
-    let kanjiText: String
-    let kanjiImage: InputImageType?
-    let studyState: StudyState = .undefined
-    let timestamp: Timestamp = Timestamp(date: Date())
-    
-    var meaningImageURL = ""
-    var ganaImageURL = ""
-    var kanjiImageURL = ""
-    
-    var hasImage: Bool {
-        self.meaningImage != nil || self.ganaImage != nil || self.kanjiImage != nil
-    }
-}
+

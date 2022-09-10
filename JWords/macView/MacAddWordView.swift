@@ -337,7 +337,7 @@ extension MacAddWordView {
                 // TODO: handle Error
                 return
             }
-            let wordInput = WordInput(wordBookID: wordBookID, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
+            let wordInput = WordInputImpl(wordBookID: wordBookID, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
             // example이 있는지 확인하고 example과 동일한지 확인하고
                 // 동일하면 example의 used에 + 1
                 // 동일하지 않으면 새로운 example 추가한다.
