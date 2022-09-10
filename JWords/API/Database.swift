@@ -70,7 +70,7 @@ extension FirestoreDB {
                 completionHandler(nil, error)
             }
             guard let documents = snapshot?.documents else { return }
-            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
+            let wordBooks = documents.compactMap({ try? $0.data(as: WordBookImpl.self) })
             completionHandler(wordBooks, nil)
         }
     }
