@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		068D4CFC28B2189300F44F6E /* WordBookCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */; };
+		0697715328CCA71700569280 /* WordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715228CCA71700569280 /* WordInput.swift */; };
 		06A1F4E028670D97003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4DF28670D97003440B0 /* Quick */; };
 		06A1F4E228670DA8003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E128670DA8003440B0 /* Quick */; };
 		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
@@ -95,6 +96,7 @@
 
 /* Begin PBXFileReference section */
 		068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookCloseView.swift; sourceTree = "<group>"; };
+		0697715228CCA71700569280 /* WordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInput.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEditView.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -365,6 +367,7 @@
 			children = (
 				5ACE0A7528699BAD00A57660 /* WordBook.swift */,
 				5ACE0A7728699BB400A57660 /* Word.swift */,
+				0697715228CCA71700569280 /* WordInput.swift */,
 				5AD8070A28A0EDE300ADB6F7 /* Events.swift */,
 				5A5740A728BDA8900080A2E2 /* Sample.swift */,
 			);
@@ -563,6 +566,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
+				0697715328CCA71700569280 /* WordInput.swift in Sources */,
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,

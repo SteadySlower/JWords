@@ -30,7 +30,7 @@ struct WordBookCloseView: View {
                 Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
                     Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
                         .tag(nil as String?)
-                    ForEach(viewModel.wordBooks) {
+                    ForEach(viewModel.wordBooks, id: \.id) {
                         Text($0.title)
                             .tag($0.id as String?)
                     }

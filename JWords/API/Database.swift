@@ -70,7 +70,7 @@ extension FirestoreDB {
                 completionHandler(nil, error)
             }
             guard let documents = snapshot?.documents else { return }
-            let wordBooks = documents.compactMap({ try? $0.data(as: WordBook.self) })
+            let wordBooks = documents.compactMap({ try? $0.data(as: WordBookImpl.self) })
             completionHandler(wordBooks, nil)
         }
     }
@@ -127,7 +127,7 @@ extension FirestoreDB {
                 completionHandler(nil, error)
             }
             guard let documents = snapshot?.documents else { return }
-            var words = documents.compactMap({ try? $0.data(as: Word.self) })
+            var words = documents.compactMap({ try? $0.data(as: WordImpl.self) })
             for i in 0..<words.count {
                 words[i].wordBookID = id
             }
@@ -217,7 +217,7 @@ extension FirestoreDB {
                 }
                 guard let documents = snapshot?.documents else { return }
                 let samples = documents
-                        .compactMap { try? $0.data(as: Sample.self) }
+                        .compactMap { try? $0.data(as: SampleImpl.self) }
                         .sorted(by: { $0.used > $1.used })
                 completionHandler(samples, nil)
             }

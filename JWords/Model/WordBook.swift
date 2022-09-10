@@ -8,8 +8,15 @@
 import FirebaseFirestoreSwift
 import Firebase
 
+protocol WordBook {
+    var id: String? { get }
+    var title: String { get }
+    var timestamp: Timestamp { get }
+    var closed: Bool { get }
+}
 
-struct WordBook: Identifiable, Codable, Hashable {
+struct WordBookImpl: WordBook, Codable, Hashable {
+    
     @DocumentID var id: String?
     var title: String
     let timestamp: Timestamp
