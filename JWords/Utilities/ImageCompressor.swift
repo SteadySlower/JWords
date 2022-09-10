@@ -20,7 +20,6 @@ class ImageCompressorImpl: ImageCompressor {
         #if os(iOS)
         guard let jpegData = image.jpegData(compressionQuality: 0.5) else {
             throw AppError.Utilities.imageToDataFail
-            return
         }
         return jpegData
         #elseif os(macOS)
@@ -28,7 +27,6 @@ class ImageCompressorImpl: ImageCompressor {
         let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
         guard let jpegData = bitmapRep.representation(using: NSBitmapImageRep.FileType.jpeg, properties: [:]) else {
             throw AppError.Utilities.imageToDataFail
-            return
         }
         return jpegData
         #endif
