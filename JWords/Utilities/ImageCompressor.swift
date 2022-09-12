@@ -19,7 +19,7 @@ class ImageCompressorImpl: ImageCompressor {
     func compressImageToJPEG(image: InputImageType) throws -> Data {
         #if os(iOS)
         guard let jpegData = image.jpegData(compressionQuality: 0.5) else {
-            throw AppError.Utilities.imageToDataFail
+            throw AppError.ImageCompressor.imageToDataFail
         }
         return jpegData
         #elseif os(macOS)

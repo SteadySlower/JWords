@@ -17,7 +17,7 @@ class MockWordBookService {
 extension MockWordBookService: WordBookService {
     func saveBook(title: String, completionHandler: @escaping CompletionWithoutData) {
         if let saveBookError = saveBookError {
-            completionHandler(error)
+            completionHandler(saveBookError)
             return
         }
         completionHandler(nil)
