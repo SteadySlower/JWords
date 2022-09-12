@@ -15,7 +15,7 @@ class Random {
         var result = ""
         
         for _ in 0..<length {
-            result += alphabets.randomElement() ?? ""
+            result += String(alphabets.randomElement()) ?? "a"
         }
         
         return result
