@@ -11,6 +11,7 @@
 		0697715328CCA71700569280 /* WordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715228CCA71700569280 /* WordInput.swift */; };
 		0697715528CCCF1300569280 /* MacAddBookViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */; };
 		0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715A28CCD05000569280 /* MockWordBookService.swift */; };
+		0697715F28CF030D00569280 /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715E28CF030C00569280 /* Random.swift */; };
 		06A1F4E028670D97003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4DF28670D97003440B0 /* Quick */; };
 		06A1F4E228670DA8003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E128670DA8003440B0 /* Quick */; };
 		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
@@ -101,6 +102,7 @@
 		0697715228CCA71700569280 /* WordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInput.swift; sourceTree = "<group>"; };
 		0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookViewModelTest.swift; sourceTree = "<group>"; };
 		0697715A28CCD05000569280 /* MockWordBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBookService.swift; sourceTree = "<group>"; };
+		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEditView.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,6 +221,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		0697715D28CF02E300569280 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				0697715E28CF030C00569280 /* Random.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		06A1F4D528670C99003440B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +293,7 @@
 		06CEF2572866F1CB00A620CC /* JWordsUnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				0697715D28CF02E300569280 /* Util */,
 				06CEF2582866F1CB00A620CC /* JWordsTests.swift */,
 				0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */,
 				0697715628CCCF8100569280 /* Mocks */,
@@ -640,6 +651,7 @@
 				06CEF2592866F1CB00A620CC /* JWordsTests.swift in Sources */,
 				0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */,
 				0697715528CCCF1300569280 /* MacAddBookViewModelTest.swift in Sources */,
+				0697715F28CF030D00569280 /* Random.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
