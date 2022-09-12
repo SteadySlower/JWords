@@ -41,7 +41,20 @@ class MacAddBookViewModelTest: QuickSpec {
         }
         
         describe("isSaveButtonUnable") {
-            
+            beforeEach {
+                prepare()
+            }
+            context("when bookName is empty") {
+                it("should be false") {
+                    viewModel.bookName = ""
+                    expect(viewModel.isSaveButtonUnable).to(beFalse())
+                }
+            }
+            context("when bookName is not empty") {
+                it("shoule be true") {
+                    viewModel.bookName = "bookName"
+                }
+            }
         }
         
     }
