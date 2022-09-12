@@ -44,26 +44,60 @@ final class WordServiceImpl: WordService {
         var meaningImageURL = ""
         var ganaImageURL = ""
         var kanjiImageURL = ""
+        var imageUploadError: Error?
         
         if let meaningImage = wordInput.meaningImage {
-            iu.uploadImage(image: meaningImage, group: group) { url in
+            iu.uploadImage(image: meaningImage, group: group) { url, error in
+                if let error = error {
+                    imageUploadError = error
+                    return
+                }
+                guard let url = url else {
+                    print("URL from image uploader is nil")
+                    imageUploadError = AppError.WordService.noWordImageURL
+                    return
+                }
+
                 meaningImageURL = url
             }
         }
         
         if let ganaImage = wordInput.ganaImage {
-            iu.uploadImage(image: ganaImage, group: group) { url in
+            iu.uploadImage(image: ganaImage, group: group) { url, error in
+                if let error = error {
+                    completionHandler(error)
+                    return
+                }
+                guard let url = url else {
+                    imageUploadError = AppError.WordService.noWordImageURL
+                    return
+                }
+                
                 ganaImageURL = url
             }
         }
         
         if let kanjiImage = wordInput.kanjiImage {
-            iu.uploadImage(image: kanjiImage, group: group) { url in
+            iu.uploadImage(image: kanjiImage, group: group) { url, error in
+                if let error = error {
+                    completionHandler(error)
+                    return
+                }
+                guard let url = url else {
+                    imageUploadError = AppError.WordService.noWordImageURL
+                    return
+                }
+                
                 kanjiImageURL = url
             }
         }
         
         group.notify(queue: .global()) { [weak self] in
+            if let imageUploadError = imageUploadError {
+                completionHandler(imageUploadError)
+                return
+            }
+            
             wordInput.meaningImageURL = meaningImageURL
             wordInput.ganaImageURL = ganaImageURL
             wordInput.kanjiImageURL = kanjiImageURL

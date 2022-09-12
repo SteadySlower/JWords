@@ -26,7 +26,7 @@ class ImageCompressorImpl: ImageCompressor {
         let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)!
         let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
         guard let jpegData = bitmapRep.representation(using: NSBitmapImageRep.FileType.jpeg, properties: [:]) else {
-            throw AppError.Utilities.imageToDataFail
+            throw AppError.ImageCompressor.imageToDataFail
         }
         return jpegData
         #endif
