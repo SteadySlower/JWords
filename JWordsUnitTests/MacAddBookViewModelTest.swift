@@ -23,7 +23,7 @@ class MacAddBookViewModelTest: QuickSpec {
         describe("bookName") {
             beforeEach {
                 prepare()
-                viewModel.bookName = "bookName"
+                viewModel.bookName = Random.string
             }
             context("when saveBook succeeded") {
                 it("should be emtpy") {
@@ -46,7 +46,7 @@ class MacAddBookViewModelTest: QuickSpec {
             }
             context("when bookName is empty") {
                 it("should be false") {
-                    viewModel.bookName = ""
+                    viewModel.bookName = Random.string
                     expect(viewModel.isSaveButtonUnable).to(beFalse())
                 }
             }
