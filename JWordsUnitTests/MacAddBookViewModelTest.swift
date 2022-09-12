@@ -13,7 +13,7 @@ class MacAddBookViewModelTest: QuickSpec {
     
     override func spec() {
         var viewModel: MacAddBookView.ViewModel!
-        var wordBookService: WordBookService!
+        var wordBookService: MockWordBookService!
         
         func prepare() {
             wordBookService = MockWordBookService()
@@ -21,7 +21,23 @@ class MacAddBookViewModelTest: QuickSpec {
         }
         
         describe("bookName") {
-            
+            beforeEach {
+                prepare()
+                viewModel.bookName = "bookName"
+            }
+            context("when saveBook succeeded") {
+                it("should be emtpy") {
+                    viewModel.saveBook()
+                    expect(viewModel.bookName.isEmpty).to(beTrue())
+                }
+            }
+            context("when saveBook failed") {
+                it("should be not be empty") {
+                    wordBookService.saveBookError = AppError.generic(massage: "Mock Error")
+                    viewModel.saveBook()
+                    expect(viewModel.bookName.isEmpty).to(beFalse())
+                }
+            }
         }
         
         describe("isSaveButtonUnable") {
