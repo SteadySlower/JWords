@@ -10,12 +10,12 @@ import Foundation
 class Random {
     
     static var string: String {
-        let length = (1...100).randomElement()!
-        let alphabets = "abcdefghijklmnopqrstuvwxyz"
+        let length = (1...100).randomElement() ?? 10
+        let alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         var result = ""
         
         for _ in 0..<length {
-            result += alphabets.randomElement()!
+            result += alphabets.randomElement() ?? ""
         }
         
         return result
