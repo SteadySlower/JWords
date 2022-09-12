@@ -34,17 +34,20 @@ extension MacAddBookView {
         @Published var bookName: String = ""
         private let wordBookService: WordBookService
         
-        init(wordBookService: WordBookService) {
-            self.wordBookService = wordBookService
-        }
-        
         var isSaveButtonUnable: Bool {
             bookName.isEmpty
         }
         
+        init(wordBookService: WordBookService) {
+            self.wordBookService = wordBookService
+        }
+        
         func saveBook() {
             wordBookService.saveBook(title: bookName) { [weak self] error in
-                if let error = error { print("디버그 \(error.localizedDescription)"); return }
+                if let error = error {
+                    print("디버그 \(error.localizedDescription)");
+                    return
+                }
                 self?.bookName = ""
             }
         }
