@@ -23,21 +23,29 @@ class MacAddBookViewModelTest: QuickSpec {
         describe("bookName") {
             beforeEach {
                 prepare()
-                viewModel.bookName = Random.string
             }
-            context("when saveBook succeeded") {
-                it("should be emtpy") {
-                    viewModel.saveBook()
-                    expect(viewModel.bookName.isEmpty).to(beTrue())
+            it("should be empty at first") {
+                expect(viewModel.bookName.isEmpty).to(beTrue())
+            }
+            context("when bookName has been updated with string") {
+                beforeEach {
+                    viewModel.bookName = Random.string
+                }
+                context("when saveBook succeeded") {
+                    it("should be emtpy") {
+                        viewModel.saveBook()
+                        expect(viewModel.bookName.isEmpty).toEventually(beTrue())
+                    }
+                }
+                context("when saveBook failed") {
+                    it("should be not be empty") {
+                        wordBookService.saveBookError = AppError.generic(massage: "Mock Error")
+                        viewModel.saveBook()
+                        expect(viewModel.bookName.isEmpty).toEventually(beFalse())
+                    }
                 }
             }
-            context("when saveBook failed") {
-                it("should be not be empty") {
-                    wordBookService.saveBookError = AppError.generic(massage: "Mock Error")
-                    viewModel.saveBook()
-                    expect(viewModel.bookName.isEmpty).to(beFalse())
-                }
-            }
+
         }
         
         describe("isSaveButtonUnable") {
