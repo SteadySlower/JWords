@@ -9,8 +9,8 @@ import Quick
 import Nimble
 @testable import JWords
 
-#if os(macOS)
 
+#if os(macOS)
 class MacAddWordViewModelTest: QuickSpec {
     
     override func spec() {
@@ -32,8 +32,13 @@ class MacAddWordViewModelTest: QuickSpec {
             
         }
         
-        describe("meaningImage") {
-            
+        fdescribe("meaningImage") {
+            beforeEach {
+                prepare()
+            }
+            it("should be nil at first") {
+                expect(viewModel.meaningImage).to(beNil())
+            }
         }
         
         describe("ganaText") {
@@ -106,5 +111,4 @@ class MacAddWordViewModelTest: QuickSpec {
     }
     
 }
-
 #endif
