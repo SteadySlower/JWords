@@ -28,8 +28,81 @@ class MacAddWordViewModelTest: QuickSpec {
             viewModel = MacAddWordView.ViewModel(dependency)
         }
         
+        describe("meaningText") {
+            
+        }
         
+        describe("meaningImage") {
+            
+        }
         
+        describe("ganaText") {
+            
+        }
+        
+        describe("ganaImage") {
+            
+        }
+        
+        describe("kanjiText") {
+            
+        }
+        
+        describe("kanjiImage") {
+            
+        }
+        
+        describe("bookList") {
+            
+        }
+        
+        describe("selectedBookIndex") {
+            
+        }
+        
+        describe("didBooksFetched") {
+            
+        }
+        
+        describe("isUploading") {
+            
+        }
+        
+        describe("selectedBook") {
+            
+        }
+        
+        describe("samples") {
+            
+        }
+        
+        describe("selectedSampleID") {
+            
+        }
+        
+        describe("selectedSample") {
+            
+        }
+        
+        describe("didExampleUsed") {
+            
+        }
+        
+        describe("isSaveButtonUnable") {
+            
+        }
+        
+        describe("isCheckingOverlap") {
+            
+        }
+        
+        describe("isOverlapped") {
+            
+        }
+        
+        describe("overlapCheckButtonTitle") {
+            
+        }
     }
     
 }
