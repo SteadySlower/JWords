@@ -54,13 +54,13 @@ class MacAddBookViewModelTest: QuickSpec {
             }
             context("when bookName is empty") {
                 it("should be false") {
-                    viewModel.bookName = Random.string
-                    expect(viewModel.isSaveButtonUnable).to(beFalse())
+                    expect(viewModel.isSaveButtonUnable).to(beTrue())
                 }
             }
             context("when bookName is not empty") {
                 it("shoule be true") {
-                    viewModel.bookName = "bookName"
+                    viewModel.bookName = Random.string
+                    expect(viewModel.isSaveButtonUnable).to(beFalse())
                 }
             }
         }
