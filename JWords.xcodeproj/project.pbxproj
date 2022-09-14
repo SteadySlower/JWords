@@ -49,6 +49,10 @@
 		5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC322869565A00AC156C /* MacAddBookView.swift */; };
 		5A67DC352869566600AC156C /* MacAddWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC342869566600AC156C /* MacAddWordView.swift */; };
 		5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BD9B828C7186D00FF9259 /* Dependency.swift */; };
+		5A72BD0D28D1B15F00058043 /* MacAddWordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */; };
+		5A72BD0F28D1B19E00058043 /* MockWordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD0E28D1B19E00058043 /* MockWordService.swift */; };
+		5A72BD1328D1B25100058043 /* MockSampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD1228D1B25100058043 /* MockSampleService.swift */; };
+		5A72BD1628D1B3C900058043 /* MockDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD1528D1B3C900058043 /* MockDependency.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A73286998F800A57660 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A72286998F800A57660 /* Collections.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
@@ -134,6 +138,10 @@
 		5A67DC322869565A00AC156C /* MacAddBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookView.swift; sourceTree = "<group>"; };
 		5A67DC342869566600AC156C /* MacAddWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddWordView.swift; sourceTree = "<group>"; };
 		5A6BD9B828C7186D00FF9259 /* Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependency.swift; sourceTree = "<group>"; };
+		5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddWordViewModelTest.swift; sourceTree = "<group>"; };
+		5A72BD0E28D1B19E00058043 /* MockWordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordService.swift; sourceTree = "<group>"; };
+		5A72BD1228D1B25100058043 /* MockSampleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSampleService.swift; sourceTree = "<group>"; };
+		5A72BD1528D1B3C900058043 /* MockDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDependency.swift; sourceTree = "<group>"; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A72286998F800A57660 /* Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
@@ -192,6 +200,7 @@
 		0697715628CCCF8100569280 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				5A72BD1428D1B3BF00058043 /* Helper */,
 				0697715928CCCFB900569280 /* Utilities */,
 				0697715828CCCFA400569280 /* Service */,
 				0697715728CCCF9F00569280 /* API */,
@@ -210,6 +219,8 @@
 			isa = PBXGroup;
 			children = (
 				0697715A28CCD05000569280 /* MockWordBookService.swift */,
+				5A72BD1228D1B25100058043 /* MockSampleService.swift */,
+				5A72BD0E28D1B19E00058043 /* MockWordService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -296,6 +307,7 @@
 				0697715D28CF02E300569280 /* Util */,
 				06CEF2582866F1CB00A620CC /* JWordsTests.swift */,
 				0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */,
+				5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */,
 				0697715628CCCF8100569280 /* Mocks */,
 			);
 			path = JWordsUnitTests;
@@ -398,6 +410,14 @@
 				5A67DC342869566600AC156C /* MacAddWordView.swift */,
 			);
 			path = macView;
+			sourceTree = "<group>";
+		};
+		5A72BD1428D1B3BF00058043 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				5A72BD1528D1B3C900058043 /* MockDependency.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		5ACE0A6F2869985F00A57660 /* DataService */ = {
@@ -648,8 +668,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A72BD1628D1B3C900058043 /* MockDependency.swift in Sources */,
 				06CEF2592866F1CB00A620CC /* JWordsTests.swift in Sources */,
+				5A72BD0F28D1B19E00058043 /* MockWordService.swift in Sources */,
 				0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */,
+				5A72BD1328D1B25100058043 /* MockSampleService.swift in Sources */,
+				5A72BD0D28D1B15F00058043 /* MacAddWordViewModelTest.swift in Sources */,
 				0697715528CCCF1300569280 /* MacAddBookViewModelTest.swift in Sources */,
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 			);
