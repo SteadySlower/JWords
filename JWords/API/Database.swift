@@ -173,7 +173,16 @@ extension FirestoreDB {
             return
         }
         
+        guard let removeFrom = word.wordBookID else {
+            let error = AppError.generic(massage: "No wordBookID to remove from")
+            completionHandler(error)
+            return
+        }
+        
         group.enter()
+        
+        wordRef(of: removeFrom).document(word.id!).delete()
+        
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
                                     "meaningText": word.meaningText,
                                     "meaningImageURL": word.meaningImageURL,
