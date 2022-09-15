@@ -12,10 +12,8 @@
 		0697715528CCCF1300569280 /* MacAddBookViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */; };
 		0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715A28CCD05000569280 /* MockWordBookService.swift */; };
 		0697715F28CF030D00569280 /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715E28CF030C00569280 /* Random.swift */; };
-		06A1F4E028670D97003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4DF28670D97003440B0 /* Quick */; };
 		06A1F4E228670DA8003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E128670DA8003440B0 /* Quick */; };
 		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
-		06A1F4E628670DB6003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E528670DB6003440B0 /* Nimble */; };
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordEditView.swift */; };
@@ -38,6 +36,8 @@
 		5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5740A728BDA8900080A2E2 /* Sample.swift */; };
 		5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF62E286A8F68000150A7 /* ImageUploader.swift */; };
 		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
+		5A6082EC28D299A70031E983 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6082EB28D299A70031E983 /* Quick */; settings = {ATTRIBUTES = (Required, ); }; };
+		5A6082EE28D299AC0031E983 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6082ED28D299AC0031E983 /* Nimble */; };
 		5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A616D9E28C05A0E0013B5AE /* Database.swift */; };
 		5A67DC1C2869426600AC156C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A67DC1B2869426500AC156C /* GoogleService-Info.plist */; };
 		5A67DC20286942FE00AC156C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC1F286942FE00AC156C /* HomeView.swift */; };
@@ -171,8 +171,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06A1F4E028670D97003440B0 /* Quick in Frameworks */,
-				06A1F4E628670DB6003440B0 /* Nimble in Frameworks */,
+				5A6082EC28D299A70031E983 /* Quick in Frameworks */,
+				5A6082EE28D299AC0031E983 /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,8 +488,8 @@
 			);
 			name = JWordsUnitTests;
 			packageProductDependencies = (
-				06A1F4DF28670D97003440B0 /* Quick */,
-				06A1F4E528670DB6003440B0 /* Nimble */,
+				5A6082EB28D299A70031E983 /* Quick */,
+				5A6082ED28D299AC0031E983 /* Nimble */,
 			);
 			productName = JWordsTests;
 			productReference = 06CEF2542866F1CB00A620CC /* JWordsUnitTests.xctest */;
@@ -928,9 +928,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = JW.JWordsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JWords.app/JWords";
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JWords.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JWords";
 			};
 			name = Debug;
 		};
@@ -947,9 +951,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = JW.JWordsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JWords.app/JWords";
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JWords.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JWords";
 			};
 			name = Release;
 		};
@@ -1111,22 +1119,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		06A1F4DF28670D97003440B0 /* Quick */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
-			productName = Quick;
-		};
 		06A1F4E128670DA8003440B0 /* Quick */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
 			productName = Quick;
 		};
 		06A1F4E328670DAE003440B0 /* Nimble */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */;
-			productName = Nimble;
-		};
-		06A1F4E528670DB6003440B0 /* Nimble */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
@@ -1175,6 +1173,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		5A6082EB28D299A70031E983 /* Quick */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
+			productName = Quick;
+		};
+		5A6082ED28D299AC0031E983 /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
