@@ -30,14 +30,18 @@ struct WordBookImpl: WordBook {
         self.id = id
         
         if let title = dict["title"] as? String,
-           let createdAt = dict["createdAt"] as? Date,
-           let _closed = dict["_closed"] as? Bool
+           let createdAt = dict["createdAt"] as? Date
         {
             self.title = title
             self.createdAt = createdAt
-            self._closed = _closed
         } else {
             throw AppError.Initializer.wordBookImpl
+        }
+        
+        if let _closed = dict["_closed"] as? Bool {
+            self._closed = _closed
+        } else {
+            self._closed = nil
         }
     }
 }
