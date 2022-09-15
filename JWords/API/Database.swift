@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseFirestore
 
 protocol Database {
     // WordBook 관련
@@ -70,7 +71,17 @@ extension FirestoreDB {
                 completionHandler(nil, error)
             }
             guard let documents = snapshot?.documents else { return }
-            let wordBooks = documents.compactMap({ try? $0.data(as: WordBookImpl.self) })
+            var wordBooks = [WordBook]()
+            
+            for document in documents {
+                let id = document.documentID
+                var dict = document.data()
+                // TODO: handle error
+                let timestamp = dict["timestamp"] as! Timestamp
+                dict["createdAt"] = timestamp.dateValue()
+                wordBooks.append(WordBookImpl(id: id, dict: dict))
+            }
+            
             completionHandler(wordBooks, nil)
         }
     }
@@ -83,13 +94,7 @@ extension FirestoreDB {
     }
     
     func checkIfOverlap(wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>) {
-        guard let wordBookID = wordBook.id else {
-            // TODO: handle Error
-            let error = AppError.generic(massage: "No id in wordBook")
-            completionHandler(nil, error)
-            return
-        }
-        wordRef(of: wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
+        wordRef(of: wordBook.id).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
                 return
@@ -100,13 +105,8 @@ extension FirestoreDB {
     }
     
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData) {
-        guard let id = toClose.id else {
-            let error = AppError.generic(massage: "No wordBook ID")
-            completionHandler(error)
-            return
-        }
         let field = ["_closed": true]
-        wordBookRef.document(id).updateData(field, completion: completionHandler)
+        wordBookRef.document(toClose.id).updateData(field, completion: completionHandler)
     }
     
 }
@@ -116,20 +116,20 @@ extension FirestoreDB {
 extension FirestoreDB {
 
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
-        guard let id = wordBook.id else {
-            let error = AppError.generic(massage: "No wordBook ID")
-            completionHandler(nil, error)
-            return
-        }
-        
-        wordRef(of: id).order(by: "timestamp").getDocuments { snapshot, error in
+        wordRef(of: wordBook.id).order(by: "timestamp").getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
             }
             guard let documents = snapshot?.documents else { return }
-            var words = documents.compactMap({ try? $0.data(as: WordImpl.self) })
-            for i in 0..<words.count {
-                words[i].wordBookID = id
+            
+            var words = [Word]()
+            
+            for document in documents {
+                let id = document.documentID
+                var dict = document.data()
+                let date = (document["timestamp"] as! Timestamp).dateValue()
+                dict["timestamp"] = date
+                words.append(WordImpl(id: id, wordBookID: wordBook.id, dict: dict))
             }
             completionHandler(words, nil)
         }
@@ -149,30 +149,12 @@ extension FirestoreDB {
     }
     
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData) {
-        guard let wordID = word.id else {
-            print("Failed in Database updateStudyState")
-            let error = AppError.generic(massage: "No ID in Word")
-            completionHandler(error)
-            return
-        }
-        guard let wordBookID = word.wordBookID else {
-            print("Failed in Database updateStudyState")
-            let error = AppError.generic(massage: "No WordBookID in Word")
-            completionHandler(error)
-            return
-        }
-        wordRef(of: wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
+        wordRef(of: word.wordBookID).document(word.id).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
         }
     }
     
     func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData) {
-        guard let wordBookID = wordBook.id else {
-            let error = AppError.generic(massage: "No wordBookID")
-            completionHandler(error)
-            return
-        }
-        
         group.enter()
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
                                     "meaningText": word.meaningText,
@@ -182,7 +164,7 @@ extension FirestoreDB {
                                     "kanjiText": word.kanjiText,
                                     "kanjiImageURL": word.kanjiImageURL,
                                     "studyState": StudyState.undefined.rawValue]
-        wordRef(of: wordBookID).addDocument(data: data) { error in
+        wordRef(of: wordBook.id).addDocument(data: data) { error in
             if let error = error {
                 completionHandler(error)
             }
