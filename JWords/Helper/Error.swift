@@ -43,4 +43,15 @@ enum AppError: Error {
             }
         }
     }
+    
+    enum Initializer: String, Error {
+        case wordBookImpl
+        case wordImpl
+        case sampleImpl
+        case wordInputImpl
+        
+        var message: String {
+            return "\(String(describing: self)): Failed to init \(self.rawValue)"
+        }
+    }
 }
