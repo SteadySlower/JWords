@@ -55,7 +55,7 @@ struct WordImpl: Word {
            let kanjiImageURL = dict["kanjiImageURL"] as? String,
            let rawValue = dict["studyState"] as? Int,
            let studyState = StudyState(rawValue: rawValue),
-           let createdAt = dict["timestamp"] as? Date
+           let createdAt = dict["createdAt"] as? Date
         {
             self.meaningText = meaningText
             self.meaningImageURL = meaningImageURL
@@ -66,7 +66,7 @@ struct WordImpl: Word {
             self.studyState = studyState
             self.createdAt = createdAt
         } else {
-            throw AppError.generic(massage: "init")
+            throw AppError.Initializer.wordImpl
         }
     }
 }
