@@ -26,11 +26,18 @@ struct WordBookImpl: WordBook {
         return false
     }
     
-    // TODO: Handle Parsing Error
-    init(id: String, dict: [String: Any]) {
+    init(id: String, dict: [String: Any]) throws {
         self.id = id
-        self.title = dict["title"] as? String ?? ""
-        self.createdAt = dict["createdAt"] as? Date ?? Date()
-        self._closed = dict["_closed"] as? Bool ?? false
+        
+        if let title = dict["title"] as? String,
+           let createdAt = dict["createdAt"] as? Date,
+           let _closed = dict["_closed"] as? Bool
+        {
+            self.title = title
+            self.createdAt = createdAt
+            self._closed = _closed
+        } else {
+            throw AppError.Initializer.wordBookImpl
+        }
     }
 }
