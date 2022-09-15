@@ -5,6 +5,9 @@
 //  Created by Jong Won Moon on 2022/09/05.
 //
 
+
+// TODO: message AppError로만 캐스팅해도 쓸 수 있게...
+
 enum AppError: Error {
     case generic(massage: String)
     enum ImageCompressor: Error {
