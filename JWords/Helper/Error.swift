@@ -56,11 +56,14 @@ enum AppError: Error {
     
     enum Firebase: Error {
         case noTimestamp
+        case noDocument
         
         var message: String {
             switch self {
             case .noTimestamp:
                 return "\(String(describing: self)): No timestamp in firebase document"
+            case .noDocument:
+                return "\(String(describing: self)): No document in firebase snapshot"
             }
         }
     }

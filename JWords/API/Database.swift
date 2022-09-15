@@ -70,7 +70,13 @@ extension FirestoreDB {
             if let error = error {
                 completionHandler(nil, error)
             }
-            guard let documents = snapshot?.documents else { return }
+            
+            guard let documents = snapshot?.documents else {
+                let error = AppError.Firebase.noDocument
+                completionHandler(nil, error)
+                return
+            }
+            
             var wordBooks = [WordBook]()
             
             for document in documents {
@@ -82,7 +88,9 @@ extension FirestoreDB {
                     completionHandler(nil, error)
                     return
                 }
+                
                 dict["createdAt"] = timestamp.dateValue()
+                
                 do {
                     wordBooks.append(try WordBookImpl(id: id, dict: dict))
                 } catch let error {
@@ -129,7 +137,12 @@ extension FirestoreDB {
             if let error = error {
                 completionHandler(nil, error)
             }
-            guard let documents = snapshot?.documents else { return }
+            
+            guard let documents = snapshot?.documents else {
+                let error = AppError.Firebase.noDocument
+                completionHandler(nil, error)
+                return
+            }
             
             var words = [Word]()
             
