@@ -227,19 +227,40 @@ extension FirestoreDB {
                 if let error = error {
                     completionHandler(nil, error)
                 }
-                guard let documents = snapshot?.documents else { return }
-                let samples = documents
-                        .compactMap { try? $0.data(as: SampleImpl.self) }
-                        .sorted(by: { $0.used > $1.used })
+                
+                guard let documents = snapshot?.documents else {
+                    let error = AppError.Firebase.noDocument
+                    completionHandler(nil, error)
+                    return
+                }
+                
+                var samples = [Sample]()
+                
+                for document in documents {
+                    let id = document.documentID
+                    var dict = document.data()
+                    
+                    guard let timestamp = dict["timestamp"] as? Timestamp else {
+                        let error = AppError.Firebase.noTimestamp
+                        completionHandler(nil, error)
+                        return
+                    }
+                    
+                    dict["createdAt"] = timestamp.dateValue()
+                    
+                    do {
+                        samples.append(try SampleImpl(id: id, dict: dict))
+                    } catch let error {
+                        completionHandler(nil, error)
+                        return
+                    }
+                }
+
                 completionHandler(samples, nil)
             }
     }
     
     func updateUsed(of sample: Sample, to used: Int) {
-        guard let id = sample.id else {
-            print("No id in sample")
-            return
-        }
-        sampleRef.document(id).updateData(["used" : used])
+        sampleRef.document(sample.id).updateData(["used" : used])
     }
 }
