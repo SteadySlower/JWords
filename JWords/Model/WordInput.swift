@@ -5,8 +5,6 @@
 //  Created by JW Moon on 2022/09/10.
 //
 
-#warning("여기 Model이 Firebase에 의존하지 않도록 바꾸기")
-
 #if os(iOS)
 import UIKit
 typealias InputImageType = UIImage
