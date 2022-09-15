@@ -136,9 +136,17 @@ extension FirestoreDB {
             for document in documents {
                 let id = document.documentID
                 var dict = document.data()
-                let date = (document["timestamp"] as! Timestamp).dateValue()
-                dict["timestamp"] = date
-                words.append(WordImpl(id: id, wordBookID: wordBook.id, dict: dict))
+                guard let timestamp = document["timestamp"] as? Timestamp else {
+                    let error = AppError.Firebase.noTimestamp
+                    completionHandler(nil, error)
+                    return
+                }
+                dict["createdAt"] = timestamp.dateValue()
+                do {
+                    words.append(try WordImpl(id: id, wordBookID: wordBook.id, dict: dict))
+                } catch let error {
+                    completionHandler(nil, error)
+                }
             }
             completionHandler(words, nil)
         }
