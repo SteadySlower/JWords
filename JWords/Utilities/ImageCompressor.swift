@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseStorage
 #if os(macOS)
 import Cocoa
 #endif
