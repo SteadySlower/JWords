@@ -7,8 +7,16 @@
 
 import SwiftUI
 
+#warning("여기 ios에서도 돌아가도록 바꾸기")
 
-#if os(macOS)
+#if os(iOS)
+import UIKit
+typealias PasteBoardType = UIPasteboard
+#elseif os(macOS)
+import Cocoa
+typealias PasteBoardType = NSPasteboard
+#endif
+
 struct MacAddWordView: View {
     // MARK: Enum
     enum InputType: Hashable {
@@ -191,7 +199,7 @@ extension MacAddWordView {
         private let inputType: InputType
         @EnvironmentObject private var viewModel: ViewModel
         
-        private var image: NSImage? {
+        private var image: InputImageType? {
             switch inputType {
             case .meaning: return viewModel.meaningImage
             case .gana: return viewModel.ganaImage
@@ -199,11 +207,16 @@ extension MacAddWordView {
             }
         }
         
-        private var pasteBoardImage: NSImage? {
-            let pb = NSPasteboard.general
-            let type = NSPasteboard.PasteboardType.tiff
+        private var pasteBoardImage: InputImageType? {
+            let pb = PasteBoardType.general
+            #if os(iOS)
+            guard let image = pb.image else { return nil }
+            #elseif os(macOS)
+            let type = PasteBoardType.PasteboardType.tiff
             guard let imgData = pb.data(forType: type) else { return nil }
-            return NSImage(data: imgData)
+            let image = InputImageType(data: imgData)
+            #endif
+            return image
         }
         
         init(inputType: InputType) {
@@ -212,10 +225,17 @@ extension MacAddWordView {
         
         var body: some View {
             if let image = image {
+                #if os(iOS)
+                Image(uiImage: image)
+                    .resizable()
+                    .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                    .onTapGesture { viewModel.clearImageInput(inputType) }
+                #elseif os(macOS)
                 Image(nsImage: image)
                     .resizable()
                     .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
                     .onTapGesture { viewModel.clearImageInput(inputType) }
+                #endif
             } else {
                 Button {
                     viewModel.insertImage(of: inputType, image: pasteBoardImage)
@@ -259,11 +279,11 @@ extension MacAddWordView {
                 isOverlapped = nil
             }
         }
-        @Published private(set) var meaningImage: NSImage?
+        @Published private(set) var meaningImage: InputImageType?
         @Published var ganaText: String = ""
-        @Published private(set) var ganaImage: NSImage?
+        @Published private(set) var ganaImage: InputImageType?
         @Published var kanjiText: String = ""
-        @Published private(set) var kanjiImage: NSImage?
+        @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
         @Published var bookList: [WordBook] = []
@@ -365,7 +385,7 @@ extension MacAddWordView {
             }
         }
         
-        func insertImage(of inputType: InputType, image: NSImage?) {
+        func insertImage(of inputType: InputType, image: InputImageType?) {
             switch inputType {
             case .meaning:
                 meaningImage = image
@@ -433,11 +453,3 @@ extension MacAddWordView {
         }
     }
 }
-
-#elseif os(iOS)
-struct MacAddWordView: View {
-    var body: some View {
-        EmptyView()
-    }
-}
-#endif
