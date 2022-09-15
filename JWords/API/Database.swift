@@ -77,9 +77,17 @@ extension FirestoreDB {
                 let id = document.documentID
                 var dict = document.data()
                 // TODO: handle error
-                let timestamp = dict["timestamp"] as! Timestamp
+                guard let timestamp = dict["timestamp"] as? Timestamp else {
+                    let error = AppError.Firebase.noTimestamp
+                    completionHandler(nil, error)
+                    return
+                }
                 dict["createdAt"] = timestamp.dateValue()
-                wordBooks.append(WordBookImpl(id: id, dict: dict))
+                guard let wordBook = try? WordBookImpl(id: id, dict: dict) else {
+                    let error = AppError.Initializer.wordBookImpl
+                    completionHandler(nil, error)
+                }
+                wordBooks.append(wordBook)
             }
             
             completionHandler(wordBooks, nil)

@@ -53,4 +53,15 @@ enum AppError: Error {
             return "\(String(describing: self)): Failed to init \(self.rawValue)"
         }
     }
+    
+    enum Firebase: Error {
+        case noTimestamp
+        
+        var message: String {
+            switch self {
+            case .noTimestamp:
+                return "\(String(describing: self)): No timestamp in firebase document"
+            }
+        }
+    }
 }
