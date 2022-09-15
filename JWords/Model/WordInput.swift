@@ -5,8 +5,7 @@
 //  Created by JW Moon on 2022/09/10.
 //
 
-import FirebaseFirestoreSwift
-import Firebase
+#warning("여기 Model이 Firebase에 의존하지 않도록 바꾸기")
 
 #if os(iOS)
 import UIKit
@@ -25,7 +24,6 @@ protocol WordInput {
     var kanjiText: String { get }
     var kanjiImage: InputImageType? { get }
     var studyState: StudyState { get }
-    var timestamp: Timestamp { get }
     
     var meaningImageURL: String { get set }
     var ganaImageURL: String { get set }
@@ -43,7 +41,6 @@ struct WordInputImpl: WordInput {
     let kanjiText: String
     let kanjiImage: InputImageType?
     let studyState: StudyState = .undefined
-    let timestamp: Timestamp = Timestamp(date: Date())
     
     var meaningImageURL = ""
     var ganaImageURL = ""
