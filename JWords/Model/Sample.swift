@@ -16,7 +16,7 @@ protocol Sample {
     var ganaImageURL: String { get }
     var kanjiText: String { get }
     var kanjiImageURL: String { get }
-    var timestamp: Date { get }
+    var createdAt: Date { get }
     var used: Int { get }
     
     var hasImage: Bool { get }
@@ -30,7 +30,7 @@ struct SampleImpl: Sample {
     let ganaImageURL: String
     let kanjiText: String
     let kanjiImageURL: String
-    let timestamp: Date
+    let createdAt: Date
     let used: Int
     
     var hasImage: Bool {
@@ -45,7 +45,7 @@ struct SampleImpl: Sample {
            let ganaImageURL = dict["ganaImageURL"] as? String,
            let kanjiText = dict["kanjiText"] as? String,
            let kanjiImageURL = dict["kanjiImageURL"] as? String,
-           let timestamp = dict["timestamp"] as? Date,
+           let createdAt = dict["createdAt"] as? Date,
            let used = dict["used"] as? Int
         {
             self.meaningText = meaningText
@@ -54,7 +54,7 @@ struct SampleImpl: Sample {
             self.ganaImageURL = ganaImageURL
             self.kanjiText = kanjiText
             self.kanjiImageURL = kanjiImageURL
-            self.timestamp = timestamp
+            self.createdAt = createdAt
             self.used = used
         } else {
             throw AppError.Initializer.sampleImpl
