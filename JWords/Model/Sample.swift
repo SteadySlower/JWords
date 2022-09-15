@@ -57,7 +57,7 @@ struct SampleImpl: Sample {
             self.timestamp = timestamp
             self.used = used
         } else {
-            throw AppError.generic(massage: "init fail of SampleImpl of id: \(id)")
+            throw AppError.Initializer.sampleImpl
         }
     }
 }
