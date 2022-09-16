@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-#if os(macOS)
+
 struct MacHomeView: View {
     
     private let dependency: Dependency
@@ -57,11 +57,3 @@ private struct WordAddNavigationView: View {
         }
     }
 }
-
-#elseif os(iOS)
-struct MacHomeView: View {
-    var body: some View {
-        EmptyView()
-    }
-}
-#endif
