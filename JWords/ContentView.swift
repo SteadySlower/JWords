@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             #if os(iOS)
-            HomeView(dependency)
+            MainTabView(dependency)
             #elseif os(macOS)
             MacHomeView(dependency)
             #endif
