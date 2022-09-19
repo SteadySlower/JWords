@@ -52,9 +52,9 @@
 		5A72BD1328D1B25100058043 /* MockSampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD1228D1B25100058043 /* MockSampleService.swift */; };
 		5A72BD1628D1B3C900058043 /* MockDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD1528D1B3C900058043 /* MockDependency.swift */; };
 		5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AF528D8071D00CADF9B /* TodayView.swift */; };
-		5A735AFB28D809C700CADF9B /* TodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFA28D809C700CADF9B /* TodayCell.swift */; };
 		5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFC28D80C3000CADF9B /* TodaySerivce.swift */; };
 		5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* TabView.swift */; };
+		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
 		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
@@ -144,9 +144,9 @@
 		5A72BD1228D1B25100058043 /* MockSampleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSampleService.swift; sourceTree = "<group>"; };
 		5A72BD1528D1B3C900058043 /* MockDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDependency.swift; sourceTree = "<group>"; };
 		5A735AF528D8071D00CADF9B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
-		5A735AFA28D809C700CADF9B /* TodayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCell.swift; sourceTree = "<group>"; };
 		5A735AFC28D80C3000CADF9B /* TodaySerivce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySerivce.swift; sourceTree = "<group>"; };
 		5A735AFE28D80EAE00CADF9B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
 		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -427,7 +427,7 @@
 			isa = PBXGroup;
 			children = (
 				5A735AF528D8071D00CADF9B /* TodayView.swift */,
-				5A735AFA28D809C700CADF9B /* TodayCell.swift */,
+				5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */,
 			);
 			path = Today;
 			sourceTree = "<group>";
@@ -647,6 +647,7 @@
 			files = (
 				5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */,
 				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
+				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
 				0697715328CCA71700569280 /* WordInput.swift in Sources */,
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
@@ -667,7 +668,6 @@
 				06CEF2492866F1C800A620CC /* ContentView.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
-				5A735AFB28D809C700CADF9B /* TodayCell.swift in Sources */,
 				5A67DC352869566600AC156C /* MacAddWordView.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */,
