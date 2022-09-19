@@ -5,7 +5,7 @@
 //  Created by Jong Won Moon on 2022/06/27.
 //
 
-import Firebase
+import Foundation
 
 typealias CompletionWithoutData = ((Error?) -> Void)
 typealias CompletionWithData<T> = ((T?, Error?) -> Void)

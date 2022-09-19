@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// TODO: pasteboard에 있는 이미지를 가져오는 코드
+
 struct MacAddBookView: View {
     @ObservedObject private var viewModel: ViewModel
     

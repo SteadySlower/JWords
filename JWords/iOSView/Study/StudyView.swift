@@ -123,7 +123,7 @@ extension StudyView {
         func fetchWords() {
             wordService.getWords(wordBook: wordBook) { [weak self] words, error in
                 if let error = error {
-                    print("디버그: \(error)")
+                    print("디버그: \(error.localizedDescription)")
                 }
                 guard let words = words else { return }
                 self?.rawWords = words

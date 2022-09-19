@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseFirestore
 
 protocol Database {
     // WordBook 관련
@@ -69,8 +70,35 @@ extension FirestoreDB {
             if let error = error {
                 completionHandler(nil, error)
             }
-            guard let documents = snapshot?.documents else { return }
-            let wordBooks = documents.compactMap({ try? $0.data(as: WordBookImpl.self) })
+            
+            guard let documents = snapshot?.documents else {
+                let error = AppError.Firebase.noDocument
+                completionHandler(nil, error)
+                return
+            }
+            
+            var wordBooks = [WordBook]()
+            
+            for document in documents {
+                let id = document.documentID
+                var dict = document.data()
+
+                guard let timestamp = dict["timestamp"] as? Timestamp else {
+                    let error = AppError.Firebase.noTimestamp
+                    completionHandler(nil, error)
+                    return
+                }
+                
+                dict["createdAt"] = timestamp.dateValue()
+                
+                do {
+                    wordBooks.append(try WordBookImpl(id: id, dict: dict))
+                } catch let error {
+                    completionHandler(nil, error)
+                    return
+                }
+            }
+            
             completionHandler(wordBooks, nil)
         }
     }
@@ -83,30 +111,23 @@ extension FirestoreDB {
     }
     
     func checkIfOverlap(wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>) {
-        guard let wordBookID = wordBook.id else {
-            // TODO: handle Error
-            let error = AppError.generic(massage: "No id in wordBook")
-            completionHandler(nil, error)
-            return
-        }
-        wordRef(of: wordBookID).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
+        wordRef(of: wordBook.id).whereField("meaningText", isEqualTo: meaningText).getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
                 return
             }
-            guard let documents = snapshot?.documents else { return }
+            guard let documents = snapshot?.documents else {
+                let error = AppError.Firebase.noDocument
+                completionHandler(nil, error)
+                return
+            }
             completionHandler(documents.count != 0 ? true : false, nil)
         }
     }
     
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData) {
-        guard let id = toClose.id else {
-            let error = AppError.generic(massage: "No wordBook ID")
-            completionHandler(error)
-            return
-        }
         let field = ["_closed": true]
-        wordBookRef.document(id).updateData(field, completion: completionHandler)
+        wordBookRef.document(toClose.id).updateData(field, completion: completionHandler)
     }
     
 }
@@ -116,20 +137,39 @@ extension FirestoreDB {
 extension FirestoreDB {
 
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
-        guard let id = wordBook.id else {
-            let error = AppError.generic(massage: "No wordBook ID")
-            completionHandler(nil, error)
-            return
-        }
-        
-        wordRef(of: id).order(by: "timestamp").getDocuments { snapshot, error in
+        wordRef(of: wordBook.id).order(by: "timestamp").getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
             }
-            guard let documents = snapshot?.documents else { return }
-            var words = documents.compactMap({ try? $0.data(as: WordImpl.self) })
-            for i in 0..<words.count {
-                words[i].wordBookID = id
+            
+            guard let documents = snapshot?.documents else {
+                let error = AppError.Firebase.noDocument
+                completionHandler(nil, error)
+                return
+            }
+            
+            var words = [Word]()
+            
+            for document in documents {
+                let id = document.documentID
+                var dict = document.data()
+                
+                guard let timestamp = document["timestamp"] as? Timestamp else {
+                    let error = AppError.Firebase.noTimestamp
+                    completionHandler(nil, error)
+                    return
+                }
+                
+                dict["createdAt"] = timestamp.dateValue()
+                
+                print(dict)
+                
+                do {
+                    words.append(try WordImpl(id: id, wordBookID: wordBook.id, dict: dict))
+                } catch let error {
+                    completionHandler(nil, error)
+                    return
+                }
             }
             completionHandler(words, nil)
         }
@@ -149,30 +189,12 @@ extension FirestoreDB {
     }
     
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData) {
-        guard let wordID = word.id else {
-            print("Failed in Database updateStudyState")
-            let error = AppError.generic(massage: "No ID in Word")
-            completionHandler(error)
-            return
-        }
-        guard let wordBookID = word.wordBookID else {
-            print("Failed in Database updateStudyState")
-            let error = AppError.generic(massage: "No WordBookID in Word")
-            completionHandler(error)
-            return
-        }
-        wordRef(of: wordBookID).document(wordID).updateData(["studyState" : newState.rawValue]) { error in
+        wordRef(of: word.wordBookID).document(word.id).updateData(["studyState" : newState.rawValue]) { error in
             completionHandler(error)
         }
     }
     
     func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData) {
-        guard let wordBookID = wordBook.id else {
-            let error = AppError.generic(massage: "No wordBookID")
-            completionHandler(error)
-            return
-        }
-        
         group.enter()
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
                                     "meaningText": word.meaningText,
@@ -182,7 +204,7 @@ extension FirestoreDB {
                                     "kanjiText": word.kanjiText,
                                     "kanjiImageURL": word.kanjiImageURL,
                                     "studyState": StudyState.undefined.rawValue]
-        wordRef(of: wordBookID).addDocument(data: data) { error in
+        wordRef(of: wordBook.id).addDocument(data: data) { error in
             if let error = error {
                 completionHandler(error)
             }
@@ -215,19 +237,40 @@ extension FirestoreDB {
                 if let error = error {
                     completionHandler(nil, error)
                 }
-                guard let documents = snapshot?.documents else { return }
-                let samples = documents
-                        .compactMap { try? $0.data(as: SampleImpl.self) }
-                        .sorted(by: { $0.used > $1.used })
+                
+                guard let documents = snapshot?.documents else {
+                    let error = AppError.Firebase.noDocument
+                    completionHandler(nil, error)
+                    return
+                }
+                
+                var samples = [Sample]()
+                
+                for document in documents {
+                    let id = document.documentID
+                    var dict = document.data()
+                    
+                    guard let timestamp = dict["timestamp"] as? Timestamp else {
+                        let error = AppError.Firebase.noTimestamp
+                        completionHandler(nil, error)
+                        return
+                    }
+                    
+                    dict["createdAt"] = timestamp.dateValue()
+                    
+                    do {
+                        samples.append(try SampleImpl(id: id, dict: dict))
+                    } catch let error {
+                        completionHandler(nil, error)
+                        return
+                    }
+                }
+
                 completionHandler(samples, nil)
             }
     }
     
     func updateUsed(of sample: Sample, to used: Int) {
-        guard let id = sample.id else {
-            print("No id in sample")
-            return
-        }
-        sampleRef.document(id).updateData(["used" : used])
+        sampleRef.document(sample.id).updateData(["used" : used])
     }
 }
