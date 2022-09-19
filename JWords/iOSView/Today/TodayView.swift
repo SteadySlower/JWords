@@ -19,15 +19,44 @@ struct TodayView: View {
     
     var body: some View {
         ScrollView {
+            OnlyFailCell(dependency: dependency)
             VStack(spacing: 8) {
                 ForEach(viewModel.todayBooks, id: \.id) { todayBook in
                     HomeCell(wordBook: todayBook, dependency: dependency)
                 }
             }
         }
-        .navigationTitle("오늘의 단어장")
         .onAppear { viewModel.fetchTodayBooks() }
     }
+}
+
+extension TodayView {
+    private struct OnlyFailCell: View {
+        
+        private let dependency: Dependency
+        
+        init(dependency: Dependency) {
+            self.dependency = dependency
+        }
+        
+        var body: some View {
+            ZStack {
+                NavigationLink {
+                    StudyView(words: [], dependency: dependency)
+                } label: {
+                    HStack {
+                        Text("틀린 단어 모아보기")
+                        Spacer()
+                    }
+                    .padding(12)
+                }
+            }
+            .border(.gray, width: 1)
+            .frame(height: 50)
+        }
+        
+    }
+    
 }
 
 extension TodayView {

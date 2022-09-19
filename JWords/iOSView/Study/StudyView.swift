@@ -50,6 +50,12 @@ struct StudyView: View {
         self.dependency = dependency
     }
     
+    // 틀린 단어 모아보기용
+    init(words: [Word], dependency: Dependency) {
+        self.viewModel = ViewModel(words: words, wordService: dependency.wordService)
+        self.dependency = dependency
+    }
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
@@ -59,13 +65,13 @@ struct StudyView: View {
                 }
             }
         }
-        .navigationTitle(viewModel.wordBook.title)
+        .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
         .onAppear {
             viewModel.fetchWords()
             resetDeviceWidth()
         }
         .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
+            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
         .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
@@ -90,6 +96,7 @@ struct StudyView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("닫기") { showCloseModal = true }
+                    .disabled(viewModel.wordBook == nil)
             }
         }
         #endif
@@ -102,7 +109,7 @@ struct StudyView: View {
 
 extension StudyView {
     final class ViewModel: ObservableObject {
-        let wordBook: WordBook
+        let wordBook: WordBook?
         private var rawWords: [Word] = []
         @Published var words: [Word] = []
         @Published private(set) var studyMode: StudyMode = .all
@@ -116,11 +123,21 @@ extension StudyView {
             self.wordService = wordService
         }
         
+        init(words: [Word], wordService: WordService) {
+            self.wordBook = nil
+            self.rawWords = words
+            self.wordService = wordService
+        }
+        
         var toMoveWords: [Word] {
             rawWords.filter { $0.studyState != .success }
         }
         
         func fetchWords() {
+            guard let wordBook = wordBook else {
+                filterWords()
+                return
+            }
             wordService.getWords(wordBook: wordBook) { [weak self] words, error in
                 if let error = error {
                     print("디버그: \(error.localizedDescription)")
