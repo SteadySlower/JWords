@@ -17,6 +17,10 @@ enum StudyMode {
         case .excludeSuccess: return "전부"
         }
     }
+    
+    mutating func toggle() {
+        self = self == .all ? .excludeSuccess : .all
+    }
 }
 
 enum FrontType {
@@ -35,6 +39,7 @@ enum FrontType {
 
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
+    @State private var studyMode: StudyMode = .all
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) var scenePhase
     
@@ -59,7 +64,7 @@ struct StudyView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEach(viewModel.words, id: \.id) { word in
+                ForEach(studyMode == .all ? viewModel.words : viewModel.onlyFail, id: \.id) { word in
                     WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }
@@ -71,9 +76,8 @@ struct StudyView: View {
             resetDeviceWidth()
         }
         .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
+            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.onlyFail, didClosed: $shouldDismiss, dependency: dependency)
         }
-        .onChange(of: scenePhase) { if $0 != .active { viewModel.updateWordState() } }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
@@ -84,8 +88,8 @@ struct StudyView: View {
                     Button("랜덤") {
                         viewModel.shuffleWords()
                     }
-                    Button(viewModel.studyMode.toggleButtonTitle) {
-                        viewModel.toggleStudyMode()
+                    Button(studyMode.toggleButtonTitle) {
+                        studyMode.toggle()
                     }
                     Button(viewModel.frontType.toggleButtonTitle) {
                         viewModel.toggleFrontType()
@@ -110,13 +114,15 @@ struct StudyView: View {
 extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook?
-        private var rawWords: [Word] = []
         @Published var words: [Word] = []
-        @Published private(set) var studyMode: StudyMode = .all
         @Published private(set) var frontType: FrontType = .meaning
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
         private let wordService: WordService
+        
+        var onlyFail: [Word] {
+            words.filter { $0.studyState != .success }
+        }
 
         init(wordBook: WordBook, wordService: WordService) {
             self.wordBook = wordBook
@@ -125,44 +131,29 @@ extension StudyView {
         
         init(words: [Word], wordService: WordService) {
             self.wordBook = nil
-            self.rawWords = words
+            self.words = words
             self.wordService = wordService
         }
         
-        var toMoveWords: [Word] {
-            rawWords.filter { $0.studyState != .success }
-        }
-        
+
         func fetchWords() {
-            guard let wordBook = wordBook else {
-                filterWords()
-                return
-            }
+            guard let wordBook = wordBook else { return }
             wordService.getWords(wordBook: wordBook) { [weak self] words, error in
                 if let error = error {
                     print("디버그: \(error.localizedDescription)")
                 }
                 guard let words = words else { return }
-                self?.rawWords = words
-                self?.filterWords()
+                self?.words = words
             }
         }
         
         func shuffleWords() {
-            rawWords.shuffle()
-            filterWords()
-            eventPublisher.send(StudyViewEvent.toFront)
-        }
-        
-        func toggleStudyMode() {
-            studyMode = studyMode == .all ? .excludeSuccess : .all
-            filterWords()
+            words.shuffle()
             eventPublisher.send(StudyViewEvent.toFront)
         }
         
         func toggleFrontType() {
             frontType = frontType == .meaning ? .kanji : .meaning
-            filterWords()
             eventPublisher.send(StudyViewEvent.toFront)
         }
         
@@ -176,35 +167,12 @@ extension StudyView {
         
         func updateStudyState(word: Word, state: StudyState) {
             wordService.updateStudyState(word: word, newState: state) { [weak self] error in
-                    // FIXME: handle error
-                    if let error = error { print(error); return }
-                    guard let self = self else { return }
+                // FIXME: handle error
+                if let error = error { print(error); return }
+                guard let self = self else { return }
                     
-                    // rawWords만 수정한다.
-                        // words까지 수정하면 전체 list가 re-render되므로 낭비 (어차피 cell color는 WordCell 객체가 처리하니까)
-                guard let rawIndex = self.rawWords.firstIndex(where: { $0.id == word.id }) else { return }
-                    self.rawWords[rawIndex].studyState = state
-                    
-                    // 다만 틀린 단어만 모아볼 때이고 state가 success일 때는 View에서 제거해야하니까 filtering해서 words에 반영해야 한다.
-                    if self.studyMode == .excludeSuccess && state == .success {
-                        self.filterWords()
-                    }
-            }
-        }
-        
-        func updateWordState() {
-            for i in 0..<words.count {
-                guard let newState = rawWords.first(where: { $0.id == words[i].id })?.studyState else { continue }
-                words[i].studyState = newState
-            }
-        }
-        
-        private func filterWords() {
-            switch studyMode {
-            case .all:
-                words = rawWords
-            case .excludeSuccess:
-                words = rawWords.filter { $0.studyState != .success }
+                guard let index = self.words.firstIndex(where: { $0.id == word.id }) else { return }
+                self.words[index].studyState = state
             }
         }
     }
