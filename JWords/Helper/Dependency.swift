@@ -11,6 +11,7 @@ protocol Dependency {
     var wordBookService: WordBookService { get }
     var wordService: WordService { get }
     var sampleService: SampleService { get }
+    var todayService: TodayService { get }
 }
 
 
@@ -19,6 +20,7 @@ class DependencyImpl: Dependency {
     let wordBookService: WordBookService
     let wordService: WordService
     let sampleService: SampleService
+    let todayService: TodayService
     
     init() {
         let db = FirestoreDB()
@@ -28,6 +30,7 @@ class DependencyImpl: Dependency {
         self.wordService = WordServiceImpl(database: db, imageUploader: iu)
         self.wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
         self.sampleService = SampleServiceImpl(database: db)
+        self.todayService = TodayServiceImpl()
     }
     
 
