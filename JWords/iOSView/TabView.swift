@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var selectedIndex: Int = 0
+    @State private var showModal = false
     private let dependency: Dependency
     
     init(_ dependency: Dependency) {
@@ -16,15 +16,17 @@ struct MainTabView: View {
     }
     
     var body: some View {
-        TabView(selection: $selectedIndex) {
-            NavigationView { TodayView(dependency) }
-                .onTapGesture { selectedIndex = 0 }
-                .tabItem { Image(systemName: "calendar") }
-                .tag(0)
-            NavigationView { HomeView(dependency)  }
-                .onTapGesture { selectedIndex = 1 }
-                .tabItem { Image(systemName: "house") }
-                .tag(1)
+        TabView {
+            NavigationView {
+                TodayView(dependency)
+                    .navigationTitle("오늘의 단어")
+            }
+            .tabItem { Image(systemName: "calendar") }
+            NavigationView {
+                HomeView(dependency)
+                    .navigationTitle("단어장 목록")
+            }
+            .tabItem { Image(systemName: "house") }
         }
     }
 }
