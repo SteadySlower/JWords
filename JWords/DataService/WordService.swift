@@ -14,7 +14,7 @@ protocol WordService {
     func getWords(wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
-    func copyWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
+    func moveWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
 }
 
 final class WordServiceImpl: WordService {
@@ -110,14 +110,14 @@ final class WordServiceImpl: WordService {
         db.updateStudyState(word: word, newState: newState, completionHandler: completionHandler)
     }
     
-    func copyWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
+    func moveWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
         let group = DispatchGroup()
         
         var copyWordError: Error? = nil
         
         // word를 옮기는 과정에서 에러가 나면 copyWordError에 할당
         for word in words {
-            db.copyWord(word, to: wordBook, group: group) { error in
+            db.moveWord(word, to: wordBook, group: group) { error in
                 copyWordError = error
             }
         }

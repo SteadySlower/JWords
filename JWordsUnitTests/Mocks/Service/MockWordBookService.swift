@@ -41,7 +41,7 @@ extension MockWordBookService: WordBookService {
         completionHandler(checkIfOverlapSuccess, nil)
     }
     
-    func closeWordBook(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData) {
+    func moveWords(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData) {
         if let closeWordBookError = closeWordBookError {
             completionHandler(closeWordBookError)
             return

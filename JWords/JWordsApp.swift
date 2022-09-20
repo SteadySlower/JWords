@@ -25,9 +25,7 @@ struct JWordsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                ContentView(dependency)
-            }
+            ContentView(dependency)
         }
     }
 }

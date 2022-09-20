@@ -40,7 +40,7 @@ extension MockWordService: WordService {
         completionHandler(nil)
     }
 
-    func copyWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
+    func moveWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
         if let copyWordsError = copyWordsError {
             completionHandler(copyWordsError)
             return

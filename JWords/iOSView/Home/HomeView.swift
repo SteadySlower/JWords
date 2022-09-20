@@ -26,7 +26,6 @@ struct HomeView: View {
                 }
             }
         }
-        .navigationTitle("단어장 목록")
         .onAppear { viewModel.fetchWordBooks() }
         .sheet(isPresented: $showModal) { WordBookAddModal(viewModel: viewModel) }
         .toolbar {
