@@ -20,7 +20,7 @@ struct TodayView: View {
     
     var body: some View {
         ScrollView {
-            OnlyFailCell(dependency: dependency)
+            OnlyFailCell(viewModel: viewModel, dependency: dependency)
             VStack(spacing: 8) {
                 ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
                     HomeCell(wordBook: todayBook, dependency: dependency)
@@ -41,18 +41,20 @@ extension TodayView {
     private struct OnlyFailCell: View {
         
         private let dependency: Dependency
+        @ObservedObject private var viewModel: ViewModel
         
-        init(dependency: Dependency) {
+        init(viewModel: ViewModel, dependency: Dependency) {
+            self.viewModel = viewModel
             self.dependency = dependency
         }
         
         var body: some View {
             ZStack {
                 NavigationLink {
-                    StudyView(words: [], dependency: dependency)
+                    StudyView(words: viewModel.onlyFailWords, dependency: dependency)
                 } label: {
                     HStack {
-                        Text("틀린 단어 모아보기")
+                        Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
                         Spacer()
                     }
                     .padding(12)
@@ -72,13 +74,16 @@ extension TodayView {
         private var todayIDs: [String] = []
         
         @Published private(set) var todayWordBooks: [WordBook] = []
+        @Published private(set) var onlyFailWords: [Word] = []
         
         private let wordBookService: WordBookService
         private let todayService: TodayService
+        private let wordService: WordService
         
         init(_ dependency: Dependency) {
             self.wordBookService = dependency.wordBookService
             self.todayService = dependency.todayService
+            self.wordService = dependency.wordService
         }
         
         func fetchTodayBooks() {
@@ -90,7 +95,28 @@ extension TodayView {
                 self.todayService.getTodayBooks { todayIDs, error in
                     self.todayIDs = todayIDs!
                     self.todayWordBooks = self.wordBooks.filter { self.todayIDs.contains($0.id) }
+                    self.fetchOnlyFailWords()
                 }
+            }
+        }
+        
+        // TODO: handle error
+        func fetchOnlyFailWords() {
+            var onlyFails = [Word]()
+            let group = DispatchGroup()
+            for todayWordBook in todayWordBooks {
+                group.enter()
+                wordService.getWords(wordBook: todayWordBook) { words, error in
+                    if let error = error { print(error); }
+                    if let words = words {
+                        let onlyFail = words.filter { $0.studyState != .success }
+                        onlyFails.append(contentsOf: onlyFail)
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                self.onlyFailWords = onlyFails
             }
         }
     }
