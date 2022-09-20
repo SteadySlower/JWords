@@ -19,7 +19,7 @@ protocol Database {
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
-    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData)
+    func moveWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData)
     
     // Sample 관련
     func insertSample(_ wordInput: WordInput)
@@ -192,7 +192,7 @@ extension FirestoreDB {
         }
     }
     
-    func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData) {
+    func moveWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData) {
         group.enter()
     
         wordRef(of: word.wordBookID).document(word.id).delete()

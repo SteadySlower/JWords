@@ -9,7 +9,7 @@ protocol WordBookService {
     func saveBook(title: String, completionHandler: @escaping CompletionWithoutData)
     func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func checkIfOverlap(in wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
-    func closeWordBook(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData)
+    func moveWords(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData)
 }
 
 class WordBookServiceImpl: WordBookService {
@@ -34,7 +34,8 @@ class WordBookServiceImpl: WordBookService {
         db.checkIfOverlap(wordBook: wordBook, meaningText: meaningText, completionHandler: completionHandler)
     }
     
-    func closeWordBook(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData) {
+    // TODO: 복습으로 체크하는 기능 생기면 복습으로 체크하는 함수로 바꾸고 닫기 함수는 따로 만들기
+    func moveWords(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData) {
         if let destination = destination {
             wordService.copyWords(toMove, to: destination) { [weak self] error in
                 if let error = error { completionHandler(error) }

@@ -97,7 +97,7 @@ extension WordBookCloseView {
         }
         
         func closeBook(completionHandler: @escaping () -> Void) {
-            wordBookService.closeWordBook(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
+            wordBookService.moveWords(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
                 // TODO: Handle Error
                 if let error = error { print(error) }
                 completionHandler()
