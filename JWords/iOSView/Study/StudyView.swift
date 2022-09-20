@@ -115,7 +115,7 @@ extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook?
         @Published var words: [Word] = []
-        @Published private(set) var frontType: FrontType = .meaning
+        @Published private(set) var frontType: FrontType = .kanji
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
         private let wordService: WordService
