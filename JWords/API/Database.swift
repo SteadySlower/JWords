@@ -194,6 +194,9 @@ extension FirestoreDB {
     
     func copyWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData) {
         group.enter()
+    
+        wordRef(of: word.wordBookID).document(word.id).delete()
+        
         let data: [String : Any] = ["timestamp": Timestamp(date: Date()),
                                     "meaningText": word.meaningText,
                                     "meaningImageURL": word.meaningImageURL,
