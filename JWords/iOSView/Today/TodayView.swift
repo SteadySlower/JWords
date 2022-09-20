@@ -90,7 +90,7 @@ extension TodayView {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
                 guard let self = self else { return }
                 if let wordBooks = wordBooks {
-                    self.wordBooks = wordBooks
+                    self.wordBooks = wordBooks.filter { !$0.closed }
                 }
                 self.todayService.getTodayBooks { todayIDs, error in
                     self.todayIDs = todayIDs!
