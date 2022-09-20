@@ -48,11 +48,15 @@ extension TodaySelectionModal {
         var body: some View {
             ZStack {
                 HStack {
-                    Text(wordBook.title)
+                    VStack(alignment: .leading) {
+                        Text(wordBook.title)
+                        Text(viewModel.dateText(of: wordBook))
+                    }
                     Spacer()
                     Image(systemName: "checkmark")
                 }
                 .frame(height: 80)
+                .padding(8)
                 .border(.gray, width: 1)
                 .font(.system(size: 24))
                 .foregroundColor(isSelected ? .green : .black)
@@ -103,6 +107,13 @@ extension TodaySelectionModal {
             todayService.updateTodayBooks(selectedID) { error in
                 return
             }
+        }
+        
+        func dateText(of wordBook: WordBook) -> String {
+            let createdAt = wordBook.createdAt.onlyDate
+            let now = Date().onlyDate
+            let gap = Calendar.current.dateComponents([.day], from: createdAt, to: now).day ?? 0
+            return gap == 0 ? "今日" : "\(gap)日前"
         }
     }
 }
