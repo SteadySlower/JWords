@@ -374,7 +374,6 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC1F286942FE00AC156C /* HomeView.swift */,
-				5A67DC22286943A800AC156C /* HomeCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -401,6 +400,7 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC2C2869470C00AC156C /* WordCell.swift */,
+				5A67DC22286943A800AC156C /* HomeCell.swift */,
 			);
 			path = items;
 			sourceTree = "<group>";
