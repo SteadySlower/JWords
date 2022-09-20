@@ -50,9 +50,7 @@ extension HomeCell {
         }
         
         var dateText: String {
-            let createdAt = wordBook.createdAt.onlyDate
-            let now = Date().onlyDate
-            let gap = Calendar.current.dateComponents([.day], from: createdAt, to: now).day ?? 0
+            let gap = Calendar.current.getDateGap(from: wordBook.createdAt, to: Date())
             return gap == 0 ? "今日" : "\(gap)日前"
         }
     }

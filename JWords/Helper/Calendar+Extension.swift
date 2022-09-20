@@ -11,6 +11,6 @@ extension Calendar {
     func getDateGap(from: Date, to: Date) -> Int {
         let fromDateOnly = from.onlyDate
         let toDateOnly = to.onlyDate
-        return self.dateComponents([.day], from: from, to: to).day ?? 0
+        return self.dateComponents([.day], from: fromDateOnly, to: toDateOnly).day ?? 0
     }
 }
