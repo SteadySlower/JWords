@@ -99,7 +99,7 @@ struct StudyView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("닫기") { showCloseModal = true }
+                Button("마감") { showCloseModal = true }
                     .disabled(viewModel.wordBook == nil)
             }
         }
