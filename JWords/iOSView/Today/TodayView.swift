@@ -100,7 +100,7 @@ extension TodayView {
             }
         }
         
-        // TODO: handle error
+        // TODO: handle error + move logic to service
         func fetchOnlyFailWords() {
             var onlyFails = [Word]()
             let group = DispatchGroup()
