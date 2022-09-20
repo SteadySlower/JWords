@@ -23,9 +23,15 @@ struct HomeCell: View {
             NavigationLink {
                 StudyView(wordBook: viewModel.wordBook, dependency: dependency)
             } label: {
-                HStack {
-                    Text(viewModel.wordBook.title)
-                    Spacer()
+                VStack {
+                    HStack {
+                        Text(viewModel.wordBook.title)
+                        Spacer()
+                    }
+                    HStack {
+                        Spacer()
+                        Text(viewModel.dateText)
+                    }
                 }
                 .padding(12)
             }
@@ -41,6 +47,13 @@ extension HomeCell {
         
         init(wordBook: WordBook) {
             self.wordBook = wordBook
+        }
+        
+        var dateText: String {
+            let createdAt = wordBook.createdAt.onlyDate
+            let now = Date().onlyDate
+            let gap = Calendar.current.dateComponents([.day], from: createdAt, to: now).day ?? 0
+            return gap == 0 ? "今日" : "\(gap)日前"
         }
     }
 }
