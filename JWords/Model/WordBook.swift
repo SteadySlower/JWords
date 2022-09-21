@@ -7,12 +7,17 @@
 
 import Foundation
 
+enum WordBookSchedule {
+    case none, study, review
+}
+
 protocol WordBook {
     var id: String { get }
     var title: String { get }
     var createdAt: Date { get }
     var closed: Bool { get }
     var dayFromToday: Int { get }
+    var schedule: WordBookSchedule { get }
 }
 
 struct WordBookImpl: WordBook {
@@ -29,6 +34,19 @@ struct WordBookImpl: WordBook {
     
     var dayFromToday: Int {
         return Calendar.current.getDateGap(from: self.createdAt, to: Date())
+    }
+    
+    var schedule: WordBookSchedule {
+        let dayFromToday = self.dayFromToday
+        let reviewInterval = [3, 7, 14, 28]
+        
+        if dayFromToday < 3 {
+            return .study
+        } else if reviewInterval.contains(dayFromToday) {
+            return .review
+        } else {
+            return .none
+        }
     }
     
     init(id: String, dict: [String: Any]) throws {
