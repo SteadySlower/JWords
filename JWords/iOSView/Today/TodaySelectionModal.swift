@@ -51,6 +51,7 @@ extension TodaySelectionModal {
                     VStack(alignment: .leading) {
                         Text(wordBook.title)
                         Text(viewModel.dateText(of: wordBook))
+                            .foregroundColor(dateTextColor)
                     }
                     Spacer()
                     Image(systemName: "checkmark")
@@ -62,6 +63,14 @@ extension TodaySelectionModal {
                 .foregroundColor(isSelected ? .green : .black)
             }
             .onTapGesture { viewModel.toggleSelected(wordBook.id) }
+        }
+        
+        private var dateTextColor: Color {
+            switch wordBook.schedule {
+            case .none: return .black
+            case .study: return .blue
+            case .review: return .pink
+            }
         }
     }
 }

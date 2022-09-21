@@ -42,7 +42,7 @@ struct HomeCell: View {
     }
     
     private var dateTextColor: Color {
-        switch viewModel.wordBookSchedule {
+        switch viewModel.wordBook.schedule {
         case .none: return .black
         case .study: return .blue
         case .review: return .pink
@@ -51,9 +51,6 @@ struct HomeCell: View {
 }
 
 extension HomeCell {
-    enum WordBookSchedule {
-        case none, study, review
-    }
     
     final class ViewModel: ObservableObject {
         let wordBook: WordBook
@@ -65,19 +62,6 @@ extension HomeCell {
         var dateText: String {
             let dayGap = wordBook.dayFromToday
             return dayGap == 0 ? "今日" : "\(dayGap)日前"
-        }
-        
-        var wordBookSchedule: WordBookSchedule {
-            let dayFromToday = wordBook.dayFromToday
-            let reviewInterval = [3, 7, 14, 28]
-            
-            if wordBook.dayFromToday < 3 {
-                return .study
-            } else if reviewInterval.contains(dayFromToday) {
-                return .review
-            } else {
-                return .none
-            }
         }
     }
 }
