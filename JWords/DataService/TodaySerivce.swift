@@ -11,11 +11,13 @@ protocol TodayService {
     func updateReviewBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData)
     func getReviewBooks(_ completionHandler: @escaping CompletionWithData<[String]>)
     func getTodaysBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>)
+    func updateReviewed(_ id: String)
 }
 
 class TodayServiceImpl: TodayService {
     private var studyID = [String]()
     private var reviewID = [String]()
+    private var reviewedID = [String]()
     
     func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
         self.studyID = idArray
@@ -32,7 +34,8 @@ class TodayServiceImpl: TodayService {
     }
     
     func getReviewBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
-        completionHandler(reviewID, nil)
+        let filtered = reviewID.filter { !reviewedID.contains($0) }
+        completionHandler(filtered, nil)
     }
     
     func getTodaysBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
@@ -47,6 +50,11 @@ class TodayServiceImpl: TodayService {
         }
         self.studyID = studyID
         self.reviewID = reviewID
+        self.reviewedID = [String]()
         completionHandler((studyID, reviewID), nil)
+    }
+    
+    func updateReviewed(_ id: String) {
+        reviewedID.append(id)
     }
 }

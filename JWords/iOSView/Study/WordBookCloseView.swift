@@ -14,7 +14,7 @@ struct WordBookCloseView: View {
     @Binding private var didClosed: Bool
     
     init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
-        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords, wordBookService: dependency.wordBookService)
+        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords, dependency: dependency)
         self._didClosed = didClosed
         // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
         viewModel.getWordBooks()
@@ -62,6 +62,7 @@ extension WordBookCloseView {
         private let toClose: WordBook
         let toMoveWords: [Word]
         private let wordBookService: WordBookService
+        private let todayService: TodayService
         
         @Published var wordBooks = [WordBook]()
         @Published var selectedID: String?
@@ -74,10 +75,11 @@ extension WordBookCloseView {
             }
         }
         
-        init(toClose: WordBook, toMoveWords: [Word], wordBookService: WordBookService) {
+        init(toClose: WordBook, toMoveWords: [Word], dependency: Dependency) {
             self.toClose = toClose
             self.toMoveWords = toMoveWords
-            self.wordBookService = wordBookService
+            self.wordBookService = dependency.wordBookService
+            self.todayService = dependency.todayService
         }
         
         func getWordBooks() {
@@ -97,6 +99,7 @@ extension WordBookCloseView {
         }
         
         func closeBook(completionHandler: @escaping () -> Void) {
+            todayService.updateReviewed(toClose.id)
             wordBookService.moveWords(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
                 // TODO: Handle Error
                 if let error = error { print(error) }

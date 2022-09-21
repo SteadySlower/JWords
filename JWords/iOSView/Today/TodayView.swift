@@ -35,6 +35,7 @@ struct TodayView: View {
                 }
             }
         }
+        .onAppear { viewModel.fetchSchedule() }
         .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
         .toolbar {
             ToolbarItem {
