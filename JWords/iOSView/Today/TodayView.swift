@@ -35,7 +35,7 @@ struct TodayView: View {
                 }
             }
         }
-        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchStudyBooks() }) { TodaySelectionModal(dependency) }
+        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
         .toolbar {
             ToolbarItem {
                 HStack {
@@ -98,7 +98,7 @@ extension TodayView {
             self.wordService = dependency.wordService
         }
         
-        func fetchStudyBooks() {
+        func fetchSchedule() {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
                 guard let self = self else { return }
                 if let wordBooks = wordBooks {
@@ -108,6 +108,10 @@ extension TodayView {
                     self.studyIDs = todayIDs!
                     self.todayWordBooks = self.wordBooks.filter { self.studyIDs.contains($0.id) }
                     self.fetchOnlyFailWords()
+                }
+                self.todayService.getReviewBooks { reviewIDs, error in
+                    self.reviewIDs = reviewIDs!
+                    self.reviewWordBooks = self.wordBooks.filter { self.reviewIDs.contains($0.id) }
                 }
             }
         }
