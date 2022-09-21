@@ -20,18 +20,28 @@ struct TodayView: View {
     
     var body: some View {
         ScrollView {
+            Text("오늘 학습할 단어")
             OnlyFailCell(viewModel: viewModel, dependency: dependency)
             VStack(spacing: 8) {
                 ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
                     HomeCell(wordBook: todayBook, dependency: dependency)
                 }
             }
+            .padding(.bottom, 8)
+            Text("오늘 복습할 단어")
+            VStack(spacing: 8) {
+                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
+                    HomeCell(wordBook: reviewBook, dependency: dependency)
+                }
+            }
         }
-        .onAppear { viewModel.fetchStudyBooks() }
         .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchStudyBooks() }) { TodaySelectionModal(dependency) }
         .toolbar {
             ToolbarItem {
-                Button("+") { showModal = true }
+                HStack {
+                    Button("List") { showModal = true }
+                    Button("+") { viewModel.autoFetchTodayBooks() }
+                }
             }
         }
     }
@@ -75,6 +85,7 @@ extension TodayView {
         private var reviewIDs: [String] = []
         
         @Published private(set) var todayWordBooks: [WordBook] = []
+        @Published private(set) var reviewWordBooks: [WordBook] = []
         @Published private(set) var onlyFailWords: [Word] = []
         
         private let wordBookService: WordBookService
@@ -96,6 +107,24 @@ extension TodayView {
                 self.todayService.getStudyBooks { todayIDs, error in
                     self.studyIDs = todayIDs!
                     self.todayWordBooks = self.wordBooks.filter { self.studyIDs.contains($0.id) }
+                    self.fetchOnlyFailWords()
+                }
+            }
+        }
+        
+        // TODO: handle error
+        func autoFetchTodayBooks() {
+            wordBookService.getWordBooks { [weak self] wordBooks, error in
+                guard let self = self else { return }
+                guard let wordBooks = wordBooks else { return }
+                let filtered = wordBooks.filter { !$0.closed }
+                self.wordBooks = filtered
+                self.todayService.getTodaysBooks(filtered) { tuple, error in
+                    guard let tuple = tuple else { return }
+                    self.studyIDs = tuple.0
+                    self.reviewIDs = tuple.1
+                    self.todayWordBooks = self.wordBooks.filter { self.studyIDs.contains($0.id) }
+                    self.reviewWordBooks = self.wordBooks.filter { self.reviewIDs.contains($0.id) }
                     self.fetchOnlyFailWords()
                 }
             }
