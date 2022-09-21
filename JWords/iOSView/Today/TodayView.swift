@@ -27,8 +27,8 @@ struct TodayView: View {
                 }
             }
         }
-        .onAppear { viewModel.fetchTodayBooks() }
-        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchTodayBooks() }) { TodaySelectionModal(dependency) }
+        .onAppear { viewModel.fetchStudyBooks() }
+        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchStudyBooks() }) { TodaySelectionModal(dependency) }
         .toolbar {
             ToolbarItem {
                 Button("+") { showModal = true }
@@ -71,7 +71,8 @@ extension TodayView {
 extension TodayView {
     final class ViewModel: ObservableObject {
         private var wordBooks: [WordBook] = []
-        private var todayIDs: [String] = []
+        private var studyIDs: [String] = []
+        private var reviewIDs: [String] = []
         
         @Published private(set) var todayWordBooks: [WordBook] = []
         @Published private(set) var onlyFailWords: [Word] = []
@@ -86,15 +87,15 @@ extension TodayView {
             self.wordService = dependency.wordService
         }
         
-        func fetchTodayBooks() {
+        func fetchStudyBooks() {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
                 guard let self = self else { return }
                 if let wordBooks = wordBooks {
                     self.wordBooks = wordBooks.filter { !$0.closed }
                 }
                 self.todayService.getStudyBooks { todayIDs, error in
-                    self.todayIDs = todayIDs!
-                    self.todayWordBooks = self.wordBooks.filter { self.todayIDs.contains($0.id) }
+                    self.studyIDs = todayIDs!
+                    self.todayWordBooks = self.wordBooks.filter { self.studyIDs.contains($0.id) }
                     self.fetchOnlyFailWords()
                 }
             }
