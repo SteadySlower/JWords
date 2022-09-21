@@ -12,6 +12,7 @@ protocol WordBook {
     var title: String { get }
     var createdAt: Date { get }
     var closed: Bool { get }
+    var dayFromToday: Int { get }
 }
 
 struct WordBookImpl: WordBook {
@@ -24,6 +25,10 @@ struct WordBookImpl: WordBook {
     var closed: Bool {
         if let closed = _closed { return closed }
         return false
+    }
+    
+    var dayFromToday: Int {
+        return Calendar.current.getDateGap(from: self.createdAt, to: Date())
     }
     
     init(id: String, dict: [String: Any]) throws {
