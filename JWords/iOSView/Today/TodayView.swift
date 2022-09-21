@@ -92,7 +92,7 @@ extension TodayView {
                 if let wordBooks = wordBooks {
                     self.wordBooks = wordBooks.filter { !$0.closed }
                 }
-                self.todayService.getTodayBooks { todayIDs, error in
+                self.todayService.getStudyBooks { todayIDs, error in
                     self.todayIDs = todayIDs!
                     self.todayWordBooks = self.wordBooks.filter { self.todayIDs.contains($0.id) }
                     self.fetchOnlyFailWords()

@@ -6,18 +6,20 @@
 //
 
 protocol TodayService {
-    func updateTodayBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData)
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<[String]>)
+    func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData)
+    func getStudyBooks(_ completionHandler: @escaping CompletionWithData<[String]>)
 }
 
 class TodayServiceImpl: TodayService {
-    private var selectedID = [String]()
+    private var studyID = [String]()
+    private var reviewID = [String]()
     
-    func updateTodayBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
-        self.selectedID = idArray
+    func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
+        self.studyID = idArray
         completionHandler(nil)
     }
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
-        completionHandler(selectedID, nil)
+    
+    func getStudyBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
+        completionHandler(studyID, nil)
     }
 }

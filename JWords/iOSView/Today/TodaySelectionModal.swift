@@ -89,7 +89,7 @@ extension TodaySelectionModal {
                 if let wordBooks = wordBooks {
                     self?.wordBooks = wordBooks.filter { $0.closed == false }
                 }
-                self?.todayService.getTodayBooks { idArray, error in
+                self?.todayService.getStudyBooks { idArray, error in
                     self?.selectedID = idArray!
                 }
             }
@@ -104,7 +104,7 @@ extension TodaySelectionModal {
         }
         
         func updateToday() {
-            todayService.updateTodayBooks(selectedID) { error in
+            todayService.updateStudyBooks(selectedID) { error in
                 return
             }
         }
