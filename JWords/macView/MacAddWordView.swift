@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-#warning("여기 ios에서도 돌아가도록 바꾸기")
-
 #if os(iOS)
 import UIKit
 typealias PasteBoardType = UIPasteboard
