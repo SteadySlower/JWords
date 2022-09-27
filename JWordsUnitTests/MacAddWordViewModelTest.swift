@@ -9,8 +9,6 @@ import Quick
 import Nimble
 @testable import JWords
 
-
-#if os(macOS)
 class MacAddWordViewModelTest: QuickSpec {
     
     override func spec() {
@@ -111,4 +109,3 @@ class MacAddWordViewModelTest: QuickSpec {
     }
     
 }
-#endif
