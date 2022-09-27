@@ -17,12 +17,14 @@ class MacAddWordViewModelTest: QuickSpec {
         var wordBookService: MockWordBookService!
         var wordService: MockWordService!
         var sampleService: MockSampleService!
+        var todayService: MockTodayService!
         
         func prepare() {
             wordBookService = MockWordBookService()
             wordService = MockWordService()
             sampleService = MockSampleService()
-            dependency = MockDependency(wordBookService: wordBookService, wordService: wordService, sampleService: sampleService)
+            todayService = MockTodayService()
+            dependency = MockDependency(wordBookService: wordBookService, wordService: wordService, sampleService: sampleService, todayService: todayService)
             viewModel = MacAddWordView.ViewModel(dependency)
         }
         
