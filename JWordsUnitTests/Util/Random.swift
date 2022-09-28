@@ -31,4 +31,8 @@ class Random {
     static var bool: Bool {
         Bool.random()
     }
+    
+    static func int(from: Int, to: Int) -> Int {
+        (from...to).randomElement() ?? from
+    }
 }
