@@ -28,4 +28,7 @@ class Random {
         return Date(timeIntervalSince1970: now - gap)
     }
     
+    static var bool: Bool {
+        Bool.random()
+    }
 }
