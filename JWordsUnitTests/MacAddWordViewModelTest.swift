@@ -89,7 +89,7 @@ class MacAddWordViewModelTest: QuickSpec {
             }
         }
         
-        fdescribe("meaningImage") {
+        describe("meaningImage") {
             beforeEach {
                 prepare()
             }
@@ -163,8 +163,55 @@ class MacAddWordViewModelTest: QuickSpec {
             }
         }
         
-        describe("ganaText") {
-            
+        fdescribe("ganaText") {
+            beforeEach {
+                prepare()
+            }
+            // saveBooks하면 nil 되는지 테스트
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                }
+                context("when a book is selected") {
+                    beforeEach {
+                        viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    }
+                    context("when a word is saved with a meaningText") {
+                        beforeEach {
+                            viewModel.ganaText = Random.string
+                            viewModel.saveWord()
+                        }
+                        it("should be empty") {
+                            expect(viewModel.ganaText).to(beEmpty())
+                        }
+                    }
+                }
+                context("when a book is not selected") {
+                    context("when a word is saved with a meaningText") {
+                        beforeEach {
+                            viewModel.ganaText = Random.string
+                            viewModel.saveWord()
+                        }
+                        it("should not be empty") {
+                            expect(viewModel.ganaText).notTo(beEmpty())
+                        }
+                    }
+                }
+            }
+            context("when wordBooks fail to be get") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                context("when a word is saved with a meaningText") {
+                    beforeEach {
+                        viewModel.ganaText = Random.string
+                        viewModel.saveWord()
+                    }
+                    it("should not be empty") {
+                        expect(viewModel.ganaText).notTo(beEmpty())
+                    }
+                }
+            }
         }
         
         describe("ganaImage") {
