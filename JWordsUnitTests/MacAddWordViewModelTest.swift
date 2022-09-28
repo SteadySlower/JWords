@@ -8,6 +8,7 @@
 import Quick
 import Nimble
 @testable import JWords
+import UIKit
 
 class MacAddWordViewModelTest: QuickSpec {
     
@@ -32,6 +33,7 @@ class MacAddWordViewModelTest: QuickSpec {
             beforeEach {
                 prepare()
             }
+            // saveBooks하면 nil 되는지 테스트
             context("when wordBooks are got successfully") {
                 beforeEach {
                     var books = [WordBook]()
@@ -83,9 +85,82 @@ class MacAddWordViewModelTest: QuickSpec {
             }
         }
         
-        describe("meaningImage") {
+        fdescribe("meaningImage") {
             beforeEach {
                 prepare()
+            }
+            // insert와 clear 함수 테스트
+            context("when an image inserted with inputType of .meaning") {
+                beforeEach {
+                    let image = UIImage()
+                    viewModel.insertImage(of: .meaning, image: image)
+                }
+                it("should be not nil") {
+                    expect(viewModel.meaningImage).notTo(beNil())
+                }
+                context("when the image with inputType of .meaning is cleared") {
+                    beforeEach {
+                        viewModel.clearImageInput(.meaning)
+                    }
+                    it("should be nil") {
+                        expect(viewModel.meaningImage).to(beNil())
+                    }
+                }
+            }
+            
+            // saveWord 일 때 nil 되는지 테스트
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    var books = [WordBook]()
+                    for _ in 0..<Random.int(from: 1, to: 100) {
+                        books.append(MockWordBook())
+                    }
+                    wordBookService.getWordBooksSuccess = books
+                    viewModel.getWordBooks()
+                }
+                context("when a book is selected") {
+                    beforeEach {
+                        viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    }
+                    context("when a word is saved with an inserted meaning image") {
+                        beforeEach {
+                            let image = UIImage()
+                            viewModel.insertImage(of: .meaning, image: image)
+                            viewModel.saveWord()
+                        }
+                        it("should be nil") {
+                            expect(viewModel.meaningImage).to(beNil())
+                        }
+                    }
+                }
+                context("when a book is not selected") {
+                    context("when a word is saved with an inserted meaning image") {
+                        beforeEach {
+                            let image = UIImage()
+                            viewModel.insertImage(of: .meaning, image: image)
+                            viewModel.saveWord()
+                        }
+                        it("should not be nil") {
+                            expect(viewModel.meaningImage).notTo(beNil())
+                        }
+                    }
+                }
+            }
+            
+            context("when wordBooks fail to be get") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                context("when a word is saved with an inserted meaning image") {
+                    beforeEach {
+                        let image = UIImage()
+                        viewModel.insertImage(of: .meaning, image: image)
+                        viewModel.saveWord()
+                    }
+                    it("should not be nil") {
+                        expect(viewModel.meaningImage).notTo(beNil())
+                    }
+                }
             }
         }
         
