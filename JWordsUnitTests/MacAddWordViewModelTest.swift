@@ -29,15 +29,63 @@ class MacAddWordViewModelTest: QuickSpec {
         }
         
         describe("meaningText") {
-            
-        }
-        
-        fdescribe("meaningImage") {
             beforeEach {
                 prepare()
             }
-            it("should be nil at first") {
-                expect(viewModel.meaningImage).to(beNil())
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    var books = [WordBook]()
+                    for _ in 0..<Random.int(from: 1, to: 100) {
+                        books.append(MockWordBook())
+                    }
+                    wordBookService.getWordBooksSuccess = books
+                    viewModel.getWordBooks()
+                }
+                context("when a book is selected") {
+                    beforeEach {
+                        viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    }
+                    context("when a word is saved with a meaningText") {
+                        beforeEach {
+                            viewModel.meaningText = Random.string
+                            viewModel.saveWord()
+                        }
+                        it("should be empty") {
+                            expect(viewModel.meaningText).to(beEmpty())
+                        }
+                    }
+                }
+                context("when a book is not selected") {
+                    context("when a word is saved with a meaningText") {
+                        beforeEach {
+                            viewModel.meaningText = Random.string
+                            viewModel.saveWord()
+                        }
+                        it("should not be empty") {
+                            expect(viewModel.meaningText).notTo(beEmpty())
+                        }
+                    }
+                }
+            }
+            context("when wordBooks fail to be get") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                context("when a word is saved with a meaningText") {
+                    beforeEach {
+                        viewModel.meaningText = Random.string
+                        viewModel.saveWord()
+                    }
+                    it("should not be empty") {
+                        expect(viewModel.meaningText).notTo(beEmpty())
+                    }
+                }
+            }
+        }
+        
+        describe("meaningImage") {
+            beforeEach {
+                prepare()
             }
         }
         
