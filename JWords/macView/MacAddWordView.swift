@@ -105,14 +105,15 @@ extension MacAddWordView {
         @EnvironmentObject private var viewModel: ViewModel
         
         var body: some View {
-            if viewModel.didBooksFetched && !viewModel.bookList.isEmpty {
-                Picker(selection: $viewModel.selectedBookIndex, label: Text("선택된 단어장:")) {
-                    ForEach(0..<viewModel.bookList.count, id: \.self) { index in
-                        Text(viewModel.bookList[index].title)
-                    }
+            Picker("", selection: $viewModel.selectedBookID) {
+                Text(viewModel.wordBookPickerDefaultText)
+                    .tag(nil as String?)
+                ForEach(viewModel.bookList, id: \.id) { book in
+                    Text(book.title)
+                        .tag(book.id as String?)
                 }
-                .padding()
             }
+            .padding()
         }
     }
     
@@ -285,12 +286,18 @@ extension MacAddWordView {
         
         // 저장할 단어장 관련 properties
         @Published private(set) var bookList: [WordBook] = []
-        @Published var selectedBookIndex = 0
+        @Published var selectedBookID: String?
         @Published private(set) var didBooksFetched: Bool = false
         @Published private(set) var isUploading: Bool = false
         
-        private var selectedBook: WordBook {
-            bookList[selectedBookIndex]
+        var wordBookPickerDefaultText: String {
+            if didBooksFetched && !bookList.isEmpty {
+                return "단어장을 선택해주세요"
+            } else if didBooksFetched && bookList.isEmpty {
+                return "단어장 리스트 불러오기 실패"
+            } else {
+                return "단어장 불러오는 중..."
+            }
         }
         
         // 예시 관련 properties
@@ -351,7 +358,13 @@ extension MacAddWordView {
         
         func saveWord() {
             isUploading = true
-            let wordInput = WordInputImpl(wordBookID: selectedBook.id, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
+            guard let wordBookID = selectedBookID else {
+                // TODO: handle error
+                print("선택된 단어장이 없어서 저장할 수 없음")
+                isUploading = false
+                return
+            }
+            let wordInput = WordInputImpl(wordBookID: wordBookID, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
             // example이 있는지 확인하고 example과 동일한지 확인하고
                 // 동일하면 example의 used에 + 1
                 // 동일하지 않으면 새로운 example 추가한다.
@@ -372,7 +385,13 @@ extension MacAddWordView {
         
         func checkIfOverlap() {
             isCheckingOverlap = true
-            wordBookService.checkIfOverlap(in: selectedBook, meaningText: meaningText) { [weak self] isOverlapped, error in
+            // TODO: handle error
+            guard let selectedWordBook = bookList.first(where: { $0.id == selectedBookID }) else {
+                print("선택된 단어장이 없어서 검색할 수 없음")
+                isCheckingOverlap = false
+                return
+            }
+            wordBookService.checkIfOverlap(in: selectedWordBook, meaningText: meaningText) { [weak self] isOverlapped, error in
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isOverlapped = isOverlapped ?? false
                 self?.isCheckingOverlap = false
