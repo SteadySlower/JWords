@@ -29,6 +29,15 @@ class MacAddWordViewModelTest: QuickSpec {
             viewModel = MacAddWordView.ViewModel(dependency)
         }
         
+        func getWordBooksSuccessfully() {
+            var books = [WordBook]()
+            for _ in 0..<Random.int(from: 1, to: 100) {
+                books.append(MockWordBook())
+            }
+            wordBookService.getWordBooksSuccess = books
+            viewModel.getWordBooks()
+        }
+        
         describe("meaningText") {
             beforeEach {
                 prepare()
@@ -36,12 +45,7 @@ class MacAddWordViewModelTest: QuickSpec {
             // saveBooks하면 nil 되는지 테스트
             context("when wordBooks are got successfully") {
                 beforeEach {
-                    var books = [WordBook]()
-                    for _ in 0..<Random.int(from: 1, to: 100) {
-                        books.append(MockWordBook())
-                    }
-                    wordBookService.getWordBooksSuccess = books
-                    viewModel.getWordBooks()
+                    getWordBooksSuccessfully()
                 }
                 context("when a book is selected") {
                     beforeEach {
@@ -111,12 +115,7 @@ class MacAddWordViewModelTest: QuickSpec {
             // saveWord 일 때 nil 되는지 테스트
             context("when wordBooks are got successfully") {
                 beforeEach {
-                    var books = [WordBook]()
-                    for _ in 0..<Random.int(from: 1, to: 100) {
-                        books.append(MockWordBook())
-                    }
-                    wordBookService.getWordBooksSuccess = books
-                    viewModel.getWordBooks()
+                    getWordBooksSuccessfully()
                 }
                 context("when a book is selected") {
                     beforeEach {
