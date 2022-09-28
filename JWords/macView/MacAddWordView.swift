@@ -284,17 +284,17 @@ extension MacAddWordView {
         @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
-        @Published var bookList: [WordBook] = []
+        @Published private(set) var bookList: [WordBook] = []
         @Published var selectedBookIndex = 0
-        @Published var didBooksFetched: Bool = false
-        @Published var isUploading: Bool = false
+        @Published private(set) var didBooksFetched: Bool = false
+        @Published private(set) var isUploading: Bool = false
         
         private var selectedBook: WordBook {
             bookList[selectedBookIndex]
         }
         
         // 예시 관련 properties
-        @Published var samples: [Sample] = []
+        @Published private(set) var samples: [Sample] = []
         @Published var selectedSampleID: String? = nil {
             didSet {
                 updateTextWithExample()
@@ -315,8 +315,8 @@ extension MacAddWordView {
             return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading
         }
         
-        @Published var isCheckingOverlap: Bool = false
-        @Published var isOverlapped: Bool? = nil
+        @Published private(set) var isCheckingOverlap: Bool = false
+        @Published private(set) var isOverlapped: Bool? = nil
         
         var overlapCheckButtonTitle: String {
             if isCheckingOverlap {
