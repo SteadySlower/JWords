@@ -22,4 +22,10 @@ class Random {
         return result
     }
     
+    static var dateWithinYear: Date {
+        let now = Date().timeIntervalSince1970
+        let gap = Double((0..<31536000).randomElement() ?? 0)
+        return Date(timeIntervalSince1970: now - gap)
+    }
+    
 }
