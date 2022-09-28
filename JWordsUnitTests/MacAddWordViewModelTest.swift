@@ -163,7 +163,7 @@ class MacAddWordViewModelTest: QuickSpec {
             }
         }
         
-        fdescribe("ganaText") {
+        describe("ganaText") {
             beforeEach {
                 prepare()
             }
@@ -219,7 +219,54 @@ class MacAddWordViewModelTest: QuickSpec {
         }
         
         describe("kanjiText") {
-            
+            beforeEach {
+                prepare()
+            }
+            // saveBooks하면 nil 되는지 테스트
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                }
+                context("when a book is selected") {
+                    beforeEach {
+                        viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    }
+                    context("when a word is saved with a meaningText") {
+                        beforeEach {
+                            viewModel.kanjiText = Random.string
+                            viewModel.saveWord()
+                        }
+                        it("should be empty") {
+                            expect(viewModel.kanjiText).to(beEmpty())
+                        }
+                    }
+                }
+                context("when a book is not selected") {
+                    context("when a word is saved with a meaningText") {
+                        beforeEach {
+                            viewModel.kanjiText = Random.string
+                            viewModel.saveWord()
+                        }
+                        it("should not be empty") {
+                            expect(viewModel.kanjiText).notTo(beEmpty())
+                        }
+                    }
+                }
+            }
+            context("when wordBooks fail to be get") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                context("when a word is saved with a meaningText") {
+                    beforeEach {
+                        viewModel.kanjiText = Random.string
+                        viewModel.saveWord()
+                    }
+                    it("should not be empty") {
+                        expect(viewModel.kanjiText).notTo(beEmpty())
+                    }
+                }
+            }
         }
         
         describe("kanjiImage") {
