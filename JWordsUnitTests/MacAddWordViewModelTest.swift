@@ -215,7 +215,77 @@ class MacAddWordViewModelTest: QuickSpec {
         }
         
         describe("ganaImage") {
+            beforeEach {
+                prepare()
+            }
+            // insert와 clear 함수 테스트
+            context("when an image inserted with inputType of .gana") {
+                beforeEach {
+                    let image = UIImage()
+                    viewModel.insertImage(of: .gana, image: image)
+                }
+                it("should be not nil") {
+                    expect(viewModel.ganaImage).notTo(beNil())
+                }
+                context("when the image with inputType of .gana is cleared") {
+                    beforeEach {
+                        viewModel.clearImageInput(.gana)
+                    }
+                    it("should be nil") {
+                        expect(viewModel.ganaImage).to(beNil())
+                    }
+                }
+            }
             
+            // saveWord 일 때 nil 되는지 테스트
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                }
+                context("when a book is selected") {
+                    beforeEach {
+                        viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    }
+                    context("when a word is saved with an inserted gana image") {
+                        beforeEach {
+                            let image = UIImage()
+                            viewModel.insertImage(of: .gana, image: image)
+                            viewModel.saveWord()
+                        }
+                        it("should be nil") {
+                            expect(viewModel.ganaImage).to(beNil())
+                        }
+                    }
+                }
+                context("when a book is not selected") {
+                    context("when a word is saved with an inserted gana image") {
+                        beforeEach {
+                            let image = UIImage()
+                            viewModel.insertImage(of: .gana, image: image)
+                            viewModel.saveWord()
+                        }
+                        it("should not be nil") {
+                            expect(viewModel.ganaImage).notTo(beNil())
+                        }
+                    }
+                }
+            }
+            
+            context("when wordBooks fail to be get") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                context("when a word is saved with an inserted gana image") {
+                    beforeEach {
+                        let image = UIImage()
+                        viewModel.insertImage(of: .gana, image: image)
+                        viewModel.saveWord()
+                    }
+                    it("should not be nil") {
+                        expect(viewModel.ganaImage).notTo(beNil())
+                    }
+                }
+            }
         }
         
         describe("kanjiText") {
