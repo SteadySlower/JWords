@@ -393,7 +393,11 @@ extension MacAddWordView {
                 return
             }
             wordBookService.checkIfOverlap(in: selectedWordBook, meaningText: meaningText) { [weak self] isOverlapped, error in
-                if let error = error { print("디버그: \(error)"); return }
+                if let error = error {
+                    self?.isCheckingOverlap = false
+                    print("디버그: \(error)")
+                    return
+                }
                 self?.isOverlapped = isOverlapped ?? false
                 self?.isCheckingOverlap = false
             }
