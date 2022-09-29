@@ -38,6 +38,15 @@ class MacAddWordViewModelTest: QuickSpec {
             viewModel.getWordBooks()
         }
         
+        func getSamplesSuccessfully() {
+            var samples = [Sample]()
+            for _ in 1..<Random.int(from: 2, to: 100) {
+                samples.append(MockSample())
+            }
+            sampleService.getSamplesSuccess = samples
+            viewModel.getExamples()
+        }
+        
         describe("meaningText") {
             beforeEach {
                 prepare()
@@ -488,6 +497,32 @@ class MacAddWordViewModelTest: QuickSpec {
         describe("samples") {
             beforeEach {
                 prepare()
+            }
+            context("when samples are got successfully") {
+                beforeEach {
+                    getSamplesSuccessfully()
+                }
+                it("should not be empty") {
+                    expect(viewModel.samples).notTo(beEmpty())
+                }
+                context("when word is saved successfully") {
+                    beforeEach {
+                        getWordBooksSuccessfully()
+                        viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                        viewModel.saveWord()
+                    }
+                    it("should be empty") {
+                        expect(viewModel.samples).to(beEmpty())
+                    }
+                }
+            }
+            context("when samples fail to be got") {
+                beforeEach {
+                    viewModel.getExamples()
+                }
+                it("should be empty") {
+                    expect(viewModel.samples).to(beEmpty())
+                }
             }
         }
         
