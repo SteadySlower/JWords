@@ -583,7 +583,61 @@ class MacAddWordViewModelTest: QuickSpec {
         }
         
         describe("isOverlapped") {
-            
+            beforeEach {
+                prepare()
+
+            }
+            context("when wordBooks are got successfully and a book is selected") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                    viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                }
+                it("should be nil at first") {
+                    expect(viewModel.isOverlapped).to(beNil())
+                }
+                context("when checkIfOverlap is successful with true") {
+                    beforeEach {
+                        wordBookService.checkIfOverlapSuccess = true
+                        viewModel.checkIfOverlap()
+                    }
+                    it("should be true") {
+                        expect(viewModel.isOverlapped).to(beTrue())
+                    }
+                    context("when meaningText is updated") {
+                        beforeEach {
+                            viewModel.meaningText = Random.string
+                        }
+                        it("should be nil") {
+                            expect(viewModel.isOverlapped).to(beNil())
+                        }
+                    }
+                }
+                context("when checkIfOverlap is successful with false") {
+                    beforeEach {
+                        wordBookService.checkIfOverlapSuccess = false
+                        viewModel.checkIfOverlap()
+                    }
+                    it("should be false") {
+                        expect(viewModel.isOverlapped).to(beFalse())
+                    }
+                    context("when meaningText is updated") {
+                        beforeEach {
+                            viewModel.meaningText = Random.string
+                        }
+                        it("should be nil") {
+                            expect(viewModel.isOverlapped).to(beNil())
+                        }
+                    }
+                }
+                context("when checkIfOverlap fails") {
+                    beforeEach {
+                        viewModel.checkIfOverlap()
+                    }
+                    it("should be nil") {
+                        expect(viewModel.isOverlapped).to(beNil())
+                    }
+                }
+            }
         }
         
         describe("overlapCheckButtonTitle") {
