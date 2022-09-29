@@ -16,15 +16,6 @@ struct MockWordBook: WordBook {
     let dayFromToday: Int
     let schedule: WordBookSchedule
     
-    init() {
-        self.id = UUID().uuidString
-        self.title = Random.string
-        self.createdAt = Random.dateWithinYear
-        self.closed = Random.bool
-        self.dayFromToday = Random.int(from: 0, to: 100)
-        self.schedule = WordBookSchedule.allCases.randomElement() ?? .none
-    }
-    
     init(
         id: String = UUID().uuidString,
         title: String = Random.string,
