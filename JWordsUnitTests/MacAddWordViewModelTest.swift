@@ -73,7 +73,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                 }
             }
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
@@ -96,7 +96,7 @@ class MacAddWordViewModelTest: QuickSpec {
             // insert와 clear 함수 테스트
             context("when an image inserted with inputType of .meaning") {
                 beforeEach {
-                    let image = UIImage()
+                    let image = InputImageType()
                     viewModel.insertImage(of: .meaning, image: image)
                 }
                 it("should be not nil") {
@@ -123,7 +123,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                     context("when a word is saved with an inserted meaning image") {
                         beforeEach {
-                            let image = UIImage()
+                            let image = InputImageType()
                             viewModel.insertImage(of: .meaning, image: image)
                             viewModel.saveWord()
                         }
@@ -135,7 +135,7 @@ class MacAddWordViewModelTest: QuickSpec {
                 context("when a book is not selected") {
                     context("when a word is saved with an inserted meaning image") {
                         beforeEach {
-                            let image = UIImage()
+                            let image = InputImageType()
                             viewModel.insertImage(of: .meaning, image: image)
                             viewModel.saveWord()
                         }
@@ -146,13 +146,13 @@ class MacAddWordViewModelTest: QuickSpec {
                 }
             }
             
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
                 context("when a word is saved with an inserted meaning image") {
                     beforeEach {
-                        let image = UIImage()
+                        let image = InputImageType()
                         viewModel.insertImage(of: .meaning, image: image)
                         viewModel.saveWord()
                     }
@@ -198,7 +198,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                 }
             }
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
@@ -221,7 +221,7 @@ class MacAddWordViewModelTest: QuickSpec {
             // insert와 clear 함수 테스트
             context("when an image inserted with inputType of .gana") {
                 beforeEach {
-                    let image = UIImage()
+                    let image = InputImageType()
                     viewModel.insertImage(of: .gana, image: image)
                 }
                 it("should be not nil") {
@@ -248,7 +248,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                     context("when a word is saved with an inserted gana image") {
                         beforeEach {
-                            let image = UIImage()
+                            let image = InputImageType()
                             viewModel.insertImage(of: .gana, image: image)
                             viewModel.saveWord()
                         }
@@ -260,7 +260,7 @@ class MacAddWordViewModelTest: QuickSpec {
                 context("when a book is not selected") {
                     context("when a word is saved with an inserted gana image") {
                         beforeEach {
-                            let image = UIImage()
+                            let image = InputImageType()
                             viewModel.insertImage(of: .gana, image: image)
                             viewModel.saveWord()
                         }
@@ -271,13 +271,13 @@ class MacAddWordViewModelTest: QuickSpec {
                 }
             }
             
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
                 context("when a word is saved with an inserted gana image") {
                     beforeEach {
-                        let image = UIImage()
+                        let image = InputImageType()
                         viewModel.insertImage(of: .gana, image: image)
                         viewModel.saveWord()
                     }
@@ -323,7 +323,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                 }
             }
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
@@ -346,7 +346,7 @@ class MacAddWordViewModelTest: QuickSpec {
             // insert와 clear 함수 테스트
             context("when an image inserted with inputType of .kanji") {
                 beforeEach {
-                    let image = UIImage()
+                    let image = InputImageType()
                     viewModel.insertImage(of: .kanji, image: image)
                 }
                 it("should be not nil") {
@@ -373,7 +373,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                     context("when a word is saved with an inserted kanji image") {
                         beforeEach {
-                            let image = UIImage()
+                            let image = InputImageType()
                             viewModel.insertImage(of: .kanji, image: image)
                             viewModel.saveWord()
                         }
@@ -385,7 +385,7 @@ class MacAddWordViewModelTest: QuickSpec {
                 context("when a book is not selected") {
                     context("when a word is saved with an inserted kanji image") {
                         beforeEach {
-                            let image = UIImage()
+                            let image = InputImageType()
                             viewModel.insertImage(of: .kanji, image: image)
                             viewModel.saveWord()
                         }
@@ -396,13 +396,13 @@ class MacAddWordViewModelTest: QuickSpec {
                 }
             }
             
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
                 context("when a word is saved with an inserted gana image") {
                     beforeEach {
-                        let image = UIImage()
+                        let image = InputImageType()
                         viewModel.insertImage(of: .gana, image: image)
                         viewModel.saveWord()
                     }
@@ -425,7 +425,7 @@ class MacAddWordViewModelTest: QuickSpec {
                     expect(viewModel.bookList).notTo(beEmpty())
                 }
             }
-            context("when wordBooks fail to be get") {
+            context("when wordBooks fail to be got") {
                 beforeEach {
                     viewModel.getWordBooks()
                 }
@@ -435,24 +435,60 @@ class MacAddWordViewModelTest: QuickSpec {
             }
         }
         
-        describe("selectedBookIndex") {
-            
-        }
         
         describe("didBooksFetched") {
-            
+            beforeEach {
+                prepare()
+            }
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                }
+                it("should be true") {
+                    expect(viewModel.didBooksFetched).to(beTrue())
+                }
+            }
+            context("when wordBooks fail to be got") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                it("should be true") {
+                    expect(viewModel.didBooksFetched).to(beTrue())
+                }
+            }
         }
         
-        describe("isUploading") {
-            
-        }
-        
-        describe("selectedBook") {
-            
+        describe("wordBookPickerDefaultText") {
+            beforeEach {
+                prepare()
+            }
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                }
+                it("should be '단어장을 선택해주세요'") {
+                    expect(viewModel.wordBookPickerDefaultText).to(equal("단어장을 선택해주세요"))
+                }
+            }
+            context("when wordBooks fail to be got") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                it("should be '단어장 리스트 불러오기 실패'") {
+                    expect(viewModel.wordBookPickerDefaultText).to(equal("단어장 리스트 불러오기 실패"))
+                }
+            }
+            context("when wordBooks are not yet got") {
+                it("should be '단어장 불러오는 중...'") {
+                    expect(viewModel.wordBookPickerDefaultText).to(equal("단어장 불러오는 중..."))
+                }
+            }
         }
         
         describe("samples") {
-            
+            beforeEach {
+                prepare()
+            }
         }
         
         describe("selectedSampleID") {
