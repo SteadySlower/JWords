@@ -348,6 +348,7 @@ extension MacAddWordView {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
                 if let error = error {
                     print("디버그: \(error.localizedDescription)")
+                    self?.didBooksFetched = true
                     return
                 }
                 guard let wordBooks = wordBooks else { return }
