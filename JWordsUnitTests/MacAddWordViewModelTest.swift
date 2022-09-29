@@ -31,7 +31,7 @@ class MacAddWordViewModelTest: QuickSpec {
         
         func getWordBooksSuccessfully() {
             var books = [WordBook]()
-            for _ in 0..<Random.int(from: 1, to: 100) {
+            for _ in 1..<Random.int(from: 2, to: 100) {
                 books.append(MockWordBook())
             }
             wordBookService.getWordBooksSuccess = books
@@ -414,7 +414,25 @@ class MacAddWordViewModelTest: QuickSpec {
         }
         
         describe("bookList") {
-            
+            beforeEach {
+                prepare()
+            }
+            context("when wordBooks are got successfully") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                }
+                it("should be not empty") {
+                    expect(viewModel.bookList).notTo(beEmpty())
+                }
+            }
+            context("when wordBooks fail to be get") {
+                beforeEach {
+                    viewModel.getWordBooks()
+                }
+                it("should be empty") {
+                    expect(viewModel.bookList).to(beEmpty())
+                }
+            }
         }
         
         describe("selectedBookIndex") {
