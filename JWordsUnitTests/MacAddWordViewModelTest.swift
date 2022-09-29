@@ -641,7 +641,44 @@ class MacAddWordViewModelTest: QuickSpec {
         }
         
         describe("overlapCheckButtonTitle") {
-            
+            beforeEach {
+                prepare()
+            }
+            it("should be '중복체크' at first") {
+                expect(viewModel.overlapCheckButtonTitle).to(equal("중복체크"))
+            }
+            context("when checkIfOverlap is successful with true") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                    viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    wordBookService.checkIfOverlapSuccess = true
+                    viewModel.checkIfOverlap()
+                }
+                it("should be '중복됨'") {
+                    expect(viewModel.overlapCheckButtonTitle).to(equal("중복됨"))
+                }
+            }
+            context("when checkIfOverlap is successful with false") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                    viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    wordBookService.checkIfOverlapSuccess = false
+                    viewModel.checkIfOverlap()
+                }
+                it("should be '중복 아님'") {
+                    expect(viewModel.overlapCheckButtonTitle).to(equal("중복 아님"))
+                }
+            }
+            context("when checkIfOverlap is failed") {
+                beforeEach {
+                    getWordBooksSuccessfully()
+                    viewModel.selectedBookID = viewModel.bookList.randomElement()!.id
+                    viewModel.checkIfOverlap()
+                }
+                it("should be '중복체크'") {
+                    expect(viewModel.overlapCheckButtonTitle).to(equal("중복체크"))
+                }
+            }
         }
     }
     
