@@ -526,24 +526,60 @@ class MacAddWordViewModelTest: QuickSpec {
             }
         }
         
-        describe("selectedSampleID") {
-            
-        }
-        
-        describe("selectedSample") {
-            
-        }
-        
-        describe("didExampleUsed") {
-            
-        }
-        
         describe("isSaveButtonUnable") {
-            
-        }
-        
-        describe("isCheckingOverlap") {
-            
+            beforeEach {
+                prepare()
+            }
+            context("when meaningText is not empty or meaningImage is not nil") {
+                beforeEach {
+                    if Random.bool {
+                        viewModel.meaningText = Random.string
+                    }
+                    if Random.bool {
+                        viewModel.insertImage(of: .meaning, image: InputImageType())
+                    }
+                    if viewModel.meaningText.isEmpty && viewModel.meaningImage == nil {
+                        viewModel.meaningText = Random.string
+                    }
+                }
+                context("when ganaText is not empty or ganaImage is not nil") {
+                    beforeEach {
+                        if Random.bool {
+                            viewModel.ganaText = Random.string
+                        }
+                        if Random.bool {
+                            viewModel.insertImage(of: .gana, image: InputImageType())
+                        }
+                        if viewModel.ganaText.isEmpty && viewModel.ganaImage == nil {
+                            viewModel.ganaText = Random.string
+                        }
+                    }
+                    it("should be false") {
+                        expect(viewModel.isSaveButtonUnable).to(beFalse())
+                    }
+                }
+                context("when kanjiText is not empty or kanjiImage is not nil") {
+                    beforeEach {
+                        if Random.bool {
+                            viewModel.kanjiText = Random.string
+                        }
+                        if Random.bool {
+                            viewModel.insertImage(of: .kanji, image: InputImageType())
+                        }
+                        if viewModel.kanjiText.isEmpty && viewModel.kanjiImage == nil {
+                            viewModel.kanjiText = Random.string
+                        }
+                    }
+                    it("should be false") {
+                        expect(viewModel.isSaveButtonUnable).to(beFalse())
+                    }
+                }
+            }
+            context("when meaningText is empty and meaningImage is nil") {
+                it("should be true") {
+                    expect(viewModel.isSaveButtonUnable).to(beTrue())
+                }
+            }
         }
         
         describe("isOverlapped") {
