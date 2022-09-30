@@ -88,5 +88,18 @@ class StudyViewModelTest: QuickSpec {
                 }
             }
         }
+        
+        describe("frontType") {
+            beforeEach {
+                prepare()
+            }
+            it("should be .kanji at first") {
+                expect(viewModel.frontType).to(equal(.kanji))
+            }
+            it("should be .meaning when toggled") {
+                viewModel.toggleFrontType()
+                expect(viewModel.frontType).to(equal(.meaning))
+            }
+        }
     }
 }
