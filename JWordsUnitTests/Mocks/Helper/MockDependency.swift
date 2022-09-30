@@ -12,11 +12,13 @@ class MockDependency: Dependency {
     let wordBookService: WordBookService
     let wordService: WordService
     let sampleService: SampleService
+    let todayService: TodayService
 
-    init(wordBookService: WordBookService, wordService: WordService, sampleService: SampleService) {
+    init(wordBookService: WordBookService, wordService: WordService, sampleService: SampleService, todayService: TodayService) {
         self.wordBookService = wordBookService
         self.wordService = wordService
         self.sampleService = sampleService
+        self.todayService = todayService
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WordBookSchedule {
+enum WordBookSchedule: CaseIterable {
     case none, study, review
 }
 
