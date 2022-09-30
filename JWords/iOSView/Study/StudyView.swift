@@ -165,7 +165,7 @@ extension StudyView {
             }
         }
         
-        func updateStudyState(word: Word, state: StudyState) {
+        private func updateStudyState(word: Word, state: StudyState) {
             wordService.updateStudyState(word: word, newState: state) { [weak self] error in
                 // FIXME: handle error
                 if let error = error { print(error); return }

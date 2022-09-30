@@ -101,5 +101,7 @@ class StudyViewModelTest: QuickSpec {
                 expect(viewModel.frontType).to(equal(.meaning))
             }
         }
+        
+        
     }
 }
