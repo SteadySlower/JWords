@@ -8,6 +8,7 @@
 import Quick
 import Nimble
 @testable import JWords
+import Foundation
 
 class StudyViewModelTest: QuickSpec {
     
@@ -102,6 +103,40 @@ class StudyViewModelTest: QuickSpec {
             }
         }
         
-        
+        describe("onlyFail") {
+            let successCount = Random.int(from: 1, to: 33)
+            let failCount = Random.int(from: 1, to: 33)
+            let undefinedCount = Random.int(from: 1, to: 33)
+            let failID = UUID().uuidString
+            let failWord = MockWord(id: failID, studyState: .fail)
+            beforeEach {
+                var words = [Word]()
+                
+                for _ in 0..<successCount {
+                    words.append(MockWord(studyState: .success))
+                }
+                
+                words.append(failWord)
+                for _ in 0..<(failCount - 1) {
+                    words.append(MockWord(studyState: .fail))
+                }
+                
+                for _ in 0..<undefinedCount {
+                    words.append(MockWord(studyState: .undefined))
+                }
+                prepare(words: words)
+            }
+            it("should have the same count with failCount + undefinedCount") {
+                expect(viewModel.onlyFail.count).to(equal(failCount + undefinedCount))
+            }
+            context("when a failed word's studyState is updated to success") {
+                beforeEach {
+                    viewModel.handleEvent(CellEvent.studyStateUpdate(word: failWord, state: .success))
+                }
+                it("'s count should be decreased by 1") {
+                    expect(viewModel.onlyFail.count).to(equal(failCount + undefinedCount - 1))
+                }
+            }
+        }
     }
 }
