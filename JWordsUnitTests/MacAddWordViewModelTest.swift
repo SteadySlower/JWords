@@ -221,6 +221,18 @@ class MacAddWordViewModelTest: QuickSpec {
                     }
                 }
             }
+            // trimPastedText에 대한 test
+            context("when a pasted text from dictionary is trimmed") {
+                let ganaString = Random.string
+                let kanjiString = Random.string
+                beforeEach {
+                    let dictionaryString = "\(ganaString) [\(kanjiString)]"
+                    viewModel.trimPastedText(dictionaryString)
+                }
+                it("should be equal to ganaString from dictionary") {
+                    expect(viewModel.ganaText).to(equal(ganaString))
+                }
+            }
         }
         
         describe("ganaImage") {
@@ -344,6 +356,18 @@ class MacAddWordViewModelTest: QuickSpec {
                     it("should not be empty") {
                         expect(viewModel.kanjiText).notTo(beEmpty())
                     }
+                }
+            }
+            // trimPastedText에 대한 test
+            context("when a pasted text from dictionary is trimmed") {
+                let ganaString = Random.string
+                let kanjiString = Random.string
+                beforeEach {
+                    let dictionaryString = "\(ganaString) [\(kanjiString)]"
+                    viewModel.trimPastedText(dictionaryString)
+                }
+                it("should be equal to kanjiString from dictionary") {
+                    expect(viewModel.kanjiText).to(equal(kanjiString))
                 }
             }
         }
