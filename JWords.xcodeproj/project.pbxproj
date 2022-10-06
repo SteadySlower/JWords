@@ -17,6 +17,7 @@
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06A564D6289E9C5100DBC2E0 /* WordEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordEditView.swift */; };
+		06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */; };
 		06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2462866F1C800A620CC /* JWordsApp.swift */; };
 		06CEF2492866F1C800A620CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2482866F1C800A620CC /* ContentView.swift */; };
 		06CEF24B2866F1CB00A620CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06CEF24A2866F1CB00A620CC /* Assets.xcassets */; };
@@ -116,6 +117,7 @@
 		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEditView.swift; sourceTree = "<group>"; };
+		06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2462866F1C800A620CC /* JWordsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsApp.swift; sourceTree = "<group>"; };
 		06CEF2482866F1C800A620CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */,
 				5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */,
 				5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */,
+				06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */,
 				0697715D28CF02E300569280 /* Util */,
 				0697715628CCCF8100569280 /* Mocks */,
 			);
@@ -713,6 +716,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */,
+				06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */,
 				5A72BD1628D1B3C900058043 /* MockDependency.swift in Sources */,
 				5A72BD0F28D1B19E00058043 /* MockWordService.swift in Sources */,
 				0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */,
