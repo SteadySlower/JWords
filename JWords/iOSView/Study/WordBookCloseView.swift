@@ -96,7 +96,7 @@ extension WordBookCloseView {
                     return
                 }
                 
-                self?.wordBooks = books
+                self?.wordBooks = books.filter { $0.closed != true && $0.id != self?.toClose.id }
             }
         }
         
