@@ -10,7 +10,6 @@ import SwiftUI
 struct WordBookCloseView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var showProgressView = false
     @Binding private var didClosed: Bool
     
     init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
@@ -22,8 +21,9 @@ struct WordBookCloseView: View {
     
     var body: some View {
         ZStack {
-            if showProgressView {
+            if viewModel.isClosing {
                 ProgressView()
+                    .scaleEffect(5)
             }
             VStack {
                 Text("\(viewModel.toMoveWords.count)개의 틀린 단어들을 이동할 단어장을 골라주세요.")
@@ -44,12 +44,12 @@ struct WordBookCloseView: View {
                         dismiss()
                     }
                     Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                        showProgressView = true
                         viewModel.closeBook {
                             didClosed = true
                             dismiss()
                         }
                     }
+                    .disabled(viewModel.isClosing)
                 }
             }
         }
@@ -66,6 +66,7 @@ extension WordBookCloseView {
         
         @Published var wordBooks = [WordBook]()
         @Published var selectedID: String?
+        @Published var isClosing: Bool = false
         
         var selectedWordBook: WordBook? {
             if let selectedID = selectedID {
@@ -94,15 +95,18 @@ extension WordBookCloseView {
                     return
                 }
                 
-                self?.wordBooks = books
+                self?.wordBooks = books.filter { $0.closed != true && $0.id != self?.toClose.id }
             }
         }
         
         func closeBook(completionHandler: @escaping () -> Void) {
             todayService.updateReviewed(toClose.id)
+            isClosing = true
             wordBookService.moveWords(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
                 // TODO: Handle Error
-                if let error = error { print(error) }
+                if let error = error {
+                    print(error)
+                }
                 completionHandler()
             }
         }
