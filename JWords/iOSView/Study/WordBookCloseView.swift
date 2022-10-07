@@ -23,6 +23,7 @@ struct WordBookCloseView: View {
         ZStack {
             if viewModel.isClosing {
                 ProgressView()
+                    .scaleEffect(5)
             }
             VStack {
                 Text("\(viewModel.toMoveWords.count)개의 틀린 단어들을 이동할 단어장을 골라주세요.")
