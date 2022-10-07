@@ -10,7 +10,6 @@ import SwiftUI
 struct WordBookCloseView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var showProgressView = false
     @Binding private var didClosed: Bool
     
     init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
@@ -22,7 +21,7 @@ struct WordBookCloseView: View {
     
     var body: some View {
         ZStack {
-            if showProgressView {
+            if viewModel.isClosing {
                 ProgressView()
             }
             VStack {
@@ -44,7 +43,6 @@ struct WordBookCloseView: View {
                         dismiss()
                     }
                     Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                        showProgressView = true
                         viewModel.closeBook {
                             didClosed = true
                             dismiss()
