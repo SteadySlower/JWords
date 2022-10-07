@@ -50,6 +50,7 @@ struct WordBookCloseView: View {
                             dismiss()
                         }
                     }
+                    .disabled(viewModel.isClosing)
                 }
             }
         }
@@ -66,6 +67,7 @@ extension WordBookCloseView {
         
         @Published var wordBooks = [WordBook]()
         @Published var selectedID: String?
+        @Published var isClosing: Bool = false
         
         var selectedWordBook: WordBook? {
             if let selectedID = selectedID {
@@ -100,9 +102,12 @@ extension WordBookCloseView {
         
         func closeBook(completionHandler: @escaping () -> Void) {
             todayService.updateReviewed(toClose.id)
+            isClosing = true
             wordBookService.moveWords(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
                 // TODO: Handle Error
-                if let error = error { print(error) }
+                if let error = error {
+                    print(error)
+                }
                 completionHandler()
             }
         }
