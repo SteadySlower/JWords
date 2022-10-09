@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0647BF9028F313CA00CD57F9 /* WordBookCloseViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0647BF8F28F313CA00CD57F9 /* WordBookCloseViewModelTest.swift */; };
 		068D4CFC28B2189300F44F6E /* WordBookCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */; };
 		0697715328CCA71700569280 /* WordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715228CCA71700569280 /* WordInput.swift */; };
 		0697715528CCCF1300569280 /* MacAddBookViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */; };
@@ -110,6 +111,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0647BF8F28F313CA00CD57F9 /* WordBookCloseViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookCloseViewModelTest.swift; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookCloseView.swift; sourceTree = "<group>"; };
 		0697715228CCA71700569280 /* WordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInput.swift; sourceTree = "<group>"; };
 		0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookViewModelTest.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */,
 				5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */,
 				06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */,
+				0647BF8F28F313CA00CD57F9 /* WordBookCloseViewModelTest.swift */,
 				0697715D28CF02E300569280 /* Util */,
 				0697715628CCCF8100569280 /* Mocks */,
 			);
@@ -717,6 +720,7 @@
 			files = (
 				5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */,
 				06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */,
+				0647BF9028F313CA00CD57F9 /* WordBookCloseViewModelTest.swift in Sources */,
 				5A72BD1628D1B3C900058043 /* MockDependency.swift in Sources */,
 				5A72BD0F28D1B19E00058043 /* MockWordService.swift in Sources */,
 				0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */,
