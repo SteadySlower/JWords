@@ -40,7 +40,7 @@ struct WordBookImpl: WordBook {
         let dayFromToday = self.dayFromToday
         let reviewInterval = [3, 7, 14, 28]
         
-        if dayFromToday < 3 {
+        if dayFromToday >= 0 && dayFromToday < 3 {
             return .study
         } else if reviewInterval.contains(dayFromToday) {
             return .review
