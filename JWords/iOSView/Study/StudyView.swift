@@ -49,6 +49,7 @@ struct StudyView: View {
     @State private var showEditModal: Bool = false
     @State private var showCloseModal: Bool = false
     @State private var shouldDismiss: Bool = false
+    @State private var showSideBar: Bool = false
     
     init(wordBook: WordBook, dependency: Dependency) {
         self.viewModel = ViewModel(wordBook: wordBook, wordService: dependency.wordService)
@@ -62,12 +63,17 @@ struct StudyView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEach(studyMode == .all ? viewModel.words : viewModel.onlyFail, id: \.id) { word in
-                    WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
-                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+        ZStack {
+            ScrollView {
+                LazyVStack(spacing: 32) {
+                    ForEach(studyMode == .all ? viewModel.words : viewModel.onlyFail, id: \.id) { word in
+                        WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                    }
                 }
+            }
+            if showSideBar {
+                SettingSideBar(showSideBar: $showSideBar)
             }
         }
         .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
@@ -88,11 +94,8 @@ struct StudyView: View {
                     Button("랜덤") {
                         viewModel.shuffleWords()
                     }
-                    Button(studyMode.toggleButtonTitle) {
-                        studyMode.toggle()
-                    }
-                    Button(viewModel.frontType.toggleButtonTitle) {
-                        viewModel.toggleFrontType()
+                    Button("설정") {
+                        showSideBar = true
                     }
                 }
             }
@@ -108,6 +111,24 @@ struct StudyView: View {
     
     private func resetDeviceWidth() {
         self.deviceWidth = Constants.Size.deviceWidth
+    }
+}
+
+extension StudyView {
+    private struct SettingSideBar: View {
+        
+        @Binding var showSideBar: Bool
+        
+        var body: some View {
+            ZStack {
+                Color(red: 211 / 256, green: 211 / 256, blue: 211 / 256, opacity: 0.3)
+                VStack {
+                    Circle()
+                }
+                .offset(x: Constants.Size.deviceWidth / 2)
+            }
+            .ignoresSafeArea()
+        }
     }
 }
 
