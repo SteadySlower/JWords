@@ -118,6 +118,17 @@ extension StudyView {
     private struct SettingSideBar: View {
         
         @Binding var showSideBar: Bool
+        @GestureState private var dragAmount = CGSize.zero
+        
+        private var dragGesture: some Gesture {
+            DragGesture(minimumDistance: 30, coordinateSpace: .global)
+                .onEnded { onEnded($0) }
+                .updating($dragAmount) { value, state, _ in
+                    if value.translation.width > 0 {
+                        state.width = value.translation.width
+                    }
+                }
+        }
         
         var body: some View {
             ZStack {
@@ -125,9 +136,16 @@ extension StudyView {
                 VStack {
                     Circle()
                 }
-                .offset(x: Constants.Size.deviceWidth / 2)
+                .offset(x: Constants.Size.deviceWidth / 2 + dragAmount.width)
+                .gesture(dragGesture)
             }
             .ignoresSafeArea()
+        }
+        
+        private func onEnded(_ value: DragGesture.Value) {
+            if value.translation.width > Constants.Size.deviceWidth * 0.3 {
+                showSideBar = false
+            }
         }
     }
 }
