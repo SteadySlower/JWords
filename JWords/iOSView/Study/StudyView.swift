@@ -8,38 +8,34 @@
 import SwiftUI
 import Combine
 
-enum StudyMode {
-    case all, excludeSuccess
+enum StudyMode: Hashable, CaseIterable {
+    case all, excludeSuccess, onlyFail
     
-    var toggleButtonTitle: String {
+    var pickerText: String {
         switch self {
-        case .all: return "O제외"
-        case .excludeSuccess: return "전부"
+        case .all: return "전부"
+        case .excludeSuccess: return "O제외"
+        case .onlyFail: return "X만"
         }
-    }
-    
-    mutating func toggle() {
-        self = self == .all ? .excludeSuccess : .all
     }
 }
 
-enum FrontType {
+enum FrontType: Hashable, CaseIterable {
     case meaning
     case kanji
     
-    var toggleButtonTitle: String {
+    var pickerText: String {
         switch self {
         case .meaning:
-            return "漢"
-        case .kanji:
             return "한"
+        case .kanji:
+            return "漢"
         }
     }
 }
 
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
-    @State private var studyMode: StudyMode = .all
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) var scenePhase
     
@@ -49,6 +45,7 @@ struct StudyView: View {
     @State private var showEditModal: Bool = false
     @State private var showCloseModal: Bool = false
     @State private var shouldDismiss: Bool = false
+    @State private var showSideBar: Bool = false
     
     init(wordBook: WordBook, dependency: Dependency) {
         self.viewModel = ViewModel(wordBook: wordBook, wordService: dependency.wordService)
@@ -62,12 +59,17 @@ struct StudyView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEach(studyMode == .all ? viewModel.words : viewModel.onlyFail, id: \.id) { word in
-                    WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
-                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+        ZStack {
+            ScrollView {
+                LazyVStack(spacing: 32) {
+                    ForEach(viewModel.words, id: \.id) { word in
+                        WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                    }
                 }
+            }
+            if showSideBar {
+                SettingSideBar(showSideBar: $showSideBar, viewModel: viewModel)
             }
         }
         .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
@@ -88,11 +90,8 @@ struct StudyView: View {
                     Button("랜덤") {
                         viewModel.shuffleWords()
                     }
-                    Button(studyMode.toggleButtonTitle) {
-                        studyMode.toggle()
-                    }
-                    Button(viewModel.frontType.toggleButtonTitle) {
-                        viewModel.toggleFrontType()
+                    Button("설정") {
+                        showSideBar = true
                     }
                 }
             }
@@ -112,18 +111,90 @@ struct StudyView: View {
 }
 
 extension StudyView {
+    private struct SettingSideBar: View {
+        
+        @Binding var showSideBar: Bool
+        @ObservedObject var viewModel: ViewModel
+        @GestureState private var dragAmount = CGSize.zero
+        
+        private var dragGesture: some Gesture {
+            DragGesture(minimumDistance: 30, coordinateSpace: .global)
+                .onEnded { onEnded($0) }
+                .updating($dragAmount) { value, state, _ in
+                    if value.translation.width > 0 {
+                        state.width = value.translation.width
+                    }
+                }
+        }
+        
+        var body: some View {
+            ZStack(alignment: .trailing) {
+                Color.black.opacity(0.5)
+                    .onTapGesture { showSideBar = false }
+                VStack {
+                    Spacer()
+                    Picker("", selection: $viewModel.studyMode) {
+                        ForEach(StudyMode.allCases, id: \.self) {
+                            Text($0.pickerText)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .padding()
+                    Picker("", selection: $viewModel.frontType) {
+                        ForEach(FrontType.allCases, id: \.self) {
+                            Text($0.pickerText)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .padding()
+                    Spacer()
+                }
+                .frame(width: Constants.Size.deviceWidth * 0.7)
+                .background { Color.white }
+                .offset(x: dragAmount.width)
+                .gesture(dragGesture)
+            }
+            .ignoresSafeArea()
+        }
+        
+        private func onEnded(_ value: DragGesture.Value) {
+            if value.translation.width > Constants.Size.deviceWidth * 0.35 {
+                showSideBar = false
+            }
+        }
+    }
+}
+
+extension StudyView {
     final class ViewModel: ObservableObject {
         let wordBook: WordBook?
-        @Published var words: [Word] = []
-        @Published private(set) var frontType: FrontType = .kanji
+        @Published private var _words: [Word] = []
+        @Published var studyMode: StudyMode = .all {
+            didSet {
+                eventPublisher.send(StudyViewEvent.toFront)
+            }
+        }
+        @Published var frontType: FrontType = .kanji {
+            didSet {
+                eventPublisher.send(StudyViewEvent.toFront)
+            }
+        }
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
         private let wordService: WordService
         
-        var onlyFail: [Word] {
-            words.filter { $0.studyState != .success }
+        var words: [Word] {
+            switch studyMode {
+            case .all: return _words
+            case .excludeSuccess: return _words.filter { $0.studyState != .success }
+            case .onlyFail: return _words.filter { $0.studyState == .fail }
+            }
         }
-
+        
+        var onlyFail: [Word] {
+            _words.filter { $0.studyState == .fail }
+        }
+        
         init(wordBook: WordBook, wordService: WordService) {
             self.wordBook = wordBook
             self.wordService = wordService
@@ -131,7 +202,7 @@ extension StudyView {
         
         init(words: [Word], wordService: WordService) {
             self.wordBook = nil
-            self.words = words
+            self._words = words
             self.wordService = wordService
         }
         
@@ -143,17 +214,12 @@ extension StudyView {
                     print("디버그: \(error.localizedDescription)")
                 }
                 guard let words = words else { return }
-                self?.words = words
+                self?._words = words
             }
         }
         
         func shuffleWords() {
-            words.shuffle()
-            eventPublisher.send(StudyViewEvent.toFront)
-        }
-        
-        func toggleFrontType() {
-            frontType = frontType == .meaning ? .kanji : .meaning
+            _words.shuffle()
             eventPublisher.send(StudyViewEvent.toFront)
         }
         
@@ -171,8 +237,8 @@ extension StudyView {
                 if let error = error { print(error); return }
                 guard let self = self else { return }
                     
-                guard let index = self.words.firstIndex(where: { $0.id == word.id }) else { return }
-                self.words[index].studyState = state
+                guard let index = self._words.firstIndex(where: { $0.id == word.id }) else { return }
+                self._words[index].studyState = state
             }
         }
     }
