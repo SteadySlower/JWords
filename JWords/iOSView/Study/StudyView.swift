@@ -78,7 +78,7 @@ struct StudyView: View {
             resetDeviceWidth()
         }
         .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.onlyFail, didClosed: $shouldDismiss, dependency: dependency)
+            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
@@ -191,8 +191,8 @@ extension StudyView {
             }
         }
         
-        var onlyFail: [Word] {
-            _words.filter { $0.studyState == .fail }
+        var toMoveWords: [Word] {
+            _words.filter { $0.studyState != .success }
         }
         
         init(wordBook: WordBook, wordService: WordService) {
