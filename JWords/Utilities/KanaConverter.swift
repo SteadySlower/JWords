@@ -5,6 +5,8 @@
 //  Created by Jong Won Moon on 2022/10/12.
 //
 
+// source code: https://gist.github.com/WorldDownTown/0343b4f31be1117abb2e2213b707c99c
+
 import Foundation
 
 private extension CFStringTokenizer {
