@@ -48,9 +48,9 @@ private extension CFStringTokenizer {
     }
 }
 
-enum Kana { case hiragana, katakana }
+private enum Kana { case hiragana, katakana }
 
-func convert(_ input: String, to kana: Kana = .hiragana) -> String {
+private func convert(_ input: String, to kana: Kana = .hiragana) -> String {
     // 주어진 String의 공백과 \n을 모두 없앤다.
     let trimmed: String = input.trimmingCharacters(in: .whitespacesAndNewlines)
     
