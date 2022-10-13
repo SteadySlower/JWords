@@ -77,6 +77,7 @@ extension MacAddWordView {
                 .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
                 .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
                 .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
+                .onChange(of: viewModel.ganaText) { viewModel.autoConvert($0) }
             }
         }
         
@@ -148,6 +149,8 @@ extension MacAddWordView {
                         ExamplePicker()
                     }
                     .padding(.horizontal)
+                } else if inputType == .gana {
+                    Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
                 }
             }
         }
@@ -335,6 +338,9 @@ extension MacAddWordView {
             return isOverlapped ? "중복됨" : "중복 아님"
         }
         
+        // 한자 -> 가나 auto convert
+        @Published var isAutoConvert: Bool = true
+        
         // initializer
         init(_ dependency: Dependency) {
             self.wordService = dependency.wordService
@@ -445,6 +451,8 @@ extension MacAddWordView {
                 if !examples.isEmpty { self?.selectedSampleID = examples[0].id }
             }
         }
+        
+        // 한자 -> 가나 auto convert
         
         private func clearInputs() {
             meaningText = ""
