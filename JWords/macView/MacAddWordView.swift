@@ -77,7 +77,7 @@ extension MacAddWordView {
                 .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
                 .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
                 .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
-                .onChange(of: viewModel.ganaText) { viewModel.autoConvert($0) }
+                .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
             }
         }
         
@@ -149,7 +149,7 @@ extension MacAddWordView {
                         ExamplePicker()
                     }
                     .padding(.horizontal)
-                } else if inputType == .gana {
+                } else if inputType == .kanji {
                     Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
                 }
             }
@@ -453,6 +453,10 @@ extension MacAddWordView {
         }
         
         // 한자 -> 가나 auto convert
+        func autoConvert(_ kanji: String) {
+            if !isAutoConvert { return }
+            ganaText = convert(kanji)
+        }
         
         private func clearInputs() {
             meaningText = ""
