@@ -455,7 +455,7 @@ extension MacAddWordView {
         // 한자 -> 가나 auto convert
         func autoConvert(_ kanji: String) {
             if !isAutoConvert { return }
-            ganaText = convert(kanji)
+            ganaText = kanji.hiragana
         }
         
         private func clearInputs() {
