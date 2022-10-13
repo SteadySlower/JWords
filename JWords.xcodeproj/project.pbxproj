@@ -61,6 +61,7 @@
 		5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* TabView.swift */; };
 		5A8DCD7828E3E80E0078E197 /* MockWordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
+		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
 		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
@@ -161,6 +162,7 @@
 		5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBook.swift; sourceTree = "<group>"; };
 		5A8FF2E528DAF33E00B5E934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
+		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
 		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
+				5AB28AA328F6B94200FF80CE /* KanaConverter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				5A67DC2D2869470C00AC156C /* WordCell.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				06CEF2492866F1C800A620CC /* ContentView.swift in Sources */,
+				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
 				5A67DC352869566600AC156C /* MacAddWordView.swift in Sources */,
