@@ -24,8 +24,18 @@ class WordBookCloseViewModelTest: QuickSpec {
             viewModel = WordBookCloseView.ViewModel(toClose: toClose, toMoveWords: toMoveWords, dependency: dependency)
         }
         
-        describe("") {
-            
+        describe("toMoveWords") {
+            context("when viewModel is initialized with array of words") {
+                it("'s count should be equal to the count of the array") {
+                    var wordArray = [Word]()
+                    let arrayCount = Random.int(from: 2, to: 100)
+                    for _ in 0..<arrayCount {
+                        wordArray.append(MockWord())
+                    }
+                    prepare(toClose: MockWordBook(), toMoveWords: wordArray)
+                    expect(viewModel.toMoveWords.count).to(equal(arrayCount))
+                }
+            }
         }
     }
     
