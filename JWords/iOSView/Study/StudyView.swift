@@ -63,7 +63,7 @@ struct StudyView: View {
             ScrollView {
                 LazyVStack(spacing: 32) {
                     ForEach(viewModel.words, id: \.id) { word in
-                        WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                        WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher, isSelected: viewModel.isSelected(word))
                             .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                     }
                 }
@@ -179,6 +179,19 @@ extension StudyView {
                 eventPublisher.send(StudyViewEvent.toFront)
             }
         }
+        
+        // 선택해서 이동 기능 관련 variables
+        @Published var isSelectionMode: Bool = false
+        @Published var selectedWords: [Word] = []
+        
+        func isSelected(_ word: Word) -> Bool {
+            if isSelectionMode {
+                return selectedWords.contains(where: { $0.id == word.id })
+            } else {
+                return false
+            }
+        }
+        
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
         private let wordService: WordService
