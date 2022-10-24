@@ -152,6 +152,8 @@ extension StudyView {
                     }
                     .pickerStyle(.segmented)
                     .padding()
+                    Toggle("선택 모드", isOn: $viewModel.isSelectionMode)
+                        .padding()
                     Spacer()
                 }
                 .frame(width: Constants.Size.deviceWidth * 0.7)
@@ -239,7 +241,12 @@ extension StudyView {
         }
         
         // 선택해서 이동 기능 관련 variables
-        @Published private(set) var isSelectionMode: Bool = true
+        @Published var isSelectionMode: Bool = false {
+            didSet {
+                eventPublisher.send(StudyViewEvent.toFront)
+                selectionDict = [String : Bool]()
+            }
+        }
         @Published private(set) var selectionDict = [String : Bool]()
         
         func isSelected(_ word: Word) -> Bool {
