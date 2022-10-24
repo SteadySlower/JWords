@@ -26,7 +26,7 @@ struct WordBookCloseView: View {
                     .scaleEffect(5)
             }
             VStack {
-                Text("\(viewModel.toMoveWords.count)개의 틀린 단어들을 이동할 단어장을 골라주세요.")
+                Text("\(viewModel.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
                 Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
                     Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
                         .tag(nil as String?)
