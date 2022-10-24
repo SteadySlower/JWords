@@ -259,7 +259,11 @@ extension StudyView {
         }
         
         var toMoveWords: [Word] {
-            _words.filter { $0.studyState != .success }
+            if !isSelectionMode {
+                return _words.filter { $0.studyState != .success }
+            } else {
+                return _words.filter { selectionDict[$0.id, default: false] }
+            }
         }
         
         init(wordBook: WordBook, wordService: WordService) {
