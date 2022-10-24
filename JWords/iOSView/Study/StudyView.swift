@@ -104,7 +104,7 @@ struct StudyView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("마감") { showCloseModal = true }
+                Button(viewModel.isSelectionMode ? "이동" : "마감") { showCloseModal = true }
                     .disabled(viewModel.wordBook == nil)
             }
         }
