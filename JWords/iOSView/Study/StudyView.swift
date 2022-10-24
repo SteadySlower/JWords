@@ -66,7 +66,8 @@ struct StudyView: View {
                         ZStack {
                             WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
                             if viewModel.isSelectionMode {
-                                SelectableCell(viewModel: viewModel, word: word)
+                                SelectableCell(isSelected: viewModel.isSelected(word))
+                                    .onTapGesture { viewModel.toggleSelection(word) }
                             }
                         }
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
@@ -172,19 +173,15 @@ extension StudyView {
     }
     
     private struct SelectableCell: View {
+        private let isSelected: Bool
         
-        @ObservedObject private var viewModel: ViewModel
-        private let word: Word
-        @State private var isSelected: Bool = false
-        
-        init(viewModel: ViewModel, word: Word) {
-            self.viewModel = viewModel
-            self.word = word
+        init(isSelected: Bool) {
+            self.isSelected = isSelected
         }
         
         var body: some View {
             ZStack {
-                if !viewModel.isSelected(word) {
+                if !isSelected {
                     Color.gray
                         .opacity(0.2)
                 } else {
@@ -193,20 +190,16 @@ extension StudyView {
                 }
             }
             .mask(
-                AnimatingEdge(isAnimating: $isSelected)
+                AnimatingEdge(isAnimating: isSelected)
             )
-            .onTapGesture {
-                viewModel.toggleSelection(word)
-                isSelected.toggle()
-            }
         }
         
         private struct AnimatingEdge: View {
-            @Binding private var isAnimating: Bool
+            private let isAnimating: Bool
             @State private var dashPhase: CGFloat = 0
             
-            init(isAnimating: Binding<Bool>) {
-                self._isAnimating = isAnimating
+            init(isAnimating: Bool) {
+                self.isAnimating = isAnimating
             }
             
             var body: some View {
