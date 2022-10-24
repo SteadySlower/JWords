@@ -63,8 +63,13 @@ struct StudyView: View {
             ScrollView {
                 LazyVStack(spacing: 32) {
                     ForEach(viewModel.words, id: \.id) { word in
-                        WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher, isSelected: viewModel.isSelected(word))
-                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                        ZStack {
+                            WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                            if viewModel.isSelectionMode {
+                                SelectableCell(viewModel: viewModel, word: word)
+                            }
+                        }
+                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                     }
                 }
             }
@@ -163,6 +168,39 @@ extension StudyView {
             }
         }
     }
+    
+    private struct SelectableCell: View {
+        
+        @ObservedObject private var viewModel: ViewModel
+        private let word: Word
+        
+        init(viewModel: ViewModel, word: Word) {
+            self.viewModel = viewModel
+            self.word = word
+        }
+        
+        var body: some View {
+            ZStack {
+                if viewModel.isSelected(word) {
+                    Color.black
+                        .opacity(0.5)
+                } else {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "checkmark")
+                            .font(.largeTitle)
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+            .onTapGesture { OnTapInSelectionMode(word) }
+        }
+        
+        
+        private func OnTapInSelectionMode(_ word: Word) {
+            // 뷰모델에서 토글 넣기
+        }
+    }
 }
 
 extension StudyView {
@@ -181,15 +219,11 @@ extension StudyView {
         }
         
         // 선택해서 이동 기능 관련 variables
-        @Published var isSelectionMode: Bool = false
-        @Published var selectedWords: [Word] = []
+        @Published private(set) var isSelectionMode: Bool = true
+        @Published private(set) var selectionDict = [String : Bool]()
         
         func isSelected(_ word: Word) -> Bool {
-            if isSelectionMode {
-                return selectedWords.contains(where: { $0.id == word.id })
-            } else {
-                return false
-            }
+            selectionDict[word.id, default: false]
         }
         
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
@@ -242,6 +276,10 @@ extension StudyView {
             case .studyStateUpdate(let word, let state):
                 updateStudyState(word: word, state: state)
             }
+        }
+        
+        func toggleSelection(_ word: Word) {
+            selectionDict[word.id, default: false].toggle()
         }
         
         private func updateStudyState(word: Word, state: StudyState) {

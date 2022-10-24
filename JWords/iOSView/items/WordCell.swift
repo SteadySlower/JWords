@@ -14,7 +14,6 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
-    @State private var isSelected: Bool
     
     // MARK: Gestures
     private var dragGesture: some Gesture {
@@ -34,9 +33,8 @@ struct WordCell: View {
     }
     
     // MARK: Initializer
-    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isSelected: Bool) {
+    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
-        self.isSelected = isSelected
         viewModel.prefetchImage()
     }
     
@@ -50,14 +48,6 @@ struct WordCell: View {
                 .gesture(tapGesture)
                 // TODO: show WordEditView
                 .onLongPressGesture { }
-            if isSelected == true {
-                HStack {
-                    Spacer()
-                    Image(systemName: "checkmark")
-                        .font(.largeTitle)
-                        .foregroundColor(.red)
-                }
-            }
         }
     }
 }
