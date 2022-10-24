@@ -173,6 +173,7 @@ extension StudyView {
         
         @ObservedObject private var viewModel: ViewModel
         private let word: Word
+        @State private var isSelected: Bool = false
         
         init(viewModel: ViewModel, word: Word) {
             self.viewModel = viewModel
@@ -181,24 +182,43 @@ extension StudyView {
         
         var body: some View {
             ZStack {
-                if viewModel.isSelected(word) {
-                    Color.black
-                        .opacity(0.5)
+                if !viewModel.isSelected(word) {
+                    Color.gray
+                        .opacity(0.2)
                 } else {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "checkmark")
-                            .font(.largeTitle)
-                            .foregroundColor(.red)
-                    }
+                    Color.blue
+                        .opacity(0.2)
                 }
             }
-            .onTapGesture { OnTapInSelectionMode(word) }
+            .mask(
+                AnimatingEdge(isAnimating: $isSelected)
+            )
+            .onTapGesture {
+                viewModel.toggleSelection(word)
+                isSelected.toggle()
+            }
         }
         
-        
-        private func OnTapInSelectionMode(_ word: Word) {
-            // 뷰모델에서 토글 넣기
+        private struct AnimatingEdge: View {
+            @Binding private var isAnimating: Bool
+            @State private var dashPhase: CGFloat = 0
+            
+            init(isAnimating: Binding<Bool>) {
+                self._isAnimating = isAnimating
+            }
+            
+            var body: some View {
+                if isAnimating {
+                    Rectangle()
+                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+                        .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
+                        .onAppear { dashPhase = -20 }
+                } else {
+                    Rectangle()
+                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+                        .onAppear { dashPhase = 0 }
+                }
+            }
         }
     }
 }
