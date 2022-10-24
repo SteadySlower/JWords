@@ -43,7 +43,7 @@ struct StudyView: View {
     
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
-    @State private var showCloseModal: Bool = false
+    @State private var showMoveModal: Bool = false
     @State private var shouldDismiss: Bool = false
     @State private var showSideBar: Bool = false
     
@@ -83,8 +83,8 @@ struct StudyView: View {
             viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
+        .sheet(isPresented: $showMoveModal, onDismiss: { if shouldDismiss { dismiss() } }) {
+            WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
@@ -104,7 +104,7 @@ struct StudyView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(viewModel.isSelectionMode ? "이동" : "마감") { showCloseModal = true }
+                Button(viewModel.isSelectionMode ? "이동" : "마감") { showMoveModal = true }
                     .disabled(viewModel.wordBook == nil)
             }
         }

@@ -1,5 +1,5 @@
 //
-//  WordBookCloseView.swift
+//  WordMoveView.swift
 //  JWords
 //
 //  Created by JW Moon on 2022/08/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WordBookCloseView: View {
+struct WordMoveView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     @Binding private var didClosed: Bool
@@ -44,7 +44,7 @@ struct WordBookCloseView: View {
                         dismiss()
                     }
                     Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                        viewModel.closeBook {
+                        viewModel.moveWords {
                             didClosed = true
                             dismiss()
                         }
@@ -57,7 +57,7 @@ struct WordBookCloseView: View {
     
 }
 
-extension WordBookCloseView {
+extension WordMoveView {
     final class ViewModel: ObservableObject {
         private let toClose: WordBook
         let toMoveWords: [Word]
@@ -99,7 +99,7 @@ extension WordBookCloseView {
             }
         }
         
-        func closeBook(completionHandler: @escaping () -> Void) {
+        func moveWords(completionHandler: @escaping () -> Void) {
             todayService.updateReviewed(toClose.id)
             isClosing = true
             wordBookService.moveWords(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in

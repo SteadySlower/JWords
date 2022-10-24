@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		068D4CFC28B2189300F44F6E /* WordBookCloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */; };
+		068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordMoveView.swift */; };
 		0697715328CCA71700569280 /* WordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715228CCA71700569280 /* WordInput.swift */; };
 		0697715528CCCF1300569280 /* MacAddBookViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */; };
 		0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715A28CCD05000569280 /* MockWordBookService.swift */; };
@@ -111,7 +111,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookCloseView.swift; sourceTree = "<group>"; };
+		068D4CFB28B2189300F44F6E /* WordMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMoveView.swift; sourceTree = "<group>"; };
 		0697715228CCA71700569280 /* WordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInput.swift; sourceTree = "<group>"; };
 		0697715428CCCF1200569280 /* MacAddBookViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookViewModelTest.swift; sourceTree = "<group>"; };
 		0697715A28CCD05000569280 /* MockWordBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBookService.swift; sourceTree = "<group>"; };
@@ -415,7 +415,7 @@
 			children = (
 				5A67DC29286946F800AC156C /* StudyView.swift */,
 				06A564D5289E9C5100DBC2E0 /* WordEditView.swift */,
-				068D4CFB28B2189300F44F6E /* WordBookCloseView.swift */,
+				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
 			);
 			path = Study;
 			sourceTree = "<group>";
@@ -694,7 +694,7 @@
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
-				068D4CFC28B2189300F44F6E /* WordBookCloseView.swift in Sources */,
+				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
