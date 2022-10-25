@@ -25,6 +25,14 @@ protocol Database {
     func insertSample(_ wordInput: WordInput)
     func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func updateUsed(of sample: Sample, to used: Int)
+    
+    // Today 관련
+    func updateTodayStudy(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData)
+    func getTodayStudy(_ completionHandler: @escaping CompletionWithData<[String]>)
+    func updateTodayReview(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData)
+    func getTodayReview(_ completionHandler: @escaping CompletionWithData<[String]>)
+    func updateTodaySchedule(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>)
+    func updateReviewed(_ id: String)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -280,5 +288,33 @@ extension FirestoreDB {
     
     func updateUsed(of sample: Sample, to used: Int) {
         sampleRef.document(sample.id).updateData(["used" : used])
+    }
+}
+
+//MARK: TodayDatebase
+
+extension FirestoreDB {
+    func updateTodayStudy(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData) {
+        
+    }
+    
+    func getTodayStudy(_ completionHandler: @escaping CompletionWithData<[String]>) {
+        
+    }
+    
+    func updateTodayReview(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData) {
+        
+    }
+    
+    func getTodayReview(_ completionHandler: @escaping CompletionWithData<[String]>) {
+        
+    }
+    
+    func updateTodaySchedule(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
+        
+    }
+    
+    func updateReviewed(_ id: String) {
+        
     }
 }
