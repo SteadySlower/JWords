@@ -31,7 +31,7 @@ protocol Database {
     func getTodayStudy(_ completionHandler: @escaping CompletionWithData<[String]>)
     func updateTodayReview(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData)
     func getTodayReview(_ completionHandler: @escaping CompletionWithData<[String]>)
-    func updateTodaySchedule(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>)
+    func updateTodaySchedule(toStudyIDs: [String], toReviewIDs: [String], _ completionHandler: @escaping CompletionWithData<([String], [String])>)
     func updateReviewed(_ id: String)
 }
 
@@ -310,7 +310,7 @@ extension FirestoreDB {
         
     }
     
-    func updateTodaySchedule(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
+    func updateTodaySchedule(toStudyIDs: [String], toReviewIDs: [String], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
         
     }
     
