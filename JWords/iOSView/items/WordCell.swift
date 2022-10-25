@@ -40,13 +40,15 @@ struct WordCell: View {
     
     // MARK: Body
     var body: some View {
-        ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
-            .onReceive(viewModel.eventPublisher) { handleEvent($0) }
-            .gesture(dragGesture)
-            .gesture(doubleTapGesture)
-            .gesture(tapGesture)
-            // TODO: show WordEditView
-            .onLongPressGesture { }
+        ZStack {
+            ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
+                .onReceive(viewModel.eventPublisher) { handleEvent($0) }
+                .gesture(dragGesture)
+                .gesture(doubleTapGesture)
+                .gesture(tapGesture)
+                // TODO: show WordEditView
+                .onLongPressGesture { }
+        }
     }
 }
 

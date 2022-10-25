@@ -1,5 +1,5 @@
 //
-//  WordBookCloseView.swift
+//  WordMoveView.swift
 //  JWords
 //
 //  Created by JW Moon on 2022/08/21.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct WordBookCloseView: View {
+struct WordMoveView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     @Binding private var didClosed: Bool
     
     init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
-        self.viewModel = ViewModel(toClose: wordBook, toMoveWords: toMoveWords, dependency: dependency)
+        self.viewModel = ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency)
         self._didClosed = didClosed
         // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
         viewModel.getWordBooks()
@@ -26,7 +26,7 @@ struct WordBookCloseView: View {
                     .scaleEffect(5)
             }
             VStack {
-                Text("\(viewModel.toMoveWords.count)개의 틀린 단어들을 이동할 단어장을 골라주세요.")
+                Text("\(viewModel.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
                 Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
                     Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
                         .tag(nil as String?)
@@ -44,7 +44,7 @@ struct WordBookCloseView: View {
                         dismiss()
                     }
                     Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                        viewModel.closeBook {
+                        viewModel.moveWords {
                             didClosed = true
                             dismiss()
                         }
@@ -57,9 +57,9 @@ struct WordBookCloseView: View {
     
 }
 
-extension WordBookCloseView {
+extension WordMoveView {
     final class ViewModel: ObservableObject {
-        private let toClose: WordBook
+        private let fromBook: WordBook
         let toMoveWords: [Word]
         private let wordBookService: WordBookService
         private let todayService: TodayService
@@ -76,8 +76,8 @@ extension WordBookCloseView {
             }
         }
         
-        init(toClose: WordBook, toMoveWords: [Word], dependency: Dependency) {
-            self.toClose = toClose
+        init(fromBook: WordBook, toMoveWords: [Word], dependency: Dependency) {
+            self.fromBook = fromBook
             self.toMoveWords = toMoveWords
             self.wordBookService = dependency.wordBookService
             self.todayService = dependency.todayService
@@ -95,14 +95,14 @@ extension WordBookCloseView {
                     return
                 }
                 
-                self?.wordBooks = books.filter { $0.closed != true && $0.id != self?.toClose.id }
+                self?.wordBooks = books.filter { $0.closed != true && $0.id != self?.fromBook.id }
             }
         }
         
-        func closeBook(completionHandler: @escaping () -> Void) {
-            todayService.updateReviewed(toClose.id)
+        func moveWords(completionHandler: @escaping () -> Void) {
+            todayService.updateReviewed(fromBook.id)
             isClosing = true
-            wordBookService.moveWords(of: toClose, to: selectedWordBook, toMove: toMoveWords) { error in
+            wordBookService.moveWords(of: fromBook, to: selectedWordBook, toMove: toMoveWords) { error in
                 // TODO: Handle Error
                 if let error = error {
                     print(error)

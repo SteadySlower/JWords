@@ -43,7 +43,7 @@ struct StudyView: View {
     
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
-    @State private var showCloseModal: Bool = false
+    @State private var showMoveModal: Bool = false
     @State private var shouldDismiss: Bool = false
     @State private var showSideBar: Bool = false
     
@@ -63,8 +63,14 @@ struct StudyView: View {
             ScrollView {
                 LazyVStack(spacing: 32) {
                     ForEach(viewModel.words, id: \.id) { word in
-                        WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
-                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                        ZStack {
+                            WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                            if viewModel.isSelectionMode {
+                                SelectableCell(isSelected: viewModel.isSelected(word))
+                                    .onTapGesture { viewModel.toggleSelection(word) }
+                            }
+                        }
+                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                     }
                 }
             }
@@ -77,8 +83,8 @@ struct StudyView: View {
             viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showCloseModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordBookCloseView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
+        .sheet(isPresented: $showMoveModal, onDismiss: { if shouldDismiss { dismiss() } }) {
+            WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
@@ -98,7 +104,7 @@ struct StudyView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("마감") { showCloseModal = true }
+                Button(viewModel.isSelectionMode ? "이동" : "마감") { showMoveModal = true }
                     .disabled(viewModel.wordBook == nil)
             }
         }
@@ -147,6 +153,8 @@ extension StudyView {
                     }
                     .pickerStyle(.segmented)
                     .padding()
+                    Toggle("선택 모드", isOn: $viewModel.isSelectionMode)
+                        .padding()
                     Spacer()
                 }
                 .frame(width: Constants.Size.deviceWidth * 0.7)
@@ -160,6 +168,51 @@ extension StudyView {
         private func onEnded(_ value: DragGesture.Value) {
             if value.translation.width > Constants.Size.deviceWidth * 0.35 {
                 showSideBar = false
+            }
+        }
+    }
+    
+    private struct SelectableCell: View {
+        private let isSelected: Bool
+        
+        init(isSelected: Bool) {
+            self.isSelected = isSelected
+        }
+        
+        var body: some View {
+            ZStack {
+                if !isSelected {
+                    Color.gray
+                        .opacity(0.2)
+                } else {
+                    Color.blue
+                        .opacity(0.2)
+                }
+            }
+            .mask(
+                AnimatingEdge(isAnimating: isSelected)
+            )
+        }
+        
+        private struct AnimatingEdge: View {
+            private let isAnimating: Bool
+            @State private var dashPhase: CGFloat = 0
+            
+            init(isAnimating: Bool) {
+                self.isAnimating = isAnimating
+            }
+            
+            var body: some View {
+                if isAnimating {
+                    Rectangle()
+                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+                        .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
+                        .onAppear { dashPhase = -20 }
+                } else {
+                    Rectangle()
+                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+                        .onAppear { dashPhase = 0 }
+                }
             }
         }
     }
@@ -179,6 +232,20 @@ extension StudyView {
                 eventPublisher.send(StudyViewEvent.toFront)
             }
         }
+        
+        // 선택해서 이동 기능 관련 variables
+        @Published var isSelectionMode: Bool = false {
+            didSet {
+                eventPublisher.send(StudyViewEvent.toFront)
+                selectionDict = [String : Bool]()
+            }
+        }
+        @Published private(set) var selectionDict = [String : Bool]()
+        
+        func isSelected(_ word: Word) -> Bool {
+            selectionDict[word.id, default: false]
+        }
+        
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
         private let wordService: WordService
@@ -192,7 +259,11 @@ extension StudyView {
         }
         
         var toMoveWords: [Word] {
-            _words.filter { $0.studyState != .success }
+            if !isSelectionMode {
+                return _words.filter { $0.studyState != .success }
+            } else {
+                return _words.filter { selectionDict[$0.id, default: false] }
+            }
         }
         
         init(wordBook: WordBook, wordService: WordService) {
@@ -229,6 +300,10 @@ extension StudyView {
             case .studyStateUpdate(let word, let state):
                 updateStudyState(word: word, state: state)
             }
+        }
+        
+        func toggleSelection(_ word: Word) {
+            selectionDict[word.id, default: false].toggle()
         }
         
         private func updateStudyState(word: Word, state: StudyState) {
