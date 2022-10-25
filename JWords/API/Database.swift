@@ -27,12 +27,8 @@ protocol Database {
     func updateUsed(of sample: Sample, to used: Int)
     
     // Today 관련
-    func updateTodayStudy(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData)
-    func getTodayStudy(_ completionHandler: @escaping CompletionWithData<[String]>)
-    func updateTodayReview(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData)
-    func getTodayReview(_ completionHandler: @escaping CompletionWithData<[String]>)
-    func updateTodaySchedule(toStudyIDs: [String], toReviewIDs: [String], _ completionHandler: @escaping CompletionWithData<([String], [String])>)
-    func updateReviewed(_ id: String)
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
+    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -294,27 +290,24 @@ extension FirestoreDB {
 //MARK: TodayDatebase
 
 extension FirestoreDB {
-    func updateTodayStudy(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData) {
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
         
     }
     
-    func getTodayStudy(_ completionHandler: @escaping CompletionWithData<[String]>) {
+    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+        let data: [String : Any] = [
+            "studyIDs": todayBooks.studyIDs,
+            "reviewIDs": todayBooks.reviewIDs,
+            "timestamp": todayBooks.createdAt,
+            "reviewedIDs": todayBooks.reviewIDs
+        ]
         
-    }
-    
-    func updateTodayReview(_ idArray: [String], _ completionHandler: @escaping CompletionWithoutData) {
-        
-    }
-    
-    func getTodayReview(_ completionHandler: @escaping CompletionWithData<[String]>) {
-        
-    }
-    
-    func updateTodaySchedule(toStudyIDs: [String], toReviewIDs: [String], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
-        
-    }
-    
-    func updateReviewed(_ id: String) {
-        
+        todayRef.addDocument(data: data) { error in
+            if error != nil {
+                completionHandler(error)
+                return
+            }
+            completionHandler(nil)
+        }
     }
 }
