@@ -59,6 +59,13 @@ final class FirestoreDB: Database {
         .document("data")
         .collection("examples")
     }()
+    
+    private lazy var todayRef = {
+        firestore
+        .collection("develop")
+        .document("data")
+        .collection("today")
+    }()
 }
 
 
