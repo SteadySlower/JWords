@@ -14,10 +14,21 @@ protocol TodayService {
     func updateReviewed(_ id: String)
 }
 
-class TodayServiceImpl: TodayService {
+final class TodayServiceImpl: TodayService {
+    
+    // DB
+    let db: Database
+    
+    // Initializer
+    init(database: Database) {
+        self.db = database
+    }
+    
     private var studyID = [String]()
     private var reviewID = [String]()
     private var reviewedID = [String]()
+    
+    // functions
     
     func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
         self.studyID = idArray

@@ -30,7 +30,7 @@ class DependencyImpl: Dependency {
         self.wordService = WordServiceImpl(database: db, imageUploader: iu)
         self.wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
         self.sampleService = SampleServiceImpl(database: db)
-        self.todayService = TodayServiceImpl()
+        self.todayService = TodayServiceImpl(database: db)
     }
     
 
