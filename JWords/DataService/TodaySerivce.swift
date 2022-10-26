@@ -10,7 +10,7 @@ import Foundation
 protocol TodayService {
     func autoUpdateTodayBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithoutData)
     func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
-    func updateReviewed(_ id: String)
+    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
 }
 
 final class TodayServiceImpl: TodayService {
@@ -51,6 +51,7 @@ final class TodayServiceImpl: TodayService {
         }
     }
     
-    func updateReviewed(_ id: String) {
+    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+        db.updateTodayBooks(todayBooks, completionHandler)
     }
 }
