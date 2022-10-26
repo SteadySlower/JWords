@@ -146,6 +146,8 @@ extension TodaySelectionModal {
                     for reviewID in todayBooks.reviewIDs {
                         self.schedules[reviewID] = .review
                     }
+                    
+                    self.sortWordBooksBySchedule()
                 }
             }
         }
@@ -179,6 +181,17 @@ extension TodaySelectionModal {
         func dateText(of wordBook: WordBook) -> String {
             let dayGap = wordBook.dayFromToday
             return dayGap == 0 ? "今日" : "\(dayGap)日前"
+        }
+        
+        func sortWordBooksBySchedule() {
+            wordBooks.sort(by: { book1, book2 in
+                if schedules[book1.id, default: .none] != .none
+                    && schedules[book2.id, default: .none] == .none {
+                    return true
+                } else {
+                    return false
+                }
+            })
         }
     }
 }
