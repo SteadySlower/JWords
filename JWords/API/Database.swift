@@ -64,11 +64,10 @@ final class FirestoreDB: Database {
         .collection("examples")
     }()
     
-    private lazy var todayRef = {
+    private lazy var dataRef = {
         firestore
         .collection("develop")
         .document("data")
-        .collection("today")
     }()
 }
 
@@ -295,14 +294,15 @@ extension FirestoreDB {
     }
     
     func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+        
         let data: [String : Any] = [
             "studyIDs": todayBooks.studyIDs,
             "reviewIDs": todayBooks.reviewIDs,
-            "timestamp": todayBooks.createdAt,
-            "reviewedIDs": todayBooks.reviewIDs
+            "timestamp": Timestamp(date: todayBooks.createdAt),
+            "reviewedIDs": todayBooks.reviewedIDs
         ]
         
-        todayRef.addDocument(data: data) { error in
+        dataRef.updateData(["today" : data]) { error in
             if error != nil {
                 completionHandler(error)
                 return

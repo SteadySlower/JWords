@@ -5,6 +5,8 @@
 //  Created by Jong Won Moon on 2022/09/19.
 //
 
+import Foundation
+
 protocol TodayService {
     func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData)
     func getStudyBooks(_ completionHandler: @escaping CompletionWithData<[String]>)
@@ -24,29 +26,18 @@ final class TodayServiceImpl: TodayService {
         self.db = database
     }
     
-    private var studyID = [String]()
-    private var reviewID = [String]()
-    private var reviewedID = [String]()
-    
     // functions
     
     func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
-        self.studyID = idArray
-        completionHandler(nil)
     }
     
     func getStudyBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
-        completionHandler(studyID, nil)
     }
     
     func updateReviewBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
-        self.reviewID = idArray
-        completionHandler(nil)
     }
     
     func getReviewBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
-        let filtered = reviewID.filter { !reviewedID.contains($0) }
-        completionHandler(filtered, nil)
     }
     
     func getTodaysBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
@@ -59,13 +50,13 @@ final class TodayServiceImpl: TodayService {
                 reviewID.append(wordBook.id)
             }
         }
-        self.studyID = studyID
-        self.reviewID = reviewID
-        self.reviewedID = [String]()
-        completionHandler((studyID, reviewID), nil)
+        let todayBooks = TodayBooksImpl(studyIDs: studyID, reviewIDs: reviewID, reviewedIDs: [], createdAt: Date())
+        
+        db.updateTodayBooks(todayBooks) { error in
+            completionHandler(nil, nil)
+        }
     }
     
     func updateReviewed(_ id: String) {
-        reviewedID.append(id)
     }
 }
