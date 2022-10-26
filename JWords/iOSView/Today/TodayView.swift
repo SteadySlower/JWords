@@ -82,8 +82,6 @@ extension TodayView {
 extension TodayView {
     final class ViewModel: ObservableObject {
         private var wordBooks: [WordBook] = []
-        private var studyIDs: [String] = []
-        private var reviewIDs: [String] = []
         
         @Published private(set) var todayWordBooks: [WordBook] = []
         @Published private(set) var reviewWordBooks: [WordBook] = []
@@ -105,14 +103,15 @@ extension TodayView {
                 if let wordBooks = wordBooks {
                     self.wordBooks = wordBooks.filter { !$0.closed }
                 }
-                self.todayService.getStudyBooks { todayIDs, error in
-                    self.studyIDs = todayIDs!
-                    self.todayWordBooks = self.wordBooks.filter { self.studyIDs.contains($0.id) }
-                    self.fetchOnlyFailWords()
-                }
-                self.todayService.getReviewBooks { reviewIDs, error in
-                    self.reviewIDs = reviewIDs!
-                    self.reviewWordBooks = self.wordBooks.filter { self.reviewIDs.contains($0.id) }
+                self.todayService.getTodayBooks { todayBooks, error in
+                    if error != nil {
+                        return
+                    }
+                    guard let todayBooks = todayBooks else { return }
+                    self.todayWordBooks = self.wordBooks.filter { todayBooks.studyIDs.contains($0.id) }
+                    self.reviewWordBooks = self.wordBooks.filter {
+                        todayBooks.reviewIDs.contains($0.id) && !todayBooks.reviewedIDs.contains($0.id)
+                    }
                 }
             }
         }
@@ -123,14 +122,8 @@ extension TodayView {
                 guard let self = self else { return }
                 guard let wordBooks = wordBooks else { return }
                 let filtered = wordBooks.filter { !$0.closed }
-                self.wordBooks = filtered
-                self.todayService.getTodaysBooks(filtered) { tuple, error in
-                    guard let tuple = tuple else { return }
-                    self.studyIDs = tuple.0
-                    self.reviewIDs = tuple.1
-                    self.todayWordBooks = self.wordBooks.filter { self.studyIDs.contains($0.id) }
-                    self.reviewWordBooks = self.wordBooks.filter { self.reviewIDs.contains($0.id) }
-                    self.fetchOnlyFailWords()
+                self.todayService.autoUpdateTodayBooks(filtered) { _ in
+                    self.fetchSchedule()
                 }
             }
         }

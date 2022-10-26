@@ -8,11 +8,8 @@
 import Foundation
 
 protocol TodayService {
-    func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData)
-    func getStudyBooks(_ completionHandler: @escaping CompletionWithData<[String]>)
-    func updateReviewBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData)
-    func getReviewBooks(_ completionHandler: @escaping CompletionWithData<[String]>)
-    func getTodaysBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>)
+    func autoUpdateTodayBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithoutData)
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
     func updateReviewed(_ id: String)
 }
 
@@ -27,20 +24,17 @@ final class TodayServiceImpl: TodayService {
     }
     
     // functions
-    
-    func updateStudyBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
+        db.getTodayBooks { todayBooks, error in
+            if error != nil {
+                completionHandler(nil, error)
+                return
+            }
+            completionHandler(todayBooks, nil)
+        }
     }
     
-    func getStudyBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
-    }
-    
-    func updateReviewBooks(_ idArray: [String], completionHandler: @escaping CompletionWithoutData) {
-    }
-    
-    func getReviewBooks(_ completionHandler: @escaping CompletionWithData<[String]>) {
-    }
-    
-    func getTodaysBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithData<([String], [String])>) {
+    func autoUpdateTodayBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithoutData) {
         var studyID = [String]()
         var reviewID = [String]()
         for wordBook in wordBooks {
@@ -53,7 +47,7 @@ final class TodayServiceImpl: TodayService {
         let todayBooks = TodayBooksImpl(studyIDs: studyID, reviewIDs: reviewID, reviewedIDs: [], createdAt: Date())
         
         db.updateTodayBooks(todayBooks) { error in
-            completionHandler(nil, nil)
+            completionHandler(error)
         }
     }
     
