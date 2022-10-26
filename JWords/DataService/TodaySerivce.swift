@@ -8,9 +8,10 @@
 import Foundation
 
 protocol TodayService {
-    func autoUpdateTodayBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithoutData)
     func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
+    func autoUpdateTodayBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithoutData)
     func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
+    func updateReviewed(_ reviewedID: String, _ completionHandler: @escaping CompletionWithoutData)
 }
 
 final class TodayServiceImpl: TodayService {
@@ -53,5 +54,22 @@ final class TodayServiceImpl: TodayService {
     
     func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
         db.updateTodayBooks(todayBooks, completionHandler)
+    }
+    
+    func updateReviewed(_ reviewedID: String, _ completionHandler: @escaping CompletionWithoutData) {
+        getTodayBooks { [weak self] todayBooks, error in
+            guard let self = self else { return }
+            if let error = error {
+                completionHandler(error)
+                return
+            }
+            // TODO: Handle Error
+            guard let todayBooks = todayBooks else { return }
+            let newReviewedIDs = todayBooks.reviewedIDs + [reviewedID]
+            let newTodayBooks = TodayBooksImpl(studyIDs: todayBooks.studyIDs, reviewIDs: todayBooks.reviewIDs, reviewedIDs: newReviewedIDs, createdAt: todayBooks.createdAt)
+            self.updateTodayBooks(newTodayBooks) { error in
+                completionHandler(error)
+            }
+        }
     }
 }
