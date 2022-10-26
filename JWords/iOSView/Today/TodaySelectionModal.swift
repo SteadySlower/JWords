@@ -10,25 +10,44 @@ import SwiftUI
 struct TodaySelectionModal: View {
     
     @ObservedObject private var viewModel: ViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var showProgressView: Bool = false
     
     init(_ dependency: Dependency) {
         self.viewModel = ViewModel(dependency)
     }
     
     var body: some View {
-        VStack {
-            Text("학습 혹은 복습할 단어장을 골라주세요.")
-            ScrollView {
-                VStack(spacing: 8) {
-                    ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                        CheckableCell(wordBook: wordBook, viewModel: viewModel)
+        ZStack {
+            if showProgressView {
+                ProgressView()
+                    .scaleEffect(5)
+            }
+            VStack {
+                Text("학습 혹은 복습할 단어장을 골라주세요.")
+                ScrollView {
+                    VStack(spacing: 8) {
+                        ForEach(viewModel.wordBooks, id: \.id) { wordBook in
+                            CheckableCell(wordBook: wordBook, viewModel: viewModel)
+                        }
                     }
                 }
+                HStack {
+                    Button("취소") { dismiss() }
+                    Spacer()
+                    Button("확인") {
+                        showProgressView = true
+                        viewModel.updateToday {
+                            showProgressView = false
+                            dismiss()
+                        }
+                    }
+                }
+                .padding()
             }
+            .padding(10)
         }
-        .padding(10)
         .onAppear { viewModel.fetchTodays() }
-        .onDisappear { viewModel.updateToday() }
     }
 }
 
