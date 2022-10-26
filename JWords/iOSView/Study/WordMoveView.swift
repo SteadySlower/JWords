@@ -99,15 +99,26 @@ extension WordMoveView {
             }
         }
         
+        // TODO: Handle Error
         func moveWords(completionHandler: @escaping () -> Void) {
-            todayService.updateReviewed(fromBook.id)
             isClosing = true
-            wordBookService.moveWords(of: fromBook, to: selectedWordBook, toMove: toMoveWords) { error in
-                // TODO: Handle Error
-                if let error = error {
-                    print(error)
+            
+            todayService.getTodayBooks { [weak self] todayBooks, error in
+                guard let self = self else { return }
+                if let error = error { print(error); return }
+                guard let todayBooks = todayBooks else { return }
+                let newReviewedIDs = todayBooks.reviewedIDs + [self.fromBook.id]
+                let newTodayBooks = TodayBooksImpl(studyIDs: todayBooks.studyIDs, reviewIDs: todayBooks.reviewIDs, reviewedIDs: newReviewedIDs, createdAt: Date())
+                self.todayService.updateTodayBooks(newTodayBooks) { error in
+                    if let error = error { print(error); return }
+                    self.wordBookService.moveWords(of: self.fromBook, to: self.selectedWordBook, toMove: self.toMoveWords) { error in
+                        if let error = error {
+                            print(error)
+                            return
+                        }
+                        completionHandler()
+                    }
                 }
-                completionHandler()
             }
         }
     }
