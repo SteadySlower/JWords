@@ -290,7 +290,32 @@ extension FirestoreDB {
 
 extension FirestoreDB {
     func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
-        
+        dataRef.getDocument { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard var dict = snapshot?.data()?["today"] as? [String: Any] else {
+                let error = AppError.Firebase.noDocument
+                completionHandler(nil, error)
+                return
+            }
+            
+            guard let timestamp = dict["timestamp"] as? Timestamp else {
+                let error = AppError.Firebase.noTimestamp
+                completionHandler(nil, error)
+                return
+            }
+            
+            dict["createdAt"] = timestamp.dateValue()
+            
+            do {
+                let todayBooks = try TodayBooksImpl(dict: dict)
+                completionHandler(todayBooks, nil)
+            } catch let error {
+                completionHandler(nil, error)
+            }
+        }
     }
     
     func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
