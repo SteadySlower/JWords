@@ -99,7 +99,7 @@ extension WordMoveView {
             }
         }
         
-        // TODO: Handle Error
+        // TODO: Handle Error + reduce callbacks
         func moveWords(completionHandler: @escaping () -> Void) {
             isClosing = true
             
