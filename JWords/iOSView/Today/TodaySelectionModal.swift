@@ -87,6 +87,8 @@ extension TodaySelectionModal {
         @Published var wordBooks: [WordBook] = []
         @Published var schedules = [String : Schedule]()
         
+        private var todayBooks: TodayBooks?
+        
         private let wordBookService: WordBookService
         private let todayService: TodayService
         
@@ -97,18 +99,33 @@ extension TodaySelectionModal {
         
         func fetchTodays() {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
-                if let error = error { print("디버그: \(error.localizedDescription)"); return }
+                guard let self = self else { return }
+                
+                if let error = error {
+                    print("디버그: \(error.localizedDescription)")
+                    return
+                }
+                
                 if let wordBooks = wordBooks {
-                    self?.wordBooks = wordBooks.filter { $0.closed == false }
+                    self.wordBooks = wordBooks.filter { !$0.closed }
                 }
-                self?.todayService.getStudyBooks { idArray, error in
-                    for id in idArray! {
-                        self?.schedules[id, default: .none] = .study
+                
+                self.todayService.getTodayBooks { todayBooks, error in
+                    if let error = error {
+                        print("디버그: \(error.localizedDescription)")
+                        return
                     }
-                }
-                self?.todayService.getReviewBooks { idArray, error in
-                    for id in idArray! {
-                        self?.schedules[id, default: .none] = .review
+                    
+                    guard let todayBooks = todayBooks else { return }
+                    
+                    self.todayBooks = todayBooks
+                    
+                    for studyID in todayBooks.studyIDs {
+                        self.schedules[studyID] = .study
+                    }
+                    
+                    for reviewID in todayBooks.reviewIDs {
+                        self.schedules[reviewID] = .review
                     }
                 }
             }
@@ -130,11 +147,14 @@ extension TodaySelectionModal {
             }
         }
         
-        func updateToday() {
+        func updateToday(_ completionHandler: @escaping () -> Void) {
             let studyIDs = schedules.keys.filter { schedules[$0] == .study }
             let reviewIDs = schedules.keys.filter { schedules[$0] == .review }
-            todayService.updateStudyBooks(studyIDs, completionHandler: { _ in })
-            todayService.updateReviewBooks(reviewIDs, completionHandler: { _ in })
+            let reviewedIDs = todayBooks?.reviewedIDs ?? []
+            let newTodayBooks = TodayBooksImpl(studyIDs: studyIDs, reviewIDs: reviewIDs, reviewedIDs: reviewedIDs, createdAt: Date())
+            todayService.updateTodayBooks(newTodayBooks) { _ in
+                completionHandler()
+            }
         }
         
         func dateText(of wordBook: WordBook) -> String {
