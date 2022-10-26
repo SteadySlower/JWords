@@ -51,6 +51,7 @@ enum AppError: Error {
         case wordBookImpl
         case wordImpl
         case sampleImpl
+        case todayBookImpl
         
         var message: String {
             return "\(String(describing: self)): Failed to init \(self.rawValue)"
