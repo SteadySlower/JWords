@@ -112,6 +112,7 @@ extension TodayView {
                     self.reviewWordBooks = self.wordBooks.filter {
                         todayBooks.reviewIDs.contains($0.id) && !todayBooks.reviewedIDs.contains($0.id)
                     }
+                    self.fetchOnlyFailWords()
                 }
             }
         }
