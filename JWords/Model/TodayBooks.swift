@@ -31,7 +31,7 @@ struct TodayBooksImpl: TodayBooks {
         
         if let studyIDs = dict["studyIDs"] as? [String],
            let reviewIDs = dict["reviewIDs"] as? [String],
-           let reviewedIDs = dict["reviewIDs"] as? [String],
+           let reviewedIDs = dict["reviewedIDs"] as? [String],
            let createdAt = dict["createdAt"] as? Date
         {
             self.studyIDs = studyIDs
