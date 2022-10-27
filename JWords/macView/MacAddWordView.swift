@@ -61,39 +61,39 @@ extension MacAddWordView {
                     }
                     .padding(.bottom)
                     VStack {
-                        TextInputView(inputType: .gana)
-                            .focused($editFocus, equals: .gana)
-                        ImageInputView(inputType: .gana)
-                    }
-                    VStack {
                         TextInputView(inputType: .kanji)
                             .focused($editFocus, equals: .kanji)
                         ImageInputView(inputType: .kanji)
+                    }
+                    VStack {
+                        TextInputView(inputType: .gana)
+                            .focused($editFocus, equals: .gana)
+                        ImageInputView(inputType: .gana)
                     }
                     SaveButton { editFocus = .meaning }
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
-                .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
-                .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
-                .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
+                .onChange(of: viewModel.meaningText) { moveCursorToKanjiWhenTap($0) }
                 .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
-            }
-        }
-        
-        private func moveCursorToGanaWhenTap(_ text: String) {
-            guard let last = text.last else { return }
-            if last == "\t" {
-                viewModel.meaningText.removeLast()
-                editFocus = .gana
+                .onChange(of: viewModel.kanjiText) { moveCursorToGanaWhenTap($0) }
+                .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
             }
         }
         
         private func moveCursorToKanjiWhenTap(_ text: String) {
             guard let last = text.last else { return }
             if last == "\t" {
-                viewModel.ganaText.removeLast()
+                viewModel.meaningText.removeLast()
                 editFocus = .kanji
+            }
+        }
+        
+        private func moveCursorToGanaWhenTap(_ text: String) {
+            guard let last = text.last else { return }
+            if last == "\t" {
+                viewModel.kanjiText.removeLast()
+                editFocus = .gana
             }
         }
     }
