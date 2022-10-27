@@ -70,7 +70,7 @@ extension MacAddWordView {
                             .focused($editFocus, equals: .kanji)
                         ImageInputView(inputType: .kanji)
                     }
-                    SaveButton()
+                    SaveButton { editFocus = .meaning }
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
@@ -96,7 +96,6 @@ extension MacAddWordView {
                 editFocus = .kanji
             }
         }
-
     }
 }
 
@@ -250,6 +249,11 @@ extension MacAddWordView {
     
     struct SaveButton: View {
         @EnvironmentObject private var viewModel: ViewModel
+        private let saveButtonTapped: () -> Void
+        
+        init(saveButtonTapped: @escaping () -> Void) {
+            self.saveButtonTapped = saveButtonTapped
+        }
         
         var body: some View {
             if viewModel.isUploading {
@@ -257,6 +261,7 @@ extension MacAddWordView {
             } else {
                 Button {
                     viewModel.saveWord()
+                    saveButtonTapped()
                 } label: {
                     Text("저장")
                 }
