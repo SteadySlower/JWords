@@ -70,7 +70,10 @@ extension MacAddWordView {
                             .focused($editFocus, equals: .gana)
                         ImageInputView(inputType: .gana)
                     }
-                    SaveButton { editFocus = .meaning }
+                    SaveButton {
+                        viewModel.saveWord()
+                        editFocus = .meaning
+                    }
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
@@ -269,7 +272,6 @@ extension MacAddWordView {
                 ProgressView()
             } else {
                 Button {
-                    viewModel.saveWord()
                     saveButtonTapped()
                 } label: {
                     Text("저장")
