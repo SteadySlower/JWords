@@ -462,8 +462,16 @@ extension MacAddWordView {
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
-                self?.samples = examples.filter({ !$0.hasImage })
-                if !examples.isEmpty { self?.selectedSampleID = examples[0].id }
+                self?.samples = examples
+                                .filter({ !$0.hasImage })
+                                .sorted { ex1, ex2 in
+                                    if !ex1.kanjiText.isEmpty && ex2.kanjiText.isEmpty {
+                                        return true
+                                    } else {
+                                        return false
+                                    }
+                                }
+                if !examples.isEmpty { self?.selectedSampleID = self?.samples[0].id }
             }
         }
         
