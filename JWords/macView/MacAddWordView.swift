@@ -77,35 +77,30 @@ extension MacAddWordView {
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
-                .onChange(of: viewModel.meaningText) { moveCursorToKanjiWhenTap($0) }
+                .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
                 .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
-                .onChange(of: viewModel.kanjiText) { moveCursorToGanaWhenTap($0) }
+                .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
                 .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
-                .onChange(of: viewModel.ganaText) { moveCursorToMeaningWhenTap($0) }
+                .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
             }
         }
         
-        private func moveCursorToKanjiWhenTap(_ text: String) {
-            guard let last = text.last else { return }
-            if last == "\t" {
+        private func moveCursorWhenTab(_ text: String) {
+            guard let last = text.last, last == "\t" else { return }
+            guard let nowCursor = editFocus else { return }
+            switch nowCursor {
+            case .meaning:
                 viewModel.meaningText.removeLast()
                 editFocus = .kanji
-            }
-        }
-        
-        private func moveCursorToGanaWhenTap(_ text: String) {
-            guard let last = text.last else { return }
-            if last == "\t" {
+                return
+            case .kanji:
                 viewModel.kanjiText.removeLast()
                 editFocus = .gana
-            }
-        }
-        
-        private func moveCursorToMeaningWhenTap(_ text: String) {
-            guard let last = text.last else { return }
-            if last == "\t" {
+                return
+            case .gana:
                 viewModel.ganaText.removeLast()
                 editFocus = .meaning
+                return
             }
         }
     }
