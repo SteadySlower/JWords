@@ -25,6 +25,10 @@ protocol Database {
     func insertSample(_ wordInput: WordInput)
     func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func updateUsed(of sample: Sample, to used: Int)
+    
+    // Today 관련
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
+    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -58,6 +62,12 @@ final class FirestoreDB: Database {
         .collection("develop")
         .document("data")
         .collection("examples")
+    }()
+    
+    private lazy var dataRef = {
+        firestore
+        .collection("develop")
+        .document("data")
     }()
 }
 
@@ -273,5 +283,56 @@ extension FirestoreDB {
     
     func updateUsed(of sample: Sample, to used: Int) {
         sampleRef.document(sample.id).updateData(["used" : used])
+    }
+}
+
+//MARK: TodayDatebase
+
+extension FirestoreDB {
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
+        dataRef.getDocument { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard var dict = snapshot?.data()?["today"] as? [String: Any] else {
+                let emptyTodayBooks = TodayBooksImpl(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
+                completionHandler(emptyTodayBooks, nil)
+                return
+            }
+            
+            guard let timestamp = dict["timestamp"] as? Timestamp else {
+                let error = AppError.Firebase.noTimestamp
+                completionHandler(nil, error)
+                return
+            }
+            
+            dict["createdAt"] = timestamp.dateValue()
+            
+            do {
+                let todayBooks = try TodayBooksImpl(dict: dict)
+                completionHandler(todayBooks, nil)
+            } catch let error {
+                completionHandler(nil, error)
+            }
+        }
+    }
+    
+    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+        
+        let data: [String : Any] = [
+            "studyIDs": todayBooks.studyIDs,
+            "reviewIDs": todayBooks.reviewIDs,
+            "timestamp": Timestamp(date: todayBooks.createdAt),
+            "reviewedIDs": todayBooks.reviewedIDs
+        ]
+        
+        dataRef.updateData(["today" : data]) { error in
+            if error != nil {
+                completionHandler(error)
+                return
+            }
+            completionHandler(nil)
+        }
     }
 }
