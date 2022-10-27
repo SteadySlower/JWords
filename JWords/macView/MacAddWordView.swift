@@ -266,6 +266,7 @@ extension MacAddWordView {
                     Text("저장")
                 }
                 .disabled(viewModel.isSaveButtonUnable)
+                .keyboardShortcut(.return, modifiers: [.command])
             }
         }
     }
