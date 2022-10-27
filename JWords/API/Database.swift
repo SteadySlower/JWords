@@ -296,8 +296,8 @@ extension FirestoreDB {
                 return
             }
             guard var dict = snapshot?.data()?["today"] as? [String: Any] else {
-                let error = AppError.Firebase.noDocument
-                completionHandler(nil, error)
+                let emptyTodayBooks = TodayBooksImpl(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
+                completionHandler(emptyTodayBooks, nil)
                 return
             }
             
