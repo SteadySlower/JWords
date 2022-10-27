@@ -78,6 +78,7 @@ extension MacAddWordView {
                 .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
                 .onChange(of: viewModel.kanjiText) { moveCursorToGanaWhenTap($0) }
                 .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
+                .onChange(of: viewModel.ganaText) { moveCursorToMeaningWhenTap($0) }
             }
         }
         
@@ -94,6 +95,14 @@ extension MacAddWordView {
             if last == "\t" {
                 viewModel.kanjiText.removeLast()
                 editFocus = .gana
+            }
+        }
+        
+        private func moveCursorToMeaningWhenTap(_ text: String) {
+            guard let last = text.last else { return }
+            if last == "\t" {
+                viewModel.ganaText.removeLast()
+                editFocus = .meaning
             }
         }
     }
