@@ -370,7 +370,7 @@ extension MacAddWordView {
                     return
                 }
                 guard let wordBooks = wordBooks else { return }
-                self?.bookList = wordBooks.filter { $0.closed != true }
+                self?.bookList = wordBooks
                 self?.didBooksFetched = true
             }
         }

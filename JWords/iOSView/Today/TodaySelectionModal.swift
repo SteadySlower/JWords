@@ -126,7 +126,7 @@ extension TodaySelectionModal {
                 }
                 
                 if let wordBooks = wordBooks {
-                    self.wordBooks = wordBooks.filter { !$0.closed }
+                    self.wordBooks = wordBooks
                 }
                 
                 self.todayService.getTodayBooks { todayBooks, error in

@@ -98,7 +98,7 @@ extension WordMoveView {
                     return
                 }
                 
-                self?.wordBooks = books.filter { $0.closed != true && $0.id != self?.fromBook.id }
+                self?.wordBooks = books.filter { $0.id != self?.fromBook.id }
             }
         }
         
