@@ -106,30 +106,39 @@ extension WordMoveView {
         func moveWords(completionHandler: @escaping () -> Void) {
             isClosing = true
             
-            todayService.updateReviewed(fromBook.id) { [weak self] error in
-                guard let self = self else { return }
+            let group = DispatchGroup()
+            
+            group.enter()
+            todayService.updateReviewed(fromBook.id) { error in
                 if let error = error {
                     print(error)
                     return
                 }
-                
-                self.wordBookService.moveWords(of: self.fromBook, to: self.selectedWordBook, toMove: self.toMoveWords) { error in
+                group.leave()
+            }
+            
+            group.enter()
+            wordBookService.moveWords(of: fromBook, to: selectedWordBook, toMove: toMoveWords) { error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                group.leave()
+            }
+            
+            if willCloseBook {
+                group.enter()
+                wordBookService.closeWordBook(fromBook) { error in
                     if let error = error {
                         print(error)
                         return
                     }
-                    if self.willCloseBook {
-                        self.wordBookService.closeWordBook(self.fromBook) { error in
-                            if let error = error {
-                                print(error)
-                                return
-                            }
-                            completionHandler()
-                        }
-                    } else {
-                        completionHandler()
-                    }
+                    group.leave()
                 }
+            }
+            
+            group.notify(queue: .main) {
+                completionHandler()
             }
         }
     }
