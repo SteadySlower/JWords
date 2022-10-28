@@ -38,6 +38,8 @@ struct WordMoveView: View {
                 #if os(iOS)
                 .pickerStyle(.wheel)
                 #endif
+                Toggle("단어장 마감하기", isOn: $viewModel.willCloseBook)
+                    .padding(.horizontal, 20)
                 HStack {
                     Button("취소") {
                         didClosed = false
@@ -67,6 +69,7 @@ extension WordMoveView {
         @Published var wordBooks = [WordBook]()
         @Published var selectedID: String?
         @Published var isClosing: Bool = false
+        @Published var willCloseBook: Bool = false
         
         var selectedWordBook: WordBook? {
             if let selectedID = selectedID {
