@@ -38,6 +38,8 @@ struct WordMoveView: View {
                 #if os(iOS)
                 .pickerStyle(.wheel)
                 #endif
+                Toggle("단어장 마감하기", isOn: $viewModel.willCloseBook)
+                    .padding(.horizontal, 20)
                 HStack {
                     Button("취소") {
                         didClosed = false
@@ -67,6 +69,7 @@ extension WordMoveView {
         @Published var wordBooks = [WordBook]()
         @Published var selectedID: String?
         @Published var isClosing: Bool = false
+        @Published var willCloseBook: Bool = false
         
         var selectedWordBook: WordBook? {
             if let selectedID = selectedID {
@@ -95,7 +98,7 @@ extension WordMoveView {
                     return
                 }
                 
-                self?.wordBooks = books.filter { $0.closed != true && $0.id != self?.fromBook.id }
+                self?.wordBooks = books.filter { $0.id != self?.fromBook.id }
             }
         }
         
@@ -103,20 +106,39 @@ extension WordMoveView {
         func moveWords(completionHandler: @escaping () -> Void) {
             isClosing = true
             
-            todayService.updateReviewed(fromBook.id) { [weak self] error in
-                guard let self = self else { return }
+            let group = DispatchGroup()
+            
+            group.enter()
+            todayService.updateReviewed(fromBook.id) { error in
                 if let error = error {
                     print(error)
                     return
                 }
-                
-                self.wordBookService.moveWords(of: self.fromBook, to: self.selectedWordBook, toMove: self.toMoveWords) { error in
+                group.leave()
+            }
+            
+            group.enter()
+            wordBookService.moveWords(of: fromBook, to: selectedWordBook, toMove: toMoveWords) { error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                group.leave()
+            }
+            
+            if willCloseBook {
+                group.enter()
+                wordBookService.closeWordBook(fromBook) { error in
                     if let error = error {
                         print(error)
                         return
                     }
-                    completionHandler()
+                    group.leave()
                 }
+            }
+            
+            group.notify(queue: .main) {
+                completionHandler()
             }
         }
     }

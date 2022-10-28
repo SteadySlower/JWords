@@ -10,6 +10,7 @@ protocol WordBookService {
     func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
     func checkIfOverlap(in wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
     func moveWords(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData)
+    func closeWordBook(_ wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
 }
 
 class WordBookServiceImpl: WordBookService {
@@ -27,25 +28,38 @@ class WordBookServiceImpl: WordBookService {
     }
     
     func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
-        db.fetchWordBooks(completionHandler: completionHandler)
+        db.fetchWordBooks { wordBook, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard let wordBook = wordBook else {
+                let error = AppError.WordBookService.noWordBooks
+                print(error.message)
+                completionHandler(nil, error)
+                return
+            }
+            
+            let filtered = wordBook.filter { $0.closed != true }
+            completionHandler(filtered, nil)
+        }
     }
     
     func checkIfOverlap(in wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>) {
         db.checkIfOverlap(wordBook: wordBook, meaningText: meaningText, completionHandler: completionHandler)
     }
     
-    // TODO: 복습으로 체크하는 기능 생기면 복습으로 체크하는 함수로 바꾸고 닫기 함수는 따로 만들기
     func moveWords(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData) {
         if let destination = destination {
             wordService.moveWords(toMove, to: destination) { error in
                 completionHandler(error)
-//                if let error = error { completionHandler(error) }
-//                self?.db.closeWordBook(of: toClose, completionHandler: completionHandler)
             }
         } else {
             completionHandler(nil)
-//            db.closeWordBook(of: toClose, completionHandler: completionHandler)
         }
     }
     
+    func closeWordBook(_ wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
+        db.closeWordBook(of: wordBook, completionHandler: completionHandler)
+    }
 }

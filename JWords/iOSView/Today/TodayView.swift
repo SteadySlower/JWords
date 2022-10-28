@@ -101,7 +101,7 @@ extension TodayView {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
                 guard let self = self else { return }
                 if let wordBooks = wordBooks {
-                    self.wordBooks = wordBooks.filter { !$0.closed }
+                    self.wordBooks = wordBooks
                 }
                 self.todayService.getTodayBooks { todayBooks, error in
                     if error != nil {
@@ -122,8 +122,7 @@ extension TodayView {
             wordBookService.getWordBooks { [weak self] wordBooks, error in
                 guard let self = self else { return }
                 guard let wordBooks = wordBooks else { return }
-                let filtered = wordBooks.filter { !$0.closed }
-                self.todayService.autoUpdateTodayBooks(filtered) { _ in
+                self.todayService.autoUpdateTodayBooks(wordBooks) { _ in
                     self.fetchSchedule()
                 }
             }
