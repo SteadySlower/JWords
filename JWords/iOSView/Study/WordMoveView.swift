@@ -118,7 +118,17 @@ extension WordMoveView {
                         print(error)
                         return
                     }
-                    completionHandler()
+                    if self.willCloseBook {
+                        self.wordBookService.closeWordBook(self.fromBook) { error in
+                            if let error = error {
+                                print(error)
+                                return
+                            }
+                            completionHandler()
+                        }
+                    } else {
+                        completionHandler()
+                    }
                 }
             }
         }
