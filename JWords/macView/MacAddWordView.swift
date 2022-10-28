@@ -61,42 +61,48 @@ extension MacAddWordView {
                     }
                     .padding(.bottom)
                     VStack {
-                        TextInputView(inputType: .gana)
-                            .focused($editFocus, equals: .gana)
-                        ImageInputView(inputType: .gana)
-                    }
-                    VStack {
                         TextInputView(inputType: .kanji)
                             .focused($editFocus, equals: .kanji)
                         ImageInputView(inputType: .kanji)
                     }
-                    SaveButton()
+                    VStack {
+                        TextInputView(inputType: .gana)
+                            .focused($editFocus, equals: .gana)
+                        ImageInputView(inputType: .gana)
+                    }
+                    SaveButton {
+                        viewModel.saveWord()
+                        editFocus = .meaning
+                    }
                 }
                 .padding(.top, 50)
                 .onAppear { viewModel.getWordBooks() }
-                .onChange(of: viewModel.meaningText) { moveCursorToGanaWhenTap($0) }
-                .onChange(of: viewModel.ganaText) { moveCursorToKanjiWhenTap($0) }
-                .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
+                .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
                 .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
+                .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
+                .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
+                .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
             }
         }
         
-        private func moveCursorToGanaWhenTap(_ text: String) {
-            guard let last = text.last else { return }
-            if last == "\t" {
+        private func moveCursorWhenTab(_ text: String) {
+            guard let last = text.last, last == "\t" else { return }
+            guard let nowCursor = editFocus else { return }
+            switch nowCursor {
+            case .meaning:
                 viewModel.meaningText.removeLast()
-                editFocus = .gana
-            }
-        }
-        
-        private func moveCursorToKanjiWhenTap(_ text: String) {
-            guard let last = text.last else { return }
-            if last == "\t" {
-                viewModel.ganaText.removeLast()
                 editFocus = .kanji
+                return
+            case .kanji:
+                viewModel.kanjiText.removeLast()
+                editFocus = .gana
+                return
+            case .gana:
+                viewModel.ganaText.removeLast()
+                editFocus = .meaning
+                return
             }
         }
-
     }
 }
 
@@ -189,7 +195,7 @@ extension MacAddWordView {
                     Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
                         .tag(nil as String?)
                     ForEach(viewModel.samples, id: \.id) { example in
-                        Text("뜻: \(example.meaningText)\n가나: \(example.ganaText)\n한자: \(example.kanjiText)")
+                        Text("뜻: \(example.meaningText)\t가나: \(example.ganaText)\t한자: \(example.kanjiText)")
                             .tag(example.id as String?)
                     }
                 }
@@ -250,17 +256,23 @@ extension MacAddWordView {
     
     struct SaveButton: View {
         @EnvironmentObject private var viewModel: ViewModel
+        private let saveButtonTapped: () -> Void
+        
+        init(saveButtonTapped: @escaping () -> Void) {
+            self.saveButtonTapped = saveButtonTapped
+        }
         
         var body: some View {
             if viewModel.isUploading {
                 ProgressView()
             } else {
                 Button {
-                    viewModel.saveWord()
+                    saveButtonTapped()
                 } label: {
                     Text("저장")
                 }
                 .disabled(viewModel.isSaveButtonUnable)
+                .keyboardShortcut(.return, modifiers: [.control])
             }
         }
     }
@@ -447,8 +459,16 @@ extension MacAddWordView {
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
-                self?.samples = examples.filter({ !$0.hasImage })
-                if !examples.isEmpty { self?.selectedSampleID = examples[0].id }
+                self?.samples = examples
+                                .filter({ !$0.hasImage })
+                                .sorted { ex1, ex2 in
+                                    if !ex1.kanjiText.isEmpty && ex2.kanjiText.isEmpty {
+                                        return true
+                                    } else {
+                                        return false
+                                    }
+                                }
+                if !examples.isEmpty { self?.selectedSampleID = self?.samples[0].id }
             }
         }
         
