@@ -96,6 +96,7 @@ struct StudyView: View {
                     Button("랜덤") {
                         viewModel.shuffleWords()
                     }
+                    .disabled(viewModel.isSelectionMode)
                     Button("설정") {
                         showSideBar = true
                     }
