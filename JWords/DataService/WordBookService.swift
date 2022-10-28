@@ -28,7 +28,21 @@ class WordBookServiceImpl: WordBookService {
     }
     
     func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
-        db.fetchWordBooks(completionHandler: completionHandler)
+        db.fetchWordBooks { wordBook, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard let wordBook = wordBook else {
+                let error = AppError.WordBookService.noWordBooks
+                print(error.message)
+                completionHandler(nil, error)
+                return
+            }
+            
+            let filtered = wordBook.filter { $0.closed != true }
+            completionHandler(filtered, nil)
+        }
     }
     
     func checkIfOverlap(in wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>) {

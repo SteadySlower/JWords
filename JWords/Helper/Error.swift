@@ -47,6 +47,17 @@ enum AppError: Error {
         }
     }
     
+    enum WordBookService: Error {
+        case noWordBooks
+        
+        var message: String {
+            switch self {
+            case .noWordBooks:
+                return "\(String(describing: self)): wordBooks is nil"
+            }
+        }
+    }
+    
     enum Initializer: String, Error {
         case wordBookImpl
         case wordImpl
