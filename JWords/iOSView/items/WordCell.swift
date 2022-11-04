@@ -50,8 +50,6 @@ struct WordCell: View {
                 .gesture(dragGesture)
                 .gesture(doubleTapGesture)
                 .gesture(tapGesture)
-                // TODO: show WordEditView
-                .onLongPressGesture { showWordInput = true }
         }
     }
 }
