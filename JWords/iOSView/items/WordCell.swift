@@ -14,6 +14,7 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
+    @State private var showWordInput = false
     
     // MARK: Gestures
     private var dragGesture: some Gesture {
@@ -43,11 +44,14 @@ struct WordCell: View {
         ZStack {
             ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
                 .onReceive(viewModel.eventPublisher) { handleEvent($0) }
+                .sheet(isPresented: $showWordInput,
+                       onDismiss: {  },
+                       content: { WordInputView(viewModel.word) })
                 .gesture(dragGesture)
                 .gesture(doubleTapGesture)
                 .gesture(tapGesture)
                 // TODO: show WordEditView
-                .onLongPressGesture { }
+                .onLongPressGesture { showWordInput = true }
         }
     }
 }
