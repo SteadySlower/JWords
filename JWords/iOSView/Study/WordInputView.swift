@@ -10,16 +10,21 @@ import SwiftUI
 struct WordInputView: View {
     @ObservedObject private var viewModel: ViewModel
     
-    init(word: Binding<Word>) {
+    init() {
+        self.viewModel = ViewModel()
+    }
+    
+    init(_ word: Word) {
         self.viewModel = ViewModel(word: word)
     }
     
     var body: some View {
         VStack {
-            TextEditor(text: $viewModel.word.meaningText)
-            TextEditor(text: $viewModel.word.ganaText)
-            Button("수정") {
-                print("EditButton Pressed")
+            TextEditor(text: $viewModel.meaningText)
+            TextEditor(text: $viewModel.kanjiText)
+            TextEditor(text: $viewModel.ganaText)
+            Button("저장") {
+                viewModel.saveButtonTapped()
             }
         }
         
@@ -28,13 +33,35 @@ struct WordInputView: View {
 
 extension WordInputView {
     final class ViewModel: ObservableObject {
-        @Binding var word: Word
+        let word: Word?
         
-        init(word: Binding<Word>) {
-            self._word = word
+        @Published var meaningText: String
+        @Published var kanjiText: String
+        @Published var ganaText: String
+        
+        init(word: Word) {
+            self.word = word
+            self.meaningText = word.meaningText
+            self.kanjiText = word.kanjiText
+            self.ganaText = word.ganaText
         }
         
-        func updateWord() {
+        init() {
+            self.word = nil
+            self.meaningText = ""
+            self.kanjiText = ""
+            self.ganaText = ""
+        }
+        
+        func saveButtonTapped() {
+            
+        }
+            
+        private func addWord() {
+            
+        }
+        
+        private func updateWord() {
             
         }
     }
