@@ -20,9 +20,17 @@ struct WordInputView: View {
     
     var body: some View {
         VStack {
+            Text(viewModel.word == nil ? "단어 추가하기" : "단어 수정하기")
+                .padding()
             TextEditor(text: $viewModel.meaningText)
+                .border(.black)
+                .padding()
             TextEditor(text: $viewModel.kanjiText)
+                .border(.black)
+                .padding()
             TextEditor(text: $viewModel.ganaText)
+                .border(.black)
+                .padding()
             Button("저장") {
                 viewModel.saveButtonTapped()
             }
