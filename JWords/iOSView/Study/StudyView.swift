@@ -76,10 +76,11 @@ struct StudyView: View {
                                     .onTapGesture { viewModel.toggleSelection(word) }
                             } else if viewModel.studyViewMode == .edit {
                                 EditableCell()
-                                    .onTapGesture { print("onTapped") }
+                                    .onTapGesture { showEditModal = true }
                             }
                         }
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                        .sheet(isPresented: $showEditModal) { WordInputView(word) }
                     }
                 }
             }
@@ -250,7 +251,6 @@ extension StudyView {
                     .scaledToFit()
                     .padding()
             }
-            .border(.black)
         }
     }
 }
