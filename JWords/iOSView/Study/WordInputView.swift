@@ -10,11 +10,7 @@ import SwiftUI
 struct WordInputView: View {
     @ObservedObject private var viewModel: ViewModel
     
-    init() {
-        self.viewModel = ViewModel()
-    }
-    
-    init(_ word: Word) {
+    init(_ word: Word? = nil) {
         self.viewModel = ViewModel(word: word)
     }
     
@@ -47,18 +43,11 @@ extension WordInputView {
         @Published var kanjiText: String
         @Published var ganaText: String
         
-        init(word: Word) {
+        init(word: Word?) {
             self.word = word
-            self.meaningText = word.meaningText
-            self.kanjiText = word.kanjiText
-            self.ganaText = word.ganaText
-        }
-        
-        init() {
-            self.word = nil
-            self.meaningText = ""
-            self.kanjiText = ""
-            self.ganaText = ""
+            self.meaningText = word?.meaningText ?? ""
+            self.kanjiText = word?.kanjiText ?? ""
+            self.ganaText = word?.ganaText ?? ""
         }
         
         func saveButtonTapped() {

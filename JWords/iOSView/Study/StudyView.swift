@@ -76,11 +76,13 @@ struct StudyView: View {
                                     .onTapGesture { viewModel.toggleSelection(word) }
                             } else if viewModel.studyViewMode == .edit {
                                 EditableCell()
-                                    .onTapGesture { showEditModal = true }
+                                    .onTapGesture {
+                                        viewModel.toEditWord = word
+                                        showEditModal = true
+                                    }
                             }
                         }
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
-                        .sheet(isPresented: $showEditModal) { WordInputView(word) }
                     }
                 }
             }
@@ -96,6 +98,9 @@ struct StudyView: View {
         .sheet(isPresented: $showMoveModal, onDismiss: { if shouldDismiss { dismiss() } }) {
             WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
         }
+        .sheet(isPresented: $showEditModal,
+               onDismiss: { viewModel.toEditWord = nil },
+               content: { WordInputView(viewModel.toEditWord) })
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
@@ -285,6 +290,9 @@ extension StudyView {
         func isSelected(_ word: Word) -> Bool {
             selectionDict[word.id, default: false]
         }
+        
+        // 단어 Edit 관련 properties
+        var toEditWord: Word?
         
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
