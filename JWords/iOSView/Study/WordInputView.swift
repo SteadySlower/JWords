@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WordInputView: View {
     @ObservedObject private var viewModel: ViewModel
+    @Environment(\.dismiss) private var dismiss
     
     init(_ word: Word? = nil, dependency: Dependency) {
         self.viewModel = ViewModel(word: word, dependency: dependency)
@@ -28,7 +29,7 @@ struct WordInputView: View {
                 .border(.black)
                 .padding()
             Button("저장") {
-                viewModel.saveButtonTapped { }
+                viewModel.saveButtonTapped { dismiss() }
             }
         }
         
@@ -66,7 +67,7 @@ extension WordInputView {
         }
         
         private func editWord(_ word: Word, _ completionHandler: @escaping () -> Void) {
-            let wordInput = WordInputImpl(wordBookID: word.wordBookID, meaningText: meaningText, ganaText: ganaText, kanjiText: kanjiText)
+            let wordInput = WordInputImpl(wordBookID: word.wordBookID, meaningText: meaningText, meaningImage: nil, ganaText: ganaText, ganaImage: nil, kanjiText: kanjiText, kanjiImage: nil)
             wordService.updateWord(word, wordInput) { error in
                 //TODO: handle error (in completionHandler as well)
                 if let error = error {

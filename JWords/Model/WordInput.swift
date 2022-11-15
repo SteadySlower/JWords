@@ -33,11 +33,11 @@ protocol WordInput {
 struct WordInputImpl: WordInput {
     let wordBookID: String
     let meaningText: String
-    let meaningImage: InputImageType? = nil
+    let meaningImage: InputImageType?
     let ganaText: String
-    let ganaImage: InputImageType? = nil
+    let ganaImage: InputImageType?
     let kanjiText: String
-    let kanjiImage: InputImageType? = nil
+    let kanjiImage: InputImageType?
     let studyState: StudyState = .undefined
     
     var meaningImageURL = ""

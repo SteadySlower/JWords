@@ -126,4 +126,8 @@ final class WordServiceImpl: WordService {
             completionHandler(copyWordError)
         }
     }
+    
+    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
+        db.updateWord(word, wordInput, completionHandler: completionHandler)
+    }
 }

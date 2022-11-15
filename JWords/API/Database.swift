@@ -20,6 +20,7 @@ protocol Database {
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func moveWord(_ word: Word, to wordBook: WordBook, group: DispatchGroup, completionHandler: @escaping CompletionWithoutData)
+    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     
     // Sample 관련
     func insertSample(_ wordInput: WordInput)
@@ -222,6 +223,16 @@ extension FirestoreDB {
             group.leave()
         }
         
+    }
+    
+    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
+        let data: [String: Any] = [
+            "meaningText": wordInput.meaningText,
+            "kanjiText": wordInput.kanjiText,
+            "ganaText": wordInput.ganaText]
+        wordRef(of: word.wordBookID).document(word.id).updateData(data) { error in
+            completionHandler(error)
+        }
     }
 }
 
