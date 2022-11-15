@@ -15,6 +15,7 @@ protocol WordService {
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func moveWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
+    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
 }
 
 final class WordServiceImpl: WordService {

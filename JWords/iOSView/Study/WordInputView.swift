@@ -10,8 +10,8 @@ import SwiftUI
 struct WordInputView: View {
     @ObservedObject private var viewModel: ViewModel
     
-    init(_ word: Word? = nil) {
-        self.viewModel = ViewModel(word: word)
+    init(_ word: Word? = nil, dependency: Dependency) {
+        self.viewModel = ViewModel(word: word, dependency: dependency)
     }
     
     var body: some View {
@@ -28,7 +28,7 @@ struct WordInputView: View {
                 .border(.black)
                 .padding()
             Button("저장") {
-                viewModel.saveButtonTapped()
+                viewModel.saveButtonTapped { }
             }
         }
         
@@ -43,23 +43,38 @@ extension WordInputView {
         @Published var kanjiText: String
         @Published var ganaText: String
         
-        init(word: Word?) {
+        private let wordService: WordService
+        
+        init(word: Word?, dependency: Dependency) {
             self.word = word
             self.meaningText = word?.meaningText ?? ""
             self.kanjiText = word?.kanjiText ?? ""
             self.ganaText = word?.ganaText ?? ""
+            self.wordService = dependency.wordService
         }
         
-        func saveButtonTapped() {
-            
+        func saveButtonTapped(_ completionHandler: @escaping () -> Void) {
+            if let word = word {
+                editWord(word, completionHandler)
+            } else {
+                addWord()
+            }
         }
             
         private func addWord() {
             
         }
         
-        private func updateWord() {
-            
+        private func editWord(_ word: Word, _ completionHandler: @escaping () -> Void) {
+            let wordInput = WordInputImpl(wordBookID: word.wordBookID, meaningText: meaningText, ganaText: ganaText, kanjiText: kanjiText)
+            wordService.updateWord(word, wordInput) { error in
+                //TODO: handle error (in completionHandler as well)
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                completionHandler()
+            }
         }
     }
 }
