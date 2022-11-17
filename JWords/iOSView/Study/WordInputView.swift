@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct WordInputView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     
-    init(_ word: Word? = nil, dependency: Dependency) {
-        self.viewModel = ViewModel(word: word, dependency: dependency)
+    init(_ word: Word? = nil, dependency: Dependency, eventPublisher: PassthroughSubject<Event, Never>) {
+        self.viewModel = ViewModel(word: word, dependency: dependency, eventPublisher: eventPublisher)
     }
     
     var body: some View {
@@ -46,17 +47,23 @@ extension WordInputView {
         
         private let wordService: WordService
         
-        init(word: Word?, dependency: Dependency) {
+        private let eventPublisher: PassthroughSubject<Event, Never>
+        
+        init(word: Word?, dependency: Dependency, eventPublisher: PassthroughSubject<Event, Never>) {
             self.word = word
             self.meaningText = word?.meaningText ?? ""
             self.kanjiText = word?.kanjiText ?? ""
             self.ganaText = word?.ganaText ?? ""
             self.wordService = dependency.wordService
+            self.eventPublisher = eventPublisher
         }
         
         func saveButtonTapped(_ completionHandler: @escaping () -> Void) {
             if let word = word {
-                editWord(word, completionHandler)
+                editWord(word) { [weak self] wordInput in
+                    self?.eventPublisher.send(WordInputViewEvent.wordEdited(word: word, wordInput: wordInput))
+                    completionHandler()
+                }
             } else {
                 addWord()
             }
@@ -66,7 +73,7 @@ extension WordInputView {
             
         }
         
-        private func editWord(_ word: Word, _ completionHandler: @escaping () -> Void) {
+        private func editWord(_ word: Word, _ completionHandler: @escaping (WordInput) -> Void) {
             let wordInput = WordInputImpl(wordBookID: word.wordBookID, meaningText: meaningText, meaningImage: nil, ganaText: ganaText, ganaImage: nil, kanjiText: kanjiText, kanjiImage: nil)
             wordService.updateWord(word, wordInput) { error in
                 //TODO: handle error (in completionHandler as well)
@@ -74,7 +81,7 @@ extension WordInputView {
                     print(error.localizedDescription)
                     return
                 }
-                completionHandler()
+                completionHandler(wordInput)
             }
         }
     }

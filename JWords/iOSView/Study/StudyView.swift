@@ -100,7 +100,7 @@ struct StudyView: View {
         }
         .sheet(isPresented: $showEditModal,
                onDismiss: { viewModel.toEditWord = nil },
-               content: { WordInputView(viewModel.toEditWord, dependency: dependency) })
+               content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
