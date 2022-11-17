@@ -167,7 +167,7 @@ extension WordCell {
     final class ViewModel: ObservableObject {
         @Published var word: Word
         private let frontType: FrontType
-        private(set) var eventPublisher = PassthroughSubject<Event, Never>()
+        let eventPublisher: PassthroughSubject<Event, Never>
         
         init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
             self.word = word
