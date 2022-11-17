@@ -14,3 +14,7 @@ enum CellEvent: Event {
 enum StudyViewEvent: Event {
     case toFront
 }
+
+enum WordInputViewEvent: Event {
+    case wordEdited(word: Word, wordInput: WordInput)
+}
