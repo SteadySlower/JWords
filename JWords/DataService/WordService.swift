@@ -15,7 +15,7 @@ protocol WordService {
     func saveWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
     func moveWords(_ words: [Word], to wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
-    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
+    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithData<Word>)
 }
 
 final class WordServiceImpl: WordService {
@@ -127,7 +127,19 @@ final class WordServiceImpl: WordService {
         }
     }
     
-    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithoutData) {
-        db.updateWord(word, wordInput, completionHandler: completionHandler)
+    func updateWord(_ word: Word, _ wordInput: WordInput, completionHandler: @escaping CompletionWithData<Word>) {
+        db.updateWord(word, wordInput) { [weak self] error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            self?.db.fetchWord(wordBookID: word.wordBookID, wordID: word.id) { word, error in
+                if let error = error {
+                    completionHandler(nil, error)
+                    return
+                }
+                completionHandler(word, error)
+            }
+        }
     }
 }
