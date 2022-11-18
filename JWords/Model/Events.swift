@@ -16,5 +16,5 @@ enum StudyViewEvent: Event {
 }
 
 enum WordInputViewEvent: Event {
-    case wordEdited(word: Word, wordInput: WordInput)
+    case wordEdited(word: Word)
 }
