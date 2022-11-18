@@ -43,7 +43,6 @@ enum StudyViewMode: Hashable {
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.scenePhase) var scenePhase
     
     private let dependency: Dependency
     
