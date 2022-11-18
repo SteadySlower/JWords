@@ -60,8 +60,8 @@ extension WordInputView {
         
         func saveButtonTapped(_ completionHandler: @escaping () -> Void) {
             if let word = word {
-                editWord(word) { [weak self] wordInput in
-                    self?.eventPublisher.send(WordInputViewEvent.wordEdited(word: word, wordInput: wordInput))
+                editWord(word) { [weak self] word in
+                    self?.eventPublisher.send(WordInputViewEvent.wordEdited(word: word))
                     completionHandler()
                 }
             } else {
@@ -73,15 +73,16 @@ extension WordInputView {
             
         }
         
-        private func editWord(_ word: Word, _ completionHandler: @escaping (WordInput) -> Void) {
+        private func editWord(_ word: Word, _ completionHandler: @escaping (Word) -> Void) {
             let wordInput = WordInputImpl(wordBookID: word.wordBookID, meaningText: meaningText, meaningImage: nil, ganaText: ganaText, ganaImage: nil, kanjiText: kanjiText, kanjiImage: nil)
-            wordService.updateWord(word, wordInput) { error in
+            wordService.updateWord(word, wordInput) { word, error in
                 //TODO: handle error (in completionHandler as well)
                 if let error = error {
                     print(error.localizedDescription)
                     return
                 }
-                completionHandler(wordInput)
+                guard let word = word else { return }
+                completionHandler(word)
             }
         }
     }
