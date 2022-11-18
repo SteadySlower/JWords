@@ -34,10 +34,15 @@ enum FrontType: Hashable, CaseIterable {
     }
 }
 
+enum StudyViewMode: Hashable {
+    case normal
+    case selection
+    case edit
+}
+
 struct StudyView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.scenePhase) var scenePhase
     
     private let dependency: Dependency
     
@@ -65,9 +70,15 @@ struct StudyView: View {
                     ForEach(viewModel.words, id: \.id) { word in
                         ZStack {
                             WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
-                            if viewModel.isSelectionMode {
+                            if viewModel.studyViewMode == .selection {
                                 SelectableCell(isSelected: viewModel.isSelected(word))
                                     .onTapGesture { viewModel.toggleSelection(word) }
+                            } else if viewModel.studyViewMode == .edit {
+                                EditableCell()
+                                    .onTapGesture {
+                                        viewModel.toEditWord = word
+                                        showEditModal = true
+                                    }
                             }
                         }
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
@@ -83,9 +94,12 @@ struct StudyView: View {
             viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showMoveModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
-        }
+        .sheet(isPresented: $showMoveModal,
+               onDismiss: { if shouldDismiss { dismiss() } },
+               content: { WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency) })
+        .sheet(isPresented: $showEditModal,
+               onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
+               content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
@@ -96,7 +110,7 @@ struct StudyView: View {
                     Button("랜덤") {
                         viewModel.shuffleWords()
                     }
-                    .disabled(viewModel.isSelectionMode)
+                    .disabled(viewModel.studyViewMode != .normal)
                     Button("설정") {
                         showSideBar = true
                     }
@@ -105,8 +119,8 @@ struct StudyView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(viewModel.isSelectionMode ? "이동" : "마감") { showMoveModal = true }
-                    .disabled(viewModel.wordBook == nil)
+                Button(viewModel.studyViewMode == .selection ? "이동" : "마감") { showMoveModal = true }
+                    .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
             }
         }
         #endif
@@ -155,8 +169,16 @@ extension StudyView {
                     .pickerStyle(.segmented)
                     .padding()
                     if viewModel.wordBook != nil {
-                        Toggle("선택 모드", isOn: $viewModel.isSelectionMode)
-                            .padding()
+                        Picker("모드", selection: $viewModel.studyViewMode) {
+                            Text("학습")
+                                .tag(StudyViewMode.normal)
+                            Text("선택")
+                                .tag(StudyViewMode.selection)
+                            Text("수정")
+                                .tag(StudyViewMode.edit)
+                        }
+                        .padding()
+                        .pickerStyle(.segmented)
                     }
                     Spacer()
                 }
@@ -219,6 +241,22 @@ extension StudyView {
             }
         }
     }
+    
+    private struct EditableCell: View {
+        var body: some View {
+            ZStack {
+                Color
+                    .clear
+                    .contentShape(Rectangle())
+                Image(systemName: "pencil")
+                    .resizable()
+                    .foregroundColor(.green)
+                    .opacity(0.5)
+                    .scaledToFit()
+                    .padding()
+            }
+        }
+    }
 }
 
 extension StudyView {
@@ -237,17 +275,23 @@ extension StudyView {
         }
         
         // 선택해서 이동 기능 관련 variables
-        @Published var isSelectionMode: Bool = false {
+        @Published var studyViewMode: StudyViewMode = .normal {
             didSet {
-                eventPublisher.send(StudyViewEvent.toFront)
-                selectionDict = [String : Bool]()
+                if studyViewMode == .selection {
+                    eventPublisher.send(StudyViewEvent.toFront)
+                    selectionDict = [String : Bool]()
+                }
             }
         }
+        
         @Published private(set) var selectionDict = [String : Bool]()
         
         func isSelected(_ word: Word) -> Bool {
             selectionDict[word.id, default: false]
         }
+        
+        // 단어 Edit 관련 properties
+        var toEditWord: Word?
         
         private(set) var eventPublisher = PassthroughSubject<Event, Never>()
         
@@ -262,10 +306,10 @@ extension StudyView {
         }
         
         var toMoveWords: [Word] {
-            if !isSelectionMode {
-                return _words.filter { $0.studyState != .success }
-            } else {
+            if studyViewMode == .selection {
                 return _words.filter { selectionDict[$0.id, default: false] }
+            } else {
+                return _words.filter { $0.studyState != .success }
             }
         }
         
@@ -298,10 +342,18 @@ extension StudyView {
         }
         
         func handleEvent(_ event: Event) {
-            guard let event = event as? CellEvent else { return }
-            switch event {
-            case .studyStateUpdate(let word, let state):
-                updateStudyState(word: word, state: state)
+            if let event = event as? CellEvent {
+                switch event {
+                case .studyStateUpdate(let word, let state):
+                    updateStudyState(word: word, state: state)
+                }
+            } else if let event = event as? WordInputViewEvent {
+                switch event {
+                case .wordEdited(let word):
+                    editWord(word: word)
+                }
+            } else {
+                return
             }
         }
         
@@ -318,6 +370,11 @@ extension StudyView {
                 guard let index = self._words.firstIndex(where: { $0.id == word.id }) else { return }
                 self._words[index].studyState = state
             }
+        }
+        
+        private func editWord(word: Word) {
+            guard let index = _words.firstIndex(where: { word.id == $0.id }) else { return }
+            _words[index] = word
         }
     }
 }
