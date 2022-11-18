@@ -95,11 +95,11 @@ struct StudyView: View {
             viewModel.fetchWords()
             resetDeviceWidth()
         }
-        .sheet(isPresented: $showMoveModal, onDismiss: { if shouldDismiss { dismiss() } }) {
-            WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency)
-        }
+        .sheet(isPresented: $showMoveModal,
+               onDismiss: { if shouldDismiss { dismiss() } },
+               content: { WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency) })
         .sheet(isPresented: $showEditModal,
-               onDismiss: { viewModel.toEditWord = nil },
+               onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
                content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
         #if os(iOS)
         // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
@@ -343,10 +343,18 @@ extension StudyView {
         }
         
         func handleEvent(_ event: Event) {
-            guard let event = event as? CellEvent else { return }
-            switch event {
-            case .studyStateUpdate(let word, let state):
-                updateStudyState(word: word, state: state)
+            if let event = event as? CellEvent {
+                switch event {
+                case .studyStateUpdate(let word, let state):
+                    updateStudyState(word: word, state: state)
+                }
+            } else if let event = event as? WordInputViewEvent {
+                switch event {
+                case .wordEdited(let word):
+                    editWord(word: word)
+                }
+            } else {
+                return
             }
         }
         
@@ -363,6 +371,11 @@ extension StudyView {
                 guard let index = self._words.firstIndex(where: { $0.id == word.id }) else { return }
                 self._words[index].studyState = state
             }
+        }
+        
+        private func editWord(word: Word) {
+            guard let index = _words.firstIndex(where: { word.id == $0.id }) else { return }
+            _words[index] = word
         }
     }
 }
