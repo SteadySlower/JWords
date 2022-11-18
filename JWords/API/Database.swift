@@ -16,6 +16,7 @@ protocol Database {
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData)
     
     // Word 관련
+    func fetchWord(wordBookID: String, wordID: String, completionHandler: @escaping CompletionWithData<Word>)
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>)
     func insertWord(wordInput: WordInput, completionHandler: @escaping CompletionWithoutData)
     func updateStudyState(word: Word, newState: StudyState, completionHandler: @escaping CompletionWithoutData)
@@ -146,6 +147,30 @@ extension FirestoreDB {
 
 // MARK: WordDatabase
 extension FirestoreDB {
+    func fetchWord(wordBookID: String, wordID: String, completionHandler: @escaping CompletionWithData<Word>) {
+        wordRef(of: wordBookID).document(wordID).getDocument { snapshot, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            
+            // TODO: handle error
+            guard let id = snapshot?.documentID,
+                  var dict = snapshot?.data(),
+                  let timestamp = dict["timestamp"] as? Timestamp else { return }
+            
+            dict["createdAt"] = timestamp.dateValue()
+            
+            do {
+                let word = try WordImpl(id: id, wordBookID: wordBookID, dict: dict)
+                completionHandler(word, nil)
+                return
+            } catch let error {
+                completionHandler(nil, error)
+                return
+            }
+        }
+    }
 
     func fetchWords(_ wordBook: WordBook, completionHandler: @escaping CompletionWithData<[Word]>) {
         wordRef(of: wordBook.id).order(by: "timestamp").getDocuments { snapshot, error in
