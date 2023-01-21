@@ -84,6 +84,11 @@ extension WordMoveView {
             self.toMoveWords = toMoveWords
             self.wordBookService = dependency.wordBookService
             self.todayService = dependency.todayService
+            
+            // 오늘 마지막 복습 일정인 book은 toggle 체크되어 있도록
+            if fromBook.dayFromToday == 28 {
+                self.willCloseBook = true
+            }
         }
         
         func getWordBooks() {
