@@ -69,7 +69,7 @@ struct StudyView: View {
                 LazyVStack(spacing: 32) {
                     ForEach(viewModel.words, id: \.id) { word in
                         ZStack {
-                            WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher)
+                            WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher, isLocked: viewModel.isCellLocked)
                             if viewModel.studyViewMode == .selection {
                                 SelectableCell(isSelected: viewModel.isSelected(word))
                                     .onTapGesture { viewModel.toggleSelection(word) }
@@ -274,6 +274,11 @@ extension StudyView {
             didSet {
                 eventPublisher.send(StudyViewEvent.toFront)
             }
+        }
+        
+        // 단어 모아보기 + 틀린 단어만 복습일 때는 cell 잠금
+        var isCellLocked: Bool {
+            return wordBook == nil && studyMode == .onlyFail
         }
         
         // 선택해서 이동 기능 관련 variables

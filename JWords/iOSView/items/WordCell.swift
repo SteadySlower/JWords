@@ -14,12 +14,13 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
+    private let isLocked: Bool
     
     // MARK: Gestures
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .global)
             .onEnded { onDragEnd($0) }
-            .updating($dragAmount) { value, state, _ in state.width = value.translation.width }
+            .updating($dragAmount) { dragUpdating($0, &$1, &$2) }
     }
     
     private var tapGesture: some Gesture {
@@ -29,12 +30,13 @@ struct WordCell: View {
     
     private var doubleTapGesture: some Gesture {
         TapGesture(count: 2)
-            .onEnded { viewModel.updateStudyState(to: .undefined) }
+            .onEnded { onDoubleTapped() }
     }
     
     // MARK: Initializer
-    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
+    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
+        self.isLocked = isLocked
         viewModel.prefetchImage()
     }
     
@@ -152,7 +154,18 @@ extension WordCell {
         }
     }
     
+    private func onDoubleTapped() {
+        if isLocked { return }
+        viewModel.updateStudyState(to: .undefined)
+    }
+    
+    private func dragUpdating(_ value: _EndedGesture<DragGesture>.Value, _ state: inout CGSize, _ transaction: inout Transaction) {
+        if isLocked { return }
+        state.width = value.translation.width
+    }
+    
     private func onDragEnd(_ value: DragGesture.Value) {
+        if isLocked { return }
         if value.translation.width > 0 {
             viewModel.updateStudyState(to: .success)
         } else {
