@@ -14,7 +14,7 @@ struct WordCell: View {
     @ObservedObject private var viewModel: ViewModel
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
-    private let isLocked: Bool = true
+    private let isLocked: Bool
     
     // MARK: Gestures
     private var dragGesture: some Gesture {
@@ -34,8 +34,9 @@ struct WordCell: View {
     }
     
     // MARK: Initializer
-    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>) {
+    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
+        self.isLocked = isLocked
         viewModel.prefetchImage()
     }
     
