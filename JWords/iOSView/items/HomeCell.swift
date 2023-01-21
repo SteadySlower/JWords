@@ -21,7 +21,7 @@ struct HomeCell: View {
     var body: some View {
         ZStack {
             NavigationLink {
-                StudyView(wordBook: viewModel.wordBook, dependency: dependency)
+                LazyView(StudyView(wordBook: viewModel.wordBook, dependency: dependency))
             } label: {
                 VStack {
                     HStack {

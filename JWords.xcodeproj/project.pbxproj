@@ -17,6 +17,7 @@
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordInputView.swift */; };
+		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */; };
 		06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2462866F1C800A620CC /* JWordsApp.swift */; };
 		06CEF2492866F1C800A620CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2482866F1C800A620CC /* ContentView.swift */; };
@@ -119,6 +120,7 @@
 		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputView.swift; sourceTree = "<group>"; };
+		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2462866F1C800A620CC /* JWordsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsApp.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 			children = (
 				5A67DC2C2869470C00AC156C /* WordCell.swift */,
 				5A67DC22286943A800AC156C /* HomeCell.swift */,
+				06BC6069297B939500AA67E6 /* LazyView.swift */,
 			);
 			path = items;
 			sourceTree = "<group>";
@@ -695,6 +698,7 @@
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
+				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
