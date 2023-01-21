@@ -184,6 +184,7 @@ extension MacAddWordView {
                     Text("찾기")
                 }
                 .disabled(viewModel.meaningText.isEmpty)
+                .keyboardShortcut("f", modifiers: [.command])
             }
         }
         
