@@ -62,7 +62,7 @@ extension TodayView {
         var body: some View {
             ZStack {
                 NavigationLink {
-                    StudyView(words: viewModel.onlyFailWords, dependency: dependency)
+                    LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
                 } label: {
                     HStack {
                         Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
