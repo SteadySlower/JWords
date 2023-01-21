@@ -22,13 +22,17 @@ struct MainTabView: View {
                     .navigationTitle("오늘의 단어")
             }
             .tabItem { Image(systemName: "calendar") }
+            #if os(iOS)
             .navigationViewStyle(.stack)
+            #endif
             NavigationView {
                 HomeView(dependency)
                     .navigationTitle("단어장 목록")
             }
             .tabItem { Image(systemName: "house") }
+            #if os(iOS)
             .navigationViewStyle(.stack)
+            #endif
         }
     }
 }
