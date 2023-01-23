@@ -39,7 +39,8 @@ struct HomeView: View {
 // MARK: SubViews
 extension HomeView {
     private struct WordBookAddModal: View {
-        @State var WordBookTitle: String = ""
+        @State var title: String = ""
+        @State var preferredFrontType: FrontType = .kanji
         @Environment(\.dismiss) var dismiss
         private let viewModel: ViewModel
         
@@ -49,9 +50,20 @@ extension HomeView {
         
         var body: some View {
             VStack {
-                TextField("단어장 이름", text: $WordBookTitle)
+                TextField("단어장 이름", text: $title)
+                    .padding()
+                Picker("", selection: $preferredFrontType) {
+                    ForEach(FrontType.allCases, id: \.self) {
+                        Text($0.preferredTypeText)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
                 HStack {
-                    Button("추가", action: { viewModel.AddWordBook(WordBookTitle); dismiss()  })
+                    Button("추가", action: {
+                        viewModel.AddWordBook(title: title, preferredFrontType: preferredFrontType)
+                        dismiss()
+                    })
                     Button("취소", role: .cancel, action: { dismiss() })
                 }
             }
@@ -78,8 +90,8 @@ extension HomeView {
             }
         }
         
-        func AddWordBook(_ title: String) {
-            wordBookService.saveBook(title: title, preferredFrontType: .kanji) { [weak self] error in
+        func AddWordBook(title: String, preferredFrontType: FrontType) {
+            wordBookService.saveBook(title: title, preferredFrontType: preferredFrontType) { [weak self] error in
                 if let error = error {
                     print(error)
                     return
