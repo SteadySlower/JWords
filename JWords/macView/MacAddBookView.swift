@@ -51,7 +51,7 @@ extension MacAddBookView {
         }
         
         func saveBook() {
-            wordBookService.saveBook(title: bookName) { [weak self] error in
+            wordBookService.saveBook(title: bookName, preferredFrontType: preferredFrontType) { [weak self] error in
                 if let error = error {
                     print("디버그 \(error.localizedDescription)");
                     return

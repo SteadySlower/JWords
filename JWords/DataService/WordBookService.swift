@@ -24,7 +24,7 @@ class WordBookServiceImpl: WordBookService {
     }
     
     func saveBook(title: String, preferredFrontType: FrontType, completionHandler: @escaping CompletionWithoutData) {
-        db.insertWordBook(title: title, completionHandler: completionHandler)
+        db.insertWordBook(title: title, preferredFrontType: preferredFrontType, completionHandler: completionHandler)
     }
     
     func getWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {

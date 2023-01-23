@@ -79,7 +79,7 @@ extension HomeView {
         }
         
         func AddWordBook(_ title: String) {
-            wordBookService.saveBook(title: title) { [weak self] error in
+            wordBookService.saveBook(title: title, preferredFrontType: .kanji) { [weak self] error in
                 if let error = error {
                     print(error)
                     return
