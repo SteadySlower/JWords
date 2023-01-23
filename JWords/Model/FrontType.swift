@@ -17,4 +17,11 @@ enum FrontType: Int, Hashable, CaseIterable {
             return "漢"
         }
     }
+    
+    var preferredTypeText: String {
+        switch self {
+        case .meaning: return "한 -> 日"
+        case .kanji: return "日 -> 한"
+        }
+    }
 }
