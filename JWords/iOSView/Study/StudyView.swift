@@ -20,7 +20,7 @@ enum StudyMode: Hashable, CaseIterable {
     }
 }
 
-enum FrontType: Hashable, CaseIterable {
+enum FrontType: Int, Hashable, CaseIterable {
     case meaning
     case kanji
     
