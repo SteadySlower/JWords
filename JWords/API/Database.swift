@@ -118,6 +118,7 @@ extension FirestoreDB {
     func insertWordBook(title: String, preferredFrontType: FrontType, completionHandler: @escaping CompletionWithoutData) {
         let data: [String : Any] = [
             "title": title,
+            "preferredFrontType": preferredFrontType.rawValue,
             "timestamp": Timestamp(date: Date())]
         wordBookRef.addDocument(data: data, completion: completionHandler)
     }
