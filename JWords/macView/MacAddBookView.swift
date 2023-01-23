@@ -19,6 +19,13 @@ struct MacAddBookView: View {
         VStack {
             TextField("단어장 이름", text: $viewModel.bookName)
                 .padding()
+            Picker("", selection: $viewModel.preferredFrontType) {
+                ForEach(FrontType.allCases, id: \.self) {
+                    Text($0.preferredTypeText)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding()
             Button {
                 viewModel.saveBook()
             } label: {
@@ -32,6 +39,7 @@ struct MacAddBookView: View {
 extension MacAddBookView {
     final class ViewModel: ObservableObject {
         @Published var bookName: String = ""
+        @Published var preferredFrontType: FrontType = .kanji
         private let wordBookService: WordBookService
         
         var isSaveButtonUnable: Bool {

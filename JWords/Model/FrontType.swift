@@ -6,8 +6,8 @@
 //
 
 enum FrontType: Int, Hashable, CaseIterable {
-    case meaning
     case kanji
+    case meaning
     
     var pickerText: String {
         switch self {
