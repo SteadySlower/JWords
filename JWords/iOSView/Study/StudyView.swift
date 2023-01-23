@@ -20,20 +20,6 @@ enum StudyMode: Hashable, CaseIterable {
     }
 }
 
-enum FrontType: Int, Hashable, CaseIterable {
-    case meaning
-    case kanji
-    
-    var pickerText: String {
-        switch self {
-        case .meaning:
-            return "한"
-        case .kanji:
-            return "漢"
-        }
-    }
-}
-
 enum StudyViewMode: Hashable {
     case normal
     case selection
