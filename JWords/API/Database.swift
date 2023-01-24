@@ -11,7 +11,7 @@ import FirebaseFirestore
 protocol Database {
     // WordBook 관련
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>)
-    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData)
+    func insertWordBook(title: String, preferredFrontType: FrontType, completionHandler: @escaping CompletionWithoutData)
     func checkIfOverlap(wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
     func closeWordBook(of toClose: WordBook, completionHandler: @escaping CompletionWithoutData)
     
@@ -115,9 +115,10 @@ extension FirestoreDB {
         }
     }
     
-    func insertWordBook(title: String, completionHandler: @escaping CompletionWithoutData) {
+    func insertWordBook(title: String, preferredFrontType: FrontType, completionHandler: @escaping CompletionWithoutData) {
         let data: [String : Any] = [
             "title": title,
+            "preferredFrontType": preferredFrontType.rawValue,
             "timestamp": Timestamp(date: Date())]
         wordBookRef.addDocument(data: data, completion: completionHandler)
     }

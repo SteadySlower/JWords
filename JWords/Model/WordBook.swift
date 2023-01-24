@@ -18,6 +18,7 @@ protocol WordBook {
     var closed: Bool { get }
     var dayFromToday: Int { get }
     var schedule: WordBookSchedule { get }
+    var preferredFrontType: FrontType { get }
 }
 
 struct WordBookImpl: WordBook {
@@ -26,10 +27,16 @@ struct WordBookImpl: WordBook {
     let title: String
     let createdAt: Date
     private let _closed: Bool?
+    private let _preferredFrontType: FrontType?
     
     var closed: Bool {
         if let closed = _closed { return closed }
         return false
+    }
+    
+    var preferredFrontType: FrontType {
+        if let _preferredFrontType = _preferredFrontType { return _preferredFrontType }
+        return .kanji
     }
     
     var dayFromToday: Int {
@@ -65,6 +72,13 @@ struct WordBookImpl: WordBook {
             self._closed = _closed
         } else {
             self._closed = nil
+        }
+        
+        if let rawValue = dict["preferredFrontType"] as? Int,
+           let _preferredFrontType = FrontType(rawValue: rawValue) {
+            self._preferredFrontType = _preferredFrontType
+        } else {
+            self._preferredFrontType = nil
         }
     }
 }

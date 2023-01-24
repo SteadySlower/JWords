@@ -20,20 +20,6 @@ enum StudyMode: Hashable, CaseIterable {
     }
 }
 
-enum FrontType: Hashable, CaseIterable {
-    case meaning
-    case kanji
-    
-    var pickerText: String {
-        switch self {
-        case .meaning:
-            return "한"
-        case .kanji:
-            return "漢"
-        }
-    }
-}
-
 enum StudyViewMode: Hashable {
     case normal
     case selection
@@ -270,7 +256,7 @@ extension StudyView {
                 eventPublisher.send(StudyViewEvent.toFront)
             }
         }
-        @Published var frontType: FrontType = .kanji {
+        @Published var frontType: FrontType {
             didSet {
                 eventPublisher.send(StudyViewEvent.toFront)
             }
@@ -323,12 +309,14 @@ extension StudyView {
         init(wordBook: WordBook, wordService: WordService) {
             self.wordBook = wordBook
             self.wordService = wordService
+            self.frontType = wordBook.preferredFrontType
         }
         
         init(words: [Word], wordService: WordService) {
             self.wordBook = nil
             self._words = words
             self.wordService = wordService
+            self.frontType = .kanji
         }
         
 
