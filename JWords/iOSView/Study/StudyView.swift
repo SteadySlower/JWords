@@ -27,7 +27,7 @@ enum StudyViewMode: Hashable {
 }
 
 struct StudyView: View {
-    @ObservedObject private var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     
     private let dependency: Dependency
@@ -39,13 +39,13 @@ struct StudyView: View {
     @State private var showSideBar: Bool = false
     
     init(wordBook: WordBook, dependency: Dependency) {
-        self.viewModel = ViewModel(wordBook: wordBook, wordService: dependency.wordService)
+        self._viewModel = StateObject(wrappedValue: ViewModel(wordBook: wordBook, wordService: dependency.wordService))
         self.dependency = dependency
     }
     
     // 틀린 단어 모아보기용
     init(words: [Word], dependency: Dependency) {
-        self.viewModel = ViewModel(words: words, wordService: dependency.wordService)
+        self._viewModel = StateObject(wrappedValue: ViewModel(words: words, wordService: dependency.wordService))
         self.dependency = dependency
     }
     
