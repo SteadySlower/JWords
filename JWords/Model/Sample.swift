@@ -20,6 +20,7 @@ protocol Sample {
     var used: Int { get }
     
     var hasImage: Bool { get }
+    var description: String { get }
 }
 
 struct SampleImpl: Sample {
@@ -35,6 +36,23 @@ struct SampleImpl: Sample {
     
     var hasImage: Bool {
         !self.meaningImageURL.isEmpty || !self.ganaImageURL.isEmpty || !self.kanjiImageURL.isEmpty
+    }
+    
+    var description: String {
+        var result = ""
+        if !self.meaningText.isEmpty {
+            result += "뜻: \(self.meaningText)\t"
+        }
+        
+        if !self.ganaText.isEmpty {
+            result += "가나: \(self.ganaText)\t"
+        }
+        
+        if !self.kanjiText.isEmpty {
+            result += "한자: \(self.kanjiText)"
+        }
+        
+        return result
     }
     
     init(id: String, dict: [String: Any]) throws {
