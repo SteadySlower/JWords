@@ -152,7 +152,7 @@ extension MacAddWordView {
                     HStack {
                         OverlapCheckButton()
                         SearchExampleButton()
-                        ExamplePicker()
+                        SamplePicker()
                     }
                     .padding(.horizontal)
                 } else if inputType == .kanji {
@@ -188,16 +188,16 @@ extension MacAddWordView {
             }
         }
         
-        private struct ExamplePicker: View {
+        private struct SamplePicker: View {
             @EnvironmentObject private var viewModel: ViewModel
             
             var body: some View {
                 Picker("", selection: $viewModel.selectedSampleID) {
                     Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
                         .tag(nil as String?)
-                    ForEach(viewModel.samples, id: \.id) { example in
-                        Text("뜻: \(example.meaningText)\t가나: \(example.ganaText)\t한자: \(example.kanjiText)")
-                            .tag(example.id as String?)
+                    ForEach(viewModel.samples, id: \.id) { sample in
+                        Text(sample.description)
+                            .tag(sample.id as String?)
                     }
                 }
             }
@@ -327,7 +327,7 @@ extension MacAddWordView {
             return samples.first(where: { $0.id == selectedSampleID })
         }
         
-        private var didExampleUsed: Bool {
+        private var didSampleUsed: Bool {
             guard let selectedSample = selectedSample else { return false }
             return selectedSample.meaningText == meaningText
                 && selectedSample.ganaText == ganaText
@@ -388,7 +388,7 @@ extension MacAddWordView {
             // example이 있는지 확인하고 example과 동일한지 확인하고
                 // 동일하면 example의 used에 + 1
                 // 동일하지 않으면 새로운 example 추가한다.
-            if didExampleUsed,
+            if didSampleUsed,
                let selectedSample = selectedSample {
                 sampleService.addOneToUsed(of: selectedSample)
             } else if !wordInput.hasImage {
