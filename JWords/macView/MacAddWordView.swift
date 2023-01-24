@@ -195,9 +195,9 @@ extension MacAddWordView {
                 Picker("", selection: $viewModel.selectedSampleID) {
                     Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
                         .tag(nil as String?)
-                    ForEach(viewModel.samples, id: \.id) { example in
-                        Text("뜻: \(example.meaningText)\t가나: \(example.ganaText)\t한자: \(example.kanjiText)")
-                            .tag(example.id as String?)
+                    ForEach(viewModel.samples, id: \.id) { sample in
+                        Text(sample.description)
+                            .tag(sample.id as String?)
                     }
                 }
             }
