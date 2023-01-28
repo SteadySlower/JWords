@@ -210,7 +210,7 @@ extension MacAddWordView {
     
 }
 
-// MARK: View Functions
+// MARK: View Methods
 
 extension MacAddWordView {
     
