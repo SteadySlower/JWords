@@ -21,7 +21,7 @@ struct TodayView: View {
     var body: some View {
         ScrollView {
             Text("오늘 학습할 단어")
-            OnlyFailCell(viewModel: viewModel, dependency: dependency)
+            onlyFailCell
             VStack(spacing: 8) {
                 ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
                     HomeCell(wordBook: todayBook, dependency: dependency)
@@ -48,33 +48,24 @@ struct TodayView: View {
     }
 }
 
+// MARK: SubViews
+
 extension TodayView {
-    private struct OnlyFailCell: View {
-        
-        private let dependency: Dependency
-        @ObservedObject private var viewModel: ViewModel
-        
-        init(viewModel: ViewModel, dependency: Dependency) {
-            self.viewModel = viewModel
-            self.dependency = dependency
-        }
-        
-        var body: some View {
-            ZStack {
-                NavigationLink {
-                    LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
-                } label: {
-                    HStack {
-                        Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
-                        Spacer()
-                    }
-                    .padding(12)
+    
+    private var onlyFailCell: some View {
+        ZStack {
+            NavigationLink {
+                LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
+            } label: {
+                HStack {
+                    Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
+                    Spacer()
                 }
+                .padding(12)
             }
-            .border(.gray, width: 1)
-            .frame(height: 50)
         }
-        
+        .border(.gray, width: 1)
+        .frame(height: 50)
     }
     
 }
