@@ -18,42 +18,32 @@ struct MacHomeView: View {
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
-                BookListNavigationView(dependency)
-                WordAddNavigationView(dependency)
+                addBookView
+                wordAddView
             }
         }
         .navigationViewStyle(.automatic)
     }
 }
 
-private struct BookListNavigationView: View {
-    private let dependency: Dependency
+// MARK: SubViews
+
+extension MacHomeView {
     
-    init(_ dependency: Dependency) {
-        self.dependency = dependency
-    }
-    
-    var body: some View {
+    private var addBookView: some View {
         NavigationLink {
             MacAddBookView(dependency)
         } label: {
             Text("add book")
         }
     }
-}
-
-private struct WordAddNavigationView: View {
-
-    private let dependency: Dependency
     
-    init(_ dependency: Dependency) {
-        self.dependency = dependency
-    }
-    var body: some View {
+    private var wordAddView: some View {
         NavigationLink {
             MacAddWordView(dependency)
         } label: {
             Text("add word")
         }
     }
+    
 }
