@@ -17,8 +17,8 @@ typealias PasteBoardType = NSPasteboard
 
 struct MacAddWordView: View {
     // MARK: Enum
-    enum InputType: Hashable {
-        case meaning, gana, kanji
+    enum InputType: Hashable, CaseIterable {
+        case meaning, kanji, gana
         
         var description: String {
             switch self {
@@ -54,22 +54,14 @@ extension MacAddWordView {
             ScrollView {
                 VStack {
                     WordBookPickerView()
-                    VStack {
-                        TextInputView(inputType: .meaning)
-                            .focused($editFocus, equals: .meaning)
-                        ImageInputView(inputType: .meaning)
+                    ForEach(InputType.allCases, id: \.self) { type in
+                        VStack {
+                            TextInputView(inputType: type)
+                                .focused($editFocus, equals: type)
+                            ImageInputView(inputType: type)
+                        }
                     }
-                    .padding(.bottom)
-                    VStack {
-                        TextInputView(inputType: .kanji)
-                            .focused($editFocus, equals: .kanji)
-                        ImageInputView(inputType: .kanji)
-                    }
-                    VStack {
-                        TextInputView(inputType: .gana)
-                            .focused($editFocus, equals: .gana)
-                        ImageInputView(inputType: .gana)
-                    }
+
                     SaveButton {
                         viewModel.saveWord()
                         editFocus = .meaning
