@@ -26,18 +26,7 @@ struct TodaySelectionModal: View {
             VStack {
                 title
                 bookList
-                HStack {
-                    Button("취소") { dismiss() }
-                    Spacer()
-                    Button("확인") {
-                        showProgressView = true
-                        viewModel.updateToday {
-                            showProgressView = false
-                            dismiss()
-                        }
-                    }
-                }
-                .padding()
+                buttons
             }
             .padding(10)
         }
@@ -106,6 +95,20 @@ extension TodaySelectionModal {
         return body
     }
     
+    private var buttons: some View {
+        HStack {
+            Button("취소") { dismiss() }
+            Spacer()
+            Button("확인") {
+                showProgressView = true
+                viewModel.updateToday {
+                    showProgressView = false
+                    dismiss()
+                }
+            }
+        }
+        .padding()
+    }
     
 }
 
