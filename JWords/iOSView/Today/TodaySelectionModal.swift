@@ -28,7 +28,7 @@ struct TodaySelectionModal: View {
                 ScrollView {
                     VStack(spacing: 8) {
                         ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                            checkableCell(wordBook)
+                            bookCell(wordBook)
                         }
                     }
                 }
@@ -53,7 +53,7 @@ struct TodaySelectionModal: View {
 
 extension TodaySelectionModal {
     
-    private func checkableCell(_ wordBook: WordBook) -> some View {
+    private func bookCell(_ wordBook: WordBook) -> some View {
         let schedule = viewModel.schedules[wordBook.id, default: .none]
         
         var dateTextColor: Color {
