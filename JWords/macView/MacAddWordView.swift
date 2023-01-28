@@ -31,7 +31,7 @@ struct MacAddWordView: View {
     
     @FocusState private var editFocus: InputType?
     
-    private let viewModel: ViewModel
+    @ObservedObject private var viewModel: ViewModel
     
     init(_ dependency: Dependency) {
         self.viewModel = ViewModel(dependency)
@@ -75,7 +75,7 @@ extension MacAddWordView {
     private var contentView: some View {
         ScrollView {
             VStack {
-                WordBookPickerView()
+                wordBookPicker
                 ForEach(InputType.allCases, id: \.self) { type in
                     VStack {
                         TextInputView(inputType: type)
@@ -91,20 +91,16 @@ extension MacAddWordView {
         }
     }
     
-    struct WordBookPickerView: View {
-        @EnvironmentObject private var viewModel: ViewModel
-        
-        var body: some View {
-            Picker("", selection: $viewModel.selectedBookID) {
-                Text(viewModel.wordBookPickerDefaultText)
-                    .tag(nil as String?)
-                ForEach(viewModel.bookList, id: \.id) { book in
-                    Text(book.title)
-                        .tag(book.id as String?)
-                }
+    private var wordBookPicker: some View {
+        Picker("", selection: $viewModel.selectedBookID) {
+            Text(viewModel.wordBookPickerDefaultText)
+                .tag(nil as String?)
+            ForEach(viewModel.bookList, id: \.id) { book in
+                Text(book.title)
+                    .tag(book.id as String?)
             }
-            .padding()
         }
+        .padding()
     }
     
     struct TextInputView: View {
