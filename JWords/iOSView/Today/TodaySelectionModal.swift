@@ -22,12 +22,7 @@ struct TodaySelectionModal: View {
             if showProgressView {
                 progressView
             }
-            VStack {
-                title
-                bookList
-                buttons
-            }
-            .padding(10)
+            contentView
         }
         .onAppear { viewModel.fetchTodays() }
     }
@@ -40,6 +35,15 @@ extension TodaySelectionModal {
     private var progressView: some View {
         ProgressView()
             .scaleEffect(5)
+    }
+    
+    private var contentView: some View {
+        VStack {
+            title
+            bookList
+            buttons
+        }
+        .padding(10)
     }
     
     private var title: some View {
