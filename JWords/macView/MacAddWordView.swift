@@ -29,6 +29,8 @@ struct MacAddWordView: View {
         }
     }
     
+    @FocusState private var editFocus: InputType?
+    
     private let viewModel: ViewModel
     
     init(_ dependency: Dependency) {
@@ -36,70 +38,55 @@ struct MacAddWordView: View {
     }
     
     var body: some View {
-        ContentView()
-            .environmentObject(viewModel)
-    }
-    
-}
-
-// MARK: ContentView
-extension MacAddWordView {
-    struct ContentView: View {
-        // MARK: Properties
-        @EnvironmentObject private var viewModel: ViewModel
-        @FocusState private var editFocus: InputType?
-        
-        // MARK: Body
-        var body: some View {
-            ScrollView {
-                VStack {
-                    WordBookPickerView()
-                    ForEach(InputType.allCases, id: \.self) { type in
-                        VStack {
-                            TextInputView(inputType: type)
-                                .focused($editFocus, equals: type)
-                            ImageInputView(inputType: type)
-                        }
-                    }
-
-                    SaveButton {
-                        viewModel.saveWord()
-                        editFocus = .meaning
+        ScrollView {
+            VStack {
+                WordBookPickerView()
+                ForEach(InputType.allCases, id: \.self) { type in
+                    VStack {
+                        TextInputView(inputType: type)
+                            .focused($editFocus, equals: type)
+                        ImageInputView(inputType: type)
                     }
                 }
-                .padding(.top, 50)
-                .onAppear { viewModel.getWordBooks() }
-                .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
-                .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
-                .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
-                .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
-                .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
+                SaveButton {
+                    viewModel.saveWord()
+                    editFocus = .meaning
+                }
             }
+            .padding(.top, 50)
+            .onAppear { viewModel.getWordBooks() }
+            .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
+            .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
+            .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
+            .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
+            .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
         }
-        
-        private func moveCursorWhenTab(_ text: String) {
-            guard let last = text.last, last == "\t" else { return }
-            guard let nowCursor = editFocus else { return }
-            switch nowCursor {
-            case .meaning:
-                viewModel.meaningText.removeLast()
-                editFocus = .kanji
-                return
-            case .kanji:
-                viewModel.kanjiText.removeLast()
-                editFocus = .gana
-                return
-            case .gana:
-                viewModel.ganaText.removeLast()
-                editFocus = .meaning
-                return
-            }
+        .environmentObject(viewModel)
+    }
+    
+    private func moveCursorWhenTab(_ text: String) {
+        guard let last = text.last, last == "\t" else { return }
+        guard let nowCursor = editFocus else { return }
+        switch nowCursor {
+        case .meaning:
+            viewModel.meaningText.removeLast()
+            editFocus = .kanji
+            return
+        case .kanji:
+            viewModel.kanjiText.removeLast()
+            editFocus = .gana
+            return
+        case .gana:
+            viewModel.ganaText.removeLast()
+            editFocus = .meaning
+            return
         }
     }
 }
 
 // MARK: SubViews
 extension MacAddWordView {
+    
     struct WordBookPickerView: View {
         @EnvironmentObject private var viewModel: ViewModel
         
