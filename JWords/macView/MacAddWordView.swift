@@ -78,7 +78,7 @@ extension MacAddWordView {
                 wordBookPicker
                 ForEach(InputType.allCases, id: \.self) { type in
                     VStack {
-                        TextInputView(inputType: type)
+                        textField(for: type)
                             .focused($editFocus, equals: type)
                         ImageInputView(inputType: type)
                     }
@@ -103,14 +103,7 @@ extension MacAddWordView {
         .padding()
     }
     
-    struct TextInputView: View {
-        private let inputType: InputType
-        @EnvironmentObject private var viewModel: ViewModel
-        
-        init(inputType: InputType) {
-            self.inputType = inputType
-        }
-        
+    private func textField(for inputType: InputType) -> some View {
         var bindingText: Binding<String> {
             switch inputType {
             case .meaning: return $viewModel.meaningText
@@ -119,7 +112,7 @@ extension MacAddWordView {
             }
         }
         
-        var body: some View {
+        return
             VStack {
                 Text("\(inputType.description) 입력")
                     .font(.system(size: 20))
@@ -129,56 +122,43 @@ extension MacAddWordView {
                     .padding(.horizontal)
                 if inputType == .meaning {
                     HStack {
-                        OverlapCheckButton()
-                        SearchExampleButton()
-                        SamplePicker()
+                        overlapCheckButton
+                        searchExampleButton
+                        samplePicker
                     }
                     .padding(.horizontal)
                 } else if inputType == .kanji {
                     Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
                 }
             }
+    }
+    
+    private var overlapCheckButton: some View {
+        Button {
+            viewModel.checkIfOverlap()
+        } label: {
+            Text(viewModel.overlapCheckButtonTitle)
         }
+        .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
+    }
         
-        private struct OverlapCheckButton: View {
-            @EnvironmentObject private var viewModel: ViewModel
-            
-            var body: some View {
-                Button {
-                    viewModel.checkIfOverlap()
-                } label: {
-                    Text(viewModel.overlapCheckButtonTitle)
-                }
-                .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-            }
+    private var searchExampleButton: some View {
+        Button {
+            viewModel.getExamples()
+        } label: {
+            Text("찾기")
         }
-        
-        private struct SearchExampleButton: View {
-            @EnvironmentObject private var viewModel: ViewModel
-            
-            var body: some View {
-                Button {
-                    viewModel.getExamples()
-                } label: {
-                    Text("찾기")
-                }
-                .disabled(viewModel.meaningText.isEmpty)
-                .keyboardShortcut("f", modifiers: [.command])
-            }
-        }
-        
-        private struct SamplePicker: View {
-            @EnvironmentObject private var viewModel: ViewModel
-            
-            var body: some View {
-                Picker("", selection: $viewModel.selectedSampleID) {
-                    Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
-                        .tag(nil as String?)
-                    ForEach(viewModel.samples, id: \.id) { sample in
-                        Text(sample.description)
-                            .tag(sample.id as String?)
-                    }
-                }
+        .disabled(viewModel.meaningText.isEmpty)
+        .keyboardShortcut("f", modifiers: [.command])
+    }
+    
+    private var samplePicker: some View {
+        Picker("", selection: $viewModel.selectedSampleID) {
+            Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
+                .tag(nil as String?)
+            ForEach(viewModel.samples, id: \.id) { sample in
+                Text(sample.description)
+                    .tag(sample.id as String?)
             }
         }
     }
