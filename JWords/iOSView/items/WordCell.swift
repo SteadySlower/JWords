@@ -43,7 +43,7 @@ extension WordCell {
         ZStack {
             background
             ZStack {
-                CellColor(state: viewModel.word.studyState)
+                cellColor
                 if isFront {
                     WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
                 } else {
@@ -72,15 +72,9 @@ extension WordCell {
         }
     }
     
-    private struct CellColor: View {
-        private let state: StudyState
-        
-        init(state: StudyState) {
-            self.state = state
-        }
-        
-        var body: some View {
-            switch state {
+    private var cellColor: some View {
+        Group {
+            switch viewModel.word.studyState {
             case .undefined:
                 Color.white
             case .success:
