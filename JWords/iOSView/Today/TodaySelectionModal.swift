@@ -20,8 +20,7 @@ struct TodaySelectionModal: View {
     var body: some View {
         ZStack {
             if showProgressView {
-                ProgressView()
-                    .scaleEffect(5)
+                progressView
             }
             VStack {
                 title
@@ -37,6 +36,11 @@ struct TodaySelectionModal: View {
 // MARK: SubViews
 
 extension TodaySelectionModal {
+    
+    private var progressView: some View {
+        ProgressView()
+            .scaleEffect(5)
+    }
     
     private var title: some View {
         Text("학습 혹은 복습할 단어장을 골라주세요.")
