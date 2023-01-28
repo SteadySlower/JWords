@@ -16,23 +16,6 @@ struct WordCell: View {
     @State private var isFront = true
     private let isLocked: Bool
     
-    // MARK: Gestures
-    private var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 30, coordinateSpace: .global)
-            .onEnded { onDragEnd($0) }
-            .updating($dragAmount) { dragUpdating($0, &$1, &$2) }
-    }
-    
-    private var tapGesture: some Gesture {
-        TapGesture()
-            .onEnded { isFront.toggle() }
-    }
-    
-    private var doubleTapGesture: some Gesture {
-        TapGesture(count: 2)
-            .onEnded { onDoubleTapped() }
-    }
-    
     // MARK: Initializer
     init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
         self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
@@ -55,6 +38,7 @@ struct WordCell: View {
 // MARK: SubViews
 
 extension WordCell {
+    
     private struct ContentView: View {
         private let isFront: Bool
         @ObservedObject private var viewModel: ViewModel
@@ -141,6 +125,28 @@ extension WordCell {
             }
         }
     }
+}
+
+// MARK: Gestures
+
+extension WordCell {
+    
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 30, coordinateSpace: .global)
+            .onEnded { onDragEnd($0) }
+            .updating($dragAmount) { dragUpdating($0, &$1, &$2) }
+    }
+    
+    private var tapGesture: some Gesture {
+        TapGesture()
+            .onEnded { isFront.toggle() }
+    }
+    
+    private var doubleTapGesture: some Gesture {
+        TapGesture(count: 2)
+            .onEnded { onDoubleTapped() }
+    }
+    
 }
 
 // MARK: View Methods
