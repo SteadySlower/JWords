@@ -46,7 +46,6 @@ struct MacAddWordView: View {
             .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
             .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
             .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
-            .environmentObject(viewModel)
     }
     
     private func moveCursorWhenTab(_ text: String) {
@@ -80,13 +79,10 @@ extension MacAddWordView {
                     VStack {
                         textField(for: type)
                             .focused($editFocus, equals: type)
-                        ImageInputView(inputType: type)
+                        imageField(for: type)
                     }
                 }
-                SaveButton {
-                    viewModel.saveWord()
-                    editFocus = .meaning
-                }
+                saveButton
             }
         }
     }
@@ -166,11 +162,9 @@ extension MacAddWordView {
         return body
     }
     
-    struct ImageInputView: View {
-        private let inputType: InputType
-        @EnvironmentObject private var viewModel: ViewModel
+    private func imageField(for inputType: InputType) -> some View {
         
-        private var image: InputImageType? {
+        var image: InputImageType? {
             switch inputType {
             case .meaning: return viewModel.meaningImage
             case .gana: return viewModel.ganaImage
@@ -178,7 +172,7 @@ extension MacAddWordView {
             }
         }
         
-        private var pasteBoardImage: InputImageType? {
+        var pasteBoardImage: InputImageType? {
             let pb = PasteBoardType.general
             #if os(iOS)
             guard let image = pb.image else { return nil }
@@ -190,47 +184,41 @@ extension MacAddWordView {
             return image
         }
         
-        init(inputType: InputType) {
-            self.inputType = inputType
-        }
-        
         var body: some View {
-            if let image = image {
-                #if os(iOS)
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                    .onTapGesture { viewModel.clearImageInput(inputType) }
-                #elseif os(macOS)
-                Image(nsImage: image)
-                    .resizable()
-                    .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                    .onTapGesture { viewModel.clearImageInput(inputType) }
-                #endif
-            } else {
-                Button {
-                    viewModel.insertImage(of: inputType, image: pasteBoardImage)
-                } label: {
-                    Text("\(inputType.description) 이미지")
+            Group {
+                if let image = image {
+                    #if os(iOS)
+                    Image(uiImage: image)
+                        .resizable()
+                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                        .onTapGesture { viewModel.clearImageInput(inputType) }
+                    #elseif os(macOS)
+                    Image(nsImage: image)
+                        .resizable()
+                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                        .onTapGesture { viewModel.clearImageInput(inputType) }
+                    #endif
+                } else {
+                    Button {
+                        viewModel.insertImage(of: inputType, image: pasteBoardImage)
+                    } label: {
+                        Text("\(inputType.description) 이미지")
+                    }
                 }
             }
         }
+        
+        return body
     }
     
-    struct SaveButton: View {
-        @EnvironmentObject private var viewModel: ViewModel
-        private let saveButtonTapped: () -> Void
-        
-        init(saveButtonTapped: @escaping () -> Void) {
-            self.saveButtonTapped = saveButtonTapped
-        }
-        
-        var body: some View {
+    private var saveButton: some View {
+        Group {
             if viewModel.isUploading {
                 ProgressView()
             } else {
                 Button {
-                    saveButtonTapped()
+                    viewModel.saveWord()
+                    editFocus = .meaning
                 } label: {
                     Text("저장")
                 }
@@ -239,6 +227,7 @@ extension MacAddWordView {
             }
         }
     }
+    
 }
 
 // MARK: ViewModel
