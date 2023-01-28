@@ -25,13 +25,7 @@ struct TodaySelectionModal: View {
             }
             VStack {
                 title
-                ScrollView {
-                    VStack(spacing: 8) {
-                        ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                            bookCell(wordBook)
-                        }
-                    }
-                }
+                bookList
                 HStack {
                     Button("취소") { dismiss() }
                     Spacer()
@@ -51,10 +45,22 @@ struct TodaySelectionModal: View {
     }
 }
 
+// MARK: SubViews
+
 extension TodaySelectionModal {
     
     private var title: some View {
         Text("학습 혹은 복습할 단어장을 골라주세요.")
+    }
+    
+    private var bookList: some View {
+        ScrollView {
+            VStack(spacing: 8) {
+                ForEach(viewModel.wordBooks, id: \.id) { wordBook in
+                    bookCell(wordBook)
+                }
+            }
+        }
     }
     
     private func bookCell(_ wordBook: WordBook) -> some View {
