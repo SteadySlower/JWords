@@ -20,14 +20,8 @@ struct TodayView: View {
     
     var body: some View {
         ScrollView {
-            Text("오늘 학습할 단어")
-            onlyFailCell
-            VStack(spacing: 8) {
-                ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
-                    HomeCell(wordBook: todayBook, dependency: dependency)
-                }
-            }
-            .padding(.bottom, 8)
+            todayBookList
+                .padding(.bottom, 8)
             Text("오늘 복습할 단어")
             VStack(spacing: 8) {
                 ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
@@ -52,20 +46,37 @@ struct TodayView: View {
 
 extension TodayView {
     
-    private var onlyFailCell: some View {
-        ZStack {
-            NavigationLink {
-                LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
-            } label: {
-                HStack {
-                    Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
-                    Spacer()
+    private var todayBookList: some View {
+        
+        var onlyFailCell: some View {
+            ZStack {
+                NavigationLink {
+                    LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
+                } label: {
+                    HStack {
+                        Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
+                        Spacer()
+                    }
+                    .padding(12)
                 }
-                .padding(12)
+            }
+            .border(.gray, width: 1)
+            .frame(height: 50)
+        }
+        
+        var body : some View {
+            VStack {
+                Text("오늘 학습할 단어")
+                onlyFailCell
+                VStack(spacing: 8) {
+                    ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
+                        HomeCell(wordBook: todayBook, dependency: dependency)
+                    }
+                }
             }
         }
-        .border(.gray, width: 1)
-        .frame(height: 50)
+        
+        return body
     }
     
 }
