@@ -24,7 +24,7 @@ struct TodaySelectionModal: View {
                     .scaleEffect(5)
             }
             VStack {
-                Text("학습 혹은 복습할 단어장을 골라주세요.")
+                title
                 ScrollView {
                     VStack(spacing: 8) {
                         ForEach(viewModel.wordBooks, id: \.id) { wordBook in
@@ -52,6 +52,10 @@ struct TodaySelectionModal: View {
 }
 
 extension TodaySelectionModal {
+    
+    private var title: some View {
+        Text("학습 혹은 복습할 단어장을 골라주세요.")
+    }
     
     private func bookCell(_ wordBook: WordBook) -> some View {
         let schedule = viewModel.schedules[wordBook.id, default: .none]
