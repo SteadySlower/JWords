@@ -22,23 +22,11 @@ struct TodayView: View {
         ScrollView {
             todayBookList
                 .padding(.bottom, 8)
-            Text("오늘 복습할 단어")
-            VStack(spacing: 8) {
-                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
-                    HomeCell(wordBook: reviewBook, dependency: dependency)
-                }
-            }
+            reviewBookList
         }
         .onAppear { viewModel.fetchSchedule() }
         .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
-        .toolbar {
-            ToolbarItem {
-                HStack {
-                    Button("List") { showModal = true }
-                    Button("+") { viewModel.autoFetchTodayBooks() }
-                }
-            }
-        }
+        .toolbar { ToolbarItem { toolbarItems } }
     }
 }
 
@@ -77,6 +65,24 @@ extension TodayView {
         }
         
         return body
+    }
+    
+    private var reviewBookList: some View {
+        VStack {
+            Text("오늘 복습할 단어")
+            VStack(spacing: 8) {
+                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
+                    HomeCell(wordBook: reviewBook, dependency: dependency)
+                }
+            }
+        }
+    }
+    
+    private var toolbarItems: some View {
+        HStack {
+            Button("List") { showModal = true }
+            Button("+") { viewModel.autoFetchTodayBooks() }
+        }
     }
     
 }
