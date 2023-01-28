@@ -40,18 +40,34 @@ struct WordCell: View {
 extension WordCell {
     
     private var contentView: some View {
-        GeometryReader { proxy in
+        ZStack {
+            background
             ZStack {
-                WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
-                ZStack {
-                    CellColor(state: viewModel.word.studyState)
-                    if isFront {
-                        WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
-                    } else {
-                        WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
-                    }
+                CellColor(state: viewModel.word.studyState)
+                if isFront {
+                    WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
+                } else {
+                    WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
                 }
-                .offset(dragAmount)
+            }
+            .offset(dragAmount)
+        }
+    }
+    
+    private var background: some View {
+        GeometryReader { proxy in
+            let imageHeight = proxy.frame(in: .local).height * 0.8
+            
+            HStack {
+                Image(systemName: "circle")
+                    .resizable()
+                    .frame(width: imageHeight, height: imageHeight)
+                    .foregroundColor(.blue)
+                Spacer()
+                Image(systemName: "x.circle")
+                    .resizable()
+                    .frame(width: imageHeight, height: imageHeight)
+                    .foregroundColor(.red)
             }
         }
     }
@@ -71,25 +87,6 @@ extension WordCell {
                 Color(red: 207/256, green: 240/256, blue: 204/256)
             case .fail:
                 Color(red: 253/256, green: 253/256, blue: 150/256)
-            }
-        }
-    }
-    
-    private struct WordCellBackground: View {
-        let imageHeight: CGFloat
-        
-        var body: some View {
-            HStack {
-                Image(systemName: "circle")
-                    .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
-                    .foregroundColor(.blue)
-                Spacer()
-                Image(systemName: "x.circle")
-                    .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
-                    .foregroundColor(.red)
-                
             }
         }
     }
