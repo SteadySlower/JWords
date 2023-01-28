@@ -38,21 +38,7 @@ struct MacAddWordView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack {
-                WordBookPickerView()
-                ForEach(InputType.allCases, id: \.self) { type in
-                    VStack {
-                        TextInputView(inputType: type)
-                            .focused($editFocus, equals: type)
-                        ImageInputView(inputType: type)
-                    }
-                }
-                SaveButton {
-                    viewModel.saveWord()
-                    editFocus = .meaning
-                }
-            }
+        contentView
             .padding(.top, 50)
             .onAppear { viewModel.getWordBooks() }
             .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
@@ -60,8 +46,7 @@ struct MacAddWordView: View {
             .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
             .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
             .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
-        }
-        .environmentObject(viewModel)
+            .environmentObject(viewModel)
     }
     
     private func moveCursorWhenTab(_ text: String) {
@@ -86,6 +71,25 @@ struct MacAddWordView: View {
 
 // MARK: SubViews
 extension MacAddWordView {
+    
+    private var contentView: some View {
+        ScrollView {
+            VStack {
+                WordBookPickerView()
+                ForEach(InputType.allCases, id: \.self) { type in
+                    VStack {
+                        TextInputView(inputType: type)
+                            .focused($editFocus, equals: type)
+                        ImageInputView(inputType: type)
+                    }
+                }
+                SaveButton {
+                    viewModel.saveWord()
+                    editFocus = .meaning
+                }
+            }
+        }
+    }
     
     struct WordBookPickerView: View {
         @EnvironmentObject private var viewModel: ViewModel
