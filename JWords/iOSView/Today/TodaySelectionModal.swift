@@ -28,7 +28,7 @@ struct TodaySelectionModal: View {
                 ScrollView {
                     VStack(spacing: 8) {
                         ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                            CheckableCell(wordBook: wordBook, viewModel: viewModel)
+                            checkableCell(wordBook)
                         }
                     }
                 }
@@ -52,49 +52,51 @@ struct TodaySelectionModal: View {
 }
 
 extension TodaySelectionModal {
-    private struct CheckableCell: View {
+    
+    private func checkableCell(_ wordBook: WordBook) -> some View {
+        let schedule = viewModel.schedules[wordBook.id, default: .none]
         
-        private let wordBook: WordBook
-        private let viewModel: ViewModel
-        private let schedule: Schedule
-        
-        init(wordBook: WordBook, viewModel: ViewModel) {
-            self.wordBook = wordBook
-            self.viewModel = viewModel
-            self.schedule = viewModel.schedules[wordBook.id, default: .none]
-        }
-        
-        var body: some View {
-            ZStack {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(wordBook.title)
-                        Text(viewModel.dateText(of: wordBook))
-                            .foregroundColor(dateTextColor)
-                    }
-                    Spacer()
-                    VStack {
-                        Button("학습") { viewModel.studyButtonTapped(wordBook.id) }
-                            .foregroundColor(schedule == .study ? Color.green : Color.black)
-                        Button("복습") { viewModel.reviewButtonTapped(wordBook.id) }
-                            .foregroundColor(schedule == .review ? Color.green : Color.black)
-                    }
-                }
-                .frame(height: 80)
-                .padding(8)
-                .border(.gray, width: 1)
-                .font(.system(size: 24))
-            }
-        }
-        
-        private var dateTextColor: Color {
+        var dateTextColor: Color {
             switch wordBook.schedule {
             case .none: return .black
             case .study: return .blue
             case .review: return .pink
             }
         }
+        
+        var bookInfo: some View {
+            VStack(alignment: .leading) {
+                Text(wordBook.title)
+                Text(viewModel.dateText(of: wordBook))
+                    .foregroundColor(dateTextColor)
+            }
+        }
+        
+        var buttons: some View {
+            VStack {
+                Button("학습") { viewModel.studyButtonTapped(wordBook.id) }
+                    .foregroundColor(schedule == .study ? Color.green : Color.black)
+                Button("복습") { viewModel.reviewButtonTapped(wordBook.id) }
+                    .foregroundColor(schedule == .review ? Color.green : Color.black)
+            }
+        }
+        
+        var body: some View {
+            HStack {
+                bookInfo
+                Spacer()
+                buttons
+            }
+            .frame(height: 80)
+            .padding(8)
+            .border(.gray, width: 1)
+            .font(.system(size: 24))
+        }
+        
+        return body
     }
+    
+    
 }
 
 extension TodaySelectionModal {
