@@ -26,7 +26,7 @@ struct WordCell: View {
     // MARK: Body
     var body: some View {
         ZStack {
-            ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
+            contentView
                 .onReceive(viewModel.eventPublisher) { handleEvent($0) }
                 .gesture(dragGesture)
                 .gesture(doubleTapGesture)
@@ -39,31 +39,19 @@ struct WordCell: View {
 
 extension WordCell {
     
-    private struct ContentView: View {
-        private let isFront: Bool
-        @ObservedObject private var viewModel: ViewModel
-        private var cellFaceOffset: CGSize
-        
-        init(isFront: Bool, viewModel: ViewModel, cellFaceOffset: CGSize) {
-            self.isFront = isFront
-            self.viewModel = viewModel
-            self.cellFaceOffset = cellFaceOffset
-        }
-
-        var body: some View {
-            GeometryReader { proxy in
+    private var contentView: some View {
+        GeometryReader { proxy in
+            ZStack {
+                WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
                 ZStack {
-                    WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
-                    ZStack {
-                        CellColor(state: viewModel.word.studyState)
-                        if isFront {
-                            WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
-                        } else {
-                            WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
-                        }
+                    CellColor(state: viewModel.word.studyState)
+                    if isFront {
+                        WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
+                    } else {
+                        WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
                     }
-                    .offset(cellFaceOffset)
                 }
+                .offset(dragAmount)
             }
         }
     }
