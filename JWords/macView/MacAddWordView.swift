@@ -112,7 +112,37 @@ extension MacAddWordView {
             }
         }
         
-        return
+        var overlapCheckButton: some View {
+            Button {
+                viewModel.checkIfOverlap()
+            } label: {
+                Text(viewModel.overlapCheckButtonTitle)
+            }
+            .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
+        }
+        
+        var searchExampleButton: some View {
+            Button {
+                viewModel.getExamples()
+            } label: {
+                Text("찾기")
+            }
+            .disabled(viewModel.meaningText.isEmpty)
+            .keyboardShortcut("f", modifiers: [.command])
+        }
+        
+        var samplePicker: some View {
+            Picker("", selection: $viewModel.selectedSampleID) {
+                Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
+                    .tag(nil as String?)
+                ForEach(viewModel.samples, id: \.id) { sample in
+                    Text(sample.description)
+                        .tag(sample.id as String?)
+                }
+            }
+        }
+        
+        var body: some View {
             VStack {
                 Text("\(inputType.description) 입력")
                     .font(.system(size: 20))
@@ -131,36 +161,9 @@ extension MacAddWordView {
                     Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
                 }
             }
-    }
-    
-    private var overlapCheckButton: some View {
-        Button {
-            viewModel.checkIfOverlap()
-        } label: {
-            Text(viewModel.overlapCheckButtonTitle)
         }
-        .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-    }
         
-    private var searchExampleButton: some View {
-        Button {
-            viewModel.getExamples()
-        } label: {
-            Text("찾기")
-        }
-        .disabled(viewModel.meaningText.isEmpty)
-        .keyboardShortcut("f", modifiers: [.command])
-    }
-    
-    private var samplePicker: some View {
-        Picker("", selection: $viewModel.selectedSampleID) {
-            Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
-                .tag(nil as String?)
-            ForEach(viewModel.samples, id: \.id) { sample in
-                Text(sample.description)
-                    .tag(sample.id as String?)
-            }
-        }
+        return body
     }
     
     struct ImageInputView: View {
