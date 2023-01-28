@@ -39,33 +39,12 @@ struct MacAddWordView: View {
     
     var body: some View {
         contentView
-            .padding(.top, 50)
             .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
-            .onChange(of: viewModel.kanjiText) { viewModel.autoConvert($0) }
-            .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
-            .onChange(of: viewModel.ganaText) { viewModel.trimPastedText($0) }
-            .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
+            .onChange(of: viewModel.meaningText) { onMeaningChange($0) }
+            .onChange(of: viewModel.kanjiText) { onKanjiChange($0) }
+            .onChange(of: viewModel.ganaText) { onGanaChange($0) }
     }
     
-    private func moveCursorWhenTab(_ text: String) {
-        guard let last = text.last, last == "\t" else { return }
-        guard let nowCursor = editFocus else { return }
-        switch nowCursor {
-        case .meaning:
-            viewModel.meaningText.removeLast()
-            editFocus = .kanji
-            return
-        case .kanji:
-            viewModel.kanjiText.removeLast()
-            editFocus = .gana
-            return
-        case .gana:
-            viewModel.ganaText.removeLast()
-            editFocus = .meaning
-            return
-        }
-    }
 }
 
 // MARK: SubViews
@@ -85,6 +64,7 @@ extension MacAddWordView {
                 saveButton
             }
         }
+        .padding(.top, 50)
     }
     
     private var wordBookPicker: some View {
@@ -225,6 +205,45 @@ extension MacAddWordView {
                 .disabled(viewModel.isSaveButtonUnable)
                 .keyboardShortcut(.return, modifiers: [.control])
             }
+        }
+    }
+    
+}
+
+// MARK: View Functions
+
+extension MacAddWordView {
+    
+    private func onMeaningChange(_ text: String) {
+        moveCursorWhenTab(text)
+    }
+    
+    private func onKanjiChange(_ text: String) {
+        moveCursorWhenTab(text)
+        viewModel.autoConvert(text)
+    }
+    
+    private func onGanaChange(_ text: String) {
+        moveCursorWhenTab(text)
+        viewModel.trimPastedText(text)
+    }
+    
+    private func moveCursorWhenTab(_ text: String) {
+        guard let last = text.last, last == "\t" else { return }
+        guard let nowCursor = editFocus else { return }
+        switch nowCursor {
+        case .meaning:
+            viewModel.meaningText.removeLast()
+            editFocus = .kanji
+            return
+        case .kanji:
+            viewModel.kanjiText.removeLast()
+            editFocus = .gana
+            return
+        case .gana:
+            viewModel.ganaText.removeLast()
+            editFocus = .meaning
+            return
         }
     }
     
