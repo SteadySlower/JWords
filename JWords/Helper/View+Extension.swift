@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-private struct SettingSideBar<Content: View>: View {
+// MARK: SideBar
+
+private struct SideBar<Content: View>: View {
     
     @Binding private var showSideBar: Bool
     @GestureState private var dragAmount: CGSize = .zero
@@ -63,7 +65,7 @@ extension View {
         
         ZStack {
             self
-            SettingSideBar(showSideBar: showSideBar, content: content)
+            SideBar(showSideBar: showSideBar, content: content)
         }
     }
 
