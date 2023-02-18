@@ -99,28 +99,51 @@ struct StudyView: View {
 
 extension StudyView {
     private var contentView: some View {
-        ZStack {
-            ScrollView {
-                LazyVStack(spacing: 32) {
-                    ForEach(viewModel.words, id: \.id) { word in
-                        ZStack {
-                            WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher, isLocked: viewModel.isCellLocked)
-                            if viewModel.studyViewMode == .selection {
-                                SelectableCell(isSelected: viewModel.isSelected(word))
-                                    .onTapGesture { viewModel.toggleSelection(word) }
-                            } else if viewModel.studyViewMode == .edit {
-                                EditableCell()
-                                    .onTapGesture {
-                                        viewModel.toEditWord = word
-                                        showEditModal = true
-                                    }
-                            }
-                        }
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEach(viewModel.words, id: \.id) { word in
+                    wordCell(word)
                         .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
-                    }
                 }
             }
-            .sideBar(showSideBar: $showSideBar) { sideBarContents }        }
+        }
+        .sideBar(showSideBar: $showSideBar) { sideBarContents }
+    }
+    
+    private func wordCell(_ word: Word) -> some View {
+        
+        var wordCell: some View {
+            WordCell(word: word,
+                     frontType: viewModel.frontType,
+                     eventPublisher: viewModel.eventPublisher,
+                     isLocked: viewModel.isCellLocked)
+        }
+        
+        var selectableCell: some View {
+            SelectableCell(isSelected: viewModel.isSelected(word))
+                .onTapGesture { viewModel.toggleSelection(word) }
+        }
+        
+        var editableCell: some View {
+            EditableCell()
+                .onTapGesture {
+                    viewModel.toEditWord = word
+                    showEditModal = true
+                }
+        }
+        
+        var body: some View {
+            ZStack {
+               wordCell
+               if viewModel.studyViewMode == .selection {
+                   selectableCell
+               } else if viewModel.studyViewMode == .edit {
+                   editableCell
+               }
+           }
+        }
+        
+        return body
     }
     
     private var sideBarContents: some View {
