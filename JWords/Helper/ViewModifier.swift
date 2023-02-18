@@ -14,7 +14,7 @@ extension View {
                     selectedColor: Color = Color.blue.opacity(0.2),
                     unselectedColor: Color = Color.gray.opacity(0.2),
                     onTap: @escaping () -> Void) -> some View {
-        modifier(SelectableEdge(nowSelecting: nowSelecting,
+        modifier(CellSelectionEdge(nowSelecting: nowSelecting,
                                 isSelected: isSelected,
                                 selectedColor: selectedColor,
                                 unselectedColor: unselectedColor,
@@ -23,7 +23,7 @@ extension View {
     
 }
 
-private struct SelectableEdge: ViewModifier {
+private struct CellSelectionEdge: ViewModifier {
     
     private let nowSelecting: Bool
     private let isSelected: Bool
