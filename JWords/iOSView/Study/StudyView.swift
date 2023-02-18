@@ -112,18 +112,6 @@ extension StudyView {
     
     private func wordCell(_ word: Word) -> some View {
         
-        var wordCell: some View {
-            WordCell(word: word,
-                     frontType: viewModel.frontType,
-                     eventPublisher: viewModel.eventPublisher,
-                     isLocked: viewModel.isCellLocked)
-        }
-        
-        var selectableCell: some View {
-            SelectableCell(isSelected: viewModel.isSelected(word))
-                .onTapGesture { viewModel.toggleSelection(word) }
-        }
-        
         var editableCell: some View {
             EditableCell()
                 .onTapGesture {
@@ -134,9 +122,12 @@ extension StudyView {
         
         var body: some View {
             ZStack {
-               wordCell
+                WordCell(word: word,
+                         frontType: viewModel.frontType,
+                         eventPublisher: viewModel.eventPublisher,
+                         isLocked: viewModel.isCellLocked)
                if viewModel.studyViewMode == .selection {
-                   selectableCell
+                   selectableCell(word)
                } else if viewModel.studyViewMode == .edit {
                    editableCell
                }
@@ -196,49 +187,17 @@ extension StudyView {
         return body
     }
     
-    private struct SelectableCell: View {
-        private let isSelected: Bool
-        
-        init(isSelected: Bool) {
-            self.isSelected = isSelected
-        }
-        
-        var body: some View {
-            ZStack {
-                if !isSelected {
-                    Color.gray
-                        .opacity(0.2)
-                } else {
-                    Color.blue
-                        .opacity(0.2)
-                }
-            }
-            .mask(
-                AnimatingEdge(isAnimating: isSelected)
-            )
-        }
-        
-        private struct AnimatingEdge: View {
-            private let isAnimating: Bool
-            @State private var dashPhase: CGFloat = 0
-            
-            init(isAnimating: Bool) {
-                self.isAnimating = isAnimating
-            }
-            
-            var body: some View {
-                if isAnimating {
-                    Rectangle()
-                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
-                        .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
-                        .onAppear { dashPhase = -20 }
-                } else {
-                    Rectangle()
-                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
-                        .onAppear { dashPhase = 0 }
-                }
+    private func selectableCell(_ word: Word) -> some View {
+        Group {
+            if viewModel.isSelected(word) {
+                Color.blue.opacity(0.2)
+                    .dashEdge(isAnimating: true)
+            } else {
+                Color.gray.opacity(0.2)
+                    .dashEdge(isAnimating: false)
             }
         }
+        .onTapGesture { viewModel.toggleSelection(word) }
     }
     
     private struct EditableCell: View {

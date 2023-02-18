@@ -20,6 +20,7 @@
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC606C297E9A7500AA67E6 /* FrontType.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
+		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
 		06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */; };
 		06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2462866F1C800A620CC /* JWordsApp.swift */; };
 		06CEF2492866F1C800A620CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2482866F1C800A620CC /* ContentView.swift */; };
@@ -125,6 +126,7 @@
 		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		06BC606C297E9A7500AA67E6 /* FrontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontType.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		06BC608B29A09FC000AA67E6 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
 		06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2462866F1C800A620CC /* JWordsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsApp.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */,
 				5A5C468728D98894000E212B /* Calendar+Extension.swift */,
 				06BC608929A0928600AA67E6 /* View+Extension.swift */,
+				06BC608B29A09FC000AA67E6 /* ViewModifier.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
+				06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */,
 				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,
 				5A67DC20286942FE00AC156C /* HomeView.swift in Sources */,
 				06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */,
