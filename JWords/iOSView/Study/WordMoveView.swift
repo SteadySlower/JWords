@@ -8,56 +8,96 @@
 import SwiftUI
 
 struct WordMoveView: View {
-    @ObservedObject private var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     @Binding private var didClosed: Bool
     
     init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
-        self.viewModel = ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency)
+        self._viewModel = StateObject(wrappedValue: ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency))
         self._didClosed = didClosed
-        // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
-        viewModel.getWordBooks()
     }
     
     var body: some View {
         ZStack {
             if viewModel.isClosing {
-                ProgressView()
-                    .scaleEffect(5)
+                progressView
             }
             VStack {
-                Text("\(viewModel.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
-                Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
-                    Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
-                        .tag(nil as String?)
-                    ForEach(viewModel.wordBooks, id: \.id) {
-                        Text($0.title)
-                            .tag($0.id as String?)
-                    }
-                }
-                #if os(iOS)
-                .pickerStyle(.wheel)
-                #endif
-                Toggle("단어장 마감하기", isOn: $viewModel.willCloseBook)
-                    .padding(.horizontal, 20)
-                HStack {
-                    Button("취소") {
-                        didClosed = false
-                        dismiss()
-                    }
-                    Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                        viewModel.moveWords {
-                            didClosed = true
-                            dismiss()
-                        }
-                    }
-                    .disabled(viewModel.isClosing)
-                }
+                title
+                bookPicker
+                closingToggle
+                buttons
             }
         }
+        .onAppear { viewModel.getWordBooks(); print("디버그: word move view on appear") }
     }
     
 }
+
+// MARK: SubViews
+
+extension WordMoveView {
+    
+    private var progressView: some View {
+        ProgressView()
+            .scaleEffect(5)
+    }
+    
+    private var title: some View {
+        Text("\(viewModel.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
+    }
+    
+    private var bookPicker: some View {
+        Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
+            Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                .tag(nil as String?)
+            ForEach(viewModel.wordBooks, id: \.id) {
+                Text($0.title)
+                    .tag($0.id as String?)
+            }
+        }
+        #if os(iOS)
+        .pickerStyle(.wheel)
+        #endif
+    }
+    
+    private var closingToggle: some View {
+        Toggle("단어장 마감하기", isOn: $viewModel.willCloseBook)
+            .padding(.horizontal, 20)
+    }
+    
+    private var buttons: some View {
+        
+        var cancelButton: some View {
+            Button("취소") {
+                didClosed = false
+                dismiss()
+            }
+        }
+        
+        var moveButton: some View {
+            Button(viewModel.selectedID != nil ? "이동" : "닫기") {
+                viewModel.moveWords {
+                    didClosed = true
+                    dismiss()
+                }
+            }
+            .disabled(viewModel.isClosing)
+        }
+        
+        var body: some View {
+            HStack {
+                cancelButton
+                moveButton
+            }
+        }
+        
+        return body
+    }
+    
+}
+
+// MARK: ViewModel
 
 extension WordMoveView {
     final class ViewModel: ObservableObject {

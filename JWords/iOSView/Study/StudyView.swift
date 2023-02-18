@@ -50,202 +50,145 @@ struct StudyView: View {
     }
     
     var body: some View {
-        ZStack {
-            ScrollView {
-                LazyVStack(spacing: 32) {
-                    ForEach(viewModel.words, id: \.id) { word in
-                        ZStack {
-                            WordCell(word: word, frontType: viewModel.frontType, eventPublisher: viewModel.eventPublisher, isLocked: viewModel.isCellLocked)
-                            if viewModel.studyViewMode == .selection {
-                                SelectableCell(isSelected: viewModel.isSelected(word))
-                                    .onTapGesture { viewModel.toggleSelection(word) }
-                            } else if viewModel.studyViewMode == .edit {
-                                EditableCell()
-                                    .onTapGesture {
-                                        viewModel.toEditWord = word
-                                        showEditModal = true
-                                    }
-                            }
-                        }
-                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
-                    }
-                }
-            }
-            if showSideBar {
-                SettingSideBar(showSideBar: $showSideBar, viewModel: viewModel)
-            }
-        }
-        .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
-        .onAppear {
-            viewModel.fetchWords()
-            resetDeviceWidth()
-        }
-        .sheet(isPresented: $showMoveModal,
-               onDismiss: { if shouldDismiss { dismiss() } },
-               content: { WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency) })
-        .sheet(isPresented: $showEditModal,
-               onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
-               content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
-        #if os(iOS)
-        // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
-        .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
-        .toolbar {
-            ToolbarItem {
-                HStack {
-                    Button("랜덤") {
-                        viewModel.shuffleWords()
-                    }
-                    .disabled(viewModel.studyViewMode != .normal)
-                    Button("설정") {
-                        showSideBar = true
-                    }
-                }
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(viewModel.studyViewMode == .selection ? "이동" : "마감") { showMoveModal = true }
-                    .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
-            }
-        }
+        contentView
+            .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
+            .onAppear { onAppear() }
+            .sheet(isPresented: $showMoveModal,
+                   onDismiss: { if shouldDismiss { dismiss() } },
+                   content: { WordMoveView(wordBook: viewModel.wordBook!,
+                                           toMoveWords: viewModel.toMoveWords,
+                                           didClosed: $shouldDismiss,
+                                           dependency: dependency) })
+            .sheet(isPresented: $showEditModal,
+                   onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
+                   content: { WordInputView(viewModel.toEditWord,
+                                            dependency: dependency,
+                                            eventPublisher: viewModel.eventPublisher) })
+            #if os(iOS)
+            // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
+            .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
+            .toolbar { ToolbarItem { rightToolBarItems } }
+            .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
         #endif
     }
     
-    private func resetDeviceWidth() {
+}
+
+// MARK: SubViews
+
+extension StudyView {
+    private var contentView: some View {
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEach(viewModel.words, id: \.id) { word in
+                    WordCell(word: word,
+                             frontType: viewModel.frontType,
+                             eventPublisher: viewModel.eventPublisher,
+                             isLocked: viewModel.isCellLocked)
+                            .selectable(nowSelecting: viewModel.studyViewMode == .selection,
+                                        isSelected: viewModel.isSelected(word),
+                                        onTap: { viewModel.toggleSelection(word) })
+                            .editable(nowEditing: viewModel.studyViewMode == .edit) {
+                                viewModel.toEditWord = word
+                                showEditModal = true
+                            }
+                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                }
+            }
+        }
+        .sideBar(showSideBar: $showSideBar) { settingSideBar }
+    }
+    
+    private var settingSideBar: some View {
+        
+        var studyModePicker: some View {
+            Picker("", selection: $viewModel.studyMode) {
+                ForEach(StudyMode.allCases, id: \.self) {
+                    Text($0.pickerText)
+                }
+            }
+            .pickerStyle(.segmented)
+        }
+        
+        var frontTypePicker: some View {
+            Picker("", selection: $viewModel.frontType) {
+                ForEach(FrontType.allCases, id: \.self) {
+                    Text($0.pickerText)
+                }
+            }
+            .pickerStyle(.segmented)
+        }
+        
+        var viewModePicker: some View {
+            Picker("모드", selection: $viewModel.studyViewMode) {
+                Text("학습")
+                    .tag(StudyViewMode.normal)
+                Text("선택")
+                    .tag(StudyViewMode.selection)
+                Text("수정")
+                    .tag(StudyViewMode.edit)
+            }
+            .pickerStyle(.segmented)
+        }
+        
+        var body: some View {
+            VStack {
+                Spacer()
+                studyModePicker
+                    .padding()
+                frontTypePicker
+                    .padding()
+                if viewModel.wordBook != nil {
+                    viewModePicker
+                        .padding()
+                }
+                Spacer()
+            }
+        }
+        
+        return body
+    }
+    
+    private var rightToolBarItems: some View {
+        HStack {
+            Button("랜덤") {
+                viewModel.shuffleWords()
+            }
+            .disabled(viewModel.studyViewMode != .normal)
+            Button("설정") {
+                showSideBar = true
+            }
+        }
+    }
+    
+    private var leftToolBarItems: some View {
+        Button(viewModel.studyViewMode == .selection ? "이동" : "마감") {
+            showMoveModal = true
+        }
+        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
+    }
+
+}
+
+// MARK: View Methods
+
+extension StudyView {
+    
+    private func deviceOrientationChanged() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.deviceWidth = Constants.Size.deviceWidth
         }
     }
+    
+    private func onAppear() {
+        viewModel.fetchWords()
+        deviceOrientationChanged()
+    }
+    
 }
 
-extension StudyView {
-    private struct SettingSideBar: View {
-        
-        @Binding var showSideBar: Bool
-        @ObservedObject var viewModel: ViewModel
-        @GestureState private var dragAmount = CGSize.zero
-        
-        private var dragGesture: some Gesture {
-            DragGesture(minimumDistance: 30, coordinateSpace: .global)
-                .onEnded { onEnded($0) }
-                .updating($dragAmount) { value, state, _ in
-                    if value.translation.width > 0 {
-                        state.width = value.translation.width
-                    }
-                }
-        }
-        
-        var body: some View {
-            ZStack(alignment: .trailing) {
-                Color.black.opacity(0.5)
-                    .onTapGesture { showSideBar = false }
-                VStack {
-                    Spacer()
-                    Picker("", selection: $viewModel.studyMode) {
-                        ForEach(StudyMode.allCases, id: \.self) {
-                            Text($0.pickerText)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding()
-                    Picker("", selection: $viewModel.frontType) {
-                        ForEach(FrontType.allCases, id: \.self) {
-                            Text($0.pickerText)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding()
-                    if viewModel.wordBook != nil {
-                        Picker("모드", selection: $viewModel.studyViewMode) {
-                            Text("학습")
-                                .tag(StudyViewMode.normal)
-                            Text("선택")
-                                .tag(StudyViewMode.selection)
-                            Text("수정")
-                                .tag(StudyViewMode.edit)
-                        }
-                        .padding()
-                        .pickerStyle(.segmented)
-                    }
-                    Spacer()
-                }
-                .frame(width: Constants.Size.deviceWidth * 0.7)
-                .background { Color.white }
-                .offset(x: dragAmount.width)
-                .gesture(dragGesture)
-            }
-            .ignoresSafeArea()
-        }
-        
-        private func onEnded(_ value: DragGesture.Value) {
-            if value.translation.width > Constants.Size.deviceWidth * 0.35 {
-                showSideBar = false
-            }
-        }
-    }
-    
-    private struct SelectableCell: View {
-        private let isSelected: Bool
-        
-        init(isSelected: Bool) {
-            self.isSelected = isSelected
-        }
-        
-        var body: some View {
-            ZStack {
-                if !isSelected {
-                    Color.gray
-                        .opacity(0.2)
-                } else {
-                    Color.blue
-                        .opacity(0.2)
-                }
-            }
-            .mask(
-                AnimatingEdge(isAnimating: isSelected)
-            )
-        }
-        
-        private struct AnimatingEdge: View {
-            private let isAnimating: Bool
-            @State private var dashPhase: CGFloat = 0
-            
-            init(isAnimating: Bool) {
-                self.isAnimating = isAnimating
-            }
-            
-            var body: some View {
-                if isAnimating {
-                    Rectangle()
-                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
-                        .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
-                        .onAppear { dashPhase = -20 }
-                } else {
-                    Rectangle()
-                        .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
-                        .onAppear { dashPhase = 0 }
-                }
-            }
-        }
-    }
-    
-    private struct EditableCell: View {
-        var body: some View {
-            ZStack {
-                Color
-                    .clear
-                    .contentShape(Rectangle())
-                Image(systemName: "pencil")
-                    .resizable()
-                    .foregroundColor(.green)
-                    .opacity(0.5)
-                    .scaledToFit()
-                    .padding()
-            }
-        }
-    }
-}
+// MARK: ViewModel
 
 extension StudyView {
     final class ViewModel: ObservableObject {

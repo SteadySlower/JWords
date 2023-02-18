@@ -20,46 +20,23 @@ struct TodayView: View {
     
     var body: some View {
         ScrollView {
-            Text("오늘 학습할 단어")
-            OnlyFailCell(viewModel: viewModel, dependency: dependency)
-            VStack(spacing: 8) {
-                ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
-                    HomeCell(wordBook: todayBook, dependency: dependency)
-                }
-            }
-            .padding(.bottom, 8)
-            Text("오늘 복습할 단어")
-            VStack(spacing: 8) {
-                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
-                    HomeCell(wordBook: reviewBook, dependency: dependency)
-                }
-            }
+            todayBookList
+                .padding(.bottom, 8)
+            reviewBookList
         }
         .onAppear { viewModel.fetchSchedule() }
         .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
-        .toolbar {
-            ToolbarItem {
-                HStack {
-                    Button("List") { showModal = true }
-                    Button("+") { viewModel.autoFetchTodayBooks() }
-                }
-            }
-        }
+        .toolbar { ToolbarItem { toolbarItems } }
     }
 }
 
+// MARK: SubViews
+
 extension TodayView {
-    private struct OnlyFailCell: View {
+    
+    private var todayBookList: some View {
         
-        private let dependency: Dependency
-        @ObservedObject private var viewModel: ViewModel
-        
-        init(viewModel: ViewModel, dependency: Dependency) {
-            self.viewModel = viewModel
-            self.dependency = dependency
-        }
-        
-        var body: some View {
+        var onlyFailCell: some View {
             ZStack {
                 NavigationLink {
                     LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
@@ -75,6 +52,37 @@ extension TodayView {
             .frame(height: 50)
         }
         
+        var body : some View {
+            VStack {
+                Text("오늘 학습할 단어")
+                onlyFailCell
+                VStack(spacing: 8) {
+                    ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
+                        HomeCell(wordBook: todayBook, dependency: dependency)
+                    }
+                }
+            }
+        }
+        
+        return body
+    }
+    
+    private var reviewBookList: some View {
+        VStack {
+            Text("오늘 복습할 단어")
+            VStack(spacing: 8) {
+                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
+                    HomeCell(wordBook: reviewBook, dependency: dependency)
+                }
+            }
+        }
+    }
+    
+    private var toolbarItems: some View {
+        HStack {
+            Button("List") { showModal = true }
+            Button("+") { viewModel.autoFetchTodayBooks() }
+        }
     }
     
 }

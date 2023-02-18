@@ -20,81 +20,104 @@ struct TodaySelectionModal: View {
     var body: some View {
         ZStack {
             if showProgressView {
-                ProgressView()
-                    .scaleEffect(5)
+                progressView
             }
-            VStack {
-                Text("학습 혹은 복습할 단어장을 골라주세요.")
-                ScrollView {
-                    VStack(spacing: 8) {
-                        ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                            CheckableCell(wordBook: wordBook, viewModel: viewModel)
-                        }
-                    }
-                }
-                HStack {
-                    Button("취소") { dismiss() }
-                    Spacer()
-                    Button("확인") {
-                        showProgressView = true
-                        viewModel.updateToday {
-                            showProgressView = false
-                            dismiss()
-                        }
-                    }
-                }
-                .padding()
-            }
-            .padding(10)
+            contentView
         }
         .onAppear { viewModel.fetchTodays() }
     }
 }
 
+// MARK: SubViews
+
 extension TodaySelectionModal {
-    private struct CheckableCell: View {
-        
-        private let wordBook: WordBook
-        private let viewModel: ViewModel
-        private let schedule: Schedule
-        
-        init(wordBook: WordBook, viewModel: ViewModel) {
-            self.wordBook = wordBook
-            self.viewModel = viewModel
-            self.schedule = viewModel.schedules[wordBook.id, default: .none]
+    
+    private var progressView: some View {
+        ProgressView()
+            .scaleEffect(5)
+    }
+    
+    private var contentView: some View {
+        VStack {
+            title
+            bookList
+            buttons
         }
-        
-        var body: some View {
-            ZStack {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(wordBook.title)
-                        Text(viewModel.dateText(of: wordBook))
-                            .foregroundColor(dateTextColor)
-                    }
-                    Spacer()
-                    VStack {
-                        Button("학습") { viewModel.studyButtonTapped(wordBook.id) }
-                            .foregroundColor(schedule == .study ? Color.green : Color.black)
-                        Button("복습") { viewModel.reviewButtonTapped(wordBook.id) }
-                            .foregroundColor(schedule == .review ? Color.green : Color.black)
-                    }
+        .padding(10)
+    }
+    
+    private var title: some View {
+        Text("학습 혹은 복습할 단어장을 골라주세요.")
+    }
+    
+    private var bookList: some View {
+        ScrollView {
+            VStack(spacing: 8) {
+                ForEach(viewModel.wordBooks, id: \.id) { wordBook in
+                    bookCell(wordBook)
                 }
-                .frame(height: 80)
-                .padding(8)
-                .border(.gray, width: 1)
-                .font(.system(size: 24))
             }
         }
+    }
+    
+    private func bookCell(_ wordBook: WordBook) -> some View {
+        let schedule = viewModel.schedules[wordBook.id, default: .none]
         
-        private var dateTextColor: Color {
+        var dateTextColor: Color {
             switch wordBook.schedule {
             case .none: return .black
             case .study: return .blue
             case .review: return .pink
             }
         }
+        
+        var bookInfo: some View {
+            VStack(alignment: .leading) {
+                Text(wordBook.title)
+                Text(viewModel.dateText(of: wordBook))
+                    .foregroundColor(dateTextColor)
+            }
+        }
+        
+        var buttons: some View {
+            VStack {
+                Button("학습") { viewModel.studyButtonTapped(wordBook.id) }
+                    .foregroundColor(schedule == .study ? Color.green : Color.black)
+                Button("복습") { viewModel.reviewButtonTapped(wordBook.id) }
+                    .foregroundColor(schedule == .review ? Color.green : Color.black)
+            }
+        }
+        
+        var body: some View {
+            HStack {
+                bookInfo
+                Spacer()
+                buttons
+            }
+            .frame(height: 80)
+            .padding(8)
+            .border(.gray, width: 1)
+            .font(.system(size: 24))
+        }
+        
+        return body
     }
+    
+    private var buttons: some View {
+        HStack {
+            Button("취소") { dismiss() }
+            Spacer()
+            Button("확인") {
+                showProgressView = true
+                viewModel.updateToday {
+                    showProgressView = false
+                    dismiss()
+                }
+            }
+        }
+        .padding()
+    }
+    
 }
 
 extension TodaySelectionModal {

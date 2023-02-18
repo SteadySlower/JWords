@@ -16,7 +16,104 @@ struct WordCell: View {
     @State private var isFront = true
     private let isLocked: Bool
     
-    // MARK: Gestures
+    // MARK: Initializer
+    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
+        self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
+        self.isLocked = isLocked
+        viewModel.prefetchImage()
+    }
+    
+    // MARK: Body
+    var body: some View {
+        ZStack {
+            contentView
+                .onReceive(viewModel.eventPublisher) { handleEvent($0) }
+                .gesture(dragGesture)
+                .gesture(doubleTapGesture)
+                .gesture(tapGesture)
+        }
+    }
+}
+
+// MARK: SubViews
+
+extension WordCell {
+    
+    private var contentView: some View {
+        ZStack {
+            background
+            ZStack {
+                cellColor
+                wordCellFace
+            }
+            .offset(dragAmount)
+        }
+    }
+    
+    private var background: some View {
+        GeometryReader { proxy in
+            let imageHeight = proxy.frame(in: .local).height * 0.8
+            
+            HStack {
+                Image(systemName: "circle")
+                    .resizable()
+                    .frame(width: imageHeight, height: imageHeight)
+                    .foregroundColor(.blue)
+                Spacer()
+                Image(systemName: "x.circle")
+                    .resizable()
+                    .frame(width: imageHeight, height: imageHeight)
+                    .foregroundColor(.red)
+            }
+        }
+    }
+    
+    private var cellColor: some View {
+        Group {
+            switch viewModel.word.studyState {
+            case .undefined:
+                Color.white
+            case .success:
+                Color(red: 207/256, green: 240/256, blue: 204/256)
+            case .fail:
+                Color(red: 253/256, green: 253/256, blue: 150/256)
+            }
+        }
+    }
+    
+    private var wordCellFace: some View {
+        
+        var text: String {
+            isFront ? viewModel.frontText : viewModel.backText
+        }
+        
+        var imageURLs: [URL] {
+            isFront ? viewModel.frontImageURLs : viewModel.backImageURLs
+        }
+        
+        var body: some View {
+            VStack {
+                Text(text)
+                    .minimumScaleFactor(0.5)
+                    .font(.system(size: 48))
+                VStack {
+                    ForEach(imageURLs, id: \.self) { url in
+                        KFImage(url)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+            }
+        }
+        
+        return body
+    }
+}
+
+// MARK: Gestures
+
+extension WordCell {
+    
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 30, coordinateSpace: .global)
             .onEnded { onDragEnd($0) }
@@ -33,114 +130,6 @@ struct WordCell: View {
             .onEnded { onDoubleTapped() }
     }
     
-    // MARK: Initializer
-    init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
-        self.viewModel = ViewModel(word: word, frontType: frontType, eventPublisher: eventPublisher)
-        self.isLocked = isLocked
-        viewModel.prefetchImage()
-    }
-    
-    // MARK: Body
-    var body: some View {
-        ZStack {
-            ContentView(isFront: isFront, viewModel: viewModel, cellFaceOffset: dragAmount)
-                .onReceive(viewModel.eventPublisher) { handleEvent($0) }
-                .gesture(dragGesture)
-                .gesture(doubleTapGesture)
-                .gesture(tapGesture)
-        }
-    }
-}
-
-// MARK: SubViews
-
-extension WordCell {
-    private struct ContentView: View {
-        private let isFront: Bool
-        @ObservedObject private var viewModel: ViewModel
-        private var cellFaceOffset: CGSize
-        
-        init(isFront: Bool, viewModel: ViewModel, cellFaceOffset: CGSize) {
-            self.isFront = isFront
-            self.viewModel = viewModel
-            self.cellFaceOffset = cellFaceOffset
-        }
-
-        var body: some View {
-            GeometryReader { proxy in
-                ZStack {
-                    WordCellBackground(imageHeight: proxy.frame(in: .local).height * 0.8)
-                    ZStack {
-                        CellColor(state: viewModel.word.studyState)
-                        if isFront {
-                            WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
-                        } else {
-                            WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
-                        }
-                    }
-                    .offset(cellFaceOffset)
-                }
-            }
-        }
-    }
-    
-    private struct CellColor: View {
-        private let state: StudyState
-        
-        init(state: StudyState) {
-            self.state = state
-        }
-        
-        var body: some View {
-            switch state {
-            case .undefined:
-                Color.white
-            case .success:
-                Color(red: 207/256, green: 240/256, blue: 204/256)
-            case .fail:
-                Color(red: 253/256, green: 253/256, blue: 150/256)
-            }
-        }
-    }
-    
-    private struct WordCellBackground: View {
-        let imageHeight: CGFloat
-        
-        var body: some View {
-            HStack {
-                Image(systemName: "circle")
-                    .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
-                    .foregroundColor(.blue)
-                Spacer()
-                Image(systemName: "x.circle")
-                    .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
-                    .foregroundColor(.red)
-                
-            }
-        }
-    }
-    
-    private struct WordCellFace: View {
-        let text: String
-        let imageURLs: [URL]
-        
-        var body: some View {
-            VStack {
-                Text(text)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 48))
-                VStack {
-                    ForEach(imageURLs, id: \.self) { url in
-                        KFImage(url)
-                            .resizable()
-                            .scaledToFit()
-                    }
-                }
-            }
-        }
-    }
 }
 
 // MARK: View Methods

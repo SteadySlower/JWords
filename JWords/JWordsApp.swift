@@ -48,7 +48,7 @@ struct JWordsApp: App {
         WindowGroup {
             ContentView(dependency)
                 // TODO: mac 앱 만들 때 화면 사이즈 조절하는 방법
-                .frame(minWidth: 800, maxWidth: .infinity, minHeight: 800, maxHeight: .infinity, alignment: .center)
+                .frame(minWidth: 800, minHeight: 500, alignment: .center)
         }
     }
 }
