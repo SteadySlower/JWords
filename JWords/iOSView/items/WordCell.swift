@@ -44,11 +44,7 @@ extension WordCell {
             background
             ZStack {
                 cellColor
-                if isFront {
-                    WordCellFace(text: viewModel.frontText, imageURLs: viewModel.frontImageURLs)
-                } else {
-                    WordCellFace(text: viewModel.backText, imageURLs: viewModel.backImageURLs)
-                }
+                wordCellFace
             }
             .offset(dragAmount)
         }
@@ -85,9 +81,15 @@ extension WordCell {
         }
     }
     
-    private struct WordCellFace: View {
-        let text: String
-        let imageURLs: [URL]
+    private var wordCellFace: some View {
+        
+        var text: String {
+            isFront ? viewModel.frontText : viewModel.backText
+        }
+        
+        var imageURLs: [URL] {
+            isFront ? viewModel.frontImageURLs : viewModel.backImageURLs
+        }
         
         var body: some View {
             VStack {
@@ -103,6 +105,8 @@ extension WordCell {
                 }
             }
         }
+        
+        return body
     }
 }
 
