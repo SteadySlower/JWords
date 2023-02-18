@@ -124,36 +124,53 @@ extension StudyView {
     }
     
     private var sideBarContents: some View {
-        VStack {
-            Spacer()
+        
+        var studyModePicker: some View {
             Picker("", selection: $viewModel.studyMode) {
                 ForEach(StudyMode.allCases, id: \.self) {
                     Text($0.pickerText)
                 }
             }
             .pickerStyle(.segmented)
-            .padding()
+        }
+        
+        var frontTypePicker: some View {
             Picker("", selection: $viewModel.frontType) {
                 ForEach(FrontType.allCases, id: \.self) {
                     Text($0.pickerText)
                 }
             }
             .pickerStyle(.segmented)
-            .padding()
-            if viewModel.wordBook != nil {
-                Picker("모드", selection: $viewModel.studyViewMode) {
-                    Text("학습")
-                        .tag(StudyViewMode.normal)
-                    Text("선택")
-                        .tag(StudyViewMode.selection)
-                    Text("수정")
-                        .tag(StudyViewMode.edit)
-                }
-                .padding()
-                .pickerStyle(.segmented)
-            }
-            Spacer()
         }
+        
+        var viewModePicker: some View {
+            Picker("모드", selection: $viewModel.studyViewMode) {
+                Text("학습")
+                    .tag(StudyViewMode.normal)
+                Text("선택")
+                    .tag(StudyViewMode.selection)
+                Text("수정")
+                    .tag(StudyViewMode.edit)
+            }
+            .pickerStyle(.segmented)
+        }
+        
+        var body: some View {
+            VStack {
+                Spacer()
+                studyModePicker
+                    .padding()
+                frontTypePicker
+                    .padding()
+                if viewModel.wordBook != nil {
+                    viewModePicker
+                        .padding()
+                }
+                Spacer()
+            }
+        }
+        
+        return body
     }
     
     private struct SettingSideBar: View {
