@@ -7,40 +7,72 @@
 
 import SwiftUI
 
-extension Color {
+extension View {
     
-    func dashEdge(isAnimating: Bool) -> some View {
-        modifier(DashEdge(isAnimating: isAnimating))
+    func selectable(nowSelecting: Bool,
+                    isSelected: Bool,
+                    selectedColor: Color = Color.blue.opacity(0.2),
+                    unselectedColor: Color = Color.gray.opacity(0.2),
+                    onTap: @escaping () -> Void) -> some View {
+        modifier(SelectableEdge(nowSelecting: nowSelecting,
+                                isSelected: isSelected,
+                                selectedColor: selectedColor,
+                                unselectedColor: unselectedColor,
+                                onTap: onTap))
     }
     
 }
 
-private struct DashEdge: ViewModifier {
+private struct SelectableEdge: ViewModifier {
     
-    let isAnimating: Bool
+    private let nowSelecting: Bool
+    private let isSelected: Bool
+    private let selectedColor: Color
+    private let unselectedColor: Color
+    private let onTap: () -> Void
+    
     @State private var dashPhase: CGFloat = 0
     
+    init(nowSelecting: Bool, isSelected: Bool, selectedColor: Color, unselectedColor: Color, onTap: @escaping () -> Void) {
+        self.nowSelecting = nowSelecting
+        self.isSelected = isSelected
+        self.selectedColor = selectedColor
+        self.unselectedColor = unselectedColor
+        self.onTap = onTap
+    }
+    
     func body(content: Content) -> some View {
-        if isAnimating {
+        if nowSelecting {
             content
-                .mask(animatingEdge)
+                .overlay {
+                    if isSelected {
+                        selectedOverlay
+                    } else {
+                        unselectedOverlay
+                    }
+                }
+                .onTapGesture { onTap() }
         } else {
             content
-                .mask(nonAnimatingEdge)
         }
     }
     
-    private var animatingEdge: some View {
-        Rectangle()
-            .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
-            .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
-            .onAppear { dashPhase = -20 }
-    
+    private var selectedOverlay: some View {
+        selectedColor
+            .mask(
+                Rectangle()
+                    .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+                    .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
+                    .onAppear { dashPhase = -20 }
+            )
     }
     
-    private var nonAnimatingEdge: some View {
-        Rectangle()
-            .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+    private var unselectedOverlay: some View {
+        unselectedColor
+            .mask (
+                Rectangle()
+                    .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+            )
     }
     
 }

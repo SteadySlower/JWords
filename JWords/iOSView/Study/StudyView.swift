@@ -126,9 +126,10 @@ extension StudyView {
                          frontType: viewModel.frontType,
                          eventPublisher: viewModel.eventPublisher,
                          isLocked: viewModel.isCellLocked)
-               if viewModel.studyViewMode == .selection {
-                   selectableCell(word)
-               } else if viewModel.studyViewMode == .edit {
+                        .selectable(nowSelecting: viewModel.studyViewMode == .selection,
+                                    isSelected: viewModel.isSelected(word),
+                                    onTap: { viewModel.toggleSelection(word) })
+                if viewModel.studyViewMode == .edit {
                    editableCell
                }
            }
@@ -185,19 +186,6 @@ extension StudyView {
         }
         
         return body
-    }
-    
-    private func selectableCell(_ word: Word) -> some View {
-        Group {
-            if viewModel.isSelected(word) {
-                Color.blue.opacity(0.2)
-                    .dashEdge(isAnimating: true)
-            } else {
-                Color.gray.opacity(0.2)
-                    .dashEdge(isAnimating: false)
-            }
-        }
-        .onTapGesture { viewModel.toggleSelection(word) }
     }
     
     private struct EditableCell: View {
