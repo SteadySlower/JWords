@@ -102,40 +102,22 @@ extension StudyView {
         ScrollView {
             LazyVStack(spacing: 32) {
                 ForEach(viewModel.words, id: \.id) { word in
-                    wordCell(word)
-                        .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
+                    WordCell(word: word,
+                             frontType: viewModel.frontType,
+                             eventPublisher: viewModel.eventPublisher,
+                             isLocked: viewModel.isCellLocked)
+                            .selectable(nowSelecting: viewModel.studyViewMode == .selection,
+                                        isSelected: viewModel.isSelected(word),
+                                        onTap: { viewModel.toggleSelection(word) })
+                            .editable(nowEditing: viewModel.studyViewMode == .edit) {
+                                viewModel.toEditWord = word
+                                showEditModal = true
+                            }
+                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }
             }
         }
         .sideBar(showSideBar: $showSideBar) { settingSideBar }
-    }
-    
-    private func wordCell(_ word: Word) -> some View {
-        
-        var editableCell: some View {
-            EditableCell()
-                .onTapGesture {
-                    viewModel.toEditWord = word
-                    showEditModal = true
-                }
-        }
-        
-        var body: some View {
-            ZStack {
-                WordCell(word: word,
-                         frontType: viewModel.frontType,
-                         eventPublisher: viewModel.eventPublisher,
-                         isLocked: viewModel.isCellLocked)
-                        .selectable(nowSelecting: viewModel.studyViewMode == .selection,
-                                    isSelected: viewModel.isSelected(word),
-                                    onTap: { viewModel.toggleSelection(word) })
-                if viewModel.studyViewMode == .edit {
-                   editableCell
-               }
-           }
-        }
-        
-        return body
     }
     
     private var settingSideBar: some View {
@@ -187,22 +169,7 @@ extension StudyView {
         
         return body
     }
-    
-    private struct EditableCell: View {
-        var body: some View {
-            ZStack {
-                Color
-                    .clear
-                    .contentShape(Rectangle())
-                Image(systemName: "pencil")
-                    .resizable()
-                    .foregroundColor(.green)
-                    .opacity(0.5)
-                    .scaledToFit()
-                    .padding()
-            }
-        }
-    }
+
 }
 
 extension StudyView {
