@@ -107,7 +107,7 @@ extension StudyView {
                 }
             }
         }
-        .sideBar(showSideBar: $showSideBar) { sideBarContents }
+        .sideBar(showSideBar: $showSideBar) { settingSideBar }
     }
     
     private func wordCell(_ word: Word) -> some View {
@@ -138,7 +138,7 @@ extension StudyView {
         return body
     }
     
-    private var sideBarContents: some View {
+    private var settingSideBar: some View {
         
         var studyModePicker: some View {
             Picker("", selection: $viewModel.studyMode) {
