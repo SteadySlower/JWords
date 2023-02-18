@@ -52,10 +52,7 @@ struct StudyView: View {
     var body: some View {
         contentView
             .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
-            .onAppear {
-                viewModel.fetchWords()
-                resetDeviceWidth()
-            }
+            .onAppear { onAppear() }
             .sheet(isPresented: $showMoveModal,
                    onDismiss: { if shouldDismiss { dismiss() } },
                    content: { WordMoveView(wordBook: viewModel.wordBook!,
@@ -69,18 +66,13 @@ struct StudyView: View {
                                             eventPublisher: viewModel.eventPublisher) })
             #if os(iOS)
             // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
             .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
             .toolbar { ToolbarItem { rightToolBarItems } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
         #endif
     }
     
-    private func resetDeviceWidth() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.deviceWidth = Constants.Size.deviceWidth
-        }
-    }
 }
 
 // MARK: SubViews
@@ -177,6 +169,23 @@ extension StudyView {
         .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
     }
 
+}
+
+// MARK: View Methods
+
+extension StudyView {
+    
+    private func deviceOrientationChanged() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.deviceWidth = Constants.Size.deviceWidth
+        }
+    }
+    
+    private func onAppear() {
+        viewModel.fetchWords()
+        deviceOrientationChanged()
+    }
+    
 }
 
 // MARK: ViewModel
