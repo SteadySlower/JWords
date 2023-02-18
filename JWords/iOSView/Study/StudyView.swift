@@ -50,6 +50,55 @@ struct StudyView: View {
     }
     
     var body: some View {
+        contentView
+            .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
+            .onAppear {
+                viewModel.fetchWords()
+                resetDeviceWidth()
+            }
+            .sheet(isPresented: $showMoveModal,
+                   onDismiss: { if shouldDismiss { dismiss() } },
+                   content: { WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency) })
+            .sheet(isPresented: $showEditModal,
+                   onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
+                   content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
+            #if os(iOS)
+            // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
+            .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
+            .toolbar {
+                ToolbarItem {
+                    HStack {
+                        Button("랜덤") {
+                            viewModel.shuffleWords()
+                        }
+                        .disabled(viewModel.studyViewMode != .normal)
+                        Button("설정") {
+                            showSideBar = true
+                        }
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(viewModel.studyViewMode == .selection ? "이동" : "마감") { showMoveModal = true }
+                        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
+                }
+            }
+        #endif
+    }
+    
+    private func resetDeviceWidth() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.deviceWidth = Constants.Size.deviceWidth
+        }
+    }
+}
+
+// MARK: SubViews
+
+extension StudyView {
+    private var contentView: some View {
         ZStack {
             ScrollView {
                 LazyVStack(spacing: 32) {
@@ -75,51 +124,8 @@ struct StudyView: View {
                 SettingSideBar(showSideBar: $showSideBar, viewModel: viewModel)
             }
         }
-        .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
-        .onAppear {
-            viewModel.fetchWords()
-            resetDeviceWidth()
-        }
-        .sheet(isPresented: $showMoveModal,
-               onDismiss: { if shouldDismiss { dismiss() } },
-               content: { WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency) })
-        .sheet(isPresented: $showEditModal,
-               onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
-               content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
-        #if os(iOS)
-        // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
-        .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
-        .toolbar {
-            ToolbarItem {
-                HStack {
-                    Button("랜덤") {
-                        viewModel.shuffleWords()
-                    }
-                    .disabled(viewModel.studyViewMode != .normal)
-                    Button("설정") {
-                        showSideBar = true
-                    }
-                }
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(viewModel.studyViewMode == .selection ? "이동" : "마감") { showMoveModal = true }
-                    .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
-            }
-        }
-        #endif
     }
     
-    private func resetDeviceWidth() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.deviceWidth = Constants.Size.deviceWidth
-        }
-    }
-}
-
-extension StudyView {
     private struct SettingSideBar: View {
         
         @Binding var showSideBar: Bool
