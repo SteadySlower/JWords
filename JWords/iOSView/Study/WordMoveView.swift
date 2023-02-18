@@ -8,15 +8,13 @@
 import SwiftUI
 
 struct WordMoveView: View {
-    @ObservedObject private var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     @Binding private var didClosed: Bool
     
     init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
-        self.viewModel = ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency)
+        self._viewModel = StateObject(wrappedValue: ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency))
         self._didClosed = didClosed
-        // FIXME: 이 API 호출은 3번 실행됨. (Modal이 3번 init되기 때문)
-        viewModel.getWordBooks()
     }
     
     var body: some View {
@@ -31,6 +29,7 @@ struct WordMoveView: View {
                 buttons
             }
         }
+        .onAppear { viewModel.getWordBooks(); print("디버그: word move view on appear") }
     }
     
 }
