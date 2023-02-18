@@ -58,33 +58,21 @@ struct StudyView: View {
             }
             .sheet(isPresented: $showMoveModal,
                    onDismiss: { if shouldDismiss { dismiss() } },
-                   content: { WordMoveView(wordBook: viewModel.wordBook!, toMoveWords: viewModel.toMoveWords, didClosed: $shouldDismiss, dependency: dependency) })
+                   content: { WordMoveView(wordBook: viewModel.wordBook!,
+                                           toMoveWords: viewModel.toMoveWords,
+                                           didClosed: $shouldDismiss,
+                                           dependency: dependency) })
             .sheet(isPresented: $showEditModal,
                    onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
-                   content: { WordInputView(viewModel.toEditWord, dependency: dependency, eventPublisher: viewModel.eventPublisher) })
+                   content: { WordInputView(viewModel.toEditWord,
+                                            dependency: dependency,
+                                            eventPublisher: viewModel.eventPublisher) })
             #if os(iOS)
             // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in resetDeviceWidth() }
             .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
-            .toolbar {
-                ToolbarItem {
-                    HStack {
-                        Button("랜덤") {
-                            viewModel.shuffleWords()
-                        }
-                        .disabled(viewModel.studyViewMode != .normal)
-                        Button("설정") {
-                            showSideBar = true
-                        }
-                    }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(viewModel.studyViewMode == .selection ? "이동" : "마감") { showMoveModal = true }
-                        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
-                }
-            }
+            .toolbar { ToolbarItem { rightToolBarItems } }
+            .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
         #endif
     }
     
@@ -169,8 +157,29 @@ extension StudyView {
         
         return body
     }
+    
+    private var rightToolBarItems: some View {
+        HStack {
+            Button("랜덤") {
+                viewModel.shuffleWords()
+            }
+            .disabled(viewModel.studyViewMode != .normal)
+            Button("설정") {
+                showSideBar = true
+            }
+        }
+    }
+    
+    private var leftToolBarItems: some View {
+        Button(viewModel.studyViewMode == .selection ? "이동" : "마감") {
+            showMoveModal = true
+        }
+        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
+    }
 
 }
+
+// MARK: ViewModel
 
 extension StudyView {
     final class ViewModel: ObservableObject {
