@@ -14,11 +14,10 @@ extension View {
                     selectedColor: Color = Color.blue.opacity(0.2),
                     unselectedColor: Color = Color.gray.opacity(0.2),
                     onTap: @escaping () -> Void) -> some View {
-        modifier(CellSelectionEdge(nowSelecting: nowSelecting,
-                                isSelected: isSelected,
-                                selectedColor: selectedColor,
-                                unselectedColor: unselectedColor,
-                                onTap: onTap))
+        nowSelecting ? AnyView(modifier(CellSelectionEdge(isSelected: isSelected,
+                                    selectedColor: selectedColor,
+                                    unselectedColor: unselectedColor,
+                                    onTap: onTap))) : AnyView(self)
     }
     
     func editable(nowEditing: Bool,
@@ -30,7 +29,6 @@ extension View {
 
 private struct CellSelectionEdge: ViewModifier {
     
-    private let nowSelecting: Bool
     private let isSelected: Bool
     private let selectedColor: Color
     private let unselectedColor: Color
@@ -38,8 +36,7 @@ private struct CellSelectionEdge: ViewModifier {
     
     @State private var dashPhase: CGFloat = 0
     
-    init(nowSelecting: Bool, isSelected: Bool, selectedColor: Color, unselectedColor: Color, onTap: @escaping () -> Void) {
-        self.nowSelecting = nowSelecting
+    init(isSelected: Bool, selectedColor: Color, unselectedColor: Color, onTap: @escaping () -> Void) {
         self.isSelected = isSelected
         self.selectedColor = selectedColor
         self.unselectedColor = unselectedColor
@@ -47,19 +44,9 @@ private struct CellSelectionEdge: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        if nowSelecting {
-            content
-                .overlay {
-                    if isSelected {
-                        selectedOverlay
-                    } else {
-                        unselectedOverlay
-                    }
-                }
-                .onTapGesture { onTap() }
-        } else {
-            content
-        }
+        content
+            .overlay { isSelected ? AnyView(selectedOverlay) : AnyView(unselectedOverlay) }
+            .onTapGesture { onTap() }
     }
     
     private var selectedOverlay: some View {
