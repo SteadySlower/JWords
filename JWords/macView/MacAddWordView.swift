@@ -18,7 +18,7 @@ typealias PasteBoardType = NSPasteboard
 struct MacAddWordView: View {
     // MARK: Enum
     enum InputType: Hashable, CaseIterable {
-        case kanji, meaning, gana
+        case kanji, gana, meaning
         
         var description: String {
             switch self {
@@ -130,14 +130,14 @@ extension MacAddWordView {
                     .font(.system(size: 30))
                     .frame(height: Constants.Size.deviceHeight / 8)
                     .padding(.horizontal)
-                if inputType == .meaning {
+                if inputType == .kanji {
                     HStack {
                         overlapCheckButton
                         searchExampleButton
                         samplePicker
                     }
                     .padding(.horizontal)
-                } else if inputType == .kanji {
+                } else if inputType == .gana {
                     Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
                 }
             }
