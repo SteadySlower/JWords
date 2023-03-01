@@ -68,13 +68,17 @@ extension MacAddWordView {
     }
     
     private var wordBookPicker: some View {
-        Picker("", selection: $viewModel.selectedBookID) {
-            Text(viewModel.wordBookPickerDefaultText)
-                .tag(nil as String?)
-            ForEach(viewModel.bookList, id: \.id) { book in
-                Text(book.title)
-                    .tag(book.id as String?)
+        HStack {
+            Picker("", selection: $viewModel.selectedBookID) {
+                Text(viewModel.wordBookPickerDefaultText)
+                    .tag(nil as String?)
+                ForEach(viewModel.bookList, id: \.id) { book in
+                    Text(book.title)
+                        .tag(book.id as String?)
+                }
             }
+            Text("단어 수: \(viewModel.wordCount ?? 0)개")
+                .hide(viewModel.selectedBookID == nil)
         }
         .padding()
     }
@@ -272,7 +276,12 @@ extension MacAddWordView {
         
         // 저장할 단어장 관련 properties
         @Published private(set) var bookList: [WordBook] = []
-        @Published var selectedBookID: String?
+        @Published var selectedBookID: String? {
+            didSet {
+                countWords(in: selectedBookID)
+            }
+        }
+        @Published var wordCount: Int?
         @Published private(set) var didBooksFetched: Bool = false
         @Published private(set) var isUploading: Bool = false
         
@@ -370,6 +379,7 @@ extension MacAddWordView {
                 // TODO: handle error
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
+                self?.wordCount = (self?.wordCount ?? 0) + 1
             }
         }
         
@@ -447,6 +457,21 @@ extension MacAddWordView {
         func autoConvert(_ kanji: String) {
             if !isAutoConvert { return }
             ganaText = kanji.hiragana
+        }
+        
+        private func countWords(in wordBookID: String?) {
+            guard let id = wordBookID else {
+                wordCount = nil
+                return
+            }
+            
+            guard let wordBook = bookList.first(where: { $0.id == id }) else { return }
+            
+            wordBookService.countWords(in: wordBook) { [weak self] count, error in
+                if let error = error { print(error); return }
+                guard let count = count else { print("No count in wordbook: \(wordBook.id)"); return }
+                self?.wordCount = count
+            }
         }
         
         private func clearInputs() {

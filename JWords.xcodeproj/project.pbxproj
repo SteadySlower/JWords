@@ -312,7 +312,7 @@
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
 				5ACE0A6F2869985F00A57660 /* DataService */,
-				5A67DC2F2869527A00AC156C /* macView */,
+				5A67DC2F2869527A00AC156C /* MacView */,
 				5A67DC24286944EF00AC156C /* Constants */,
 				5A67DC1D286942E800AC156C /* iOSView */,
 				5A67DC1B2869426500AC156C /* GoogleService-Info.plist */,
@@ -442,14 +442,14 @@
 			path = items;
 			sourceTree = "<group>";
 		};
-		5A67DC2F2869527A00AC156C /* macView */ = {
+		5A67DC2F2869527A00AC156C /* MacView */ = {
 			isa = PBXGroup;
 			children = (
 				5A67DC302869529700AC156C /* MacHomeView.swift */,
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
 				5A67DC342869566600AC156C /* MacAddWordView.swift */,
 			);
-			path = macView;
+			path = MacView;
 			sourceTree = "<group>";
 		};
 		5A72BD1428D1B3BF00058043 /* Helper */ = {

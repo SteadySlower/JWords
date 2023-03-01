@@ -11,10 +11,10 @@ protocol WordBookService {
     func checkIfOverlap(in wordBook: WordBook, meaningText: String, completionHandler: @escaping CompletionWithData<Bool>)
     func moveWords(of toClose: WordBook, to destination: WordBook?, toMove: [Word], completionHandler: @escaping CompletionWithoutData)
     func closeWordBook(_ wordBook: WordBook, completionHandler: @escaping CompletionWithoutData)
+    func countWords(in wordBook: WordBook, completionHandler: @escaping CompletionWithData<Int>)
 }
 
 class WordBookServiceImpl: WordBookService {
-    
     let db: Database
     let wordService: WordService
     
@@ -62,4 +62,21 @@ class WordBookServiceImpl: WordBookService {
     func closeWordBook(_ wordBook: WordBook, completionHandler: @escaping CompletionWithoutData) {
         db.closeWordBook(of: wordBook, completionHandler: completionHandler)
     }
+    
+    func countWords(in wordBook: WordBook, completionHandler: @escaping CompletionWithData<Int>) {
+        db.fetchWords(wordBook) { words, error in
+            if let error = error {
+                completionHandler(nil, error)
+                return
+            }
+            guard let words = words else {
+                let error = AppError.generic(massage: "Nil Words in word book")
+                print(error.localizedDescription)
+                completionHandler(nil, error)
+                return
+            }
+            completionHandler(words.count, nil)
+        }
+    }
+
 }
