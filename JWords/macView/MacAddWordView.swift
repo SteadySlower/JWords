@@ -433,6 +433,7 @@ extension MacAddWordView {
         }
         
         func getExamples() {
+            guard !kanjiText.isEmpty else { return }
             sampleService.getSamples(kanjiText) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
