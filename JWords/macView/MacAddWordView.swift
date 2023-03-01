@@ -77,7 +77,7 @@ extension MacAddWordView {
                         .tag(book.id as String?)
                 }
             }
-            Text("단어 수: n개")
+            Text("단어 수: \(viewModel.wordCount ?? 0)개")
                 .hide(viewModel.selectedBookID == nil)
         }
         .padding()
