@@ -18,7 +18,7 @@ typealias PasteBoardType = NSPasteboard
 struct MacAddWordView: View {
     // MARK: Enum
     enum InputType: Hashable, CaseIterable {
-        case meaning, kanji, gana
+        case kanji, meaning, gana
         
         var description: String {
             switch self {
