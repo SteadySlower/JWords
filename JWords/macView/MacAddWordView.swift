@@ -78,6 +78,7 @@ extension MacAddWordView {
                 }
             }
             Text("단어 수: n개")
+                .hide(viewModel.selectedBookID == nil)
         }
         .padding()
     }
