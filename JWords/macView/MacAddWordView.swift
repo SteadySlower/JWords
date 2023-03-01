@@ -18,7 +18,7 @@ typealias PasteBoardType = NSPasteboard
 struct MacAddWordView: View {
     // MARK: Enum
     enum InputType: Hashable, CaseIterable {
-        case meaning, kanji, gana
+        case kanji, gana, meaning
         
         var description: String {
             switch self {
@@ -107,7 +107,7 @@ extension MacAddWordView {
             } label: {
                 Text("찾기")
             }
-            .disabled(viewModel.meaningText.isEmpty)
+            .disabled(viewModel.kanjiText.isEmpty)
             .keyboardShortcut("f", modifiers: [.command])
         }
         
@@ -130,14 +130,14 @@ extension MacAddWordView {
                     .font(.system(size: 30))
                     .frame(height: Constants.Size.deviceHeight / 8)
                     .padding(.horizontal)
-                if inputType == .meaning {
+                if inputType == .kanji {
                     HStack {
                         overlapCheckButton
                         searchExampleButton
                         samplePicker
                     }
                     .padding(.horizontal)
-                } else if inputType == .kanji {
+                } else if inputType == .gana {
                     Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
                 }
             }
@@ -436,7 +436,7 @@ extension MacAddWordView {
         }
         
         func getExamples() {
-            sampleService.getSamples(meaningText) { [weak self] examples, error in
+            sampleService.getSamples(kanjiText) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
