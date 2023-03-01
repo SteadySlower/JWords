@@ -101,14 +101,9 @@ extension MacAddWordView {
             .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
         }
         
-        var searchExampleButton: some View {
-            Button {
-                viewModel.getExamples()
-            } label: {
-                Text("찾기")
-            }
-            .disabled(viewModel.kanjiText.isEmpty)
-            .keyboardShortcut("f", modifiers: [.command])
+        var autoSearchToggle: some View {
+            Toggle("자동 검색", isOn: $viewModel.isAutoFetchSamples)
+                .keyboardShortcut("f", modifiers: [.command])
         }
         
         var samplePicker: some View {
@@ -133,7 +128,7 @@ extension MacAddWordView {
                 if inputType == .kanji {
                     HStack {
                         overlapCheckButton
-                        searchExampleButton
+                        autoSearchToggle
                         samplePicker
                     }
                     .padding(.horizontal)
@@ -298,6 +293,7 @@ extension MacAddWordView {
         
         // 예시 관련 properties
         @Published private(set) var samples: [Sample] = []
+        @Published var isAutoFetchSamples: Bool = true
         @Published var selectedSampleID: String? = nil {
             didSet {
                 updateTextWithExample()
