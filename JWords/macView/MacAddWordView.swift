@@ -314,7 +314,7 @@ extension MacAddWordView {
         }
         
         var isSaveButtonUnable: Bool {
-            return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading
+            return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
         }
         
         @Published private(set) var isCheckingOverlap: Bool = false
