@@ -463,7 +463,14 @@ extension MacAddWordView {
                 wordCount = nil
                 return
             }
-            #warning("add word counting network logic")
+            
+            guard let wordBook = bookList.first(where: { $0.id == id }) else { return }
+            
+            wordBookService.countWords(in: wordBook) { [weak self] count, error in
+                if let error = error { print(error); return }
+                guard let count = count else { print("No count in wordbook: \(wordBook.id)"); return }
+                self?.wordCount = count
+            }
         }
         
         private func clearInputs() {
