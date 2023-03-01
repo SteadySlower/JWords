@@ -242,6 +242,7 @@ extension MacAddWordView {
             return
         case .kanji:
             viewModel.kanjiText.removeLast()
+            viewModel.getExamples()
             editFocus = .gana
             return
         case .gana:
