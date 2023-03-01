@@ -275,7 +275,12 @@ extension MacAddWordView {
         
         // 저장할 단어장 관련 properties
         @Published private(set) var bookList: [WordBook] = []
-        @Published var selectedBookID: String?
+        @Published var selectedBookID: String? {
+            didSet {
+                countWords(in: selectedBookID)
+            }
+        }
+        @Published var wordCount: Int?
         @Published private(set) var didBooksFetched: Bool = false
         @Published private(set) var isUploading: Bool = false
         
@@ -450,6 +455,14 @@ extension MacAddWordView {
         func autoConvert(_ kanji: String) {
             if !isAutoConvert { return }
             ganaText = kanji.hiragana
+        }
+        
+        private func countWords(in wordBookID: String?) {
+            guard let id = wordBookID else {
+                wordCount = nil
+                return
+            }
+            #warning("add word counting network logic")
         }
         
         private func clearInputs() {
