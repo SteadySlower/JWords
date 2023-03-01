@@ -107,7 +107,7 @@ extension MacAddWordView {
             } label: {
                 Text("찾기")
             }
-            .disabled(viewModel.meaningText.isEmpty)
+            .disabled(viewModel.kanjiText.isEmpty)
             .keyboardShortcut("f", modifiers: [.command])
         }
         
