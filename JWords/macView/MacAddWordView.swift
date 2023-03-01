@@ -68,13 +68,16 @@ extension MacAddWordView {
     }
     
     private var wordBookPicker: some View {
-        Picker("", selection: $viewModel.selectedBookID) {
-            Text(viewModel.wordBookPickerDefaultText)
-                .tag(nil as String?)
-            ForEach(viewModel.bookList, id: \.id) { book in
-                Text(book.title)
-                    .tag(book.id as String?)
+        HStack {
+            Picker("", selection: $viewModel.selectedBookID) {
+                Text(viewModel.wordBookPickerDefaultText)
+                    .tag(nil as String?)
+                ForEach(viewModel.bookList, id: \.id) { book in
+                    Text(book.title)
+                        .tag(book.id as String?)
+                }
             }
+            Text("단어 수: n개")
         }
         .padding()
     }
