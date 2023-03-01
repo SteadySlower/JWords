@@ -70,3 +70,15 @@ extension View {
     }
 
 }
+
+// MARK: Hide
+
+extension View {
+    @ViewBuilder func hide(_ bool: Bool) -> some View {
+        if bool {
+            EmptyView()
+        } else {
+            self
+        }
+    }
+}
