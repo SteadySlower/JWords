@@ -379,6 +379,7 @@ extension MacAddWordView {
                 // TODO: handle error
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
+                self?.wordCount = (self?.wordCount ?? 0) + 1
             }
         }
         
