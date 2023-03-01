@@ -10,6 +10,7 @@ import Foundation
 protocol SampleService {
     func saveSample(wordInput: WordInput)
     func getSamples(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
+    func getSamplesByMeaning(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func addOneToUsed(of sample: Sample)
 }
 
@@ -27,6 +28,10 @@ class SampleServiceImpl: SampleService {
     
     func getSamples(_ query: String, completionHandler: @escaping ([Sample]?, Error?) -> Void) {
         db.fetchSample(query, completionHandler: completionHandler)
+    }
+    
+    func getSamplesByMeaning(_ query: String, completionHandler: @escaping ([Sample]?, Error?) -> Void) {
+        db.fetchSampleByMeaning(query, completionHandler: completionHandler)
     }
     
     func addOneToUsed(of sample: Sample) {

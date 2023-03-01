@@ -26,6 +26,7 @@ protocol Database {
     // Sample 관련
     func insertSample(_ wordInput: WordInput)
     func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
+    func fetchSampleByMeaning(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>)
     func updateUsed(of sample: Sample, to used: Int)
     
     // Today 관련
@@ -278,6 +279,47 @@ extension FirestoreDB {
     }
     
     func fetchSample(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>) {
+        sampleRef
+            .whereField("kanjiText", isEqualTo: query)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completionHandler(nil, error)
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    let error = AppError.Firebase.noDocument
+                    completionHandler(nil, error)
+                    return
+                }
+                
+                var samples = [Sample]()
+                
+                for document in documents {
+                    let id = document.documentID
+                    var dict = document.data()
+                    
+                    guard let timestamp = dict["timestamp"] as? Timestamp else {
+                        let error = AppError.Firebase.noTimestamp
+                        completionHandler(nil, error)
+                        return
+                    }
+                    
+                    dict["createdAt"] = timestamp.dateValue()
+                    
+                    do {
+                        samples.append(try SampleImpl(id: id, dict: dict))
+                    } catch let error {
+                        completionHandler(nil, error)
+                        return
+                    }
+                }
+                
+                completionHandler(samples, nil)
+            }
+            
+    }
+    
+    func fetchSampleByMeaning(_ query: String, completionHandler: @escaping CompletionWithData<[Sample]>) {
         sampleRef
             .whereField("meaningText", isGreaterThanOrEqualTo: query)
             .whereField("meaningText", isLessThan: query + "힣")

@@ -436,7 +436,7 @@ extension MacAddWordView {
         }
         
         func getExamples() {
-            sampleService.getSamples(meaningText) { [weak self] examples, error in
+            sampleService.getSamples(kanjiText) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
