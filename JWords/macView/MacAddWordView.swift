@@ -127,8 +127,9 @@ extension MacAddWordView {
                     .padding(.horizontal)
                 if inputType == .meaning {
                     HStack {
-                        overlapCheckButton
+//                        overlapCheckButton
                         autoSearchToggle
+                            .padding(.leading, 5)
                         samplePicker
                     }
                     .padding(.horizontal)
