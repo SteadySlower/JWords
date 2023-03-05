@@ -65,6 +65,9 @@ extension MacAddWordView {
             }
         }
         .padding(.top, 50)
+        .background {
+            copyAndPasteButton
+        }
     }
     
     private var wordBookPicker: some View {
@@ -208,9 +211,19 @@ extension MacAddWordView {
         }
     }
     
+    private var copyAndPasteButton: some View {
+        Button {
+            copyAndPaste()
+        } label: {
+            EmptyView()
+        }
+        .keyboardShortcut("v", modifiers: [.command])
+    }
+    
 }
 
 // MARK: View Methods
+// TODO: View Method 중에서 비지니스 로직은 VM으로 이동하기
 
 extension MacAddWordView {
     
@@ -244,6 +257,35 @@ extension MacAddWordView {
         case .gana:
             viewModel.ganaText.removeAll(where: { $0 == "\t"})
             editFocus = .meaning
+            return
+        }
+    }
+    
+    private func copyAndPaste() {
+        guard let focus = editFocus else { return }
+        
+        var pasteBoardImage: InputImageType? {
+            let pb = PasteBoardType.general
+            #if os(iOS)
+            guard let image = pb.image else { return nil }
+            #elseif os(macOS)
+            let type = PasteBoardType.PasteboardType.tiff
+            guard let imgData = pb.data(forType: type) else { return nil }
+            let image = InputImageType(data: imgData)
+            #endif
+            return image
+        }
+        
+        var pasteBoardText: String? {
+            let pb = PasteBoardType.general
+            return pb.string(forType: .string)
+        }
+        
+        if let pasteBoardImage = pasteBoardImage {
+            viewModel.insertImage(of: focus, image: pasteBoardImage)
+        } else if let pasteBoardText = pasteBoardText {
+            viewModel.insertText(of: focus, text: pasteBoardText)
+        } else {
             return
         }
     }
@@ -409,6 +451,17 @@ extension MacAddWordView {
                 ganaImage = image
             case .kanji:
                 kanjiImage = image
+            }
+        }
+        
+        func insertText(of inputType: InputType, text: String) {
+            switch inputType {
+            case .meaning:
+                meaningText = text
+            case .gana:
+                ganaText = text
+            case .kanji:
+                kanjiText = text
             }
         }
         
