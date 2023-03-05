@@ -229,20 +229,20 @@ extension MacAddWordView {
     }
     
     private func moveCursorWhenTab(_ text: String) {
-        guard let last = text.last, last == "\t" else { return }
+        guard text.contains("\t") else { return }
         guard let nowCursor = editFocus else { return }
         switch nowCursor {
         case .meaning:
-            viewModel.meaningText.removeLast()
+            viewModel.meaningText.removeAll(where: { $0 == "\t"})
             viewModel.getExamples()
             editFocus = .kanji
             return
         case .kanji:
-            viewModel.kanjiText.removeLast()
+            viewModel.kanjiText.removeAll(where: { $0 == "\t"})
             editFocus = .gana
             return
         case .gana:
-            viewModel.ganaText.removeLast()
+            viewModel.ganaText.removeAll(where: { $0 == "\t"})
             editFocus = .meaning
             return
         }
