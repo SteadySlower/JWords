@@ -354,6 +354,7 @@ extension MacAddWordView {
         }
         
         func saveWord() {
+            trimTexts()
             isUploading = true
             guard let wordBookID = selectedBookID else {
                 // TODO: handle error
@@ -471,6 +472,15 @@ extension MacAddWordView {
                 guard let count = count else { print("No count in wordbook: \(wordBook.id)"); return }
                 self?.wordCount = count
             }
+        }
+        
+        private func trimTexts() {
+            meaningText = meaningText.lStrip()
+            meaningText = meaningText.rStrip()
+            kanjiText = kanjiText.lStrip()
+            kanjiText = kanjiText.rStrip()
+            ganaText = ganaText.lStrip()
+            ganaText = ganaText.rStrip()
         }
         
         private func clearInputs() {
