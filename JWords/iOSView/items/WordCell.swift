@@ -15,6 +15,7 @@ struct WordCell: View {
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
     private let isLocked: Bool
+    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
     // MARK: Initializer
     init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
@@ -41,6 +42,8 @@ extension WordCell {
     
     private var contentView: some View {
         ZStack {
+            frontFace
+            backFace
             background
             ZStack {
                 cellColor
@@ -48,24 +51,23 @@ extension WordCell {
             }
             .offset(dragAmount)
         }
+        .frame(width: deviceWidth * 0.9)
+        .frame(minHeight: viewModel.word.hasImage ? 200 : 100)
     }
     
     private var background: some View {
-        GeometryReader { proxy in
-            let imageHeight = proxy.frame(in: .local).height * 0.8
-            
-            HStack {
-                Image(systemName: "circle")
-                    .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
-                    .foregroundColor(.blue)
-                Spacer()
-                Image(systemName: "x.circle")
-                    .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
-                    .foregroundColor(.red)
-            }
+        HStack {
+            Image(systemName: "circle")
+                .resizable()
+                .frame(width: 100, height: 100)
+                .foregroundColor(.blue)
+            Spacer()
+            Image(systemName: "x.circle")
+                .resizable()
+                .frame(width: 100, height: 100)
+                .foregroundColor(.red)
         }
+        .background { Color.white }
     }
     
     private var cellColor: some View {
@@ -78,6 +80,42 @@ extension WordCell {
             case .fail:
                 Color(red: 253/256, green: 253/256, blue: 150/256)
             }
+        }
+    }
+    
+    private var frontFace: some View {
+        ZStack {
+            VStack {
+                Text(viewModel.frontText)
+                    .minimumScaleFactor(0.1)
+                    .font(.system(size: 48))
+                VStack {
+                    ForEach(viewModel.frontImageURLs, id: \.self) { url in
+                        KFImage(url)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+            }
+            Color.white
+        }
+    }
+    
+    private var backFace: some View {
+        ZStack {
+            VStack {
+                Text(viewModel.backText)
+                    .minimumScaleFactor(0.1)
+                    .font(.system(size: 48))
+                VStack {
+                    ForEach(viewModel.backImageURLs, id: \.self) { url in
+                        KFImage(url)
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+            }
+            Color.white
         }
     }
     
@@ -94,7 +132,7 @@ extension WordCell {
         var body: some View {
             VStack {
                 Text(text)
-                    .minimumScaleFactor(0.5)
+                    .minimumScaleFactor(0.1)
                     .font(.system(size: 48))
                 VStack {
                     ForEach(imageURLs, id: \.self) { url in

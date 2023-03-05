@@ -93,7 +93,6 @@ extension StudyView {
                                 viewModel.toEditWord = word
                                 showEditModal = true
                             }
-                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }
             }
         }
