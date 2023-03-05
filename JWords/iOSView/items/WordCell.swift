@@ -33,6 +33,10 @@ struct WordCell: View {
                 .gesture(doubleTapGesture)
                 .gesture(tapGesture)
         }
+        #if os(iOS)
+        .onAppear { deviceOrientationChanged() }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
+        #endif
     }
 }
 
@@ -197,6 +201,12 @@ extension WordCell {
             viewModel.updateStudyState(to: .success)
         } else {
             viewModel.updateStudyState(to: .fail)
+        }
+    }
+    
+    private func deviceOrientationChanged() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.deviceWidth = Constants.Size.deviceWidth
         }
     }
 }
