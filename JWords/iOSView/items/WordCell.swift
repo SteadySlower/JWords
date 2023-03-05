@@ -59,7 +59,7 @@ extension WordCell {
     
     private var background: some View {
         ZStack {
-            sizeBackground
+            sizeDecisionView
             HStack {
                 Image(systemName: "circle")
                     .resizable()
@@ -115,7 +115,7 @@ extension WordCell {
         return body
     }
     
-    private var sizeBackground: some View {
+    private var sizeDecisionView: some View {
         ZStack {
             ZStack {
                 cellFace(isFront: true)
