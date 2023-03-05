@@ -32,7 +32,6 @@ struct StudyView: View {
     
     private let dependency: Dependency
     
-    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     @State private var showEditModal: Bool = false
     @State private var showMoveModal: Bool = false
     @State private var shouldDismiss: Bool = false
@@ -52,7 +51,7 @@ struct StudyView: View {
     var body: some View {
         contentView
             .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
-            .onAppear { onAppear() }
+            .onAppear { viewModel.fetchWords() }
             .sheet(isPresented: $showMoveModal,
                    onDismiss: { if shouldDismiss { dismiss() } },
                    content: { WordMoveView(wordBook: viewModel.wordBook!,
@@ -65,12 +64,10 @@ struct StudyView: View {
                                             dependency: dependency,
                                             eventPublisher: viewModel.eventPublisher) })
             #if os(iOS)
-            // TODO: 화면 돌리면 알아서 다시 deviceWidth를 전달해서 cell 크기를 다시 계산한다.
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
             .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
             .toolbar { ToolbarItem { rightToolBarItems } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
-        #endif
+            #endif
     }
     
 }
@@ -93,7 +90,6 @@ extension StudyView {
                                 viewModel.toEditWord = word
                                 showEditModal = true
                             }
-                            .frame(width: deviceWidth * 0.9, height: word.hasImage ? 200 : 100)
                 }
             }
         }
@@ -169,23 +165,6 @@ extension StudyView {
         .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
     }
 
-}
-
-// MARK: View Methods
-
-extension StudyView {
-    
-    private func deviceOrientationChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.deviceWidth = Constants.Size.deviceWidth
-        }
-    }
-    
-    private func onAppear() {
-        viewModel.fetchWords()
-        deviceOrientationChanged()
-    }
-    
 }
 
 // MARK: ViewModel

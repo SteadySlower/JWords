@@ -15,6 +15,7 @@ struct WordCell: View {
     @GestureState private var dragAmount = CGSize.zero
     @State private var isFront = true
     private let isLocked: Bool
+    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
     // MARK: Initializer
     init(word: Word, frontType: FrontType, eventPublisher: PassthroughSubject<Event, Never>, isLocked: Bool) {
@@ -32,6 +33,10 @@ struct WordCell: View {
                 .gesture(doubleTapGesture)
                 .gesture(tapGesture)
         }
+        #if os(iOS)
+        .onAppear { deviceOrientationChanged() }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
+        #endif
     }
 }
 
@@ -44,27 +49,29 @@ extension WordCell {
             background
             ZStack {
                 cellColor
-                wordCellFace
+                cellFace(isFront: isFront)
             }
             .offset(dragAmount)
         }
+        .frame(width: deviceWidth * 0.9)
+        .frame(minHeight: viewModel.word.hasImage ? 200 : 100)
     }
     
     private var background: some View {
-        GeometryReader { proxy in
-            let imageHeight = proxy.frame(in: .local).height * 0.8
-            
+        ZStack {
+            sizeDecisionView
             HStack {
                 Image(systemName: "circle")
                     .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
+                    .frame(width: 100, height: 100)
                     .foregroundColor(.blue)
                 Spacer()
                 Image(systemName: "x.circle")
                     .resizable()
-                    .frame(width: imageHeight, height: imageHeight)
+                    .frame(width: 100, height: 100)
                     .foregroundColor(.red)
             }
+            .background { Color.white }
         }
     }
     
@@ -81,7 +88,7 @@ extension WordCell {
         }
     }
     
-    private var wordCellFace: some View {
+    private func cellFace(isFront: Bool) -> some View {
         
         var text: String {
             isFront ? viewModel.frontText : viewModel.backText
@@ -94,8 +101,7 @@ extension WordCell {
         var body: some View {
             VStack {
                 Text(text)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 48))
+                    .font(.system(size: fontSize(of: text)))
                 VStack {
                     ForEach(imageURLs, id: \.self) { url in
                         KFImage(url)
@@ -108,6 +114,20 @@ extension WordCell {
         
         return body
     }
+    
+    private var sizeDecisionView: some View {
+        ZStack {
+            ZStack {
+                cellFace(isFront: true)
+                Color.white
+            }
+            ZStack {
+                cellFace(isFront: false)
+                Color.white
+            }
+        }
+    }
+    
 }
 
 // MARK: Gestures
@@ -159,6 +179,22 @@ extension WordCell {
             viewModel.updateStudyState(to: .success)
         } else {
             viewModel.updateStudyState(to: .fail)
+        }
+    }
+    
+    private func deviceOrientationChanged() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.deviceWidth = Constants.Size.deviceWidth
+        }
+    }
+    
+    private func fontSize(of text: String) -> CGFloat {
+        if text.count <= 10 {
+            return 45
+        } else if text.count <= 30 {
+            return 35
+        } else {
+            return 30
         }
     }
 }
