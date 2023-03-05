@@ -101,8 +101,7 @@ extension WordCell {
         var body: some View {
             VStack {
                 Text(text)
-                    .minimumScaleFactor(0.1)
-                    .font(.system(size: 48))
+                    .font(.system(size: fontSize(of: text)))
                 VStack {
                     ForEach(imageURLs, id: \.self) { url in
                         KFImage(url)
@@ -186,6 +185,16 @@ extension WordCell {
     private func deviceOrientationChanged() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.deviceWidth = Constants.Size.deviceWidth
+        }
+    }
+    
+    private func fontSize(of text: String) -> CGFloat {
+        if text.count <= 10 {
+            return 45
+        } else if text.count <= 30 {
+            return 35
+        } else {
+            return 30
         }
     }
 }
