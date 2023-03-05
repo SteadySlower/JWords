@@ -59,12 +59,22 @@ struct WordImpl: Word {
         {
             self.meaningText = meaningText
             self.meaningImageURL = meaningImageURL
-            self.ganaText = ganaText
+            
+            // 가나만 있으면 가나가 한자의 자리로 오도록 수정
+            if kanjiText.isEmpty && !ganaText.isEmpty {
+                self.kanjiText = ganaText
+                self.ganaText = ""
+            } else {
+                self.ganaText = ganaText
+                self.kanjiText = kanjiText
+            }
+            
             self.ganaImageURL = ganaImageURL
-            self.kanjiText = kanjiText
             self.kanjiImageURL = kanjiImageURL
             self.studyState = studyState
             self.createdAt = createdAt
+            
+
         } else {
             throw AppError.Initializer.wordImpl
         }
