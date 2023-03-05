@@ -278,7 +278,11 @@ extension MacAddWordView {
         
         var pasteBoardText: String? {
             let pb = PasteBoardType.general
+            #if os(iOS)
+            return pb.string
+            #elseif os(macOS)
             return pb.string(forType: .string)
+            #endif
         }
         
         if let pasteBoardImage = pasteBoardImage {
