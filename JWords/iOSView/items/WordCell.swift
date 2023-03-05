@@ -46,12 +46,10 @@ extension WordCell {
     
     private var contentView: some View {
         ZStack {
-            frontFace
-            backFace
             background
             ZStack {
                 cellColor
-                wordCellFace
+                cellFace(isFront: isFront)
             }
             .offset(dragAmount)
         }
@@ -60,18 +58,21 @@ extension WordCell {
     }
     
     private var background: some View {
-        HStack {
-            Image(systemName: "circle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.blue)
-            Spacer()
-            Image(systemName: "x.circle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.red)
+        ZStack {
+            sizeBackground
+            HStack {
+                Image(systemName: "circle")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(.blue)
+                Spacer()
+                Image(systemName: "x.circle")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(.red)
+            }
+            .background { Color.white }
         }
-        .background { Color.white }
     }
     
     private var cellColor: some View {
@@ -87,43 +88,7 @@ extension WordCell {
         }
     }
     
-    private var frontFace: some View {
-        ZStack {
-            VStack {
-                Text(viewModel.frontText)
-                    .minimumScaleFactor(0.1)
-                    .font(.system(size: 48))
-                VStack {
-                    ForEach(viewModel.frontImageURLs, id: \.self) { url in
-                        KFImage(url)
-                            .resizable()
-                            .scaledToFit()
-                    }
-                }
-            }
-            Color.white
-        }
-    }
-    
-    private var backFace: some View {
-        ZStack {
-            VStack {
-                Text(viewModel.backText)
-                    .minimumScaleFactor(0.1)
-                    .font(.system(size: 48))
-                VStack {
-                    ForEach(viewModel.backImageURLs, id: \.self) { url in
-                        KFImage(url)
-                            .resizable()
-                            .scaledToFit()
-                    }
-                }
-            }
-            Color.white
-        }
-    }
-    
-    private var wordCellFace: some View {
+    private func cellFace(isFront: Bool) -> some View {
         
         var text: String {
             isFront ? viewModel.frontText : viewModel.backText
@@ -150,6 +115,20 @@ extension WordCell {
         
         return body
     }
+    
+    private var sizeBackground: some View {
+        ZStack {
+            ZStack {
+                cellFace(isFront: true)
+                Color.white
+            }
+            ZStack {
+                cellFace(isFront: false)
+                Color.white
+            }
+        }
+    }
+    
 }
 
 // MARK: Gestures
