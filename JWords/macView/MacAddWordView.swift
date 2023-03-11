@@ -67,6 +67,7 @@ extension MacAddWordView {
         .padding(.top, 50)
         .background {
             copyAndPasteButton
+            sampleCancelButton
         }
     }
     
@@ -221,6 +222,17 @@ extension MacAddWordView {
         .opacity(0)
     }
     
+    private var sampleCancelButton: some View {
+        Button {
+            viewModel.cancelExampleSelection()
+            print("디버그: esc")
+        } label: {
+                
+        }
+        .keyboardShortcut("k", modifiers: [.command])
+        .opacity(0)
+    }
+    
 }
 
 // MARK: View Methods
@@ -344,7 +356,9 @@ extension MacAddWordView {
         @Published var isAutoFetchSamples: Bool = true
         @Published var selectedSampleID: String? = nil {
             didSet {
-                updateTextWithExample()
+                if selectedSampleID != nil {
+                    updateTextWithExample()
+                }
             }
         }
         private var selectedSample: Sample? {
@@ -509,6 +523,12 @@ extension MacAddWordView {
                                 }
                 if !examples.isEmpty { self?.selectedSampleID = self?.samples[0].id }
             }
+        }
+        
+        func cancelExampleSelection() {
+            selectedSampleID = nil
+            kanjiText = ""
+            ganaText = ""
         }
         
         // 한자 -> 가나 auto convert
