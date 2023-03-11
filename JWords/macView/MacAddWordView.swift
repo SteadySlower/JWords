@@ -230,7 +230,7 @@ extension MacAddWordView {
         } label: {
                 
         }
-        .keyboardShortcut("k", modifiers: [.command])
+        .keyboardShortcut(.escape, modifiers: [.command])
         .opacity(0)
     }
     
