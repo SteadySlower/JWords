@@ -215,9 +215,10 @@ extension MacAddWordView {
         Button {
             copyAndPaste()
         } label: {
-            EmptyView()
+                
         }
         .keyboardShortcut("v", modifiers: [.command])
+        .opacity(0)
     }
     
 }
