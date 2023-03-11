@@ -68,6 +68,8 @@ extension MacAddWordView {
         .background {
             copyAndPasteButton
             sampleCancelButton
+            sampleUpButton
+            sampleDownButton
         }
     }
     
@@ -225,11 +227,30 @@ extension MacAddWordView {
     private var sampleCancelButton: some View {
         Button {
             viewModel.cancelExampleSelection()
-            print("디버그: esc")
         } label: {
                 
         }
         .keyboardShortcut("k", modifiers: [.command])
+        .opacity(0)
+    }
+    
+    private var sampleUpButton: some View {
+        Button {
+            viewModel.sampleUp()
+        } label: {
+                
+        }
+        .keyboardShortcut(.upArrow, modifiers: [.command])
+        .opacity(0)
+    }
+    
+    private var sampleDownButton: some View {
+        Button {
+            viewModel.sampleDown()
+        } label: {
+                
+        }
+        .keyboardShortcut(.downArrow, modifiers: [.command])
         .opacity(0)
     }
     
@@ -508,6 +529,7 @@ extension MacAddWordView {
         
         func getExamples() {
             guard !meaningText.isEmpty else { return }
+            selectedSampleID = nil
             sampleService.getSamplesByMeaning(meaningText) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
@@ -529,6 +551,20 @@ extension MacAddWordView {
             selectedSampleID = nil
             kanjiText = ""
             ganaText = ""
+        }
+        
+        func sampleUp() {
+            guard !samples.isEmpty else { return }
+            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
+            let nextIndex = (nowIndex + 1) % samples.count
+            selectedSampleID = samples[nextIndex].id
+        }
+        
+        func sampleDown() {
+            guard !samples.isEmpty else { return }
+            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
+            let nextIndex = (nowIndex - 1) >= 0 ? (nowIndex - 1) : (samples.count - 1)
+            selectedSampleID = samples[nextIndex].id
         }
         
         // 한자 -> 가나 auto convert
