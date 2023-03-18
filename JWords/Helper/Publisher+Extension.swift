@@ -10,10 +10,11 @@ import Combine
 import Foundation
 
 extension Publisher where Self.Failure == Never {
-    public func weakAssign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Self.Output>, on object: Root) -> AnyCancellable where Root: AnyObject {
-        self.receive(on: RunLoop.main)
+    func weakAssign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Self.Output>, on object: Root) where Root: BaseViewModel {
+        return self.receive(on: RunLoop.main)
             .sink { [weak object] (value) in
             object?[keyPath: keyPath] = value
-        }
+            }
+            .store(in: &object.subscription)
     }
 }

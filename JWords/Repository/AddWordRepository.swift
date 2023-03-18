@@ -10,9 +10,9 @@ import Combine
 
 protocol AddWordRepository {
     var wordBook: AnyPublisher<WordBook?, Never> { get }
-    var meaningImage: AnyPublisher<WordBook?, Never> { get }
-    var ganaImage: AnyPublisher<WordBook?, Never> { get }
-    var kanjiImage: AnyPublisher<WordBook?, Never> { get }
+    var meaningImage: AnyPublisher<InputImageType?, Never> { get }
+    var ganaImage: AnyPublisher<InputImageType?, Never> { get }
+    var kanjiImage: AnyPublisher<InputImageType?, Never> { get }
 }
 
 class AddWordRepositoryImpl: Repository, AddWordRepository {
@@ -33,13 +33,13 @@ class AddWordRepositoryImpl: Repository, AddWordRepository {
     var wordBook: AnyPublisher<WordBook?, Never> { $_wordBook.eraseToAnyPublisher() }
     
     @Published private(set) var _meaningImage: InputImageType?
-    var meaningImage: AnyPublisher<WordBook?, Never> { $_wordBook.eraseToAnyPublisher() }
+    var meaningImage: AnyPublisher<InputImageType?, Never> { $_meaningImage.eraseToAnyPublisher() }
     
     @Published private(set) var _ganaImage: InputImageType?
-    var ganaImage: AnyPublisher<WordBook?, Never> { $_wordBook.eraseToAnyPublisher() }
+    var ganaImage: AnyPublisher<InputImageType?, Never> { $_ganaImage.eraseToAnyPublisher() }
     
     @Published private(set) var _kanjiImage: InputImageType?
-    var kanjiImage: AnyPublisher<WordBook?, Never> { $_wordBook.eraseToAnyPublisher() }
+    var kanjiImage: AnyPublisher<InputImageType?, Never> { $_ganaImage.eraseToAnyPublisher() }
     
     func updateWordBook(_ wordBook: WordBook?) {
         self._wordBook = wordBook

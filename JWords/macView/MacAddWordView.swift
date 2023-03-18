@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 #if os(iOS)
 import UIKit
@@ -332,12 +333,14 @@ extension MacAddWordView {
 
 // MARK: ViewModel
 extension MacAddWordView {
-    final class ViewModel: ObservableObject {
+    final class ViewModel: BaseViewModel {
         // Properties
         
         private let wordService: WordService
         private let sampleService: SampleService
         private let wordBookService: WordBookService
+        
+        private var subscriptions = [AnyCancellable]()
         
         // 단어 내용 입력 관련 properties
         @Published var meaningText: String = "" {
@@ -352,6 +355,8 @@ extension MacAddWordView {
         @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
+        @Published var wordBook: WordBook?
+        
         @Published private(set) var bookList: [WordBook] = []
         @Published var selectedBookID: String? {
             didSet {
@@ -413,11 +418,17 @@ extension MacAddWordView {
         // 한자 -> 가나 auto convert
         @Published var isAutoConvert: Bool = true
         
+        private let addWordRepository: AddWordRepository
+        
         // initializer
-        init(_ dependency: ServiceManager) {
+        init(_ dependency: ServiceManager,
+             _ addWordRepository: AddWordRepository = RepositoryManager.addWordRepository) {
             self.wordService = dependency.wordService
             self.wordBookService = dependency.wordBookService
             self.sampleService = dependency.sampleService
+            self.addWordRepository = addWordRepository
+            super.init()
+            configure()
         }
         
         // public methods
@@ -621,4 +632,26 @@ extension MacAddWordView {
             kanjiText = selectedSample.kanjiText
         }
     }
+}
+
+extension MacAddWordView.ViewModel {
+    
+    func configure() {
+        addWordRepository
+            .wordBook
+            .weakAssign(to: \.wordBook, on: self)
+        
+        addWordRepository
+            .meaningImage
+            .weakAssign(to: \.meaningImage, on: self)
+        
+        addWordRepository
+            .kanjiImage
+            .weakAssign(to: \.kanjiImage, on: self)
+        
+        addWordRepository
+            .ganaImage
+            .weakAssign(to: \.ganaImage, on: self)
+    }
+    
 }
