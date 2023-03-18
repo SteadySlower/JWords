@@ -14,6 +14,7 @@ class ServiceManager {
     let wordService: WordService
     let sampleService: SampleService
     let todayService: TodayService
+    let pasteBoardService: PasteBoardService
     
     init() {
         let db = FirestoreDB()
@@ -24,6 +25,7 @@ class ServiceManager {
         self.wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
         self.sampleService = SampleServiceImpl(database: db)
         self.todayService = TodayServiceImpl(database: db)
+        self.pasteBoardService = PasteBoardServiceImpl()
     }
     
 

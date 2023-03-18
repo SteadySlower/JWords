@@ -23,9 +23,12 @@ protocol AddWordRepository {
 class AddWordRepositoryImpl: Repository, AddWordRepository {
     
     private let wordService: WordService
+    private let pasteBoardService: PasteBoardService
     
-    init(wordService: WordService = ServiceManager.shared.wordService) {
+    init(wordService: WordService = ServiceManager.shared.wordService,
+         pasteBoardService: PasteBoardService = ServiceManager.shared.pasteBoardService) {
         self.wordService = wordService
+        self.pasteBoardService = pasteBoardService
         super.init()
     }
     
