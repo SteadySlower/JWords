@@ -7,15 +7,8 @@
 
 import Foundation
 
-protocol ServiceManager {
-    var wordBookService: WordBookService { get }
-    var wordService: WordService { get }
-    var sampleService: SampleService { get }
-    var todayService: TodayService { get }
-}
-
-
-class ServiceManagerImpl: ServiceManager {
+class ServiceManager {
+    static let shared: ServiceManager = ServiceManager()
     
     let wordBookService: WordBookService
     let wordService: WordService
