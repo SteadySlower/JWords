@@ -42,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 struct JWordsApp: App {
     @NSApplicationDelegateAdaptor private var delegate: AppDelegate
     
-    private let dependency: ServiceManager = ServiceManagerImpl()
+    private let dependency: ServiceManager = ServiceManager()
     
     var body: some Scene {
         WindowGroup {
