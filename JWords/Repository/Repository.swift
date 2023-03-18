@@ -32,11 +32,12 @@ class Repository {
     var subscription: [AnyCancellable] = []
     
     final private func isLoading(_ isLoading: Bool) {
-        self._isLoading.send(isLoading)
+        _isLoading.send(isLoading)
+        
     }
     
     final private func onError(_ error: Error) {
-        self._error.send(error)
+        _error.send(error)
     }
     
     func clear() {
