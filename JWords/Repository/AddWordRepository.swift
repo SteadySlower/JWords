@@ -13,6 +13,11 @@ protocol AddWordRepository {
     var meaningImage: AnyPublisher<InputImageType?, Never> { get }
     var ganaImage: AnyPublisher<InputImageType?, Never> { get }
     var kanjiImage: AnyPublisher<InputImageType?, Never> { get }
+    
+    func updateWordBook(_ wordBook: WordBook?)
+    func updateMeaningImage(_ image: InputImageType?)
+    func updateGanaImage(_ image: InputImageType?)
+    func updateKanjiImage(_ image: InputImageType?)
 }
 
 class AddWordRepositoryImpl: Repository, AddWordRepository {
