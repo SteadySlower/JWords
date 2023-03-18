@@ -67,6 +67,9 @@ extension MacAddWordView {
         .padding(.top, 50)
         .background {
             copyAndPasteButton
+            sampleCancelButton
+            sampleUpButton
+            sampleDownButton
         }
     }
     
@@ -215,9 +218,40 @@ extension MacAddWordView {
         Button {
             copyAndPaste()
         } label: {
-            EmptyView()
+                
         }
         .keyboardShortcut("v", modifiers: [.command])
+        .opacity(0)
+    }
+    
+    private var sampleCancelButton: some View {
+        Button {
+            viewModel.cancelExampleSelection()
+        } label: {
+                
+        }
+        .keyboardShortcut(.escape, modifiers: [.command])
+        .opacity(0)
+    }
+    
+    private var sampleUpButton: some View {
+        Button {
+            viewModel.sampleUp()
+        } label: {
+                
+        }
+        .keyboardShortcut(.upArrow, modifiers: [.command])
+        .opacity(0)
+    }
+    
+    private var sampleDownButton: some View {
+        Button {
+            viewModel.sampleDown()
+        } label: {
+                
+        }
+        .keyboardShortcut(.downArrow, modifiers: [.command])
+        .opacity(0)
     }
     
 }
@@ -343,7 +377,9 @@ extension MacAddWordView {
         @Published var isAutoFetchSamples: Bool = true
         @Published var selectedSampleID: String? = nil {
             didSet {
-                updateTextWithExample()
+                if selectedSampleID != nil {
+                    updateTextWithExample()
+                }
             }
         }
         private var selectedSample: Sample? {
@@ -493,6 +529,7 @@ extension MacAddWordView {
         
         func getExamples() {
             guard !meaningText.isEmpty else { return }
+            selectedSampleID = nil
             sampleService.getSamplesByMeaning(meaningText) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
@@ -508,6 +545,26 @@ extension MacAddWordView {
                                 }
                 if !examples.isEmpty { self?.selectedSampleID = self?.samples[0].id }
             }
+        }
+        
+        func cancelExampleSelection() {
+            selectedSampleID = nil
+            kanjiText = ""
+            ganaText = ""
+        }
+        
+        func sampleUp() {
+            guard !samples.isEmpty else { return }
+            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
+            let nextIndex = (nowIndex + 1) % samples.count
+            selectedSampleID = samples[nextIndex].id
+        }
+        
+        func sampleDown() {
+            guard !samples.isEmpty else { return }
+            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
+            let nextIndex = (nowIndex - 1) >= 0 ? (nowIndex - 1) : (samples.count - 1)
+            selectedSampleID = samples[nextIndex].id
         }
         
         // 한자 -> 가나 auto convert
