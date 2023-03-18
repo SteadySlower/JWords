@@ -21,7 +21,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct JWordsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    private let dependency: ServiceManager = ServiceManagerImpl()
+    private let dependency: ServiceManager = ServiceManager()
     
     var body: some Scene {
         WindowGroup {
