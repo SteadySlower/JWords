@@ -334,7 +334,7 @@
 				5A5FF633286ADF53000150A7 /* Helper */,
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
-				5ACE0A6F2869985F00A57660 /* DataService */,
+				5ACE0A6F2869985F00A57660 /* Service */,
 				5A67DC2F2869527A00AC156C /* MacView */,
 				5A67DC24286944EF00AC156C /* Constants */,
 				5A67DC1D286942E800AC156C /* iOSView */,
@@ -512,7 +512,7 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		5ACE0A6F2869985F00A57660 /* DataService */ = {
+		5ACE0A6F2869985F00A57660 /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */,
@@ -522,7 +522,7 @@
 				5AE1DB1B28C5D640006DB89C /* WordBookService.swift */,
 				5ACE0A702869986F00A57660 /* WordService.swift */,
 			);
-			path = DataService;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		5ACE0A7428699B9600A57660 /* Model */ = {
