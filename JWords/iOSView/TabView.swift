@@ -9,9 +9,9 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var showModal = false
-    private let dependency: Dependency
+    private let dependency: ServiceManager
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.dependency = dependency
     }
     

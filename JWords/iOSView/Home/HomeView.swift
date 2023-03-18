@@ -11,9 +11,9 @@ struct HomeView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var showModal = false
     
-    private let dependency: Dependency
+    private let dependency: ServiceManager
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.viewModel = ViewModel(wordBookService: dependency.wordBookService)
         self.dependency = dependency
     }

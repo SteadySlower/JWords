@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Dependency {
+protocol ServiceManager {
     var wordBookService: WordBookService { get }
     var wordService: WordService { get }
     var sampleService: SampleService { get }
@@ -15,7 +15,7 @@ protocol Dependency {
 }
 
 
-class DependencyImpl: Dependency {
+class ServiceManagerImpl: ServiceManager {
     
     let wordBookService: WordBookService
     let wordService: WordService

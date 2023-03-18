@@ -12,7 +12,7 @@ struct WordMoveView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding private var didClosed: Bool
     
-    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: Dependency) {
+    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: ServiceManager) {
         self._viewModel = StateObject(wrappedValue: ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency))
         self._didClosed = didClosed
     }
@@ -119,7 +119,7 @@ extension WordMoveView {
             }
         }
         
-        init(fromBook: WordBook, toMoveWords: [Word], dependency: Dependency) {
+        init(fromBook: WordBook, toMoveWords: [Word], dependency: ServiceManager) {
             self.fromBook = fromBook
             self.toMoveWords = toMoveWords
             self.wordBookService = dependency.wordBookService

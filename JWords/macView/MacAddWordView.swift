@@ -33,7 +33,7 @@ struct MacAddWordView: View {
     
     @ObservedObject private var viewModel: ViewModel
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.viewModel = ViewModel(dependency)
     }
     
@@ -414,7 +414,7 @@ extension MacAddWordView {
         @Published var isAutoConvert: Bool = true
         
         // initializer
-        init(_ dependency: Dependency) {
+        init(_ dependency: ServiceManager) {
             self.wordService = dependency.wordService
             self.wordBookService = dependency.wordBookService
             self.sampleService = dependency.sampleService

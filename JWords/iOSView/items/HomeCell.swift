@@ -11,9 +11,9 @@ struct HomeCell: View {
     @ObservedObject private var viewModel: ViewModel
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    private let dependency: Dependency
+    private let dependency: ServiceManager
     
-    init(wordBook: WordBook, dependency: Dependency) {
+    init(wordBook: WordBook, dependency: ServiceManager) {
         self.viewModel = ViewModel(wordBook: wordBook)
         self.dependency = dependency
     }

@@ -56,7 +56,7 @@
 		5A6BA59C28E53BAE004B04FC /* MockSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BA59B28E53BAE004B04FC /* MockSample.swift */; };
 		5A6BBF7A28E68A15003D9A4D /* StudyViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */; };
 		5A6BBF7C28E68E10003D9A4D /* MockWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7B28E68E10003D9A4D /* MockWord.swift */; };
-		5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BD9B828C7186D00FF9259 /* Dependency.swift */; };
+		5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BD9B828C7186D00FF9259 /* ServiceManager.swift */; };
 		5A6D29E128D416E200A63D92 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6D29E028D416E200A63D92 /* FirebaseFirestore */; };
 		5A6D29E328D416E800A63D92 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6D29E228D416E800A63D92 /* FirebaseStorage */; };
 		5A72BD0D28D1B15F00058043 /* MacAddWordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */; };
@@ -165,7 +165,7 @@
 		5A6BA59B28E53BAE004B04FC /* MockSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSample.swift; sourceTree = "<group>"; };
 		5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewModelTest.swift; sourceTree = "<group>"; };
 		5A6BBF7B28E68E10003D9A4D /* MockWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWord.swift; sourceTree = "<group>"; };
-		5A6BD9B828C7186D00FF9259 /* Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependency.swift; sourceTree = "<group>"; };
+		5A6BD9B828C7186D00FF9259 /* ServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceManager.swift; sourceTree = "<group>"; };
 		5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddWordViewModelTest.swift; sourceTree = "<group>"; };
 		5A72BD0E28D1B19E00058043 /* MockWordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordService.swift; sourceTree = "<group>"; };
 		5A72BD1228D1B25100058043 /* MockSampleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSampleService.swift; sourceTree = "<group>"; };
@@ -389,7 +389,6 @@
 			isa = PBXGroup;
 			children = (
 				5AE1DB1E28C5E46B006DB89C /* Error.swift */,
-				5A6BD9B828C7186D00FF9259 /* Dependency.swift */,
 				5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */,
 				5A5C468728D98894000E212B /* Calendar+Extension.swift */,
 				06BC608929A0928600AA67E6 /* View+Extension.swift */,
@@ -496,11 +495,12 @@
 		5ACE0A6F2869985F00A57660 /* DataService */ = {
 			isa = PBXGroup;
 			children = (
-				5ACE0A702869986F00A57660 /* WordService.swift */,
 				5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */,
 				5AE1DB1928C5D51B006DB89C /* SampleService.swift */,
-				5AE1DB1B28C5D640006DB89C /* WordBookService.swift */,
+				5A6BD9B828C7186D00FF9259 /* ServiceManager.swift */,
 				5A735AFC28D80C3000CADF9B /* TodaySerivce.swift */,
+				5AE1DB1B28C5D640006DB89C /* WordBookService.swift */,
+				5ACE0A702869986F00A57660 /* WordService.swift */,
 			);
 			path = DataService;
 			sourceTree = "<group>";
@@ -746,7 +746,7 @@
 				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
-				5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */,
+				5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
