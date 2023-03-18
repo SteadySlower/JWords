@@ -178,7 +178,7 @@ extension MacAddWordView {
                     Image(uiImage: image)
                         .resizable()
                         .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.clearImageInput(inputType) }
+                        .onTapGesture { viewModel.imageTapped(in: inputType) }
                     #elseif os(macOS)
                     Image(nsImage: image)
                         .resizable()
@@ -527,14 +527,14 @@ extension MacAddWordView {
             kanjiText = String(strings[1])
         }
         
-        func clearImageInput(_ inputType: InputType) {
+        func imageTapped(in inputType: InputType) {
             switch inputType {
             case .meaning:
-                meaningImage = nil
+                addWordRepository.updateMeaningImage(nil)
             case .gana:
-                ganaImage = nil
+                addWordRepository.updateGanaImage(nil)
             case .kanji:
-                kanjiImage = nil
+                addWordRepository.updateKanjiImage(nil)
             }
         }
         
