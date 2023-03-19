@@ -17,18 +17,6 @@ typealias PasteBoardType = NSPasteboard
 #endif
 
 struct MacAddWordView: View {
-    // MARK: Enum
-    enum InputType: Hashable, CaseIterable {
-        case meaning, kanji, gana
-        
-        var description: String {
-            switch self {
-            case .meaning: return "뜻"
-            case .gana: return "가나"
-            case .kanji: return "한자"
-            }
-        }
-    }
     
     @FocusState private var editFocus: InputType?
     
@@ -59,7 +47,10 @@ extension MacAddWordView {
                     VStack {
                         textField(for: type)
                             .focused($editFocus, equals: type)
-                        imageField(for: type)
+                        ImageField(inputType: type,
+                                   image: viewModel.image(of: type),
+                                   addImageButtonTapped: { viewModel.addImageButtonTapped(in: $0) },
+                                   imageTapped: { viewModel.imageTapped(in: $0) })
                     }
                 }
                 saveButton
@@ -149,55 +140,6 @@ extension MacAddWordView {
         return body
     }
     
-    private func imageField(for inputType: InputType) -> some View {
-        
-        var image: InputImageType? {
-            switch inputType {
-            case .meaning: return viewModel.meaningImage
-            case .gana: return viewModel.ganaImage
-            case .kanji: return viewModel.kanjiImage
-            }
-        }
-        
-        var pasteBoardImage: InputImageType? {
-            let pb = PasteBoardType.general
-            #if os(iOS)
-            guard let image = pb.image else { return nil }
-            #elseif os(macOS)
-            let type = PasteBoardType.PasteboardType.tiff
-            guard let imgData = pb.data(forType: type) else { return nil }
-            let image = InputImageType(data: imgData)
-            #endif
-            return image
-        }
-        
-        var body: some View {
-            Group {
-                if let image = image {
-                    #if os(iOS)
-                    Image(uiImage: image)
-                        .resizable()
-                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.imageTapped(in: inputType) }
-                    #elseif os(macOS)
-                    Image(nsImage: image)
-                        .resizable()
-                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.clearImageInput(inputType) }
-                    #endif
-                } else {
-                    Button {
-                        viewModel.insertImage(of: inputType, image: pasteBoardImage)
-                    } label: {
-                        Text("\(inputType.description) 이미지")
-                    }
-                }
-            }
-        }
-        
-        return body
-    }
-    
     private var saveButton: some View {
         Group {
             if viewModel.isUploading {
@@ -217,7 +159,7 @@ extension MacAddWordView {
     
     private var copyAndPasteButton: some View {
         Button {
-            copyAndPaste()
+//            copyAndPaste()
         } label: {
                 
         }
@@ -296,38 +238,38 @@ extension MacAddWordView {
         }
     }
     
-    private func copyAndPaste() {
-        guard let focus = editFocus else { return }
-        
-        var pasteBoardImage: InputImageType? {
-            let pb = PasteBoardType.general
-            #if os(iOS)
-            guard let image = pb.image else { return nil }
-            #elseif os(macOS)
-            let type = PasteBoardType.PasteboardType.tiff
-            guard let imgData = pb.data(forType: type) else { return nil }
-            let image = InputImageType(data: imgData)
-            #endif
-            return image
-        }
-        
-        var pasteBoardText: String? {
-            let pb = PasteBoardType.general
-            #if os(iOS)
-            return pb.string
-            #elseif os(macOS)
-            return pb.string(forType: .string)
-            #endif
-        }
-        
-        if let pasteBoardImage = pasteBoardImage {
-            viewModel.insertImage(of: focus, image: pasteBoardImage)
-        } else if let pasteBoardText = pasteBoardText {
-            viewModel.insertText(of: focus, text: pasteBoardText)
-        } else {
-            return
-        }
-    }
+//    private func copyAndPaste() {
+//        guard let focus = editFocus else { return }
+//
+//        var pasteBoardImage: InputImageType? {
+//            let pb = PasteBoardType.general
+//            #if os(iOS)
+//            guard let image = pb.image else { return nil }
+//            #elseif os(macOS)
+//            let type = PasteBoardType.PasteboardType.tiff
+//            guard let imgData = pb.data(forType: type) else { return nil }
+//            let image = InputImageType(data: imgData)
+//            #endif
+//            return image
+//        }
+//
+//        var pasteBoardText: String? {
+//            let pb = PasteBoardType.general
+//            #if os(iOS)
+//            return pb.string
+//            #elseif os(macOS)
+//            return pb.string(forType: .string)
+//            #endif
+//        }
+//
+//        if let pasteBoardImage = pasteBoardImage {
+//            viewModel.insertImage(of: focus, image: pasteBoardImage)
+//        } else if let pasteBoardText = pasteBoardText {
+//            viewModel.insertText(of: focus, text: pasteBoardText)
+//        } else {
+//            return
+//        }
+//    }
     
 }
 
@@ -494,28 +436,6 @@ extension MacAddWordView {
             }
         }
         
-        func insertImage(of inputType: InputType, image: InputImageType?) {
-            switch inputType {
-            case .meaning:
-                meaningImage = image
-            case .gana:
-                ganaImage = image
-            case .kanji:
-                kanjiImage = image
-            }
-        }
-        
-        func insertText(of inputType: InputType, text: String) {
-            switch inputType {
-            case .meaning:
-                meaningText = text
-            case .gana:
-                ganaText = text
-            case .kanji:
-                kanjiText = text
-            }
-        }
-        
         // 네이버 사전에서 복사-붙여넣기할 때 "히라가나 [한자]" 형태로 된 텍스트 가나-한자로 구분
         func trimPastedText(_ input: String) {
             guard input.contains("[") else { return }
@@ -527,14 +447,38 @@ extension MacAddWordView {
             kanjiText = String(strings[1])
         }
         
+        // 이미지 관련
+        
+        func image(of: InputType) -> InputImageType? {
+            switch of {
+            case .meaning:
+                return meaningImage
+            case .gana:
+                return ganaImage
+            case .kanji:
+                return kanjiImage
+            }
+        }
+        
+        func addImageButtonTapped(in inputType: InputType) {
+            switch inputType {
+            case .meaning:
+                addWordRepository.updateMeaningImage()
+            case .gana:
+                addWordRepository.updateGanaImage()
+            case .kanji:
+                addWordRepository.updateKanjiImage()
+            }
+        }
+        
         func imageTapped(in inputType: InputType) {
             switch inputType {
             case .meaning:
-                addWordRepository.updateMeaningImage(nil)
+                addWordRepository.clearMeaningImage()
             case .gana:
-                addWordRepository.updateGanaImage(nil)
+                addWordRepository.clearGanaImage()
             case .kanji:
-                addWordRepository.updateKanjiImage(nil)
+                addWordRepository.clearKanjiImage()
             }
         }
         

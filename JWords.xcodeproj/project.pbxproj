@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735A29C6D1430076DBE4 /* ImageField.swift */; };
+		0624735D29C6D8580076DBE4 /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735C29C6D8580076DBE4 /* InputType.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -123,6 +125,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0624735A29C6D1430076DBE4 /* ImageField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageField.swift; path = JWords/macView/Components/ImageField.swift; sourceTree = SOURCE_ROOT; };
+		0624735C29C6D8580076DBE4 /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -240,6 +244,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0624735929C6D1360076DBE4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0624735A29C6D1430076DBE4 /* ImageField.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		067840F229C5914D0019ABA8 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +492,7 @@
 		5A67DC2F2869527A00AC156C /* MacView */ = {
 			isa = PBXGroup;
 			children = (
+				0624735929C6D1360076DBE4 /* Components */,
 				5A67DC302869529700AC156C /* MacHomeView.swift */,
 				06BC609929AEF04600AA67E6 /* MacAddWordView.swift */,
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
@@ -538,6 +551,7 @@
 				5A5740A728BDA8900080A2E2 /* Sample.swift */,
 				5A653FEA2907C1C800E3466E /* TodayBooks.swift */,
 				06BC606C297E9A7500AA67E6 /* FrontType.swift */,
+				0624735C29C6D8580076DBE4 /* InputType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -733,6 +747,7 @@
 			files = (
 				5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */,
 				067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */,
+				0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */,
 				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
 				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
 				0697715328CCA71700569280 /* WordInput.swift in Sources */,
@@ -748,6 +763,7 @@
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
+				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
