@@ -238,39 +238,6 @@ extension MacAddWordView {
         }
     }
     
-//    private func copyAndPaste() {
-//        guard let focus = editFocus else { return }
-//
-//        var pasteBoardImage: InputImageType? {
-//            let pb = PasteBoardType.general
-//            #if os(iOS)
-//            guard let image = pb.image else { return nil }
-//            #elseif os(macOS)
-//            let type = PasteBoardType.PasteboardType.tiff
-//            guard let imgData = pb.data(forType: type) else { return nil }
-//            let image = InputImageType(data: imgData)
-//            #endif
-//            return image
-//        }
-//
-//        var pasteBoardText: String? {
-//            let pb = PasteBoardType.general
-//            #if os(iOS)
-//            return pb.string
-//            #elseif os(macOS)
-//            return pb.string(forType: .string)
-//            #endif
-//        }
-//
-//        if let pasteBoardImage = pasteBoardImage {
-//            viewModel.insertImage(of: focus, image: pasteBoardImage)
-//        } else if let pasteBoardText = pasteBoardText {
-//            viewModel.insertText(of: focus, text: pasteBoardText)
-//        } else {
-//            return
-//        }
-//    }
-    
 }
 
 // MARK: ViewModel
