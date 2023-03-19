@@ -12,7 +12,16 @@ struct SamplePicker: View {
     private let samples: [Sample]
     private let samplePicked: (Sample?) -> Void
     
-    @State var selectedID: String?
+    @State var selectedID: String? = nil
+    
+    init(samples: [Sample],
+         samplePicked: @escaping (Sample?) -> Void,
+         selectedSample: Sample?)
+    {
+        self.samples = samples
+        self.samplePicked = samplePicked
+        self.selectedID = selectedSample?.id
+    }
     
     var body: some View {
         Picker("", selection: $selectedID) {
