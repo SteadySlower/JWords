@@ -50,7 +50,7 @@ class AddWordRepositoryImpl: Repository, AddWordRepository {
     var ganaImage: AnyPublisher<InputImageType?, Never> { $_ganaImage.eraseToAnyPublisher() }
     
     @Published private(set) var _kanjiImage: InputImageType?
-    var kanjiImage: AnyPublisher<InputImageType?, Never> { $_ganaImage.eraseToAnyPublisher() }
+    var kanjiImage: AnyPublisher<InputImageType?, Never> { $_kanjiImage.eraseToAnyPublisher() }
     
     func updateWordBook(_ wordBook: WordBook?) {
         self._wordBook = wordBook
