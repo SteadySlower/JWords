@@ -95,17 +95,6 @@ extension MacAddWordView {
                 .keyboardShortcut("f", modifiers: [.command])
         }
         
-        var samplePicker: some View {
-            Picker("", selection: $viewModel.selectedSampleID) {
-                Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
-                    .tag(nil as String?)
-                ForEach(viewModel.samples, id: \.id) { sample in
-                    Text(sample.description)
-                        .tag(sample.id as String?)
-                }
-            }
-        }
-        
         var body: some View {
             VStack {
                 Text("\(inputType.description) 입력")
@@ -118,7 +107,9 @@ extension MacAddWordView {
                     HStack {
                         autoSearchToggle
                             .padding(.leading, 5)
-                        samplePicker
+                        SamplePicker(samples: viewModel.samples,
+                                     samplePicked: { viewModel.selectedSample = $0 },
+                                     selectedSample: viewModel.selectedSample)
                     }
                     .padding(.horizontal)
                 } else if inputType == .gana {
@@ -279,15 +270,13 @@ extension MacAddWordView {
         // 예시 관련 properties
         @Published private(set) var samples: [Sample] = []
         @Published var isAutoFetchSamples: Bool = true
+        @Published var selectedSample: Sample?
         @Published var selectedSampleID: String? = nil {
             didSet {
                 if selectedSampleID != nil {
                     updateTextWithExample()
                 }
             }
-        }
-        private var selectedSample: Sample? {
-            return samples.first(where: { $0.id == selectedSampleID })
         }
         
         private var didSampleUsed: Bool {
