@@ -90,15 +90,6 @@ extension MacAddWordView {
             }
         }
         
-        var overlapCheckButton: some View {
-            Button {
-                viewModel.checkIfOverlap()
-            } label: {
-                Text(viewModel.overlapCheckButtonTitle)
-            }
-            .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-        }
-        
         var autoSearchToggle: some View {
             Toggle("자동 검색", isOn: $viewModel.isAutoFetchSamples)
                 .keyboardShortcut("f", modifiers: [.command])
@@ -125,7 +116,6 @@ extension MacAddWordView {
                     .padding(.horizontal)
                 if inputType == .meaning {
                     HStack {
-//                        overlapCheckButton
                         autoSearchToggle
                             .padding(.leading, 5)
                         samplePicker
@@ -381,25 +371,6 @@ extension MacAddWordView {
                 if let error = error { print("디버그: \(error)"); return }
                 self?.isUploading = false
                 self?.wordCount = (self?.wordCount ?? 0) + 1
-            }
-        }
-        
-        func checkIfOverlap() {
-            isCheckingOverlap = true
-            // TODO: handle error
-            guard let selectedWordBook = bookList.first(where: { $0.id == selectedBookID }) else {
-                print("선택된 단어장이 없어서 검색할 수 없음")
-                isCheckingOverlap = false
-                return
-            }
-            wordBookService.checkIfOverlap(in: selectedWordBook, meaningText: meaningText) { [weak self] isOverlapped, error in
-                if let error = error {
-                    self?.isCheckingOverlap = false
-                    print("디버그: \(error)")
-                    return
-                }
-                self?.isOverlapped = isOverlapped ?? false
-                self?.isCheckingOverlap = false
             }
         }
         
