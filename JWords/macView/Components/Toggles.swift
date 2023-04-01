@@ -9,11 +9,10 @@ import SwiftUI
 
 struct AutoSearchToggle: View {
     
-    @State private var autoSearch: Bool
+    @State private var autoSearch: Bool = true
     private let onTapped: (Bool) -> Void
     
-    init(autoSearch: Bool, onTapped: @escaping (Bool) -> Void) {
-        self.autoSearch = autoSearch
+    init(onTapped: @escaping (Bool) -> Void) {
         self.onTapped = onTapped
     }
     
@@ -26,11 +25,10 @@ struct AutoSearchToggle: View {
 
 struct AutoConvertToggle: View {
     
-    @State private var autoConvert: Bool
+    @State private var autoConvert: Bool = true
     private let onTapped: (Bool) -> Void
     
-    init(autoConvert: Bool, onTapped: @escaping (Bool) -> Void) {
-        self.autoConvert = autoConvert
+    init(onTapped: @escaping (Bool) -> Void) {
         self.onTapped = onTapped
     }
     
