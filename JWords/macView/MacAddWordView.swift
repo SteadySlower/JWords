@@ -510,19 +510,18 @@ extension MacAddWordView.ViewModel {
     func configure() {
         addWordRepository
             .wordBook
-            .weakAssign(to: \.wordBook, on: self)
-        
+            .assign(to: &$wordBook)
         addWordRepository
             .meaningImage
-            .weakAssign(to: \.meaningImage, on: self)
+            .assign(to: &$meaningImage)
         
         addWordRepository
             .kanjiImage
-            .weakAssign(to: \.kanjiImage, on: self)
+            .assign(to: &$kanjiImage)
         
         addWordRepository
             .ganaImage
-            .weakAssign(to: \.ganaImage, on: self)
+            .assign(to: &$ganaImage)
     }
     
 }
