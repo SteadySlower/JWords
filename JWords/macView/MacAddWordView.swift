@@ -233,11 +233,7 @@ extension MacAddWordView {
         private var subscriptions = [AnyCancellable]()
         
         // 단어 내용 입력 관련 properties
-        @Published var meaningText: String = "" {
-            didSet {
-                isOverlapped = nil
-            }
-        }
+        @Published var meaningText: String = ""
         @Published private(set) var meaningImage: InputImageType?
         @Published var ganaText: String = ""
         @Published private(set) var ganaImage: InputImageType?
@@ -288,19 +284,6 @@ extension MacAddWordView {
         
         var isSaveButtonUnable: Bool {
             return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
-        }
-        
-        @Published private(set) var isCheckingOverlap: Bool = false
-        @Published private(set) var isOverlapped: Bool? = nil
-        
-        var overlapCheckButtonTitle: String {
-            if isCheckingOverlap {
-                return "중복 검사중"
-            }
-            guard let isOverlapped = isOverlapped else {
-                return "중복체크"
-            }
-            return isOverlapped ? "중복됨" : "중복 아님"
         }
         
         // 한자 -> 가나 auto convert
