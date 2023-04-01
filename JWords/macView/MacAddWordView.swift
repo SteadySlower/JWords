@@ -371,25 +371,11 @@ extension MacAddWordView {
         }
         
         func addImageButtonTapped(in inputType: InputType) {
-            switch inputType {
-            case .meaning:
-                addWordRepository.updateMeaningImage()
-            case .gana:
-                addWordRepository.updateGanaImage()
-            case .kanji:
-                addWordRepository.updateKanjiImage()
-            }
+            addWordRepository.updateImage(inputType)
         }
         
         func imageTapped(in inputType: InputType) {
-            switch inputType {
-            case .meaning:
-                addWordRepository.clearMeaningImage()
-            case .gana:
-                addWordRepository.clearGanaImage()
-            case .kanji:
-                addWordRepository.clearKanjiImage()
-            }
+            addWordRepository.clearImage(inputType)
         }
         
         func getExamples() {

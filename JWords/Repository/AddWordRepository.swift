@@ -15,12 +15,8 @@ protocol AddWordRepository: BaseRepository {
     var kanjiImage: AnyPublisher<InputImageType?, Never> { get }
     
     func updateWordBook(_ wordBook: WordBook?)
-    func updateMeaningImage()
-    func updateGanaImage()
-    func updateKanjiImage()
-    func clearMeaningImage()
-    func clearGanaImage()
-    func clearKanjiImage()
+    func updateImage(_ type: InputType)
+    func clearImage(_ type: InputType)
 }
 
 class AddWordRepositoryImpl: Repository, AddWordRepository {
@@ -56,28 +52,26 @@ class AddWordRepositoryImpl: Repository, AddWordRepository {
         self._wordBook = wordBook
     }
     
-    func updateMeaningImage() {
-        self._meaningImage = pasteBoardService.fetchImage()
+    func updateImage(_ type: InputType) {
+        switch type {
+        case .meaning:
+            self._meaningImage = pasteBoardService.fetchImage()
+        case .kanji:
+            self._kanjiImage = pasteBoardService.fetchImage()
+        case .gana:
+            self._ganaImage = pasteBoardService.fetchImage()
+        }
     }
     
-    func updateGanaImage() {
-        self._ganaImage = pasteBoardService.fetchImage()
-    }
-
-    func updateKanjiImage() {
-        self._kanjiImage = pasteBoardService.fetchImage()
-    }
-
-    func clearMeaningImage() {
-        self._meaningImage = nil
-    }
-    
-    func clearGanaImage() {
-        self._ganaImage = nil
-    }
-    
-    func clearKanjiImage() {
-        self._kanjiImage = nil
+    func clearImage(_ type: InputType) {
+        switch type {
+        case .meaning:
+            self._meaningImage = nil
+        case .kanji:
+            self._kanjiImage = nil
+        case .gana:
+            self._ganaImage = nil
+        }
     }
     
 }
