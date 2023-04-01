@@ -27,6 +27,7 @@
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordInputView.swift */; };
 		06B2DA2129D7D0AB009C67EF /* WordAddField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2029D7D0AB009C67EF /* WordAddField.swift */; };
+		06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2429D7D42F009C67EF /* Toggles.swift */; };
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC606C297E9A7500AA67E6 /* FrontType.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
@@ -143,6 +144,7 @@
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputView.swift; sourceTree = "<group>"; };
 		06B2DA2029D7D0AB009C67EF /* WordAddField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordAddField.swift; path = JWords/macView/Components/WordAddField.swift; sourceTree = SOURCE_ROOT; };
+		06B2DA2429D7D42F009C67EF /* Toggles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toggles.swift; path = JWords/macView/Components/Toggles.swift; sourceTree = SOURCE_ROOT; };
 		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		06BC606C297E9A7500AA67E6 /* FrontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontType.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				0624735A29C6D1430076DBE4 /* ImageField.swift */,
 				0624736029C6DAC80076DBE4 /* SamplePicker.swift */,
 				06B2DA2029D7D0AB009C67EF /* WordAddField.swift */,
+				06B2DA2429D7D42F009C67EF /* Toggles.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
 				5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
