@@ -24,4 +24,22 @@ struct AutoSearchToggle: View {
     }
 }
 
+struct AutoConvertToggle: View {
+    
+    @State private var autoConvert: Bool
+    private let onTapped: (Bool) -> Void
+    
+    init(autoConvert: Bool, onTapped: @escaping (Bool) -> Void) {
+        self.autoConvert = autoConvert
+        self.onTapped = onTapped
+    }
+    
+    var body: some View {
+        Toggle("한자 -> 가나 자동 변환", isOn: $autoConvert)
+            .onChange(of: autoConvert) { onTapped($0) }
+    }
+}
+
+
+
 
