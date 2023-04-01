@@ -45,7 +45,7 @@ extension MacAddWordView {
                 wordBookPicker
                 ForEach(InputType.allCases, id: \.self) { type in
                     VStack {
-                        textField(for: type)
+                        textField(type) { viewModel.updateText($0, $1) }
                             .focused($editFocus, equals: type)
                         ImageField(inputType: type,
                                    image: viewModel.image(of: type),
@@ -81,44 +81,23 @@ extension MacAddWordView {
         .padding()
     }
     
-    private func textField(for inputType: InputType) -> some View {
-        var bindingText: Binding<String> {
-            switch inputType {
-            case .meaning: return $viewModel.meaningText
-            case .gana: return $viewModel.ganaText
-            case .kanji: return $viewModel.kanjiText
-            }
-        }
-        
-        var autoSearchToggle: some View {
-            Toggle("자동 검색", isOn: $viewModel.isAutoFetchSamples)
-                .keyboardShortcut("f", modifiers: [.command])
-        }
-        
-        var body: some View {
-            VStack {
-                Text("\(inputType.description) 입력")
-                    .font(.system(size: 20))
-                TextEditor(text: bindingText)
-                    .font(.system(size: 30))
-                    .frame(height: Constants.Size.deviceHeight / 8)
-                    .padding(.horizontal)
-                if inputType == .meaning {
-                    HStack {
-                        autoSearchToggle
-                            .padding(.leading, 5)
-                        SamplePicker(samples: viewModel.samples,
-                                     samplePicked: { viewModel.selectedSample = $0 },
-                                     selectedSample: viewModel.selectedSample)
-                    }
-                    .padding(.horizontal)
-                } else if inputType == .gana {
-                    Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
+    private func textField(_ type: InputType,
+                           onTextChange: (InputType, String) -> Void)
+    -> some View {
+        VStack {
+            WordAddField(inputType: type) { viewModel.updateText($0, $1) }
+            if type == .meaning {
+                HStack {
+                    AutoSearchToggle { viewModel.updateAutoSearch($0) }
+                    SamplePicker(samples: viewModel.samples,
+                                 samplePicked: { viewModel.selectedSample = $0 },
+                                 selectedSample: viewModel.selectedSample)
                 }
+                .padding(.horizontal)
+            } else if type == .gana {
+                AutoConvertToggle { viewModel.updateAutoConvert($0) }
             }
         }
-        
-        return body
     }
     
     private var saveButton: some View {
@@ -200,23 +179,23 @@ extension MacAddWordView {
     }
     
     private func moveCursorWhenTab(_ text: String) {
-        guard text.contains("\t") else { return }
-        guard let nowCursor = editFocus else { return }
-        switch nowCursor {
-        case .meaning:
-            viewModel.meaningText.removeAll(where: { $0 == "\t"})
-            viewModel.getExamples()
-            editFocus = .kanji
-            return
-        case .kanji:
-            viewModel.kanjiText.removeAll(where: { $0 == "\t"})
-            editFocus = .gana
-            return
-        case .gana:
-            viewModel.ganaText.removeAll(where: { $0 == "\t"})
-            editFocus = .meaning
-            return
-        }
+//        guard text.contains("\t") else { return }
+//        guard let nowCursor = editFocus else { return }
+//        switch nowCursor {
+//        case .meaning:
+//            viewModel.meaningText.removeAll(where: { $0 == "\t"})
+//            viewModel.getExamples()
+//            editFocus = .kanji
+//            return
+//        case .kanji:
+//            viewModel.kanjiText.removeAll(where: { $0 == "\t"})
+//            editFocus = .gana
+//            return
+//        case .gana:
+//            viewModel.ganaText.removeAll(where: { $0 == "\t"})
+//            editFocus = .meaning
+//            return
+//        }
     }
     
 }
@@ -233,11 +212,11 @@ extension MacAddWordView {
         private var subscriptions = [AnyCancellable]()
         
         // 단어 내용 입력 관련 properties
-        @Published var meaningText: String = ""
+        @Published private(set) var meaningText: String = ""
         @Published private(set) var meaningImage: InputImageType?
-        @Published var ganaText: String = ""
+        @Published private(set) var ganaText: String = ""
         @Published private(set) var ganaImage: InputImageType?
-        @Published var kanjiText: String = ""
+        @Published private(set) var kanjiText: String = ""
         @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
@@ -265,7 +244,7 @@ extension MacAddWordView {
         
         // 예시 관련 properties
         @Published private(set) var samples: [Sample] = []
-        @Published var isAutoFetchSamples: Bool = true
+        @Published private(set) var isAutoSearch: Bool = true
         @Published var selectedSample: Sample?
         @Published var selectedSampleID: String? = nil {
             didSet {
@@ -287,7 +266,7 @@ extension MacAddWordView {
         }
         
         // 한자 -> 가나 auto convert
-        @Published var isAutoConvert: Bool = true
+        @Published private(set) var isAutoConvert: Bool = true
         
         private let addWordRepository: AddWordRepository
         
@@ -368,6 +347,30 @@ extension MacAddWordView {
             case .kanji:
                 return kanjiImage
             }
+        }
+        
+        // text 관련 repository 연결함수
+        
+        func updateText(_ type: InputType, _ text: String) {
+            switch type {
+            case .meaning:
+                meaningText = text
+            case .kanji:
+                kanjiText = text
+            case .gana:
+                ganaText = text
+            }
+        }
+        
+        func updateAutoConvert(_ isAutoConvert: Bool) {
+            self.isAutoConvert = isAutoConvert
+        }
+        
+        
+        // 샘플 관련 repository 연결 함수
+        
+        func updateAutoSearch(_ isAutoSearch: Bool) {
+            self.isAutoSearch = isAutoSearch
         }
         
         func addImageButtonTapped(in inputType: InputType) {
