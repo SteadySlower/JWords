@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol AddWordRepository {
+protocol AddWordRepository: BaseRepository {
     var wordBook: AnyPublisher<WordBook?, Never> { get }
     var meaningImage: AnyPublisher<InputImageType?, Never> { get }
     var ganaImage: AnyPublisher<InputImageType?, Never> { get }

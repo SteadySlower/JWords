@@ -11,12 +11,12 @@ import Combine
 
 protocol BaseRepository {
     var isLoading: AnyPublisher<Bool, Never> { get }
-    var error: AnyPublisher<Error?, Never> { get }
+    var error: AnyPublisher<Error, Never> { get }
     var subscription: [AnyCancellable] { get }
     func clear() -> Void
 }
 
-class Repository {
+class Repository: BaseRepository {
     
     private let _isLoading = CurrentValueSubject<Bool, Never>(false)
     
