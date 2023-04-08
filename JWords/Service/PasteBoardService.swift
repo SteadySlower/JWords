@@ -30,7 +30,7 @@ class PasteBoardServiceImpl: PasteBoardService {
         #if os(iOS)
         pb.image
         #elseif os(macOS)
-        let type = PasteBoardType.PasteboardType.tiff
+        let type = PasteBoard.PasteboardType.tiff
         guard let imgData = pb.data(forType: type) else { return nil }
         return InputImageType(data: imgData)
         #endif

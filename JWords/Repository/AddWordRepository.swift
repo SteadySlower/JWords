@@ -62,6 +62,12 @@ class AddWordRepository: Repository {
         }
     }
     
+    func updateText(with sample: Sample) {
+        meaningText = sample.meaningText
+        ganaText = sample.ganaText
+        kanjiText = sample.kanjiText
+    }
+    
     func updateImage(_ type: InputType) {
         switch type {
         case .meaning:

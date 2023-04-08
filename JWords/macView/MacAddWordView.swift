@@ -8,14 +8,6 @@
 import SwiftUI
 import Combine
 
-#if os(iOS)
-import UIKit
-typealias PasteBoardType = UIPasteboard
-#elseif os(macOS)
-import Cocoa
-typealias PasteBoardType = NSPasteboard
-#endif
-
 struct MacAddWordView: View {
     
     @FocusState private var editFocus: InputType?
@@ -57,11 +49,6 @@ extension MacAddWordView {
             }
         }
         .padding(.top, 50)
-        .background {
-            sampleCancelButton
-            sampleUpButton
-            sampleDownButton
-        }
     }
     
     private var wordBookPicker: some View {
@@ -88,9 +75,7 @@ extension MacAddWordView {
             if type == .meaning {
                 HStack {
                     AutoSearchToggle { viewModel.updateAutoSearch($0) }
-                    SamplePicker(samples: viewModel.samples,
-                                 samplePicked: { viewModel.selectedSample = $0 },
-                                 selectedSample: viewModel.selectedSample)
+                    SamplePicker(samples: viewModel.samples, selected: viewModel.selectedSample) { viewModel.handleSamplePickerAction($0) }
                 }
                 .padding(.horizontal)
             } else if type == .gana {
@@ -117,35 +102,7 @@ extension MacAddWordView {
     }
     
     
-    private var sampleCancelButton: some View {
-        Button {
-            viewModel.cancelExampleSelection()
-        } label: {
-                
-        }
-        .keyboardShortcut(.escape, modifiers: [.command])
-        .opacity(0)
-    }
-    
-    private var sampleUpButton: some View {
-        Button {
-            viewModel.sampleUp()
-        } label: {
-                
-        }
-        .keyboardShortcut(.upArrow, modifiers: [.command])
-        .opacity(0)
-    }
-    
-    private var sampleDownButton: some View {
-        Button {
-            viewModel.sampleDown()
-        } label: {
-                
-        }
-        .keyboardShortcut(.downArrow, modifiers: [.command])
-        .opacity(0)
-    }
+
     
 }
 
@@ -158,11 +115,11 @@ extension MacAddWordView {
     private func moveCursorWhenTab(_ text: String) {
         guard text.contains("\t") else { return }
         guard let nowCursor = editFocus else { return }
-        let removed = text.filter { $0 == "\t" }
+        let removed = text.filter { $0 != "\t" }
         switch nowCursor {
         case .meaning:
             viewModel.updateText(.meaning, removed)
-            viewModel.getExamples()
+            viewModel.getExamples(removed)
             editFocus = .kanji
             return
         case .kanji:
@@ -222,20 +179,10 @@ extension MacAddWordView {
         // 예시 관련 properties
         @Published private(set) var samples: [Sample] = []
         @Published private(set) var isAutoSearch: Bool = true
-        @Published var selectedSample: Sample?
-        @Published var selectedSampleID: String? = nil {
-            didSet {
-                if selectedSampleID != nil {
-                    updateTextWithExample()
-                }
-            }
-        }
+        @Published private(set) var selectedSample: Sample?
         
-        private var didSampleUsed: Bool {
-            guard let selectedSample = selectedSample else { return false }
-            return selectedSample.meaningText == meaningText
-                && selectedSample.ganaText == ganaText
-                && selectedSample.kanjiText == kanjiText ? true : false
+        func onSamplePicked(_ sample: Sample?) {
+            self.selectedSample = sample
         }
         
         var isSaveButtonUnable: Bool {
@@ -299,12 +246,7 @@ extension MacAddWordView {
             addWordRepository.updateAutoConvertMode(autoConvertMode)
         }
         
-        
-        // 샘플 관련 repository 연결 함수
-        
-        func updateAutoSearch(_ isAutoSearch: Bool) {
-            self.isAutoSearch = isAutoSearch
-        }
+        // image 관련 repository 연결함수
         
         func addImageButtonTapped(in inputType: InputType) {
             addWordRepository.updateImage(inputType)
@@ -314,10 +256,28 @@ extension MacAddWordView {
             addWordRepository.clearImage(inputType)
         }
         
-        func getExamples() {
-            guard !meaningText.isEmpty else { return }
-            selectedSampleID = nil
-            sampleService.getSamplesByMeaning(meaningText) { [weak self] examples, error in
+        // 샘플 관련 repository 연결 함수
+        
+        func updateAutoSearch(_ isAutoSearch: Bool) {
+            self.isAutoSearch = isAutoSearch
+        }
+    
+        
+        func handleSamplePickerAction(_ action: SamplePicker.Action) {
+            switch action {
+            case .picked(let sample):
+                self.selectedSample = sample
+                if let sample = sample { addWordRepository.updateText(with: sample) }
+            case .cancelled:
+                addWordRepository.updateText(.kanji, "")
+                addWordRepository.updateText(.gana, "")
+            }
+        }
+        
+        func getExamples(_ query: String) {
+            guard !query.isEmpty else { return }
+            selectedSample = nil
+            sampleService.getSamplesByMeaning(query) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
@@ -330,44 +290,14 @@ extension MacAddWordView {
                                         return false
                                     }
                                 }
-                if !examples.isEmpty { self?.selectedSampleID = self?.samples[0].id }
+                self?.selectedSample = examples.first
             }
-        }
-        
-        func cancelExampleSelection() {
-            selectedSampleID = nil
-            kanjiText = ""
-            ganaText = ""
-        }
-        
-        func sampleUp() {
-            guard !samples.isEmpty else { return }
-            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
-            let nextIndex = (nowIndex + 1) % samples.count
-            selectedSampleID = samples[nextIndex].id
-        }
-        
-        func sampleDown() {
-            guard !samples.isEmpty else { return }
-            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
-            let nextIndex = (nowIndex - 1) >= 0 ? (nowIndex - 1) : (samples.count - 1)
-            selectedSampleID = samples[nextIndex].id
         }
         
         private func clearSamples() {
             samples = []
-            selectedSampleID = nil
         }
         
-        private func updateTextWithExample() {
-            guard let selectedSample = selectedSample else {
-//                clearInputs()
-                return
-            }
-            meaningText = selectedSample.meaningText
-            ganaText = selectedSample.ganaText
-            kanjiText = selectedSample.kanjiText
-        }
     }
 }
 
