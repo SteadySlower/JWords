@@ -29,9 +29,9 @@ struct MacAddWordView: View {
     var body: some View {
         contentView
             .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { onMeaningChange($0) }
-            .onChange(of: viewModel.kanjiText) { onKanjiChange($0) }
-            .onChange(of: viewModel.ganaText) { onGanaChange($0) }
+            .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
+            .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
+            .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
     }
     
 }
@@ -154,22 +154,6 @@ extension MacAddWordView {
 
 extension MacAddWordView {
     
-    private func onMeaningChange(_ text: String) {
-        moveCursorWhenTab(text)
-    }
-    
-    private func onKanjiChange(_ text: String) {
-        moveCursorWhenTab(text)
-        // TODO: 한자 -> 가나 자동변환은 비지니스 로직임!
-        viewModel.autoConvert(text)
-    }
-    
-    private func onGanaChange(_ text: String) {
-        moveCursorWhenTab(text)
-        // TODO: 복붙한거 개선은 비지니스 로직임!
-        viewModel.trimPastedText(text)
-    }
-    
     // tab을 눌렀을 때 field 이동하는 것은 비지니스 로직이 아님!
     private func moveCursorWhenTab(_ text: String) {
         guard text.contains("\t") else { return }
@@ -259,9 +243,6 @@ extension MacAddWordView {
             return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
         }
         
-        // 한자 -> 가나 auto convert
-        @Published private(set) var isAutoConvert: Bool = true
-        
         private let addWordRepository: AddWordRepository
         
         // initializer
@@ -319,16 +300,6 @@ extension MacAddWordView {
             }
         }
         
-        // 네이버 사전에서 복사-붙여넣기할 때 "히라가나 [한자]" 형태로 된 텍스트 가나-한자로 구분
-        func trimPastedText(_ input: String) {
-            guard input.contains("[") else { return }
-            var strings = input.split(separator: " ")
-            guard strings.count >= 2 else { return }
-            strings[0] = strings[0].filter { $0 != "-" } // 장음표시 제거
-            strings[1] = strings[1].filter { !["[", "]"].contains($0) }
-            ganaText = String(strings[0])
-            kanjiText = String(strings[1])
-        }
         
         // 이미지 관련
         
@@ -346,18 +317,11 @@ extension MacAddWordView {
         // text 관련 repository 연결함수
         
         func updateText(_ type: InputType, _ text: String) {
-            switch type {
-            case .meaning:
-                meaningText = text
-            case .kanji:
-                kanjiText = text
-            case .gana:
-                ganaText = text
-            }
+            addWordRepository.updateText(type, text)
         }
         
-        func updateAutoConvert(_ isAutoConvert: Bool) {
-            self.isAutoConvert = isAutoConvert
+        func updateAutoConvert(_ autoConvertMode: Bool) {
+            addWordRepository.updateAutoConvertMode(autoConvertMode)
         }
         
         
@@ -415,11 +379,7 @@ extension MacAddWordView {
             selectedSampleID = samples[nextIndex].id
         }
         
-        // 한자 -> 가나 auto convert
-        func autoConvert(_ kanji: String) {
-            if !isAutoConvert { return }
-            ganaText = kanji.hiragana
-        }
+
         
         private func countWords(in wordBookID: String?) {
             guard let id = wordBookID else {
@@ -477,6 +437,15 @@ extension MacAddWordView.ViewModel {
         addWordRepository
             .$wordBook
             .assign(to: &$wordBook)
+        addWordRepository
+            .$meaningText
+            .assign(to: &$meaningText)
+        addWordRepository
+            .$kanjiText
+            .assign(to: &$kanjiText)
+        addWordRepository
+            .$ganaText
+            .assign(to: &$ganaText)
         addWordRepository
             .$meaningImage
             .assign(to: &$meaningImage)
