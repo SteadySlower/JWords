@@ -58,7 +58,6 @@ extension MacAddWordView {
         }
         .padding(.top, 50)
         .background {
-            copyAndPasteButton
             sampleCancelButton
             sampleUpButton
             sampleDownButton
@@ -117,15 +116,6 @@ extension MacAddWordView {
         }
     }
     
-    private var copyAndPasteButton: some View {
-        Button {
-//            copyAndPaste()
-        } label: {
-                
-        }
-        .keyboardShortcut("v", modifiers: [.command])
-        .opacity(0)
-    }
     
     private var sampleCancelButton: some View {
         Button {
@@ -170,32 +160,36 @@ extension MacAddWordView {
     
     private func onKanjiChange(_ text: String) {
         moveCursorWhenTab(text)
+        // TODO: 한자 -> 가나 자동변환은 비지니스 로직임!
         viewModel.autoConvert(text)
     }
     
     private func onGanaChange(_ text: String) {
         moveCursorWhenTab(text)
+        // TODO: 복붙한거 개선은 비지니스 로직임!
         viewModel.trimPastedText(text)
     }
     
+    // tab을 눌렀을 때 field 이동하는 것은 비지니스 로직이 아님!
     private func moveCursorWhenTab(_ text: String) {
-//        guard text.contains("\t") else { return }
-//        guard let nowCursor = editFocus else { return }
-//        switch nowCursor {
-//        case .meaning:
-//            viewModel.meaningText.removeAll(where: { $0 == "\t"})
-//            viewModel.getExamples()
-//            editFocus = .kanji
-//            return
-//        case .kanji:
-//            viewModel.kanjiText.removeAll(where: { $0 == "\t"})
-//            editFocus = .gana
-//            return
-//        case .gana:
-//            viewModel.ganaText.removeAll(where: { $0 == "\t"})
-//            editFocus = .meaning
-//            return
-//        }
+        guard text.contains("\t") else { return }
+        guard let nowCursor = editFocus else { return }
+        let removed = text.filter { $0 == "\t" }
+        switch nowCursor {
+        case .meaning:
+            viewModel.updateText(.meaning, removed)
+            viewModel.getExamples()
+            editFocus = .kanji
+            return
+        case .kanji:
+            viewModel.updateText(.kanji, removed)
+            editFocus = .gana
+            return
+        case .gana:
+            viewModel.updateText(.gana, removed)
+            editFocus = .meaning
+            return
+        }
     }
     
 }
@@ -481,18 +475,16 @@ extension MacAddWordView.ViewModel {
     
     func configure() {
         addWordRepository
-            .wordBook
+            .$wordBook
             .assign(to: &$wordBook)
         addWordRepository
-            .meaningImage
+            .$meaningImage
             .assign(to: &$meaningImage)
-        
         addWordRepository
-            .kanjiImage
+            .$kanjiImage
             .assign(to: &$kanjiImage)
-        
         addWordRepository
-            .ganaImage
+            .$ganaImage
             .assign(to: &$ganaImage)
     }
     

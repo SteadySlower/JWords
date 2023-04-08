@@ -26,11 +26,8 @@ class AddWordRepository: Repository {
     }
 
     @Published private(set) var wordBook: WordBook?
-    
     @Published private(set) var meaningImage: InputImageType?
-    
     @Published private(set) var ganaImage: InputImageType?
-    
     @Published private(set) var kanjiImage: InputImageType?
     
     func updateWordBook(_ wordBook: WordBook?) {
