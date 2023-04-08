@@ -37,7 +37,7 @@ extension MacAddWordView {
                 wordBookPicker
                 ForEach(InputType.allCases, id: \.self) { type in
                     VStack {
-                        textField(type) { viewModel.updateText($0, $1) }
+                        textField(type)
                             .focused($editFocus, equals: type)
                         ImageField(inputType: type,
                                    image: viewModel.image(of: type),
@@ -67,11 +67,19 @@ extension MacAddWordView {
         .padding()
     }
     
-    private func textField(_ type: InputType,
-                           onTextChange: (InputType, String) -> Void)
+    private func textField(_ type: InputType)
     -> some View {
-        VStack {
-            WordAddField(inputType: type) { viewModel.updateText($0, $1) }
+        
+        var text: Binding<String> {
+            switch type {
+            case .meaning: return $viewModel.meaningText
+            case .kanji: return $viewModel.kanjiText
+            case .gana: return $viewModel.ganaText
+            }
+        }
+        
+        return VStack {
+            WordAddField(title: "\(type.description) 입력", text: text)
             if type == .meaning {
                 HStack {
                     AutoSearchToggle { viewModel.updateAutoSearch($0) }
@@ -118,16 +126,16 @@ extension MacAddWordView {
         let removed = text.filter { $0 != "\t" }
         switch nowCursor {
         case .meaning:
-            viewModel.updateText(.meaning, removed)
+            viewModel.meaningText = removed
             viewModel.getExamples(removed)
             editFocus = .kanji
             return
         case .kanji:
-            viewModel.updateText(.kanji, removed)
+            viewModel.kanjiText = removed
             editFocus = .gana
             return
         case .gana:
-            viewModel.updateText(.gana, removed)
+            viewModel.ganaText = removed
             editFocus = .meaning
             return
         }
@@ -145,11 +153,11 @@ extension MacAddWordView {
         private let wordBookService: WordBookService
         
         // 단어 내용 입력 관련 properties
-        @Published private(set) var meaningText: String = ""
+        @Published var meaningText: String = ""
         @Published private(set) var meaningImage: InputImageType?
-        @Published private(set) var ganaText: String = ""
+        @Published var ganaText: String = ""
         @Published private(set) var ganaImage: InputImageType?
-        @Published private(set) var kanjiText: String = ""
+        @Published var kanjiText: String = ""
         @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
@@ -238,10 +246,6 @@ extension MacAddWordView {
         
         // text 관련 repository 연결함수
         
-        func updateText(_ type: InputType, _ text: String) {
-            addWordRepository.updateText(type, text)
-        }
-        
         func updateAutoConvert(_ autoConvertMode: Bool) {
             addWordRepository.updateAutoConvertMode(autoConvertMode)
         }
@@ -304,6 +308,22 @@ extension MacAddWordView {
 extension MacAddWordView.ViewModel {
     
     func configure() {
+        
+        // send event to repository
+        $meaningText
+            .removeDuplicates()
+            .sink { [weak self] in self?.addWordRepository.updateText(.meaning, $0) }
+            .store(in: &subscription)
+        $kanjiText
+            .removeDuplicates()
+            .sink { [weak self] in self?.addWordRepository.updateText(.kanji, $0) }
+            .store(in: &subscription)
+        $ganaText
+            .removeDuplicates()
+            .sink { [weak self] in self?.addWordRepository.updateText(.gana, $0) }
+            .store(in: &subscription)
+        
+        // receive state from repository
         addWordRepository
             .$wordBook
             .assign(to: &$wordBook)

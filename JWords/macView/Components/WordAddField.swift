@@ -9,27 +9,23 @@ import SwiftUI
 
 struct WordAddField: View {
     
-    private let inputType: InputType
-    private let onTextChange: (InputType, String) -> Void
+    private let title: String
+    @Binding private var text: String
     
-    init(inputType: InputType,
-         onTextChange: @escaping (InputType, String) -> Void)
+    init(title: String, text: Binding<String>)
     {
-        self.inputType = inputType
-        self.onTextChange = onTextChange
+        self.title = title
+        self._text = text
     }
-    
-    @State private var text: String = ""
     
     var body: some View {
         VStack {
-            Text("\(inputType.description) 입력")
+            Text(title)
                 .font(.system(size: 20))
             TextEditor(text: $text)
                 .font(.system(size: 30))
                 .frame(height: Constants.Size.deviceHeight / 8)
                 .padding(.horizontal)
         }
-        .onChange(of: text) { onTextChange(inputType, $0) }
     }
 }

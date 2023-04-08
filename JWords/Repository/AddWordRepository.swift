@@ -50,6 +50,7 @@ class AddWordRepository: Repository {
     }
     
     func updateText(_ type: InputType, _ text: String) {
+        print("type: \(type) text: \(text)")
         switch type {
         case .meaning:
             meaningText = text
