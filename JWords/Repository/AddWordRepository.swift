@@ -10,12 +10,18 @@ import Combine
 
 class AddWordRepository: Repository {
     
+    private let wordBookService: WordBookService
     private let wordService: WordService
+    private let sampleService: SampleService
     private let pasteBoardService: PasteBoardService
     
-    init(wordService: WordService = ServiceManager.shared.wordService,
+    init(wordBookService: WordBookService = ServiceManager.shared.wordBookService,
+        wordService: WordService = ServiceManager.shared.wordService,
+         sampleService: SampleService = ServiceManager.shared.sampleService,
          pasteBoardService: PasteBoardService = ServiceManager.shared.pasteBoardService) {
+        self.wordBookService = wordBookService
         self.wordService = wordService
+        self.sampleService = sampleService
         self.pasteBoardService = pasteBoardService
         super.init()
     }
@@ -28,6 +34,7 @@ class AddWordRepository: Repository {
     // states
 
     @Published private(set) var wordBook: WordBook?
+    @Published private(set) var wordCount: Int?
     @Published private(set) var meaningText: String = ""
     @Published private(set) var ganaText: String = ""
     @Published private(set) var kanjiText: String = ""
@@ -81,7 +88,41 @@ class AddWordRepository: Repository {
         self.autoConvertMode = autoConvertMode
     }
     
+    func saveWord(_ sample: Sample?) {
+        updateIsLoading(true)
+        
+        guard let wordBook = wordBook else {
+            print("디버그: 선택된 단어장이 없어서 저장할 수 없음")
+            updateIsLoading(false)
+            return
+        }
+        
+        let wordInput = makeWordInput(id: wordBook.id)
+        
+        if let sample = sample {
+            handleSample(wordInput: wordInput, sample: sample)
+        }
+        
+        wordService.saveWord(wordInput: wordInput) { error in
+            // TODO: handle error
+            if let error = error { self.onError(error) }
+            self.updateIsLoading(false)
+        }
+        
+    }
+    
     // private methods
+    
+    private func countWords() {
+        guard let wordBook = wordBook else {
+            wordCount = nil
+            return
+        }
+        wordBookService.countWords(in: wordBook) { count, error in
+            if let error = error { self.onError(error); return }
+            if let count = count { self.wordCount = count }
+        }
+    }
     
     // 한자 -> 가나 auto convert
     private func autoConvert(_ kanji: String) {
@@ -98,6 +139,49 @@ class AddWordRepository: Repository {
         strings[1] = strings[1].filter { !["[", "]"].contains($0) }
         ganaText = String(strings[0])
         kanjiText = String(strings[1])
+    }
+    
+    // 입력하기 전에 좌우 공백 제거
+    private func trimTexts() {
+        meaningText = meaningText.lStrip()
+        meaningText = meaningText.rStrip()
+        kanjiText = kanjiText.lStrip()
+        kanjiText = kanjiText.rStrip()
+        ganaText = ganaText.lStrip()
+        ganaText = ganaText.rStrip()
+    }
+    
+    private func clearInputs() {
+        meaningText = ""
+        meaningImage = nil
+        ganaText = ""
+        ganaImage = nil
+        kanjiText = ""
+        kanjiImage = nil
+    }
+    
+    private func makeWordInput(id: String) -> WordInput {
+        trimTexts()
+        let wordInput = WordInputImpl(wordBookID: id,
+                                      meaningText: meaningText,
+                                      meaningImage: meaningImage,
+                                      ganaText: ganaText,
+                                      ganaImage: ganaImage,
+                                      kanjiText: kanjiText,
+                                      kanjiImage: kanjiImage)
+        clearInputs()
+        return wordInput
+    }
+    
+    private func handleSample(wordInput: WordInput, sample: Sample) {
+        let isEqual = (sample.meaningText == wordInput.meaningText
+                       && sample.ganaText == wordInput.ganaText
+                       && sample.kanjiText == wordInput.kanjiText)
+        if isEqual {
+            sampleService.addOneToUsed(of: sample)
+        } else if !wordInput.hasImage {
+            sampleService.saveSample(wordInput: wordInput)
+        }
     }
     
 }

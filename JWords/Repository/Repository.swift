@@ -19,25 +19,22 @@ protocol BaseRepository {
 class Repository: BaseRepository {
     
     private let _isLoading = CurrentValueSubject<Bool, Never>(false)
-    
     private let _error = PassthroughSubject<Error, Never>()
-    
     var isLoading: AnyPublisher<Bool, Never> {
         _isLoading.eraseToAnyPublisher()
     }
-    
     var error: AnyPublisher<Error, Never> {
         _error.eraseToAnyPublisher()
     }
     
     var subscription: [AnyCancellable] = []
     
-    final private func isLoading(_ isLoading: Bool) {
+    final func updateIsLoading(_ isLoading: Bool) {
         _isLoading.send(isLoading)
         
     }
     
-    final private func onError(_ error: Error) {
+    final func onError(_ error: Error) {
         _error.send(error)
     }
     

@@ -187,8 +187,6 @@ extension MacAddWordView {
         private let sampleService: SampleService
         private let wordBookService: WordBookService
         
-        private var subscriptions = [AnyCancellable]()
-        
         // 단어 내용 입력 관련 properties
         @Published private(set) var meaningText: String = ""
         @Published private(set) var meaningImage: InputImageType?
@@ -198,15 +196,16 @@ extension MacAddWordView {
         @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
-        @Published var wordBook: WordBook?
+        @Published private(set) var wordBook: WordBook?
         
         @Published private(set) var bookList: [WordBook] = []
         @Published var selectedBookID: String? {
+            // TODO: refactor
             didSet {
-                countWords(in: selectedBookID)
+                addWordRepository.updateWordBook(bookList.first(where: { $0.id == selectedBookID }))
             }
         }
-        @Published var wordCount: Int?
+        @Published private(set) var wordCount: Int?
         @Published private(set) var didBooksFetched: Bool = false
         @Published private(set) var isUploading: Bool = false
         
@@ -272,32 +271,8 @@ extension MacAddWordView {
         }
         
         func saveWord() {
-            trimTexts()
-            isUploading = true
-            guard let wordBookID = selectedBookID else {
-                // TODO: handle error
-                print("선택된 단어장이 없어서 저장할 수 없음")
-                isUploading = false
-                return
-            }
-            let wordInput = WordInputImpl(wordBookID: wordBookID, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
-            // example이 있는지 확인하고 example과 동일한지 확인하고
-                // 동일하면 example의 used에 + 1
-                // 동일하지 않으면 새로운 example 추가한다.
-            if didSampleUsed,
-               let selectedSample = selectedSample {
-                sampleService.addOneToUsed(of: selectedSample)
-            } else if !wordInput.hasImage {
-                sampleService.saveSample(wordInput: wordInput)
-            }
-            clearInputs()
-            clearExamples()
-            wordService.saveWord(wordInput: wordInput) { [weak self] error in
-                // TODO: handle error
-                if let error = error { print("디버그: \(error)"); return }
-                self?.isUploading = false
-                self?.wordCount = (self?.wordCount ?? 0) + 1
-            }
+            clearSamples()
+            addWordRepository.saveWord(selectedSample)
         }
         
         
@@ -379,49 +354,14 @@ extension MacAddWordView {
             selectedSampleID = samples[nextIndex].id
         }
         
-
-        
-        private func countWords(in wordBookID: String?) {
-            guard let id = wordBookID else {
-                wordCount = nil
-                return
-            }
-            
-            guard let wordBook = bookList.first(where: { $0.id == id }) else { return }
-            
-            wordBookService.countWords(in: wordBook) { [weak self] count, error in
-                if let error = error { print(error); return }
-                guard let count = count else { print("No count in wordbook: \(wordBook.id)"); return }
-                self?.wordCount = count
-            }
-        }
-        
-        private func trimTexts() {
-            meaningText = meaningText.lStrip()
-            meaningText = meaningText.rStrip()
-            kanjiText = kanjiText.lStrip()
-            kanjiText = kanjiText.rStrip()
-            ganaText = ganaText.lStrip()
-            ganaText = ganaText.rStrip()
-        }
-        
-        private func clearInputs() {
-            meaningText = ""
-            meaningImage = nil
-            ganaText = ""
-            ganaImage = nil
-            kanjiText = ""
-            kanjiImage = nil
-        }
-        
-        private func clearExamples() {
+        private func clearSamples() {
             samples = []
             selectedSampleID = nil
         }
         
         private func updateTextWithExample() {
             guard let selectedSample = selectedSample else {
-                clearInputs()
+//                clearInputs()
                 return
             }
             meaningText = selectedSample.meaningText
@@ -437,6 +377,9 @@ extension MacAddWordView.ViewModel {
         addWordRepository
             .$wordBook
             .assign(to: &$wordBook)
+        addWordRepository
+            .$wordCount
+            .assign(to: &$wordCount)
         addWordRepository
             .$meaningText
             .assign(to: &$meaningText)
@@ -455,6 +398,9 @@ extension MacAddWordView.ViewModel {
         addWordRepository
             .$ganaImage
             .assign(to: &$ganaImage)
+        addWordRepository
+            .isLoading
+            .assign(to: &$isUploading)
     }
     
 }
