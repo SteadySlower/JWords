@@ -83,7 +83,8 @@ extension MacAddWordView {
             if type == .meaning {
                 HStack {
                     AutoSearchToggle { viewModel.updateAutoSearch($0) }
-                    SamplePicker(samples: viewModel.samples, selected: viewModel.selectedSample) { viewModel.handleSamplePickerAction($0) }
+                    SamplePicker(samples: viewModel.samples,
+                                 selectedID: $viewModel.selectedSampleID)
                 }
                 .padding(.horizontal)
             } else if type == .gana {
@@ -187,11 +188,7 @@ extension MacAddWordView {
         // 예시 관련 properties
         @Published private(set) var samples: [Sample] = []
         @Published private(set) var isAutoSearch: Bool = true
-        @Published private(set) var selectedSample: Sample?
-        
-        func onSamplePicked(_ sample: Sample?) {
-            self.selectedSample = sample
-        }
+        @Published var selectedSampleID: String?
         
         var isSaveButtonUnable: Bool {
             return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
@@ -227,7 +224,7 @@ extension MacAddWordView {
         
         func saveWord() {
             clearSamples()
-            addWordRepository.saveWord(selectedSample)
+            addWordRepository.saveWord()
         }
         
         
@@ -265,22 +262,10 @@ extension MacAddWordView {
         func updateAutoSearch(_ isAutoSearch: Bool) {
             self.isAutoSearch = isAutoSearch
         }
-    
-        
-        func handleSamplePickerAction(_ action: SamplePicker.Action) {
-            switch action {
-            case .picked(let sample):
-                self.selectedSample = sample
-                if let sample = sample { addWordRepository.updateText(with: sample) }
-            case .cancelled:
-                addWordRepository.updateText(.kanji, "")
-                addWordRepository.updateText(.gana, "")
-            }
-        }
         
         func getExamples(_ query: String) {
             guard !query.isEmpty else { return }
-            selectedSample = nil
+            selectedSampleID = nil
             sampleService.getSamplesByMeaning(query) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
@@ -294,7 +279,7 @@ extension MacAddWordView {
                                         return false
                                     }
                                 }
-                self?.selectedSample = examples.first
+                self?.selectedSampleID = examples.first?.id
             }
         }
         
@@ -321,6 +306,11 @@ extension MacAddWordView.ViewModel {
         $ganaText
             .removeDuplicates()
             .sink { [weak self] in self?.addWordRepository.updateText(.gana, $0) }
+            .store(in: &subscription)
+        $selectedSampleID
+            .removeDuplicates()
+            .map { [weak self] id in self?.samples.first { $0.id == id } }
+            .sink { [weak self] in self?.addWordRepository.updateSample($0) }
             .store(in: &subscription)
         
         // receive state from repository
@@ -351,6 +341,10 @@ extension MacAddWordView.ViewModel {
         addWordRepository
             .isLoading
             .assign(to: &$isUploading)
+        addWordRepository
+            .$usedSample
+            .sink { [weak self] in self?.selectedSampleID = $0?.id }
+            .store(in: &subscription)
     }
     
 }

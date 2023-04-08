@@ -41,6 +41,7 @@ class AddWordRepository: Repository {
     @Published private(set) var meaningImage: InputImageType?
     @Published private(set) var ganaImage: InputImageType?
     @Published private(set) var kanjiImage: InputImageType?
+    @Published private(set) var usedSample: Sample?
     @Published private(set) var autoConvertMode: Bool = true
     
     // public methods
@@ -50,7 +51,7 @@ class AddWordRepository: Repository {
     }
     
     func updateText(_ type: InputType, _ text: String) {
-        print("type: \(type) text: \(text)")
+        usedSample = nil
         switch type {
         case .meaning:
             meaningText = text
@@ -61,12 +62,6 @@ class AddWordRepository: Repository {
             ganaText = text
             trimPastedText(text)
         }
-    }
-    
-    func updateText(with sample: Sample) {
-        meaningText = sample.meaningText
-        ganaText = sample.ganaText
-        kanjiText = sample.kanjiText
     }
     
     func updateImage(_ type: InputType) {
@@ -91,11 +86,22 @@ class AddWordRepository: Repository {
         }
     }
     
+    func updateSample(_ sample: Sample?) {
+        usedSample = sample
+        if let sample = sample {
+            kanjiText = sample.kanjiText
+            ganaText = sample.ganaText
+        } else {
+            kanjiText = ""
+            ganaText = ""
+        }
+    }
+    
     func updateAutoConvertMode(_ autoConvertMode: Bool) {
         self.autoConvertMode = autoConvertMode
     }
     
-    func saveWord(_ sample: Sample?) {
+    func saveWord() {
         updateIsLoading(true)
         
         guard let wordBook = wordBook else {
@@ -106,9 +112,7 @@ class AddWordRepository: Repository {
         
         let wordInput = makeWordInput(id: wordBook.id)
         
-        if let sample = sample {
-            handleSample(wordInput: wordInput, sample: sample)
-        }
+        handleSample(wordInput: wordInput, sample: usedSample)
         
         wordService.saveWord(wordInput: wordInput) { error in
             // TODO: handle error
@@ -180,11 +184,8 @@ class AddWordRepository: Repository {
         return wordInput
     }
     
-    private func handleSample(wordInput: WordInput, sample: Sample) {
-        let isEqual = (sample.meaningText == wordInput.meaningText
-                       && sample.ganaText == wordInput.ganaText
-                       && sample.kanjiText == wordInput.kanjiText)
-        if isEqual {
+    private func handleSample(wordInput: WordInput, sample: Sample?) {
+        if let sample = sample {
             sampleService.addOneToUsed(of: sample)
         } else if !wordInput.hasImage {
             sampleService.saveSample(wordInput: wordInput)
