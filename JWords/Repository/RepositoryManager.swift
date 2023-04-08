@@ -8,5 +8,5 @@
 import Foundation
 
 enum RepositoryManager {
-    static let addWordRepository = AddWordRepositoryImpl()
+    static let addWordRepository = AddWordRepository()
 }
