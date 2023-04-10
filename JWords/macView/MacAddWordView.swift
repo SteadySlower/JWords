@@ -191,7 +191,8 @@ extension MacAddWordView {
         @Published var selectedSampleID: String?
         
         var isSaveButtonUnable: Bool {
-            return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
+            false
+//            return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
         }
         
         private let addWordRepository: AddWordRepository
@@ -223,7 +224,7 @@ extension MacAddWordView {
         }
         
         func saveWord() {
-            clearSamples()
+//            clearSamples()
             addWordRepository.saveWord()
         }
         
@@ -297,14 +298,20 @@ extension MacAddWordView.ViewModel {
         // send event to repository
         $meaningText
             .removeDuplicates()
+            .filter { !$0.contains("\t") }
+            .filter { [weak self] in $0 != self?.addWordRepository.meaningText }
             .sink { [weak self] in self?.addWordRepository.updateText(.meaning, $0) }
             .store(in: &subscription)
         $kanjiText
             .removeDuplicates()
+            .filter { !$0.contains("\t") }
+            .filter { [weak self] in $0 != self?.addWordRepository.kanjiText }
             .sink { [weak self] in self?.addWordRepository.updateText(.kanji, $0) }
             .store(in: &subscription)
         $ganaText
             .removeDuplicates()
+            .filter { !$0.contains("\t") }
+            .filter { [weak self] in $0 != self?.addWordRepository.ganaText }
             .sink { [weak self] in self?.addWordRepository.updateText(.gana, $0) }
             .store(in: &subscription)
         $selectedSampleID
@@ -343,8 +350,8 @@ extension MacAddWordView.ViewModel {
             .assign(to: &$isUploading)
         addWordRepository
             .$usedSample
-            .sink { [weak self] in self?.selectedSampleID = $0?.id }
-            .store(in: &subscription)
+            .map { $0?.id }
+            .assign(to: &$selectedSampleID)
     }
     
 }

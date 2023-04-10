@@ -24,7 +24,6 @@ class AddWordRepository: Repository {
         self.sampleService = sampleService
         self.pasteBoardService = pasteBoardService
         super.init()
-        configure()
     }
     
     override func clear() {
@@ -51,16 +50,19 @@ class AddWordRepository: Repository {
         self.wordBook = wordBook
     }
     
+    // update by user input
     func updateText(_ type: InputType, _ text: String) {
         switch type {
         case .meaning:
             meaningText = text
         case .kanji:
             kanjiText = text
+            autoConvert(text)
         case .gana:
             ganaText = text
+            trimPastedText(text)
         }
-        usedSample = nil
+        self.checkSampleIsUsed(type, text)
     }
     
     func updateImage(_ type: InputType) {
@@ -88,11 +90,12 @@ class AddWordRepository: Repository {
     func updateSample(_ sample: Sample?) {
         usedSample = sample
         if let sample = sample {
+            meaningText = sample.meaningText
             kanjiText = sample.kanjiText
             ganaText = sample.ganaText
         } else {
-            kanjiText = ""
             ganaText = ""
+            kanjiText = ""
         }
     }
     
@@ -122,15 +125,6 @@ class AddWordRepository: Repository {
     }
     
     // private methods
-    
-    private func configure() {
-        $kanjiText
-            .sink { self.autoConvert($0) }
-            .store(in: &subscription)
-        $meaningText
-            .sink { self.trimPastedText($0) }
-            .store(in: &subscription)
-    }
     
     private func countWords() {
         guard let wordBook = wordBook else {
@@ -197,6 +191,21 @@ class AddWordRepository: Repository {
             sampleService.addOneToUsed(of: sample)
         } else if !wordInput.hasImage {
             sampleService.saveSample(wordInput: wordInput)
+        }
+    }
+    
+    private func checkSampleIsUsed(_ type: InputType, _ text: String) {
+        guard let sample = usedSample else { return }
+        switch type {
+        case .meaning:
+            if text != sample.meaningText { usedSample = nil }
+            return
+        case .kanji:
+            if text != sample.kanjiText { usedSample = nil }
+            return
+        case .gana:
+            if text != sample.ganaText { usedSample = nil }
+            return
         }
     }
     
