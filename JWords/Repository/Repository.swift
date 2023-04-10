@@ -9,20 +9,10 @@ import Foundation
 import SwiftUI
 import Combine
 
-protocol BaseRepository {
-    var isLoading: AnyPublisher<Bool, Never> { get }
-    var error: AnyPublisher<Error, Never> { get }
-    var subscription: [AnyCancellable] { get }
-    func clear() -> Void
-}
-
-class Repository: BaseRepository {
+class Repository {
     
-    private let _isLoading = CurrentValueSubject<Bool, Never>(false)
+    @Published private(set) var isLoading = false
     private let _error = PassthroughSubject<Error, Never>()
-    var isLoading: AnyPublisher<Bool, Never> {
-        _isLoading.eraseToAnyPublisher()
-    }
     var error: AnyPublisher<Error, Never> {
         _error.eraseToAnyPublisher()
     }
@@ -30,8 +20,7 @@ class Repository: BaseRepository {
     var subscription: [AnyCancellable] = []
     
     final func updateIsLoading(_ isLoading: Bool) {
-        _isLoading.send(isLoading)
-        
+        self.isLoading = isLoading
     }
     
     final func onError(_ error: Error) {
