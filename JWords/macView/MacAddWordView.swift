@@ -339,7 +339,7 @@ extension MacAddWordView.ViewModel {
             .$ganaImage
             .assign(to: &$ganaImage)
         addWordRepository
-            .isLoading
+            .$isLoading
             .assign(to: &$isUploading)
         addWordRepository
             .$usedSample

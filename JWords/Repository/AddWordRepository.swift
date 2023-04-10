@@ -24,6 +24,7 @@ class AddWordRepository: Repository {
         self.sampleService = sampleService
         self.pasteBoardService = pasteBoardService
         super.init()
+        configure()
     }
     
     override func clear() {
@@ -51,17 +52,15 @@ class AddWordRepository: Repository {
     }
     
     func updateText(_ type: InputType, _ text: String) {
-        usedSample = nil
         switch type {
         case .meaning:
             meaningText = text
         case .kanji:
             kanjiText = text
-            autoConvert(text)
         case .gana:
             ganaText = text
-            trimPastedText(text)
         }
+        usedSample = nil
     }
     
     func updateImage(_ type: InputType) {
@@ -123,6 +122,15 @@ class AddWordRepository: Repository {
     }
     
     // private methods
+    
+    private func configure() {
+        $kanjiText
+            .sink { self.autoConvert($0) }
+            .store(in: &subscription)
+        $meaningText
+            .sink { self.trimPastedText($0) }
+            .store(in: &subscription)
+    }
     
     private func countWords() {
         guard let wordBook = wordBook else {
