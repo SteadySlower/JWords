@@ -21,9 +21,9 @@ struct MacAddWordView: View {
     var body: some View {
         contentView
             .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { moveCursorWhenTab($0) }
-            .onChange(of: viewModel.kanjiText) { moveCursorWhenTab($0) }
-            .onChange(of: viewModel.ganaText) { moveCursorWhenTab($0) }
+            .onChange(of: viewModel.meaningText) { onChangeText(of: .meaning, $0) }
+            .onChange(of: viewModel.kanjiText) { onChangeText(of: .kanji, $0) }
+            .onChange(of: viewModel.ganaText) { onChangeText(of: .gana, $0) }
     }
     
 }
@@ -120,9 +120,12 @@ extension MacAddWordView {
 
 extension MacAddWordView {
     
-    // tab을 눌렀을 때 field 이동하는 것은 비지니스 로직이 아님!
+    private func onChangeText(of type: InputType, _ text: String) {
+        if text.contains("\t") { moveCursorWhenTab(text); return }
+        viewModel.updateText(of: type, text)
+    }
+    
     private func moveCursorWhenTab(_ text: String) {
-        guard text.contains("\t") else { return }
         guard let nowCursor = editFocus else { return }
         let removed = text.filter { $0 != "\t" }
         switch nowCursor {
@@ -191,8 +194,7 @@ extension MacAddWordView {
         @Published var selectedSampleID: String?
         
         var isSaveButtonUnable: Bool {
-            false
-//            return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
+            return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
         }
         
         private let addWordRepository: AddWordRepository
@@ -224,7 +226,7 @@ extension MacAddWordView {
         }
         
         func saveWord() {
-//            clearSamples()
+            clearSamples()
             addWordRepository.saveWord()
         }
         
@@ -243,6 +245,10 @@ extension MacAddWordView {
         }
         
         // text 관련 repository 연결함수
+        
+        func updateText(of type: InputType, _ text: String) {
+            addWordRepository.updateText(type, text)
+        }
         
         func updateAutoConvert(_ autoConvertMode: Bool) {
             addWordRepository.updateAutoConvertMode(autoConvertMode)
@@ -295,25 +301,6 @@ extension MacAddWordView.ViewModel {
     
     func configure() {
         
-        // send event to repository
-        $meaningText
-            .removeDuplicates()
-            .filter { !$0.contains("\t") }
-            .filter { [weak self] in $0 != self?.addWordRepository.meaningText }
-            .sink { [weak self] in self?.addWordRepository.updateText(.meaning, $0) }
-            .store(in: &subscription)
-        $kanjiText
-            .removeDuplicates()
-            .filter { !$0.contains("\t") }
-            .filter { [weak self] in $0 != self?.addWordRepository.kanjiText }
-            .sink { [weak self] in self?.addWordRepository.updateText(.kanji, $0) }
-            .store(in: &subscription)
-        $ganaText
-            .removeDuplicates()
-            .filter { !$0.contains("\t") }
-            .filter { [weak self] in $0 != self?.addWordRepository.ganaText }
-            .sink { [weak self] in self?.addWordRepository.updateText(.gana, $0) }
-            .store(in: &subscription)
         $selectedSampleID
             .removeDuplicates()
             .map { [weak self] id in self?.samples.first { $0.id == id } }
