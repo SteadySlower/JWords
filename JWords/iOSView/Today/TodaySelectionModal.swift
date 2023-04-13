@@ -13,7 +13,7 @@ struct TodaySelectionModal: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showProgressView: Bool = false
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.viewModel = ViewModel(dependency)
     }
     
@@ -134,7 +134,7 @@ extension TodaySelectionModal {
         private let wordBookService: WordBookService
         private let todayService: TodayService
         
-        init(_ dependency: Dependency) {
+        init(_ dependency: ServiceManager) {
             self.wordBookService = dependency.wordBookService
             self.todayService = dependency.todayService
         }

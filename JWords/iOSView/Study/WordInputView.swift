@@ -12,7 +12,7 @@ struct WordInputView: View {
     @ObservedObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     
-    init(_ word: Word? = nil, dependency: Dependency, eventPublisher: PassthroughSubject<Event, Never>) {
+    init(_ word: Word? = nil, dependency: ServiceManager, eventPublisher: PassthroughSubject<Event, Never>) {
         self.viewModel = ViewModel(word: word, dependency: dependency, eventPublisher: eventPublisher)
     }
     
@@ -49,7 +49,7 @@ extension WordInputView {
         
         private let eventPublisher: PassthroughSubject<Event, Never>
         
-        init(word: Word?, dependency: Dependency, eventPublisher: PassthroughSubject<Event, Never>) {
+        init(word: Word?, dependency: ServiceManager, eventPublisher: PassthroughSubject<Event, Never>) {
             self.word = word
             self.meaningText = word?.meaningText ?? ""
             self.kanjiText = word?.kanjiText ?? ""

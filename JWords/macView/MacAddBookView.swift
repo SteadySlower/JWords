@@ -11,7 +11,7 @@ import SwiftUI
 struct MacAddBookView: View {
     @ObservedObject private var viewModel: ViewModel
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.viewModel = ViewModel(wordBookService: dependency.wordBookService)
     }
     

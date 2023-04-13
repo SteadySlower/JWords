@@ -11,9 +11,9 @@ struct TodayView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var showModal: Bool = false
     
-    private let dependency: Dependency
+    private let dependency: ServiceManager
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.viewModel = ViewModel(dependency)
         self.dependency = dependency
     }
@@ -99,7 +99,7 @@ extension TodayView {
         private let todayService: TodayService
         private let wordService: WordService
         
-        init(_ dependency: Dependency) {
+        init(_ dependency: ServiceManager) {
             self.wordBookService = dependency.wordBookService
             self.todayService = dependency.todayService
             self.wordService = dependency.wordService

@@ -30,20 +30,20 @@ struct StudyView: View {
     @StateObject private var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
     
-    private let dependency: Dependency
+    private let dependency: ServiceManager
     
     @State private var showEditModal: Bool = false
     @State private var showMoveModal: Bool = false
     @State private var shouldDismiss: Bool = false
     @State private var showSideBar: Bool = false
     
-    init(wordBook: WordBook, dependency: Dependency) {
+    init(wordBook: WordBook, dependency: ServiceManager) {
         self._viewModel = StateObject(wrappedValue: ViewModel(wordBook: wordBook, wordService: dependency.wordService))
         self.dependency = dependency
     }
     
     // 틀린 단어 모아보기용
-    init(words: [Word], dependency: Dependency) {
+    init(words: [Word], dependency: ServiceManager) {
         self._viewModel = StateObject(wrappedValue: ViewModel(words: words, wordService: dependency.wordService))
         self.dependency = dependency
     }

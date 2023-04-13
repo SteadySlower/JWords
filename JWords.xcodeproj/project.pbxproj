@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735A29C6D1430076DBE4 /* ImageField.swift */; };
+		0624735D29C6D8580076DBE4 /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735C29C6D8580076DBE4 /* InputType.swift */; };
+		0624736129C6DAC80076DBE4 /* SamplePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624736029C6DAC80076DBE4 /* SamplePicker.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
+		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
+		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
+		067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840F329C591570019ABA8 /* BaseViewModel.swift */; };
+		067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840F529C595EF0019ABA8 /* PasteBoardService.swift */; };
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordMoveView.swift */; };
 		0697715328CCA71700569280 /* WordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715228CCA71700569280 /* WordInput.swift */; };
@@ -19,6 +26,8 @@
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordInputView.swift */; };
+		06B2DA2129D7D0AB009C67EF /* WordAddField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2029D7D0AB009C67EF /* WordAddField.swift */; };
+		06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2429D7D42F009C67EF /* Toggles.swift */; };
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC606C297E9A7500AA67E6 /* FrontType.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
@@ -34,6 +43,7 @@
 		06CEF2782866F32700A620CC /* JWordsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */; };
 		06CEF28E2866F86700A620CC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF28D2866F86700A620CC /* FirebaseFirestore */; };
 		06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEF2912866F86700A620CC /* FirebaseStorage */; };
+		06E4066229C5578D0055B104 /* RepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E4066129C5578D0055B104 /* RepositoryManager.swift */; };
 		5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A002C2428E2CB260037D139 /* MockTodayService.swift */; };
 		5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */; };
 		5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5328C2286C126C0080D500 /* Kingfisher */; };
@@ -55,7 +65,7 @@
 		5A6BA59C28E53BAE004B04FC /* MockSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BA59B28E53BAE004B04FC /* MockSample.swift */; };
 		5A6BBF7A28E68A15003D9A4D /* StudyViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */; };
 		5A6BBF7C28E68E10003D9A4D /* MockWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7B28E68E10003D9A4D /* MockWord.swift */; };
-		5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BD9B828C7186D00FF9259 /* Dependency.swift */; };
+		5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BD9B828C7186D00FF9259 /* ServiceManager.swift */; };
 		5A6D29E128D416E200A63D92 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6D29E028D416E200A63D92 /* FirebaseFirestore */; };
 		5A6D29E328D416E800A63D92 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6D29E228D416E800A63D92 /* FirebaseStorage */; };
 		5A72BD0D28D1B15F00058043 /* MacAddWordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */; };
@@ -117,7 +127,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0624735A29C6D1430076DBE4 /* ImageField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageField.swift; path = JWords/macView/Components/ImageField.swift; sourceTree = SOURCE_ROOT; };
+		0624735C29C6D8580076DBE4 /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
+		0624736029C6DAC80076DBE4 /* SamplePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SamplePicker.swift; path = JWords/macView/Components/SamplePicker.swift; sourceTree = SOURCE_ROOT; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
+		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		067840F329C591570019ABA8 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		067840F529C595EF0019ABA8 /* PasteBoardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardService.swift; sourceTree = "<group>"; };
 		0688A1D329B3345E0057B2DB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* WordMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMoveView.swift; sourceTree = "<group>"; };
 		0697715228CCA71700569280 /* WordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInput.swift; sourceTree = "<group>"; };
@@ -126,6 +143,8 @@
 		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputView.swift; sourceTree = "<group>"; };
+		06B2DA2029D7D0AB009C67EF /* WordAddField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordAddField.swift; path = JWords/macView/Components/WordAddField.swift; sourceTree = SOURCE_ROOT; };
+		06B2DA2429D7D42F009C67EF /* Toggles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toggles.swift; path = JWords/macView/Components/Toggles.swift; sourceTree = SOURCE_ROOT; };
 		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		06BC606C297E9A7500AA67E6 /* FrontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontType.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -145,6 +164,7 @@
 		06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsAcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
 		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		06E4066129C5578D0055B104 /* RepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryManager.swift; sourceTree = "<group>"; };
 		5A002C2428E2CB260037D139 /* MockTodayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTodayService.swift; sourceTree = "<group>"; };
 		5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResettingScript.swift; sourceTree = "<group>"; };
 		5A5740A728BDA8900080A2E2 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
@@ -163,7 +183,7 @@
 		5A6BA59B28E53BAE004B04FC /* MockSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSample.swift; sourceTree = "<group>"; };
 		5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewModelTest.swift; sourceTree = "<group>"; };
 		5A6BBF7B28E68E10003D9A4D /* MockWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWord.swift; sourceTree = "<group>"; };
-		5A6BD9B828C7186D00FF9259 /* Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependency.swift; sourceTree = "<group>"; };
+		5A6BD9B828C7186D00FF9259 /* ServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceManager.swift; sourceTree = "<group>"; };
 		5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddWordViewModelTest.swift; sourceTree = "<group>"; };
 		5A72BD0E28D1B19E00058043 /* MockWordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordService.swift; sourceTree = "<group>"; };
 		5A72BD1228D1B25100058043 /* MockSampleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSampleService.swift; sourceTree = "<group>"; };
@@ -228,6 +248,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0624735929C6D1360076DBE4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0624735A29C6D1430076DBE4 /* ImageField.swift */,
+				0624736029C6DAC80076DBE4 /* SamplePicker.swift */,
+				06B2DA2029D7D0AB009C67EF /* WordAddField.swift */,
+				06B2DA2429D7D42F009C67EF /* Toggles.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		067840F229C5914D0019ABA8 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				067840F329C591570019ABA8 /* BaseViewModel.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		0697715628CCCF8100569280 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,11 +349,13 @@
 			children = (
 				0647529E29B45AB90047E84A /* GoogleService-Info.plist */,
 				5A8FF2E528DAF33E00B5E934 /* Info.plist */,
+				067840F229C5914D0019ABA8 /* Base */,
+				06E4066029C5577B0055B104 /* Repository */,
 				5A616D9D28C059FC0013B5AE /* API */,
 				5A5FF633286ADF53000150A7 /* Helper */,
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
-				5ACE0A6F2869985F00A57660 /* DataService */,
+				5ACE0A6F2869985F00A57660 /* Service */,
 				5A67DC2F2869527A00AC156C /* MacView */,
 				5A67DC24286944EF00AC156C /* Constants */,
 				5A67DC1D286942E800AC156C /* iOSView */,
@@ -365,6 +406,16 @@
 			path = JWordsAcceptanceTests;
 			sourceTree = "<group>";
 		};
+		06E4066029C5577B0055B104 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				06E4066129C5578D0055B104 /* RepositoryManager.swift */,
+				067840ED29C55EB40019ABA8 /* Repository.swift */,
+				067840EA29C55E350019ABA8 /* AddWordRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		5A5FF630286AD746000150A7 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,7 +429,6 @@
 			isa = PBXGroup;
 			children = (
 				5AE1DB1E28C5E46B006DB89C /* Error.swift */,
-				5A6BD9B828C7186D00FF9259 /* Dependency.swift */,
 				5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */,
 				5A5C468728D98894000E212B /* Calendar+Extension.swift */,
 				06BC608929A0928600AA67E6 /* View+Extension.swift */,
@@ -448,6 +498,7 @@
 		5A67DC2F2869527A00AC156C /* MacView */ = {
 			isa = PBXGroup;
 			children = (
+				0624735929C6D1360076DBE4 /* Components */,
 				5A67DC302869529700AC156C /* MacHomeView.swift */,
 				06BC609929AEF04600AA67E6 /* MacAddWordView.swift */,
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
@@ -482,16 +533,18 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		5ACE0A6F2869985F00A57660 /* DataService */ = {
+		5ACE0A6F2869985F00A57660 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				5ACE0A702869986F00A57660 /* WordService.swift */,
 				5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */,
 				5AE1DB1928C5D51B006DB89C /* SampleService.swift */,
-				5AE1DB1B28C5D640006DB89C /* WordBookService.swift */,
+				5A6BD9B828C7186D00FF9259 /* ServiceManager.swift */,
 				5A735AFC28D80C3000CADF9B /* TodaySerivce.swift */,
+				5AE1DB1B28C5D640006DB89C /* WordBookService.swift */,
+				5ACE0A702869986F00A57660 /* WordService.swift */,
+				067840F529C595EF0019ABA8 /* PasteBoardService.swift */,
 			);
-			path = DataService;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		5ACE0A7428699B9600A57660 /* Model */ = {
@@ -504,6 +557,7 @@
 				5A5740A728BDA8900080A2E2 /* Sample.swift */,
 				5A653FEA2907C1C800E3466E /* TodayBooks.swift */,
 				06BC606C297E9A7500AA67E6 /* FrontType.swift */,
+				0624735C29C6D8580076DBE4 /* InputType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -698,6 +752,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */,
+				067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */,
+				0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */,
 				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
 				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
 				0697715328CCA71700569280 /* WordInput.swift in Sources */,
@@ -712,29 +768,37 @@
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
+				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
+				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
+				06B2DA2129D7D0AB009C67EF /* WordAddField.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
+				0624736129C6DAC80076DBE4 /* SamplePicker.swift in Sources */,
 				5A653FEB2907C1C800E3466E /* TodayBooks.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
 				5A67DC2D2869470C00AC156C /* WordCell.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
+				06E4066229C5578D0055B104 /* RepositoryManager.swift in Sources */,
 				06CEF2492866F1C800A620CC /* ContentView.swift in Sources */,
 				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
+				067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */,
+				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
-				5A6BD9B928C7186D00FF9259 /* Dependency.swift in Sources */,
+				5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */,
 				06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

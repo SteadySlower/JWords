@@ -7,20 +7,14 @@
 
 import Foundation
 
-protocol Dependency {
-    var wordBookService: WordBookService { get }
-    var wordService: WordService { get }
-    var sampleService: SampleService { get }
-    var todayService: TodayService { get }
-}
-
-
-class DependencyImpl: Dependency {
+class ServiceManager {
+    static let shared: ServiceManager = ServiceManager()
     
     let wordBookService: WordBookService
     let wordService: WordService
     let sampleService: SampleService
     let todayService: TodayService
+    let pasteBoardService: PasteBoardService
     
     init() {
         let db = FirestoreDB()
@@ -31,6 +25,7 @@ class DependencyImpl: Dependency {
         self.wordBookService = WordBookServiceImpl(database: db, wordService: wordService)
         self.sampleService = SampleServiceImpl(database: db)
         self.todayService = TodayServiceImpl(database: db)
+        self.pasteBoardService = PasteBoardServiceImpl()
     }
     
 

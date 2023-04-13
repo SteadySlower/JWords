@@ -21,7 +21,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct JWordsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    private let dependency: Dependency = DependencyImpl()
+    private let dependency: ServiceManager = ServiceManager()
     
     var body: some Scene {
         WindowGroup {
@@ -42,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 struct JWordsApp: App {
     @NSApplicationDelegateAdaptor private var delegate: AppDelegate
     
-    private let dependency: Dependency = DependencyImpl()
+    private let dependency: ServiceManager = ServiceManager()
     
     var body: some Scene {
         WindowGroup {

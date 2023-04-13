@@ -6,43 +6,24 @@
 //
 
 import SwiftUI
-
-#if os(iOS)
-import UIKit
-typealias PasteBoardType = UIPasteboard
-#elseif os(macOS)
-import Cocoa
-typealias PasteBoardType = NSPasteboard
-#endif
+import Combine
 
 struct MacAddWordView: View {
-    // MARK: Enum
-    enum InputType: Hashable, CaseIterable {
-        case meaning, kanji, gana
-        
-        var description: String {
-            switch self {
-            case .meaning: return "뜻"
-            case .gana: return "가나"
-            case .kanji: return "한자"
-            }
-        }
-    }
     
     @FocusState private var editFocus: InputType?
     
     @ObservedObject private var viewModel: ViewModel
     
-    init(_ dependency: Dependency) {
+    init(_ dependency: ServiceManager) {
         self.viewModel = ViewModel(dependency)
     }
     
     var body: some View {
         contentView
             .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { onMeaningChange($0) }
-            .onChange(of: viewModel.kanjiText) { onKanjiChange($0) }
-            .onChange(of: viewModel.ganaText) { onGanaChange($0) }
+            .onChange(of: viewModel.meaningText) { onChangeText(of: .meaning, $0) }
+            .onChange(of: viewModel.kanjiText) { onChangeText(of: .kanji, $0) }
+            .onChange(of: viewModel.ganaText) { onChangeText(of: .gana, $0) }
     }
     
 }
@@ -56,21 +37,18 @@ extension MacAddWordView {
                 wordBookPicker
                 ForEach(InputType.allCases, id: \.self) { type in
                     VStack {
-                        textField(for: type)
+                        textField(type)
                             .focused($editFocus, equals: type)
-                        imageField(for: type)
+                        ImageField(inputType: type,
+                                   image: viewModel.image(of: type),
+                                   addImageButtonTapped: { viewModel.addImageButtonTapped(in: $0) },
+                                   imageTapped: { viewModel.imageTapped(in: $0) })
                     }
                 }
                 saveButton
             }
         }
         .padding(.top, 50)
-        .background {
-            copyAndPasteButton
-            sampleCancelButton
-            sampleUpButton
-            sampleDownButton
-        }
     }
     
     private var wordBookPicker: some View {
@@ -89,112 +67,30 @@ extension MacAddWordView {
         .padding()
     }
     
-    private func textField(for inputType: InputType) -> some View {
-        var bindingText: Binding<String> {
-            switch inputType {
+    private func textField(_ type: InputType)
+    -> some View {
+        
+        var text: Binding<String> {
+            switch type {
             case .meaning: return $viewModel.meaningText
-            case .gana: return $viewModel.ganaText
             case .kanji: return $viewModel.kanjiText
+            case .gana: return $viewModel.ganaText
             }
         }
         
-        var overlapCheckButton: some View {
-            Button {
-                viewModel.checkIfOverlap()
-            } label: {
-                Text(viewModel.overlapCheckButtonTitle)
-            }
-            .disabled(viewModel.isOverlapped != nil || viewModel.isCheckingOverlap)
-        }
-        
-        var autoSearchToggle: some View {
-            Toggle("자동 검색", isOn: $viewModel.isAutoFetchSamples)
-                .keyboardShortcut("f", modifiers: [.command])
-        }
-        
-        var samplePicker: some View {
-            Picker("", selection: $viewModel.selectedSampleID) {
-                Text(viewModel.samples.isEmpty ? "검색결과 없음" : "미선택")
-                    .tag(nil as String?)
-                ForEach(viewModel.samples, id: \.id) { sample in
-                    Text(sample.description)
-                        .tag(sample.id as String?)
+        return VStack {
+            WordAddField(title: "\(type.description) 입력", text: text)
+            if type == .meaning {
+                HStack {
+                    AutoSearchToggle { viewModel.updateAutoSearch($0) }
+                    SamplePicker(samples: viewModel.samples,
+                                 selectedID: $viewModel.selectedSampleID)
                 }
+                .padding(.horizontal)
+            } else if type == .gana {
+                AutoConvertToggle { viewModel.updateAutoConvert($0) }
             }
         }
-        
-        var body: some View {
-            VStack {
-                Text("\(inputType.description) 입력")
-                    .font(.system(size: 20))
-                TextEditor(text: bindingText)
-                    .font(.system(size: 30))
-                    .frame(height: Constants.Size.deviceHeight / 8)
-                    .padding(.horizontal)
-                if inputType == .meaning {
-                    HStack {
-//                        overlapCheckButton
-                        autoSearchToggle
-                            .padding(.leading, 5)
-                        samplePicker
-                    }
-                    .padding(.horizontal)
-                } else if inputType == .gana {
-                    Toggle("한자 -> 가나 자동 변환", isOn: $viewModel.isAutoConvert)
-                }
-            }
-        }
-        
-        return body
-    }
-    
-    private func imageField(for inputType: InputType) -> some View {
-        
-        var image: InputImageType? {
-            switch inputType {
-            case .meaning: return viewModel.meaningImage
-            case .gana: return viewModel.ganaImage
-            case .kanji: return viewModel.kanjiImage
-            }
-        }
-        
-        var pasteBoardImage: InputImageType? {
-            let pb = PasteBoardType.general
-            #if os(iOS)
-            guard let image = pb.image else { return nil }
-            #elseif os(macOS)
-            let type = PasteBoardType.PasteboardType.tiff
-            guard let imgData = pb.data(forType: type) else { return nil }
-            let image = InputImageType(data: imgData)
-            #endif
-            return image
-        }
-        
-        var body: some View {
-            Group {
-                if let image = image {
-                    #if os(iOS)
-                    Image(uiImage: image)
-                        .resizable()
-                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.clearImageInput(inputType) }
-                    #elseif os(macOS)
-                    Image(nsImage: image)
-                        .resizable()
-                        .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
-                        .onTapGesture { viewModel.clearImageInput(inputType) }
-                    #endif
-                } else {
-                    Button {
-                        viewModel.insertImage(of: inputType, image: pasteBoardImage)
-                    } label: {
-                        Text("\(inputType.description) 이미지")
-                    }
-                }
-            }
-        }
-        
-        return body
     }
     
     private var saveButton: some View {
@@ -214,45 +110,8 @@ extension MacAddWordView {
         }
     }
     
-    private var copyAndPasteButton: some View {
-        Button {
-            copyAndPaste()
-        } label: {
-                
-        }
-        .keyboardShortcut("v", modifiers: [.command])
-        .opacity(0)
-    }
     
-    private var sampleCancelButton: some View {
-        Button {
-            viewModel.cancelExampleSelection()
-        } label: {
-                
-        }
-        .keyboardShortcut(.escape, modifiers: [.command])
-        .opacity(0)
-    }
-    
-    private var sampleUpButton: some View {
-        Button {
-            viewModel.sampleUp()
-        } label: {
-                
-        }
-        .keyboardShortcut(.upArrow, modifiers: [.command])
-        .opacity(0)
-    }
-    
-    private var sampleDownButton: some View {
-        Button {
-            viewModel.sampleDown()
-        } label: {
-                
-        }
-        .keyboardShortcut(.downArrow, modifiers: [.command])
-        .opacity(0)
-    }
+
     
 }
 
@@ -261,69 +120,27 @@ extension MacAddWordView {
 
 extension MacAddWordView {
     
-    private func onMeaningChange(_ text: String) {
-        moveCursorWhenTab(text)
-    }
-    
-    private func onKanjiChange(_ text: String) {
-        moveCursorWhenTab(text)
-        viewModel.autoConvert(text)
-    }
-    
-    private func onGanaChange(_ text: String) {
-        moveCursorWhenTab(text)
-        viewModel.trimPastedText(text)
+    private func onChangeText(of type: InputType, _ text: String) {
+        if text.contains("\t") { moveCursorWhenTab(text); return }
+        viewModel.updateText(of: type, text)
     }
     
     private func moveCursorWhenTab(_ text: String) {
-        guard text.contains("\t") else { return }
         guard let nowCursor = editFocus else { return }
+        let removed = text.filter { $0 != "\t" }
         switch nowCursor {
         case .meaning:
-            viewModel.meaningText.removeAll(where: { $0 == "\t"})
-            viewModel.getExamples()
+            viewModel.meaningText = removed
+            viewModel.getExamples(removed)
             editFocus = .kanji
             return
         case .kanji:
-            viewModel.kanjiText.removeAll(where: { $0 == "\t"})
+            viewModel.kanjiText = removed
             editFocus = .gana
             return
         case .gana:
-            viewModel.ganaText.removeAll(where: { $0 == "\t"})
+            viewModel.ganaText = removed
             editFocus = .meaning
-            return
-        }
-    }
-    
-    private func copyAndPaste() {
-        guard let focus = editFocus else { return }
-        
-        var pasteBoardImage: InputImageType? {
-            let pb = PasteBoardType.general
-            #if os(iOS)
-            guard let image = pb.image else { return nil }
-            #elseif os(macOS)
-            let type = PasteBoardType.PasteboardType.tiff
-            guard let imgData = pb.data(forType: type) else { return nil }
-            let image = InputImageType(data: imgData)
-            #endif
-            return image
-        }
-        
-        var pasteBoardText: String? {
-            let pb = PasteBoardType.general
-            #if os(iOS)
-            return pb.string
-            #elseif os(macOS)
-            return pb.string(forType: .string)
-            #endif
-        }
-        
-        if let pasteBoardImage = pasteBoardImage {
-            viewModel.insertImage(of: focus, image: pasteBoardImage)
-        } else if let pasteBoardText = pasteBoardText {
-            viewModel.insertText(of: focus, text: pasteBoardText)
-        } else {
             return
         }
     }
@@ -332,7 +149,7 @@ extension MacAddWordView {
 
 // MARK: ViewModel
 extension MacAddWordView {
-    final class ViewModel: ObservableObject {
+    final class ViewModel: BaseViewModel {
         // Properties
         
         private let wordService: WordService
@@ -340,11 +157,7 @@ extension MacAddWordView {
         private let wordBookService: WordBookService
         
         // 단어 내용 입력 관련 properties
-        @Published var meaningText: String = "" {
-            didSet {
-                isOverlapped = nil
-            }
-        }
+        @Published var meaningText: String = ""
         @Published private(set) var meaningImage: InputImageType?
         @Published var ganaText: String = ""
         @Published private(set) var ganaImage: InputImageType?
@@ -352,13 +165,16 @@ extension MacAddWordView {
         @Published private(set) var kanjiImage: InputImageType?
         
         // 저장할 단어장 관련 properties
+        @Published private(set) var wordBook: WordBook?
+        
         @Published private(set) var bookList: [WordBook] = []
         @Published var selectedBookID: String? {
+            // TODO: refactor
             didSet {
-                countWords(in: selectedBookID)
+                addWordRepository.updateWordBook(bookList.first(where: { $0.id == selectedBookID }))
             }
         }
-        @Published var wordCount: Int?
+        @Published private(set) var wordCount: Int?
         @Published private(set) var didBooksFetched: Bool = false
         @Published private(set) var isUploading: Bool = false
         
@@ -374,50 +190,24 @@ extension MacAddWordView {
         
         // 예시 관련 properties
         @Published private(set) var samples: [Sample] = []
-        @Published var isAutoFetchSamples: Bool = true
-        @Published var selectedSampleID: String? = nil {
-            didSet {
-                if selectedSampleID != nil {
-                    updateTextWithExample()
-                }
-            }
-        }
-        private var selectedSample: Sample? {
-            return samples.first(where: { $0.id == selectedSampleID })
-        }
-        
-        private var didSampleUsed: Bool {
-            guard let selectedSample = selectedSample else { return false }
-            return selectedSample.meaningText == meaningText
-                && selectedSample.ganaText == ganaText
-                && selectedSample.kanjiText == kanjiText ? true : false
-        }
+        @Published private(set) var isAutoSearch: Bool = true
+        @Published var selectedSampleID: String?
         
         var isSaveButtonUnable: Bool {
             return (meaningText.isEmpty && meaningImage == nil) || (ganaText.isEmpty && ganaImage == nil && kanjiText.isEmpty && kanjiImage == nil) || isUploading || (selectedBookID == nil)
         }
         
-        @Published private(set) var isCheckingOverlap: Bool = false
-        @Published private(set) var isOverlapped: Bool? = nil
-        
-        var overlapCheckButtonTitle: String {
-            if isCheckingOverlap {
-                return "중복 검사중"
-            }
-            guard let isOverlapped = isOverlapped else {
-                return "중복체크"
-            }
-            return isOverlapped ? "중복됨" : "중복 아님"
-        }
-        
-        // 한자 -> 가나 auto convert
-        @Published var isAutoConvert: Bool = true
+        private let addWordRepository: AddWordRepository
         
         // initializer
-        init(_ dependency: Dependency) {
+        init(_ dependency: ServiceManager,
+             _ addWordRepository: AddWordRepository = RepositoryManager.addWordRepository) {
             self.wordService = dependency.wordService
             self.wordBookService = dependency.wordBookService
             self.sampleService = dependency.sampleService
+            self.addWordRepository = addWordRepository
+            super.init()
+            configure()
         }
         
         // public methods
@@ -436,101 +226,54 @@ extension MacAddWordView {
         }
         
         func saveWord() {
-            trimTexts()
-            isUploading = true
-            guard let wordBookID = selectedBookID else {
-                // TODO: handle error
-                print("선택된 단어장이 없어서 저장할 수 없음")
-                isUploading = false
-                return
-            }
-            let wordInput = WordInputImpl(wordBookID: wordBookID, meaningText: meaningText, meaningImage: meaningImage, ganaText: ganaText, ganaImage: ganaImage, kanjiText: kanjiText, kanjiImage: kanjiImage)
-            // example이 있는지 확인하고 example과 동일한지 확인하고
-                // 동일하면 example의 used에 + 1
-                // 동일하지 않으면 새로운 example 추가한다.
-            if didSampleUsed,
-               let selectedSample = selectedSample {
-                sampleService.addOneToUsed(of: selectedSample)
-            } else if !wordInput.hasImage {
-                sampleService.saveSample(wordInput: wordInput)
-            }
-            clearInputs()
-            clearExamples()
-            wordService.saveWord(wordInput: wordInput) { [weak self] error in
-                // TODO: handle error
-                if let error = error { print("디버그: \(error)"); return }
-                self?.isUploading = false
-                self?.wordCount = (self?.wordCount ?? 0) + 1
-            }
+            clearSamples()
+            addWordRepository.saveWord()
         }
         
-        func checkIfOverlap() {
-            isCheckingOverlap = true
-            // TODO: handle error
-            guard let selectedWordBook = bookList.first(where: { $0.id == selectedBookID }) else {
-                print("선택된 단어장이 없어서 검색할 수 없음")
-                isCheckingOverlap = false
-                return
-            }
-            wordBookService.checkIfOverlap(in: selectedWordBook, meaningText: meaningText) { [weak self] isOverlapped, error in
-                if let error = error {
-                    self?.isCheckingOverlap = false
-                    print("디버그: \(error)")
-                    return
-                }
-                self?.isOverlapped = isOverlapped ?? false
-                self?.isCheckingOverlap = false
-            }
-        }
         
-        func insertImage(of inputType: InputType, image: InputImageType?) {
-            switch inputType {
+        // 이미지 관련
+        
+        func image(of: InputType) -> InputImageType? {
+            switch of {
             case .meaning:
-                meaningImage = image
+                return meaningImage
             case .gana:
-                ganaImage = image
+                return ganaImage
             case .kanji:
-                kanjiImage = image
+                return kanjiImage
             }
         }
         
-        func insertText(of inputType: InputType, text: String) {
-            switch inputType {
-            case .meaning:
-                meaningText = text
-            case .gana:
-                ganaText = text
-            case .kanji:
-                kanjiText = text
-            }
+        // text 관련 repository 연결함수
+        
+        func updateText(of type: InputType, _ text: String) {
+            addWordRepository.updateText(type, text)
         }
         
-        // 네이버 사전에서 복사-붙여넣기할 때 "히라가나 [한자]" 형태로 된 텍스트 가나-한자로 구분
-        func trimPastedText(_ input: String) {
-            guard input.contains("[") else { return }
-            var strings = input.split(separator: " ")
-            guard strings.count >= 2 else { return }
-            strings[0] = strings[0].filter { $0 != "-" } // 장음표시 제거
-            strings[1] = strings[1].filter { !["[", "]"].contains($0) }
-            ganaText = String(strings[0])
-            kanjiText = String(strings[1])
+        func updateAutoConvert(_ autoConvertMode: Bool) {
+            addWordRepository.updateAutoConvertMode(autoConvertMode)
         }
         
-        func clearImageInput(_ inputType: InputType) {
-            switch inputType {
-            case .meaning:
-                meaningImage = nil
-            case .gana:
-                ganaImage = nil
-            case .kanji:
-                kanjiImage = nil
-            }
+        // image 관련 repository 연결함수
+        
+        func addImageButtonTapped(in inputType: InputType) {
+            addWordRepository.updateImage(inputType)
         }
         
-        func getExamples() {
-            guard !meaningText.isEmpty else { return }
+        func imageTapped(in inputType: InputType) {
+            addWordRepository.clearImage(inputType)
+        }
+        
+        // 샘플 관련 repository 연결 함수
+        
+        func updateAutoSearch(_ isAutoSearch: Bool) {
+            self.isAutoSearch = isAutoSearch
+        }
+        
+        func getExamples(_ query: String) {
+            guard !query.isEmpty else { return }
             selectedSampleID = nil
-            sampleService.getSamplesByMeaning(meaningText) { [weak self] examples, error in
+            sampleService.getSamplesByMeaning(query) { [weak self] examples, error in
                 if let error = error { print(error); return }
                 guard let examples = examples else { print("examples are nil"); return }
                 // example의 이미지는 View에 보여줄 수 없으므로 일단 image 있는 것은 필터링
@@ -543,82 +286,59 @@ extension MacAddWordView {
                                         return false
                                     }
                                 }
-                if !examples.isEmpty { self?.selectedSampleID = self?.samples[0].id }
+                self?.selectedSampleID = examples.first?.id
             }
         }
         
-        func cancelExampleSelection() {
-            selectedSampleID = nil
-            kanjiText = ""
-            ganaText = ""
-        }
-        
-        func sampleUp() {
-            guard !samples.isEmpty else { return }
-            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
-            let nextIndex = (nowIndex + 1) % samples.count
-            selectedSampleID = samples[nextIndex].id
-        }
-        
-        func sampleDown() {
-            guard !samples.isEmpty else { return }
-            let nowIndex = samples.firstIndex(where: { $0.id == selectedSampleID }) ?? 0
-            let nextIndex = (nowIndex - 1) >= 0 ? (nowIndex - 1) : (samples.count - 1)
-            selectedSampleID = samples[nextIndex].id
-        }
-        
-        // 한자 -> 가나 auto convert
-        func autoConvert(_ kanji: String) {
-            if !isAutoConvert { return }
-            ganaText = kanji.hiragana
-        }
-        
-        private func countWords(in wordBookID: String?) {
-            guard let id = wordBookID else {
-                wordCount = nil
-                return
-            }
-            
-            guard let wordBook = bookList.first(where: { $0.id == id }) else { return }
-            
-            wordBookService.countWords(in: wordBook) { [weak self] count, error in
-                if let error = error { print(error); return }
-                guard let count = count else { print("No count in wordbook: \(wordBook.id)"); return }
-                self?.wordCount = count
-            }
-        }
-        
-        private func trimTexts() {
-            meaningText = meaningText.lStrip()
-            meaningText = meaningText.rStrip()
-            kanjiText = kanjiText.lStrip()
-            kanjiText = kanjiText.rStrip()
-            ganaText = ganaText.lStrip()
-            ganaText = ganaText.rStrip()
-        }
-        
-        private func clearInputs() {
-            meaningText = ""
-            meaningImage = nil
-            ganaText = ""
-            ganaImage = nil
-            kanjiText = ""
-            kanjiImage = nil
-        }
-        
-        private func clearExamples() {
+        private func clearSamples() {
             samples = []
-            selectedSampleID = nil
         }
         
-        private func updateTextWithExample() {
-            guard let selectedSample = selectedSample else {
-                clearInputs()
-                return
-            }
-            meaningText = selectedSample.meaningText
-            ganaText = selectedSample.ganaText
-            kanjiText = selectedSample.kanjiText
-        }
     }
+}
+
+extension MacAddWordView.ViewModel {
+    
+    func configure() {
+        
+        $selectedSampleID
+            .removeDuplicates()
+            .map { [weak self] id in self?.samples.first { $0.id == id } }
+            .sink { [weak self] in self?.addWordRepository.updateSample($0) }
+            .store(in: &subscription)
+        
+        // receive state from repository
+        addWordRepository
+            .$wordBook
+            .assign(to: &$wordBook)
+        addWordRepository
+            .$wordCount
+            .assign(to: &$wordCount)
+        addWordRepository
+            .$meaningText
+            .assign(to: &$meaningText)
+        addWordRepository
+            .$kanjiText
+            .assign(to: &$kanjiText)
+        addWordRepository
+            .$ganaText
+            .assign(to: &$ganaText)
+        addWordRepository
+            .$meaningImage
+            .assign(to: &$meaningImage)
+        addWordRepository
+            .$kanjiImage
+            .assign(to: &$kanjiImage)
+        addWordRepository
+            .$ganaImage
+            .assign(to: &$ganaImage)
+        addWordRepository
+            .$isLoading
+            .assign(to: &$isUploading)
+        addWordRepository
+            .$usedSample
+            .map { $0?.id }
+            .assign(to: &$selectedSampleID)
+    }
+    
 }
