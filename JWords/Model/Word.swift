@@ -43,6 +43,20 @@ struct WordImpl: Word {
         !self.meaningImageURL.isEmpty || !self.ganaImageURL.isEmpty || !self.kanjiImageURL.isEmpty
     }
     
+    // interim init for development
+    init() {
+        self.id = UUID().uuidString
+        self.wordBookID = UUID().uuidString
+        self.meaningText = "의미"
+        self.meaningImageURL = ""
+        self.ganaText = "가나"
+        self.ganaImageURL = ""
+        self.kanjiText = "한자"
+        self.kanjiImageURL = ""
+        self.studyState = .undefined
+        self.createdAt = Date()
+    }
+    
     init(id: String, wordBookID: String, dict: [String : Any]) throws {
         self.id = id
         self.wordBookID = wordBookID
