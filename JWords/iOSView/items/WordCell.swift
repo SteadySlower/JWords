@@ -352,7 +352,9 @@ extension WordCell {
     }
 }
 
+
 struct WordCell_Previews: PreviewProvider {
+    
     static var previews: some View {
         WordCell(
             store: Store(
