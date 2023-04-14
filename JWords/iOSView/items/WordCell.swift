@@ -79,6 +79,8 @@ struct StudyWord: ReducerProtocol {
         
         static func == (lhs: StudyWord.State, rhs: StudyWord.State) -> Bool {
             lhs.id == rhs.id
+            && lhs.isFront == rhs.isFront
+            && lhs.studyState == rhs.studyState
         }
     }
     
@@ -222,9 +224,6 @@ extension WordCell {
                             .scaledToFit()
                     }
                 }
-                Button("라면") {
-                    vs.send(.cellDoubleTapped)
-                }
             }
         }
         
@@ -249,31 +248,11 @@ extension WordCell {
 // MARK: View Methods
 
 extension WordCell {
-//    private func handleEvent(_ event: Event) {
-//        guard let event = event as? StudyViewEvent else { return }
-//        switch event {
-//        case .toFront:
-//            isFront = true; return
-//        }
-//    }
-//    
-//    private func onDoubleTapped() {
-//        if isLocked { return }
-//    }
     
     private func dragUpdating(_ isLocked: Bool, _ value: _EndedGesture<DragGesture>.Value, _ state: inout CGSize, _ transaction: inout Transaction) {
         if isLocked { return }
         state.width = value.translation.width
     }
-    
-//    private func onDragEnd(_ value: DragGesture.Value) {
-//        if isLocked { return }
-//        if value.translation.width > 0 {
-//            viewModel.updateStudyState(to: .success)
-//        } else {
-//            viewModel.updateStudyState(to: .fail)
-//        }
-//    }
     
     private func deviceOrientationChanged() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
