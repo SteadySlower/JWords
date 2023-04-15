@@ -43,7 +43,7 @@ extension ImageField {
     
     private var imageView: some View {
         #if os(iOS)
-        Image(uiImage: image!)
+        Image(uiImage: image)
             .resizable()
             .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
         #elseif os(macOS)
