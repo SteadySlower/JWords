@@ -158,8 +158,23 @@ struct StudyView: View {
                 // TODO: add edit modal
             }
             #if os(iOS)
-//            .toolbar { ToolbarItem { rightToolBarItems } }
-//            .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
+            .toolbar { ToolbarItem {
+                HStack {
+                    Button("랜덤") {
+                        vs.send(.randomButtonTapped)
+                    }
+                    .disabled(vs.studyViewMode != .normal)
+                    Button("설정") {
+                        vs.send(.settingButtonTapped)
+                    }
+                }
+            } }
+            .toolbar { ToolbarItem(placement: .navigationBarLeading) {
+                Button(vs.studyViewMode == .selection ? "이동" : "마감") {
+                    vs.send(.moveButtonTapped)
+                }
+                .disabled(vs.wordBook == nil || vs.studyViewMode == .edit)
+            } }
             #endif
         }
     }
@@ -240,24 +255,6 @@ extension StudyView {
 //        return body
 //    }
 //
-//    private var rightToolBarItems: some View {
-//        HStack {
-//            Button("랜덤") {
-//                viewModel.shuffleWords()
-//            }
-//            .disabled(viewModel.studyViewMode != .normal)
-//            Button("설정") {
-//                showSideBar = true
-//            }
-//        }
-//    }
-//
-//    private var leftToolBarItems: some View {
-//        Button(viewModel.studyViewMode == .selection ? "이동" : "마감") {
-//            showMoveModal = true
-//        }
-//        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
-//    }
 
 }
 
@@ -398,20 +395,24 @@ struct StudyView_Previews: PreviewProvider {
     ]
     
     static var previews: some View {
-        StudyView(
-            store: Store(
-                initialState: WordList.State(words: mockWords),
-                reducer: WordList()._printChanges()
+        NavigationView {
+            StudyView(
+                store: Store(
+                    initialState: WordList.State(words: mockWords),
+                    reducer: WordList()._printChanges()
+                )
             )
-        )
-        .previewDisplayName("words")
-        StudyView(
-            store: Store(
-                initialState: WordList.State(wordBook: .mock),
-                reducer: WordList()._printChanges()
+            .previewDisplayName("words")
+        }
+        NavigationView {
+            StudyView(
+                store: Store(
+                    initialState: WordList.State(wordBook: .mock),
+                    reducer: WordList()._printChanges()
+                )
             )
-        )
-        .previewDisplayName("word book")
+            .previewDisplayName("word book")
+        }
     }
 }
 
