@@ -37,6 +37,17 @@ struct WordList: ReducerProtocol {
         var selectedIDs: Set<String> = []
         var toEditWord: Word?
         
+        init(wordBook: WordBook) {
+            self.wordBook = wordBook
+            self.frontType = wordBook.preferredFrontType
+        }
+        
+        init(words: [Word]) {
+            self.wordBook = nil
+            self._words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(word: $0) })
+            self.frontType = .kanji
+        }
+        
         var isLocked: Bool {
             wordBook == nil && studyMode == .onlyFail
         }
@@ -57,14 +68,6 @@ struct WordList: ReducerProtocol {
             }
         }
         
-        static func == (lhs: WordList.State, rhs: WordList.State) -> Bool {
-            lhs._words == rhs._words
-            && lhs.studyMode == rhs.studyMode
-            && lhs.frontType == rhs.frontType
-            && lhs.studyMode == rhs.studyMode
-            && lhs.selectedIDs == rhs.selectedIDs
-            && lhs.toEditWord?.id == rhs.toEditWord?.id
-        }
     }
 
     enum Action: Equatable {
