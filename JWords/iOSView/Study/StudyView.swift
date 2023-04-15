@@ -37,6 +37,11 @@ struct WordList: ReducerProtocol {
         var selectedIDs: Set<String> = []
         var toEditWord: Word?
         
+        var showEditModal: Bool = false
+        var showMoveModal: Bool = false
+        var shouldDismiss: Bool = false
+        var showSideBar: Bool = false
+        
         init(wordBook: WordBook) {
             self.wordBook = wordBook
             self.frontType = wordBook.preferredFrontType
@@ -74,7 +79,9 @@ struct WordList: ReducerProtocol {
         case onAppear
         case wordsResponse(TaskResult<[Word]>)
         case moveButtonTapped
+        case setMoveModal(isPresented: Bool)
         case editButtonTapped
+        case setEditModal(isPresented: Bool)
         case studyModeChanged(StudyMode)
         case frontTypeChanged(FrontType)
         case viewModeChanged(StudyViewMode)
@@ -115,47 +122,41 @@ struct WordList: ReducerProtocol {
 }
 
 struct StudyView: View {
-    @StateObject private var viewModel: ViewModel
-    @Environment(\.dismiss) private var dismiss
     
-    private let dependency: ServiceManager
+    let store: StoreOf<WordList>
+    @Environment(\.dismiss) private var dismiss
     
     @State private var showEditModal: Bool = false
     @State private var showMoveModal: Bool = false
     @State private var shouldDismiss: Bool = false
     @State private var showSideBar: Bool = false
     
-    init(wordBook: WordBook, dependency: ServiceManager) {
-        self._viewModel = StateObject(wrappedValue: ViewModel(wordBook: wordBook, wordService: dependency.wordService))
-        self.dependency = dependency
-    }
     
-    // 틀린 단어 모아보기용
-    init(words: [Word], dependency: ServiceManager) {
-        self._viewModel = StateObject(wrappedValue: ViewModel(words: words, wordService: dependency.wordService))
-        self.dependency = dependency
-    }
     
     var body: some View {
-        contentView
-            .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
-            .onAppear { viewModel.fetchWords() }
-            .sheet(isPresented: $showMoveModal,
-                   onDismiss: { if shouldDismiss { dismiss() } },
-                   content: { WordMoveView(wordBook: viewModel.wordBook!,
-                                           toMoveWords: viewModel.toMoveWords,
-                                           didClosed: $shouldDismiss,
-                                           dependency: dependency) })
-            .sheet(isPresented: $showEditModal,
-                   onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
-                   content: { WordInputView(viewModel.toEditWord,
-                                            dependency: dependency,
-                                            eventPublisher: viewModel.eventPublisher) })
-            #if os(iOS)
-            .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
-            .toolbar { ToolbarItem { rightToolBarItems } }
-            .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
-            #endif
+        WithViewStore(store, observe: { $0 }) { vs in
+            contentView
+                .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
+                .onAppear { vs.send(.onAppear) }
+                .sheet(isPresented: vs.binding(
+                    get: \.showMoveModal,
+                    send: WordList.Action.setMoveModal(isPresented:)
+                    )
+                ) {
+                    // TODO: add move modal
+                }
+                .sheet(isPresented: vs.binding(
+                    get: \.showEditModal,
+                    send: WordList.Action.setEditModal(isPresented:)
+                    )
+                ) {
+                    // TODO: add edit modal
+                }
+                #if os(iOS)
+                .toolbar { ToolbarItem { rightToolBarItems } }
+                .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
+                #endif
+        }
     }
     
 }
