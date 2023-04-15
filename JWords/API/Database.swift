@@ -105,7 +105,7 @@ extension FirestoreDB {
                 dict["createdAt"] = timestamp.dateValue()
                 
                 do {
-                    wordBooks.append(try WordBookImpl(id: id, dict: dict))
+                    wordBooks.append(try WordBook(id: id, dict: dict))
                 } catch let error {
                     completionHandler(nil, error)
                     return

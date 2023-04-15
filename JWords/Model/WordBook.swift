@@ -7,21 +7,21 @@
 
 import Foundation
 
-enum WordBookSchedule: CaseIterable {
+enum WordBookSchedule: Equatable, CaseIterable {
     case none, study, review
 }
 
-protocol WordBook {
-    var id: String { get }
-    var title: String { get }
-    var createdAt: Date { get }
-    var closed: Bool { get }
-    var dayFromToday: Int { get }
-    var schedule: WordBookSchedule { get }
-    var preferredFrontType: FrontType { get }
-}
+//protocol WordBook {
+//    var id: String { get }
+//    var title: String { get }
+//    var createdAt: Date { get }
+//    var closed: Bool { get }
+//    var dayFromToday: Int { get }
+//    var schedule: WordBookSchedule { get }
+//    var preferredFrontType: FrontType { get }
+//}
 
-struct WordBookImpl: WordBook {
+struct WordBook: Equatable, Identifiable {
     
     let id: String
     let title: String

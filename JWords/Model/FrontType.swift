@@ -5,7 +5,7 @@
 //  Created by JW Moon on 2023/01/23.
 //
 
-enum FrontType: Int, Hashable, CaseIterable {
+enum FrontType: Int, Equatable, Hashable, CaseIterable {
     case kanji
     case meaning
     
