@@ -38,3 +38,23 @@ extension WordClient: DependencyKey {
     }
   )
 }
+
+extension WordClient: TestDependencyKey {
+  static let previewValue = Self(
+    words: { _ in .mock }
+  )
+
+  static let testValue = Self(
+    words: unimplemented("\(Self.self).forecast")
+  )
+}
+
+extension Array where Element == Word {
+    static let mock = [
+        Word(), Word(), Word(), Word(), Word(), Word(), Word(), Word()
+    ]
+}
+
+extension WordBook {
+    static let mock = WordBook(title: "Mock Word Book")
+}

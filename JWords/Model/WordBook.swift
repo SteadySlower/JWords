@@ -56,6 +56,14 @@ struct WordBook: Equatable, Identifiable {
         }
     }
     
+    init(title: String) {
+        self.id = UUID().uuidString
+        self.title = title
+        self.createdAt = Date()
+        self._closed = nil
+        self._preferredFrontType = nil
+    }
+    
     init(id: String, dict: [String: Any]) throws {
         self.id = id
         
