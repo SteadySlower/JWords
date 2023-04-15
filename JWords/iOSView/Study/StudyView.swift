@@ -88,6 +88,7 @@ struct WordList: ReducerProtocol {
         case randomButtonTapped
         case settingButtonTapped
         case closeButtonTapped
+        case word(id: StudyWord.State.ID, action: StudyWord.Action)
     }
     
     @Dependency(\.wordClient) var wordClient
@@ -110,13 +111,16 @@ struct WordList: ReducerProtocol {
                 return .none
             case .moveButtonTapped:
                 return .none
+            case .word(let id, let action):
+                return .none
             default:
                 return .none
             }
-
-            
-            
         }
+        .forEach(\._words, action: /Action.word(id:action:)) {
+          StudyWord()
+        }
+
     }
 
 }
@@ -126,36 +130,37 @@ struct StudyView: View {
     let store: StoreOf<WordList>
     @Environment(\.dismiss) private var dismiss
     
-    @State private var showEditModal: Bool = false
-    @State private var showMoveModal: Bool = false
-    @State private var shouldDismiss: Bool = false
-    @State private var showSideBar: Bool = false
-    
-    
-    
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            contentView
-                .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
-                .onAppear { vs.send(.onAppear) }
-                .sheet(isPresented: vs.binding(
-                    get: \.showMoveModal,
-                    send: WordList.Action.setMoveModal(isPresented:)
-                    )
-                ) {
-                    // TODO: add move modal
+            ScrollView {
+                LazyVStack(spacing: 32) {
+                    ForEachStore(
+                      self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
+                    ) {
+                      WordCell(store: $0)
+                    }
                 }
-                .sheet(isPresented: vs.binding(
-                    get: \.showEditModal,
-                    send: WordList.Action.setEditModal(isPresented:)
-                    )
-                ) {
-                    // TODO: add edit modal
-                }
-                #if os(iOS)
-                .toolbar { ToolbarItem { rightToolBarItems } }
-                .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
-                #endif
+            }
+            .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
+            .onAppear { vs.send(.onAppear) }
+            .sheet(isPresented: vs.binding(
+                get: \.showMoveModal,
+                send: WordList.Action.setMoveModal(isPresented:)
+                )
+            ) {
+                // TODO: add move modal
+            }
+            .sheet(isPresented: vs.binding(
+                get: \.showEditModal,
+                send: WordList.Action.setEditModal(isPresented:)
+                )
+            ) {
+                // TODO: add edit modal
+            }
+            #if os(iOS)
+//            .toolbar { ToolbarItem { rightToolBarItems } }
+//            .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
+            #endif
         }
     }
     
@@ -164,10 +169,10 @@ struct StudyView: View {
 // MARK: SubViews
 
 extension StudyView {
-    private var contentView: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEach(viewModel.words, id: \.id) { word in
+//    private var contentView: some View {
+//        ScrollView {
+//            LazyVStack(spacing: 32) {
+//                ForEach(viewModel.words, id: \.id) { word in
 //                    WordCell(word: word,
 //                             frontType: viewModel.frontType,
 //                             eventPublisher: viewModel.eventPublisher,
@@ -179,80 +184,80 @@ extension StudyView {
 //                                viewModel.toEditWord = word
 //                                showEditModal = true
 //                            }
-                }
-            }
-        }
-        .sideBar(showSideBar: $showSideBar) { settingSideBar }
-    }
+//                }
+//            }
+//        }
+//        .sideBar(showSideBar: $showSideBar) { settingSideBar }
+//    }
     
-    private var settingSideBar: some View {
-        
-        var studyModePicker: some View {
-            Picker("", selection: $viewModel.studyMode) {
-                ForEach(StudyMode.allCases, id: \.self) {
-                    Text($0.pickerText)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-        
-        var frontTypePicker: some View {
-            Picker("", selection: $viewModel.frontType) {
-                ForEach(FrontType.allCases, id: \.self) {
-                    Text($0.pickerText)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-        
-        var viewModePicker: some View {
-            Picker("모드", selection: $viewModel.studyViewMode) {
-                Text("학습")
-                    .tag(StudyViewMode.normal)
-                Text("선택")
-                    .tag(StudyViewMode.selection)
-                Text("수정")
-                    .tag(StudyViewMode.edit)
-            }
-            .pickerStyle(.segmented)
-        }
-        
-        var body: some View {
-            VStack {
-                Spacer()
-                studyModePicker
-                    .padding()
-                frontTypePicker
-                    .padding()
-                if viewModel.wordBook != nil {
-                    viewModePicker
-                        .padding()
-                }
-                Spacer()
-            }
-        }
-        
-        return body
-    }
-    
-    private var rightToolBarItems: some View {
-        HStack {
-            Button("랜덤") {
-                viewModel.shuffleWords()
-            }
-            .disabled(viewModel.studyViewMode != .normal)
-            Button("설정") {
-                showSideBar = true
-            }
-        }
-    }
-    
-    private var leftToolBarItems: some View {
-        Button(viewModel.studyViewMode == .selection ? "이동" : "마감") {
-            showMoveModal = true
-        }
-        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
-    }
+//    private var settingSideBar: some View {
+//
+//        var studyModePicker: some View {
+//            Picker("", selection: $viewModel.studyMode) {
+//                ForEach(StudyMode.allCases, id: \.self) {
+//                    Text($0.pickerText)
+//                }
+//            }
+//            .pickerStyle(.segmented)
+//        }
+//
+//        var frontTypePicker: some View {
+//            Picker("", selection: $viewModel.frontType) {
+//                ForEach(FrontType.allCases, id: \.self) {
+//                    Text($0.pickerText)
+//                }
+//            }
+//            .pickerStyle(.segmented)
+//        }
+//
+//        var viewModePicker: some View {
+//            Picker("모드", selection: $viewModel.studyViewMode) {
+//                Text("학습")
+//                    .tag(StudyViewMode.normal)
+//                Text("선택")
+//                    .tag(StudyViewMode.selection)
+//                Text("수정")
+//                    .tag(StudyViewMode.edit)
+//            }
+//            .pickerStyle(.segmented)
+//        }
+//
+//        var body: some View {
+//            VStack {
+//                Spacer()
+//                studyModePicker
+//                    .padding()
+//                frontTypePicker
+//                    .padding()
+//                if viewModel.wordBook != nil {
+//                    viewModePicker
+//                        .padding()
+//                }
+//                Spacer()
+//            }
+//        }
+//
+//        return body
+//    }
+//
+//    private var rightToolBarItems: some View {
+//        HStack {
+//            Button("랜덤") {
+//                viewModel.shuffleWords()
+//            }
+//            .disabled(viewModel.studyViewMode != .normal)
+//            Button("설정") {
+//                showSideBar = true
+//            }
+//        }
+//    }
+//
+//    private var leftToolBarItems: some View {
+//        Button(viewModel.studyViewMode == .selection ? "이동" : "마감") {
+//            showMoveModal = true
+//        }
+//        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
+//    }
 
 }
 
@@ -386,4 +391,27 @@ extension StudyView {
 }
 
 
+struct StudyView_Previews: PreviewProvider {
+    
+    private static let mockWords: [Word] = [
+        Word(), Word(), Word(), Word(), Word(), Word(), Word(), Word()
+    ]
+    
+    static var previews: some View {
+        StudyView(
+            store: Store(
+                initialState: WordList.State(words: mockWords),
+                reducer: WordList()._printChanges()
+            )
+        )
+        .previewDisplayName("words")
+        StudyView(
+            store: Store(
+                initialState: WordList.State(wordBook: .mock),
+                reducer: WordList()._printChanges()
+            )
+        )
+        .previewDisplayName("word book")
+    }
+}
 
