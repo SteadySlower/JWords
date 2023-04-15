@@ -9,31 +9,11 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-enum StudyMode: Hashable, CaseIterable, Equatable {
-    case all, excludeSuccess, onlyFail
-    
-    var pickerText: String {
-        switch self {
-        case .all: return "전부"
-        case .excludeSuccess: return "O제외"
-        case .onlyFail: return "X만"
-        }
-    }
-}
-
-enum StudyViewMode: Hashable, Equatable {
-    case normal
-    case selection
-    case edit
-}
-
 struct WordList: ReducerProtocol {
     struct State: Equatable {
         let wordBook: WordBook?
         var _words: IdentifiedArrayOf<StudyWord.State> = []
-        var studyMode: StudyMode = .all
-        var frontType: FrontType
-        var studyViewMode: StudyViewMode = .normal
+        var setting: StudySetting.State
         var selectedIDs: Set<String> = []
         var toEditWord: Word?
         
@@ -44,21 +24,21 @@ struct WordList: ReducerProtocol {
         
         init(wordBook: WordBook) {
             self.wordBook = wordBook
-            self.frontType = wordBook.preferredFrontType
+            self.setting = .init(frontMode: wordBook.preferredFrontType)
         }
         
         init(words: [Word]) {
             self.wordBook = nil
             self._words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(word: $0) })
-            self.frontType = .kanji
+            self.setting = .init(frontMode: .kanji)
         }
         
         var isLocked: Bool {
-            wordBook == nil && studyMode == .onlyFail
+            wordBook == nil && setting.studyMode == .onlyFail
         }
         
         var words: IdentifiedArrayOf<StudyWord.State> {
-            switch studyMode {
+            switch setting.studyMode {
             case .all: return _words
             case .excludeSuccess: return _words.filter { $0.studyState != .success }
             case .onlyFail: return _words.filter { $0.studyState == .fail }
@@ -66,7 +46,7 @@ struct WordList: ReducerProtocol {
         }
         
         var toMoveWords: IdentifiedArrayOf<StudyWord.State> {
-            if studyViewMode == .selection {
+            if setting.studyViewMode == .selection {
                 return _words.filter { selectedIDs.contains($0.id) }
             } else {
                 return _words.filter { $0.studyState != .success }
@@ -78,23 +58,23 @@ struct WordList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case wordsResponse(TaskResult<[Word]>)
-        case moveButtonTapped
         case setMoveModal(isPresented: Bool)
         case editButtonTapped
         case setEditModal(isPresented: Bool)
-        case studyModeChanged(StudyMode)
-        case frontTypeChanged(FrontType)
-        case viewModeChanged(StudyViewMode)
+        case setSideBar(isPresented: Bool)
         case randomButtonTapped
-        case settingButtonTapped
         case closeButtonTapped
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
+        case sideBar(action: StudySetting.Action)
     }
     
     @Dependency(\.wordClient) var wordClient
     private enum FetchWordsID {}
     
     var body: some ReducerProtocol<State, Action> {
+        Scope(state: \.setting, action: /Action.sideBar(action:)) {
+            StudySetting()
+        }
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -109,9 +89,12 @@ struct WordList: ReducerProtocol {
             case .wordsResponse(.failure):
                 state._words = []
                 return .none
-            case .moveButtonTapped:
+            case .setSideBar(let isPresented):
+                state.showSideBar = isPresented
                 return .none
             case .word(let id, let action):
+                return .none
+            case .sideBar(_):
                 return .none
             default:
                 return .none
@@ -120,7 +103,6 @@ struct WordList: ReducerProtocol {
         .forEach(\._words, action: /Action.word(id:action:)) {
           StudyWord()
         }
-
     }
 
 }
@@ -143,17 +125,21 @@ struct StudyView: View {
             }
             .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
             .onAppear { vs.send(.onAppear) }
+            .sideBar(showSideBar: vs.binding(
+                get: \.showSideBar,
+                send: WordList.Action.setSideBar(isPresented:))
+            ) {
+                SettingSideBar(store: self.store.scope(state: \.setting, action: WordList.Action.sideBar(action:)))
+            }
             .sheet(isPresented: vs.binding(
                 get: \.showMoveModal,
-                send: WordList.Action.setMoveModal(isPresented:)
-                )
+                send: WordList.Action.setMoveModal(isPresented:))
             ) {
                 // TODO: add move modal
             }
             .sheet(isPresented: vs.binding(
                 get: \.showEditModal,
-                send: WordList.Action.setEditModal(isPresented:)
-                )
+                send: WordList.Action.setEditModal(isPresented:))
             ) {
                 // TODO: add edit modal
             }
@@ -163,99 +149,21 @@ struct StudyView: View {
                     Button("랜덤") {
                         vs.send(.randomButtonTapped)
                     }
-                    .disabled(vs.studyViewMode != .normal)
+                    .disabled(vs.setting.studyViewMode != .normal)
                     Button("설정") {
-                        vs.send(.settingButtonTapped)
+                        vs.send(.setSideBar(isPresented: true))
                     }
                 }
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                Button(vs.studyViewMode == .selection ? "이동" : "마감") {
-                    vs.send(.moveButtonTapped)
+                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                    vs.send(.setMoveModal(isPresented: true))
                 }
-                .disabled(vs.wordBook == nil || vs.studyViewMode == .edit)
+                .disabled(vs.wordBook == nil || vs.setting.studyViewMode == .edit)
             } }
             #endif
         }
     }
-    
-}
-
-// MARK: SubViews
-
-extension StudyView {
-//    private var contentView: some View {
-//        ScrollView {
-//            LazyVStack(spacing: 32) {
-//                ForEach(viewModel.words, id: \.id) { word in
-//                    WordCell(word: word,
-//                             frontType: viewModel.frontType,
-//                             eventPublisher: viewModel.eventPublisher,
-//                             isLocked: viewModel.isCellLocked)
-//                            .selectable(nowSelecting: viewModel.studyViewMode == .selection,
-//                                        isSelected: viewModel.isSelected(word),
-//                                        onTap: { viewModel.toggleSelection(word) })
-//                            .editable(nowEditing: viewModel.studyViewMode == .edit) {
-//                                viewModel.toEditWord = word
-//                                showEditModal = true
-//                            }
-//                }
-//            }
-//        }
-//        .sideBar(showSideBar: $showSideBar) { settingSideBar }
-//    }
-    
-//    private var settingSideBar: some View {
-//
-//        var studyModePicker: some View {
-//            Picker("", selection: $viewModel.studyMode) {
-//                ForEach(StudyMode.allCases, id: \.self) {
-//                    Text($0.pickerText)
-//                }
-//            }
-//            .pickerStyle(.segmented)
-//        }
-//
-//        var frontTypePicker: some View {
-//            Picker("", selection: $viewModel.frontType) {
-//                ForEach(FrontType.allCases, id: \.self) {
-//                    Text($0.pickerText)
-//                }
-//            }
-//            .pickerStyle(.segmented)
-//        }
-//
-//        var viewModePicker: some View {
-//            Picker("모드", selection: $viewModel.studyViewMode) {
-//                Text("학습")
-//                    .tag(StudyViewMode.normal)
-//                Text("선택")
-//                    .tag(StudyViewMode.selection)
-//                Text("수정")
-//                    .tag(StudyViewMode.edit)
-//            }
-//            .pickerStyle(.segmented)
-//        }
-//
-//        var body: some View {
-//            VStack {
-//                Spacer()
-//                studyModePicker
-//                    .padding()
-//                frontTypePicker
-//                    .padding()
-//                if viewModel.wordBook != nil {
-//                    viewModePicker
-//                        .padding()
-//                }
-//                Spacer()
-//            }
-//        }
-//
-//        return body
-//    }
-//
-
 }
 
 // MARK: ViewModel

@@ -29,6 +29,7 @@
 		06B2DA2129D7D0AB009C67EF /* WordAddField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2029D7D0AB009C67EF /* WordAddField.swift */; };
 		06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2429D7D42F009C67EF /* Toggles.swift */; };
 		06B2DA3C29EA33F8009C67EF /* WordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3B29EA33F8009C67EF /* WordClient.swift */; };
+		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC606C297E9A7500AA67E6 /* FrontType.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
@@ -148,6 +149,7 @@
 		06B2DA2029D7D0AB009C67EF /* WordAddField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordAddField.swift; path = JWords/macView/Components/WordAddField.swift; sourceTree = SOURCE_ROOT; };
 		06B2DA2429D7D42F009C67EF /* Toggles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toggles.swift; path = JWords/macView/Components/Toggles.swift; sourceTree = SOURCE_ROOT; };
 		06B2DA3B29EA33F8009C67EF /* WordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordClient.swift; sourceTree = "<group>"; };
+		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		06BC606C297E9A7500AA67E6 /* FrontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontType.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				5A67DC29286946F800AC156C /* StudyView.swift */,
 				06A564D5289E9C5100DBC2E0 /* WordInputView.swift */,
 				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
+				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
 			);
 			path = Study;
 			sourceTree = "<group>";
@@ -759,6 +762,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06B2DA3C29EA33F8009C67EF /* WordClient.swift in Sources */,
+				06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */,
 				5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */,
 				067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */,
 				0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */,
