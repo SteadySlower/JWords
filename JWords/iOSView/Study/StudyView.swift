@@ -7,8 +7,9 @@
 
 import SwiftUI
 import Combine
+import ComposableArchitecture
 
-enum StudyMode: Hashable, CaseIterable {
+enum StudyMode: Hashable, CaseIterable, Equatable {
     case all, excludeSuccess, onlyFail
     
     var pickerText: String {
@@ -20,10 +21,94 @@ enum StudyMode: Hashable, CaseIterable {
     }
 }
 
-enum StudyViewMode: Hashable {
+enum StudyViewMode: Hashable, Equatable {
     case normal
     case selection
     case edit
+}
+
+struct WordList: ReducerProtocol {
+    struct State: Equatable {
+        let wordBook: WordBook?
+        var _words: IdentifiedArrayOf<StudyWord.State> = []
+        var studyMode: StudyMode = .all
+        var frontType: FrontType
+        var studyViewMode: StudyViewMode = .normal
+        var selectedIDs: Set<String> = []
+        var toEditWord: Word?
+        
+        var isLocked: Bool {
+            wordBook == nil && studyMode == .onlyFail
+        }
+        
+        var words: IdentifiedArrayOf<StudyWord.State> {
+            switch studyMode {
+            case .all: return _words
+            case .excludeSuccess: return _words.filter { $0.studyState != .success }
+            case .onlyFail: return _words.filter { $0.studyState == .fail }
+            }
+        }
+        
+        var toMoveWords: IdentifiedArrayOf<StudyWord.State> {
+            if studyViewMode == .selection {
+                return _words.filter { selectedIDs.contains($0.id) }
+            } else {
+                return _words.filter { $0.studyState != .success }
+            }
+        }
+        
+        static func == (lhs: WordList.State, rhs: WordList.State) -> Bool {
+            lhs._words == rhs._words
+            && lhs.studyMode == rhs.studyMode
+            && lhs.frontType == rhs.frontType
+            && lhs.studyMode == rhs.studyMode
+            && lhs.selectedIDs == rhs.selectedIDs
+            && lhs.toEditWord?.id == rhs.toEditWord?.id
+        }
+    }
+
+    enum Action: Equatable {
+        case onAppear
+        case wordsResponse(TaskResult<[Word]>)
+        case moveButtonTapped
+        case editButtonTapped
+        case studyModeChanged(StudyMode)
+        case frontTypeChanged(FrontType)
+        case viewModeChanged(StudyViewMode)
+        case randomButtonTapped
+        case settingButtonTapped
+        case closeButtonTapped
+    }
+    
+    @Dependency(\.wordClient) var wordClient
+    private enum FetchWordsID {}
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                guard let wordBook = state.wordBook else { return .none }
+                return .task {
+                    await .wordsResponse(TaskResult { try await wordClient.words(wordBook) })
+                }
+                .cancellable(id: FetchWordsID.self)
+            case let .wordsResponse(.success(words)):
+                state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0) })
+                return .none
+            case .wordsResponse(.failure):
+                state._words = []
+                return .none
+            case .moveButtonTapped:
+                return .none
+            default:
+                return .none
+            }
+
+            
+            
+        }
+    }
+
 }
 
 struct StudyView: View {
