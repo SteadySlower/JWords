@@ -43,20 +43,6 @@ struct WordImpl: Word {
         !self.meaningImageURL.isEmpty || !self.ganaImageURL.isEmpty || !self.kanjiImageURL.isEmpty
     }
     
-    // interim init for development
-    init() {
-        self.id = UUID().uuidString
-        self.wordBookID = UUID().uuidString
-        self.meaningText = "의미"
-        self.meaningImageURL = ""
-        self.ganaText = "가나"
-        self.ganaImageURL = ""
-        self.kanjiText = "한자"
-        self.kanjiImageURL = "https://firebasestorage.googleapis.com:443/v0/b/jwords-935a2.appspot.com/o/card_images%2FA76BE9AC-C849-45DA-95C5-77AF39D5F096?alt=media&token=27225755-b7ab-4197-a5a1-f604b4b4f3c1"
-        self.studyState = .undefined
-        self.createdAt = Date()
-    }
-    
     init(id: String, wordBookID: String, dict: [String : Any]) throws {
         self.id = id
         self.wordBookID = wordBookID

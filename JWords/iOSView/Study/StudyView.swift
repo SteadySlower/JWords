@@ -79,17 +79,17 @@ extension StudyView {
         ScrollView {
             LazyVStack(spacing: 32) {
                 ForEach(viewModel.words, id: \.id) { word in
-//                    WordCell(word: word,
-//                             frontType: viewModel.frontType,
-//                             eventPublisher: viewModel.eventPublisher,
-//                             isLocked: viewModel.isCellLocked)
-//                            .selectable(nowSelecting: viewModel.studyViewMode == .selection,
-//                                        isSelected: viewModel.isSelected(word),
-//                                        onTap: { viewModel.toggleSelection(word) })
-//                            .editable(nowEditing: viewModel.studyViewMode == .edit) {
-//                                viewModel.toEditWord = word
-//                                showEditModal = true
-//                            }
+                    WordCell(word: word,
+                             frontType: viewModel.frontType,
+                             eventPublisher: viewModel.eventPublisher,
+                             isLocked: viewModel.isCellLocked)
+                            .selectable(nowSelecting: viewModel.studyViewMode == .selection,
+                                        isSelected: viewModel.isSelected(word),
+                                        onTap: { viewModel.toggleSelection(word) })
+                            .editable(nowEditing: viewModel.studyViewMode == .edit) {
+                                viewModel.toEditWord = word
+                                showEditModal = true
+                            }
                 }
             }
         }
