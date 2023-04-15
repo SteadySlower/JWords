@@ -11,22 +11,22 @@ enum StudyState: Int {
     case undefined = 0, success, fail
 }
 
-protocol Word {
-    var id: String { get }
-    var wordBookID: String { get }
-    var meaningText: String { get }
-    var meaningImageURL: String { get }
-    var ganaText: String { get }
-    var ganaImageURL: String { get }
-    var kanjiText: String { get }
-    var kanjiImageURL: String { get }
-    var studyState: StudyState { get set }
-    var createdAt: Date { get }
-    
-    var hasImage: Bool { get }
-}
+//protocol Word: Equatable {
+//    var id: String { get }
+//    var wordBookID: String { get }
+//    var meaningText: String { get }
+//    var meaningImageURL: String { get }
+//    var ganaText: String { get }
+//    var ganaImageURL: String { get }
+//    var kanjiText: String { get }
+//    var kanjiImageURL: String { get }
+//    var studyState: StudyState { get set }
+//    var createdAt: Date { get }
+//
+//    var hasImage: Bool { get }
+//}
 
-struct WordImpl: Word {
+struct Word: Equatable, Identifiable, Sendable {
    
     let id: String
     let wordBookID: String

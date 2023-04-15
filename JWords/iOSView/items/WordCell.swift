@@ -339,7 +339,7 @@ struct WordCell_Previews: PreviewProvider {
     static var previews: some View {
         WordCell(
             store: Store(
-                initialState: StudyWord.State(word: WordImpl()),
+                initialState: StudyWord.State(word: Word()),
                 reducer: StudyWord()
             )
         )

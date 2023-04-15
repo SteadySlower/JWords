@@ -164,7 +164,7 @@ extension FirestoreDB {
             dict["createdAt"] = timestamp.dateValue()
             
             do {
-                let word = try WordImpl(id: id, wordBookID: wordBookID, dict: dict)
+                let word = try Word(id: id, wordBookID: wordBookID, dict: dict)
                 completionHandler(word, nil)
                 return
             } catch let error {
@@ -201,7 +201,7 @@ extension FirestoreDB {
                 dict["createdAt"] = timestamp.dateValue()
                 
                 do {
-                    words.append(try WordImpl(id: id, wordBookID: wordBook.id, dict: dict))
+                    words.append(try Word(id: id, wordBookID: wordBook.id, dict: dict))
                 } catch let error {
                     completionHandler(nil, error)
                     return
