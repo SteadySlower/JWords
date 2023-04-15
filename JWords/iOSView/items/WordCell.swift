@@ -134,14 +134,26 @@ struct WordCell: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ZStack {
-                contentView
-                    .gesture(dragGesture
-                        .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
-                        .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
-                    )
-                    .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
-                    .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
+                sizeDecisionView(frontText: vs.frontText,
+                                 frontImageURLs: vs.frontImageURLs,
+                                 backText: vs.backText,
+                                 backImageURLs: vs.backImageURLs)
+                swipeGuide
+                ZStack {
+                    cellColor(vs.studyState)
+                    cellFace(vs.isFront ? vs.frontText : vs.backText,
+                             vs.isFront ? vs.frontImageURLs : vs.backImageURLs)
+                }
+                .offset(dragAmount)
             }
+            .frame(width: deviceWidth * 0.9)
+            .frame(minHeight: vs.word.hasImage ? 200 : 100)
+            .gesture(dragGesture
+                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
+                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
+            )
+            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
+            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
             #if os(iOS)
             .onAppear { deviceOrientationChanged() }
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
@@ -155,94 +167,63 @@ struct WordCell: View {
 
 extension WordCell {
     
-    private var contentView: some View {
-        WithViewStore(self.store) { vs in
-            ZStack {
-                background
-                ZStack {
-                    cellColor
-                    cellFace(isFront: vs.isFront)
-                }
-                .offset(dragAmount)
-            }
-            .frame(width: deviceWidth * 0.9)
-            .frame(minHeight: vs.word.hasImage ? 200 : 100)
-        }
-    }
-    
-    private var background: some View {
+    private func sizeDecisionView(frontText: String,
+                                  frontImageURLs: [URL],
+                                  backText: String,
+                                  backImageURLs: [URL]) -> some View {
         ZStack {
-            sizeDecisionView
-            HStack {
-                Image(systemName: "circle")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.blue)
-                Spacer()
-                Image(systemName: "x.circle")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.red)
+            ZStack {
+                cellFace(frontText, frontImageURLs)
+                Color.white
             }
-            .background { Color.white }
-        }
-    }
-    
-    private var cellColor: some View {
-        WithViewStore(self.store) { vs in
-            Group {
-                switch vs.studyState {
-                case .undefined:
-                    Color.white
-                case .success:
-                    Color(red: 207/256, green: 240/256, blue: 204/256)
-                case .fail:
-                    Color(red: 253/256, green: 253/256, blue: 150/256)
-                }
+            ZStack {
+                cellFace(backText, backImageURLs)
+                Color.white
             }
         }
     }
     
-    private func cellFace(isFront: Bool) -> some View {
-        
-        return WithViewStore(self.store) { vs in
-            var text: String {
-                isFront ? vs.frontText : vs.backText
+    private var swipeGuide: some View {
+        HStack {
+            Image(systemName: "circle")
+                .resizable()
+                .frame(width: 100, height: 100)
+                .foregroundColor(.blue)
+            Spacer()
+            Image(systemName: "x.circle")
+                .resizable()
+                .frame(width: 100, height: 100)
+                .foregroundColor(.red)
+        }
+        .background { Color.white }
+    }
+    
+    private func cellColor(_ studyState: StudyState) -> some View {
+        Group {
+            switch studyState {
+            case .undefined:
+                Color.white
+            case .success:
+                Color(red: 207/256, green: 240/256, blue: 204/256)
+            case .fail:
+                Color(red: 253/256, green: 253/256, blue: 150/256)
             }
-            
-            var imageURLs: [URL] {
-                isFront ? vs.frontImageURLs : vs.backImageURLs
-            }
-            
+        }
+    }
+    
+    private func cellFace(_ text: String, _ imageURLs: [URL]) -> some View {
+        VStack {
+            Text(text)
+                .font(.system(size: fontSize(of: text)))
             VStack {
-                Text(text)
-                    .font(.system(size: fontSize(of: text)))
-                VStack {
-                    ForEach(imageURLs, id: \.self) { url in
-                        KFImage(url)
-                            .resizable()
-                            .scaledToFit()
-                    }
+                ForEach(imageURLs, id: \.self) { url in
+                    KFImage(url)
+                        .resizable()
+                        .scaledToFit()
                 }
             }
         }
-        
-
     }
-    
-    private var sizeDecisionView: some View {
-        ZStack {
-            ZStack {
-                cellFace(isFront: true)
-                Color.white
-            }
-            ZStack {
-                cellFace(isFront: false)
-                Color.white
-            }
-        }
-    }
-    
 }
 
 // MARK: View Methods
