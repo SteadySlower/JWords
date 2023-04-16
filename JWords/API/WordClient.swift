@@ -12,6 +12,7 @@ import XCTestDynamicOverlay
 struct WordClient {
     private static let wordService: WordService = ServiceManager.shared.wordService
     var words: @Sendable (WordBook) async throws -> [Word]
+    var studyState: @Sendable (Word, StudyState) async throws -> Word
 }
 
 extension DependencyValues {
@@ -35,17 +36,30 @@ extension WordClient: DependencyKey {
                 }
             }
         }
+    },
+    studyState: { word, studyState in
+        return try await withCheckedThrowingContinuation { continuation in
+            wordService.updateStudyState(word: word, newState: studyState) { error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else {
+                    continuation.resume(with: .success(Word(word: word, newStudyState: studyState)))
+                }
+            }
+        }
     }
   )
 }
 
 extension WordClient: TestDependencyKey {
   static let previewValue = Self(
-    words: { _ in .mock }
+    words: { _ in .mock },
+    studyState: { word, state in Word(word: word, newStudyState: state) }
   )
 
   static let testValue = Self(
-    words: unimplemented("\(Self.self).forecast")
+    words: unimplemented("\(Self.self).words"),
+    studyState: unimplemented("\(Self.self).studyState")
   )
 }
 
