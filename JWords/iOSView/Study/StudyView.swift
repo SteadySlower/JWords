@@ -30,7 +30,7 @@ struct WordList: ReducerProtocol {
         init(words: [Word]) {
             self.wordBook = nil
             self._words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(word: $0) })
-            self.setting = .init(frontMode: .kanji)
+            self.setting = .init()
         }
         
         var isLocked: Bool {
@@ -84,7 +84,7 @@ struct WordList: ReducerProtocol {
                 }
                 .cancellable(id: FetchWordsID.self)
             case let .wordsResponse(.success(words)):
-                state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0) })
+                state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0, frontType: state.setting.frontType) })
                 return .none
             case .wordsResponse(.failure):
                 state._words = []
@@ -94,8 +94,14 @@ struct WordList: ReducerProtocol {
                 return .none
             case .word(let id, let action):
                 return .none
-            case .sideBar(_):
-                return .none
+            case .sideBar(let action):
+                switch action {
+                case .setFrontType(_):
+                    state._words = IdentifiedArray(uniqueElements: state._words.map { setFrontType($0, type: state.setting.frontType) })
+                    return .none
+                default:
+                    return .none
+                }
             default:
                 return .none
             }
@@ -103,6 +109,11 @@ struct WordList: ReducerProtocol {
         .forEach(\._words, action: /Action.word(id:action:)) {
           StudyWord()
         }
+    }
+    
+    private func setFrontType(_ wordState: StudyWord.State, type: FrontType) -> StudyWord.State {
+        let word = wordState.word
+        return StudyWord.State(word: word, frontType: type)
     }
 
 }

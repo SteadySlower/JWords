@@ -33,7 +33,7 @@ struct StudySetting: ReducerProtocol {
         var frontType: FrontType
         var studyViewMode: StudyViewMode = .normal
         
-        init(frontMode: FrontType) {
+        init(frontMode: FrontType = .kanji) {
             self.frontType = frontMode
         }
     }

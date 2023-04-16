@@ -19,11 +19,11 @@ struct StudyWord: ReducerProtocol {
         var studyState: StudyState
         var isFront: Bool = true
         
-        init(word: Word) {
+        init(word: Word, frontType: FrontType = .kanji) {
             self.id = word.id
             self.word = word
             self.isLocked = false
-            self.frontType = .kanji
+            self.frontType = frontType
             self.studyState = word.studyState
         }
         
@@ -339,7 +339,7 @@ struct WordCell_Previews: PreviewProvider {
     static var previews: some View {
         WordCell(
             store: Store(
-                initialState: StudyWord.State(word: Word()),
+                initialState: StudyWord.State(word: Word(), frontType: .kanji),
                 reducer: StudyWord()
             )
         )
