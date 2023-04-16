@@ -94,28 +94,32 @@ struct StudyWord: ReducerProtocol {
         case cellDrag(direction: SwipeDirection)
     }
     
-    struct Environment {}
+    @Dependency(\.wordClient) var wordClient
+    private enum UpdateStudyStateID {}
     
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .cellTapped:
-            state.isFront.toggle()
-            return .none
-        case .cellDoubleTapped:
-            if state.isLocked { return .none }
-            state.studyState = .undefined
-            return .none
-        case .cellDrag(let direction):
-            if state.isLocked { return .none }
-            switch direction {
-            case .left:
-                state.studyState = .success
-            case .right:
-                state.studyState = .fail
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .cellTapped:
+                state.isFront.toggle()
+                return .none
+            case .cellDoubleTapped:
+                if state.isLocked { return .none }
+                state.studyState = .undefined
+                return .none
+            case .cellDrag(let direction):
+                if state.isLocked { return .none }
+                switch direction {
+                case .left:
+                    state.studyState = .success
+                case .right:
+                    state.studyState = .fail
+                }
+                return .none
             }
-            return .none
         }
     }
+
 }
 
 struct WordCell: View {
