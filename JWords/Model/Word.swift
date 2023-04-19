@@ -57,19 +57,6 @@ struct Word: Equatable, Identifiable, Sendable {
         self.createdAt = Date()
     }
     
-    init(word: Word, newStudyState: StudyState) {
-        self.id = word.id
-        self.wordBookID = word.wordBookID
-        self.meaningText = word.meaningText
-        self.meaningImageURL = word.meaningImageURL
-        self.ganaText = word.ganaText
-        self.ganaImageURL = word.ganaImageURL
-        self.kanjiText = word.kanjiText
-        self.kanjiImageURL = word.kanjiImageURL
-        self.studyState = newStudyState
-        self.createdAt = word.createdAt
-    }
-    
     init(id: String, wordBookID: String, dict: [String : Any]) throws {
         self.id = id
         self.wordBookID = wordBookID
