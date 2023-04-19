@@ -12,7 +12,7 @@ import XCTestDynamicOverlay
 struct WordClient {
     private static let wordService: WordService = ServiceManager.shared.wordService
     var words: @Sendable (WordBook) async throws -> [Word]
-    var studyState: @Sendable (Word, StudyState) async throws -> Word
+    var studyState: @Sendable (Word, StudyState) async throws -> StudyState
 }
 
 extension DependencyValues {
@@ -43,7 +43,7 @@ extension WordClient: DependencyKey {
                 if let error = error {
                     continuation.resume(with: .failure(error))
                 } else {
-                    continuation.resume(with: .success(Word(word: word, newStudyState: studyState)))
+                    continuation.resume(with: .success(studyState))
                 }
             }
         }
@@ -54,7 +54,7 @@ extension WordClient: DependencyKey {
 extension WordClient: TestDependencyKey {
   static let previewValue = Self(
     words: { _ in .mock },
-    studyState: { word, state in Word(word: word, newStudyState: state) }
+    studyState: { word, state in state }
   )
 
   static let testValue = Self(

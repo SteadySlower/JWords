@@ -13,10 +13,17 @@ import ComposableArchitecture
 struct StudyWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
-        let word: Word
+        var word: Word
         let isLocked: Bool
         let frontType: FrontType
-        var studyState: StudyState
+        var studyState: StudyState {
+            get {
+                word.studyState
+            }
+            set(newState) {
+                word.studyState = newState
+            }
+        }
         var isFront: Bool = true
         
         init(word: Word, frontType: FrontType = .kanji) {
@@ -92,6 +99,7 @@ struct StudyWord: ReducerProtocol {
         case cellTapped
         case cellDoubleTapped
         case cellDrag(direction: SwipeDirection)
+        case studyStateResponse(TaskResult<StudyState>)
     }
     
     @Dependency(\.wordClient) var wordClient
@@ -105,16 +113,17 @@ struct StudyWord: ReducerProtocol {
                 return .none
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
-                state.studyState = .undefined
-                return .none
+                let word = state.word
+                return .task { await .studyStateResponse(TaskResult { try await wordClient.studyState(word, .undefined) }) }
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
-                switch direction {
-                case .left:
-                    state.studyState = .success
-                case .right:
-                    state.studyState = .fail
-                }
+                let word = state.word
+                let newState: StudyState = direction == .left ? .success : .fail
+                return .task { await .studyStateResponse(TaskResult { try await wordClient.studyState(word, newState) }) }
+            case let .studyStateResponse(.success(newState)):
+                state.studyState = newState
+                return .none
+            case .studyStateResponse(.failure(_)):
                 return .none
             }
         }
@@ -344,7 +353,7 @@ struct WordCell_Previews: PreviewProvider {
         WordCell(
             store: Store(
                 initialState: StudyWord.State(word: Word(), frontType: .kanji),
-                reducer: StudyWord()
+                reducer: StudyWord()._printChanges()
             )
         )
     }
