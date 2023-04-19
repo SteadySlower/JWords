@@ -114,12 +114,16 @@ struct StudyWord: ReducerProtocol {
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
                 let word = state.word
-                return .task { await .studyStateResponse(TaskResult { try await wordClient.studyState(word, .undefined) }) }
+                return .task {
+                    await .studyStateResponse(TaskResult { try await wordClient.studyState(word, .undefined) })
+                }.cancellable(id: UpdateStudyStateID.self)
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
                 let word = state.word
                 let newState: StudyState = direction == .left ? .success : .fail
-                return .task { await .studyStateResponse(TaskResult { try await wordClient.studyState(word, newState) }) }
+                return .task {
+                    await .studyStateResponse(TaskResult { try await wordClient.studyState(word, newState) })
+                }.cancellable(id: UpdateStudyStateID.self)
             case let .studyStateResponse(.success(newState)):
                 state.studyState = newState
                 return .none
@@ -131,7 +135,7 @@ struct StudyWord: ReducerProtocol {
 
 }
 
-struct WordCell: View {
+struct StudyCell: View {
     
     let store: StoreOf<StudyWord>
     
@@ -178,7 +182,7 @@ struct WordCell: View {
 
 // MARK: SubViews
 
-extension WordCell {
+extension StudyCell {
     
     private func sizeDecisionView(frontText: String,
                                   frontImageURLs: [URL],
@@ -241,7 +245,7 @@ extension WordCell {
 
 // MARK: View Methods
 
-extension WordCell {
+extension StudyCell {
     
     private func dragUpdating(_ isLocked: Bool, _ value: _EndedGesture<DragGesture>.Value, _ state: inout CGSize, _ transaction: inout Transaction) {
         if isLocked { return }
@@ -267,7 +271,7 @@ extension WordCell {
 
 // MARK: ViewModel
 
-extension WordCell {
+extension StudyCell {
     final class ViewModel: ObservableObject {
         @Published var word: Word
         private let frontType: FrontType
@@ -350,7 +354,7 @@ extension WordCell {
 struct WordCell_Previews: PreviewProvider {
     
     static var previews: some View {
-        WordCell(
+        StudyCell(
             store: Store(
                 initialState: StudyWord.State(word: Word(), frontType: .kanji),
                 reducer: StudyWord()._printChanges()
