@@ -20,9 +20,8 @@ extension View {
                                     onTap: onTap))) : AnyView(self)
     }
     
-    func editable(nowEditing: Bool,
-                  onTap: @escaping () -> Void) -> some View {
-        nowEditing ? AnyView(modifier(CellEditingIcon(onTap: onTap))) : AnyView(self)
+    func editable() -> some View {
+        modifier(CellEditingIcon())
     }
     
 }
@@ -70,28 +69,15 @@ private struct CellSelectionEdge: ViewModifier {
 }
 
 private struct CellEditingIcon: ViewModifier {
-    
-    private let onTap: () -> Void
-    
-    init(onTap: @escaping () -> Void) {
-        self.onTap = onTap
-    }
-    
     func body(content: Content) -> some View {
         content
             .overlay(
-                ZStack {
-                    Color
-                        .clear
-                        .contentShape(Rectangle())
-                    Image(systemName: "pencil")
-                        .resizable()
-                        .foregroundColor(.green)
-                        .opacity(0.5)
-                        .scaledToFit()
-                        .padding()
-                }
-                .onTapGesture { onTap() }
+                Image(systemName: "pencil")
+                    .resizable()
+                    .foregroundColor(.green)
+                    .opacity(0.5)
+                    .scaledToFit()
+                    .padding()
             )
     }
 }

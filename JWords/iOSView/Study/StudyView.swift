@@ -13,9 +13,10 @@ struct WordList: ReducerProtocol {
     struct State: Equatable {
         let wordBook: WordBook?
         var _words: IdentifiedArrayOf<StudyWord.State> = []
+        var editWords: IdentifiedArrayOf<EditWord.State> = []
         var setting: StudySetting.State
         var selectedIDs: Set<String> = []
-        var toEditWord: Word?
+        var toEditWord: InputWord.State?
         
         var showEditModal: Bool = false
         var showMoveModal: Bool = false
@@ -65,6 +66,8 @@ struct WordList: ReducerProtocol {
         case randomButtonTapped
         case closeButtonTapped
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
+        case editWords(id: EditWord.State.ID, action: EditWord.Action)
+        case editWord(action: InputWord.Action)
         case sideBar(action: StudySetting.Action)
     }
     
@@ -92,15 +95,34 @@ struct WordList: ReducerProtocol {
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
                 return .none
+            case .setEditModal(let isPresent):
+                state.showEditModal = isPresent
+                if !isPresent { state.toEditWord = nil }
+                return .none
             case .randomButtonTapped:
-                state._words.shuffle()
+                state._words = IdentifiedArrayOf(uniqueElements: state._words.shuffled().map { StudyWord.State(word: $0.word) })
                 return .none
             case .word(let id, let action):
+                return .none
+            case .editWords(let id, _):
+                guard let word = state._words.filter({ $0.id == id }).first?.word else { return .none }
+                state.toEditWord = InputWord.State(word: word)
+                state.showEditModal = true
                 return .none
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):
                     state._words = IdentifiedArray(uniqueElements: state._words.map { setFrontType($0, type: state.setting.frontType) })
+                    return .none
+                case .setStudyViewMode(let mode):
+                    state.editWords = []
+                    switch mode {
+                    case .edit:
+                        state.editWords = IdentifiedArrayOf(uniqueElements: state.words.map { EditWord.State(word: $0.word, frontType: state.setting.frontType) })
+                    default:
+                        break
+                    }
+                    state.showSideBar = false
                     return .none
                 default:
                     return .none
@@ -110,7 +132,13 @@ struct WordList: ReducerProtocol {
             }
         }
         .forEach(\._words, action: /Action.word(id:action:)) {
-          StudyWord()
+            StudyWord()
+        }
+        .forEach(\.editWords, action: /Action.editWords(id:action:)) {
+            EditWord()
+        }
+        .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
+            InputWord()
         }
     }
     
@@ -118,7 +146,7 @@ struct WordList: ReducerProtocol {
         let word = wordState.word
         return StudyWord.State(word: word, frontType: type)
     }
-
+    
 }
 
 struct StudyView: View {
@@ -130,10 +158,18 @@ struct StudyView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
                 LazyVStack(spacing: 32) {
-                    ForEachStore(
-                      self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
-                    ) {
-                      WordCell(store: $0)
+                    if vs.setting.studyViewMode == .normal {
+                        ForEachStore(
+                          self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
+                        ) {
+                            StudyCell(store: $0)
+                        }
+                    } else if vs.setting.studyViewMode == .edit {
+                        ForEachStore(
+                            self.store.scope(state: \.editWords, action: WordList.Action.editWords(id:action:))
+                        ) {
+                            EditCell(store: $0)
+                        }
                     }
                 }
             }
@@ -155,7 +191,9 @@ struct StudyView: View {
                 get: \.showEditModal,
                 send: WordList.Action.setEditModal(isPresented:))
             ) {
-                // TODO: add edit modal
+                IfLetStore(self.store.scope(state: \.toEditWord, action: WordList.Action.editWord(action:))) {
+                    WordInputView(store: $0)
+                }
             }
             #if os(iOS)
             .toolbar { ToolbarItem {

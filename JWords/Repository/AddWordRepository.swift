@@ -175,7 +175,7 @@ class AddWordRepository: Repository {
     
     private func makeWordInput(id: String) -> WordInput {
         trimTexts()
-        let wordInput = WordInputImpl(wordBookID: id,
+        let wordInput = WordInput(wordBookID: id,
                                       meaningText: meaningText,
                                       meaningImage: meaningImage,
                                       ganaText: ganaText,

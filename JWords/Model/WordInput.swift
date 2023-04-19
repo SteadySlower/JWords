@@ -13,24 +13,24 @@ import Cocoa
 typealias InputImageType = NSImage
 #endif
 
-protocol WordInput {
-    var wordBookID: String { get }
-    var meaningText: String { get }
-    var meaningImage: InputImageType? { get }
-    var ganaText: String { get }
-    var ganaImage: InputImageType? { get }
-    var kanjiText: String { get }
-    var kanjiImage: InputImageType? { get }
-    var studyState: StudyState { get }
-    
-    var meaningImageURL: String { get set }
-    var ganaImageURL: String { get set }
-    var kanjiImageURL: String { get set }
-    
-    var hasImage: Bool { get }
-}
+//protocol WordInput {
+//    var wordBookID: String { get }
+//    var meaningText: String { get }
+//    var meaningImage: InputImageType? { get }
+//    var ganaText: String { get }
+//    var ganaImage: InputImageType? { get }
+//    var kanjiText: String { get }
+//    var kanjiImage: InputImageType? { get }
+//    var studyState: StudyState { get }
+//
+//    var meaningImageURL: String { get set }
+//    var ganaImageURL: String { get set }
+//    var kanjiImageURL: String { get set }
+//
+//    var hasImage: Bool { get }
+//}
 
-struct WordInputImpl: WordInput {
+struct WordInput: Equatable {
     let wordBookID: String
     let meaningText: String
     let meaningImage: InputImageType?
