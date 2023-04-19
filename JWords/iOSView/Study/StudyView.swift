@@ -92,6 +92,9 @@ struct WordList: ReducerProtocol {
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
                 return .none
+            case .randomButtonTapped:
+                state._words.shuffle()
+                return .none
             case .word(let id, let action):
                 return .none
             case .sideBar(let action):
@@ -321,8 +324,8 @@ struct StudyView_Previews: PreviewProvider {
                     reducer: WordList()._printChanges()
                 )
             )
-            .previewDisplayName("words")
         }
+        .previewDisplayName("words")
         NavigationView {
             StudyView(
                 store: Store(
@@ -330,8 +333,8 @@ struct StudyView_Previews: PreviewProvider {
                     reducer: WordList()._printChanges()
                 )
             )
-            .previewDisplayName("word book")
         }
+        .previewDisplayName("word book")
     }
 }
 
