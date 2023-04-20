@@ -43,7 +43,6 @@ struct EditWord: ReducerProtocol {
 struct EditCell: View {
     
     let store: StoreOf<EditWord>
-    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
     // MARK: Body
     var body: some View {
