@@ -14,8 +14,8 @@ struct WordList: ReducerProtocol {
         let wordBook: WordBook?
         var _words: IdentifiedArrayOf<StudyWord.State> = []
         var editWords: IdentifiedArrayOf<EditWord.State> = []
+        var selectionWords: IdentifiedArrayOf<SelectionWord.State> = []
         var setting: StudySetting.State
-        var selectedIDs: Set<String> = []
         var toEditWord: InputWord.State?
         
         var showEditModal: Bool = false
@@ -46,11 +46,11 @@ struct WordList: ReducerProtocol {
             }
         }
         
-        var toMoveWords: IdentifiedArrayOf<StudyWord.State> {
+        var toMoveWords: [Word] {
             if setting.studyViewMode == .selection {
-                return _words.filter { selectedIDs.contains($0.id) }
+                return selectionWords.filter { $0.isSelected }.map { $0.word }
             } else {
-                return _words.filter { $0.studyState != .success }
+                return _words.filter { $0.studyState != .success }.map { $0.word }
             }
         }
         
@@ -68,6 +68,7 @@ struct WordList: ReducerProtocol {
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
         case editWord(action: InputWord.Action)
+        case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
     }
     
@@ -102,8 +103,6 @@ struct WordList: ReducerProtocol {
             case .randomButtonTapped:
                 state._words = IdentifiedArrayOf(uniqueElements: state._words.shuffled().map { StudyWord.State(word: $0.word) })
                 return .none
-            case .word(let id, let action):
-                return .none
             case .editWords(let id, _):
                 guard let word = state._words.filter({ $0.id == id }).first?.word else { return .none }
                 state.toEditWord = InputWord.State(word: word)
@@ -113,8 +112,11 @@ struct WordList: ReducerProtocol {
                 switch editWordAction {
                 case let .editWordResponse(.success(word)):
                     guard let index = state._words.index(id: word.id) else { return .none }
-                    state._words[index] = StudyWord.State(word: word, frontType: state.setting.frontType)
+                    state._words[index] = StudyWord.State(word: word,
+                                                          frontType: state.setting.frontType)
                     state.setting.studyViewMode = .normal
+                    state.editWords = []
+                    state.toEditWord = nil
                     state.showEditModal = false
                     return .none
                 default:
@@ -126,12 +128,14 @@ struct WordList: ReducerProtocol {
                     state._words = IdentifiedArray(uniqueElements: state._words.map { setFrontType($0, type: state.setting.frontType) })
                     return .none
                 case .setStudyViewMode(let mode):
-                    state.editWords = []
                     switch mode {
+                    case .normal:
+                        state.editWords = []
+                        state.selectionWords = []
                     case .edit:
                         state.editWords = IdentifiedArrayOf(uniqueElements: state.words.map { EditWord.State(word: $0.word, frontType: state.setting.frontType) })
-                    default:
-                        break
+                    case .selection:
+                        state.selectionWords = IdentifiedArrayOf(uniqueElements: state.words.map { SelectionWord.State(word: $0.word, frontType: state.setting.frontType) })
                     }
                     state.showSideBar = false
                     return .none
@@ -147,6 +151,9 @@ struct WordList: ReducerProtocol {
         }
         .forEach(\.editWords, action: /Action.editWords(id:action:)) {
             EditWord()
+        }
+        .forEach(\.selectionWords, action: /Action.selectionWords(id:action:)) {
+            SelectionWord()
         }
         .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
             InputWord()
@@ -180,6 +187,12 @@ struct StudyView: View {
                             self.store.scope(state: \.editWords, action: WordList.Action.editWords(id:action:))
                         ) {
                             EditCell(store: $0)
+                        }
+                    } else if vs.setting.studyViewMode == .selection {
+                        ForEachStore(
+                            self.store.scope(state: \.selectionWords, action: WordList.Action.selectionWords(id:action:))
+                        ) {
+                            SelectionCell(store: $0)
                         }
                     }
                 }
@@ -361,9 +374,13 @@ extension StudyView {
 
 struct StudyView_Previews: PreviewProvider {
     
-    private static let mockWords: [Word] = [
-        Word(), Word(), Word(), Word(), Word(), Word(), Word(), Word()
-    ]
+    private static let mockWords: [Word] = {
+        var result = [Word]()
+        for i in 0..<10 {
+            result.append(Word(index: i))
+        }
+        return result
+    }()
     
     static var previews: some View {
         NavigationView {

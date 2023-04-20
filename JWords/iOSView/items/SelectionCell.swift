@@ -13,7 +13,7 @@ import ComposableArchitecture
 struct SelectionWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
-        var word: Word
+        let word: Word
         let frontType: FrontType
         var isSelected: Bool
         

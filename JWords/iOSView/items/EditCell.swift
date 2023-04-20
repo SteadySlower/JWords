@@ -13,7 +13,7 @@ import ComposableArchitecture
 struct EditWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
-        var word: Word
+        let word: Word
         let frontType: FrontType
         
         init(word: Word, frontType: FrontType = .kanji) {
