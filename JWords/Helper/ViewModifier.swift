@@ -20,10 +20,6 @@ extension View {
                                     onTap: onTap))) : AnyView(self)
     }
     
-    func editable() -> some View {
-        modifier(CellEditingIcon())
-    }
-    
 }
 
 private struct CellSelectionEdge: ViewModifier {
@@ -66,18 +62,4 @@ private struct CellSelectionEdge: ViewModifier {
             )
     }
     
-}
-
-private struct CellEditingIcon: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .overlay(
-                Image(systemName: "pencil")
-                    .resizable()
-                    .foregroundColor(.green)
-                    .opacity(0.5)
-                    .scaledToFit()
-                    .padding()
-            )
-    }
 }
