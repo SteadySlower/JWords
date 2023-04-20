@@ -6,96 +6,112 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct MoveWords: ReducerProtocol {
+    struct State: Equatable {
+        let fromBook: WordBook
+        let toMoveWords: [Word]
+        var wordBooks = [WordBook]()
+        var selectedID: String?
+        var isLoading: Bool = false
+        var willCloseBook: Bool = false
+        
+        init(fromBook: WordBook,
+             toMoveWords: [Word],
+             wordBooks: [WordBook] = [WordBook](),
+             selectedID: String? = nil,
+             isLoading: Bool,
+             willCloseBook: Bool) {
+            self.fromBook = fromBook
+            self.toMoveWords = toMoveWords
+            self.wordBooks = wordBooks
+            self.selectedID = selectedID
+            self.isLoading = isLoading
+            self.willCloseBook = willCloseBook
+        }
+    }
+    
+    enum Action: Equatable {
+        case onAppear
+        case wordBookResponse(TaskResult<[WordBook]>)
+        case updateSelection(String?)
+        case updateWillCloseBook(willClose: Bool)
+    }
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                return .none
+            default:
+                return .none
+            }
+        }
+    }
+}
 
 struct WordMoveView: View {
-    @StateObject private var viewModel: ViewModel
-    @Environment(\.dismiss) private var dismiss
-    @Binding private var didClosed: Bool
-    
-    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: ServiceManager) {
-        self._viewModel = StateObject(wrappedValue: ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency))
-        self._didClosed = didClosed
-    }
+    let store: StoreOf<MoveWords>
     
     var body: some View {
-        ZStack {
-            if viewModel.isClosing {
-                progressView
-            }
-            VStack {
-                title
-                bookPicker
-                closingToggle
-                buttons
-            }
-        }
-        .onAppear { viewModel.getWordBooks(); print("디버그: word move view on appear") }
-    }
-    
-}
-
-// MARK: SubViews
-
-extension WordMoveView {
-    
-    private var progressView: some View {
-        ProgressView()
-            .scaleEffect(5)
-    }
-    
-    private var title: some View {
-        Text("\(viewModel.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
-    }
-    
-    private var bookPicker: some View {
-        Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
-            Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
-                .tag(nil as String?)
-            ForEach(viewModel.wordBooks, id: \.id) {
-                Text($0.title)
-                    .tag($0.id as String?)
-            }
-        }
-        #if os(iOS)
-        .pickerStyle(.wheel)
-        #endif
-    }
-    
-    private var closingToggle: some View {
-        Toggle("단어장 마감하기", isOn: $viewModel.willCloseBook)
-            .padding(.horizontal, 20)
-    }
-    
-    private var buttons: some View {
-        
-        var cancelButton: some View {
-            Button("취소") {
-                didClosed = false
-                dismiss()
-            }
-        }
-        
-        var moveButton: some View {
-            Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                viewModel.moveWords {
-                    didClosed = true
-                    dismiss()
+        WithViewStore(store, observe: { $0 }) { vs in
+            ZStack {
+                if vs.isLoading {
+                    ProgressView()
+                        .scaleEffect(5)
+                }
+                VStack {
+                    Text("\(vs.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
+                    Picker("이동할 단어장 고르기", selection: vs.binding(
+                        get: \.selectedID,
+                        send: MoveWords.Action.updateSelection)
+                    ) {
+                        Text(vs.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                            .tag(nil as String?)
+                        ForEach(vs.wordBooks, id: \.id) {
+                            Text($0.title)
+                                .tag($0.id as String?)
+                        }
+                    }
+                    #if os(iOS)
+                    .pickerStyle(.wheel)
+                    #endif
+                    Toggle("단어장 마감하기", isOn: vs.binding(
+                        get: \.willCloseBook,
+                        send: MoveWords.Action.updateWillCloseBook(willClose:))
+                    )
+                    .padding(.horizontal, 20)
+                    HStack {
+                        Button("취소") {
+                            
+                        }
+                        Button(vs.selectedID != nil ? "이동" : "닫기") {
+                        }
+                        .disabled(vs.isLoading)
+                    }
                 }
             }
-            .disabled(viewModel.isClosing)
+            .onAppear { vs.send(.onAppear) }
         }
-        
-        var body: some View {
-            HStack {
-                cancelButton
-                moveButton
-            }
-        }
-        
-        return body
     }
     
 }
+
+struct WordMoveView_Previews: PreviewProvider {
+    static var previews: some View {
+        WordMoveView(
+            store: Store(
+                initialState: MoveWords.State(fromBook: WordBook(title: "타이틀"),
+                                              toMoveWords: [],
+                                              isLoading: false,
+                                              willCloseBook: true),
+                reducer: MoveWords()._printChanges()
+            )
+        )
+    }
+}
+
 
 // MARK: ViewModel
 
