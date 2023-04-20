@@ -13,6 +13,7 @@ struct WordClient {
     private static let wordService: WordService = ServiceManager.shared.wordService
     var words: @Sendable (WordBook) async throws -> [Word]
     var studyState: @Sendable (Word, StudyState) async throws -> StudyState
+    var edit: @Sendable (Word, WordInput) async throws -> Word
 }
 
 extension DependencyValues {
@@ -47,6 +48,19 @@ extension WordClient: DependencyKey {
                 }
             }
         }
+    },
+    edit: { word, wordInput in
+        return try await withCheckedThrowingContinuation { continuation in
+            wordService.updateWord(word, wordInput) { word, error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else if let word = word {
+                    continuation.resume(with: .success(word))
+                } else {
+                    continuation.resume(with: .failure(AppError.generic(massage: "words is nil in WordClient_words")))
+                }
+            }
+        }
     }
   )
 }
@@ -54,13 +68,29 @@ extension WordClient: DependencyKey {
 extension WordClient: TestDependencyKey {
   static let previewValue = Self(
     words: { _ in .mock },
-    studyState: { word, state in state }
+    studyState: { word, state in state },
+    edit: { word, wordInput in makeMockEditWord(word, wordInput) }
+//    edit: { word, wordInput in throw AppError.generic(massage: "mock error") }
   )
 
   static let testValue = Self(
     words: unimplemented("\(Self.self).words"),
-    studyState: unimplemented("\(Self.self).studyState")
+    studyState: unimplemented("\(Self.self).studyState"),
+    edit: unimplemented("\(Self.self).edit")
   )
+    
+    static private func makeMockEditWord(_ word: Word, _ wordInput: WordInput) -> Word {
+        return Word(id: word.id,
+                    wordBookID: word.wordBookID,
+                    meaningText: wordInput.meaningText,
+                    meaningImageURL: word.meaningImageURL,
+                    ganaText: wordInput.ganaText,
+                    ganaImageURL: word.ganaImageURL,
+                    kanjiText: wordInput.kanjiText,
+                    kanjiImageURL: word.kanjiImageURL,
+                    studyState: word.studyState,
+                    createdAt: word.createdAt)
+    }
 }
 
 extension Array where Element == Word {

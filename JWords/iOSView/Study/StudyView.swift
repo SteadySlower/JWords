@@ -109,6 +109,17 @@ struct WordList: ReducerProtocol {
                 state.toEditWord = InputWord.State(word: word)
                 state.showEditModal = true
                 return .none
+            case .editWord(let editWordAction):
+                switch editWordAction {
+                case let .editWordResponse(.success(word)):
+                    guard let index = state._words.index(id: word.id) else { return .none }
+                    state._words[index] = StudyWord.State(word: word, frontType: state.setting.frontType)
+                    state.setting.studyViewMode = .normal
+                    state.showEditModal = false
+                    return .none
+                default:
+                    return .none
+                }
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):

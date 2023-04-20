@@ -41,9 +41,11 @@ struct InputWord: ReducerProtocol {
         case updateKanjiText(String)
         case updateGanaText(String)
         case saveButtonTapped
-        case editWordResponse(TaskResult<StudyState>)
+        case editWordResponse(TaskResult<Word>)
     }
     
+    @Dependency(\.wordClient) var wordClient
+    private enum EditWordID {}
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -58,8 +60,24 @@ struct InputWord: ReducerProtocol {
                 state.ganaText = text
                 return .none
             case .saveButtonTapped:
+                if let word = state.word {
+                    let wordInput = WordInput(wordBookID: word.wordBookID,
+                                              meaningText: state.meaningText,
+                                              meaningImage: nil,
+                                              ganaText: state.ganaText,
+                                              ganaImage: nil,
+                                              kanjiText: state.kanjiText,
+                                              kanjiImage: nil)
+                    return .task {
+                        await .editWordResponse(TaskResult { try await wordClient.edit(word, wordInput) })
+                    }.cancellable(id: EditWordID.self)
+                }
                 return .none
-            case .editWordResponse(let result):
+            case .editWordResponse(.success(_)):
+                return .none
+            case let .editWordResponse(.failure(error)):
+                // handle error
+                print(error)
                 return .none
             }
         }
@@ -87,7 +105,7 @@ struct WordInputView: View {
                     .border(.black)
                     .padding()
                 Button("저장") {
-                    
+                    vs.send(.saveButtonTapped)
                 }
             }
         }
