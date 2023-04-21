@@ -39,10 +39,22 @@ struct MoveWords: ReducerProtocol {
         case updateWillCloseBook(willClose: Bool)
     }
     
+    @Dependency(\.wordBookClient) var wordBookClient
+    private enum FetchWordBooksID {}
+    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                return .task {
+                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
+                }
+                .cancellable(id: FetchWordBooksID.self)
+            case let .wordBookResponse(.success(wordBooks)):
+                state.wordBooks = wordBooks
+                return .none
+            case .wordBookResponse(.failure):
+                state.wordBooks = []
                 return .none
             default:
                 return .none
