@@ -94,9 +94,13 @@ extension WordClient: TestDependencyKey {
 }
 
 extension Array where Element == Word {
-    static let mock = [
-        Word(), Word(), Word(), Word(), Word(), Word(), Word(), Word()
-    ]
+    static let mock: [Word] = {
+        var result = [Word]()
+        for i in 0..<10 {
+            result.append(Word(index: i))
+        }
+        return result
+    }()
 }
 
 extension WordBook {
