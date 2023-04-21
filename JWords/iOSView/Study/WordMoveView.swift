@@ -46,15 +46,21 @@ struct MoveWords: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                state.isLoading = true
                 return .task {
                     await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
                 }
                 .cancellable(id: FetchWordBooksID.self)
             case let .wordBookResponse(.success(wordBooks)):
                 state.wordBooks = wordBooks
+                state.isLoading = false
                 return .none
             case .wordBookResponse(.failure):
                 state.wordBooks = []
+                state.isLoading = false
+                return .none
+            case .updateWillCloseBook(let willClose):
+                state.willCloseBook = willClose
                 return .none
             default:
                 return .none
@@ -117,7 +123,7 @@ struct WordMoveView_Previews: PreviewProvider {
                 initialState: MoveWords.State(fromBook: WordBook(title: "타이틀"),
                                               toMoveWords: [],
                                               isLoading: false,
-                                              willCloseBook: true),
+                                              willCloseBook: false),
                 reducer: MoveWords()._printChanges()
             )
         )
