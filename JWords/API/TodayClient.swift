@@ -39,7 +39,7 @@ extension TodayClient: DependencyKey {
 
 extension TodayClient: TestDependencyKey {
   static let previewValue = Self(
-    updateReviewed: { _ in  }
+    updateReviewed: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); print("preview client: update reviewed")  }
   )
 
   static let testValue = Self(

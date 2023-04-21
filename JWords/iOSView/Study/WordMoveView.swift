@@ -30,6 +30,14 @@ struct MoveWords: ReducerProtocol {
             self.isLoading = isLoading
             self.willCloseBook = willCloseBook
         }
+        
+        var selectedWordBook: WordBook? {
+            if let selectedID = selectedID {
+                return wordBooks.first(where: { $0.id == selectedID })
+            } else {
+                return nil
+            }
+        }
     }
     
     enum Action: Equatable {
@@ -37,10 +45,33 @@ struct MoveWords: ReducerProtocol {
         case wordBookResponse(TaskResult<[WordBook]>)
         case updateSelection(String?)
         case updateWillCloseBook(willClose: Bool)
+        case closeButtonTapped
+        case moveWordsResponse(TaskResult<Void>)
+        
+        static func == (lhs: Action, rhs: Action) -> Bool {
+            switch (lhs, rhs) {
+            case (.onAppear, .onAppear):
+                return true
+            case let (.wordBookResponse(lhsResult), .wordBookResponse(rhsResult)):
+                return lhsResult == rhsResult
+            case let (.updateSelection(lhsSelection), .updateSelection(rhsSelection)):
+                return lhsSelection == rhsSelection
+            case let (.updateWillCloseBook(lhsWillClose), .updateWillCloseBook(rhsWillClose)):
+                return lhsWillClose == rhsWillClose
+            case (.closeButtonTapped, .closeButtonTapped):
+                return true
+            case (.moveWordsResponse, .moveWordsResponse):
+                return true
+            default:
+                return false
+            }
+        }
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
+    @Dependency(\.todayClient) var todayClient
     private enum FetchWordBooksID {}
+    private enum MoveWordsID {}
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -59,10 +90,37 @@ struct MoveWords: ReducerProtocol {
                 state.wordBooks = []
                 state.isLoading = false
                 return .none
+            case .updateSelection(let id):
+                state.selectedID = id
+                return .none
             case .updateWillCloseBook(let willClose):
                 state.willCloseBook = willClose
                 return .none
-            default:
+            case .closeButtonTapped:
+                state.isLoading = true
+                let toBook = state.selectedWordBook
+                let toMoveWords = state.toMoveWords
+                let fromBook = state.fromBook
+                let willCloseBook = state.willCloseBook
+                return .task {
+                    await .moveWordsResponse(TaskResult {
+                        try await withThrowingTaskGroup(of: Void.self) { group in
+                            group.addTask { try await todayClient.updateReviewed(fromBook.id) }
+                            group.addTask { try await wordBookClient.moveWords(fromBook, toBook, toMoveWords) }
+                            if willCloseBook {
+                                group.addTask { try await wordBookClient.closeBook(fromBook) }
+                            }
+                            try await group.next()
+                        }
+                    })
+                }.cancellable(id: MoveWordsID.self)
+            case .moveWordsResponse(.success):
+                state.isLoading = false
+                print("preview: 세이코 시타와 기리기리 타케도")
+                return .none
+            case let .moveWordsResponse(.failure(error)):
+                state.isLoading = false
+                print("디버그: \(error)")
                 return .none
             }
         }
@@ -105,6 +163,7 @@ struct WordMoveView: View {
                             
                         }
                         Button(vs.selectedID != nil ? "이동" : "닫기") {
+                            vs.send(.closeButtonTapped)
                         }
                         .disabled(vs.isLoading)
                     }

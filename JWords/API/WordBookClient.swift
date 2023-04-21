@@ -12,7 +12,7 @@ import XCTestDynamicOverlay
 struct WordBookClient {
     private static let wordBookService: WordBookService = ServiceManager.shared.wordBookService
     var wordBooks: @Sendable () async throws -> [WordBook]
-    var moveWords: @Sendable (WordBook, WordBook, [Word]) async throws -> Void
+    var moveWords: @Sendable (WordBook, WordBook?, [Word]) async throws -> Void
     var closeBook: @Sendable (WordBook) async throws -> Void
 }
 
@@ -64,10 +64,11 @@ extension WordBookClient: DependencyKey {
 }
 
 extension WordBookClient: TestDependencyKey {
-  static let previewValue = Self(
+    static let previewValue = Self(
     wordBooks: { .mock },
-    moveWords: { _, _, _ in  },
-    closeBook: { _ in  }
+    moveWords: { _, _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: move words") },
+    closeBook: { _ in try await Task.sleep(nanoseconds: 3 * 1_000_000_000); print("preview client: close books")  }
+//    closeBook: { _ in throw AppError.generic(massage: "preview client: Mock Failure to close book")  }
   )
 
   static let testValue = Self(
