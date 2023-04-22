@@ -8,6 +8,32 @@
 import SwiftUI
 import ComposableArchitecture
 
+struct TodayList: ReducerProtocol {
+    struct State: Equatable {
+        var wordBooks: [WordBook] = []
+        var todayWordBooks: [WordBook] = []
+        var reviewWordBooks: [WordBook] = []
+        var onlyFailWords: [Word] = []
+        var isLoading: Bool = false
+        
+    }
+    
+    enum Action: Equatable {
+        case onAppear
+    }
+    
+
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                return .none
+            }
+        }
+    }
+
+}
+
 struct TodayView: View {
     @ObservedObject private var viewModel: ViewModel
     @State private var showModal: Bool = false
