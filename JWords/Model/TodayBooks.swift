@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol TodayBooks {
-    var studyIDs: [String] { get }
-    var reviewIDs: [String] { get }
-    var reviewedIDs: [String] { get }
-    var createdAt: Date { get }
-}
+//protocol TodayBooks {
+//    var studyIDs: [String] { get }
+//    var reviewIDs: [String] { get }
+//    var reviewedIDs: [String] { get }
+//    var createdAt: Date { get }
+//}
 
-struct TodayBooksImpl: TodayBooks {
+struct TodayBooks: Equatable {
     let studyIDs: [String]
     let reviewIDs: [String]
     let reviewedIDs: [String]

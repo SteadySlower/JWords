@@ -195,7 +195,7 @@ extension TodaySelectionModal {
             let studyIDs = schedules.keys.filter { schedules[$0] == .study }
             let reviewIDs = schedules.keys.filter { schedules[$0] == .review }
             let reviewedIDs = todayBooks?.reviewedIDs ?? []
-            let newTodayBooks = TodayBooksImpl(studyIDs: studyIDs, reviewIDs: reviewIDs, reviewedIDs: reviewedIDs, createdAt: Date())
+            let newTodayBooks = TodayBooks(studyIDs: studyIDs, reviewIDs: reviewIDs, reviewedIDs: reviewedIDs, createdAt: Date())
             todayService.updateTodayBooks(newTodayBooks) { _ in
                 completionHandler()
             }

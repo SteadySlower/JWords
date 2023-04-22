@@ -375,7 +375,7 @@ extension FirestoreDB {
                 return
             }
             guard var dict = snapshot?.data()?["today"] as? [String: Any] else {
-                let emptyTodayBooks = TodayBooksImpl(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
+                let emptyTodayBooks = TodayBooks(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
                 completionHandler(emptyTodayBooks, nil)
                 return
             }
@@ -389,7 +389,7 @@ extension FirestoreDB {
             dict["createdAt"] = timestamp.dateValue()
             
             do {
-                let todayBooks = try TodayBooksImpl(dict: dict)
+                let todayBooks = try TodayBooks(dict: dict)
                 completionHandler(todayBooks, nil)
             } catch let error {
                 completionHandler(nil, error)

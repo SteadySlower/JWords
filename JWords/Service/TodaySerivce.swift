@@ -45,7 +45,7 @@ final class TodayServiceImpl: TodayService {
                 reviewID.append(wordBook.id)
             }
         }
-        let todayBooks = TodayBooksImpl(studyIDs: studyID, reviewIDs: reviewID, reviewedIDs: [], createdAt: Date())
+        let todayBooks = TodayBooks(studyIDs: studyID, reviewIDs: reviewID, reviewedIDs: [], createdAt: Date())
         
         db.updateTodayBooks(todayBooks) { error in
             completionHandler(error)
@@ -66,7 +66,7 @@ final class TodayServiceImpl: TodayService {
             // TODO: Handle Error
             guard let todayBooks = todayBooks else { return }
             let newReviewedIDs = todayBooks.reviewedIDs + [reviewedID]
-            let newTodayBooks = TodayBooksImpl(studyIDs: todayBooks.studyIDs, reviewIDs: todayBooks.reviewIDs, reviewedIDs: newReviewedIDs, createdAt: todayBooks.createdAt)
+            let newTodayBooks = TodayBooks(studyIDs: todayBooks.studyIDs, reviewIDs: todayBooks.reviewIDs, reviewedIDs: newReviewedIDs, createdAt: todayBooks.createdAt)
             self.updateTodayBooks(newTodayBooks) { error in
                 completionHandler(error)
             }
