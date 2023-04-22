@@ -12,16 +12,19 @@ import ComposableArchitecture
 struct WordList: ReducerProtocol {
     struct State: Equatable {
         let wordBook: WordBook?
+        
+        // state for cells of each StudyViewMode
         var _words: IdentifiedArrayOf<StudyWord.State> = []
         var editWords: IdentifiedArrayOf<EditWord.State> = []
         var selectionWords: IdentifiedArrayOf<SelectionWord.State> = []
+        
+        // state for side bar and modals
         var setting: StudySetting.State
         var toEditWord: InputWord.State?
         var moveWords: MoveWords.State?
         
         var showEditModal: Bool = false
         var showMoveModal: Bool = false
-        var shouldDismiss: Bool = false
         var showSideBar: Bool = false
         
         init(wordBook: WordBook) {
@@ -83,6 +86,7 @@ struct WordList: ReducerProtocol {
         }
         Reduce { state, action in
             switch action {
+            // actions for the list it self
             case .onAppear:
                 guard let wordBook = state.wordBook else { return .none }
                 return .task {
@@ -95,6 +99,15 @@ struct WordList: ReducerProtocol {
             case .wordsResponse(.failure):
                 state._words = []
                 return .none
+            case .randomButtonTapped:
+                state._words = IdentifiedArrayOf(uniqueElements: state._words.shuffled().map { StudyWord.State(word: $0.word) })
+                return .none
+            case .editWords(let id, _):
+                guard let word = state._words.filter({ $0.id == id }).first?.word else { return .none }
+                state.toEditWord = InputWord.State(word: word)
+                state.showEditModal = true
+                return .none
+            // actions for side bar and modal presentation
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
                 return .none
@@ -112,14 +125,7 @@ struct WordList: ReducerProtocol {
                 }
                 state.showMoveModal = isPresent
                 return .none
-            case .randomButtonTapped:
-                state._words = IdentifiedArrayOf(uniqueElements: state._words.shuffled().map { StudyWord.State(word: $0.word) })
-                return .none
-            case .editWords(let id, _):
-                guard let word = state._words.filter({ $0.id == id }).first?.word else { return .none }
-                state.toEditWord = InputWord.State(word: word)
-                state.showEditModal = true
-                return .none
+            // actions from side bar and modals
             case .editWord(let editWordAction):
                 switch editWordAction {
                 case let .editWordResponse(.success(word)):
@@ -130,11 +136,10 @@ struct WordList: ReducerProtocol {
                     state.editWords = []
                     state.toEditWord = nil
                     state.showEditModal = false
-                    return .none
                 default:
-                    return .none
+                    break
                 }
-            
+                return .none
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):
