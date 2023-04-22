@@ -12,6 +12,7 @@ import XCTestDynamicOverlay
 struct TodayClient {
     private static let todayService: TodayService = ServiceManager.shared.todayService
     var updateReviewed: @Sendable (String) async throws -> Void
+    var autoUpdateTodayBooks: @Sendable ([WordBook]) async throws -> Void
 }
 
 extension DependencyValues {
@@ -33,17 +34,31 @@ extension TodayClient: DependencyKey {
                     }
                 }
             }
+        },
+        autoUpdateTodayBooks: { wordBooks in
+            return try await withCheckedThrowingContinuation { continuation in
+                todayService.autoUpdateTodayBooks(wordBooks) { error in
+                    if let error = error {
+                        continuation.resume(with: .failure(error))
+                    } else {
+                        continuation.resume(with: .success(()))
+                    }
+                }
+            }
+            
         }
   )
 }
 
 extension TodayClient: TestDependencyKey {
   static let previewValue = Self(
-    updateReviewed: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); print("preview client: update reviewed")  }
+    updateReviewed: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); print("preview client: update reviewed")  },
+    autoUpdateTodayBooks: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: auto update todayBooks") }
   )
 
   static let testValue = Self(
-    updateReviewed: unimplemented("\(Self.self).updateReviewed")
+    updateReviewed: unimplemented("\(Self.self).updateReviewed"),
+    autoUpdateTodayBooks: unimplemented("\(Self.self).autoUpdateTodayBooks")
   )
 }
 
