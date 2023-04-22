@@ -58,6 +58,32 @@ struct WordList: ReducerProtocol {
             }
         }
         
+        fileprivate mutating func editCellTapped(id: String) {
+            guard let word = _words.filter({ $0.id == id }).first?.word else { return }
+            toEditWord = InputWord.State(word: word)
+            showEditModal = true
+        }
+        
+        fileprivate mutating func clearEdit() {
+            editWords = []
+            toEditWord = nil
+            setting.studyViewMode = .normal
+        }
+        
+        fileprivate mutating func clearMove() {
+            moveWords = nil
+            selectionWords = []
+            setting.studyViewMode = .normal
+        }
+        
+        fileprivate mutating func editWord(word: Word) throws {
+            guard let index = _words.index(id: word.id) else {
+                throw AppError.noMatchingWord(id: word.id)
+            }
+            _words[index] = StudyWord.State(word: word, frontType: setting.frontType)
+            setting.studyViewMode = .normal
+        }
+        
     }
 
     enum Action: Equatable {
@@ -100,12 +126,13 @@ struct WordList: ReducerProtocol {
                 state._words = []
                 return .none
             case .randomButtonTapped:
-                state._words = IdentifiedArrayOf(uniqueElements: state._words.shuffled().map { StudyWord.State(word: $0.word) })
+                state._words.shuffle()
                 return .none
-            case .editWords(let id, _):
-                guard let word = state._words.filter({ $0.id == id }).first?.word else { return .none }
-                state.toEditWord = InputWord.State(word: word)
-                state.showEditModal = true
+            case .editWords(let id, let action):
+                switch action {
+                case .cellTapped:
+                    state.editCellTapped(id: id)
+                }
                 return .none
             // actions for side bar and modal presentation
             case .setSideBar(let isPresented):
@@ -113,15 +140,13 @@ struct WordList: ReducerProtocol {
                 return .none
             case .setEditModal(let isPresent):
                 state.showEditModal = isPresent
-                if !isPresent { state.toEditWord = nil }
                 return .none
             case .setMoveModal(let isPresent):
-                guard let fromBook = state.wordBook else { return .none }
                 if isPresent {
+                    guard let fromBook = state.wordBook else { return .none }
                     state.moveWords = MoveWords.State(fromBook: fromBook, toMoveWords: state.toMoveWords)
                 } else {
-                    state.moveWords = nil
-                    state.setting.studyViewMode = .normal
+                    state.clearMove()
                 }
                 state.showMoveModal = isPresent
                 return .none
@@ -129,13 +154,24 @@ struct WordList: ReducerProtocol {
             case .editWord(let editWordAction):
                 switch editWordAction {
                 case let .editWordResponse(.success(word)):
-                    guard let index = state._words.index(id: word.id) else { return .none }
-                    state._words[index] = StudyWord.State(word: word,
-                                                          frontType: state.setting.frontType)
-                    state.setting.studyViewMode = .normal
-                    state.editWords = []
-                    state.toEditWord = nil
+                    do {
+                        try state.editWord(word: word)
+                    } catch {
+                        print(error)
+                        return .none
+                    }
+                    state.clearEdit()
                     state.showEditModal = false
+                default:
+                    break
+                }
+                return .none
+            case .moveWords(let action):
+                switch action {
+                case .moveWordsResponse(.success):
+                    // TODO: 상위 View에서 StudyView dismiss할 타이밍
+                    state.showMoveModal = false
+                    return .none
                 default:
                     break
                 }
