@@ -103,6 +103,7 @@ struct WordList: ReducerProtocol {
     }
     
     @Dependency(\.wordClient) var wordClient
+    @Dependency(\.imageClient) var imageClient
     private enum FetchWordsID {}
     
     var body: some ReducerProtocol<State, Action> {
@@ -113,13 +114,18 @@ struct WordList: ReducerProtocol {
             switch action {
             // actions for the list it self
             case .onAppear:
-                guard let wordBook = state.wordBook else { return .none }
+                guard let wordBook = state.wordBook else {
+                    let words = state._words.map { $0.word }
+                    imageClient.prefetchImages(words)
+                    return .none
+                }
                 return .task {
                     await .wordsResponse(TaskResult { try await wordClient.words(wordBook) })
                 }
                 .cancellable(id: FetchWordsID.self)
             case let .wordsResponse(.success(words)):
                 state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0, frontType: state.setting.frontType) })
+                imageClient.prefetchImages(words)
                 return .none
             case .wordsResponse(.failure):
                 state._words = []
@@ -178,7 +184,7 @@ struct WordList: ReducerProtocol {
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):
-                    state._words = IdentifiedArray(uniqueElements: state._words.map { setFrontType($0, type: state.setting.frontType) })
+                    state._words = IdentifiedArray(uniqueElements: state._words.map { StudyWord.State(word: $0.word, frontType: state.setting.frontType) })
                     return .none
                 case .setStudyViewMode(let mode):
                     switch mode {
@@ -225,11 +231,6 @@ struct WordList: ReducerProtocol {
         .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
             MoveWords()
         }
-    }
-    
-    private func setFrontType(_ wordState: StudyWord.State, type: FrontType) -> StudyWord.State {
-        let word = wordState.word
-        return StudyWord.State(word: word, frontType: type)
     }
     
 }
