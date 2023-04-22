@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct TodayView: View {
     @ObservedObject private var viewModel: ViewModel
@@ -39,7 +40,14 @@ extension TodayView {
         var onlyFailCell: some View {
             ZStack {
                 NavigationLink {
-                    LazyView(StudyView(words: viewModel.onlyFailWords, dependency: dependency))
+                    LazyView(
+                        StudyView(
+                            store: Store(
+                                initialState: WordList.State(words: viewModel.onlyFailWords),
+                                reducer: WordList()._printChanges()
+                            )
+                        )
+                    )
                 } label: {
                     HStack {
                         Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
@@ -58,7 +66,7 @@ extension TodayView {
                 onlyFailCell
                 VStack(spacing: 8) {
                     ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
-                        HomeCell(wordBook: todayBook, dependency: dependency)
+                        HomeCell(wordBook: todayBook)
                     }
                 }
             }
@@ -72,7 +80,7 @@ extension TodayView {
             Text("오늘 복습할 단어")
             VStack(spacing: 8) {
                 ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
-                    HomeCell(wordBook: reviewBook, dependency: dependency)
+                    HomeCell(wordBook: reviewBook)
                 }
             }
         }

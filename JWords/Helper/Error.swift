@@ -5,11 +5,17 @@
 //  Created by Jong Won Moon on 2022/09/05.
 //
 
-
-// TODO: message AppError로만 캐스팅해도 쓸 수 있게...
-
 enum AppError: Error {
     case generic(massage: String)
+    case noMatchingWord(id: String)
+    
+    case imageCompressor(error: AppError.ImageCompressor)
+    case imageUploader(error: ImageUploader)
+    case wordService(error: AppError.WordService)
+    case wordBookService(error: AppError.WordBookService)
+    case initializer(error: AppError.Initializer)
+    case firebase(error: AppError.Firebase)
+    
     enum ImageCompressor: Error {
         case imageToDataFail
         
