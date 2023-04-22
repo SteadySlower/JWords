@@ -21,14 +21,13 @@ struct MoveWords: ReducerProtocol {
              toMoveWords: [Word],
              wordBooks: [WordBook] = [WordBook](),
              selectedID: String? = nil,
-             isLoading: Bool = false,
-             willCloseBook: Bool = false) {
+             isLoading: Bool = false) {
             self.fromBook = fromBook
             self.toMoveWords = toMoveWords
             self.wordBooks = wordBooks
             self.selectedID = selectedID
             self.isLoading = isLoading
-            self.willCloseBook = willCloseBook
+            self.willCloseBook = fromBook.dayFromToday >= 28 ? true : false
         }
         
         var selectedWordBook: WordBook? {
@@ -180,103 +179,9 @@ struct WordMoveView_Previews: PreviewProvider {
             store: Store(
                 initialState: MoveWords.State(fromBook: WordBook(title: "타이틀"),
                                               toMoveWords: [],
-                                              isLoading: false,
-                                              willCloseBook: false),
+                                              isLoading: false),
                 reducer: MoveWords()._printChanges()
             )
         )
-    }
-}
-
-
-// MARK: ViewModel
-
-extension WordMoveView {
-    final class ViewModel: ObservableObject {
-        private let fromBook: WordBook
-        let toMoveWords: [Word]
-        private let wordBookService: WordBookService
-        private let todayService: TodayService
-        
-        @Published var wordBooks = [WordBook]()
-        @Published var selectedID: String?
-        @Published var isClosing: Bool = false
-        @Published var willCloseBook: Bool = false
-        
-        var selectedWordBook: WordBook? {
-            if let selectedID = selectedID {
-                return wordBooks.first(where: { $0.id == selectedID })
-            } else {
-                return nil
-            }
-        }
-        
-        init(fromBook: WordBook, toMoveWords: [Word], dependency: ServiceManager) {
-            self.fromBook = fromBook
-            self.toMoveWords = toMoveWords
-            self.wordBookService = dependency.wordBookService
-            self.todayService = dependency.todayService
-            
-            // 오늘 마지막 복습 일정인 book은 toggle 체크되어 있도록
-            if fromBook.dayFromToday == 28 {
-                self.willCloseBook = true
-            }
-        }
-        
-        func getWordBooks() {
-            wordBookService.getWordBooks { [weak self] books, error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                
-                guard let books = books else {
-                    print("Debug: No wordbook Found")
-                    return
-                }
-                
-                self?.wordBooks = books.filter { $0.id != self?.fromBook.id }
-            }
-        }
-        
-        // TODO: Handle Error
-        func moveWords(completionHandler: @escaping () -> Void) {
-            isClosing = true
-            
-            let group = DispatchGroup()
-            
-            group.enter()
-            todayService.updateReviewed(fromBook.id) { error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                group.leave()
-            }
-            
-            group.enter()
-            wordBookService.moveWords(of: fromBook, to: selectedWordBook, toMove: toMoveWords) { error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                group.leave()
-            }
-            
-            if willCloseBook {
-                group.enter()
-                wordBookService.closeWordBook(fromBook) { error in
-                    if let error = error {
-                        print(error)
-                        return
-                    }
-                    group.leave()
-                }
-            }
-            
-            group.notify(queue: .main) {
-                completionHandler()
-            }
-        }
     }
 }

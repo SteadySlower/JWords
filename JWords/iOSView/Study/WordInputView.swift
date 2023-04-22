@@ -112,57 +112,6 @@ struct WordInputView: View {
     }
 }
 
-extension WordInputView {
-    final class ViewModel: ObservableObject {
-        let word: Word?
-        
-        @Published var meaningText: String
-        @Published var kanjiText: String
-        @Published var ganaText: String
-        
-        private let wordService: WordService
-        
-        private let eventPublisher: PassthroughSubject<Event, Never>
-        
-        init(word: Word?, dependency: ServiceManager, eventPublisher: PassthroughSubject<Event, Never>) {
-            self.word = word
-            self.meaningText = word?.meaningText ?? ""
-            self.kanjiText = word?.kanjiText ?? ""
-            self.ganaText = word?.ganaText ?? ""
-            self.wordService = dependency.wordService
-            self.eventPublisher = eventPublisher
-        }
-        
-        func saveButtonTapped(_ completionHandler: @escaping () -> Void) {
-            if let word = word {
-                editWord(word) { [weak self] word in
-                    self?.eventPublisher.send(WordInputViewEvent.wordEdited(word: word))
-                    completionHandler()
-                }
-            } else {
-                addWord()
-            }
-        }
-            
-        private func addWord() {
-            
-        }
-        
-        private func editWord(_ word: Word, _ completionHandler: @escaping (Word) -> Void) {
-            let wordInput = WordInput(wordBookID: word.wordBookID, meaningText: meaningText, meaningImage: nil, ganaText: ganaText, ganaImage: nil, kanjiText: kanjiText, kanjiImage: nil)
-            wordService.updateWord(word, wordInput) { word, error in
-                //TODO: handle error (in completionHandler as well)
-                if let error = error {
-                    print(error.localizedDescription)
-                    return
-                }
-                guard let word = word else { return }
-                completionHandler(word)
-            }
-        }
-    }
-}
-
 
 struct WordInputView_Previews: PreviewProvider {
     static var previews: some View {
