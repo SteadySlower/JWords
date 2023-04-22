@@ -38,15 +38,14 @@ struct WordList: ReducerProtocol {
             self.setting = .init()
         }
         
-        var isLocked: Bool {
-            wordBook == nil && setting.studyMode == .onlyFail
-        }
-        
         var words: IdentifiedArrayOf<StudyWord.State> {
             switch setting.studyMode {
-            case .all: return _words
-            case .excludeSuccess: return _words.filter { $0.studyState != .success }
-            case .onlyFail: return _words.filter { $0.studyState == .fail }
+            case .all:
+                return _words
+            case .excludeSuccess:
+                return _words.filter { $0.studyState != .success }
+            case .onlyFail:
+                return _words.filter { $0.studyState == .fail }
             }
         }
         
@@ -193,7 +192,18 @@ struct WordList: ReducerProtocol {
                     }
                     state.showSideBar = false
                     return .none
-                default:
+                case .setStudyMode(let mode):
+                    switch mode {
+                    case .all, .excludeSuccess:
+                        state._words = IdentifiedArray(
+                            uniqueElements: state._words
+                                .map { StudyWord.State(word: $0.word, isLocked: false) })
+                    case .onlyFail:
+                        state._words = IdentifiedArray(
+                            uniqueElements: state._words
+                                .map { StudyWord.State(word: $0.word, isLocked: true) })
+                    }
+                    state.showSideBar = false
                     return .none
                 }
             default:
