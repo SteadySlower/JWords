@@ -14,15 +14,15 @@ struct MoveWords: ReducerProtocol {
         let toMoveWords: [Word]
         var wordBooks = [WordBook]()
         var selectedID: String?
-        var isLoading: Bool = false
-        var willCloseBook: Bool = false
+        var isLoading: Bool
+        var willCloseBook: Bool
         
         init(fromBook: WordBook,
              toMoveWords: [Word],
              wordBooks: [WordBook] = [WordBook](),
              selectedID: String? = nil,
-             isLoading: Bool,
-             willCloseBook: Bool) {
+             isLoading: Bool = false,
+             willCloseBook: Bool = false) {
             self.fromBook = fromBook
             self.toMoveWords = toMoveWords
             self.wordBooks = wordBooks
@@ -116,7 +116,6 @@ struct MoveWords: ReducerProtocol {
                 }.cancellable(id: MoveWordsID.self)
             case .moveWordsResponse(.success):
                 state.isLoading = false
-                print("preview: 세이코 시타와 기리기리 타케도")
                 return .none
             case let .moveWordsResponse(.failure(error)):
                 state.isLoading = false

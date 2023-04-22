@@ -17,6 +17,7 @@ struct WordList: ReducerProtocol {
         var selectionWords: IdentifiedArrayOf<SelectionWord.State> = []
         var setting: StudySetting.State
         var toEditWord: InputWord.State?
+        var moveWords: MoveWords.State?
         
         var showEditModal: Bool = false
         var showMoveModal: Bool = false
@@ -68,6 +69,7 @@ struct WordList: ReducerProtocol {
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
         case editWord(action: InputWord.Action)
+        case moveWords(action: MoveWords.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
     }
@@ -100,6 +102,16 @@ struct WordList: ReducerProtocol {
                 state.showEditModal = isPresent
                 if !isPresent { state.toEditWord = nil }
                 return .none
+            case .setMoveModal(let isPresent):
+                guard let fromBook = state.wordBook else { return .none }
+                if isPresent {
+                    state.moveWords = MoveWords.State(fromBook: fromBook, toMoveWords: state.toMoveWords)
+                } else {
+                    state.moveWords = nil
+                    state.setting.studyViewMode = .normal
+                }
+                state.showMoveModal = isPresent
+                return .none
             case .randomButtonTapped:
                 state._words = IdentifiedArrayOf(uniqueElements: state._words.shuffled().map { StudyWord.State(word: $0.word) })
                 return .none
@@ -122,6 +134,7 @@ struct WordList: ReducerProtocol {
                 default:
                     return .none
                 }
+            
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):
@@ -157,6 +170,9 @@ struct WordList: ReducerProtocol {
         }
         .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
             InputWord()
+        }
+        .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
+            MoveWords()
         }
     }
     
@@ -209,7 +225,9 @@ struct StudyView: View {
                 get: \.showMoveModal,
                 send: WordList.Action.setMoveModal(isPresented:))
             ) {
-                // TODO: add move modal
+                IfLetStore(self.store.scope(state: \.moveWords, action: WordList.Action.moveWords(action:))) {
+                    WordMoveView(store: $0)
+                }
             }
             .sheet(isPresented: vs.binding(
                 get: \.showEditModal,
