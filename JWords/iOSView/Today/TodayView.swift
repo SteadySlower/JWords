@@ -11,6 +11,7 @@ import ComposableArchitecture
 struct TodayList: ReducerProtocol {
     struct State: Equatable {
         var wordBooks: [WordBook] = []
+        var todayBooks: TodayBooks = .empty
         var todayWordBooks: [WordBook] = []
         var reviewWordBooks: [WordBook] = []
         var onlyFailWords: [Word] = []
@@ -22,7 +23,22 @@ struct TodayList: ReducerProtocol {
             wordList != nil
         }
         
+        fileprivate mutating func setBooks() {
+            todayWordBooks = self.wordBooks
+                .filter { todayBooks.studyIDs.contains($0.id) }
+            reviewWordBooks = self.wordBooks
+                .filter {
+                    todayBooks.reviewIDs.contains($0.id)
+                    && !todayBooks.reviewedIDs.contains($0.id)
+                }
+        }
+        
     }
+    
+    @Dependency(\.wordBookClient) var wordBookClient
+    @Dependency(\.wordClient) var wordClient
+    @Dependency(\.todayClient) var todayClient
+    private enum FetchWordBooksID {}
     
     enum Action: Equatable {
         case onAppear
@@ -32,13 +48,30 @@ struct TodayList: ReducerProtocol {
         case showStudyView(Bool)
         case onlyFailCellTapped
         case homeCellTapped(WordBook)
+        case wordBookResponse(TaskResult<[WordBook]>)
+        case todayBookResponse(TaskResult<TodayBooks>)
     }
     
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            // TODO: 이거 한방에 하게 갱신
             case .onAppear:
+                state.isLoading = true
+                return .task {
+                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
+                }
+                .cancellable(id: FetchWordBooksID.self)
+            case let .wordBookResponse(.success(wordBooks)):
+                state.wordBooks = wordBooks
+                return .task {
+                    await .todayBookResponse(TaskResult { try await todayClient.getTodayBooks() })
+                }
+            case let .todayBookResponse(.success(todayBooks)):
+                state.todayBooks = todayBooks
+                state.setBooks()
+                state.isLoading = false
                 return .none
             case .showStudyView(let showStudyView):
                 if !showStudyView { state.wordList = nil }
@@ -62,45 +95,53 @@ struct TodayView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
-                VStack {
-                    NavigationLink(
-                        destination: IfLetStore(store.scope(state: \.wordList,
-                                                            action: TodayList.Action.wordList(action:))
-                                    ) { StudyView(store: $0) },
-                       isActive: vs.binding(get: \.showStudyView,
-                                            send: TodayList.Action.showStudyView)) { EmptyView() }
-                    Text("오늘 학습할 단어")
-                    Button {
-                        vs.send(.onlyFailCellTapped)
-                    } label: {
-                        HStack {
-                            Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
-                            Spacer()
+            ZStack {
+                if vs.isLoading {
+                    ProgressView()
+                        .scaleEffect(5)
+                }
+                ScrollView {
+                    VStack {
+                        NavigationLink(
+                            destination: IfLetStore(store.scope(state: \.wordList,
+                                                                action: TodayList.Action.wordList(action:))
+                                        ) { StudyView(store: $0) },
+                           isActive: vs.binding(get: \.showStudyView,
+                                                send: TodayList.Action.showStudyView))
+                        { EmptyView() }
+                        Text("오늘 학습할 단어")
+                        Button {
+                            vs.send(.onlyFailCellTapped)
+                        } label: {
+                            HStack {
+                                Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
+                                Spacer()
+                            }
+                            .padding(12)
                         }
-                        .padding(12)
-                    }
-                    .border(.gray, width: 1)
-                    .frame(height: 50)
-                    VStack(spacing: 8) {
-                        ForEach(vs.todayWordBooks, id: \.id) { todayBook in
-                            HomeCell(wordBook: todayBook) {
-                                vs.send(.homeCellTapped(todayBook))
+                        .border(.gray, width: 1)
+                        .frame(height: 50)
+                        VStack(spacing: 8) {
+                            ForEach(vs.todayWordBooks, id: \.id) { todayBook in
+                                HomeCell(wordBook: todayBook) {
+                                    vs.send(.homeCellTapped(todayBook))
+                                }
                             }
                         }
                     }
-                }
-                VStack {
-                    Text("오늘 복습할 단어")
-                    VStack(spacing: 8) {
-                        ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
-                            HomeCell(wordBook: reviewBook) {
-                                vs.send(.homeCellTapped(reviewBook))
+                    VStack {
+                        Text("오늘 복습할 단어")
+                        VStack(spacing: 8) {
+                            ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
+                                HomeCell(wordBook: reviewBook) {
+                                    vs.send(.homeCellTapped(reviewBook))
+                                }
                             }
                         }
                     }
                 }
             }
+
             .onAppear { vs.send(.onAppear) }
             //        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
             .toolbar { ToolbarItem {
