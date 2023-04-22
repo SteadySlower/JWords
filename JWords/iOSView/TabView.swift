@@ -18,8 +18,8 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             NavigationView {
-                TodayView(dependency)
-                    .navigationTitle("오늘의 단어")
+//                TodayView(dependency)
+//                    .navigationTitle("오늘의 단어")
             }
             .tabItem { Image(systemName: "calendar") }
             #if os(iOS)

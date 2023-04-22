@@ -14,12 +14,17 @@ struct TodayList: ReducerProtocol {
         var todayWordBooks: [WordBook] = []
         var reviewWordBooks: [WordBook] = []
         var onlyFailWords: [Word] = []
+        var wordList: WordList.State?
         var isLoading: Bool = false
+        var showModal: Bool = false
         
     }
     
     enum Action: Equatable {
         case onAppear
+        case wordList(action: WordList.Action)
+        case listButtonTapped
+        case autoAddButtonTapped
     }
     
 
@@ -28,97 +33,82 @@ struct TodayList: ReducerProtocol {
             switch action {
             case .onAppear:
                 return .none
+            default:
+                return .none
             }
+        }
+        .ifLet(\.wordList, action: /Action.wordList(action:)) {
+            WordList()
         }
     }
 
 }
 
 struct TodayView: View {
-    @ObservedObject private var viewModel: ViewModel
-    @State private var showModal: Bool = false
-    
-    private let dependency: ServiceManager
-    
-    init(_ dependency: ServiceManager) {
-        self.viewModel = ViewModel(dependency)
-        self.dependency = dependency
-    }
+    let store: StoreOf<TodayList>
     
     var body: some View {
-        ScrollView {
-            todayBookList
-                .padding(.bottom, 8)
-            reviewBookList
+        WithViewStore(store, observe: { $0 }) { vs in
+            ScrollView {
+                VStack {
+                    Text("오늘 학습할 단어")
+                    ZStack {
+                        NavigationLink {
+                            IfLetStore(
+                                store.scope(state: \.wordList,
+                                            action: TodayList.Action.wordList(action:))
+                            ) {
+                                StudyView(store: $0)
+                            }
+                        } label: {
+                            HStack {
+                                Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
+                                Spacer()
+                            }
+                            .padding(12)
+                        }
+                    }
+                    .border(.gray, width: 1)
+                    .frame(height: 50)
+                    VStack(spacing: 8) {
+                        ForEach(vs.todayWordBooks, id: \.id) { todayBook in
+                            HomeCell(wordBook: todayBook)
+                        }
+                    }
+                }
+                VStack {
+                    Text("오늘 복습할 단어")
+                    VStack(spacing: 8) {
+                        ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
+                            HomeCell(wordBook: reviewBook)
+                        }
+                    }
+                }
+            }
+            .onAppear { vs.send(.onAppear) }
+            //        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
+            .toolbar { ToolbarItem {
+                HStack {
+                    Button("List") { vs.send(.listButtonTapped) }
+                    Button("+") { vs.send(.autoAddButtonTapped) }
+                }
+            }}
+
         }
-        .onAppear { viewModel.fetchSchedule() }
-        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
-        .toolbar { ToolbarItem { toolbarItems } }
     }
 }
 
-// MARK: SubViews
-
-extension TodayView {
-    
-    private var todayBookList: some View {
-        
-        var onlyFailCell: some View {
-            ZStack {
-                NavigationLink {
-                    LazyView(
-                        StudyView(
-                            store: Store(
-                                initialState: WordList.State(words: viewModel.onlyFailWords),
-                                reducer: WordList()._printChanges()
-                            )
-                        )
-                    )
-                } label: {
-                    HStack {
-                        Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
-                        Spacer()
-                    }
-                    .padding(12)
-                }
-            }
-            .border(.gray, width: 1)
-            .frame(height: 50)
-        }
-        
-        var body : some View {
-            VStack {
-                Text("오늘 학습할 단어")
-                onlyFailCell
-                VStack(spacing: 8) {
-                    ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
-                        HomeCell(wordBook: todayBook)
-                    }
-                }
-            }
-        }
-        
-        return body
-    }
-    
-    private var reviewBookList: some View {
-        VStack {
-            Text("오늘 복습할 단어")
-            VStack(spacing: 8) {
-                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
-                    HomeCell(wordBook: reviewBook)
-                }
-            }
+struct TodayView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            TodayView(
+                store: Store(
+                    initialState: TodayList.State(),
+                    reducer: TodayList()._printChanges()
+                )
+            )
         }
     }
-    
-    private var toolbarItems: some View {
-        HStack {
-            Button("List") { showModal = true }
-            Button("+") { viewModel.autoFetchTodayBooks() }
-        }
-    }
-    
 }
 
 extension TodayView {
