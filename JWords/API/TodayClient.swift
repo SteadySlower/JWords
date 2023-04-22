@@ -13,6 +13,7 @@ struct TodayClient {
     private static let todayService: TodayService = ServiceManager.shared.todayService
     var updateReviewed: @Sendable (String) async throws -> Void
     var autoUpdateTodayBooks: @Sendable ([WordBook]) async throws -> Void
+    var getTodayBooks: @Sendable () async throws -> TodayBooks
 }
 
 extension DependencyValues {
@@ -45,7 +46,19 @@ extension TodayClient: DependencyKey {
                     }
                 }
             }
-            
+        },
+        getTodayBooks: {
+            return try await withCheckedThrowingContinuation { continuation in
+                todayService.getTodayBooks { todayBooks, error in
+                    if let error = error {
+                        continuation.resume(with: .failure(error))
+                    } else if let todayBooks = todayBooks {
+                        continuation.resume(with: .success(todayBooks))
+                    } else {
+                        continuation.resume(with: .failure(AppError.generic(massage: "today client failure: today book is nil")))
+                    }
+                }
+            }
         }
   )
 }
@@ -53,13 +66,22 @@ extension TodayClient: DependencyKey {
 extension TodayClient: TestDependencyKey {
   static let previewValue = Self(
     updateReviewed: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); print("preview client: update reviewed")  },
-    autoUpdateTodayBooks: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: auto update todayBooks") }
+    autoUpdateTodayBooks: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: auto update todayBooks") },
+    getTodayBooks: { try await Task.sleep(nanoseconds: 1 * 1_000_000_000); return .empty }
   )
 
   static let testValue = Self(
     updateReviewed: unimplemented("\(Self.self).updateReviewed"),
-    autoUpdateTodayBooks: unimplemented("\(Self.self).autoUpdateTodayBooks")
+    autoUpdateTodayBooks: unimplemented("\(Self.self).autoUpdateTodayBooks"),
+    getTodayBooks: unimplemented("\(Self.self).getTodayBooks")
   )
+}
+
+extension TodayBooks {
+    static let empty = TodayBooks(studyIDs: [],
+                                 reviewIDs: [],
+                                 reviewedIDs: [],
+                                 createdAt: Date())
 }
 
 
