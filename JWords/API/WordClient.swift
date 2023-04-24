@@ -67,7 +67,7 @@ extension WordClient: DependencyKey {
 
 extension WordClient: TestDependencyKey {
   static let previewValue = Self(
-    words: { _ in .mock },
+    words: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); return .mock },
     studyState: { word, state in state },
     edit: { word, wordInput in makeMockEditWord(word, wordInput) }
 //    edit: { word, wordInput in throw AppError.generic(massage: "mock error") }
@@ -94,13 +94,13 @@ extension WordClient: TestDependencyKey {
 }
 
 extension Array where Element == Word {
-    static let mock: [Word] = {
+    static var mock: [Word] {
         var result = [Word]()
         for i in 0..<10 {
             result.append(Word(index: i))
         }
         return result
-    }()
+    }
 }
 
 extension WordBook {

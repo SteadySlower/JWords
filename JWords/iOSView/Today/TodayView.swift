@@ -21,6 +21,13 @@ struct TodayList: ReducerProtocol {
             wordList != nil
         }
         
+        fileprivate mutating func clear() {
+            studyWordBooks = []
+            reviewWordBooks = []
+            onlyFailWords = []
+            wordList = nil
+        }
+        
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -37,6 +44,42 @@ struct TodayList: ReducerProtocol {
         case onlyFailCellTapped
         case homeCellTapped(WordBook)
         case scheduleResponse(TaskResult<TodayBooks>)
+        case onlyFailResponse(TaskResult<[Word]>)
+    }
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                state.clear()
+                state.isLoading = true
+                return .task {
+                    await .scheduleResponse(TaskResult { try await getTodayBooks() })
+                }
+                .cancellable(id: FetchScheduleID.self)
+            case let .scheduleResponse(.success(books)):
+                state.studyWordBooks = books.study
+                state.reviewWordBooks = books.review
+                return .task {
+                    await .onlyFailResponse(TaskResult { try await getOnlyFailWords(studyBooks: books.study) })
+                }
+            case let .onlyFailResponse(.success(onlyFails)):
+                state.onlyFailWords = onlyFails
+                state.isLoading = false
+                return .none
+            case .onlyFailCellTapped:
+                state.wordList = WordList.State(words: state.onlyFailWords)
+                return .none
+            case let .homeCellTapped(wordBook):
+                state.wordList = WordList.State(wordBook: wordBook)
+                return .none
+            default:
+                return .none
+            }
+        }
+        .ifLet(\.wordList, action: /Action.wordList(action:)) {
+            WordList()
+        }
     }
     
     private func getTodayBooks() async throws -> TodayBooks {
@@ -65,35 +108,19 @@ struct TodayList: ReducerProtocol {
         }
     }
     
-    var body: some ReducerProtocol<State, Action> {
-        Reduce { state, action in
-            switch action {
-            case .onAppear:
-                state.isLoading = true
-                return .task {
-                    await .scheduleResponse(TaskResult { try await getTodayBooks() })
-                }
-                .cancellable(id: FetchScheduleID.self)
-            case let .scheduleResponse(.success(books)):
-                state.studyWordBooks = books.study
-                state.reviewWordBooks = books.review
-                state.isLoading = false
-                return .none
-            case .showStudyView(let showStudyView):
-                if !showStudyView { state.wordList = nil }
-                return .none
-            case .onlyFailCellTapped:
-                state.wordList = WordList.State(words: state.onlyFailWords)
-                return .none
-            case let .homeCellTapped(wordBook):
-                state.wordList = WordList.State(wordBook: wordBook)
-                return .none
-            default:
-                return .none
+    private func getOnlyFailWords(studyBooks: [WordBook]) async throws -> [Word] {
+        return try await withThrowingTaskGroup(of: [Word].self, returning: [Word].self) { group in
+            var result = [Word]()
+            
+            for studyBook in studyBooks {
+                group.addTask { try await wordClient.words(studyBook) }
             }
-        }
-        .ifLet(\.wordList, action: /Action.wordList(action:)) {
-            WordList()
+            
+            for try await words in group {
+                result.append(contentsOf: words)
+            }
+            
+            return result
         }
     }
 
@@ -130,6 +157,7 @@ struct TodayView: View {
                         }
                         .border(.gray, width: 1)
                         .frame(height: 50)
+                        .disabled(vs.isLoading)
                         VStack(spacing: 8) {
                             ForEach(vs.studyWordBooks, id: \.id) { todayBook in
                                 HomeCell(wordBook: todayBook) {
