@@ -85,6 +85,9 @@ struct TodayList: ReducerProtocol {
             case .onlyFailCellTapped:
                 state.wordList = WordList.State(words: state.onlyFailWords)
                 return .none
+            case let .homeCellTapped(wordBook):
+                state.wordList = WordList.State(wordBook: wordBook)
+                return .none
             default:
                 return .none
             }
