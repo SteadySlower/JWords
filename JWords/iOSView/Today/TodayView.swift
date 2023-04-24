@@ -120,7 +120,7 @@ struct TodayList: ReducerProtocol {
                 result.append(contentsOf: words)
             }
             
-            return result
+            return result.filter { $0.studyState != .success }
         }
     }
 
