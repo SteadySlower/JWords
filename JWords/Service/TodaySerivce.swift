@@ -8,9 +8,9 @@
 import Foundation
 
 protocol TodayService {
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodaySchedule>)
     func autoUpdateTodayBooks(_ wordBooks: [WordBook], _ completionHandler: @escaping CompletionWithoutData)
-    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
+    func updateTodayBooks(_ todayBooks: TodaySchedule, _ completionHandler: @escaping CompletionWithoutData)
     func updateReviewed(_ reviewedID: String, _ completionHandler: @escaping CompletionWithoutData)
 }
 
@@ -25,7 +25,7 @@ final class TodayServiceImpl: TodayService {
     }
     
     // functions
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodaySchedule>) {
         db.getTodayBooks { todayBooks, error in
             if error != nil {
                 completionHandler(nil, error)
@@ -45,14 +45,14 @@ final class TodayServiceImpl: TodayService {
                 reviewID.append(wordBook.id)
             }
         }
-        let todayBooks = TodayBooks(studyIDs: studyID, reviewIDs: reviewID, reviewedIDs: [], createdAt: Date())
+        let todayBooks = TodaySchedule(studyIDs: studyID, reviewIDs: reviewID, reviewedIDs: [], createdAt: Date())
         
         db.updateTodayBooks(todayBooks) { error in
             completionHandler(error)
         }
     }
     
-    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+    func updateTodayBooks(_ todayBooks: TodaySchedule, _ completionHandler: @escaping CompletionWithoutData) {
         db.updateTodayBooks(todayBooks, completionHandler)
     }
     
@@ -66,7 +66,7 @@ final class TodayServiceImpl: TodayService {
             // TODO: Handle Error
             guard let todayBooks = todayBooks else { return }
             let newReviewedIDs = todayBooks.reviewedIDs + [reviewedID]
-            let newTodayBooks = TodayBooks(studyIDs: todayBooks.studyIDs, reviewIDs: todayBooks.reviewIDs, reviewedIDs: newReviewedIDs, createdAt: todayBooks.createdAt)
+            let newTodayBooks = TodaySchedule(studyIDs: todayBooks.studyIDs, reviewIDs: todayBooks.reviewIDs, reviewedIDs: newReviewedIDs, createdAt: todayBooks.createdAt)
             self.updateTodayBooks(newTodayBooks) { error in
                 completionHandler(error)
             }

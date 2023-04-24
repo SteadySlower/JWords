@@ -129,7 +129,7 @@ extension TodaySelectionModal {
         @Published var wordBooks: [WordBook] = []
         @Published var schedules = [String : Schedule]()
         
-        private var todayBooks: TodayBooks?
+        private var todayBooks: TodaySchedule?
         
         private let wordBookService: WordBookService
         private let todayService: TodayService
@@ -195,7 +195,7 @@ extension TodaySelectionModal {
             let studyIDs = schedules.keys.filter { schedules[$0] == .study }
             let reviewIDs = schedules.keys.filter { schedules[$0] == .review }
             let reviewedIDs = todayBooks?.reviewedIDs ?? []
-            let newTodayBooks = TodayBooks(studyIDs: studyIDs, reviewIDs: reviewIDs, reviewedIDs: reviewedIDs, createdAt: Date())
+            let newTodayBooks = TodaySchedule(studyIDs: studyIDs, reviewIDs: reviewIDs, reviewedIDs: reviewedIDs, createdAt: Date())
             todayService.updateTodayBooks(newTodayBooks) { _ in
                 completionHandler()
             }

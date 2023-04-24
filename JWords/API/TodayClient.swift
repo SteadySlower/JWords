@@ -13,7 +13,7 @@ struct TodayClient {
     private static let todayService: TodayService = ServiceManager.shared.todayService
     var updateReviewed: @Sendable (String) async throws -> Void
     var autoUpdateTodayBooks: @Sendable ([WordBook]) async throws -> Void
-    var getTodayBooks: @Sendable () async throws -> TodayBooks
+    var getTodayBooks: @Sendable () async throws -> TodaySchedule
 }
 
 extension DependencyValues {
@@ -67,7 +67,7 @@ extension TodayClient: TestDependencyKey {
   static let previewValue = Self(
     updateReviewed: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); print("preview client: update reviewed")  },
     autoUpdateTodayBooks: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: auto update todayBooks") },
-    getTodayBooks: { try await Task.sleep(nanoseconds: 1 * 1_000_000_000); return .empty }
+    getTodayBooks: { try await Task.sleep(nanoseconds: 3 * 1_000_000_000); return .empty }
   )
 
   static let testValue = Self(
@@ -77,9 +77,9 @@ extension TodayClient: TestDependencyKey {
   )
 }
 
-extension TodayBooks {
-    static let empty = TodayBooks(studyIDs: [],
-                                 reviewIDs: [],
+extension TodaySchedule {
+    static let empty = TodaySchedule(studyIDs: ["0", "1", "2"],
+                                 reviewIDs: ["3", "4", "5"],
                                  reviewedIDs: [],
                                  createdAt: Date())
 }

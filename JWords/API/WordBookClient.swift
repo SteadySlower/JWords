@@ -65,7 +65,7 @@ extension WordBookClient: DependencyKey {
 
 extension WordBookClient: TestDependencyKey {
     static let previewValue = Self(
-    wordBooks: { .mock },
+        wordBooks: { try await Task.sleep(nanoseconds: 3 * 1_000_000_000); return .mock },
     moveWords: { _, _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: move words") },
     closeBook: { _ in try await Task.sleep(nanoseconds: 3 * 1_000_000_000); print("preview client: close books")  }
 //    closeBook: { _ in throw AppError.generic(massage: "preview client: Mock Failure to close book")  }
@@ -82,7 +82,7 @@ extension Array where Element == WordBook {
     static let mock: [WordBook] = {
         var result = [WordBook]()
         for i in 0..<10 {
-            result.append(WordBook(title: "단어장 \(i)"))
+            result.append(WordBook(index: i))
         }
         return result
     }()

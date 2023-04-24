@@ -10,9 +10,7 @@ import ComposableArchitecture
 
 struct TodayList: ReducerProtocol {
     struct State: Equatable {
-        var wordBooks: [WordBook] = []
-        var todayBooks: TodayBooks = .empty
-        var todayWordBooks: [WordBook] = []
+        var studyWordBooks: [WordBook] = []
         var reviewWordBooks: [WordBook] = []
         var onlyFailWords: [Word] = []
         var wordList: WordList.State?
@@ -23,22 +21,12 @@ struct TodayList: ReducerProtocol {
             wordList != nil
         }
         
-        fileprivate mutating func setBooks() {
-            todayWordBooks = self.wordBooks
-                .filter { todayBooks.studyIDs.contains($0.id) }
-            reviewWordBooks = self.wordBooks
-                .filter {
-                    todayBooks.reviewIDs.contains($0.id)
-                    && !todayBooks.reviewedIDs.contains($0.id)
-                }
-        }
-        
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
     @Dependency(\.wordClient) var wordClient
     @Dependency(\.todayClient) var todayClient
-    private enum FetchWordBooksID {}
+    private enum FetchScheduleID {}
     
     enum Action: Equatable {
         case onAppear
@@ -48,29 +36,47 @@ struct TodayList: ReducerProtocol {
         case showStudyView(Bool)
         case onlyFailCellTapped
         case homeCellTapped(WordBook)
-        case wordBookResponse(TaskResult<[WordBook]>)
-        case todayBookResponse(TaskResult<TodayBooks>)
+        case scheduleResponse(TaskResult<TodayBooks>)
     }
     
+    private func getTodayBooks() async throws -> TodayBooks {
+        return try await withThrowingTaskGroup(of: Any.self, returning: TodayBooks.self) { group in
+            var books: [WordBook]?
+            var schedule: TodaySchedule?
+            group.addTask { try await wordBookClient.wordBooks() }
+            group.addTask { try await todayClient.getTodayBooks() }
+            
+            for try await result in group {
+                if let result = result as? [WordBook] {
+                    books = result
+                    continue
+                }
+                if let result = result as? TodaySchedule {
+                    schedule = result
+                    continue
+                }
+            }
+            
+            guard let books = books, let schedule = schedule else {
+                throw AppError.generic(massage: "Failed to fetch today's schedule")
+            }
 
+            return TodayBooks(books: books, schedule: schedule)
+        }
+    }
+    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            // TODO: 이거 한방에 하게 갱신
             case .onAppear:
                 state.isLoading = true
                 return .task {
-                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
+                    await .scheduleResponse(TaskResult { try await getTodayBooks() })
                 }
-                .cancellable(id: FetchWordBooksID.self)
-            case let .wordBookResponse(.success(wordBooks)):
-                state.wordBooks = wordBooks
-                return .task {
-                    await .todayBookResponse(TaskResult { try await todayClient.getTodayBooks() })
-                }
-            case let .todayBookResponse(.success(todayBooks)):
-                state.todayBooks = todayBooks
-                state.setBooks()
+                .cancellable(id: FetchScheduleID.self)
+            case let .scheduleResponse(.success(books)):
+                state.studyWordBooks = books.study
+                state.reviewWordBooks = books.review
                 state.isLoading = false
                 return .none
             case .showStudyView(let showStudyView):
@@ -122,7 +128,7 @@ struct TodayView: View {
                         .border(.gray, width: 1)
                         .frame(height: 50)
                         VStack(spacing: 8) {
-                            ForEach(vs.todayWordBooks, id: \.id) { todayBook in
+                            ForEach(vs.studyWordBooks, id: \.id) { todayBook in
                                 HomeCell(wordBook: todayBook) {
                                     vs.send(.homeCellTapped(todayBook))
                                 }

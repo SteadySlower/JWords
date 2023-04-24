@@ -30,8 +30,8 @@ protocol Database {
     func updateUsed(of sample: Sample, to used: Int)
     
     // Today 관련
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
-    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodaySchedule>)
+    func updateTodayBooks(_ todayBooks: TodaySchedule, _ completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -368,14 +368,14 @@ extension FirestoreDB {
 //MARK: TodayDatebase
 
 extension FirestoreDB {
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodaySchedule>) {
         dataRef.getDocument { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
                 return
             }
             guard var dict = snapshot?.data()?["today"] as? [String: Any] else {
-                let emptyTodayBooks = TodayBooks(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
+                let emptyTodayBooks = TodaySchedule(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
                 completionHandler(emptyTodayBooks, nil)
                 return
             }
@@ -389,7 +389,7 @@ extension FirestoreDB {
             dict["createdAt"] = timestamp.dateValue()
             
             do {
-                let todayBooks = try TodayBooks(dict: dict)
+                let todayBooks = try TodaySchedule(dict: dict)
                 completionHandler(todayBooks, nil)
             } catch let error {
                 completionHandler(nil, error)
@@ -397,7 +397,7 @@ extension FirestoreDB {
         }
     }
     
-    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+    func updateTodayBooks(_ todayBooks: TodaySchedule, _ completionHandler: @escaping CompletionWithoutData) {
         
         let data: [String : Any] = [
             "studyIDs": todayBooks.studyIDs,
