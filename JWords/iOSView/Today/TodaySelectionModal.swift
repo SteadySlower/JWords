@@ -6,25 +6,93 @@
 //
 
 import SwiftUI
+import Combine
+import ComposableArchitecture
+
+enum Schedule: Equatable {
+    case none, study, review
+}
+
+struct TodaySelection: ReducerProtocol {
+    struct State: Equatable {
+        var wordBooks: [WordBook] = []
+        var schedules: [String : Schedule]
+        var todayBooks: TodaySchedule?
+        var isLoading: Bool = false
+        
+        init(todayBooks: [WordBook], reviewBooks: [WordBook]) {
+            var schedules = [String:Schedule]()
+            for book in todayBooks {
+                schedules[book.id] = .study
+            }
+            for book in reviewBooks {
+                schedules[book.id] = .review
+            }
+            self.schedules = schedules
+        }
+        
+    }
+    
+    enum Action: Equatable {
+        case onAppear
+        case cellTapped
+        case studyButtonTapped(WordBook)
+        case reviewButtonTapped(WordBook)
+        case cancelButtonTapped
+        case okButtonTapped
+    }
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                state.isLoading = true
+                return .none
+            case .cellTapped:
+                return .none
+            default:
+                return .none
+            }
+        }
+    }
+    
+
+
+}
 
 struct TodaySelectionModal: View {
     
-    @ObservedObject private var viewModel: ViewModel
-    @Environment(\.dismiss) private var dismiss
-    @State private var showProgressView: Bool = false
-    
-    init(_ dependency: ServiceManager) {
-        self.viewModel = ViewModel(dependency)
-    }
+    let store: StoreOf<TodaySelection>
     
     var body: some View {
-        ZStack {
-            if showProgressView {
-                progressView
+        WithViewStore(store, observe: { $0 }) { vs in
+            ZStack {
+                if vs.isLoading {
+                    progressView
+                }
+                VStack {
+                    Text("학습 혹은 복습할 단어장을 골라주세요.")
+                    ScrollView {
+                        VStack(spacing: 8) {
+                            ForEach(vs.wordBooks, id: \.id) { wordBook in
+                                bookCell(wordBook,
+                                         vs.schedules[wordBook.id] ?? .none,
+                                         { vs.send(.studyButtonTapped(wordBook)) },
+                                         { vs.send(.reviewButtonTapped(wordBook)) })
+                            }
+                        }
+                    }
+                    HStack {
+                        Button("취소") { vs.send(.cancelButtonTapped) }
+                        Spacer()
+                        Button("확인") { vs.send(.okButtonTapped) }
+                    }
+                    .padding()
+                }
+                .padding(10)
             }
-            contentView
+            .onAppear { vs.send(.onAppear) }
         }
-        .onAppear { viewModel.fetchTodays() }
     }
 }
 
@@ -37,53 +105,37 @@ extension TodaySelectionModal {
             .scaleEffect(5)
     }
     
-    private var contentView: some View {
-        VStack {
-            title
-            bookList
-            buttons
-        }
-        .padding(10)
-    }
-    
-    private var title: some View {
-        Text("학습 혹은 복습할 단어장을 골라주세요.")
-    }
-    
-    private var bookList: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                    bookCell(wordBook)
-                }
-            }
-        }
-    }
-    
-    private func bookCell(_ wordBook: WordBook) -> some View {
-        let schedule = viewModel.schedules[wordBook.id, default: .none]
+    private func bookCell(_ wordBook: WordBook,
+                          _ schedule: Schedule,
+                          _ studyButtonTapped: @escaping () -> Void,
+                          _ reviewButtonTapped: @escaping () -> Void) -> some View {
         
         var dateTextColor: Color {
-            switch wordBook.schedule {
+            switch schedule {
             case .none: return .black
             case .study: return .blue
             case .review: return .pink
             }
         }
         
+        var dateText: String {
+            let dayGap = wordBook.dayFromToday
+            return dayGap == 0 ? "今日" : "\(dayGap)日前"
+        }
+        
         var bookInfo: some View {
             VStack(alignment: .leading) {
                 Text(wordBook.title)
-                Text(viewModel.dateText(of: wordBook))
+                Text(dateText)
                     .foregroundColor(dateTextColor)
             }
         }
         
         var buttons: some View {
             VStack {
-                Button("학습") { viewModel.studyButtonTapped(wordBook.id) }
+                Button("학습") { studyButtonTapped() }
                     .foregroundColor(schedule == .study ? Color.green : Color.black)
-                Button("복습") { viewModel.reviewButtonTapped(wordBook.id) }
+                Button("복습") { reviewButtonTapped() }
                     .foregroundColor(schedule == .review ? Color.green : Color.black)
             }
         }
@@ -103,27 +155,24 @@ extension TodaySelectionModal {
         return body
     }
     
-    private var buttons: some View {
-        HStack {
-            Button("취소") { dismiss() }
-            Spacer()
-            Button("확인") {
-                showProgressView = true
-                viewModel.updateToday {
-                    showProgressView = false
-                    dismiss()
-                }
-            }
+}
+
+struct TodaySelectionModal_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            TodaySelectionModal(
+                store: Store(
+                    initialState: TodaySelection.State(
+                        todayBooks: [WordBook(index: 0), WordBook(index: 1), WordBook(index: 2)],
+                        reviewBooks: [WordBook(index: 3), WordBook(index: 4), WordBook(index: 5)]),
+                    reducer: TodaySelection()._printChanges()
+                )
+            )
         }
-        .padding()
     }
-    
 }
 
 extension TodaySelectionModal {
-    enum Schedule {
-        case none, study, review
-    }
     
     final class ViewModel: ObservableObject {
         @Published var wordBooks: [WordBook] = []
