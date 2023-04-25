@@ -73,6 +73,14 @@ struct TodayList: ReducerProtocol {
             case let .homeCellTapped(wordBook):
                 state.wordList = WordList.State(wordBook: wordBook)
                 return .none
+            case .autoAddButtonTapped:
+                state.clear()
+                state.isLoading = true
+                return .task {
+                    let books = try await wordBookClient.wordBooks()
+                    try await todayClient.autoUpdateTodayBooks(books)
+                    return await .scheduleResponse(TaskResult { try await getTodayBooks() })
+                }
             default:
                 return .none
             }
