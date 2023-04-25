@@ -33,9 +33,11 @@ struct TodaySelection: ReducerProtocol {
         
     }
     
+    @Dependency(\.wordBookClient) var wordBookClient
+    
     enum Action: Equatable {
         case onAppear
-        case cellTapped
+        case wordBookResponse(TaskResult<[WordBook]>)
         case studyButtonTapped(WordBook)
         case reviewButtonTapped(WordBook)
         case cancelButtonTapped
@@ -47,8 +49,12 @@ struct TodaySelection: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.isLoading = true
-                return .none
-            case .cellTapped:
+                return .task {
+                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
+                }
+            case let .wordBookResponse(.success(books)):
+                state.wordBooks = sortWordBooksBySchedule(books, schedule: state.schedules)
+                state.isLoading = false
                 return .none
             default:
                 return .none
@@ -56,7 +62,16 @@ struct TodaySelection: ReducerProtocol {
         }
     }
     
-
+    func sortWordBooksBySchedule(_ wordBooks: [WordBook], schedule: [String:Schedule]) -> [WordBook] {
+        return wordBooks.sorted(by: { book1, book2 in
+            if schedule[book1.id, default: .none] != .none
+                && schedule[book2.id, default: .none] == .none {
+                return true
+            } else {
+                return false
+            }
+        })
+    }
 
 }
 
