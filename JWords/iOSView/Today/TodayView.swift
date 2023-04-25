@@ -14,11 +14,15 @@ struct TodayList: ReducerProtocol {
         var reviewWordBooks: [WordBook] = []
         var onlyFailWords: [Word] = []
         var wordList: WordList.State?
+        var todaySelection: TodaySelection.State?
         var isLoading: Bool = false
-        var showModal: Bool = false
         
         var showStudyView: Bool {
             wordList != nil
+        }
+        
+        var showModal: Bool {
+            todaySelection != nil
         }
         
         fileprivate mutating func clear() {
@@ -40,6 +44,8 @@ struct TodayList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case wordList(action: WordList.Action)
+        case todaySelection(action: TodaySelection.Action)
+        case setSelectionModal(isPresent: Bool)
         case listButtonTapped
         case autoAddButtonTapped
         case showStudyView(Bool)
@@ -70,11 +76,18 @@ struct TodayList: ReducerProtocol {
                 state.onlyFailWords = onlyFails
                 state.isLoading = false
                 return .none
+            case .setSelectionModal(let isPresent):
+                if !isPresent { state.todaySelection = nil }
+                return .none
             case .onlyFailCellTapped:
                 state.wordList = WordList.State(words: state.onlyFailWords)
                 return .none
             case let .homeCellTapped(wordBook):
                 state.wordList = WordList.State(wordBook: wordBook)
+                return .none
+            case .listButtonTapped:
+                state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
+                                                            reviewBooks: state.reviewWordBooks)
                 return .none
             case .autoAddButtonTapped:
                 state.clear()
@@ -91,6 +104,9 @@ struct TodayList: ReducerProtocol {
         }
         .ifLet(\.wordList, action: /Action.wordList(action:)) {
             WordList()
+        }
+        .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
+            TodaySelection()
         }
     }
     
@@ -192,7 +208,14 @@ struct TodayView: View {
             }
 
             .onAppear { vs.send(.onAppear) }
-            //        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
+            .sheet(isPresented: vs.binding(
+                get: \.showModal,
+                send: TodayList.Action.setSelectionModal(isPresent:))
+            ) {
+                IfLetStore(self.store.scope(state: \.todaySelection, action: TodayList.Action.todaySelection(action:))) {
+                    TodaySelectionModal(store: $0)
+                }
+            }
             .toolbar { ToolbarItem {
                 HStack {
                     Button("List") { vs.send(.listButtonTapped) }
