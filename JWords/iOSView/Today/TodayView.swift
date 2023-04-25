@@ -34,6 +34,8 @@ struct TodayList: ReducerProtocol {
     @Dependency(\.wordClient) var wordClient
     @Dependency(\.todayClient) var todayClient
     private enum FetchScheduleID {}
+    private enum GetOnlyFailID {}
+    private enum AutoAddID {}
     
     enum Action: Equatable {
         case onAppear
@@ -63,6 +65,7 @@ struct TodayList: ReducerProtocol {
                 return .task {
                     await .onlyFailResponse(TaskResult { try await getOnlyFailWords(studyBooks: books.study) })
                 }
+                .cancellable(id: GetOnlyFailID.self)
             case let .onlyFailResponse(.success(onlyFails)):
                 state.onlyFailWords = onlyFails
                 state.isLoading = false
@@ -81,6 +84,7 @@ struct TodayList: ReducerProtocol {
                     try await todayClient.autoUpdateTodayBooks(books)
                     return await .scheduleResponse(TaskResult { try await getTodayBooks() })
                 }
+                .cancellable(id: AutoAddID.self)
             default:
                 return .none
             }
