@@ -56,6 +56,22 @@ struct TodaySelection: ReducerProtocol {
                 state.wordBooks = sortWordBooksBySchedule(books, schedule: state.schedules)
                 state.isLoading = false
                 return .none
+            case let .studyButtonTapped(book):
+                let id = book.id
+                if state.schedules[id, default: .none] == .study {
+                    state.schedules[id, default: .none] = .none
+                } else {
+                    state.schedules[id, default: .none] = .study
+                }
+                return .none
+            case let .reviewButtonTapped(book):
+                let id = book.id
+                if state.schedules[id, default: .none] == .review {
+                    state.schedules[id, default: .none] = .none
+                } else {
+                    state.schedules[id, default: .none] = .review
+                }
+                return .none
             default:
                 return .none
             }
