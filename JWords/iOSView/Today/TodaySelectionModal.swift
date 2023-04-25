@@ -16,7 +16,7 @@ enum Schedule: Equatable {
 struct TodaySelection: ReducerProtocol {
     struct State: Equatable {
         var wordBooks: [WordBook] = []
-        var schedules: [String : Schedule]
+        var schedules: [String:Schedule]
         var todayBooks: TodaySchedule?
         var isLoading: Bool = false
         
@@ -29,6 +29,22 @@ struct TodaySelection: ReducerProtocol {
                 schedules[book.id] = .review
             }
             self.schedules = schedules
+        }
+        
+        mutating func toggleStudy(_ id: String) {
+            if schedules[id, default: .none] == .study {
+                schedules[id, default: .none] = .none
+            } else {
+                schedules[id, default: .none] = .study
+            }
+        }
+        
+        mutating func toggleReview(_ id: String) {
+            if schedules[id, default: .none] == .review {
+                schedules[id, default: .none] = .none
+            } else {
+                schedules[id, default: .none] = .review
+            }
         }
         
     }
@@ -57,20 +73,10 @@ struct TodaySelection: ReducerProtocol {
                 state.isLoading = false
                 return .none
             case let .studyButtonTapped(book):
-                let id = book.id
-                if state.schedules[id, default: .none] == .study {
-                    state.schedules[id, default: .none] = .none
-                } else {
-                    state.schedules[id, default: .none] = .study
-                }
+                state.toggleStudy(book.id)
                 return .none
             case let .reviewButtonTapped(book):
-                let id = book.id
-                if state.schedules[id, default: .none] == .review {
-                    state.schedules[id, default: .none] = .none
-                } else {
-                    state.schedules[id, default: .none] = .review
-                }
+                state.toggleReview(book.id)
                 return .none
             default:
                 return .none
