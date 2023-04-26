@@ -30,6 +30,8 @@ struct HomeList: ReducerProtocol {
         case wordBookResponse(TaskResult<[WordBook]>)
         case homeCellTapped(WordBook)
         case setAddBookModal(isPresent: Bool)
+        case showStudyView(Bool)
+        case wordList(action: WordList.Action)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -54,6 +56,9 @@ struct HomeList: ReducerProtocol {
                 return .none
             }
         }
+        .ifLet(\.wordList, action: /Action.wordList(action:)) {
+            WordList()
+        }
     }
 
 }
@@ -65,6 +70,16 @@ struct HomeView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
+                NavigationLink(
+                    destination: IfLetStore(
+                            store.scope(
+                                state: \.wordList,
+                                action: HomeList.Action.wordList(action:))
+                            ) { StudyView(store: $0) },
+                    isActive: vs.binding(
+                                get: \.showStudyView,
+                                send: HomeList.Action.showStudyView))
+                { EmptyView() }
                 VStack(spacing: 8) {
                     ForEach(vs.wordBooks, id: \.id) { wordBook in
                         HomeCell(wordBook: wordBook) { vs.send(.homeCellTapped(wordBook)) }
@@ -72,6 +87,8 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("단어장 목록")
+            .navigationBarTitleDisplayMode(.inline)
+            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
 //            .sheet(isPresented: vs.binding(
 //                get: \.showModal,
