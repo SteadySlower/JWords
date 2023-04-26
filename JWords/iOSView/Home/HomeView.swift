@@ -18,6 +18,7 @@ struct HomeList: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
+        case wordBookResponse(TaskResult<[WordBook]>)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -26,6 +27,15 @@ struct HomeList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                state.isLoading = true
+                return .task {
+                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
+                }
+            case let .wordBookResponse(.success(books)):
+                state.wordBooks = books
+                state.isLoading = false
+                return .none
+            default:
                 return .none
             }
         }
