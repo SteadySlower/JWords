@@ -150,33 +150,3 @@ struct HomeView_Previews: PreviewProvider {
         }
     }
 }
-
-extension HomeView {
-    final class ViewModel: ObservableObject {
-        @Published private(set) var wordBooks: [WordBook] = []
-        private let wordBookService: WordBookService
-        
-        init(wordBookService: WordBookService) {
-            self.wordBookService = wordBookService
-        }
-        
-        func fetchWordBooks() {
-            wordBookService.getWordBooks { [weak self] wordBooks, error in
-                if let error = error { print("디버그: \(error.localizedDescription)"); return }
-                if let wordBooks = wordBooks {
-                    self?.wordBooks = wordBooks
-                }
-            }
-        }
-        
-        func AddWordBook(title: String, preferredFrontType: FrontType) {
-            wordBookService.saveBook(title: title, preferredFrontType: preferredFrontType) { [weak self] error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                self?.fetchWordBooks()
-            }
-        }
-    }
-}
