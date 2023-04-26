@@ -116,6 +116,11 @@ struct TodayList: ReducerProtocol {
                 default:
                     return .none
                 }
+            case .wordList(let action):
+                if action == WordList.Action.dismiss {
+                    state.wordList = nil
+                }
+                return .none
             default:
                 return .none
             }
