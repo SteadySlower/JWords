@@ -14,11 +14,22 @@ struct HomeList: ReducerProtocol {
         var wordBooks:[WordBook] = []
         var wordList: WordList.State?
         var isLoading: Bool = false
+        
+        var showStudyView: Bool {
+            wordList != nil
+        }
+        
+        mutating func clear() {
+            wordBooks = []
+            wordList = nil
+        }
     }
     
     enum Action: Equatable {
         case onAppear
         case wordBookResponse(TaskResult<[WordBook]>)
+        case homeCellTapped(WordBook)
+        case setAddBookModal(isPresent: Bool)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -27,6 +38,7 @@ struct HomeList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                state.clear()
                 state.isLoading = true
                 return .task {
                     await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
@@ -34,6 +46,9 @@ struct HomeList: ReducerProtocol {
             case let .wordBookResponse(.success(books)):
                 state.wordBooks = books
                 state.isLoading = false
+                return .none
+            case let .homeCellTapped(wordBook):
+                state.wordList = WordList.State(wordBook: wordBook)
                 return .none
             default:
                 return .none
@@ -44,30 +59,46 @@ struct HomeList: ReducerProtocol {
 }
 
 struct HomeView: View {
-    @ObservedObject private var viewModel: ViewModel
-    @State private var showModal = false
     
-    private let dependency: ServiceManager
-    
-    init(_ dependency: ServiceManager) {
-        self.viewModel = ViewModel(wordBookService: dependency.wordBookService)
-        self.dependency = dependency
-    }
+    let store: StoreOf<HomeList>
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                    HomeCell(wordBook: wordBook) {  }
+        WithViewStore(store, observe: { $0 }) { vs in
+            ScrollView {
+                VStack(spacing: 8) {
+                    ForEach(vs.wordBooks, id: \.id) { wordBook in
+                        HomeCell(wordBook: wordBook) { vs.send(.homeCellTapped(wordBook)) }
+                    }
+                }
+            }
+            .navigationTitle("단어장 목록")
+            .onAppear { vs.send(.onAppear) }
+//            .sheet(isPresented: vs.binding(
+//                get: \.showModal,
+//                send: TodayList.Action.setSelectionModal(isPresent:))
+//            ) {
+//                IfLetStore(self.store.scope(state: \.todaySelection, action: TodayList.Action.todaySelection(action:))) {
+//                    TodaySelectionModal(store: $0)
+//                }
+//            }
+            .toolbar {
+                ToolbarItem {
+                    Button("+") {  }
                 }
             }
         }
-        .onAppear { viewModel.fetchWordBooks() }
-        .sheet(isPresented: $showModal) { WordBookAddModal(viewModel: viewModel) }
-        .toolbar {
-            ToolbarItem {
-                Button("+") { showModal = true }
-            }
+    }
+}
+
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            HomeView(
+                store: Store(
+                    initialState: HomeList.State(),
+                    reducer: HomeList()._printChanges()
+                )
+            )
         }
     }
 }

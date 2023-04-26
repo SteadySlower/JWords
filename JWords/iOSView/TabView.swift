@@ -31,8 +31,12 @@ struct MainTabView: View {
             .navigationViewStyle(.stack)
             #endif
             NavigationView {
-                HomeView(dependency)
-                    .navigationTitle("단어장 목록")
+                HomeView(
+                    store: Store(
+                        initialState: HomeList.State(),
+                        reducer: HomeList()._printChanges()
+                    )
+                )
             }
             .tabItem { Image(systemName: "house") }
             #if os(iOS)
