@@ -48,11 +48,15 @@ struct TodayBooks: Equatable {
     
     let study: [WordBook]
     let review: [WordBook]
+    let reviewed: [WordBook]
     
     init(books: [WordBook], schedule: TodaySchedule) {
         self.study = books.filter { schedule.studyIDs.contains($0.id) }
         self.review = books.filter {
             schedule.reviewIDs.contains($0.id) && !schedule.reviewedIDs.contains($0.id)
+        }
+        self.reviewed = books.filter {
+            schedule.reviewIDs.contains($0.id) && schedule.reviewedIDs.contains($0.id)
         }
     }
     

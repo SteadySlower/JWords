@@ -12,6 +12,7 @@ struct TodayList: ReducerProtocol {
     struct State: Equatable {
         var studyWordBooks: [WordBook] = []
         var reviewWordBooks: [WordBook] = []
+        var reviewedWordBooks: [WordBook] = []
         var onlyFailWords: [Word] = []
         var wordList: WordList.State?
         var todaySelection: TodaySelection.State?
@@ -30,6 +31,7 @@ struct TodayList: ReducerProtocol {
             reviewWordBooks = []
             onlyFailWords = []
             wordList = nil
+            todaySelection = nil
         }
         
     }
@@ -68,6 +70,7 @@ struct TodayList: ReducerProtocol {
             case let .scheduleResponse(.success(books)):
                 state.studyWordBooks = books.study
                 state.reviewWordBooks = books.review
+                state.reviewedWordBooks = books.reviewed
                 return .task {
                     await .onlyFailResponse(TaskResult { try await getOnlyFailWords(studyBooks: books.study) })
                 }
@@ -87,7 +90,7 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .listButtonTapped:
                 state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
-                                                            reviewBooks: state.reviewWordBooks)
+                                                            reviewBooks: state.reviewWordBooks, reviewedBooks: state.reviewedWordBooks)
                 return .none
             case .autoAddButtonTapped:
                 state.clear()
@@ -98,6 +101,21 @@ struct TodayList: ReducerProtocol {
                     return await .scheduleResponse(TaskResult { try await getTodayBooks() })
                 }
                 .cancellable(id: AutoAddID.self)
+            case let .todaySelection(action):
+                switch action {
+                case .updateTodayResponse(.success):
+                    state.clear()
+                    state.isLoading = true
+                    return .task {
+                        await .scheduleResponse(TaskResult { try await getTodayBooks() })
+                    }
+                    .cancellable(id: FetchScheduleID.self)
+                case .cancelButtonTapped:
+                    state.todaySelection = nil
+                    return .none
+                default:
+                    return .none
+                }
             default:
                 return .none
             }
@@ -167,11 +185,14 @@ struct TodayView: View {
                 ScrollView {
                     VStack {
                         NavigationLink(
-                            destination: IfLetStore(store.scope(state: \.wordList,
-                                                                action: TodayList.Action.wordList(action:))
-                                        ) { StudyView(store: $0) },
-                           isActive: vs.binding(get: \.showStudyView,
-                                                send: TodayList.Action.showStudyView))
+                            destination: IfLetStore(
+                                    store.scope(
+                                        state: \.wordList,
+                                        action: TodayList.Action.wordList(action:))
+                                    ) { StudyView(store: $0) },
+                            isActive: vs.binding(
+                                        get: \.showStudyView,
+                                        send: TodayList.Action.showStudyView))
                         { EmptyView() }
                         Text("오늘 학습할 단어")
                         Button {

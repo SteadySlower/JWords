@@ -14,6 +14,7 @@ struct TodayClient {
     var updateReviewed: @Sendable (String) async throws -> Void
     var autoUpdateTodayBooks: @Sendable ([WordBook]) async throws -> Void
     var getTodayBooks: @Sendable () async throws -> TodaySchedule
+    var updateTodayBooks: @Sendable (TodaySchedule) async throws -> Void
 }
 
 extension DependencyValues {
@@ -59,6 +60,17 @@ extension TodayClient: DependencyKey {
                     }
                 }
             }
+        },
+        updateTodayBooks: { todaySchedule in
+            return try await withCheckedThrowingContinuation { continuation in
+                todayService.updateTodayBooks(todaySchedule) { error in
+                    if let error = error {
+                        continuation.resume(with: .failure(error))
+                    } else {
+                        continuation.resume(with: .success(()))
+                    }
+                }
+            }
         }
   )
 }
@@ -67,13 +79,15 @@ extension TodayClient: TestDependencyKey {
   static let previewValue = Self(
     updateReviewed: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); print("preview client: update reviewed")  },
     autoUpdateTodayBooks: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: auto update todayBooks") },
-    getTodayBooks: { try await Task.sleep(nanoseconds: 3 * 1_000_000_000); return .empty }
+    getTodayBooks: { try await Task.sleep(nanoseconds: 3 * 1_000_000_000); return .empty },
+    updateTodayBooks: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); }
   )
 
   static let testValue = Self(
     updateReviewed: unimplemented("\(Self.self).updateReviewed"),
     autoUpdateTodayBooks: unimplemented("\(Self.self).autoUpdateTodayBooks"),
-    getTodayBooks: unimplemented("\(Self.self).getTodayBooks")
+    getTodayBooks: unimplemented("\(Self.self).getTodayBooks"),
+    updateTodayBooks: unimplemented("\(Self.self).updateTodayBooks")
   )
 }
 
