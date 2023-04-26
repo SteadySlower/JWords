@@ -13,15 +13,21 @@ struct HomeList: ReducerProtocol {
     struct State: Equatable {
         var wordBooks:[WordBook] = []
         var wordList: WordList.State?
+        var inputBook: InputBook.State?
         var isLoading: Bool = false
         
         var showStudyView: Bool {
             wordList != nil
         }
         
+        var showBookInputModal: Bool {
+            inputBook != nil
+        }
+        
         mutating func clear() {
             wordBooks = []
             wordList = nil
+            inputBook = nil
         }
     }
     
@@ -29,9 +35,10 @@ struct HomeList: ReducerProtocol {
         case onAppear
         case wordBookResponse(TaskResult<[WordBook]>)
         case homeCellTapped(WordBook)
-        case setAddBookModal(isPresent: Bool)
+        case setInputBookModal(isPresent: Bool)
         case showStudyView(Bool)
         case wordList(action: WordList.Action)
+        case inputBook(action: InputBook.Action)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -49,15 +56,37 @@ struct HomeList: ReducerProtocol {
                 state.wordBooks = books
                 state.isLoading = false
                 return .none
+            case .setInputBookModal(let isPresent):
+                state.inputBook = isPresent ? InputBook.State() : nil
+                return .none
             case let .homeCellTapped(wordBook):
                 state.wordList = WordList.State(wordBook: wordBook)
                 return .none
+            case .wordList(let action):
+                if action == WordList.Action.dismiss {
+                    state.wordList = nil
+                }
+                return .none
+            case .inputBook(let action):
+                switch action {
+                case .addBookResponse(.success):
+                    state.inputBook = nil
+                    return .none
+                case .cancelButtonTapped:
+                    state.inputBook = nil
+                    return .none
+                default:
+                    return .none
+                }
             default:
                 return .none
             }
         }
         .ifLet(\.wordList, action: /Action.wordList(action:)) {
             WordList()
+        }
+        .ifLet(\.inputBook, action: /Action.inputBook(action:)) {
+            InputBook()
         }
     }
 
@@ -90,17 +119,19 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
-//            .sheet(isPresented: vs.binding(
-//                get: \.showModal,
-//                send: TodayList.Action.setSelectionModal(isPresent:))
-//            ) {
-//                IfLetStore(self.store.scope(state: \.todaySelection, action: TodayList.Action.todaySelection(action:))) {
-//                    TodaySelectionModal(store: $0)
-//                }
-//            }
+            .sheet(isPresented: vs.binding(
+                get: \.showBookInputModal,
+                send: HomeList.Action.setInputBookModal(isPresent:))
+            ) {
+                IfLetStore(self.store.scope(state: \.inputBook,
+                                            action: HomeList.Action.inputBook(action:))
+                ) {
+                    WordBookAddModal(store: $0)
+                }
+            }
             .toolbar {
                 ToolbarItem {
-                    Button("+") {  }
+                    Button("+") { vs.send(.setInputBookModal(isPresent: true)) }
                 }
             }
         }
