@@ -177,57 +177,51 @@ struct TodayView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
-                if vs.isLoading {
-                    ProgressView()
-                        .scaleEffect(5)
-                }
-                ScrollView {
-                    VStack {
-                        NavigationLink(
-                            destination: IfLetStore(
-                                    store.scope(
-                                        state: \.wordList,
-                                        action: TodayList.Action.wordList(action:))
-                                    ) { StudyView(store: $0) },
-                            isActive: vs.binding(
-                                        get: \.showStudyView,
-                                        send: TodayList.Action.showStudyView))
-                        { EmptyView() }
-                        Text("오늘 학습할 단어")
-                        Button {
-                            vs.send(.onlyFailCellTapped)
-                        } label: {
-                            HStack {
-                                Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
-                                Spacer()
-                            }
-                            .padding(12)
+            ScrollView {
+                VStack {
+                    NavigationLink(
+                        destination: IfLetStore(
+                                store.scope(
+                                    state: \.wordList,
+                                    action: TodayList.Action.wordList(action:))
+                                ) { StudyView(store: $0) },
+                        isActive: vs.binding(
+                                    get: \.showStudyView,
+                                    send: TodayList.Action.showStudyView))
+                    { EmptyView() }
+                    Text("오늘 학습할 단어")
+                    Button {
+                        vs.send(.onlyFailCellTapped)
+                    } label: {
+                        HStack {
+                            Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
+                            Spacer()
                         }
-                        .border(.gray, width: 1)
-                        .frame(height: 50)
-                        .disabled(vs.isLoading)
-                        VStack(spacing: 8) {
-                            ForEach(vs.studyWordBooks, id: \.id) { todayBook in
-                                HomeCell(wordBook: todayBook) {
-                                    vs.send(.homeCellTapped(todayBook))
-                                }
+                        .padding(12)
+                    }
+                    .border(.gray, width: 1)
+                    .frame(height: 50)
+                    .disabled(vs.isLoading)
+                    VStack(spacing: 8) {
+                        ForEach(vs.studyWordBooks, id: \.id) { todayBook in
+                            HomeCell(wordBook: todayBook) {
+                                vs.send(.homeCellTapped(todayBook))
                             }
                         }
                     }
-                    VStack {
-                        Text("오늘 복습할 단어")
-                        VStack(spacing: 8) {
-                            ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
-                                HomeCell(wordBook: reviewBook) {
-                                    vs.send(.homeCellTapped(reviewBook))
-                                }
+                }
+                VStack {
+                    Text("오늘 복습할 단어")
+                    VStack(spacing: 8) {
+                        ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
+                            HomeCell(wordBook: reviewBook) {
+                                vs.send(.homeCellTapped(reviewBook))
                             }
                         }
                     }
                 }
             }
-
+            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,

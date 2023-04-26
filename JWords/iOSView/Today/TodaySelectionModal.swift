@@ -155,31 +155,27 @@ struct TodaySelectionModal: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
-                if vs.isLoading {
-                    progressView
-                }
-                VStack {
-                    Text("학습 혹은 복습할 단어장을 골라주세요.")
-                    ScrollView {
-                        VStack(spacing: 8) {
-                            ForEach(vs.wordBooks, id: \.id) { wordBook in
-                                bookCell(wordBook,
-                                         vs.schedules[wordBook.id] ?? .none,
-                                         { vs.send(.studyButtonTapped(wordBook)) },
-                                         { vs.send(.reviewButtonTapped(wordBook)) })
-                            }
+            VStack {
+                Text("학습 혹은 복습할 단어장을 골라주세요.")
+                ScrollView {
+                    VStack(spacing: 8) {
+                        ForEach(vs.wordBooks, id: \.id) { wordBook in
+                            bookCell(wordBook,
+                                     vs.schedules[wordBook.id] ?? .none,
+                                     { vs.send(.studyButtonTapped(wordBook)) },
+                                     { vs.send(.reviewButtonTapped(wordBook)) })
                         }
                     }
-                    HStack {
-                        Button("취소") { vs.send(.cancelButtonTapped) }
-                        Spacer()
-                        Button("확인") { vs.send(.okButtonTapped) }
-                    }
-                    .padding()
                 }
-                .padding(10)
+                HStack {
+                    Button("취소") { vs.send(.cancelButtonTapped) }
+                    Spacer()
+                    Button("확인") { vs.send(.okButtonTapped) }
+                }
+                .padding()
             }
+            .padding(10)
+            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
     }
@@ -188,11 +184,6 @@ struct TodaySelectionModal: View {
 // MARK: SubViews
 
 extension TodaySelectionModal {
-    
-    private var progressView: some View {
-        ProgressView()
-            .scaleEffect(5)
-    }
     
     private func bookCell(_ wordBook: WordBook,
                           _ schedule: Schedule,
