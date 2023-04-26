@@ -82,6 +82,7 @@
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
 		5A798A5129E795380009CFFF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 5A798A5029E795380009CFFF /* ComposableArchitecture */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
+		5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7D079E29F8CC090022D0D7 /* BookInputView.swift */; };
 		5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698729F227BA00B5A02E /* WordBookClient.swift */; };
 		5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698929F234B000B5A02E /* TodayClient.swift */; };
 		5A8DCD7828E3E80E0078E197 /* MockWordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */; };
@@ -206,6 +207,7 @@
 		5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCell.swift; sourceTree = "<group>"; };
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
+		5A7D079E29F8CC090022D0D7 /* BookInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInputView.swift; sourceTree = "<group>"; };
 		5A8B698729F227BA00B5A02E /* WordBookClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookClient.swift; sourceTree = "<group>"; };
 		5A8B698929F234B000B5A02E /* TodayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayClient.swift; sourceTree = "<group>"; };
 		5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBook.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC1F286942FE00AC156C /* HomeView.swift */,
+				5A7D079E29F8CC090022D0D7 /* BookInputView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -819,6 +822,7 @@
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
 				5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */,
+				5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				06E4066229C5578D0055B104 /* RepositoryManager.swift in Sources */,
 				06CEF2492866F1C800A620CC /* ContentView.swift in Sources */,

@@ -120,42 +120,6 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
-// MARK: SubViews
-extension HomeView {
-    private struct WordBookAddModal: View {
-        @State var title: String = ""
-        @State var preferredFrontType: FrontType = .kanji
-        @Environment(\.dismiss) var dismiss
-        private let viewModel: ViewModel
-        
-        init(viewModel: ViewModel) {
-            self.viewModel = viewModel
-        }
-        
-        var body: some View {
-            VStack {
-                TextField("단어장 이름", text: $title)
-                    .padding()
-                Picker("", selection: $preferredFrontType) {
-                    ForEach(FrontType.allCases, id: \.self) {
-                        Text($0.preferredTypeText)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                HStack {
-                    Button("추가", action: {
-                        viewModel.AddWordBook(title: title, preferredFrontType: preferredFrontType)
-                        dismiss()
-                    })
-                    Button("취소", role: .cancel, action: { dismiss() })
-                }
-            }
-            .padding()
-        }
-    }
-}
-
 extension HomeView {
     final class ViewModel: ObservableObject {
         @Published private(set) var wordBooks: [WordBook] = []
