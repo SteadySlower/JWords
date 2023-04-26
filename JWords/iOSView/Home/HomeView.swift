@@ -22,7 +22,7 @@ struct HomeView: View {
         ScrollView {
             VStack(spacing: 8) {
                 ForEach(viewModel.wordBooks, id: \.id) { wordBook in
-                    HomeCell(wordBook: wordBook)
+                    HomeCell(wordBook: wordBook) {  }
                 }
             }
         }

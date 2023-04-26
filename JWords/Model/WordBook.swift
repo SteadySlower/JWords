@@ -56,9 +56,18 @@ struct WordBook: Equatable, Identifiable {
         }
     }
     
+    // initializer for mocking
     init(title: String) {
         self.id = UUID().uuidString
         self.title = title
+        self.createdAt = Date()
+        self._closed = nil
+        self._preferredFrontType = nil
+    }
+    
+    init(index: Int) {
+        self.id = "\(index)"
+        self.title = "\(index)번 단어장"
         self.createdAt = Date()
         self._closed = nil
         self._preferredFrontType = nil

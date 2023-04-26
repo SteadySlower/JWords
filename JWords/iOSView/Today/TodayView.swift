@@ -8,91 +8,257 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct TodayView: View {
-    @ObservedObject private var viewModel: ViewModel
-    @State private var showModal: Bool = false
-    
-    private let dependency: ServiceManager
-    
-    init(_ dependency: ServiceManager) {
-        self.viewModel = ViewModel(dependency)
-        self.dependency = dependency
+struct TodayList: ReducerProtocol {
+    struct State: Equatable {
+        var studyWordBooks: [WordBook] = []
+        var reviewWordBooks: [WordBook] = []
+        var reviewedWordBooks: [WordBook] = []
+        var onlyFailWords: [Word] = []
+        var wordList: WordList.State?
+        var todaySelection: TodaySelection.State?
+        var isLoading: Bool = false
+        
+        var showStudyView: Bool {
+            wordList != nil
+        }
+        
+        var showModal: Bool {
+            todaySelection != nil
+        }
+        
+        fileprivate mutating func clear() {
+            studyWordBooks = []
+            reviewWordBooks = []
+            onlyFailWords = []
+            wordList = nil
+            todaySelection = nil
+        }
+        
     }
     
-    var body: some View {
-        ScrollView {
-            todayBookList
-                .padding(.bottom, 8)
-            reviewBookList
+    @Dependency(\.wordBookClient) var wordBookClient
+    @Dependency(\.wordClient) var wordClient
+    @Dependency(\.todayClient) var todayClient
+    private enum FetchScheduleID {}
+    private enum GetOnlyFailID {}
+    private enum AutoAddID {}
+    
+    enum Action: Equatable {
+        case onAppear
+        case wordList(action: WordList.Action)
+        case todaySelection(action: TodaySelection.Action)
+        case setSelectionModal(isPresent: Bool)
+        case listButtonTapped
+        case autoAddButtonTapped
+        case showStudyView(Bool)
+        case onlyFailCellTapped
+        case homeCellTapped(WordBook)
+        case scheduleResponse(TaskResult<TodayBooks>)
+        case onlyFailResponse(TaskResult<[Word]>)
+    }
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                state.clear()
+                state.isLoading = true
+                return .task {
+                    await .scheduleResponse(TaskResult { try await getTodayBooks() })
+                }
+                .cancellable(id: FetchScheduleID.self)
+            case let .scheduleResponse(.success(books)):
+                state.studyWordBooks = books.study
+                state.reviewWordBooks = books.review
+                state.reviewedWordBooks = books.reviewed
+                return .task {
+                    await .onlyFailResponse(TaskResult { try await getOnlyFailWords(studyBooks: books.study) })
+                }
+                .cancellable(id: GetOnlyFailID.self)
+            case let .onlyFailResponse(.success(onlyFails)):
+                state.onlyFailWords = onlyFails
+                state.isLoading = false
+                return .none
+            case .setSelectionModal(let isPresent):
+                if !isPresent { state.todaySelection = nil }
+                return .none
+            case .onlyFailCellTapped:
+                state.wordList = WordList.State(words: state.onlyFailWords)
+                return .none
+            case let .homeCellTapped(wordBook):
+                state.wordList = WordList.State(wordBook: wordBook)
+                return .none
+            case .listButtonTapped:
+                state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
+                                                            reviewBooks: state.reviewWordBooks, reviewedBooks: state.reviewedWordBooks)
+                return .none
+            case .autoAddButtonTapped:
+                state.clear()
+                state.isLoading = true
+                return .task {
+                    let books = try await wordBookClient.wordBooks()
+                    try await todayClient.autoUpdateTodayBooks(books)
+                    return await .scheduleResponse(TaskResult { try await getTodayBooks() })
+                }
+                .cancellable(id: AutoAddID.self)
+            case let .todaySelection(action):
+                switch action {
+                case .updateTodayResponse(.success):
+                    state.clear()
+                    state.isLoading = true
+                    return .task {
+                        await .scheduleResponse(TaskResult { try await getTodayBooks() })
+                    }
+                    .cancellable(id: FetchScheduleID.self)
+                case .cancelButtonTapped:
+                    state.todaySelection = nil
+                    return .none
+                default:
+                    return .none
+                }
+            default:
+                return .none
+            }
         }
-        .onAppear { viewModel.fetchSchedule() }
-        .sheet(isPresented: $showModal, onDismiss: { viewModel.fetchSchedule() }) { TodaySelectionModal(dependency) }
-        .toolbar { ToolbarItem { toolbarItems } }
+        .ifLet(\.wordList, action: /Action.wordList(action:)) {
+            WordList()
+        }
+        .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
+            TodaySelection()
+        }
+    }
+    
+    private func getTodayBooks() async throws -> TodayBooks {
+        return try await withThrowingTaskGroup(of: Any.self, returning: TodayBooks.self) { group in
+            var books: [WordBook]?
+            var schedule: TodaySchedule?
+            group.addTask { try await wordBookClient.wordBooks() }
+            group.addTask { try await todayClient.getTodayBooks() }
+            
+            for try await result in group {
+                if let result = result as? [WordBook] {
+                    books = result
+                    continue
+                }
+                if let result = result as? TodaySchedule {
+                    schedule = result
+                    continue
+                }
+            }
+            
+            guard let books = books, let schedule = schedule else {
+                throw AppError.generic(massage: "Failed to fetch today's schedule")
+            }
+
+            return TodayBooks(books: books, schedule: schedule)
+        }
+    }
+    
+    private func getOnlyFailWords(studyBooks: [WordBook]) async throws -> [Word] {
+        return try await withThrowingTaskGroup(of: [Word].self, returning: [Word].self) { group in
+            var result = [Word]()
+            
+            for studyBook in studyBooks {
+                group.addTask { try await wordClient.words(studyBook) }
+            }
+            
+            for try await words in group {
+                result.append(contentsOf: words)
+            }
+            
+            return result.filter { $0.studyState != .success }
+        }
+    }
+
+}
+
+struct TodayView: View {
+    let store: StoreOf<TodayList>
+    
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            ZStack {
+                if vs.isLoading {
+                    ProgressView()
+                        .scaleEffect(5)
+                }
+                ScrollView {
+                    VStack {
+                        NavigationLink(
+                            destination: IfLetStore(
+                                    store.scope(
+                                        state: \.wordList,
+                                        action: TodayList.Action.wordList(action:))
+                                    ) { StudyView(store: $0) },
+                            isActive: vs.binding(
+                                        get: \.showStudyView,
+                                        send: TodayList.Action.showStudyView))
+                        { EmptyView() }
+                        Text("오늘 학습할 단어")
+                        Button {
+                            vs.send(.onlyFailCellTapped)
+                        } label: {
+                            HStack {
+                                Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
+                                Spacer()
+                            }
+                            .padding(12)
+                        }
+                        .border(.gray, width: 1)
+                        .frame(height: 50)
+                        .disabled(vs.isLoading)
+                        VStack(spacing: 8) {
+                            ForEach(vs.studyWordBooks, id: \.id) { todayBook in
+                                HomeCell(wordBook: todayBook) {
+                                    vs.send(.homeCellTapped(todayBook))
+                                }
+                            }
+                        }
+                    }
+                    VStack {
+                        Text("오늘 복습할 단어")
+                        VStack(spacing: 8) {
+                            ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
+                                HomeCell(wordBook: reviewBook) {
+                                    vs.send(.homeCellTapped(reviewBook))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .onAppear { vs.send(.onAppear) }
+            .sheet(isPresented: vs.binding(
+                get: \.showModal,
+                send: TodayList.Action.setSelectionModal(isPresent:))
+            ) {
+                IfLetStore(self.store.scope(state: \.todaySelection, action: TodayList.Action.todaySelection(action:))) {
+                    TodaySelectionModal(store: $0)
+                }
+            }
+            .toolbar { ToolbarItem {
+                HStack {
+                    Button("List") { vs.send(.listButtonTapped) }
+                    Button("+") { vs.send(.autoAddButtonTapped) }
+                }
+            }}
+
+        }
     }
 }
 
-// MARK: SubViews
-
-extension TodayView {
-    
-    private var todayBookList: some View {
-        
-        var onlyFailCell: some View {
-            ZStack {
-                NavigationLink {
-                    LazyView(
-                        StudyView(
-                            store: Store(
-                                initialState: WordList.State(words: viewModel.onlyFailWords),
-                                reducer: WordList()._printChanges()
-                            )
-                        )
-                    )
-                } label: {
-                    HStack {
-                        Text("틀린 \(viewModel.onlyFailWords.count) 단어만 모아보기")
-                        Spacer()
-                    }
-                    .padding(12)
-                }
-            }
-            .border(.gray, width: 1)
-            .frame(height: 50)
-        }
-        
-        var body : some View {
-            VStack {
-                Text("오늘 학습할 단어")
-                onlyFailCell
-                VStack(spacing: 8) {
-                    ForEach(viewModel.todayWordBooks, id: \.id) { todayBook in
-                        HomeCell(wordBook: todayBook)
-                    }
-                }
-            }
-        }
-        
-        return body
-    }
-    
-    private var reviewBookList: some View {
-        VStack {
-            Text("오늘 복습할 단어")
-            VStack(spacing: 8) {
-                ForEach(viewModel.reviewWordBooks, id: \.id) { reviewBook in
-                    HomeCell(wordBook: reviewBook)
-                }
-            }
+struct TodayView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            TodayView(
+                store: Store(
+                    initialState: TodayList.State(),
+                    reducer: TodayList()._printChanges()
+                )
+            )
         }
     }
-    
-    private var toolbarItems: some View {
-        HStack {
-            Button("List") { showModal = true }
-            Button("+") { viewModel.autoFetchTodayBooks() }
-        }
-    }
-    
 }
 
 extension TodayView {

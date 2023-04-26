@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol TodayBooks {
-    var studyIDs: [String] { get }
-    var reviewIDs: [String] { get }
-    var reviewedIDs: [String] { get }
-    var createdAt: Date { get }
-}
+//protocol TodayBooks {
+//    var studyIDs: [String] { get }
+//    var reviewIDs: [String] { get }
+//    var reviewedIDs: [String] { get }
+//    var createdAt: Date { get }
+//}
 
-struct TodayBooksImpl: TodayBooks {
+struct TodaySchedule: Equatable {
     let studyIDs: [String]
     let reviewIDs: [String]
     let reviewedIDs: [String]
@@ -42,4 +42,22 @@ struct TodayBooksImpl: TodayBooks {
             throw AppError.Initializer.todayBookImpl
         }
     }
+}
+
+struct TodayBooks: Equatable {
+    
+    let study: [WordBook]
+    let review: [WordBook]
+    let reviewed: [WordBook]
+    
+    init(books: [WordBook], schedule: TodaySchedule) {
+        self.study = books.filter { schedule.studyIDs.contains($0.id) }
+        self.review = books.filter {
+            schedule.reviewIDs.contains($0.id) && !schedule.reviewedIDs.contains($0.id)
+        }
+        self.reviewed = books.filter {
+            schedule.reviewIDs.contains($0.id) && schedule.reviewedIDs.contains($0.id)
+        }
+    }
+    
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct MainTabView: View {
     @State private var showModal = false
@@ -18,8 +19,12 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             NavigationView {
-                TodayView(dependency)
-                    .navigationTitle("오늘의 단어")
+                TodayView(
+                    store: Store(
+                        initialState: TodayList.State(),
+                        reducer: TodayList()._printChanges()
+                    )
+                )
             }
             .tabItem { Image(systemName: "calendar") }
             #if os(iOS)

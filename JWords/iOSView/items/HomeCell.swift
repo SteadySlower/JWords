@@ -10,23 +10,18 @@ import ComposableArchitecture
 
 struct HomeCell: View {
     private let wordBook: WordBook
+    private let onTapped: () -> Void
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    init(wordBook: WordBook) {
+    init(wordBook: WordBook, onTapped: @escaping () -> Void) {
         self.wordBook = wordBook
+        self.onTapped = onTapped
     }
     
     var body: some View {
         ZStack {
-            NavigationLink {
-                LazyView(
-                    StudyView(
-                        store: Store(
-                            initialState: WordList.State(wordBook: wordBook),
-                            reducer: WordList()._printChanges()
-                        )
-                    )
-                )
+            Button {
+                onTapped()
             } label: {
                 VStack {
                     HStack {

@@ -243,20 +243,24 @@ struct StudyView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
-                LazyVStack(spacing: 32) {
-                    if vs.setting.studyViewMode == .normal {
+                if vs.setting.studyViewMode == .normal {
+                    LazyVStack(spacing: 32) {
                         ForEachStore(
                           self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
                         ) {
                             StudyCell(store: $0)
                         }
-                    } else if vs.setting.studyViewMode == .edit {
+                    }
+                } else if vs.setting.studyViewMode == .edit {
+                    LazyVStack(spacing: 32) {
                         ForEachStore(
                             self.store.scope(state: \.editWords, action: WordList.Action.editWords(id:action:))
                         ) {
                             EditCell(store: $0)
                         }
-                    } else if vs.setting.studyViewMode == .selection {
+                    }
+                } else if vs.setting.studyViewMode == .selection {
+                    LazyVStack(spacing: 32) {
                         ForEachStore(
                             self.store.scope(state: \.selectionWords, action: WordList.Action.selectionWords(id:action:))
                         ) {
