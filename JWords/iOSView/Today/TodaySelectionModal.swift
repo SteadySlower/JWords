@@ -107,10 +107,8 @@ struct TodaySelection: ReducerProtocol {
                 state.toggleReview(book.id)
                 return .none
             case .okButtonTapped:
-                let schedule = state.schedules
-                let reviewedIDs = state.reviewedBooks.map { $0.id }
                 state.isLoading = true
-                return .task {
+                return .task { [schedule = state.schedules, reviewedIDs = state.reviewedBooks.map { $0.id }] in
                     await .updateTodayResponse(TaskResult {
                         try await updateToday(schedule, reviewedIDs)
                     })

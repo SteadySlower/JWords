@@ -60,11 +60,9 @@ struct InputBook: ReducerProtocol {
                 state.preferredFrontType = type
                 return .none
             case .addButtonTapped:
-                let title = state.title
-                let type = state.preferredFrontType
-                guard !title.isEmpty else { return .none }
+                guard !state.title.isEmpty else { return .none }
                 state.isLoading = true
-                return .task {
+                return .task { [title = state.title, type = state.preferredFrontType] in
                     await .addBookResponse(TaskResult { try await wordBookClient.addBook(title, type) })
                 }
             case .addBookResponse(.success):

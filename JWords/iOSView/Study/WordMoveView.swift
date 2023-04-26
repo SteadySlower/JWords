@@ -97,11 +97,11 @@ struct MoveWords: ReducerProtocol {
                 return .none
             case .closeButtonTapped:
                 state.isLoading = true
-                let toBook = state.selectedWordBook
-                let toMoveWords = state.toMoveWords
-                let fromBook = state.fromBook
-                let willCloseBook = state.willCloseBook
                 return .task {
+                    [toBook = state.selectedWordBook,
+                     toMoveWords = state.toMoveWords,
+                     fromBook = state.fromBook,
+                     willCloseBook = state.willCloseBook] in
                     await .moveWordsResponse(TaskResult {
                         try await withThrowingTaskGroup(of: Void.self) { group in
                             group.addTask { try await todayClient.updateReviewed(fromBook.id) }

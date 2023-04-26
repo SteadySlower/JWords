@@ -57,15 +57,13 @@ struct StudyWord: ReducerProtocol {
                 return .none
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
-                let word = state.word
-                return .task {
+                return .task { [word = state.word] in
                     await .studyStateResponse(TaskResult { try await wordClient.studyState(word, .undefined) })
                 }.cancellable(id: UpdateStudyStateID.self)
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
-                let word = state.word
                 let newState: StudyState = direction == .left ? .success : .fail
-                return .task {
+                return .task { [word = state.word] in
                     await .studyStateResponse(TaskResult { try await wordClient.studyState(word, newState) })
                 }.cancellable(id: UpdateStudyStateID.self)
             case let .studyStateResponse(.success(newState)):
