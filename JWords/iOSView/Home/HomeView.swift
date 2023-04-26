@@ -6,6 +6,32 @@
 //
 
 import SwiftUI
+import Combine
+import ComposableArchitecture
+
+struct HomeList: ReducerProtocol {
+    struct State: Equatable {
+        var wordBooks:[WordBook] = []
+        var wordList: WordList.State?
+        var isLoading: Bool = false
+    }
+    
+    enum Action: Equatable {
+        case onAppear
+    }
+    
+    @Dependency(\.wordBookClient) var wordBookClient
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                return .none
+            }
+        }
+    }
+
+}
 
 struct HomeView: View {
     @ObservedObject private var viewModel: ViewModel
