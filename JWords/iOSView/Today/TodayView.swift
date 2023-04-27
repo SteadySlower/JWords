@@ -116,6 +116,11 @@ struct TodayList: ReducerProtocol {
                 default:
                     return .none
                 }
+            case .wordList(let action):
+                if action == WordList.Action.dismiss {
+                    state.wordList = nil
+                }
+                return .none
             default:
                 return .none
             }
@@ -177,57 +182,51 @@ struct TodayView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
-                if vs.isLoading {
-                    ProgressView()
-                        .scaleEffect(5)
-                }
-                ScrollView {
-                    VStack {
-                        NavigationLink(
-                            destination: IfLetStore(
-                                    store.scope(
-                                        state: \.wordList,
-                                        action: TodayList.Action.wordList(action:))
-                                    ) { StudyView(store: $0) },
-                            isActive: vs.binding(
-                                        get: \.showStudyView,
-                                        send: TodayList.Action.showStudyView))
-                        { EmptyView() }
-                        Text("오늘 학습할 단어")
-                        Button {
-                            vs.send(.onlyFailCellTapped)
-                        } label: {
-                            HStack {
-                                Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
-                                Spacer()
-                            }
-                            .padding(12)
+            ScrollView {
+                VStack {
+                    NavigationLink(
+                        destination: IfLetStore(
+                                store.scope(
+                                    state: \.wordList,
+                                    action: TodayList.Action.wordList(action:))
+                                ) { StudyView(store: $0) },
+                        isActive: vs.binding(
+                                    get: \.showStudyView,
+                                    send: TodayList.Action.showStudyView))
+                    { EmptyView() }
+                    Text("오늘 학습할 단어")
+                    Button {
+                        vs.send(.onlyFailCellTapped)
+                    } label: {
+                        HStack {
+                            Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
+                            Spacer()
                         }
-                        .border(.gray, width: 1)
-                        .frame(height: 50)
-                        .disabled(vs.isLoading)
-                        VStack(spacing: 8) {
-                            ForEach(vs.studyWordBooks, id: \.id) { todayBook in
-                                HomeCell(wordBook: todayBook) {
-                                    vs.send(.homeCellTapped(todayBook))
-                                }
+                        .padding(12)
+                    }
+                    .border(.gray, width: 1)
+                    .frame(height: 50)
+                    .disabled(vs.isLoading)
+                    VStack(spacing: 8) {
+                        ForEach(vs.studyWordBooks, id: \.id) { todayBook in
+                            HomeCell(wordBook: todayBook) {
+                                vs.send(.homeCellTapped(todayBook))
                             }
                         }
                     }
-                    VStack {
-                        Text("오늘 복습할 단어")
-                        VStack(spacing: 8) {
-                            ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
-                                HomeCell(wordBook: reviewBook) {
-                                    vs.send(.homeCellTapped(reviewBook))
-                                }
+                }
+                VStack {
+                    Text("오늘 복습할 단어")
+                    VStack(spacing: 8) {
+                        ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
+                            HomeCell(wordBook: reviewBook) {
+                                vs.send(.homeCellTapped(reviewBook))
                             }
                         }
                     }
                 }
             }
-
+            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,
@@ -257,77 +256,6 @@ struct TodayView_Previews: PreviewProvider {
                     reducer: TodayList()._printChanges()
                 )
             )
-        }
-    }
-}
-
-extension TodayView {
-    final class ViewModel: ObservableObject {
-        private var wordBooks: [WordBook] = []
-        
-        @Published private(set) var todayWordBooks: [WordBook] = []
-        @Published private(set) var reviewWordBooks: [WordBook] = []
-        @Published private(set) var onlyFailWords: [Word] = []
-        
-        private let wordBookService: WordBookService
-        private let todayService: TodayService
-        private let wordService: WordService
-        
-        init(_ dependency: ServiceManager) {
-            self.wordBookService = dependency.wordBookService
-            self.todayService = dependency.todayService
-            self.wordService = dependency.wordService
-        }
-        
-        func fetchSchedule() {
-            wordBookService.getWordBooks { [weak self] wordBooks, error in
-                guard let self = self else { return }
-                if let wordBooks = wordBooks {
-                    self.wordBooks = wordBooks
-                }
-                self.todayService.getTodayBooks { todayBooks, error in
-                    if error != nil {
-                        return
-                    }
-                    guard let todayBooks = todayBooks else { return }
-                    self.todayWordBooks = self.wordBooks.filter { todayBooks.studyIDs.contains($0.id) }
-                    self.reviewWordBooks = self.wordBooks.filter {
-                        todayBooks.reviewIDs.contains($0.id) && !todayBooks.reviewedIDs.contains($0.id)
-                    }
-                    self.fetchOnlyFailWords()
-                }
-            }
-        }
-        
-        // TODO: handle error
-        func autoFetchTodayBooks() {
-            wordBookService.getWordBooks { [weak self] wordBooks, error in
-                guard let self = self else { return }
-                guard let wordBooks = wordBooks else { return }
-                self.todayService.autoUpdateTodayBooks(wordBooks) { _ in
-                    self.fetchSchedule()
-                }
-            }
-        }
-        
-        // TODO: handle error + move logic to service
-        func fetchOnlyFailWords() {
-            var onlyFails = [Word]()
-            let group = DispatchGroup()
-            for todayWordBook in todayWordBooks {
-                group.enter()
-                wordService.getWords(wordBook: todayWordBook) { words, error in
-                    if let error = error { print(error); }
-                    if let words = words {
-                        let onlyFail = words.filter { $0.studyState != .success }
-                        onlyFails.append(contentsOf: onlyFail)
-                    }
-                    group.leave()
-                }
-            }
-            group.notify(queue: .main) {
-                self.onlyFailWords = onlyFails
-            }
         }
     }
 }

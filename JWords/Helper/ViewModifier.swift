@@ -20,6 +20,10 @@ extension View {
                                     onTap: onTap))) : AnyView(self)
     }
     
+    func loadingView(_ isLoading: Bool) -> some View {
+        modifier(LoadingView(isLoading: isLoading))
+    }
+    
 }
 
 private struct CellSelectionEdge: ViewModifier {
@@ -62,4 +66,19 @@ private struct CellSelectionEdge: ViewModifier {
             )
     }
     
+}
+
+private struct LoadingView: ViewModifier {
+    
+    let isLoading: Bool
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            if isLoading {
+                ProgressView()
+                    .scaleEffect(5)
+            }
+            content
+        }
+    }
 }

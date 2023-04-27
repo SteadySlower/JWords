@@ -100,6 +100,7 @@ struct WordList: ReducerProtocol {
         case moveWords(action: MoveWords.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
+        case dismiss
     }
     
     @Dependency(\.wordClient) var wordClient
@@ -174,9 +175,7 @@ struct WordList: ReducerProtocol {
             case .moveWords(let action):
                 switch action {
                 case .moveWordsResponse(.success):
-                    // TODO: 상위 View에서 StudyView dismiss할 타이밍
-                    state.showMoveModal = false
-                    return .none
+                    return .task { .dismiss }
                 default:
                     break
                 }

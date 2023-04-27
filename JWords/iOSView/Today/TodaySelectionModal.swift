@@ -107,10 +107,8 @@ struct TodaySelection: ReducerProtocol {
                 state.toggleReview(book.id)
                 return .none
             case .okButtonTapped:
-                let schedule = state.schedules
-                let reviewedIDs = state.reviewedBooks.map { $0.id }
                 state.isLoading = true
-                return .task {
+                return .task { [schedule = state.schedules, reviewedIDs = state.reviewedBooks.map { $0.id }] in
                     await .updateTodayResponse(TaskResult {
                         try await updateToday(schedule, reviewedIDs)
                     })
@@ -155,31 +153,27 @@ struct TodaySelectionModal: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
-                if vs.isLoading {
-                    progressView
-                }
-                VStack {
-                    Text("학습 혹은 복습할 단어장을 골라주세요.")
-                    ScrollView {
-                        VStack(spacing: 8) {
-                            ForEach(vs.wordBooks, id: \.id) { wordBook in
-                                bookCell(wordBook,
-                                         vs.schedules[wordBook.id] ?? .none,
-                                         { vs.send(.studyButtonTapped(wordBook)) },
-                                         { vs.send(.reviewButtonTapped(wordBook)) })
-                            }
+            VStack {
+                Text("학습 혹은 복습할 단어장을 골라주세요.")
+                ScrollView {
+                    VStack(spacing: 8) {
+                        ForEach(vs.wordBooks, id: \.id) { wordBook in
+                            bookCell(wordBook,
+                                     vs.schedules[wordBook.id] ?? .none,
+                                     { vs.send(.studyButtonTapped(wordBook)) },
+                                     { vs.send(.reviewButtonTapped(wordBook)) })
                         }
                     }
-                    HStack {
-                        Button("취소") { vs.send(.cancelButtonTapped) }
-                        Spacer()
-                        Button("확인") { vs.send(.okButtonTapped) }
-                    }
-                    .padding()
                 }
-                .padding(10)
+                HStack {
+                    Button("취소") { vs.send(.cancelButtonTapped) }
+                    Spacer()
+                    Button("확인") { vs.send(.okButtonTapped) }
+                }
+                .padding()
             }
+            .padding(10)
+            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
     }
@@ -188,11 +182,6 @@ struct TodaySelectionModal: View {
 // MARK: SubViews
 
 extension TodaySelectionModal {
-    
-    private var progressView: some View {
-        ProgressView()
-            .scaleEffect(5)
-    }
     
     private func bookCell(_ wordBook: WordBook,
                           _ schedule: Schedule,
@@ -258,102 +247,6 @@ struct TodaySelectionModal_Previews: PreviewProvider {
                     reducer: TodaySelection()._printChanges()
                 )
             )
-        }
-    }
-}
-
-extension TodaySelectionModal {
-    
-    final class ViewModel: ObservableObject {
-        @Published var wordBooks: [WordBook] = []
-        @Published var schedules = [String : Schedule]()
-        
-        private var todayBooks: TodaySchedule?
-        
-        private let wordBookService: WordBookService
-        private let todayService: TodayService
-        
-        init(_ dependency: ServiceManager) {
-            self.wordBookService = dependency.wordBookService
-            self.todayService = dependency.todayService
-        }
-        
-        func fetchTodays() {
-            wordBookService.getWordBooks { [weak self] wordBooks, error in
-                guard let self = self else { return }
-                
-                if let error = error {
-                    print("디버그: \(error.localizedDescription)")
-                    return
-                }
-                
-                if let wordBooks = wordBooks {
-                    self.wordBooks = wordBooks
-                }
-                
-                self.todayService.getTodayBooks { todayBooks, error in
-                    if let error = error {
-                        print("디버그: \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    guard let todayBooks = todayBooks else { return }
-                    
-                    self.todayBooks = todayBooks
-                    
-                    for studyID in todayBooks.studyIDs {
-                        self.schedules[studyID] = .study
-                    }
-                    
-                    for reviewID in todayBooks.reviewIDs {
-                        self.schedules[reviewID] = .review
-                    }
-                    
-                    self.sortWordBooksBySchedule()
-                }
-            }
-        }
-        
-        func studyButtonTapped(_ id: String) {
-            if schedules[id, default: .none] == .study {
-                schedules[id, default: .none] = .none
-            } else {
-                schedules[id, default: .none] = .study
-            }
-        }
-        
-        func reviewButtonTapped(_ id: String) {
-            if schedules[id, default: .none] == .review {
-                schedules[id, default: .none] = .none
-            } else {
-                schedules[id, default: .none] = .review
-            }
-        }
-        
-        func updateToday(_ completionHandler: @escaping () -> Void) {
-            let studyIDs = schedules.keys.filter { schedules[$0] == .study }
-            let reviewIDs = schedules.keys.filter { schedules[$0] == .review }
-            let reviewedIDs = todayBooks?.reviewedIDs ?? []
-            let newTodayBooks = TodaySchedule(studyIDs: studyIDs, reviewIDs: reviewIDs, reviewedIDs: reviewedIDs, createdAt: Date())
-            todayService.updateTodayBooks(newTodayBooks) { _ in
-                completionHandler()
-            }
-        }
-        
-        func dateText(of wordBook: WordBook) -> String {
-            let dayGap = wordBook.dayFromToday
-            return dayGap == 0 ? "今日" : "\(dayGap)日前"
-        }
-        
-        func sortWordBooksBySchedule() {
-            wordBooks.sort(by: { book1, book2 in
-                if schedules[book1.id, default: .none] != .none
-                    && schedules[book2.id, default: .none] == .none {
-                    return true
-                } else {
-                    return false
-                }
-            })
         }
     }
 }

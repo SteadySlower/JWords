@@ -97,11 +97,11 @@ struct MoveWords: ReducerProtocol {
                 return .none
             case .closeButtonTapped:
                 state.isLoading = true
-                let toBook = state.selectedWordBook
-                let toMoveWords = state.toMoveWords
-                let fromBook = state.fromBook
-                let willCloseBook = state.willCloseBook
                 return .task {
+                    [toBook = state.selectedWordBook,
+                     toMoveWords = state.toMoveWords,
+                     fromBook = state.fromBook,
+                     willCloseBook = state.willCloseBook] in
                     await .moveWordsResponse(TaskResult {
                         try await withThrowingTaskGroup(of: Void.self) { group in
                             group.addTask { try await todayClient.updateReviewed(fromBook.id) }
@@ -130,43 +130,38 @@ struct WordMoveView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
-                if vs.isLoading {
-                    ProgressView()
-                        .scaleEffect(5)
+            VStack {
+                Text("\(vs.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
+                Picker("이동할 단어장 고르기", selection: vs.binding(
+                    get: \.selectedID,
+                    send: MoveWords.Action.updateSelection)
+                ) {
+                    Text(vs.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                        .tag(nil as String?)
+                    ForEach(vs.wordBooks, id: \.id) {
+                        Text($0.title)
+                            .tag($0.id as String?)
+                    }
                 }
-                VStack {
-                    Text("\(vs.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
-                    Picker("이동할 단어장 고르기", selection: vs.binding(
-                        get: \.selectedID,
-                        send: MoveWords.Action.updateSelection)
-                    ) {
-                        Text(vs.wordBooks.isEmpty ? "로딩중" : "이동 안함")
-                            .tag(nil as String?)
-                        ForEach(vs.wordBooks, id: \.id) {
-                            Text($0.title)
-                                .tag($0.id as String?)
-                        }
+                #if os(iOS)
+                .pickerStyle(.wheel)
+                #endif
+                Toggle("단어장 마감하기", isOn: vs.binding(
+                    get: \.willCloseBook,
+                    send: MoveWords.Action.updateWillCloseBook(willClose:))
+                )
+                .padding(.horizontal, 20)
+                HStack {
+                    Button("취소") {
+                        
                     }
-                    #if os(iOS)
-                    .pickerStyle(.wheel)
-                    #endif
-                    Toggle("단어장 마감하기", isOn: vs.binding(
-                        get: \.willCloseBook,
-                        send: MoveWords.Action.updateWillCloseBook(willClose:))
-                    )
-                    .padding(.horizontal, 20)
-                    HStack {
-                        Button("취소") {
-                            
-                        }
-                        Button(vs.selectedID != nil ? "이동" : "닫기") {
-                            vs.send(.closeButtonTapped)
-                        }
-                        .disabled(vs.isLoading)
+                    Button(vs.selectedID != nil ? "이동" : "닫기") {
+                        vs.send(.closeButtonTapped)
                     }
+                    .disabled(vs.isLoading)
                 }
             }
+            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
     }
