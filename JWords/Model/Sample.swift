@@ -8,22 +8,22 @@
 
 import Foundation
 
-protocol Sample {
-    var id: String { get }
-    var meaningText: String { get }
-    var meaningImageURL: String { get }
-    var ganaText: String { get }
-    var ganaImageURL: String { get }
-    var kanjiText: String { get }
-    var kanjiImageURL: String { get }
-    var createdAt: Date { get }
-    var used: Int { get }
-    
-    var hasImage: Bool { get }
-    var description: String { get }
-}
+//protocol Sample {
+//    var id: String { get }
+//    var meaningText: String { get }
+//    var meaningImageURL: String { get }
+//    var ganaText: String { get }
+//    var ganaImageURL: String { get }
+//    var kanjiText: String { get }
+//    var kanjiImageURL: String { get }
+//    var createdAt: Date { get }
+//    var used: Int { get }
+//
+//    var hasImage: Bool { get }
+//    var description: String { get }
+//}
 
-struct SampleImpl: Sample {
+struct Sample: Equatable {
     let id: String
     let meaningText: String
     let meaningImageURL: String

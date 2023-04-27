@@ -10,6 +10,10 @@ import Foundation
 extension String {
     
     static let whitespaceAndNewlineCharacters: [Character] = [" ", "\n", "\t"]
+    
+    var hasTab: Bool {
+        self.contains("\t")
+    }
 
     func rStrip(_ charactors: [Character] = String.whitespaceAndNewlineCharacters) -> String {
         var s = self

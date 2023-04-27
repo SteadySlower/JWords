@@ -7,6 +7,15 @@
 
 import SwiftUI
 import Combine
+import ComposableArchitecture
+
+//struct AddWord: ReducerProtocol {
+//
+//    struct State: Equatable {
+//
+//    }
+//
+//}
 
 struct MacAddWordView: View {
     
