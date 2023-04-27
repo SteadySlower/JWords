@@ -335,7 +335,9 @@ struct StudyView_Previews: PreviewProvider {
             )
         }
         .previewDisplayName("words")
+        #if os(iOS)
         .navigationViewStyle(.stack)
+        #endif
         NavigationView {
             StudyView(
                 store: Store(
@@ -345,7 +347,9 @@ struct StudyView_Previews: PreviewProvider {
             )
         }
         .previewDisplayName("word book")
+        #if os(iOS)
         .navigationViewStyle(.stack)
+        #endif
     }
 }
 

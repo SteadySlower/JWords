@@ -116,7 +116,9 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("단어장 목록")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .sheet(isPresented: vs.binding(
