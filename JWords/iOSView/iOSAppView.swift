@@ -18,6 +18,11 @@ struct iOSApp: ReducerProtocol {
         var selectedTab: Tab = .today
         var todayList: TodayList.State? = TodayList.State()
         var homeList: HomeList.State?
+        
+        mutating func clearList() {
+            todayList = nil
+            homeList = nil
+        }
     }
     
     enum Action: Equatable {
@@ -32,15 +37,14 @@ struct iOSApp: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .tabChanged(let tab):
+                state.clearList()
+                state.selectedTab = tab
                 switch tab {
                 case .today:
-                    state.homeList = nil
                     state.todayList = TodayList.State()
                 case .home:
-                    state.todayList = nil
                     state.homeList = HomeList.State()
                 }
-                state.selectedTab = tab
                 return .none
             default:
                 return .none
