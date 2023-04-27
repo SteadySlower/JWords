@@ -77,7 +77,7 @@
 		5A72BD1628D1B3C900058043 /* MockDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD1528D1B3C900058043 /* MockDependency.swift */; };
 		5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AF528D8071D00CADF9B /* TodayView.swift */; };
 		5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFC28D80C3000CADF9B /* TodaySerivce.swift */; };
-		5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* TabView.swift */; };
+		5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */; };
 		5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */; };
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
 		5A798A5129E795380009CFFF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 5A798A5029E795380009CFFF /* ComposableArchitecture */; };
@@ -203,7 +203,7 @@
 		5A72BD1528D1B3C900058043 /* MockDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDependency.swift; sourceTree = "<group>"; };
 		5A735AF528D8071D00CADF9B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		5A735AFC28D80C3000CADF9B /* TodaySerivce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySerivce.swift; sourceTree = "<group>"; };
-		5A735AFE28D80EAE00CADF9B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppView.swift; sourceTree = "<group>"; };
 		5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCell.swift; sourceTree = "<group>"; };
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
@@ -478,7 +478,7 @@
 				5A67DC2E2869491E00AC156C /* items */,
 				5A67DC28286946DF00AC156C /* Study */,
 				5A67DC212869439D00AC156C /* Home */,
-				5A735AFE28D80EAE00CADF9B /* TabView.swift */,
+				5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */,
 			);
 			path = iOSView;
 			sourceTree = "<group>";
@@ -800,7 +800,7 @@
 				06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */,
 				5A67DC312869529700AC156C /* MacHomeView.swift in Sources */,
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
-				5A735AFF28D80EAE00CADF9B /* TabView.swift in Sources */,
+				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,

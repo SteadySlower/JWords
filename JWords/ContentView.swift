@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct ContentView: View {
     
@@ -18,7 +19,12 @@ struct ContentView: View {
     var body: some View {
         Group {
             #if os(iOS)
-            MainTabView(dependency)
+            iOSAppView(
+                store: Store(
+                    initialState: iOSApp.State(),
+                    reducer: iOSApp()._printChanges()
+                )
+            )
             #elseif os(macOS)
             MacHomeView(dependency)
             #endif
