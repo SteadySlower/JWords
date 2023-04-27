@@ -84,6 +84,7 @@
 		5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7D079E29F8CC090022D0D7 /* BookInputView.swift */; };
 		5A80ACED29FA4A6000E3F31A /* MeaningField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */; };
 		5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */; };
+		5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACF029FA535500E3F31A /* KanjiField.swift */; };
 		5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698729F227BA00B5A02E /* WordBookClient.swift */; };
 		5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698929F234B000B5A02E /* TodayClient.swift */; };
 		5A8DCD7828E3E80E0078E197 /* MockWordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */; };
@@ -210,6 +211,7 @@
 		5A7D079E29F8CC090022D0D7 /* BookInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInputView.swift; sourceTree = "<group>"; };
 		5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MeaningField.swift; path = JWords/macView/Components/MeaningField.swift; sourceTree = SOURCE_ROOT; };
 		5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GanaField.swift; path = JWords/macView/Components/GanaField.swift; sourceTree = SOURCE_ROOT; };
+		5A80ACF029FA535500E3F31A /* KanjiField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiField.swift; path = JWords/macView/Components/KanjiField.swift; sourceTree = SOURCE_ROOT; };
 		5A8B698729F227BA00B5A02E /* WordBookClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookClient.swift; sourceTree = "<group>"; };
 		5A8B698929F234B000B5A02E /* TodayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayClient.swift; sourceTree = "<group>"; };
 		5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBook.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				06B2DA2429D7D42F009C67EF /* Toggles.swift */,
 				5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */,
 				5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */,
+				5A80ACF029FA535500E3F31A /* KanjiField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -837,6 +840,7 @@
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
 				5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */,
 				06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
