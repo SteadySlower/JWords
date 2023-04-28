@@ -9,13 +9,54 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-//struct AddWord: ReducerProtocol {
-//
-//    struct State: Equatable {
-//
-//    }
-//
-//}
+struct AddWord: ReducerProtocol {
+
+    struct State: Equatable {
+        var meaning = AddMeaning.State()
+        var kanji = AddKanji.State()
+        var gana = AddGana.State()
+    }
+    
+    enum Action: Equatable {
+        case addMeaning(action: AddMeaning.Action)
+        case addKanji(action: AddKanji.Action)
+        case addGana(action: AddGana.Action)
+    }
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .addMeaning(let action):
+                switch action {
+                default:
+                    return .none
+                }
+            case .addKanji(let action):
+                switch action {
+                default:
+                    return .none
+                }
+            case .addGana(let action):
+                switch action {
+                default:
+                    return .none
+                }
+            default:
+                return .none
+            }
+        }
+        Scope(state: \.meaning, action: /Action.addMeaning(action:)) {
+            AddMeaning()
+        }
+        Scope(state: \.kanji, action: /Action.addKanji(action:)) {
+            AddKanji()
+        }
+        Scope(state: \.gana, action: /Action.addGana(action:)) {
+            AddGana()
+        }
+    }
+
+}
 
 struct MacAddWordView: View {
     
