@@ -281,8 +281,8 @@
 			children = (
 				0624735A29C6D1430076DBE4 /* ImageField.swift */,
 				0624736029C6DAC80076DBE4 /* SamplePicker.swift */,
-				06B2DA2029D7D0AB009C67EF /* WordAddField.swift */,
 				06B2DA2429D7D42F009C67EF /* Toggles.swift */,
+				06B2DA2029D7D0AB009C67EF /* WordAddField.swift */,
 				5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */,
 				5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */,
 				5A80ACF029FA535500E3F31A /* KanjiField.swift */,

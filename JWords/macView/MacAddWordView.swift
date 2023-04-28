@@ -15,12 +15,19 @@ struct AddWord: ReducerProtocol {
         var meaning = AddMeaning.State()
         var kanji = AddKanji.State()
         var gana = AddGana.State()
+        var isLoading = false
+        
+        var canSave: Bool {
+            return true
+        }
     }
     
     enum Action: Equatable {
+        case onAppear
         case addMeaning(action: AddMeaning.Action)
         case addKanji(action: AddKanji.Action)
         case addGana(action: AddGana.Action)
+        case saveButtonTapped
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -60,141 +67,52 @@ struct AddWord: ReducerProtocol {
 
 struct MacAddWordView: View {
     
-    @FocusState private var editFocus: InputType?
-    
-    @ObservedObject private var viewModel: ViewModel
-    
-    init(_ dependency: ServiceManager) {
-        self.viewModel = ViewModel(dependency)
-    }
+    let store: StoreOf<AddWord>
     
     var body: some View {
-        contentView
-            .onAppear { viewModel.getWordBooks() }
-            .onChange(of: viewModel.meaningText) { onChangeText(of: .meaning, $0) }
-            .onChange(of: viewModel.kanjiText) { onChangeText(of: .kanji, $0) }
-            .onChange(of: viewModel.ganaText) { onChangeText(of: .gana, $0) }
-    }
-    
-}
-
-// MARK: SubViews
-extension MacAddWordView {
-    
-    private var contentView: some View {
-        ScrollView {
+        WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                wordBookPicker
-                ForEach(InputType.allCases, id: \.self) { type in
-                    VStack {
-                        textField(type)
-                            .focused($editFocus, equals: type)
-                        ImageField(inputType: type,
-                                   image: viewModel.image(of: type),
-                                   addImageButtonTapped: { viewModel.addImageButtonTapped(in: $0) },
-                                   imageTapped: { viewModel.imageTapped(in: $0) })
+                MeaningField(store: store.scope(
+                    state: \.meaning,
+                    action: AddWord.Action.addMeaning(action:))
+                )
+                KanjiField(store: store.scope(
+                    state: \.kanji,
+                    action: AddWord.Action.addKanji(action:))
+                )
+                GanaField(store: store.scope(
+                    state: \.gana,
+                    action: AddWord.Action.addGana(action:))
+                )
+                if vs.isLoading {
+                    ProgressView()
+                } else {
+                    Button {
+                        vs.send(.saveButtonTapped)
+                    } label: {
+                        Text("저장")
                     }
-                }
-                saveButton
-            }
-        }
-        .padding(.top, 50)
-    }
-    
-    private var wordBookPicker: some View {
-        HStack {
-            Picker("", selection: $viewModel.selectedBookID) {
-                Text(viewModel.wordBookPickerDefaultText)
-                    .tag(nil as String?)
-                ForEach(viewModel.bookList, id: \.id) { book in
-                    Text(book.title)
-                        .tag(book.id as String?)
+                    .disabled(!vs.canSave)
+                    .keyboardShortcut(.return, modifiers: [.control])
                 }
             }
-            Text("단어 수: \(viewModel.wordCount ?? 0)개")
-                .hide(viewModel.selectedBookID == nil)
+            .onAppear { vs.send(.onAppear) }
         }
-        .padding()
-    }
-    
-    private func textField(_ type: InputType)
-    -> some View {
-        
-        var text: Binding<String> {
-            switch type {
-            case .meaning: return $viewModel.meaningText
-            case .kanji: return $viewModel.kanjiText
-            case .gana: return $viewModel.ganaText
-            }
-        }
-        
-        return VStack {
-            WordAddField(title: "\(type.description) 입력", text: text)
-            if type == .meaning {
-                HStack {
-                    AutoSearchToggle { viewModel.updateAutoSearch($0) }
-                    SamplePicker(samples: viewModel.samples,
-                                 selectedID: $viewModel.selectedSampleID)
-                }
-                .padding(.horizontal)
-            } else if type == .gana {
-                AutoConvertToggle { viewModel.updateAutoConvert($0) }
-            }
-        }
-    }
-    
-    private var saveButton: some View {
-        Group {
-            if viewModel.isUploading {
-                ProgressView()
-            } else {
-                Button {
-                    viewModel.saveWord()
-                    editFocus = .meaning
-                } label: {
-                    Text("저장")
-                }
-                .disabled(viewModel.isSaveButtonUnable)
-                .keyboardShortcut(.return, modifiers: [.control])
-            }
-        }
-    }
-    
-    
 
+    }
     
 }
 
-// MARK: View Methods
-// TODO: View Method 중에서 비지니스 로직은 VM으로 이동하기
 
-extension MacAddWordView {
-    
-    private func onChangeText(of type: InputType, _ text: String) {
-        if text.contains("\t") { moveCursorWhenTab(text); return }
-        viewModel.updateText(of: type, text)
+struct MacAddWordView_Previews: PreviewProvider {
+    static var previews: some View {
+        MacAddWordView(
+            store: Store(
+                initialState: AddWord.State(),
+                reducer: AddWord()._printChanges()
+            )
+        )
     }
-    
-    private func moveCursorWhenTab(_ text: String) {
-        guard let nowCursor = editFocus else { return }
-        let removed = text.filter { $0 != "\t" }
-        switch nowCursor {
-        case .meaning:
-            viewModel.meaningText = removed
-            viewModel.getExamples(removed)
-            editFocus = .kanji
-            return
-        case .kanji:
-            viewModel.kanjiText = removed
-            editFocus = .gana
-            return
-        case .gana:
-            viewModel.ganaText = removed
-            editFocus = .meaning
-            return
-        }
-    }
-    
 }
 
 // MARK: ViewModel
