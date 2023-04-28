@@ -78,4 +78,17 @@ struct Sample: Equatable {
             throw AppError.Initializer.sampleImpl
         }
     }
+    
+    // initializer for mocking
+    init(index: Int) {
+        self.id = UUID().uuidString
+        self.meaningText = "의미\(index)"
+        self.meaningImageURL = ""
+        self.ganaText = "가나\(index)"
+        self.ganaImageURL = ""
+        self.kanjiText = "한자\(index)"
+        self.kanjiImageURL = "https://firebasestorage.googleapis.com:443/v0/b/jwords-935a2.appspot.com/o/card_images%2FA76BE9AC-C849-45DA-95C5-77AF39D5F096?alt=media&token=27225755-b7ab-4197-a5a1-f604b4b4f3c1"
+        self.createdAt = Date()
+        self.used = index
+    }
 }
