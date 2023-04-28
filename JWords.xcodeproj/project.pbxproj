@@ -81,6 +81,7 @@
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
 		5A798A5129E795380009CFFF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 5A798A5029E795380009CFFF /* ComposableArchitecture */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
+		5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */; };
 		5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7D079E29F8CC090022D0D7 /* BookInputView.swift */; };
 		5A80ACED29FA4A6000E3F31A /* MeaningField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */; };
 		5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */; };
@@ -208,6 +209,7 @@
 		5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCell.swift; sourceTree = "<group>"; };
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
+		5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardClient.swift; sourceTree = "<group>"; };
 		5A7D079E29F8CC090022D0D7 /* BookInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInputView.swift; sourceTree = "<group>"; };
 		5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MeaningField.swift; path = JWords/macView/Components/MeaningField.swift; sourceTree = SOURCE_ROOT; };
 		5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GanaField.swift; path = JWords/macView/Components/GanaField.swift; sourceTree = SOURCE_ROOT; };
@@ -473,6 +475,7 @@
 				5A8B698729F227BA00B5A02E /* WordBookClient.swift */,
 				5A8B698929F234B000B5A02E /* TodayClient.swift */,
 				0622726829F3B69100EEAD50 /* ImageClient.swift */,
+				5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -819,6 +822,7 @@
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
+				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
