@@ -20,11 +20,14 @@ struct AddMeaning: ReducerProtocol {
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
+    @Dependency(\.sampleClient) var sampleClient
+    private enum SamplesID {}
     
     enum Action: Equatable {
         case updateText(String)
         case imageAddButtonTapped
         case imageTapped
+        case sampleResponse(TaskResult<[Sample]>)
         case updateAutoSearch(Bool)
         case updateSelectedID(String?)
         case onTab
@@ -50,7 +53,15 @@ struct AddMeaning: ReducerProtocol {
                 state.selectedID = id
                 return .none
             case .onTab:
-                print("디버그: tab on meaning field")
+                guard state.autoSearch else { return .none }
+                return .task { [meaning = state.text] in
+                    await .sampleResponse(TaskResult { try await sampleClient.samplesByMeaning(meaning) })
+                }
+                .cancellable(id: SamplesID.self)
+            case let .sampleResponse(.success(samples)):
+                guard !samples.isEmpty else { return .none }
+                state.samples = samples
+                state.selectedID = samples[0].id
                 return .none
             default:
                 return .none
