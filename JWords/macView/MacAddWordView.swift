@@ -48,6 +48,11 @@ struct AddWord: ReducerProtocol {
             case .addMeaning(.onTab):
                 state.focusedField = .kanji
                 return .none
+            case let .addKanji(.updateText(text)):
+                if state.gana.autoConvert {
+                    state.gana.text = text.hiragana
+                }
+                return .none
             case .addKanji(.onTab):
                 state.focusedField = .gana
                 return .none
