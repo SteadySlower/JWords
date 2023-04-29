@@ -7,294 +7,349 @@
 
 import SwiftUI
 import Combine
+import ComposableArchitecture
 
-enum StudyMode: Hashable, CaseIterable {
-    case all, excludeSuccess, onlyFail
-    
-    var pickerText: String {
-        switch self {
-        case .all: return "전부"
-        case .excludeSuccess: return "O제외"
-        case .onlyFail: return "X만"
-        }
-    }
-}
-
-enum StudyViewMode: Hashable {
-    case normal
-    case selection
-    case edit
-}
-
-struct StudyView: View {
-    @StateObject private var viewModel: ViewModel
-    @Environment(\.dismiss) private var dismiss
-    
-    private let dependency: ServiceManager
-    
-    @State private var showEditModal: Bool = false
-    @State private var showMoveModal: Bool = false
-    @State private var shouldDismiss: Bool = false
-    @State private var showSideBar: Bool = false
-    
-    init(wordBook: WordBook, dependency: ServiceManager) {
-        self._viewModel = StateObject(wrappedValue: ViewModel(wordBook: wordBook, wordService: dependency.wordService))
-        self.dependency = dependency
-    }
-    
-    // 틀린 단어 모아보기용
-    init(words: [Word], dependency: ServiceManager) {
-        self._viewModel = StateObject(wrappedValue: ViewModel(words: words, wordService: dependency.wordService))
-        self.dependency = dependency
-    }
-    
-    var body: some View {
-        contentView
-            .navigationTitle(viewModel.wordBook?.title ?? "틀린 단어 모아보기")
-            .onAppear { viewModel.fetchWords() }
-            .sheet(isPresented: $showMoveModal,
-                   onDismiss: { if shouldDismiss { dismiss() } },
-                   content: { WordMoveView(wordBook: viewModel.wordBook!,
-                                           toMoveWords: viewModel.toMoveWords,
-                                           didClosed: $shouldDismiss,
-                                           dependency: dependency) })
-            .sheet(isPresented: $showEditModal,
-                   onDismiss: { viewModel.toEditWord = nil; viewModel.studyViewMode = .normal },
-                   content: { WordInputView(viewModel.toEditWord,
-                                            dependency: dependency,
-                                            eventPublisher: viewModel.eventPublisher) })
-            #if os(iOS)
-            .onReceive(viewModel.eventPublisher) { viewModel.handleEvent($0) }
-            .toolbar { ToolbarItem { rightToolBarItems } }
-            .toolbar { ToolbarItem(placement: .navigationBarLeading) { leftToolBarItems } }
-            #endif
-    }
-    
-}
-
-// MARK: SubViews
-
-extension StudyView {
-    private var contentView: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEach(viewModel.words, id: \.id) { word in
-                    WordCell(word: word,
-                             frontType: viewModel.frontType,
-                             eventPublisher: viewModel.eventPublisher,
-                             isLocked: viewModel.isCellLocked)
-                            .selectable(nowSelecting: viewModel.studyViewMode == .selection,
-                                        isSelected: viewModel.isSelected(word),
-                                        onTap: { viewModel.toggleSelection(word) })
-                            .editable(nowEditing: viewModel.studyViewMode == .edit) {
-                                viewModel.toEditWord = word
-                                showEditModal = true
-                            }
-                }
-            }
-        }
-        .sideBar(showSideBar: $showSideBar) { settingSideBar }
-    }
-    
-    private var settingSideBar: some View {
-        
-        var studyModePicker: some View {
-            Picker("", selection: $viewModel.studyMode) {
-                ForEach(StudyMode.allCases, id: \.self) {
-                    Text($0.pickerText)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-        
-        var frontTypePicker: some View {
-            Picker("", selection: $viewModel.frontType) {
-                ForEach(FrontType.allCases, id: \.self) {
-                    Text($0.pickerText)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-        
-        var viewModePicker: some View {
-            Picker("모드", selection: $viewModel.studyViewMode) {
-                Text("학습")
-                    .tag(StudyViewMode.normal)
-                Text("선택")
-                    .tag(StudyViewMode.selection)
-                Text("수정")
-                    .tag(StudyViewMode.edit)
-            }
-            .pickerStyle(.segmented)
-        }
-        
-        var body: some View {
-            VStack {
-                Spacer()
-                studyModePicker
-                    .padding()
-                frontTypePicker
-                    .padding()
-                if viewModel.wordBook != nil {
-                    viewModePicker
-                        .padding()
-                }
-                Spacer()
-            }
-        }
-        
-        return body
-    }
-    
-    private var rightToolBarItems: some View {
-        HStack {
-            Button("랜덤") {
-                viewModel.shuffleWords()
-            }
-            .disabled(viewModel.studyViewMode != .normal)
-            Button("설정") {
-                showSideBar = true
-            }
-        }
-    }
-    
-    private var leftToolBarItems: some View {
-        Button(viewModel.studyViewMode == .selection ? "이동" : "마감") {
-            showMoveModal = true
-        }
-        .disabled(viewModel.wordBook == nil || viewModel.studyViewMode == .edit)
-    }
-
-}
-
-// MARK: ViewModel
-
-extension StudyView {
-    final class ViewModel: ObservableObject {
+struct WordList: ReducerProtocol {
+    struct State: Equatable {
         let wordBook: WordBook?
-        @Published private var _words: [Word] = []
-        @Published var studyMode: StudyMode = .all {
-            didSet {
-                eventPublisher.send(StudyViewEvent.toFront)
-            }
-        }
-        @Published var frontType: FrontType {
-            didSet {
-                eventPublisher.send(StudyViewEvent.toFront)
-            }
-        }
         
-        // 단어 모아보기 + 틀린 단어만 복습일 때는 cell 잠금
-        var isCellLocked: Bool {
-            return wordBook == nil && studyMode == .onlyFail
-        }
+        // state for cells of each StudyViewMode
+        var _words: IdentifiedArrayOf<StudyWord.State> = []
+        var editWords: IdentifiedArrayOf<EditWord.State> = []
+        var selectionWords: IdentifiedArrayOf<SelectionWord.State> = []
         
-        // 선택해서 이동 기능 관련 variables
-        @Published var studyViewMode: StudyViewMode = .normal {
-            didSet {
-                if studyViewMode == .selection {
-                    eventPublisher.send(StudyViewEvent.toFront)
-                    selectionDict = [String : Bool]()
-                }
-            }
+        // state for side bar and modals
+        var setting: StudySetting.State
+        var toEditWord: InputWord.State?
+        var moveWords: MoveWords.State?
+        
+        var showEditModal: Bool = false
+        var showMoveModal: Bool = false
+        var showSideBar: Bool = false
+        
+        init(wordBook: WordBook) {
+            self.wordBook = wordBook
+            self.setting = .init(frontMode: wordBook.preferredFrontType)
         }
         
-        @Published private(set) var selectionDict = [String : Bool]()
-        
-        func isSelected(_ word: Word) -> Bool {
-            selectionDict[word.id, default: false]
+        init(words: [Word]) {
+            self.wordBook = nil
+            self._words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(word: $0) })
+            self.setting = .init()
         }
         
-        // 단어 Edit 관련 properties
-        var toEditWord: Word?
-        
-        private(set) var eventPublisher = PassthroughSubject<Event, Never>()
-        
-        private let wordService: WordService
-        
-        var words: [Word] {
-            switch studyMode {
-            case .all: return _words
-            case .excludeSuccess: return _words.filter { $0.studyState != .success }
-            case .onlyFail: return _words.filter { $0.studyState == .fail }
+        var words: IdentifiedArrayOf<StudyWord.State> {
+            switch setting.studyMode {
+            case .all:
+                return _words
+            case .excludeSuccess:
+                return _words.filter { $0.studyState != .success }
+            case .onlyFail:
+                return _words.filter { $0.studyState == .fail }
             }
         }
         
         var toMoveWords: [Word] {
-            if studyViewMode == .selection {
-                return _words.filter { selectionDict[$0.id, default: false] }
+            if setting.studyViewMode == .selection {
+                return selectionWords.filter { $0.isSelected }.map { $0.word }
             } else {
-                return _words.filter { $0.studyState != .success }
+                return _words.filter { $0.studyState != .success }.map { $0.word }
             }
         }
         
-        init(wordBook: WordBook, wordService: WordService) {
-            self.wordBook = wordBook
-            self.wordService = wordService
-            self.frontType = wordBook.preferredFrontType
+        fileprivate mutating func editCellTapped(id: String) {
+            guard let word = _words.filter({ $0.id == id }).first?.word else { return }
+            toEditWord = InputWord.State(word: word)
+            showEditModal = true
         }
         
-        init(words: [Word], wordService: WordService) {
-            self.wordBook = nil
-            self._words = words
-            self.wordService = wordService
-            self.frontType = .kanji
+        fileprivate mutating func clearEdit() {
+            editWords = []
+            toEditWord = nil
+            setting.studyViewMode = .normal
         }
         
+        fileprivate mutating func clearMove() {
+            moveWords = nil
+            selectionWords = []
+            setting.studyViewMode = .normal
+        }
+        
+        fileprivate mutating func editWord(word: Word) throws {
+            guard let index = _words.index(id: word.id) else {
+                throw AppError.noMatchingWord(id: word.id)
+            }
+            _words[index] = StudyWord.State(word: word, frontType: setting.frontType)
+            setting.studyViewMode = .normal
+        }
+        
+    }
 
-        func fetchWords() {
-            guard let wordBook = wordBook else { return }
-            wordService.getWords(wordBook: wordBook) { [weak self] words, error in
-                if let error = error {
-                    print("디버그: \(error.localizedDescription)")
+    enum Action: Equatable {
+        case onAppear
+        case wordsResponse(TaskResult<[Word]>)
+        case setMoveModal(isPresented: Bool)
+        case editButtonTapped
+        case setEditModal(isPresented: Bool)
+        case setSideBar(isPresented: Bool)
+        case randomButtonTapped
+        case closeButtonTapped
+        case word(id: StudyWord.State.ID, action: StudyWord.Action)
+        case editWords(id: EditWord.State.ID, action: EditWord.Action)
+        case editWord(action: InputWord.Action)
+        case moveWords(action: MoveWords.Action)
+        case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
+        case sideBar(action: StudySetting.Action)
+        case dismiss
+    }
+    
+    @Dependency(\.wordClient) var wordClient
+    @Dependency(\.imageClient) var imageClient
+    private enum FetchWordsID {}
+    
+    var body: some ReducerProtocol<State, Action> {
+        Scope(state: \.setting, action: /Action.sideBar(action:)) {
+            StudySetting()
+        }
+        Reduce { state, action in
+            switch action {
+            // actions for the list it self
+            case .onAppear:
+                guard let wordBook = state.wordBook else {
+                    let words = state._words.map { $0.word }
+                    imageClient.prefetchImages(words)
+                    return .none
                 }
-                guard let words = words else { return }
-                self?._words = words
+                return .task {
+                    await .wordsResponse(TaskResult { try await wordClient.words(wordBook) })
+                }
+                .cancellable(id: FetchWordsID.self)
+            case let .wordsResponse(.success(words)):
+                state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0, frontType: state.setting.frontType) })
+                imageClient.prefetchImages(words)
+                return .none
+            case .wordsResponse(.failure):
+                state._words = []
+                return .none
+            case .randomButtonTapped:
+                state._words.shuffle()
+                return .none
+            case .editWords(let id, let action):
+                switch action {
+                case .cellTapped:
+                    state.editCellTapped(id: id)
+                }
+                return .none
+            // actions for side bar and modal presentation
+            case .setSideBar(let isPresented):
+                state.showSideBar = isPresented
+                return .none
+            case .setEditModal(let isPresent):
+                state.showEditModal = isPresent
+                return .none
+            case .setMoveModal(let isPresent):
+                if isPresent {
+                    guard let fromBook = state.wordBook else { return .none }
+                    state.moveWords = MoveWords.State(fromBook: fromBook, toMoveWords: state.toMoveWords)
+                } else {
+                    state.clearMove()
+                }
+                state.showMoveModal = isPresent
+                return .none
+            // actions from side bar and modals
+            case .editWord(let editWordAction):
+                switch editWordAction {
+                case let .editWordResponse(.success(word)):
+                    do {
+                        try state.editWord(word: word)
+                    } catch {
+                        print(error)
+                        return .none
+                    }
+                    state.clearEdit()
+                    state.showEditModal = false
+                default:
+                    break
+                }
+                return .none
+            case .moveWords(let action):
+                switch action {
+                case .moveWordsResponse(.success):
+                    return .task { .dismiss }
+                default:
+                    break
+                }
+                return .none
+            case .sideBar(let action):
+                switch action {
+                case .setFrontType(_):
+                    state._words = IdentifiedArray(uniqueElements: state._words.map { StudyWord.State(word: $0.word, frontType: state.setting.frontType) })
+                    return .none
+                case .setStudyViewMode(let mode):
+                    switch mode {
+                    case .normal:
+                        state.editWords = []
+                        state.selectionWords = []
+                    case .edit:
+                        state.editWords = IdentifiedArrayOf(uniqueElements: state.words.map { EditWord.State(word: $0.word, frontType: state.setting.frontType) })
+                    case .selection:
+                        state.selectionWords = IdentifiedArrayOf(uniqueElements: state.words.map { SelectionWord.State(word: $0.word, frontType: state.setting.frontType) })
+                    }
+                    state.showSideBar = false
+                    return .none
+                case .setStudyMode(let mode):
+                    switch mode {
+                    case .all, .excludeSuccess:
+                        state._words = IdentifiedArray(
+                            uniqueElements: state._words
+                                .map { StudyWord.State(word: $0.word, isLocked: false) })
+                    case .onlyFail:
+                        state._words = IdentifiedArray(
+                            uniqueElements: state._words
+                                .map { StudyWord.State(word: $0.word, isLocked: true) })
+                    }
+                    state.showSideBar = false
+                    return .none
+                }
+            default:
+                return .none
             }
         }
-        
-        func shuffleWords() {
-            _words.shuffle()
-            eventPublisher.send(StudyViewEvent.toFront)
+        .forEach(\._words, action: /Action.word(id:action:)) {
+            StudyWord()
         }
-        
-        func handleEvent(_ event: Event) {
-            if let event = event as? CellEvent {
-                switch event {
-                case .studyStateUpdate(let word, let state):
-                    updateStudyState(word: word, state: state)
+        .forEach(\.editWords, action: /Action.editWords(id:action:)) {
+            EditWord()
+        }
+        .forEach(\.selectionWords, action: /Action.selectionWords(id:action:)) {
+            SelectionWord()
+        }
+        .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
+            InputWord()
+        }
+        .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
+            MoveWords()
+        }
+    }
+    
+}
+
+struct StudyView: View {
+    
+    let store: StoreOf<WordList>
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            ScrollView {
+                if vs.setting.studyViewMode == .normal {
+                    LazyVStack(spacing: 32) {
+                        ForEachStore(
+                          self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
+                        ) {
+                            StudyCell(store: $0)
+                        }
+                    }
+                } else if vs.setting.studyViewMode == .edit {
+                    LazyVStack(spacing: 32) {
+                        ForEachStore(
+                            self.store.scope(state: \.editWords, action: WordList.Action.editWords(id:action:))
+                        ) {
+                            EditCell(store: $0)
+                        }
+                    }
+                } else if vs.setting.studyViewMode == .selection {
+                    LazyVStack(spacing: 32) {
+                        ForEachStore(
+                            self.store.scope(state: \.selectionWords, action: WordList.Action.selectionWords(id:action:))
+                        ) {
+                            SelectionCell(store: $0)
+                        }
+                    }
                 }
-            } else if let event = event as? WordInputViewEvent {
-                switch event {
-                case .wordEdited(let word):
-                    editWord(word: word)
+            }
+            .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
+            .onAppear { vs.send(.onAppear) }
+            .sideBar(showSideBar: vs.binding(
+                get: \.showSideBar,
+                send: WordList.Action.setSideBar(isPresented:))
+            ) {
+                SettingSideBar(store: self.store.scope(state: \.setting, action: WordList.Action.sideBar(action:)))
+            }
+            .sheet(isPresented: vs.binding(
+                get: \.showMoveModal,
+                send: WordList.Action.setMoveModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.moveWords, action: WordList.Action.moveWords(action:))) {
+                    WordMoveView(store: $0)
                 }
-            } else {
-                return
             }
-        }
-        
-        func toggleSelection(_ word: Word) {
-            selectionDict[word.id, default: false].toggle()
-        }
-        
-        private func updateStudyState(word: Word, state: StudyState) {
-            wordService.updateStudyState(word: word, newState: state) { [weak self] error in
-                // FIXME: handle error
-                if let error = error { print(error); return }
-                guard let self = self else { return }
-                    
-                guard let index = self._words.firstIndex(where: { $0.id == word.id }) else { return }
-                self._words[index].studyState = state
+            .sheet(isPresented: vs.binding(
+                get: \.showEditModal,
+                send: WordList.Action.setEditModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.toEditWord, action: WordList.Action.editWord(action:))) {
+                    WordInputView(store: $0)
+                }
             }
-        }
-        
-        private func editWord(word: Word) {
-            guard let index = _words.firstIndex(where: { word.id == $0.id }) else { return }
-            _words[index] = word
+            #if os(iOS)
+            .toolbar { ToolbarItem {
+                HStack {
+                    Button("랜덤") {
+                        vs.send(.randomButtonTapped)
+                    }
+                    .disabled(vs.setting.studyViewMode != .normal)
+                    Button("설정") {
+                        vs.send(.setSideBar(isPresented: true))
+                    }
+                }
+            } }
+            .toolbar { ToolbarItem(placement: .navigationBarLeading) {
+                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                    vs.send(.setMoveModal(isPresented: true))
+                }
+                .disabled(vs.wordBook == nil || vs.setting.studyViewMode == .edit)
+            } }
+            #endif
         }
     }
 }
 
-
+struct StudyView_Previews: PreviewProvider {
+    
+    private static let mockWords: [Word] = {
+        var result = [Word]()
+        for i in 0..<10 {
+            result.append(Word(index: i))
+        }
+        return result
+    }()
+    
+    static var previews: some View {
+        NavigationView {
+            StudyView(
+                store: Store(
+                    initialState: WordList.State(words: mockWords),
+                    reducer: WordList()._printChanges()
+                )
+            )
+        }
+        .previewDisplayName("words")
+        #if os(iOS)
+        .navigationViewStyle(.stack)
+        #endif
+        NavigationView {
+            StudyView(
+                store: Store(
+                    initialState: WordList.State(wordBook: .mock),
+                    reducer: WordList()._printChanges()
+                )
+            )
+        }
+        .previewDisplayName("word book")
+        #if os(iOS)
+        .navigationViewStyle(.stack)
+        #endif
+    }
+}
 

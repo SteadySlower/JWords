@@ -82,3 +82,17 @@ extension View {
         }
     }
 }
+
+// MARK: Synchronize
+// use to synchronize view's FocusState and the store's state
+
+extension View {
+  func synchronize<Value>(
+    _ first: Binding<Value>,
+    _ second: FocusState<Value>.Binding
+  ) -> some View {
+    self
+      .onChange(of: first.wrappedValue) { second.wrappedValue = $0 }
+      .onChange(of: second.wrappedValue) { first.wrappedValue = $0 }
+  }
+}

@@ -20,9 +20,8 @@ extension View {
                                     onTap: onTap))) : AnyView(self)
     }
     
-    func editable(nowEditing: Bool,
-                  onTap: @escaping () -> Void) -> some View {
-        nowEditing ? AnyView(modifier(CellEditingIcon(onTap: onTap))) : AnyView(self)
+    func loadingView(_ isLoading: Bool) -> some View {
+        modifier(LoadingView(isLoading: isLoading))
     }
     
 }
@@ -69,29 +68,17 @@ private struct CellSelectionEdge: ViewModifier {
     
 }
 
-private struct CellEditingIcon: ViewModifier {
+private struct LoadingView: ViewModifier {
     
-    private let onTap: () -> Void
-    
-    init(onTap: @escaping () -> Void) {
-        self.onTap = onTap
-    }
+    let isLoading: Bool
     
     func body(content: Content) -> some View {
-        content
-            .overlay(
-                ZStack {
-                    Color
-                        .clear
-                        .contentShape(Rectangle())
-                    Image(systemName: "pencil")
-                        .resizable()
-                        .foregroundColor(.green)
-                        .opacity(0.5)
-                        .scaledToFit()
-                        .padding()
-                }
-                .onTapGesture { onTap() }
-            )
+        ZStack {
+            if isLoading {
+                ProgressView()
+                    .scaleEffect(5)
+            }
+            content
+        }
     }
 }

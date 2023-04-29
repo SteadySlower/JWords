@@ -11,22 +11,22 @@ enum StudyState: Int {
     case undefined = 0, success, fail
 }
 
-protocol Word {
-    var id: String { get }
-    var wordBookID: String { get }
-    var meaningText: String { get }
-    var meaningImageURL: String { get }
-    var ganaText: String { get }
-    var ganaImageURL: String { get }
-    var kanjiText: String { get }
-    var kanjiImageURL: String { get }
-    var studyState: StudyState { get set }
-    var createdAt: Date { get }
-    
-    var hasImage: Bool { get }
-}
+//protocol Word: Equatable {
+//    var id: String { get }
+//    var wordBookID: String { get }
+//    var meaningText: String { get }
+//    var meaningImageURL: String { get }
+//    var ganaText: String { get }
+//    var ganaImageURL: String { get }
+//    var kanjiText: String { get }
+//    var kanjiImageURL: String { get }
+//    var studyState: StudyState { get set }
+//    var createdAt: Date { get }
+//
+//    var hasImage: Bool { get }
+//}
 
-struct WordImpl: Word {
+struct Word: Equatable, Identifiable, Sendable {
    
     let id: String
     let wordBookID: String
@@ -41,6 +41,42 @@ struct WordImpl: Word {
     
     var hasImage: Bool {
         !self.meaningImageURL.isEmpty || !self.ganaImageURL.isEmpty || !self.kanjiImageURL.isEmpty
+    }
+    
+    // interim init for development
+    init(index: Int = 0) {
+        self.id = UUID().uuidString
+        self.wordBookID = UUID().uuidString
+        self.meaningText = "의미\(index)"
+        self.meaningImageURL = ""
+        self.ganaText = "가나\(index)"
+        self.ganaImageURL = ""
+        self.kanjiText = "한자\(index)"
+        self.kanjiImageURL = "https://firebasestorage.googleapis.com:443/v0/b/jwords-935a2.appspot.com/o/card_images%2FA76BE9AC-C849-45DA-95C5-77AF39D5F096?alt=media&token=27225755-b7ab-4197-a5a1-f604b4b4f3c1"
+        self.studyState = .undefined
+        self.createdAt = Date()
+    }
+    
+    init(id: String,
+        wordBookID: String,
+        meaningText: String,
+        meaningImageURL: String,
+        ganaText: String,
+        ganaImageURL: String,
+        kanjiText: String,
+        kanjiImageURL: String,
+        studyState: StudyState,
+        createdAt: Date) {
+        self.id = id
+        self.wordBookID = wordBookID
+        self.meaningText = meaningText
+        self.meaningImageURL = meaningImageURL
+        self.ganaText = ganaText
+        self.ganaImageURL = ganaImageURL
+        self.kanjiText = kanjiText
+        self.kanjiImageURL = kanjiImageURL
+        self.studyState = studyState
+        self.createdAt = createdAt
     }
     
     init(id: String, wordBookID: String, dict: [String : Any]) throws {

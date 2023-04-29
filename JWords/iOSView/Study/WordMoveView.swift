@@ -6,110 +6,29 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
-struct WordMoveView: View {
-    @StateObject private var viewModel: ViewModel
-    @Environment(\.dismiss) private var dismiss
-    @Binding private var didClosed: Bool
-    
-    init(wordBook: WordBook, toMoveWords: [Word], didClosed: Binding<Bool>, dependency: ServiceManager) {
-        self._viewModel = StateObject(wrappedValue: ViewModel(fromBook: wordBook, toMoveWords: toMoveWords, dependency: dependency))
-        self._didClosed = didClosed
-    }
-    
-    var body: some View {
-        ZStack {
-            if viewModel.isClosing {
-                progressView
-            }
-            VStack {
-                title
-                bookPicker
-                closingToggle
-                buttons
-            }
-        }
-        .onAppear { viewModel.getWordBooks(); print("디버그: word move view on appear") }
-    }
-    
-}
-
-// MARK: SubViews
-
-extension WordMoveView {
-    
-    private var progressView: some View {
-        ProgressView()
-            .scaleEffect(5)
-    }
-    
-    private var title: some View {
-        Text("\(viewModel.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
-    }
-    
-    private var bookPicker: some View {
-        Picker("이동할 단어장 고르기", selection: $viewModel.selectedID) {
-            Text(viewModel.wordBooks.isEmpty ? "로딩중" : "이동 안함")
-                .tag(nil as String?)
-            ForEach(viewModel.wordBooks, id: \.id) {
-                Text($0.title)
-                    .tag($0.id as String?)
-            }
-        }
-        #if os(iOS)
-        .pickerStyle(.wheel)
-        #endif
-    }
-    
-    private var closingToggle: some View {
-        Toggle("단어장 마감하기", isOn: $viewModel.willCloseBook)
-            .padding(.horizontal, 20)
-    }
-    
-    private var buttons: some View {
-        
-        var cancelButton: some View {
-            Button("취소") {
-                didClosed = false
-                dismiss()
-            }
-        }
-        
-        var moveButton: some View {
-            Button(viewModel.selectedID != nil ? "이동" : "닫기") {
-                viewModel.moveWords {
-                    didClosed = true
-                    dismiss()
-                }
-            }
-            .disabled(viewModel.isClosing)
-        }
-        
-        var body: some View {
-            HStack {
-                cancelButton
-                moveButton
-            }
-        }
-        
-        return body
-    }
-    
-}
-
-// MARK: ViewModel
-
-extension WordMoveView {
-    final class ViewModel: ObservableObject {
-        private let fromBook: WordBook
+struct MoveWords: ReducerProtocol {
+    struct State: Equatable {
+        let fromBook: WordBook
         let toMoveWords: [Word]
-        private let wordBookService: WordBookService
-        private let todayService: TodayService
+        var wordBooks = [WordBook]()
+        var selectedID: String?
+        var isLoading: Bool
+        var willCloseBook: Bool
         
-        @Published var wordBooks = [WordBook]()
-        @Published var selectedID: String?
-        @Published var isClosing: Bool = false
-        @Published var willCloseBook: Bool = false
+        init(fromBook: WordBook,
+             toMoveWords: [Word],
+             wordBooks: [WordBook] = [WordBook](),
+             selectedID: String? = nil,
+             isLoading: Bool = false) {
+            self.fromBook = fromBook
+            self.toMoveWords = toMoveWords
+            self.wordBooks = wordBooks
+            self.selectedID = selectedID
+            self.isLoading = isLoading
+            self.willCloseBook = fromBook.dayFromToday >= 28 ? true : false
+        }
         
         var selectedWordBook: WordBook? {
             if let selectedID = selectedID {
@@ -118,73 +37,146 @@ extension WordMoveView {
                 return nil
             }
         }
+    }
+    
+    enum Action: Equatable {
+        case onAppear
+        case wordBookResponse(TaskResult<[WordBook]>)
+        case updateSelection(String?)
+        case updateWillCloseBook(willClose: Bool)
+        case closeButtonTapped
+        case moveWordsResponse(TaskResult<Void>)
         
-        init(fromBook: WordBook, toMoveWords: [Word], dependency: ServiceManager) {
-            self.fromBook = fromBook
-            self.toMoveWords = toMoveWords
-            self.wordBookService = dependency.wordBookService
-            self.todayService = dependency.todayService
-            
-            // 오늘 마지막 복습 일정인 book은 toggle 체크되어 있도록
-            if fromBook.dayFromToday == 28 {
-                self.willCloseBook = true
+        static func == (lhs: Action, rhs: Action) -> Bool {
+            switch (lhs, rhs) {
+            case (.onAppear, .onAppear):
+                return true
+            case let (.wordBookResponse(lhsResult), .wordBookResponse(rhsResult)):
+                return lhsResult == rhsResult
+            case let (.updateSelection(lhsSelection), .updateSelection(rhsSelection)):
+                return lhsSelection == rhsSelection
+            case let (.updateWillCloseBook(lhsWillClose), .updateWillCloseBook(rhsWillClose)):
+                return lhsWillClose == rhsWillClose
+            case (.closeButtonTapped, .closeButtonTapped):
+                return true
+            case (.moveWordsResponse, .moveWordsResponse):
+                return true
+            default:
+                return false
             }
         }
-        
-        func getWordBooks() {
-            wordBookService.getWordBooks { [weak self] books, error in
-                if let error = error {
-                    print(error)
-                    return
+    }
+    
+    @Dependency(\.wordBookClient) var wordBookClient
+    @Dependency(\.todayClient) var todayClient
+    private enum FetchWordBooksID {}
+    private enum MoveWordsID {}
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                state.isLoading = true
+                return .task {
+                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
                 }
-                
-                guard let books = books else {
-                    print("Debug: No wordbook Found")
-                    return
-                }
-                
-                self?.wordBooks = books.filter { $0.id != self?.fromBook.id }
+                .cancellable(id: FetchWordBooksID.self)
+            case let .wordBookResponse(.success(wordBooks)):
+                state.wordBooks = wordBooks
+                state.isLoading = false
+                return .none
+            case .wordBookResponse(.failure):
+                state.wordBooks = []
+                state.isLoading = false
+                return .none
+            case .updateSelection(let id):
+                state.selectedID = id
+                return .none
+            case .updateWillCloseBook(let willClose):
+                state.willCloseBook = willClose
+                return .none
+            case .closeButtonTapped:
+                state.isLoading = true
+                return .task {
+                    [toBook = state.selectedWordBook,
+                     toMoveWords = state.toMoveWords,
+                     fromBook = state.fromBook,
+                     willCloseBook = state.willCloseBook] in
+                    await .moveWordsResponse(TaskResult {
+                        try await withThrowingTaskGroup(of: Void.self) { group in
+                            group.addTask { try await todayClient.updateReviewed(fromBook.id) }
+                            group.addTask { try await wordBookClient.moveWords(fromBook, toBook, toMoveWords) }
+                            if willCloseBook {
+                                group.addTask { try await wordBookClient.closeBook(fromBook) }
+                            }
+                            try await group.next()
+                        }
+                    })
+                }.cancellable(id: MoveWordsID.self)
+            case .moveWordsResponse(.success):
+                state.isLoading = false
+                return .none
+            case let .moveWordsResponse(.failure(error)):
+                state.isLoading = false
+                print("디버그: \(error)")
+                return .none
             }
         }
-        
-        // TODO: Handle Error
-        func moveWords(completionHandler: @escaping () -> Void) {
-            isClosing = true
-            
-            let group = DispatchGroup()
-            
-            group.enter()
-            todayService.updateReviewed(fromBook.id) { error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                group.leave()
-            }
-            
-            group.enter()
-            wordBookService.moveWords(of: fromBook, to: selectedWordBook, toMove: toMoveWords) { error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                group.leave()
-            }
-            
-            if willCloseBook {
-                group.enter()
-                wordBookService.closeWordBook(fromBook) { error in
-                    if let error = error {
-                        print(error)
-                        return
+    }
+}
+
+struct WordMoveView: View {
+    let store: StoreOf<MoveWords>
+    
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            VStack {
+                Text("\(vs.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
+                Picker("이동할 단어장 고르기", selection: vs.binding(
+                    get: \.selectedID,
+                    send: MoveWords.Action.updateSelection)
+                ) {
+                    Text(vs.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                        .tag(nil as String?)
+                    ForEach(vs.wordBooks, id: \.id) {
+                        Text($0.title)
+                            .tag($0.id as String?)
                     }
-                    group.leave()
+                }
+                #if os(iOS)
+                .pickerStyle(.wheel)
+                #endif
+                Toggle("단어장 마감하기", isOn: vs.binding(
+                    get: \.willCloseBook,
+                    send: MoveWords.Action.updateWillCloseBook(willClose:))
+                )
+                .padding(.horizontal, 20)
+                HStack {
+                    Button("취소") {
+                        
+                    }
+                    Button(vs.selectedID != nil ? "이동" : "닫기") {
+                        vs.send(.closeButtonTapped)
+                    }
+                    .disabled(vs.isLoading)
                 }
             }
-            
-            group.notify(queue: .main) {
-                completionHandler()
-            }
+            .loadingView(vs.isLoading)
+            .onAppear { vs.send(.onAppear) }
         }
+    }
+    
+}
+
+struct WordMoveView_Previews: PreviewProvider {
+    static var previews: some View {
+        WordMoveView(
+            store: Store(
+                initialState: MoveWords.State(fromBook: WordBook(title: "타이틀"),
+                                              toMoveWords: [],
+                                              isLoading: false),
+                reducer: MoveWords()._printChanges()
+            )
+        )
     }
 }

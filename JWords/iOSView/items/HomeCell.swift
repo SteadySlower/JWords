@@ -6,31 +6,31 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct HomeCell: View {
-    @ObservedObject private var viewModel: ViewModel
+    private let wordBook: WordBook
+    private let onTapped: () -> Void
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    private let dependency: ServiceManager
-    
-    init(wordBook: WordBook, dependency: ServiceManager) {
-        self.viewModel = ViewModel(wordBook: wordBook)
-        self.dependency = dependency
+    init(wordBook: WordBook, onTapped: @escaping () -> Void) {
+        self.wordBook = wordBook
+        self.onTapped = onTapped
     }
     
     var body: some View {
         ZStack {
-            NavigationLink {
-                LazyView(StudyView(wordBook: viewModel.wordBook, dependency: dependency))
+            Button {
+                onTapped()
             } label: {
                 VStack {
                     HStack {
-                        Text(viewModel.wordBook.title)
+                        Text(wordBook.title)
                         Spacer()
                     }
                     HStack {
                         Spacer()
-                        Text(viewModel.dateText)
+                        Text(dateText)
                             .foregroundColor(dateTextColor)
                     }
                 }
@@ -42,26 +42,15 @@ struct HomeCell: View {
     }
     
     private var dateTextColor: Color {
-        switch viewModel.wordBook.schedule {
+        switch wordBook.schedule {
         case .none: return .black
         case .study: return .blue
         case .review: return .pink
         }
     }
-}
-
-extension HomeCell {
     
-    final class ViewModel: ObservableObject {
-        let wordBook: WordBook
-        
-        init(wordBook: WordBook) {
-            self.wordBook = wordBook
-        }
-        
-        var dateText: String {
-            let dayGap = wordBook.dayFromToday
-            return dayGap == 0 ? "今日" : "\(dayGap)日前"
-        }
+    private var dateText: String {
+        let dayGap = wordBook.dayFromToday
+        return dayGap == 0 ? "今日" : "\(dayGap)日前"
     }
 }

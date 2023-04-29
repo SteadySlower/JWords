@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseCore
+import ComposableArchitecture
 
 #if os(iOS)
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -21,11 +22,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct JWordsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    private let dependency: ServiceManager = ServiceManager()
-    
     var body: some Scene {
         WindowGroup {
-            ContentView(dependency)
+            iOSAppView(
+                store: Store(
+                    initialState: iOSApp.State(),
+                    reducer: iOSApp()._printChanges()
+                )
+            )
         }
     }
 }
@@ -42,13 +46,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 struct JWordsApp: App {
     @NSApplicationDelegateAdaptor private var delegate: AppDelegate
     
-    private let dependency: ServiceManager = ServiceManager()
-    
     var body: some Scene {
         WindowGroup {
-            ContentView(dependency)
-                // TODO: mac 앱 만들 때 화면 사이즈 조절하는 방법
-                .frame(minWidth: 800, minHeight: 500, alignment: .center)
+            MacAppView(
+                store: Store(
+                    initialState: MacApp.State(),
+                    reducer: MacApp()._printChanges()
+                )
+            )
         }
     }
 }

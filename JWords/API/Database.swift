@@ -30,8 +30,8 @@ protocol Database {
     func updateUsed(of sample: Sample, to used: Int)
     
     // Today 관련
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>)
-    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData)
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodaySchedule>)
+    func updateTodayBooks(_ todayBooks: TodaySchedule, _ completionHandler: @escaping CompletionWithoutData)
 }
 
 // Firebase에 직접 extension으로 만들어도 되지만 Firebase를 한단계 감싼 class를 만들었음.
@@ -105,7 +105,7 @@ extension FirestoreDB {
                 dict["createdAt"] = timestamp.dateValue()
                 
                 do {
-                    wordBooks.append(try WordBookImpl(id: id, dict: dict))
+                    wordBooks.append(try WordBook(id: id, dict: dict))
                 } catch let error {
                     completionHandler(nil, error)
                     return
@@ -164,7 +164,7 @@ extension FirestoreDB {
             dict["createdAt"] = timestamp.dateValue()
             
             do {
-                let word = try WordImpl(id: id, wordBookID: wordBookID, dict: dict)
+                let word = try Word(id: id, wordBookID: wordBookID, dict: dict)
                 completionHandler(word, nil)
                 return
             } catch let error {
@@ -201,7 +201,7 @@ extension FirestoreDB {
                 dict["createdAt"] = timestamp.dateValue()
                 
                 do {
-                    words.append(try WordImpl(id: id, wordBookID: wordBook.id, dict: dict))
+                    words.append(try Word(id: id, wordBookID: wordBook.id, dict: dict))
                 } catch let error {
                     completionHandler(nil, error)
                     return
@@ -307,7 +307,7 @@ extension FirestoreDB {
                     dict["createdAt"] = timestamp.dateValue()
                     
                     do {
-                        samples.append(try SampleImpl(id: id, dict: dict))
+                        samples.append(try Sample(id: id, dict: dict))
                     } catch let error {
                         completionHandler(nil, error)
                         return
@@ -349,7 +349,7 @@ extension FirestoreDB {
                     dict["createdAt"] = timestamp.dateValue()
                     
                     do {
-                        samples.append(try SampleImpl(id: id, dict: dict))
+                        samples.append(try Sample(id: id, dict: dict))
                     } catch let error {
                         completionHandler(nil, error)
                         return
@@ -368,14 +368,14 @@ extension FirestoreDB {
 //MARK: TodayDatebase
 
 extension FirestoreDB {
-    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodayBooks>) {
+    func getTodayBooks(_ completionHandler: @escaping CompletionWithData<TodaySchedule>) {
         dataRef.getDocument { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
                 return
             }
             guard var dict = snapshot?.data()?["today"] as? [String: Any] else {
-                let emptyTodayBooks = TodayBooksImpl(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
+                let emptyTodayBooks = TodaySchedule(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: Date())
                 completionHandler(emptyTodayBooks, nil)
                 return
             }
@@ -389,7 +389,7 @@ extension FirestoreDB {
             dict["createdAt"] = timestamp.dateValue()
             
             do {
-                let todayBooks = try TodayBooksImpl(dict: dict)
+                let todayBooks = try TodaySchedule(dict: dict)
                 completionHandler(todayBooks, nil)
             } catch let error {
                 completionHandler(nil, error)
@@ -397,7 +397,7 @@ extension FirestoreDB {
         }
     }
     
-    func updateTodayBooks(_ todayBooks: TodayBooks, _ completionHandler: @escaping CompletionWithoutData) {
+    func updateTodayBooks(_ todayBooks: TodaySchedule, _ completionHandler: @escaping CompletionWithoutData) {
         
         let data: [String : Any] = [
             "studyIDs": todayBooks.studyIDs,
