@@ -16,6 +16,10 @@ struct SelectWordBook: ReducerProtocol {
         var wordCount: Int? = nil
         var didFetched = false
         
+        var selectedBook: WordBook? {
+            wordBooks.first(where: { $0.id == selectedID })
+        }
+        
         var pickerDefaultText: String {
             if didFetched && !wordBooks.isEmpty {
                 return "단어장을 선택해주세요"
@@ -27,14 +31,38 @@ struct SelectWordBook: ReducerProtocol {
         }
     }
     
+    @Dependency(\.wordBookClient) var wordBookClient
+    private enum fetchBooksID {}
+    private enum fetchWordCountID {}
+    
     enum Action: Equatable {
+        case onAppear
+        case booksResponse(TaskResult<[WordBook]>)
         case updateID(String?)
-
+        case wordCountResponse(TaskResult<Int>)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                return .task {
+                    await .booksResponse(TaskResult { try await wordBookClient.wordBooks() })
+                }
+            case let .booksResponse(.success(books)):
+                state.didFetched = true
+                state.wordBooks = books
+                return .none
+            case .updateID(let id):
+                state.selectedID = id
+                state.wordCount = nil
+                guard let book = state.selectedBook else { return .none }
+                return .task {
+                    await .wordCountResponse(TaskResult { try await wordBookClient.wordCount(book) })
+                }
+            case let .wordCountResponse(.success(count)):
+                state.wordCount = count
+                return .none
             default:
                 return .none
             }
@@ -61,10 +89,19 @@ struct WordBookPicker: View {
                             .tag(book.id as String?)
                     }
                 }
-                Text("단어 수: \(vs.wordCount ?? 0)개")
-                    .hide(vs.selectedID == nil)
+                Group {
+                    if let wordCount = vs.wordCount {
+                        Text("단어 수: \(wordCount)개")
+                    } else {
+                        ProgressView()
+                            .scaleEffect(0.5)
+                    }
+                }
+                .frame(height: 50)
+                .opacity(vs.selectedID == nil ? 0 : 1)
             }
             .padding()
+            .onAppear { vs.send(.onAppear) }
         }
     }
 }
