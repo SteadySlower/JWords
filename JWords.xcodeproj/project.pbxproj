@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622726829F3B69100EEAD50 /* ImageClient.swift */; };
 		0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727229FC9C3400EEAD50 /* WordBookPicker.swift */; };
+		0622727629FCEE1500EEAD50 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0622727529FCEE1500EEAD50 /* ComposableArchitecture */; };
 		0624735D29C6D8580076DBE4 /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735C29C6D8580076DBE4 /* InputType.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
@@ -76,7 +77,6 @@
 		5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */; };
 		5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */; };
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
-		5A798A5129E795380009CFFF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 5A798A5029E795380009CFFF /* ComposableArchitecture */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
 		5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */; };
 		5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C6FDA29FBA3CC00DD84A4 /* SampleClient.swift */; };
@@ -233,6 +233,7 @@
 			files = (
 				5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */,
 				06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */,
+				0622727629FCEE1500EEAD50 /* ComposableArchitecture in Frameworks */,
 				06CEF28E2866F86700A620CC /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -614,6 +615,7 @@
 				06CEF28D2866F86700A620CC /* FirebaseFirestore */,
 				06CEF2912866F86700A620CC /* FirebaseStorage */,
 				5A5328C2286C126C0080D500 /* Kingfisher */,
+				0622727529FCEE1500EEAD50 /* ComposableArchitecture */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -730,6 +732,7 @@
 				06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */,
 				06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */,
 				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
 			projectDirPath = "";
@@ -1275,6 +1278,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.52.0;
+			};
+		};
 		06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Quick.git";
@@ -1310,6 +1321,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0622727529FCEE1500EEAD50 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
 		06A1F4E128670DA8003440B0 /* Quick */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
