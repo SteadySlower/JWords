@@ -17,9 +17,20 @@ struct AddMeaning: ReducerProtocol {
         var autoSearch: Bool = true
         var samples: [Sample] = []
         var selectedID: String? = nil
+        var isFetchingSamples = false
         
         var isEmpty: Bool {
             text.isEmpty && image == nil
+        }
+        
+        var samplePickerDefaultText: String {
+            if isFetchingSamples {
+                return "검색 중"
+            } else if samples.isEmpty {
+                return "검색 결과 없음"
+            } else {
+                return "미선택"
+            }
         }
     }
     
@@ -57,12 +68,16 @@ struct AddMeaning: ReducerProtocol {
                 state.selectedID = id
                 return .none
             case .onTab:
-                guard state.autoSearch else { return .none }
+                guard state.autoSearch
+                        && !state.text.isEmpty
+                        && !state.isFetchingSamples else { return .none }
+                state.isFetchingSamples = true
                 return .task { [meaning = state.text] in
                     await .sampleResponse(TaskResult { try await sampleClient.samplesByMeaning(meaning) })
                 }
                 .cancellable(id: SamplesID.self)
             case let .sampleResponse(.success(samples)):
+                state.isFetchingSamples = false
                 guard !samples.isEmpty else { return .none }
                 state.samples = samples
                 state.selectedID = samples[0].id
@@ -100,7 +115,7 @@ struct MeaningField: View {
                                  get: \.selectedID,
                                  send: AddMeaning.Action.updateSelectedID)
                     ) {
-                        Text(vs.samples.isEmpty ? "검색결과 없음" : "미선택")
+                        Text(vs.samplePickerDefaultText)
                             .tag(nil as String?)
                         ForEach(vs.samples, id: \.id) { sample in
                             Text(sample.description)
