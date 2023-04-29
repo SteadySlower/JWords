@@ -33,7 +33,12 @@ extension MacHomeView {
     
     private var addBookView: some View {
         NavigationLink {
-            MacAddBookView(dependency)
+            MacAddBookView(
+                store: Store(
+                    initialState: AddBook.State(),
+                    reducer: AddBook()._printChanges()
+                )
+            )
         } label: {
             Text("add book")
         }

@@ -14,7 +14,7 @@ struct WordBookClient {
     var wordBooks: @Sendable () async throws -> [WordBook]
     var moveWords: @Sendable (WordBook, WordBook?, [Word]) async throws -> Void
     var closeBook: @Sendable (WordBook) async throws -> Void
-    var addBook: @Sendable (String, FrontType) async throws -> Void
+    var addBook: @Sendable (String, FrontType) async throws -> Bool
     var wordCount: @Sendable (WordBook) async throws -> Int
 }
 
@@ -68,7 +68,7 @@ extension WordBookClient: DependencyKey {
                 if let error = error {
                     continuation.resume(with: .failure(error))
                 } else {
-                    continuation.resume(with: .success(()))
+                    continuation.resume(with: .success((true)))
                 }
             }
         }
@@ -94,7 +94,7 @@ extension WordBookClient: TestDependencyKey {
     wordBooks: { try await Task.sleep(nanoseconds: 3 * 1_000_000_000); return .mock },
     moveWords: { _, _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: move words") },
     closeBook: { _ in try await Task.sleep(nanoseconds: 3 * 1_000_000_000); print("preview client: close books")  },
-    addBook: { _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: add book") },
+    addBook: { _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: add book"); return true },
     wordCount: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: word count"); return 10  }
   )
 
