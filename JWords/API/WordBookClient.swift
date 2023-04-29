@@ -95,7 +95,7 @@ extension WordBookClient: TestDependencyKey {
     moveWords: { _, _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: move words") },
     closeBook: { _ in try await Task.sleep(nanoseconds: 3 * 1_000_000_000); print("preview client: close books")  },
     addBook: { _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: add book") },
-    wordCount: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); return 10 print("preview client: word count") }
+    wordCount: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: word count"); return 10  }
   )
 
   static let testValue = Self(
