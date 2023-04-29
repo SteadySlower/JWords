@@ -233,7 +233,6 @@
 			files = (
 				5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */,
 				06CEF2922866F86700A620CC /* FirebaseStorage in Frameworks */,
-				5A798A5129E795380009CFFF /* ComposableArchitecture in Frameworks */,
 				06CEF28E2866F86700A620CC /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -615,7 +614,6 @@
 				06CEF28D2866F86700A620CC /* FirebaseFirestore */,
 				06CEF2912866F86700A620CC /* FirebaseStorage */,
 				5A5328C2286C126C0080D500 /* Kingfisher */,
-				5A798A5029E795380009CFFF /* ComposableArchitecture */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -732,7 +730,6 @@
 				06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */,
 				06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */,
 				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				5A798A4F29E795380009CFFF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
 			projectDirPath = "";
@@ -1310,14 +1307,6 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		5A798A4F29E795380009CFFF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.52.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1375,11 +1364,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
-		};
-		5A798A5029E795380009CFFF /* ComposableArchitecture */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5A798A4F29E795380009CFFF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
