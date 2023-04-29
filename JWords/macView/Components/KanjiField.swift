@@ -47,9 +47,6 @@ struct AddKanji: ReducerProtocol {
             case .imageTapped:
                 state.image = nil
                 return .none
-            case .onTab:
-                print("디버그: tab on gana field")
-                return .none
             default:
                 return .none
             }
