@@ -38,6 +38,12 @@ struct AddMeaning: ReducerProtocol {
             samples = []
             selectedID = nil
         }
+        
+        mutating func clearField() {
+            text = ""
+            image = nil
+            clearSample()
+        }
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient

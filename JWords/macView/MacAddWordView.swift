@@ -26,6 +26,17 @@ struct AddWord: ReducerProtocol {
             || isLoading
         }
         
+        var wordInput: WordInput? {
+            guard let wordBookID = book.selectedID else { return nil }
+            return WordInput(wordBookID: wordBookID,
+                             meaningText: meaning.text.trimmed,
+                             meaningImage: meaning.image,
+                             ganaText: gana.text.trimmed,
+                             ganaImage: gana.image,
+                             kanjiText: kanji.text.trimmed,
+                             kanjiImage: kanji.image)
+        }
+        
         mutating func updateTextBySample(_ id: String?) {
             if let sample = meaning.samples.first { $0.id == id } {
                 kanji.text = sample.kanjiText
@@ -36,10 +47,20 @@ struct AddWord: ReducerProtocol {
             }
         }
         
+        mutating func clearFields() {
+            meaning.clearField()
+            kanji.clearField()
+            gana.clearField()
+        }
+        
         enum Field: Hashable {
             case meaning, kanji, gana
         }
     }
+    
+    @Dependency(\.wordClient) var wordClient
+    @Dependency(\.sampleClient) var sampleClient
+    private enum AddWordID {}
     
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
@@ -49,6 +70,7 @@ struct AddWord: ReducerProtocol {
         case addKanji(action: AddKanji.Action)
         case addGana(action: AddGana.Action)
         case saveButtonTapped
+        case addWordResponse(TaskResult<Bool>)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -75,6 +97,21 @@ struct AddWord: ReducerProtocol {
                 return .none
             case .addGana(.updateText):
                 state.meaning.selectedID = nil
+                return .none
+            case .saveButtonTapped:
+                guard let wordInput = state.wordInput else { return .none }
+                if let sample = state.meaning.samples.first { $0.id == state.meaning.selectedID } {
+                    sampleClient.used(sample)
+                } else {
+                    sampleClient.add(wordInput)
+                }
+                state.clearFields()
+                return .task {
+                    await .addWordResponse(TaskResult { try await wordClient.add(wordInput) })
+                }
+                .cancellable(id: AddWordID.self)
+            case .addWordResponse(.success):
+                state.book.onWordAdded()
                 return .none
             default:
                 return .none

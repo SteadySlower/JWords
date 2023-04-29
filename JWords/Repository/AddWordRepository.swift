@@ -156,12 +156,12 @@ class AddWordRepository: Repository {
     
     // 입력하기 전에 좌우 공백 제거
     private func trimTexts() {
-        meaningText = meaningText.lStrip()
-        meaningText = meaningText.rStrip()
-        kanjiText = kanjiText.lStrip()
-        kanjiText = kanjiText.rStrip()
-        ganaText = ganaText.lStrip()
-        ganaText = ganaText.rStrip()
+//        meaningText = meaningText.lStrip()
+//        meaningText = meaningText.rStrip()
+//        kanjiText = kanjiText.lStrip()
+//        kanjiText = kanjiText.rStrip()
+//        ganaText = ganaText.lStrip()
+//        ganaText = ganaText.rStrip()
     }
     
     private func clearInputs() {

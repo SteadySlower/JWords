@@ -19,6 +19,11 @@ struct AddGana: ReducerProtocol {
         var isEmpty: Bool {
             text.isEmpty && image == nil
         }
+        
+        mutating func clearField() {
+            text = ""
+            image = nil
+        }
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient

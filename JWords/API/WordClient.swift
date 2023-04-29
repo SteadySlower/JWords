@@ -14,6 +14,7 @@ struct WordClient {
     var words: @Sendable (WordBook) async throws -> [Word]
     var studyState: @Sendable (Word, StudyState) async throws -> StudyState
     var edit: @Sendable (Word, WordInput) async throws -> Word
+    var add: @Sendable (WordInput) async throws -> Bool // interim return type
 }
 
 extension DependencyValues {
@@ -61,6 +62,17 @@ extension WordClient: DependencyKey {
                 }
             }
         }
+    },
+    add: { wordInput in
+        return try await withCheckedThrowingContinuation { continuation in
+            wordService.saveWord(wordInput: wordInput) { error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else {
+                    continuation.resume(with: .success(true))
+                }
+            }
+        }
     }
   )
 }
@@ -69,14 +81,15 @@ extension WordClient: TestDependencyKey {
   static let previewValue = Self(
     words: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); return .mock },
     studyState: { word, state in state },
-    edit: { word, wordInput in makeMockEditWord(word, wordInput) }
-//    edit: { word, wordInput in throw AppError.generic(massage: "mock error") }
+    edit: { word, wordInput in makeMockEditWord(word, wordInput) },
+    add: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); return true }
   )
 
   static let testValue = Self(
     words: unimplemented("\(Self.self).words"),
     studyState: unimplemented("\(Self.self).studyState"),
-    edit: unimplemented("\(Self.self).edit")
+    edit: unimplemented("\(Self.self).edit"),
+    add: unimplemented("\(Self.self).add")
   )
     
     static private func makeMockEditWord(_ word: Word, _ wordInput: WordInput) -> Word {

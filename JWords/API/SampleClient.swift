@@ -10,6 +10,8 @@ import ComposableArchitecture
 struct SampleClient {
     private static let sampleService: SampleService = ServiceManager.shared.sampleService
     var samplesByMeaning: @Sendable (String) async throws -> [Sample]
+    var add: (WordInput) -> Void
+    var used: (Sample) -> Void
 }
 
 extension DependencyValues {
@@ -33,17 +35,23 @@ extension SampleClient: DependencyKey {
                 }
             }
         }
-    }
+    },
+    add: { wordInput in sampleService.saveSample(wordInput: wordInput) },
+    used: { sample in sampleService.addOneToUsed(of: sample) }
   )
 }
 
 extension SampleClient: TestDependencyKey {
   static let previewValue = Self(
-    samplesByMeaning: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); return .mock }
+    samplesByMeaning: { _ in try await Task.sleep(nanoseconds: 2 * 1_000_000_000); return .mock },
+    add: { _ in },
+    used: { _ in }
   )
 
   static let testValue = Self(
-    samplesByMeaning: unimplemented("\(Self.self).samplesByMeaning")
+    samplesByMeaning: unimplemented("\(Self.self).samplesByMeaning"),
+    add: unimplemented("\(Self.self).add"),
+    used: unimplemented("\(Self.self).used")
   )
 }
 

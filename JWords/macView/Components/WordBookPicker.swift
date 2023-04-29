@@ -29,6 +29,12 @@ struct SelectWordBook: ReducerProtocol {
                 return "단어장 불러오는 중..."
             }
         }
+        
+        mutating func onWordAdded() {
+            if let wordCount = wordCount {
+                self.wordCount = wordCount + 1
+            }
+        }
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
