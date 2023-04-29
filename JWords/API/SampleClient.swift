@@ -23,7 +23,15 @@ extension SampleClient: DependencyKey {
   static let liveValue = SampleClient(
     samplesByMeaning: { meaning in
         return try await withCheckedThrowingContinuation { continuation in
-            
+            sampleService.getSamplesByMeaning(meaning) { samples, error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else if let samples = samples {
+                    continuation.resume(with: .success(samples))
+                } else {
+                    continuation.resume(with: .failure(AppError.generic(massage: "samples are nil in SampleClient_samplesByMeaning")))
+                }
+            }
         }
     }
   )
