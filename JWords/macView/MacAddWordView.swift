@@ -12,6 +12,7 @@ import ComposableArchitecture
 struct AddWord: ReducerProtocol {
 
     struct State: Equatable {
+        var book = SelectWordBook.State()
         var meaning = AddMeaning.State()
         var kanji = AddKanji.State()
         var gana = AddGana.State()
@@ -24,6 +25,7 @@ struct AddWord: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
+        case selectWordBook(action: SelectWordBook.Action)
         case addMeaning(action: AddMeaning.Action)
         case addKanji(action: AddKanji.Action)
         case addGana(action: AddGana.Action)
@@ -52,6 +54,9 @@ struct AddWord: ReducerProtocol {
                 return .none
             }
         }
+        Scope(state: \.book, action: /Action.selectWordBook(action:)) {
+            SelectWordBook()
+        }
         Scope(state: \.meaning, action: /Action.addMeaning(action:)) {
             AddMeaning()
         }
@@ -72,6 +77,10 @@ struct MacAddWordView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
+                WordBookPicker(store: store.scope(
+                    state: \.book,
+                    action: AddWord.Action.selectWordBook(action:))
+                )
                 MeaningField(store: store.scope(
                     state: \.meaning,
                     action: AddWord.Action.addMeaning(action:))
