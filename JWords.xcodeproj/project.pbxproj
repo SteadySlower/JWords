@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622726829F3B69100EEAD50 /* ImageClient.swift */; };
 		0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727229FC9C3400EEAD50 /* WordBookPicker.swift */; };
-		0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735A29C6D1430076DBE4 /* ImageField.swift */; };
 		0624735D29C6D8580076DBE4 /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735C29C6D8580076DBE4 /* InputType.swift */; };
-		0624736129C6DAC80076DBE4 /* SamplePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624736029C6DAC80076DBE4 /* SamplePicker.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -28,8 +26,6 @@
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordInputView.swift */; };
-		06B2DA2129D7D0AB009C67EF /* WordAddField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2029D7D0AB009C67EF /* WordAddField.swift */; };
-		06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA2429D7D42F009C67EF /* Toggles.swift */; };
 		06B2DA3C29EA33F8009C67EF /* WordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3B29EA33F8009C67EF /* WordClient.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
@@ -144,9 +140,7 @@
 /* Begin PBXFileReference section */
 		0622726829F3B69100EEAD50 /* ImageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageClient.swift; sourceTree = "<group>"; };
 		0622727229FC9C3400EEAD50 /* WordBookPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordBookPicker.swift; path = JWords/macView/Components/WordBookPicker.swift; sourceTree = SOURCE_ROOT; };
-		0624735A29C6D1430076DBE4 /* ImageField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageField.swift; path = JWords/macView/Components/ImageField.swift; sourceTree = SOURCE_ROOT; };
 		0624735C29C6D8580076DBE4 /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
-		0624736029C6DAC80076DBE4 /* SamplePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SamplePicker.swift; path = JWords/macView/Components/SamplePicker.swift; sourceTree = SOURCE_ROOT; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -160,8 +154,6 @@
 		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputView.swift; sourceTree = "<group>"; };
-		06B2DA2029D7D0AB009C67EF /* WordAddField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordAddField.swift; path = JWords/macView/Components/WordAddField.swift; sourceTree = SOURCE_ROOT; };
-		06B2DA2429D7D42F009C67EF /* Toggles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Toggles.swift; path = JWords/macView/Components/Toggles.swift; sourceTree = SOURCE_ROOT; };
 		06B2DA3B29EA33F8009C67EF /* WordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordClient.swift; sourceTree = "<group>"; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
@@ -281,10 +273,6 @@
 		0624735929C6D1360076DBE4 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				0624735A29C6D1430076DBE4 /* ImageField.swift */,
-				0624736029C6DAC80076DBE4 /* SamplePicker.swift */,
-				06B2DA2429D7D42F009C67EF /* Toggles.swift */,
-				06B2DA2029D7D0AB009C67EF /* WordAddField.swift */,
 				5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */,
 				5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */,
 				5A80ACF029FA535500E3F31A /* KanjiField.swift */,
@@ -801,7 +789,6 @@
 				06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */,
 				5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */,
 				067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */,
-				0624735B29C6D1430076DBE4 /* ImageField.swift in Sources */,
 				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
 				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
 				0697715328CCA71700569280 /* WordInput.swift in Sources */,
@@ -824,7 +811,6 @@
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
-				06B2DA2129D7D0AB009C67EF /* WordAddField.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
@@ -834,7 +820,6 @@
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
-				0624736129C6DAC80076DBE4 /* SamplePicker.swift in Sources */,
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
@@ -854,7 +839,6 @@
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
 				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
 				5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */,
-				06B2DA2529D7D42F009C67EF /* Toggles.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
 				5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */,
 				5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */,
