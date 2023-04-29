@@ -32,6 +32,11 @@ struct AddMeaning: ReducerProtocol {
                 return "미선택"
             }
         }
+        
+        mutating func clearSample() {
+            samples = []
+            selectedID = nil
+        }
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -71,6 +76,7 @@ struct AddMeaning: ReducerProtocol {
                 guard state.autoSearch
                         && !state.text.isEmpty
                         && !state.isFetchingSamples else { return .none }
+                state.clearSample()
                 state.isFetchingSamples = true
                 return .task { [meaning = state.text] in
                     await .sampleResponse(TaskResult { try await sampleClient.samplesByMeaning(meaning) })
