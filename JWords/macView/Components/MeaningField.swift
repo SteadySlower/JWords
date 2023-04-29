@@ -34,10 +34,6 @@ struct AddMeaning: ReducerProtocol {
             }
         }
         
-        var selectedSample: Sample? {
-            samples.first { $0.id == selectedID }
-        }
-        
         mutating func clearSample() {
             samples = []
             selectedID = nil
@@ -56,10 +52,8 @@ struct AddMeaning: ReducerProtocol {
         case updateAutoSearch(Bool)
         case updateSelectedID(String?)
         case onTab
-        case onIDSelected
         case showAutoSelectAlert(Sample)
         case alertDismissed
-        case autoSelect(Sample)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -80,7 +74,7 @@ struct AddMeaning: ReducerProtocol {
                 return .none
             case .updateSelectedID(let id):
                 state.selectedID = id
-                return .task { .onIDSelected }
+                return .none
             case .onTab:
                 guard state.autoSearch
                         && !state.text.isEmpty
@@ -103,19 +97,16 @@ struct AddMeaning: ReducerProtocol {
                   ButtonState(role: .cancel) {
                     TextState("취소")
                   }
-                    ButtonState(action: .autoSelect(sample)) {
+                    ButtonState(action: .updateSelectedID(sample.id)) {
                     TextState("자동 선택")
                   }
                 } message: {
                     TextState(sample.description)
                 }
                 return .none
-            case let .autoSelect(sample):
-                state.selectedID = sample.id
-                return .none
             case .alertDismissed:
               state.alert = nil
-              return .task { .onIDSelected }
+              return .none
             default:
                 return .none
             }

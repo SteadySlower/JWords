@@ -26,6 +26,16 @@ struct AddWord: ReducerProtocol {
             || isLoading
         }
         
+        mutating func updateTextBySample(_ id: String?) {
+            if let sample = meaning.samples.first { $0.id == id } {
+                kanji.text = sample.kanjiText
+                gana.text = sample.ganaText
+            } else {
+                kanji.text = ""
+                gana.text = ""
+            }
+        }
+        
         enum Field: Hashable {
             case meaning, kanji, gana
         }
@@ -48,25 +58,23 @@ struct AddWord: ReducerProtocol {
             case .addMeaning(.onTab):
                 state.focusedField = .kanji
                 return .none
-            case .addMeaning(.onIDSelected):
-                if let sample = state.meaning.selectedSample {
-                    state.kanji.text = sample.kanjiText
-                    state.gana.text = sample.ganaText
-                } else {
-                    state.kanji.text = ""
-                    state.gana.text = ""
-                }
+            case let .addMeaning(.updateSelectedID(id)):
+                state.updateTextBySample(id)
                 return .none
             case let .addKanji(.updateText(text)):
                 if state.gana.autoConvert {
                     state.gana.text = text.hiragana
                 }
+                state.meaning.selectedID = nil
                 return .none
             case .addKanji(.onTab):
                 state.focusedField = .gana
                 return .none
             case .addGana(.onTab):
                 state.focusedField = .meaning
+                return .none
+            case .addGana(.updateText):
+                state.meaning.selectedID = nil
                 return .none
             default:
                 return .none
