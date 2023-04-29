@@ -15,6 +15,7 @@ struct WordBookClient {
     var moveWords: @Sendable (WordBook, WordBook?, [Word]) async throws -> Void
     var closeBook: @Sendable (WordBook) async throws -> Void
     var addBook: @Sendable (String, FrontType) async throws -> Void
+    var wordCount: @Sendable (WordBook) async throws -> Int
 }
 
 extension DependencyValues {
@@ -71,6 +72,19 @@ extension WordBookClient: DependencyKey {
                 }
             }
         }
+    },
+    wordCount: { wordBook in
+        return try await withCheckedThrowingContinuation { continuation in
+            wordBookService.countWords(in: wordBook) { count, error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else if let count = count {
+                    continuation.resume(with: .success(count))
+                } else {
+                    continuation.resume(with: .failure(AppError.generic(massage: "count is nil in WordBookClient_wordCount")))
+                }
+            }
+        }
     }
   )
 }
@@ -80,15 +94,16 @@ extension WordBookClient: TestDependencyKey {
     wordBooks: { try await Task.sleep(nanoseconds: 3 * 1_000_000_000); return .mock },
     moveWords: { _, _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: move words") },
     closeBook: { _ in try await Task.sleep(nanoseconds: 3 * 1_000_000_000); print("preview client: close books")  },
-//    closeBook: { _ in throw AppError.generic(massage: "preview client: Mock Failure to close book")  },
-    addBook: { _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: add book") }
+    addBook: { _, _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: add book") },
+    wordCount: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); return 10 print("preview client: word count") }
   )
 
   static let testValue = Self(
     wordBooks: unimplemented("\(Self.self).wordBooks"),
     moveWords: unimplemented("\(Self.self).moveWords"),
     closeBook: unimplemented("\(Self.self).closeBook"),
-    addBook: unimplemented("\(Self.self).addBook")
+    addBook: unimplemented("\(Self.self).addBook"),
+    wordCount: unimplemented("\(Self.self).wordCount")
   )
 }
 
