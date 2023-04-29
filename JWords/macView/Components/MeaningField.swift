@@ -18,6 +18,7 @@ struct AddMeaning: ReducerProtocol {
         var samples: [Sample] = []
         var selectedID: String? = nil
         var isFetchingSamples = false
+        var alert: AlertState<Action>?
         
         var isEmpty: Bool {
             text.isEmpty && image == nil
@@ -31,6 +32,10 @@ struct AddMeaning: ReducerProtocol {
             } else {
                 return "미선택"
             }
+        }
+        
+        var selectedSample: Sample? {
+            samples.first { $0.id == selectedID }
         }
         
         mutating func clearSample() {
@@ -51,6 +56,10 @@ struct AddMeaning: ReducerProtocol {
         case updateAutoSearch(Bool)
         case updateSelectedID(String?)
         case onTab
+        case onIDSelected
+        case showAutoSelectAlert(Sample)
+        case alertDismissed
+        case autoSelect(Sample)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -71,7 +80,7 @@ struct AddMeaning: ReducerProtocol {
                 return .none
             case .updateSelectedID(let id):
                 state.selectedID = id
-                return .none
+                return .task { .onIDSelected }
             case .onTab:
                 guard state.autoSearch
                         && !state.text.isEmpty
@@ -86,8 +95,27 @@ struct AddMeaning: ReducerProtocol {
                 state.isFetchingSamples = false
                 guard !samples.isEmpty else { return .none }
                 state.samples = samples
-                state.selectedID = samples[0].id
+                return .task { .showAutoSelectAlert(samples[0]) }
+            case let .showAutoSelectAlert(sample):
+                state.alert = AlertState {
+                  TextState("검색 결과 자동 선택")
+                } actions: {
+                  ButtonState(role: .cancel) {
+                    TextState("취소")
+                  }
+                    ButtonState(action: .autoSelect(sample)) {
+                    TextState("자동 선택")
+                  }
+                } message: {
+                    TextState(sample.description)
+                }
                 return .none
+            case let .autoSelect(sample):
+                state.selectedID = sample.id
+                return .none
+            case .alertDismissed:
+              state.alert = nil
+              return .task { .onIDSelected }
             default:
                 return .none
             }
@@ -148,6 +176,10 @@ struct MeaningField: View {
                 }
             }
             .padding(.horizontal)
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
 }
