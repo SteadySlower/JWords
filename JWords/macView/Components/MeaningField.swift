@@ -17,6 +17,10 @@ struct AddMeaning: ReducerProtocol {
         var autoSearch: Bool = true
         var samples: [Sample] = []
         var selectedID: String? = nil
+        
+        var isEmpty: Bool {
+            text.isEmpty && image == nil
+        }
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -84,7 +88,6 @@ struct MeaningField: View {
                     send: AddMeaning.Action.updateText))
                     .font(.system(size: 30))
                     .frame(height: Constants.Size.deviceHeight / 8)
-                    .padding(.horizontal)
                 HStack {
                     Toggle("자동 검색",
                            isOn: vs.binding(
@@ -123,6 +126,7 @@ struct MeaningField: View {
                     }
                 }
             }
+            .padding(.horizontal)
         }
     }
 }

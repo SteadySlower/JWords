@@ -12,18 +12,27 @@ import ComposableArchitecture
 struct AddWord: ReducerProtocol {
 
     struct State: Equatable {
+        @BindingState var focusedField: Field?
         var book = SelectWordBook.State()
         var meaning = AddMeaning.State()
         var kanji = AddKanji.State()
         var gana = AddGana.State()
         var isLoading = false
         
-        var canSave: Bool {
-            return true
+        var unableToSave: Bool {
+            (book.selectedID == nil)
+            || meaning.isEmpty
+            || (kanji.isEmpty && gana.isEmpty)
+            || isLoading
+        }
+        
+        enum Field: Hashable {
+            case meaning, kanji, gana
         }
     }
     
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
         case onAppear
         case selectWordBook(action: SelectWordBook.Action)
         case addMeaning(action: AddMeaning.Action)
@@ -33,23 +42,18 @@ struct AddWord: ReducerProtocol {
     }
     
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
-            case .addMeaning(let action):
-                switch action {
-                default:
-                    return .none
-                }
-            case .addKanji(let action):
-                switch action {
-                default:
-                    return .none
-                }
-            case .addGana(let action):
-                switch action {
-                default:
-                    return .none
-                }
+            case .addMeaning(.onTab):
+                state.focusedField = .kanji
+                return .none
+            case .addKanji(.onTab):
+                state.focusedField = .gana
+                return .none
+            case .addGana(.onTab):
+                state.focusedField = .meaning
+                return .none
             default:
                 return .none
             }
@@ -73,6 +77,7 @@ struct AddWord: ReducerProtocol {
 struct MacAddWordView: View {
     
     let store: StoreOf<AddWord>
+    @FocusState var focusedField: AddWord.State.Field?
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -85,14 +90,17 @@ struct MacAddWordView: View {
                     state: \.meaning,
                     action: AddWord.Action.addMeaning(action:))
                 )
+                .focused($focusedField, equals: .meaning)
                 KanjiField(store: store.scope(
                     state: \.kanji,
                     action: AddWord.Action.addKanji(action:))
                 )
+                .focused($focusedField, equals: .kanji)
                 GanaField(store: store.scope(
                     state: \.gana,
                     action: AddWord.Action.addGana(action:))
                 )
+                .focused($focusedField, equals: .gana)
                 if vs.isLoading {
                     ProgressView()
                 } else {
@@ -101,11 +109,12 @@ struct MacAddWordView: View {
                     } label: {
                         Text("저장")
                     }
-                    .disabled(!vs.canSave)
+                    .disabled(vs.unableToSave)
                     .keyboardShortcut(.return, modifiers: [.control])
                 }
             }
             .onAppear { vs.send(.onAppear) }
+            .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
 
     }

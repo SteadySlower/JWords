@@ -14,6 +14,10 @@ struct AddKanji: ReducerProtocol {
     struct State: Equatable {
         var text = ""
         var image: InputImageType?
+        
+        var isEmpty: Bool {
+            text.isEmpty && image == nil
+        }
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
