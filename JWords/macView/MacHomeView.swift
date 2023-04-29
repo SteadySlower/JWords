@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct MacHomeView: View {
     
@@ -40,7 +41,12 @@ extension MacHomeView {
     
     private var wordAddView: some View {
         NavigationLink {
-            MacAddWordView(dependency)
+            MacAddWordView(
+                store: Store(
+                    initialState: AddWord.State(),
+                    reducer: AddWord()._printChanges()
+                )
+            )
         } label: {
             Text("add word")
         }

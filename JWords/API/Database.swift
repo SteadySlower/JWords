@@ -307,7 +307,7 @@ extension FirestoreDB {
                     dict["createdAt"] = timestamp.dateValue()
                     
                     do {
-                        samples.append(try SampleImpl(id: id, dict: dict))
+                        samples.append(try Sample(id: id, dict: dict))
                     } catch let error {
                         completionHandler(nil, error)
                         return
@@ -349,7 +349,7 @@ extension FirestoreDB {
                     dict["createdAt"] = timestamp.dateValue()
                     
                     do {
-                        samples.append(try SampleImpl(id: id, dict: dict))
+                        samples.append(try Sample(id: id, dict: dict))
                     } catch let error {
                         completionHandler(nil, error)
                         return

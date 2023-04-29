@@ -10,8 +10,16 @@ import Foundation
 extension String {
     
     static let whitespaceAndNewlineCharacters: [Character] = [" ", "\n", "\t"]
+    
+    var hasTab: Bool {
+        self.contains("\t")
+    }
+    
+    var trimmed: String {
+        self.lStrip().rStrip()
+    }
 
-    func rStrip(_ charactors: [Character] = String.whitespaceAndNewlineCharacters) -> String {
+    private func rStrip(_ charactors: [Character] = String.whitespaceAndNewlineCharacters) -> String {
         var s = self
         guard s.contains(where: { charactors.contains($0) }) else { return self }
         while let last = s.last,
@@ -24,7 +32,7 @@ extension String {
         
     }
     
-    func lStrip(_ charactors: [Character] = String.whitespaceAndNewlineCharacters) -> String {
+    private func lStrip(_ charactors: [Character] = String.whitespaceAndNewlineCharacters) -> String {
         var s = self
         guard s.contains(where: { charactors.contains($0) }) else { return self }
         while let first = s.first,
