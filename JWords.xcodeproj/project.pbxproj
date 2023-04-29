@@ -59,7 +59,7 @@
 		5A67DC27286944FF00AC156C /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC26286944FF00AC156C /* Size.swift */; };
 		5A67DC2A286946F800AC156C /* StudyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC29286946F800AC156C /* StudyView.swift */; };
 		5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC2C2869470C00AC156C /* StudyCell.swift */; };
-		5A67DC312869529700AC156C /* MacHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC302869529700AC156C /* MacHomeView.swift */; };
+		5A67DC312869529700AC156C /* MacAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC302869529700AC156C /* MacAppView.swift */; };
 		5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC322869565A00AC156C /* MacAddBookView.swift */; };
 		5A6BA59C28E53BAE004B04FC /* MockSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BA59B28E53BAE004B04FC /* MockSample.swift */; };
 		5A6BBF7A28E68A15003D9A4D /* StudyViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */; };
@@ -188,7 +188,7 @@
 		5A67DC26286944FF00AC156C /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		5A67DC29286946F800AC156C /* StudyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyView.swift; sourceTree = "<group>"; };
 		5A67DC2C2869470C00AC156C /* StudyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyCell.swift; sourceTree = "<group>"; };
-		5A67DC302869529700AC156C /* MacHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacHomeView.swift; sourceTree = "<group>"; };
+		5A67DC302869529700AC156C /* MacAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppView.swift; sourceTree = "<group>"; };
 		5A67DC322869565A00AC156C /* MacAddBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAddBookView.swift; sourceTree = "<group>"; };
 		5A6BA59B28E53BAE004B04FC /* MockSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSample.swift; sourceTree = "<group>"; };
 		5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewModelTest.swift; sourceTree = "<group>"; };
@@ -531,7 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				0624735929C6D1360076DBE4 /* Components */,
-				5A67DC302869529700AC156C /* MacHomeView.swift */,
+				5A67DC302869529700AC156C /* MacAppView.swift */,
 				06BC609929AEF04600AA67E6 /* MacAddWordView.swift */,
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
 			);
@@ -800,7 +800,7 @@
 				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,
 				5A67DC20286942FE00AC156C /* HomeView.swift in Sources */,
 				06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */,
-				5A67DC312869529700AC156C /* MacHomeView.swift in Sources */,
+				5A67DC312869529700AC156C /* MacAppView.swift in Sources */,
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
