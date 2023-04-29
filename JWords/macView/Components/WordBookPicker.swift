@@ -49,6 +49,7 @@ struct SelectWordBook: ReducerProtocol {
                 return .task {
                     await .booksResponse(TaskResult { try await wordBookClient.wordBooks() })
                 }
+                .cancellable(id: fetchBooksID.self)
             case let .booksResponse(.success(books)):
                 state.didFetched = true
                 state.wordBooks = books
@@ -60,6 +61,7 @@ struct SelectWordBook: ReducerProtocol {
                 return .task {
                     await .wordCountResponse(TaskResult { try await wordBookClient.wordCount(book) })
                 }
+                .cancellable(id: fetchWordCountID.self)
             case let .wordCountResponse(.success(count)):
                 state.wordCount = count
                 return .none
