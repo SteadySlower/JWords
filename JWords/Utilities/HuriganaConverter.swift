@@ -40,6 +40,7 @@ class HuriganaConverter {
             // 토큰이 가나이거나, 구두점이거나, 빈칸이면 그냥 더하기
             if token == gana
                 || token.isPunctuation
+                || token.isKatakana
                 || token == " "
                 || gana == ""
             {
