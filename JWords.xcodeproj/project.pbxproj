@@ -17,6 +17,8 @@
 		06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */; };
 		06308A5E29FE14D900BDEE2D /* iOSHuriganaTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */; };
 		06308A6029FE2CDB00BDEE2D /* WordAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */; };
+		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
+		06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -153,6 +155,8 @@
 		06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HuriganaText.swift; path = JWords/macView/Components/HuriganaText.swift; sourceTree = SOURCE_ROOT; };
 		06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSHuriganaTestView.swift; sourceTree = "<group>"; };
 		06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordAddView.swift; sourceTree = "<group>"; };
+		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
+		06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WrappingHStack.swift; path = JWords/macView/Components/WrappingHStack.swift; sourceTree = SOURCE_ROOT; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -290,6 +294,7 @@
 				5A80ACF029FA535500E3F31A /* KanjiField.swift */,
 				0622727229FC9C3400EEAD50 /* WordBookPicker.swift */,
 				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
+				06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -540,6 +545,7 @@
 				06BC6069297B939500AA67E6 /* LazyView.swift */,
 				5A77B98E29EFA99000EA7B41 /* BaseCell.swift */,
 				5A7B920029F10C0500ED3CAA /* SelectionCell.swift */,
+				06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */,
 			);
 			path = items;
 			sourceTree = "<group>";
@@ -814,6 +820,7 @@
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
 				5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */,
+				06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */,
 				06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */,
 				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,
 				5A67DC20286942FE00AC156C /* HomeView.swift in Sources */,
@@ -855,6 +862,7 @@
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
+				06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */,
 				067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */,
 				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
 				5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */,
