@@ -93,6 +93,7 @@ struct HuriganaText: View {
                 huriView(for: huri)
             }
         }
+        .padding(.top, fontSize / 2)
     }
     
     @ViewBuilder
