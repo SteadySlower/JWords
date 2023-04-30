@@ -7,6 +7,11 @@
 
 import Foundation
 
+extension String {
+    static let huriganaFrom = "⌜"
+    static let huriganaTo = "⌟"
+}
+
 class HuriganaConverter {
     
     static let shared = HuriganaConverter()
@@ -47,12 +52,28 @@ class HuriganaConverter {
                 result.append(token)
             // 한자면 []안에 더하기
             } else {
-                result.append("\(token)[\(gana)]")
+                let trimmed = trimHuri(token, gana)
+                result.append("\(trimmed.0)\(String.huriganaFrom)\(trimmed.1)\(String.huriganaTo)`\(trimmed.2)")
             }
+            
+            result.append("`")
         }
         
         return result
     }
     
+}
+
+fileprivate func trimHuri(_ token: String, _ gana: String) -> (String, String, String) {
+    var gana = gana
+    var token = token
+    var tail = ""
+    while let gLast = gana.last,
+          let tLast = token.last,
+          gLast == tLast {
+        tail = "\(gana.removeLast())\(tail)"
+        token = String(token.dropLast())
+    }
+    return (token, gana, tail)
 }
 

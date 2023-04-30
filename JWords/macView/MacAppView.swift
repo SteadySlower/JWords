@@ -60,11 +60,11 @@ struct MacAppView: View {
                 } label: {
                     Text("add word")
                 }
-                NavigationLink {
-                    HuriganaTestView()
-                } label: {
-                    Text("hurigana test")
-                }
+//                NavigationLink {
+//                    HuriganaTestView()
+//                } label: {
+//                    Text("hurigana test")
+//                }
             }
         }
         .navigationViewStyle(.automatic)

@@ -15,14 +15,11 @@ struct HuriganaTestView: View {
     var body: some View {
         VStack {
             Text(hurigana)
+                .padding(.bottom, 20)
+            HuriganaText(hurigana: hurigana)
             TextField("", text: $text)
                 .onChange(of: text) { hurigana = HuriganaConverter.shared.convert($0) }
         }
-    }
-}
-
-struct HuriganaTestView_Previews: PreviewProvider {
-    static var previews: some View {
-        HuriganaTestView()
+        .padding(100)
     }
 }
