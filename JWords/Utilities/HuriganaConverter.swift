@@ -49,6 +49,8 @@ class HuriganaConverter {
             } else {
                 result.append("\(token)[\(gana)]")
             }
+            
+            result.append("`")
         }
         
         return result
