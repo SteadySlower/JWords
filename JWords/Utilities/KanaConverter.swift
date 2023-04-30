@@ -10,7 +10,7 @@
 import Foundation
 
 // CFStringTokenizer: 연속된 String을 Token (단어, 문장) 단위로 쪼개주는 객체
-private extension CFStringTokenizer {
+extension CFStringTokenizer {
     
     // CFStringTokenizer 안에 있는 CFString을 가지고 string으로 바꾸어주는 computed property
         // kCFStringTransformLatinHiragana과 kCFStringTransformLatinKatakana는 CFString 타입이지만 실제로 데이터를 담고 있는 것은 아니고
@@ -29,7 +29,7 @@ private extension CFStringTokenizer {
     }
 
     // 토큰 하나를 gana string으로 하나로 바꾸어 주는 함수
-    private func letter(to transform: CFString) -> String {
+    func letter(to transform: CFString) -> String {
         
         // 현재 Token을 복사해오는데 Lantin Transction으로 가져온다. (여기서 한자가 Latin Transcription으로 바뀜)
             // 그리고 나서 NSString -> NSMutableString으로 바꾼다 (Latin을 gana로 바꾸기 위해서 mutable로)

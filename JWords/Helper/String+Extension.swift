@@ -43,4 +43,24 @@ extension String {
         print(s)
         return s
     }
+    
+    var isPunctuation: Bool {
+        guard self.count == 1 else { return false }
+        let char = Character(self)
+        if char.unicodeScalars.count == 1,
+           CharacterSet.punctuationCharacters.contains(char.unicodeScalars.first!) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var isKatakana: Bool {
+        let katakanaCharacterSet = CharacterSet(charactersIn: "\u{30A0}"..."\u{30FF}")
+        if self.unicodeScalars.allSatisfy({ katakanaCharacterSet.contains($0) }) {
+            return true
+        } else {
+            return false
+        }
+    }
 }

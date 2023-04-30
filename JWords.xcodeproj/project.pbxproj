@@ -10,6 +10,9 @@
 		0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622726829F3B69100EEAD50 /* ImageClient.swift */; };
 		0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727229FC9C3400EEAD50 /* WordBookPicker.swift */; };
 		0622727629FCEE1500EEAD50 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0622727529FCEE1500EEAD50 /* ComposableArchitecture */; };
+		0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */; };
+		0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727929FCFC2600EEAD50 /* Character+Extension.swift */; };
+		0622727C29FDEADC00EEAD50 /* HuriganaTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727B29FDEADC00EEAD50 /* HuriganaTestView.swift */; };
 		0624735D29C6D8580076DBE4 /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735C29C6D8580076DBE4 /* InputType.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
@@ -140,6 +143,9 @@
 /* Begin PBXFileReference section */
 		0622726829F3B69100EEAD50 /* ImageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageClient.swift; sourceTree = "<group>"; };
 		0622727229FC9C3400EEAD50 /* WordBookPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordBookPicker.swift; path = JWords/macView/Components/WordBookPicker.swift; sourceTree = SOURCE_ROOT; };
+		0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuriganaConverter.swift; sourceTree = "<group>"; };
+		0622727929FCFC2600EEAD50 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
+		0622727B29FDEADC00EEAD50 /* HuriganaTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HuriganaTestView.swift; path = JWords/macView/HuriganaTestView.swift; sourceTree = SOURCE_ROOT; };
 		0624735C29C6D8580076DBE4 /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
@@ -442,6 +448,7 @@
 			children = (
 				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
 				5AB28AA328F6B94200FF80CE /* KanaConverter.swift */,
+				0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -455,6 +462,7 @@
 				06BC608929A0928600AA67E6 /* View+Extension.swift */,
 				06BC608B29A09FC000AA67E6 /* ViewModifier.swift */,
 				0688A1D329B3345E0057B2DB /* String+Extension.swift */,
+				0622727929FCFC2600EEAD50 /* Character+Extension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -534,6 +542,7 @@
 				5A67DC302869529700AC156C /* MacAppView.swift */,
 				06BC609929AEF04600AA67E6 /* MacAddWordView.swift */,
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
+				0622727B29FDEADC00EEAD50 /* HuriganaTestView.swift */,
 			);
 			path = MacView;
 			sourceTree = "<group>";
@@ -814,11 +823,13 @@
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
+				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
+				0622727C29FDEADC00EEAD50 /* HuriganaTestView.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
@@ -826,6 +837,7 @@
 				5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */,
 				5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
+				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
 				06E4066229C5578D0055B104 /* RepositoryManager.swift in Sources */,
 				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
