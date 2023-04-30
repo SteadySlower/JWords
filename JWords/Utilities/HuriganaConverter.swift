@@ -7,6 +7,11 @@
 
 import Foundation
 
+extension String {
+    static let huriganaFrom = "⌜"
+    static let huriganaTo = "⌟"
+}
+
 class HuriganaConverter {
     
     static let shared = HuriganaConverter()
@@ -48,7 +53,7 @@ class HuriganaConverter {
             // 한자면 []안에 더하기
             } else {
                 let trimmed = trimHuri(token, gana)
-                result.append("\(trimmed.0)[\(trimmed.1)]`\(trimmed.2)")
+                result.append("\(trimmed.0)\(String.huriganaFrom)\(trimmed.1)\(String.huriganaTo)`\(trimmed.2)")
             }
             
             result.append("`")
