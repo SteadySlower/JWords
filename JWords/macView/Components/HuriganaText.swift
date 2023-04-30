@@ -7,26 +7,6 @@
 
 import SwiftUI
 
-private struct Huri: Identifiable, Equatable {
-    let id = UUID()
-    let kanji: String
-    let gana: String
-    
-    init(_ huriString: String) {
-        if huriString.contains(where: { $0 == Character(String.huriganaFrom) }) {
-            let kanjiAndGana = huriString.split(separator: Character(String.huriganaFrom))
-            self.kanji = String(kanjiAndGana[0])
-            self.gana = String(kanjiAndGana[1].dropLast())
-        } else {
-            self.kanji = ""
-            self.gana = huriString
-        }
-        
-    }
-}
-
-
-
 struct HuriganaText: View {
     private let huris: [Huri]
     private let fontSize: CGFloat

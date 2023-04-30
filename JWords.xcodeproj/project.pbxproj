@@ -19,6 +19,7 @@
 		06308A6029FE2CDB00BDEE2D /* WordAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */; };
 		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
 		06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */; };
+		06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6529FE2ED500BDEE2D /* Huri.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -157,6 +158,7 @@
 		06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordAddView.swift; sourceTree = "<group>"; };
 		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
 		06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WrappingHStack.swift; path = JWords/macView/Components/WrappingHStack.swift; sourceTree = SOURCE_ROOT; };
+		06308A6529FE2ED500BDEE2D /* Huri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Huri.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 			isa = PBXGroup;
 			children = (
 				5ACE0A7528699BAD00A57660 /* WordBook.swift */,
+				06308A6529FE2ED500BDEE2D /* Huri.swift */,
 				5ACE0A7728699BB400A57660 /* Word.swift */,
 				0697715228CCA71700569280 /* WordInput.swift */,
 				5AD8070A28A0EDE300ADB6F7 /* Events.swift */,
@@ -862,6 +865,7 @@
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
+				06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */,
 				06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */,
 				067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */,
 				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
