@@ -63,4 +63,16 @@ extension String {
             return false
         }
     }
+    
+    var isRomaji: Bool {
+        let letters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        let range = self.rangeOfCharacter(from: letters.inverted)
+        return range == nil
+    }
+    
+    var isHanGeul: Bool {
+        let letters = CharacterSet(charactersIn: "가-힣")
+        let range = self.rangeOfCharacter(from: letters.inverted)
+        return range == nil
+    }
 }

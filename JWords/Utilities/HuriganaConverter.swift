@@ -48,6 +48,7 @@ class HuriganaConverter {
                 || token.isKatakana
                 || token == " "
                 || gana == ""
+                || token.isRomaji
             {
                 result.append(token)
             // 한자면 []안에 더하기
