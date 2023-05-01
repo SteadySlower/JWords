@@ -10,32 +10,31 @@ import ComposableArchitecture
 
 struct EditHuriganaText: ReducerProtocol {
     struct State: Equatable {
-        var huris: IdentifiedArrayOf<EditHuri.State>
+        var huris: [Huri]
         
         init(hurigana: String) {
-            self.huris
-            = IdentifiedArray(
-                uniqueElements: hurigana
-                    .split(separator: "`")
-                    .map { Huri(String($0)) }
-                    .map { EditHuri.State(huri: $0) }
-            )
+            self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
+        }
+        
+        mutating func updateHuri(_ huri: Huri) {
+            guard let index = huris.firstIndex(where: { $0.id == huri.id }) else { return }
+            huris[index] = huri
         }
     }
     
     enum Action: Equatable {
-        case editHuri(id: UUID, action: EditHuri.Action)
+        case onGanaUpdated(Huri)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .onGanaUpdated(let huri):
+                state.updateHuri(huri)
+                return .none
             default:
                 return .none
             }
-        }
-        .forEach(\.huris, action: /Action.editHuri(id:action:)) {
-            EditHuri()
         }
     }
 
@@ -48,10 +47,8 @@ struct EditableHuriganaText: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             WrappingHStack(horizontalSpacing: 0, verticalSpacing: fontSize / 2) {
-                ForEachStore(
-                    self.store.scope(state: \.huris, action: EditHuriganaText.Action.editHuri(id:action:))
-                ) {
-                    EditableHuriView(store: $0, fontsize: fontSize)
+                ForEach(vs.huris, id: \.id) { huri in
+                    EditableHuriUnit(huri: huri, fontSize: fontSize) { vs.send(.onGanaUpdated($0)) }
                 }
             }
             .padding(.top, fontSize / 2)
