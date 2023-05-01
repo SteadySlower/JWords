@@ -1,0 +1,70 @@
+//
+//  EditableHuriganaText.swift
+//  JWords
+//
+//  Created by JW Moon on 2023/04/30.
+//
+
+import SwiftUI
+import ComposableArchitecture
+
+struct EditHuriganaText: ReducerProtocol {
+    struct State: Equatable {
+        var huris: [Huri]
+        
+        init(hurigana: String) {
+            self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
+        }
+        
+        mutating func updateHuri(_ huri: Huri) {
+            guard let index = huris.firstIndex(where: { $0.id == huri.id }) else { return }
+            huris[index] = huri
+        }
+    }
+    
+    enum Action: Equatable {
+        case onGanaUpdated(Huri)
+    }
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onGanaUpdated(let huri):
+                state.updateHuri(huri)
+                return .none
+            default:
+                return .none
+            }
+        }
+    }
+
+}
+
+struct EditableHuriganaText: View {
+    let store: StoreOf<EditHuriganaText>
+    let fontSize: CGFloat = 20
+
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            WrappingHStack(horizontalSpacing: 0, verticalSpacing: fontSize / 2) {
+                ForEach(vs.huris, id: \.id) { huri in
+                    EditableHuriUnit(huri: huri, fontSize: fontSize) { vs.send(.onGanaUpdated($0)) }
+                }
+            }
+            .padding(.top, fontSize / 2)
+        }
+    }
+}
+
+
+struct EditableHuriganaText_Previews: PreviewProvider {
+    
+    static let sampleHurigana = "弟⌜おとうと⌟``さん`全然⌜ぜんぜん⌟``大丈夫⌜だいじょうぶ⌟``です`よ`色々⌜いろいろ⌟``な`こと`が`ある`の`み`間違⌜まちが⌟`い`ない`よ`君⌜きみ⌟``なん`と`か`なる`よ`緊張⌜きんちょう⌟``し`ない`で`進⌜すす⌟`む`よ`なん`だけ`？`"
+    
+    static var previews: some View {
+        EditableHuriganaText(
+            store: Store(initialState: EditHuriganaText.State(hurigana: sampleHurigana),
+                                          reducer: EditHuriganaText())
+        )
+    }
+}
