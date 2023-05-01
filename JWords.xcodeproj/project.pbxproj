@@ -20,6 +20,7 @@
 		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
 		06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */; };
 		06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6529FE2ED500BDEE2D /* Huri.swift */; };
+		06308A6829FE315800BDEE2D /* EditableHuriView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6729FE315800BDEE2D /* EditableHuriView.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -159,6 +160,7 @@
 		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
 		06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WrappingHStack.swift; path = JWords/macView/Components/WrappingHStack.swift; sourceTree = SOURCE_ROOT; };
 		06308A6529FE2ED500BDEE2D /* Huri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Huri.swift; sourceTree = "<group>"; };
+		06308A6729FE315800BDEE2D /* EditableHuriView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriView.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 				5A77B98E29EFA99000EA7B41 /* BaseCell.swift */,
 				5A7B920029F10C0500ED3CAA /* SelectionCell.swift */,
 				06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */,
+				06308A6729FE315800BDEE2D /* EditableHuriView.swift */,
 			);
 			path = items;
 			sourceTree = "<group>";
@@ -842,6 +845,7 @@
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
+				06308A6829FE315800BDEE2D /* EditableHuriView.swift in Sources */,
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
@@ -1091,6 +1095,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = JW.JWords;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1131,6 +1136,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = JW.JWords;
 				PRODUCT_NAME = "$(TARGET_NAME)";

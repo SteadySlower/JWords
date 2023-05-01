@@ -53,7 +53,11 @@ class HuriganaConverter {
             // 한자면 []안에 더하기
             } else {
                 let trimmed = trimHuri(token, gana)
-                result.append("\(trimmed.0)\(String.huriganaFrom)\(trimmed.1)\(String.huriganaTo)`\(trimmed.2)")
+                if !trimmed.2.isEmpty {
+                    result.append("\(trimmed.0)\(String.huriganaFrom)\(trimmed.1)\(String.huriganaTo)`\(trimmed.2)")
+                } else {
+                    result.append("\(trimmed.0)\(String.huriganaFrom)\(trimmed.1)\(String.huriganaTo)")
+                }
             }
             
             result.append("`")
