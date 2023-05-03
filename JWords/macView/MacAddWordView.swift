@@ -51,6 +51,7 @@ struct AddWord: ReducerProtocol {
             meaning.clearField()
             kanji.clearField()
             gana.clearField()
+            focusedField = .meaning
         }
         
         enum Field: Hashable {
