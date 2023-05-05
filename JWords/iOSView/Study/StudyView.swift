@@ -12,6 +12,7 @@ import ComposableArchitecture
 struct WordList: ReducerProtocol {
     struct State: Equatable {
         let wordBook: WordBook?
+        var isLoading: Bool = false
         
         // state for cells of each StudyViewMode
         var _words: IdentifiedArrayOf<StudyWord.State> = []
@@ -39,6 +40,7 @@ struct WordList: ReducerProtocol {
         }
         
         var words: IdentifiedArrayOf<StudyWord.State> {
+            guard !isLoading else { return [] }
             switch setting.studyMode {
             case .all:
                 return _words
@@ -88,6 +90,7 @@ struct WordList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case wordsResponse(TaskResult<[Word]>)
+        case imageFetchResponse(TaskResult<Bool>)
         case setMoveModal(isPresented: Bool)
         case editButtonTapped
         case setEditModal(isPresented: Bool)
@@ -106,6 +109,7 @@ struct WordList: ReducerProtocol {
     @Dependency(\.wordClient) var wordClient
     @Dependency(\.imageClient) var imageClient
     private enum FetchWordsID {}
+    private enum FetchImagesID {}
     
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.setting, action: /Action.sideBar(action:)) {
@@ -115,10 +119,13 @@ struct WordList: ReducerProtocol {
             switch action {
             // actions for the list it self
             case .onAppear:
+                state.isLoading = true
                 guard let wordBook = state.wordBook else {
                     let words = state._words.map { $0.word }
-                    imageClient.prefetchImages(words)
-                    return .none
+                    return .task {
+                        await .imageFetchResponse(TaskResult { try await imageClient.prefetchImages(words) })
+                    }
+                    .cancellable(id: FetchImagesID.self)
                 }
                 return .task {
                     await .wordsResponse(TaskResult { try await wordClient.words(wordBook) })
@@ -126,7 +133,12 @@ struct WordList: ReducerProtocol {
                 .cancellable(id: FetchWordsID.self)
             case let .wordsResponse(.success(words)):
                 state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0, frontType: state.setting.frontType) })
-                imageClient.prefetchImages(words)
+                return .task {
+                    await .imageFetchResponse(TaskResult { try await imageClient.prefetchImages(words) })
+                }
+                .cancellable(id: FetchImagesID.self)
+            case .imageFetchResponse:
+                state.isLoading = false
                 return .none
             case .wordsResponse(.failure):
                 state._words = []
@@ -268,6 +280,7 @@ struct StudyView: View {
                     }
                 }
             }
+            .loadingView(vs.isLoading)
             .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
             .onAppear { vs.send(.onAppear) }
             .sideBar(showSideBar: vs.binding(
