@@ -14,16 +14,13 @@ struct AddingUnit: ReducerProtocol {
         var kanjiText: String = ""
         var huriText = EditHuriganaText.State(hurigana: "")
         
-        mutating func updateWordText(_ text: String) {
-            wordText = text
-            let hurigana = HuriganaConverter.shared.convert(text)
-            huriText = EditHuriganaText.State(hurigana: hurigana)
-        }
+        var isEditingKanji = true
     }
     
     enum Action: Equatable {
         case updateWordText(String)
         case editHuriText(action: EditHuriganaText.Action)
+        case kanjiTextButtonTapped
         case addButtonTapped
         case cancelButtonTapped
     }
@@ -32,7 +29,16 @@ struct AddingUnit: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .updateWordText(let text):
-                state.updateWordText(text)
+                state.kanjiText = text
+                return .none
+            case .kanjiTextButtonTapped:
+                if !state.isEditingKanji {
+                    state.isEditingKanji = true
+                    return .none
+                }
+                let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
+                state.huriText = EditHuriganaText.State(hurigana: hurigana)
+                state.isEditingKanji = false
                 return .none
             default:
                 return .none
@@ -52,13 +58,24 @@ struct StudyUnitAddView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                EditableHuriganaText(store: store.scope(
-                    state: \.huriText,
-                    action: AddingUnit.Action.editHuriText(action:))
-                )
-                TextEditor(text: vs.binding(get: \.wordText, send: WordAdding.Action.updateWordText))
-                    .border(.black)
-                    .frame(height: 100)
+                HStack {
+                    VStack {
+                        if vs.isEditingKanji {
+                            TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateWordText))
+                                .border(.black)
+                        } else {
+                            EditableHuriganaText(store: store.scope(
+                                state: \.huriText,
+                                action: AddingUnit.Action.editHuriText(action:))
+                            )
+                        }
+                        Spacer()
+                    }
+                    Button(vs.isEditingKanji ? "변환" : "수정") { vs.send(.kanjiTextButtonTapped) }
+                }
+                .frame(height: 100)
+                .padding(10)
+
                 HStack {
                     Button("추가") { vs.send(.addButtonTapped) }
                     Button("취소") { vs.send(.cancelButtonTapped) }
