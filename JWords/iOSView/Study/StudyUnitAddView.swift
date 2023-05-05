@@ -8,10 +8,10 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct WordAdding: ReducerProtocol {
+struct AddingUnit: ReducerProtocol {
     struct State: Equatable {
         var meaningText: String = ""
-        var wordText: String = ""
+        var kanjiText: String = ""
         var huriText = EditHuriganaText.State(hurigana: "")
         
         mutating func updateWordText(_ text: String) {
@@ -45,16 +45,16 @@ struct WordAdding: ReducerProtocol {
 
 }
 
-struct WordAddView: View {
+struct StudyUnitAddView: View {
     
-    let store: StoreOf<WordAdding>
+    let store: StoreOf<AddingUnit>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
                 EditableHuriganaText(store: store.scope(
                     state: \.huriText,
-                    action: WordAdding.Action.editHuriText(action:))
+                    action: AddingUnit.Action.editHuriText(action:))
                 )
                 TextEditor(text: vs.binding(get: \.wordText, send: WordAdding.Action.updateWordText))
                     .border(.black)
@@ -68,11 +68,11 @@ struct WordAddView: View {
     }
 }
 
-struct WordAddView_Previews: PreviewProvider {
+struct StudyUnitAddView_Previews: PreviewProvider {
     static var previews: some View {
-        WordAddView(store: Store(
-            initialState: WordAdding.State(),
-            reducer: WordAdding())
+        StudyUnitAddView(store: Store(
+            initialState: AddingUnit.State(),
+            reducer: AddingUnit())
         )
     }
 }
