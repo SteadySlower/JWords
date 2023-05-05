@@ -7,9 +7,22 @@
 
 import Foundation
 
+enum UnitType {
+    case word, kanji, sentence
+    
+    var description: String {
+        switch self {
+        case .word: return "단어"
+        case .kanji: return "한자"
+        case .sentence: return "문장"
+        }
+    }
+}
+
 struct StudyUnit: Equatable, Identifiable, Sendable {
     
     let id: String
+    let type: UnitType
     let studySetID: String
     let kanjiText: String
     let kanjiImageURL: String
