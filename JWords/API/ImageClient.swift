@@ -11,7 +11,7 @@ import XCTestDynamicOverlay
 import Kingfisher
 
 struct ImageClient {
-    var prefetchImages: @Sendable ([Word]) -> Void
+    var prefetchImages: @Sendable ([Word]) async throws -> Bool
 }
 
 extension DependencyValues {
@@ -24,15 +24,18 @@ extension DependencyValues {
 extension ImageClient: DependencyKey {
   static let liveValue = ImageClient(
     prefetchImages: { words in
-        var urls = [URL]()
-        for word in words {
-            urls.append(contentsOf: getWordURLs(word))
+        return try await withCheckedThrowingContinuation { continuation in
+            var urls = [URL]()
+            for word in words {
+                urls.append(contentsOf: getWordURLs(word))
+            }
+            let prefetcher = ImagePrefetcher(urls: urls) {
+                skippedResources, failedResources, completedResources in
+                print("prefetched image: \(completedResources)")
+                continuation.resume(with: .success(true))
+            }
+            prefetcher.start()
         }
-        let prefetcher = ImagePrefetcher(urls: urls) {
-            skippedResources, failedResources, completedResources in
-            print("prefetched image: \(completedResources)")
-        }
-        prefetcher.start()
     }
   )
     
@@ -45,7 +48,7 @@ extension ImageClient: DependencyKey {
 
 extension ImageClient: TestDependencyKey {
   static let previewValue = Self(
-    prefetchImages: { _ in print("preview client: image prefetched")  }
+    prefetchImages: { _ in try await Task.sleep(nanoseconds: 1 * 1_000_000_000); print("preview client: image prefetched"); return true  }
   )
 
   static let testValue = Self(
