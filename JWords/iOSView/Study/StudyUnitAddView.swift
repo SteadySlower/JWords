@@ -16,6 +16,10 @@ struct AddingUnit: ReducerProtocol {
         var huriText = EditHuriganaText.State(hurigana: "")
         
         var isEditingKanji = true
+        
+        var ableToAdd: Bool {
+            !kanjiText.isEmpty && !meaningText.isEmpty
+        }
     }
     
     enum Action: Equatable {
@@ -106,6 +110,7 @@ struct StudyUnitAddView: View {
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
                     Button("추가") { vs.send(.addButtonTapped) }
+                        .disabled(!vs.ableToAdd)
                 }
             }
             .padding(.horizontal, 10)
