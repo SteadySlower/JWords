@@ -8,6 +8,7 @@
         <attribute name="preferredFrontType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="units" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StudyUnit" inverseName="set" inverseEntity="StudyUnit"/>
     </entity>
     <entity name="StudyUnit" representedClassName="StudyUnit" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -18,5 +19,8 @@
         <attribute name="meaningText" optional="YES" attributeType="String"/>
         <attribute name="studyState" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="kanjiOfWord" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="sampleForKanji" inverseEntity="StudyUnit"/>
+        <relationship name="sampleForKanji" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="kanjiOfWord" inverseEntity="StudyUnit"/>
+        <relationship name="set" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StudySet" inverseName="units" inverseEntity="StudySet"/>
     </entity>
 </model>
