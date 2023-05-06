@@ -26,6 +26,8 @@ struct StudyWord: ReducerProtocol {
         }
         var isFront: Bool = true
         
+        var alert: AlertState<Action>?
+        
         init(word: Word, frontType: FrontType = .kanji, isLocked: Bool = false) {
             self.id = word.id
             self.word = word
@@ -44,6 +46,7 @@ struct StudyWord: ReducerProtocol {
         case cellDoubleTapped
         case cellDrag(direction: SwipeDirection)
         case studyStateResponse(TaskResult<StudyState>)
+        case alertDismissed
     }
     
     @Dependency(\.wordClient) var wordClient
@@ -57,19 +60,24 @@ struct StudyWord: ReducerProtocol {
                 return .none
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
+                state.studyState = .undefined
                 return .task { [word = state.word] in
                     await .studyStateResponse(TaskResult { try await wordClient.studyState(word, .undefined) })
                 }.cancellable(id: UpdateStudyStateID.self)
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
                 let newState: StudyState = direction == .left ? .success : .fail
+                state.studyState = newState
                 return .task { [word = state.word] in
                     await .studyStateResponse(TaskResult { try await wordClient.studyState(word, newState) })
                 }.cancellable(id: UpdateStudyStateID.self)
-            case let .studyStateResponse(.success(newState)):
-                state.studyState = newState
+            case .studyStateResponse(.failure):
+                state.alert = AppError.unknown.simpleAlert(action: Action.self)
                 return .none
-            case .studyStateResponse(.failure(_)):
+            case .alertDismissed:
+                state.alert = nil
+                return .none
+            default:
                 return .none
             }
         }
@@ -101,6 +109,10 @@ struct StudyCell: View {
             )
             .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
             .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
     

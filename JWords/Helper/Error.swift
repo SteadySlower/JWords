@@ -11,6 +11,8 @@ enum AppError: Error, Equatable {
     case generic(massage: String)
     case noMatchingWord(id: String)
     
+    case unknown
+    
     // error when add study unit
     case notConvertedToHuri
     case KanjiTooLong
