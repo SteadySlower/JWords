@@ -16,6 +16,14 @@ struct EditHuriganaText: ReducerProtocol {
             self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
         }
         
+        var hurigana: String {
+            var result = ""
+            for huri in huris {
+                result += "\(huri.toString)`"
+            }
+            return result
+        }
+        
         mutating func updateHuri(_ huri: Huri) {
             guard let index = huris.firstIndex(where: { $0.id == huri.id }) else { return }
             huris[index] = huri

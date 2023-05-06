@@ -50,6 +50,9 @@ struct AddingUnit: ReducerProtocol {
                 state.huriText = EditHuriganaText.State(hurigana: hurigana)
                 state.isEditingKanji = false
                 return .none
+            case .addButtonTapped:
+                print("디버그: \(state.huriText.hurigana)")
+                return .none
             default:
                 return .none
             }
