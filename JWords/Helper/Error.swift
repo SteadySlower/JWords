@@ -5,9 +5,13 @@
 //  Created by Jong Won Moon on 2022/09/05.
 //
 
+import ComposableArchitecture
+
 enum AppError: Error, Equatable {
     case generic(massage: String)
     case noMatchingWord(id: String)
+    
+    case unknown
     
     // error when add study unit
     case notConvertedToHuri
@@ -19,6 +23,34 @@ enum AppError: Error, Equatable {
     case wordBookService(error: AppError.WordBookService)
     case initializer(error: AppError.Initializer)
     case firebase(error: AppError.Firebase)
+    
+    var errorMessage: String {
+        switch self {
+        case .KanjiTooLong:
+            return "한자는 1글자 이상 저장할 수 없습니다."
+        case .notConvertedToHuri:
+            return "후리가나로 변환해야 저장할 수 있습니다."
+        default:
+            return "알 수 없는 에러입니다."
+        }
+    }
+    
+    func simpleAlert<T>(action: T.Type) -> AlertState<T> {
+        return AlertState<T> {
+          TextState("에러")
+        } actions: {
+          ButtonState(role: .cancel) {
+            TextState("확인")
+          }
+        } message: {
+            TextState(self.errorMessage)
+        }
+    }
+}
+
+// MARK: SubErrors
+
+extension AppError {
     
     enum ImageCompressor: Error {
         case imageToDataFail
@@ -92,4 +124,5 @@ enum AppError: Error, Equatable {
             }
         }
     }
+    
 }
