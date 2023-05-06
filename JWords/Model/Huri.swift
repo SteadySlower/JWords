@@ -28,6 +28,13 @@ struct Huri: Identifiable, Equatable {
             self.kanji = ""
             self.gana = huriString
         }
-        
+    }
+    
+    var toString: String {
+        if !self.kanji.isEmpty {
+            return "\(self.kanji)\(String.huriganaFrom)\(self.gana)\(String.huriganaTo)"
+        } else {
+            return self.gana
+        }
     }
 }

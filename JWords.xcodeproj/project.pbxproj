@@ -16,11 +16,13 @@
 		0624735D29C6D8580076DBE4 /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0624735C29C6D8580076DBE4 /* InputType.swift */; };
 		06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */; };
 		06308A5E29FE14D900BDEE2D /* iOSHuriganaTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */; };
-		06308A6029FE2CDB00BDEE2D /* WordAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */; };
+		06308A6029FE2CDB00BDEE2D /* StudyUnitAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5F29FE2CDB00BDEE2D /* StudyUnitAddView.swift */; };
 		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
 		06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */; };
 		06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6529FE2ED500BDEE2D /* Huri.swift */; };
 		06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */; };
+		06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A702A048EFD00BDEE2D /* StudyUnit.swift */; };
+		06308A732A04902A00BDEE2D /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A722A04902A00BDEE2D /* StudySet.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -156,11 +158,13 @@
 		0624735C29C6D8580076DBE4 /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
 		06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HuriganaText.swift; path = JWords/macView/Components/HuriganaText.swift; sourceTree = SOURCE_ROOT; };
 		06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSHuriganaTestView.swift; sourceTree = "<group>"; };
-		06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordAddView.swift; sourceTree = "<group>"; };
+		06308A5F29FE2CDB00BDEE2D /* StudyUnitAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitAddView.swift; sourceTree = "<group>"; };
 		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
 		06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WrappingHStack.swift; path = JWords/macView/Components/WrappingHStack.swift; sourceTree = SOURCE_ROOT; };
 		06308A6529FE2ED500BDEE2D /* Huri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Huri.swift; sourceTree = "<group>"; };
 		06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriUnit.swift; sourceTree = "<group>"; };
+		06308A702A048EFD00BDEE2D /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
+		06308A722A04902A00BDEE2D /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -533,7 +537,7 @@
 			children = (
 				5A67DC29286946F800AC156C /* StudyView.swift */,
 				06A564D5289E9C5100DBC2E0 /* WordInputView.swift */,
-				06308A5F29FE2CDB00BDEE2D /* WordAddView.swift */,
+				06308A5F29FE2CDB00BDEE2D /* StudyUnitAddView.swift */,
 				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
 			);
@@ -614,6 +618,8 @@
 				5ACE0A7528699BAD00A57660 /* WordBook.swift */,
 				06308A6529FE2ED500BDEE2D /* Huri.swift */,
 				5ACE0A7728699BB400A57660 /* Word.swift */,
+				06308A702A048EFD00BDEE2D /* StudyUnit.swift */,
+				06308A722A04902A00BDEE2D /* StudySet.swift */,
 				0697715228CCA71700569280 /* WordInput.swift */,
 				5AD8070A28A0EDE300ADB6F7 /* Events.swift */,
 				5A5740A728BDA8900080A2E2 /* Sample.swift */,
@@ -850,11 +856,12 @@
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
+				06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
 				0622727C29FDEADC00EEAD50 /* HuriganaTestView.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
-				06308A6029FE2CDB00BDEE2D /* WordAddView.swift in Sources */,
+				06308A6029FE2CDB00BDEE2D /* StudyUnitAddView.swift in Sources */,
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
@@ -868,6 +875,7 @@
 				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */,
+				06308A732A04902A00BDEE2D /* StudySet.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
 				06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */,
 				06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */,
