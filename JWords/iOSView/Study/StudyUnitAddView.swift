@@ -18,9 +18,11 @@ struct AddingUnit: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case updateWordText(String)
+        case updateKanjiText(String)
+        case updateMeaningText(String)
         case editHuriText(action: EditHuriganaText.Action)
         case kanjiTextButtonTapped
+        case meaningButtonTapped
         case addButtonTapped
         case cancelButtonTapped
     }
@@ -28,8 +30,11 @@ struct AddingUnit: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .updateWordText(let text):
+            case .updateKanjiText(let text):
                 state.kanjiText = text
+                return .none
+            case .updateMeaningText(let text):
+                state.meaningText = text
                 return .none
             case .kanjiTextButtonTapped:
                 if !state.isEditingKanji {
@@ -61,19 +66,26 @@ struct StudyUnitAddView: View {
                 HStack {
                     VStack {
                         if vs.isEditingKanji {
-                            TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateWordText))
+                            TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
                                 .border(.black)
                         } else {
                             EditableHuriganaText(store: store.scope(
                                 state: \.huriText,
                                 action: AddingUnit.Action.editHuriText(action:))
                             )
+                            Spacer()
                         }
-                        Spacer()
                     }
                     Button(vs.isEditingKanji ? "변환" : "수정") { vs.send(.kanjiTextButtonTapped) }
                 }
                 .frame(height: 100)
+                .padding(10)
+                HStack {
+                    TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
+                        .border(.black)
+                        .frame(height: 100)
+                    Button("검색") { vs.send(.meaningButtonTapped) }
+                }
                 .padding(10)
 
                 HStack {
