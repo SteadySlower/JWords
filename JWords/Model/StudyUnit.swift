@@ -25,9 +25,9 @@ struct StudyUnit: Equatable, Identifiable, Sendable {
     let type: UnitType
     let studySetID: String
     let kanjiText: String
-    let kanjiImageURL: String
+    let kanjiImageID: String
     let meaningText: String
-    let meaningImageURL: String
+    let meaningImageID: String
     var studyState: StudyState
     let createdAt: Date
     
