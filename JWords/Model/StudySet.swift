@@ -14,6 +14,7 @@ struct StudySet: Equatable, Identifiable {
     let createdAt: Date
     let closed: Bool
     let preferredFrontType: FrontType
+    let isAutoSchedule: Bool
     
     var dayFromToday: Int {
         return Calendar.current.getDateGap(from: self.createdAt, to: Date())
