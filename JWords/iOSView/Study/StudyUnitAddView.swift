@@ -65,6 +65,9 @@ struct AddingUnit: ReducerProtocol {
             switch action {
             case .setUnitType(let type):
                 state.unitType = type
+                if type == .kanji {
+                    state.isEditingKanji = true
+                }
                 return .none
             case .updateKanjiText(let text):
                 state.kanjiText = text
@@ -136,6 +139,7 @@ struct StudyUnitAddView: View {
                         }
                     }
                     Button(vs.isEditingKanji ? "변환" : "수정") { vs.send(.kanjiTextButtonTapped) }
+                        .disabled(vs.unitType == .kanji)
                 }
                 .frame(height: 100)
                 HStack {
