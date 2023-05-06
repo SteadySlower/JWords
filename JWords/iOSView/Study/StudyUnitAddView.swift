@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 struct AddingUnit: ReducerProtocol {
     struct State: Equatable {
+        var unitType: UnitType = .word
         var meaningText: String = ""
         var kanjiText: String = ""
         var huriText = EditHuriganaText.State(hurigana: "")
@@ -18,6 +19,7 @@ struct AddingUnit: ReducerProtocol {
     }
     
     enum Action: Equatable {
+        case setUnitType(UnitType)
         case updateKanjiText(String)
         case updateMeaningText(String)
         case editHuriText(action: EditHuriganaText.Action)
@@ -30,6 +32,9 @@ struct AddingUnit: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .setUnitType(let type):
+                state.unitType = type
+                return .none
             case .updateKanjiText(let text):
                 state.kanjiText = text
                 return .none
@@ -63,12 +68,21 @@ struct StudyUnitAddView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
+                Picker("", selection: vs.binding(
+                    get: \.unitType,
+                    send: AddingUnit.Action.setUnitType)
+                ) {
+                    ForEach(UnitType.allCases, id: \.self) {
+                        Text($0.description)
+                    }
+                }
+                .pickerStyle(.segmented)
                 HStack {
-                    VStack {
-                        if vs.isEditingKanji {
-                            TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
-                                .border(.black)
-                        } else {
+                    if vs.isEditingKanji {
+                        TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
+                            .border(.black)
+                    } else {
+                        VStack {
                             EditableHuriganaText(store: store.scope(
                                 state: \.huriText,
                                 action: AddingUnit.Action.editHuriText(action:))
@@ -79,20 +93,19 @@ struct StudyUnitAddView: View {
                     Button(vs.isEditingKanji ? "변환" : "수정") { vs.send(.kanjiTextButtonTapped) }
                 }
                 .frame(height: 100)
-                .padding(10)
                 HStack {
                     TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
                         .border(.black)
                         .frame(height: 100)
                     Button("검색") { vs.send(.meaningButtonTapped) }
                 }
-                .padding(10)
-
-                HStack {
-                    Button("추가") { vs.send(.addButtonTapped) }
+                .padding(.bottom, 20)
+                HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
+                    Button("추가") { vs.send(.addButtonTapped) }
                 }
             }
+            .padding(.horizontal, 10)
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum UnitType {
+enum UnitType: CaseIterable {
     case word, kanji, sentence
     
     var description: String {
