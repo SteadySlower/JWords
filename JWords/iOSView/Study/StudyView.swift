@@ -23,9 +23,11 @@ struct WordList: ReducerProtocol {
         var setting: StudySetting.State
         var toEditWord: InputWord.State?
         var moveWords: MoveWords.State?
+        var addUnit: AddingUnit.State?
         
         var showEditModal: Bool = false
         var showMoveModal: Bool = false
+        var showAddModal: Bool = false
         var showSideBar: Bool = false
         
         init(wordBook: WordBook) {
@@ -94,6 +96,7 @@ struct WordList: ReducerProtocol {
         case setMoveModal(isPresented: Bool)
         case editButtonTapped
         case setEditModal(isPresented: Bool)
+        case setAddModal(isPresented: Bool)
         case setSideBar(isPresented: Bool)
         case randomButtonTapped
         case closeButtonTapped
@@ -101,6 +104,7 @@ struct WordList: ReducerProtocol {
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
         case editWord(action: InputWord.Action)
         case moveWords(action: MoveWords.Action)
+        case addUnit(action: AddingUnit.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
         case dismiss
@@ -167,6 +171,14 @@ struct WordList: ReducerProtocol {
                     state.clearMove()
                 }
                 state.showMoveModal = isPresent
+                return .none
+            case .setAddModal(let isPresent):
+                state.showAddModal = isPresent
+                if isPresent {
+                    state.addUnit = AddingUnit.State()
+                } else {
+                    state.addUnit = nil
+                }
                 return .none
             // actions from side bar and modals
             case .editWord(let editWordAction):
@@ -242,6 +254,9 @@ struct WordList: ReducerProtocol {
         .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
             MoveWords()
         }
+        .ifLet(\.addUnit, action: /Action.addUnit(action:)) {
+            AddingUnit()
+        }
     }
     
 }
@@ -305,6 +320,14 @@ struct StudyView: View {
                     WordInputView(store: $0)
                 }
             }
+            .sheet(isPresented: vs.binding(
+                get: \.showAddModal,
+                send: WordList.Action.setAddModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.addUnit, action: WordList.Action.addUnit(action:))) {
+                    StudyUnitAddView(store: $0)
+                }
+            }
             #if os(iOS)
             .toolbar { ToolbarItem {
                 HStack {
@@ -318,10 +341,13 @@ struct StudyView: View {
                 }
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
-                    vs.send(.setMoveModal(isPresented: true))
+                HStack {
+                    Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                        vs.send(.setMoveModal(isPresented: true))
+                    }
+                    .disabled(vs.wordBook == nil || vs.setting.studyViewMode == .edit)
+                    Button("+") { vs.send(.setAddModal(isPresented: true)) }
                 }
-                .disabled(vs.wordBook == nil || vs.setting.studyViewMode == .edit)
             } }
             #endif
         }

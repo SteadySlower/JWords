@@ -106,6 +106,7 @@ struct StudyUnitAddView: View {
                 }
             }
             .padding(.horizontal, 10)
+            .presentationDetents([.medium])
         }
     }
 }
