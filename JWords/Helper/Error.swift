@@ -20,6 +20,12 @@ enum AppError: Error, Equatable {
     case initializer(error: AppError.Initializer)
     case firebase(error: AppError.Firebase)
     
+}
+
+// MARK: SubErrors
+
+extension {
+    
     enum ImageCompressor: Error {
         case imageToDataFail
         
@@ -92,4 +98,5 @@ enum AppError: Error, Equatable {
             }
         }
     }
+    
 }
