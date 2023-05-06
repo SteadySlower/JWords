@@ -21,30 +21,7 @@ struct AddingUnit: ReducerProtocol {
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
         }
-        
-        mutating func setAlert(error: AppError) {
-            
-            var errorMessage: String {
-                switch error {
-                case .KanjiTooLong:
-                    return "한자는 1글자 이상 저장할 수 없습니다."
-                case .notConvertedToHuri:
-                    return "후리가나로 변환해야 저장할 수 있습니다."
-                default:
-                    return "알 수 없는 에러입니다."
-                }
-            }
-            
-            alert = AlertState {
-              TextState("저장할 수 없습니다.")
-            } actions: {
-              ButtonState(role: .cancel) {
-                TextState("확인")
-              }
-            } message: {
-                TextState(errorMessage)
-            }
-        }
+    
     }
     
     enum Action: Equatable {
@@ -93,7 +70,7 @@ struct AddingUnit: ReducerProtocol {
                 print("디버그: \(state.huriText.hurigana)")
                 return .none
             case .showErrorAlert(let error):
-                state.setAlert(error: error)
+                state.alert = error.simpleAlert(action: Action.self)
                 return .none
             case .alertDismissed:
                 state.alert = nil
