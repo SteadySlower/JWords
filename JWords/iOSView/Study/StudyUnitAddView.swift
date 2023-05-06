@@ -14,11 +14,36 @@ struct AddingUnit: ReducerProtocol {
         var meaningText: String = ""
         var kanjiText: String = ""
         var huriText = EditHuriganaText.State(hurigana: "")
+        var alert: AlertState<Action>?
         
         var isEditingKanji = true
         
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
+        }
+        
+        mutating func setAlert(error: AppError) {
+            
+            var errorMessage: String {
+                switch error {
+                case .KanjiTooLong:
+                    return "한자는 1글자 이상 저장할 수 없습니다."
+                case .notConvertedToHuri:
+                    return "후리가나로 변환해야 저장할 수 있습니다."
+                default:
+                    return "알 수 없는 에러입니다."
+                }
+            }
+            
+            alert = AlertState {
+              TextState("저장할 수 없습니다.")
+            } actions: {
+              ButtonState(role: .cancel) {
+                TextState("확인")
+              }
+            } message: {
+                TextState(errorMessage)
+            }
         }
     }
     
@@ -30,6 +55,8 @@ struct AddingUnit: ReducerProtocol {
         case kanjiTextButtonTapped
         case meaningButtonTapped
         case addButtonTapped
+        case showErrorAlert(AppError)
+        case alertDismissed
         case cancelButtonTapped
     }
     
@@ -55,7 +82,18 @@ struct AddingUnit: ReducerProtocol {
                 state.isEditingKanji = false
                 return .none
             case .addButtonTapped:
+                if state.unitType != .kanji && state.isEditingKanji {
+                    return .task { .showErrorAlert(.notConvertedToHuri) }
+                } else if state.unitType == .kanji && state.kanjiText.count > 1 {
+                    return .task { .showErrorAlert(.KanjiTooLong) }
+                }
                 print("디버그: \(state.huriText.hurigana)")
+                return .none
+            case .showErrorAlert(let error):
+                state.setAlert(error: error)
+                return .none
+            case .alertDismissed:
+                state.alert = nil
                 return .none
             default:
                 return .none
@@ -115,6 +153,10 @@ struct StudyUnitAddView: View {
             }
             .padding(.horizontal, 10)
             .presentationDetents([.medium])
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
 }

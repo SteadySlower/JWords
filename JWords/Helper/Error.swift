@@ -5,12 +5,16 @@
 //  Created by Jong Won Moon on 2022/09/05.
 //
 
-enum AppError: Error {
+enum AppError: Error, Equatable {
     case generic(massage: String)
     case noMatchingWord(id: String)
     
+    // error when add study unit
+    case notConvertedToHuri
+    case KanjiTooLong
+    
     case imageCompressor(error: AppError.ImageCompressor)
-    case imageUploader(error: ImageUploader)
+    case imageUploader(error: AppError.ImageUploader)
     case wordService(error: AppError.WordService)
     case wordBookService(error: AppError.WordBookService)
     case initializer(error: AppError.Initializer)
