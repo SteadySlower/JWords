@@ -112,6 +112,10 @@ class CoreDataClient {
             throw AppError.coreData
         }
         
+        HuriganaConverter.shared.extractKanjis(from: kanjiText )
+            .compactMap { try? getKanjiMO($0) }
+            .forEach { mo.addToKanjiOfWord($0) }
+        
         mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         mo.type = Int16(type.rawValue)
         if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
@@ -126,6 +130,44 @@ class CoreDataClient {
             try context.save()
         } catch let error as NSError {
             context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func fetchKanjis() throws -> [StudyUnit] {
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
+        
+        do {
+            return try context.fetch(fetchRequest).map { StudyUnit(from: $0) }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanji)
+        
+        do {
+            let fetched = try context.fetch(fetchRequest).first
+            if let fetched = fetched {
+                return fetched
+            } else {
+                guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
+                    print("디버그: StudyUnitMO 객체를 만들 수 없음")
+                    throw AppError.coreData
+                }
+                mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+                mo.type = Int16(UnitType.kanji.rawValue)
+                mo.kanjiText = kanji
+                mo.studyState = Int16(StudyState.undefined.rawValue)
+                mo.createdAt = Date()
+                return mo
+            }
+        } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
