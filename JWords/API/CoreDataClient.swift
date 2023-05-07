@@ -23,7 +23,10 @@ class CoreDataClient {
     }()
     
     func insertSet(title: String, isAutoSchedule: Bool = true, preferredFrontType: FrontType = .kanji) throws {
-        let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as! StudySetMO
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
+            print("디버그: StudySetMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
         
         mo.id = "set_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         mo.title = title
@@ -91,5 +94,40 @@ class CoreDataClient {
         }
         
         return units.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+    }
+    
+    func insertUnit(in set: StudySet,
+                    type: UnitType,
+                    kanjiText: String,
+                    kanjiImageID: String?,
+                    meaningText: String,
+                    meaningImageID: String?) throws {
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
+            print("디버그: StudyUnitMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        mo.type = Int16(type.rawValue)
+        if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
+        mo.kanjiImageID = kanjiImageID
+        if !meaningText.isEmpty { mo.meaningText = meaningText }
+        mo.meaningImageID = meaningImageID
+        mo.studyState = Int16(StudyState.undefined.rawValue)
+        mo.createdAt = Date()
+        mo.addToSet(set)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
     }
 }
