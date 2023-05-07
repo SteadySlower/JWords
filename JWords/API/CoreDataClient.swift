@@ -42,24 +42,40 @@ class CoreDataClient {
     }
     
     func fetchSets(includeClosed: Bool = false) throws -> [StudySet] {
-        var result = [StudySet]()
-        
         let fetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
         let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
         fetchRequest.sortDescriptors = [createdAtDesc]
         fetchRequest.predicate = NSPredicate(format: "closed == false")
         
         do {
-            let MOs = try self.context.fetch(fetchRequest)
-            for mo in MOs {
-                let set = StudySet(from: mo)
-                result.append(set)
-            }
-        } catch let error as NSError {
+            return try self.context.fetch(fetchRequest).map { StudySet(from: $0) }
+        } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
+    }
+    
+    func updateSet(_ set: StudySet,
+                   title: String? = nil,
+                   isAutoSchedule: Bool? = nil,
+                   preferredFrontType: FrontType? = nil,
+                   closed: Bool? = nil) throws {
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
         
-        return result
+        if let title = title { set.title = title }
+        if let isAutoSchedule = isAutoSchedule { set.isAutoSchedule = isAutoSchedule  }
+        if let preferredFrontType = preferredFrontType { set.preferredFrontType = Int16(preferredFrontType.rawValue) }
+        if let closed = closed { set.closed = closed }
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
     }
 }

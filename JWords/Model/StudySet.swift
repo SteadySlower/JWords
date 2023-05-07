@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import CoreData
 
 struct StudySet: Equatable, Identifiable {
     
     let id: String
+    let objectID: NSManagedObjectID
     let title: String
     let createdAt: Date
     let closed: Bool
@@ -18,6 +20,7 @@ struct StudySet: Equatable, Identifiable {
     
     init(from mo: StudySetMO) {
         self.id = mo.id ?? ""
+        self.objectID = mo.objectID
         self.title = mo.title ?? ""
         self.createdAt = mo.createdAt ?? Date()
         self.closed = mo.closed

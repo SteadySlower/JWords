@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 enum UnitType: Int, CaseIterable {
     case word, kanji, sentence
@@ -19,9 +20,10 @@ enum UnitType: Int, CaseIterable {
     }
 }
 
-struct StudyUnit: Equatable, Identifiable, Sendable {
+struct StudyUnit: Equatable, Identifiable {
     
     let id: String
+    let objectID: NSManagedObjectID
     let type: UnitType
     let studySets: [StudySet]
     let kanjiText: String?
@@ -33,6 +35,7 @@ struct StudyUnit: Equatable, Identifiable, Sendable {
     
     init(from mo: StudyUnitMO) {
         self.id = mo.id ?? ""
+        self.objectID = mo.objectID
         self.type = UnitType(rawValue: Int(mo.type)) ?? .word
         self.kanjiText = mo.kanjiText
         self.kanjiImageID = mo.kanjiImageID
