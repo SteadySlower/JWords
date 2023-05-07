@@ -36,6 +36,27 @@ class CoreDataClient {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
+    }
+    
+    func fetchSets(includeClosed: Bool = false) throws -> [StudySet] {
+        var result = [StudySet]()
         
+        let fetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
+        let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
+        fetchRequest.sortDescriptors = [createdAtDesc]
+        fetchRequest.predicate = NSPredicate(format: "closed == true")
+        
+        do {
+            let MOs = try self.context.fetch(fetchRequest)
+            for mo in MOs {
+                let set = StudySet(from: mo)
+                result.append(set)
+            }
+        } catch let error as NSError {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+        return result
     }
 }
