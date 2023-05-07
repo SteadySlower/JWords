@@ -47,7 +47,7 @@ class CoreDataClient {
         let fetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
         let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
         fetchRequest.sortDescriptors = [createdAtDesc]
-        fetchRequest.predicate = NSPredicate(format: "closed == true")
+        fetchRequest.predicate = NSPredicate(format: "closed == false")
         
         do {
             let MOs = try self.context.fetch(fetchRequest)
