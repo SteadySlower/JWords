@@ -19,7 +19,11 @@ struct CoreDataTestView: View {
             LazyVStack {
                 ForEach(sets) { studySet in
                     VStack {
-                        Text(studySet.title + "\(studySet.createdAt.onlyDate)")
+                        Text(studySet.title + " \(studySet.createdAt.onlyDate)")
+                        HStack {
+                            Button("📖") { }
+                            Button("🗑️") { try! cd.updateSet(studySet, closed: true) }
+                        }
                     }
                     .padding(10)
                 }
