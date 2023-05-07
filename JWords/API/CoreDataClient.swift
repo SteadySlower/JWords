@@ -78,4 +78,18 @@ class CoreDataClient {
             throw AppError.coreData
         }
     }
+    
+    func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let units = set.units else {
+            print("디버그: units가 nil")
+            throw AppError.coreData
+        }
+        
+        return units.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+    }
 }
