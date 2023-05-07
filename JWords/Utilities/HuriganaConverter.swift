@@ -67,6 +67,19 @@ class HuriganaConverter {
         return result
     }
     
+    func extractKanjis(from hurigana: String) -> [String] {
+        var result = [String]()
+        let huris = hurigana.split(separator: "`").map { Huri(String($0)) }
+        
+        for huri in huris {
+            for kanji in huri.kanji {
+                result.append(String(kanji))
+            }
+        }
+        
+        return result.filter { !$0.isEmpty }
+    }
+    
 }
 
 fileprivate func trimHuri(_ token: String, _ gana: String) -> (String, String, String) {
