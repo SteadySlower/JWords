@@ -43,6 +43,7 @@ struct AddingUnit: ReducerProtocol {
         case showErrorAlert(AppError)
         case alertDismissed
         case cancelButtonTapped
+        case addUnit
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -76,12 +77,20 @@ struct AddingUnit: ReducerProtocol {
                     return .task { .showErrorAlert(.KanjiTooLong) }
                 }
                 print("디버그: \(state.huriText.hurigana)")
-                return .none
+                return .task { .addUnit }
             case .showErrorAlert(let error):
                 state.alert = error.simpleAlert(action: Action.self)
                 return .none
             case .alertDismissed:
                 state.alert = nil
+                return .none
+            case .addUnit:
+                try! cd.insertUnit(in: state.set,
+                              type: state.unitType,
+                              kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                              kanjiImageID: nil,
+                              meaningText: state.meaningText,
+                              meaningImageID: nil)
                 return .none
             default:
                 return .none

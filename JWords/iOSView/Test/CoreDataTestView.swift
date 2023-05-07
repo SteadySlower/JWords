@@ -72,8 +72,13 @@ struct CDTStudyView: View {
             LazyVStack {
                 ForEach(units) { unit in
                     VStack {
-                        HuriganaText(hurigana: unit.kanjiText ?? "")
-                        Text(unit.meaningText ?? "")
+                        if unit.type == .kanji {
+                            Text(unit.kanjiText ?? "")
+                            Text(unit.meaningText ?? "")
+                        } else {
+                            HuriganaText(hurigana: unit.kanjiText ?? "")
+                            Text(unit.meaningText ?? "")
+                        }
                     }
                     .padding(10)
                     .border(.black)
@@ -88,7 +93,7 @@ struct CDTStudyView: View {
         }
         .toolbar { ToolbarItem {
             HStack {
-                Button("⏳") {  }
+                Button("⏳") { units = try! cd.fetchUnits(of: set); print(units) }
                 Button("+") { showModal = true }
             }
         }}
