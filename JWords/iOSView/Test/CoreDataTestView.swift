@@ -78,6 +78,7 @@ struct CDTStudyView: View {
                         } else {
                             HuriganaText(hurigana: unit.kanjiText ?? "")
                             Text(unit.meaningText ?? "")
+                            Button("한자 출력") { print(HuriganaConverter.shared.extractKanjis(from: unit.kanjiText ?? "")) }
                         }
                     }
                     .padding(10)
@@ -94,6 +95,7 @@ struct CDTStudyView: View {
         .toolbar { ToolbarItem {
             HStack {
                 Button("⏳") { units = try! cd.fetchUnits(of: set); print(units) }
+                Button("🈯️") { units = try! cd.fetchKanjis() }
                 Button("+") { showModal = true }
             }
         }}
