@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E261" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="StudySet" representedClassName="StudySet" syncable="YES" codeGenerationType="class">
-        <attribute name="closed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="isAutoSchedule" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="preferredFrontType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    <entity name="StudySet" representedClassName="StudySetMO" syncable="YES" codeGenerationType="class">
+        <attribute name="closed" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="isAutoSchedule" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="preferredFrontType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
         <relationship name="units" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StudyUnit" inverseName="set" inverseEntity="StudyUnit"/>
     </entity>
-    <entity name="StudyUnit" representedClassName="StudyUnit" syncable="YES" codeGenerationType="class">
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
+    <entity name="StudyUnit" representedClassName="StudyUnitMO" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="705111840" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="String"/>
         <attribute name="kanjiImageID" optional="YES" attributeType="String"/>
         <attribute name="kanjiText" optional="YES" attributeType="String"/>
         <attribute name="meaningImageID" optional="YES" attributeType="String"/>
         <attribute name="meaningText" optional="YES" attributeType="String"/>
-        <attribute name="studyState" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="studyState" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="kanjiOfWord" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="sampleForKanji" inverseEntity="StudyUnit"/>
         <relationship name="sampleForKanji" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="kanjiOfWord" inverseEntity="StudyUnit"/>
         <relationship name="set" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StudySet" inverseName="units" inverseEntity="StudySet"/>

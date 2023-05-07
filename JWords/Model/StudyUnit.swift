@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum UnitType: CaseIterable {
+enum UnitType: Int, CaseIterable {
     case word, kanji, sentence
     
     var description: String {
@@ -23,12 +23,24 @@ struct StudyUnit: Equatable, Identifiable, Sendable {
     
     let id: String
     let type: UnitType
-    let studySetID: String
-    let kanjiText: String
-    let kanjiImageID: String
-    let meaningText: String
-    let meaningImageID: String
+    let studySets: [StudySet]
+    let kanjiText: String?
+    let kanjiImageID: String?
+    let meaningText: String?
+    let meaningImageID: String?
     var studyState: StudyState
     let createdAt: Date
+    
+    init(from mo: StudyUnitMO) {
+        self.id = mo.id ?? ""
+        self.type = UnitType(rawValue: Int(mo.type)) ?? .word
+        self.kanjiText = mo.kanjiText
+        self.kanjiImageID = mo.kanjiImageID
+        self.meaningText = mo.meaningText
+        self.meaningImageID = mo.meaningImageID
+        self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
+        self.createdAt = mo.createdAt ?? Date()
+        self.studySets = mo.set?.array.compactMap { $0 as? StudySetMO }.map { StudySet(from: $0) } ?? []
+    }
     
 }
