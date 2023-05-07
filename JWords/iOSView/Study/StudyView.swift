@@ -175,7 +175,7 @@ struct WordList: ReducerProtocol {
             case .setAddModal(let isPresent):
                 state.showAddModal = isPresent
                 if isPresent {
-                    state.addUnit = AddingUnit.State()
+//                    state.addUnit = AddingUnit.State(set: <#T##StudySet#>)
                 } else {
                     state.addUnit = nil
                 }

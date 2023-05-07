@@ -9,7 +9,11 @@ import SwiftUI
 import ComposableArchitecture
 
 struct AddingUnit: ReducerProtocol {
+    
+    private let cd = CoreDataClient.shared
+    
     struct State: Equatable {
+        let set: StudySet
         var unitType: UnitType = .word
         var meaningText: String = ""
         var kanjiText: String = ""
@@ -17,6 +21,10 @@ struct AddingUnit: ReducerProtocol {
         var alert: AlertState<Action>?
         
         var isEditingKanji = true
+        
+        init(set: StudySet) {
+            self.set = set
+        }
         
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
@@ -142,11 +150,11 @@ struct StudyUnitAddView: View {
     }
 }
 
-struct StudyUnitAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        StudyUnitAddView(store: Store(
-            initialState: AddingUnit.State(),
-            reducer: AddingUnit())
-        )
-    }
-}
+//struct StudyUnitAddView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StudyUnitAddView(store: Store(
+//            initialState: AddingUnit.State(set: Study),
+//            reducer: AddingUnit())
+//        )
+//    }
+//}
