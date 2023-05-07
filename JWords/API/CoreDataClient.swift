@@ -9,6 +9,9 @@ import Foundation
 import CoreData
 
 class CoreDataClient {
+    
+    static let shared = CoreDataClient()
+    
     private lazy var context: NSManagedObjectContext = {
         let container = NSPersistentContainer(name: "jwords")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
