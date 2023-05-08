@@ -95,7 +95,7 @@ struct CDTStudyView: View {
         .toolbar { ToolbarItem {
             HStack {
                 Button("⏳") { units = try! cd.fetchUnits(of: set); print(units) }
-                Button("🈯️") { units = try! cd.fetchKanjis() }
+                Button("🈯️") { units = try! cd.fetchAllKanjis() }
                 Button("+") { showModal = true }
             }
         }}

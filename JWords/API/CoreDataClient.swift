@@ -135,7 +135,7 @@ class CoreDataClient {
         }
     }
     
-    func fetchKanjis() throws -> [StudyUnit] {
+    func fetchAllKanjis() throws -> [StudyUnit] {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
         
@@ -152,8 +152,7 @@ class CoreDataClient {
         fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanji)
         
         do {
-            let fetched = try context.fetch(fetchRequest).first
-            if let fetched = fetched {
+            if let fetched = try context.fetch(fetchRequest).first {
                 return fetched
             } else {
                 guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
