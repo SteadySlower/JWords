@@ -13,12 +13,12 @@ import ComposableArchitecture
 struct EditWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
-        let word: Word
+        let unit: StudyUnit
         let frontType: FrontType
         
-        init(word: Word, frontType: FrontType = .kanji) {
-            self.id = word.id
-            self.word = word
+        init(unit: StudyUnit, frontType: FrontType = .kanji) {
+            self.id = unit.id
+            self.unit = unit
             self.frontType = frontType
         }
         
@@ -47,17 +47,17 @@ struct EditCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-//            BaseCell(word: vs.word,
-//                     frontType: vs.frontType)
-//                .overlay(
-//                    Image(systemName: "pencil")
-//                        .resizable()
-//                        .foregroundColor(.green)
-//                        .opacity(0.5)
-//                        .scaledToFit()
-//                        .padding()
-//                )
-//                .onTapGesture { vs.send(.cellTapped) }
+            BaseCell(unit: vs.unit,
+                     frontType: vs.frontType)
+                .overlay(
+                    Image(systemName: "pencil")
+                        .resizable()
+                        .foregroundColor(.green)
+                        .opacity(0.5)
+                        .scaledToFit()
+                        .padding()
+                )
+                .onTapGesture { vs.send(.cellTapped) }
         }
     }
     
