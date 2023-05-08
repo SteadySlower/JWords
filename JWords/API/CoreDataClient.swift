@@ -173,6 +173,23 @@ class CoreDataClient {
         return samples.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
     }
     
+    func updateStudyState(unit: StudyUnit, newState: StudyState) throws {
+        guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.studyState = Int16(newState.rawValue)
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanji)
