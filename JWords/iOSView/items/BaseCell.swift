@@ -10,68 +10,38 @@ import Kingfisher
 
 struct BaseCell: View {
     
-    private let word: Word
+    private let unit: StudyUnit
     private let frontType: FrontType
     private let isFront: Bool
     private let dragAmount: CGSize
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
-    init(word: Word,
+    init(unit: StudyUnit,
          frontType: FrontType,
          isFront: Bool = true,
          dragAmount: CGSize = .zero) {
-        self.word = word
+        self.unit = unit
         self.frontType = frontType
         self.isFront = isFront
         self.dragAmount = dragAmount
     }
     
-    var frontText: String {
+    var frontText: String? {
         switch frontType {
         case .meaning:
-            return word.meaningText
+            return unit.kanjiText
         case .kanji:
-            return word.kanjiText
-        }
-    }
-    
-    var frontImageURLs: [URL] {
-        switch frontType {
-        case .meaning:
-            return [word.meaningImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
-        case .kanji:
-            return [word.kanjiImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
+            return unit.meaningText
         }
     }
     
     // frontText를 제외한 두 가지 text에서 빈 text를 제외하고 띄어쓰기
-    var backText: String {
+    var backText: String? {
         switch frontType {
         case .meaning:
-            return [word.ganaText, word.kanjiText]
-                .filter { !$0.isEmpty }
-                .joined(separator: "\n")
+            return unit.meaningText
         case .kanji:
-            return [word.ganaText, word.meaningText]
-                .filter { !$0.isEmpty }
-                .joined(separator: "\n")
-        }
-    }
-    
-    var backImageURLs: [URL] {
-        switch frontType {
-        case .meaning:
-            return [word.kanjiImageURL, word.ganaImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
-        case .kanji:
-            return [word.ganaImageURL, word.meaningImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
+            return unit.kanjiText
         }
     }
 
@@ -81,13 +51,12 @@ struct BaseCell: View {
             swipeGuide
             ZStack {
                 cellColor
-                cellFace(isFront ? frontText : backText,
-                         isFront ? frontImageURLs : backImageURLs)
+                cellFace(isFront ? frontText : backText)
             }
             .offset(dragAmount)
         }
         .frame(width: deviceWidth * 0.9)
-        .frame(minHeight: word.hasImage ? 200 : 100)
+//        .frame(minHeight: word.hasImage ? 200 : 100)
         #if os(iOS)
         .onAppear { deviceOrientationChanged() }
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
@@ -99,11 +68,11 @@ extension BaseCell {
     private var sizeDecisionView: some View {
         ZStack {
             ZStack {
-                cellFace(frontText, frontImageURLs)
+                cellFace(frontText)
                 Color.white
             }
             ZStack {
-                cellFace(backText, backImageURLs)
+                cellFace(backText)
                 Color.white
             }
         }
@@ -126,7 +95,7 @@ extension BaseCell {
     
     @ViewBuilder
     private var cellColor: some View {
-        switch word.studyState {
+        switch unit.studyState {
         case .undefined:
             Color.white
         case .success:
@@ -136,17 +105,18 @@ extension BaseCell {
         }
     }
     
-    private func cellFace(_ text: String, _ imageURLs: [URL]) -> some View {
-        VStack {
-            Text(text)
-                .font(.system(size: fontSize(of: text)))
+    @ViewBuilder
+    private func cellFace(_ text: String?) -> some View {
+        if let text = text {
             VStack {
-                ForEach(imageURLs, id: \.self) { url in
-                    KFImage(url)
-                        .resizable()
-                        .scaledToFit()
+                if text.isHurigana {
+                    HuriganaText(hurigana: text)
+                } else {
+                    Text(text)
                 }
             }
+        } else {
+            EmptyView()
         }
     }
     

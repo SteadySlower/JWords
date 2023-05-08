@@ -44,6 +44,10 @@ extension String {
         return s
     }
     
+    var isHurigana: Bool {
+        self.contains { $0 == "`" }
+    }
+    
     var isPunctuation: Bool {
         guard self.count == 1 else { return false }
         let char = Character(self)
