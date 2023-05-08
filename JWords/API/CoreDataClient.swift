@@ -147,6 +147,32 @@ class CoreDataClient {
         }
     }
     
+    func fetchKanjis(usedIn unit: StudyUnit) throws -> [StudyUnit] {
+        guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let kanjis = mo.kanjiOfWord else {
+            return []
+        }
+        
+        return kanjis.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+    }
+    
+    func fetchSampleUnit(ofKanji kanji: StudyUnit) throws -> [StudyUnit] {
+        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let samples = mo.sampleForKanji else {
+            return []
+        }
+        
+        return samples.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+    }
+    
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanji)
