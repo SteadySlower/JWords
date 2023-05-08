@@ -62,6 +62,17 @@ struct CDTStudyView: View {
     let set: StudySet
     @State var units = [StudyUnit]()
     @State var showModal = false
+    @State var showAlert = false
+    @State var alertContent = [StudyUnit]()
+    
+    var alertMessage: String {
+        var result = ""
+        for unit in alertContent {
+            result += unit.kanjiText ?? ""
+            result += "\n"
+        }
+        return result
+    }
     
     init(set: StudySet) {
         self.set = set
@@ -75,10 +86,17 @@ struct CDTStudyView: View {
                         if unit.type == .kanji {
                             Text(unit.kanjiText ?? "")
                             Text(unit.meaningText ?? "")
+                            Button("샘플 보기") {
+                                alertContent = try! cd.fetchSampleUnit(ofKanji: unit)
+                                showAlert = true
+                            }
                         } else {
                             HuriganaText(hurigana: unit.kanjiText ?? "")
                             Text(unit.meaningText ?? "")
-                            Button("한자 출력") { print(HuriganaConverter.shared.extractKanjis(from: unit.kanjiText ?? "")) }
+                            Button("한자 보기") {
+                                alertContent = try! cd.fetchKanjis(usedIn: unit)
+                                showAlert = true
+                            }
                         }
                     }
                     .padding(10)
@@ -90,6 +108,12 @@ struct CDTStudyView: View {
             StudyUnitAddView(store: Store(
                 initialState: AddingUnit.State(set: set),
                 reducer: AddingUnit())
+            )
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("연결 보기"),
+                  message: Text(alertMessage),
+                  dismissButton: .cancel()
             )
         }
         .toolbar { ToolbarItem {
