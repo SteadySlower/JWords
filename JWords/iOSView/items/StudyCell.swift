@@ -99,20 +99,20 @@ struct StudyCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(word: vs.word,
-                     frontType: vs.frontType,
-                     isFront: vs.isFront,
-                     dragAmount: dragAmount)
-            .gesture(dragGesture
-                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
-                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
-            )
-            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
-            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
-            .alert(
-              self.store.scope(state: \.alert),
-              dismiss: .alertDismissed
-            )
+//            BaseCell(word: vs.word,
+//                     frontType: vs.frontType,
+//                     isFront: vs.isFront,
+//                     dragAmount: dragAmount)
+//            .gesture(dragGesture
+//                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
+//                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
+//            )
+//            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
+//            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
+//            .alert(
+//              self.store.scope(state: \.alert),
+//              dismiss: .alertDismissed
+//            )
         }
     }
     

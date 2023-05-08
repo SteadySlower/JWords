@@ -47,17 +47,17 @@ struct EditCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(word: vs.word,
-                     frontType: vs.frontType)
-                .overlay(
-                    Image(systemName: "pencil")
-                        .resizable()
-                        .foregroundColor(.green)
-                        .opacity(0.5)
-                        .scaledToFit()
-                        .padding()
-                )
-                .onTapGesture { vs.send(.cellTapped) }
+//            BaseCell(word: vs.word,
+//                     frontType: vs.frontType)
+//                .overlay(
+//                    Image(systemName: "pencil")
+//                        .resizable()
+//                        .foregroundColor(.green)
+//                        .opacity(0.5)
+//                        .scaledToFit()
+//                        .padding()
+//                )
+//                .onTapGesture { vs.send(.cellTapped) }
         }
     }
     
