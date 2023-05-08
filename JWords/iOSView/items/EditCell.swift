@@ -47,7 +47,7 @@ struct EditCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(word: vs.word,
+            BaseCell(unit: vs.unit,
                      frontType: vs.frontType)
                 .overlay(
                     Image(systemName: "pencil")
