@@ -13,24 +13,24 @@ import ComposableArchitecture
 struct StudyWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
-        var word: Word
+        var unit: StudyUnit
         let isLocked: Bool
         let frontType: FrontType
         var studyState: StudyState {
             get {
-                word.studyState
+                unit.studyState
             }
             set(newState) {
-                word.studyState = newState
+                unit.studyState = newState
             }
         }
         var isFront: Bool = true
         
         var alert: AlertState<Action>?
         
-        init(word: Word, frontType: FrontType = .kanji, isLocked: Bool = false) {
-            self.id = word.id
-            self.word = word
+        init(unit: StudyUnit, frontType: FrontType = .kanji, isLocked: Bool = false) {
+            self.id = unit.id
+            self.unit = unit
             self.isLocked = isLocked
             self.frontType = frontType
         }
@@ -45,11 +45,11 @@ struct StudyWord: ReducerProtocol {
         case cellTapped
         case cellDoubleTapped
         case cellDrag(direction: SwipeDirection)
-        case studyStateResponse(TaskResult<StudyState>)
+        case showErrorAlert
         case alertDismissed
     }
     
-    @Dependency(\.wordClient) var wordClient
+    @Dependency(\.cdWordClient) var wordClient
     private enum UpdateStudyStateID {}
     
     var body: some ReducerProtocol<State, Action> {
@@ -60,24 +60,32 @@ struct StudyWord: ReducerProtocol {
                 return .none
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
+                let beforeState = state.studyState
                 state.studyState = .undefined
-                return .task { [word = state.word] in
-                    await .studyStateResponse(TaskResult { try await wordClient.studyState(word, .undefined) })
-                }.cancellable(id: UpdateStudyStateID.self)
+                do {
+                    _ = try wordClient.studyState(state.unit, .undefined)
+                } catch {
+                    state.studyState = beforeState
+                    return .task { .showErrorAlert }
+                }
+                return .none
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
+                let beforeState = state.studyState
                 let newState: StudyState = direction == .left ? .success : .fail
                 state.studyState = newState
-                return .task { [word = state.word] in
-                    await .studyStateResponse(TaskResult { try await wordClient.studyState(word, newState) })
-                }.cancellable(id: UpdateStudyStateID.self)
-            case .studyStateResponse(.failure):
+                do {
+                    _ = try wordClient.studyState(state.unit, newState)
+                } catch {
+                    state.studyState = beforeState
+                    return .task { .showErrorAlert }
+                }
+                return .none
+            case .showErrorAlert:
                 state.alert = AppError.unknown.simpleAlert(action: Action.self)
                 return .none
             case .alertDismissed:
                 state.alert = nil
-                return .none
-            default:
                 return .none
             }
         }
@@ -99,20 +107,20 @@ struct StudyCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-//            BaseCell(word: vs.word,
-//                     frontType: vs.frontType,
-//                     isFront: vs.isFront,
-//                     dragAmount: dragAmount)
-//            .gesture(dragGesture
-//                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
-//                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
-//            )
-//            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
-//            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
-//            .alert(
-//              self.store.scope(state: \.alert),
-//              dismiss: .alertDismissed
-//            )
+            BaseCell(unit: vs.unit,
+                     frontType: vs.frontType,
+                     isFront: vs.isFront,
+                     dragAmount: dragAmount)
+            .gesture(dragGesture
+                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
+                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
+            )
+            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
+            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
     
@@ -130,18 +138,18 @@ extension StudyCell {
     
 }
 
-struct WordCell_Previews: PreviewProvider {
+struct StudyCell_Previews: PreviewProvider {
     
     static var previews: some View {
         StudyCell(
             store: Store(
-                initialState: StudyWord.State(word: Word(), frontType: .kanji),
+                initialState: StudyWord.State(unit: .init(index: 0), frontType: .kanji),
                 reducer: StudyWord()._printChanges()
             )
         )
         StudyCell(
             store: Store(
-                initialState: StudyWord.State(word: Word(), frontType: .kanji, isLocked: true),
+                initialState: StudyWord.State(unit: .init(index: 0), frontType: .kanji, isLocked: true),
                 reducer: StudyWord()._printChanges()
             )
         )

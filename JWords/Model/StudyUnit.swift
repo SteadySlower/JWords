@@ -46,4 +46,18 @@ struct StudyUnit: Equatable, Identifiable {
         self.studySets = mo.set?.array.compactMap { $0 as? StudySetMO }.map { StudySet(from: $0) } ?? []
     }
     
+    // intializer for mocking
+    init(index: Int) {
+        self.id = UUID().uuidString
+        self.objectID = NSManagedObjectID()
+        self.type = UnitType.allCases.randomElement()!
+        self.studySets = []
+        self.kanjiText = "Kanji Text \(index)"
+        self.kanjiImageID = nil
+        self.meaningText = "Meaning Text \(index)"
+        self.meaningImageID = nil
+        self.studyState = .undefined
+        self.createdAt = Date()
+    }
+    
 }
