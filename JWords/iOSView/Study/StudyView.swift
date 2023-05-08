@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct WordList: ReducerProtocol {
     struct State: Equatable {
-        let wordBook: WordBook?
+        let set: StudySet?
         var isLoading: Bool = false
         
         // state for cells of each StudyViewMode
@@ -30,14 +30,14 @@ struct WordList: ReducerProtocol {
         var showAddModal: Bool = false
         var showSideBar: Bool = false
         
-        init(wordBook: WordBook) {
-            self.wordBook = wordBook
-            self.setting = .init(frontMode: wordBook.preferredFrontType)
+        init(set: StudySet) {
+            self.set = set
+            self.setting = .init(frontMode: set.preferredFrontType)
         }
         
-        init(words: [Word]) {
-            self.wordBook = nil
-            self._words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(word: $0) })
+        init(units: [StudyUnit]) {
+            self.set = nil
+            self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
             self.setting = .init()
         }
         
@@ -55,14 +55,14 @@ struct WordList: ReducerProtocol {
         
         var toMoveWords: [Word] {
             if setting.studyViewMode == .selection {
-                return selectionWords.filter { $0.isSelected }.map { $0.word }
+                return selectionWords.filter { $0.isSelected }.map { $0.unit }
             } else {
-                return _words.filter { $0.studyState != .success }.map { $0.word }
+                return _words.filter { $0.studyState != .success }.map { $0.unit }
             }
         }
         
         fileprivate mutating func editCellTapped(id: String) {
-            guard let word = _words.filter({ $0.id == id }).first?.word else { return }
+            guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
             toEditWord = InputWord.State(word: word)
             showEditModal = true
         }

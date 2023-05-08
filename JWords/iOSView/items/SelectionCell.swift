@@ -53,7 +53,7 @@ struct SelectionCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(unit: vs.unit,
+            BaseCell(word: vs.word,
                      frontType: vs.frontType)
                 .overlay { vs.isSelected ? AnyView(selectedOverlay) : AnyView(unselectedOverlay) }
                 .onTapGesture { vs.send(.cellTapped) }
