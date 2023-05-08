@@ -98,6 +98,10 @@ struct CDTStudyView: View {
                                 showAlert = true
                             }
                         }
+                        Text("\(unit.studyState.rawValue)")
+                        Button("update state to success") { try! cd.updateStudyState(unit: unit, newState: .success) }
+                        Button("update state to fail") { try! cd.updateStudyState(unit: unit, newState: .fail) }
+                        Button("update state to undefined") { try! cd.updateStudyState(unit: unit, newState: .undefined) }
                     }
                     .padding(10)
                     .border(.black)
