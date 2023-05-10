@@ -112,7 +112,7 @@ class CoreDataClient {
             throw AppError.coreData
         }
         
-        HuriganaConverter.shared.extractKanjis(from: kanjiText )
+        HuriganaConverter.shared.extractKanjis(from: kanjiText)
             .compactMap { try? getKanjiMO($0) }
             .forEach { mo.addToKanjiOfWord($0) }
         
@@ -188,6 +188,26 @@ class CoreDataClient {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
+    }
+    
+    func moveUnits(_ units: [StudyUnit], from: StudySet, to: StudySet) throws {
+        guard let fromSetMO = try? context.existingObject(with: from.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let toSetMO = try? context.existingObject(with: to.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        units.compactMap { unit in
+            try? context.existingObject(with: unit.objectID) as? StudyUnitMO
+        }.forEach { mo in
+            mo.removeFromSet(fromSetMO)
+            mo.addToSet(toSetMO)
+        }
+        
     }
     
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {

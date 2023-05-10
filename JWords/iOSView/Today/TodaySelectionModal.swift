@@ -15,12 +15,12 @@ enum Schedule: Equatable {
 
 struct TodaySelection: ReducerProtocol {
     struct State: Equatable {
-        var wordBooks: [WordBook] = []
-        var reviewedBooks: [WordBook]
+        var wordBooks: [StudySet] = []
+        var reviewedBooks: [StudySet]
         var schedules: [String:Schedule]
         var isLoading: Bool = false
         
-        init(todayBooks: [WordBook], reviewBooks: [WordBook], reviewedBooks :[WordBook]) {
+        init(todayBooks: [StudySet], reviewBooks: [StudySet], reviewedBooks :[StudySet]) {
             var schedules = [String:Schedule]()
             for book in todayBooks {
                 schedules[book.id] = .study
@@ -50,55 +50,23 @@ struct TodaySelection: ReducerProtocol {
         
     }
     
-    @Dependency(\.wordBookClient) var wordBookClient
-    @Dependency(\.todayClient) var todayClient
-    private enum FetchWordBookID {}
-    private enum UpdateTodayID {}
-    
+    let ud = UserDefaultClient.shared
+    let cd = CoreDataClient.shared
     
     enum Action: Equatable {        
         case onAppear
-        case wordBookResponse(TaskResult<[WordBook]>)
-        case studyButtonTapped(WordBook)
-        case reviewButtonTapped(WordBook)
+        case studyButtonTapped(StudySet)
+        case reviewButtonTapped(StudySet)
         case okButtonTapped
-        case updateTodayResponse(TaskResult<Void>)
         case cancelButtonTapped
-        
-        static func == (lhs: Action, rhs: Action) -> Bool {
-            switch (lhs, rhs) {
-            case (.onAppear, .onAppear):
-                return true
-            case let (.wordBookResponse(result1), .wordBookResponse(result2)):
-                return result1 == result2
-            case let (.studyButtonTapped(book1), .studyButtonTapped(book2)):
-                return book1.id == book2.id
-            case let (.reviewButtonTapped(book1), .reviewButtonTapped(book2)):
-                return book1.id == book2.id
-            case (.okButtonTapped, .okButtonTapped):
-                return true
-            case (.updateTodayResponse, .updateTodayResponse):
-                return true
-            case (.cancelButtonTapped, .cancelButtonTapped):
-                return true
-            default:
-                return false
-            }
-        }
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                state.isLoading = true
-                return .task {
-                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
-                }
-                .cancellable(id: FetchWordBookID.self)
-            case let .wordBookResponse(.success(books)):
+                let books = try! cd.fetchSets()
                 state.wordBooks = sortWordBooksBySchedule(books, schedule: state.schedules)
-                state.isLoading = false
                 return .none
             case let .studyButtonTapped(book):
                 state.toggleStudy(book.id)
@@ -108,13 +76,9 @@ struct TodaySelection: ReducerProtocol {
                 return .none
             case .okButtonTapped:
                 state.isLoading = true
-                return .task { [schedule = state.schedules, reviewedIDs = state.reviewedBooks.map { $0.id }] in
-                    await .updateTodayResponse(TaskResult {
-                        try await updateToday(schedule, reviewedIDs)
-                    })
-                }
-                .cancellable(id: UpdateTodayID.self)
-            case .updateTodayResponse(.success()):
+                let newSchedule = getTodaySchedule(state.schedules, state.reviewedBooks.map { $0.id })
+                ud.updateSchedule(todaySchedule: newSchedule)
+                state.isLoading = false
                 return .none
             default:
                 return .none
@@ -122,7 +86,7 @@ struct TodaySelection: ReducerProtocol {
         }
     }
     
-    private func sortWordBooksBySchedule(_ wordBooks: [WordBook], schedule: [String:Schedule]) -> [WordBook] {
+    private func sortWordBooksBySchedule(_ wordBooks: [StudySet], schedule: [String:Schedule]) -> [StudySet] {
         return wordBooks.sorted(by: { book1, book2 in
             if schedule[book1.id, default: .none] != .none
                 && schedule[book2.id, default: .none] == .none {
@@ -133,16 +97,14 @@ struct TodaySelection: ReducerProtocol {
         })
     }
     
-    private func updateToday(_ schedule: [String:Schedule], _ reviewedIDs: [String]) async throws {
+    private func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
         let studyIDs = schedule.keys.filter { schedule[$0] == .study }
         let reviewIDs = schedule.keys.filter { schedule[$0] == .review }
         let reviewedIDs = reviewedIDs.filter { schedule[$0, default: .none] == .none }
-        let newTodayBooks = TodaySchedule(studyIDs: studyIDs,
-                                          reviewIDs: reviewIDs,
-                                          reviewedIDs: reviewedIDs,
-                                          createdAt: Date())
-        try await todayClient.updateTodayBooks(newTodayBooks)
-        
+        return TodaySchedule(studyIDs: studyIDs,
+                              reviewIDs: reviewIDs,
+                              reviewedIDs: reviewedIDs,
+                              createdAt: Date())
     }
 
 }
@@ -183,7 +145,7 @@ struct TodaySelectionModal: View {
 
 extension TodaySelectionModal {
     
-    private func bookCell(_ wordBook: WordBook,
+    private func bookCell(_ wordBook: StudySet,
                           _ schedule: Schedule,
                           _ studyButtonTapped: @escaping () -> Void,
                           _ reviewButtonTapped: @escaping () -> Void) -> some View {
@@ -241,8 +203,8 @@ struct TodaySelectionModal_Previews: PreviewProvider {
             TodaySelectionModal(
                 store: Store(
                     initialState: TodaySelection.State(
-                        todayBooks: [WordBook(index: 0), WordBook(index: 1), WordBook(index: 2)],
-                        reviewBooks: [WordBook(index: 3), WordBook(index: 4), WordBook(index: 5)],
+                        todayBooks: [StudySet(index: 0), StudySet(index: 1), StudySet(index: 2)],
+                        reviewBooks: [StudySet(index: 3), StudySet(index: 4), StudySet(index: 5)],
                         reviewedBooks: []),
                     reducer: TodaySelection()._printChanges()
                 )

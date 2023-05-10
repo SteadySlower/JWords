@@ -13,17 +13,39 @@ struct AddingUnit: ReducerProtocol {
     private let cd = CoreDataClient.shared
     
     struct State: Equatable {
-        let set: StudySet
-        var unitType: UnitType = .word
-        var meaningText: String = ""
-        var kanjiText: String = ""
-        var huriText = EditHuriganaText.State(hurigana: "")
+        let set: StudySet?
+        let unit: StudyUnit?
+        var unitType: UnitType
+        var meaningText: String
+        var kanjiText: String
+        var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
         var isEditingKanji = true
         
         init(set: StudySet) {
             self.set = set
+            self.unit = nil
+            self.unitType = .word
+            self.meaningText = ""
+            self.kanjiText = ""
+            self.huriText = EditHuriganaText.State(hurigana: "")
+            self.alert = nil
+        }
+        
+        init(unit: StudyUnit) {
+            self.set = nil
+            self.unit = unit
+            self.unitType = unit.type
+            self.meaningText = unit.meaningText ?? ""
+            if unit.type != .kanji {
+                self.huriText = EditHuriganaText.State(hurigana: unit.kanjiText ?? "")
+                self.kanjiText = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText ?? "")
+                isEditingKanji = false
+            } else {
+                self.kanjiText = unit.kanjiText ?? ""
+                self.huriText = EditHuriganaText.State(hurigana: "")
+            }
         }
         
         var ableToAdd: Bool {
@@ -85,12 +107,16 @@ struct AddingUnit: ReducerProtocol {
                 state.alert = nil
                 return .none
             case .addUnit:
-                try! cd.insertUnit(in: state.set,
-                              type: state.unitType,
-                              kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
-                              kanjiImageID: nil,
-                              meaningText: state.meaningText,
-                              meaningImageID: nil)
+                if let set = state.set {
+                    try! cd.insertUnit(in: set,
+                                  type: state.unitType,
+                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                  kanjiImageID: nil,
+                                  meaningText: state.meaningText,
+                                  meaningImageID: nil)
+                } else if let unit = state.unit {
+                    // unit 수정
+                }
                 return .none
             default:
                 return .none

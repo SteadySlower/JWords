@@ -28,6 +28,17 @@ struct StudySet: Equatable, Identifiable {
         self.isAutoSchedule = mo.isAutoSchedule
     }
     
+    // intializer for mocking
+    init(index: Int) {
+        self.id = "\(index)"
+        self.objectID = NSManagedObjectID()
+        self.title = "\(index)번 단어장"
+        self.createdAt = Date()
+        self.closed = false
+        self.preferredFrontType = .kanji
+        self.isAutoSchedule = true
+    }
+    
     var dayFromToday: Int {
         return Calendar.current.getDateGap(from: self.createdAt, to: Date())
     }

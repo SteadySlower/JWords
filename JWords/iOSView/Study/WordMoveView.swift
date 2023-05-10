@@ -10,27 +10,20 @@ import ComposableArchitecture
 
 struct MoveWords: ReducerProtocol {
     struct State: Equatable {
-        let fromBook: WordBook
-        let toMoveWords: [Word]
-        var wordBooks = [WordBook]()
-        var selectedID: String?
-        var isLoading: Bool
+        let fromBook: StudySet
+        let toMoveWords: [StudyUnit]
+        var wordBooks = [StudySet]()
+        var selectedID: String? = nil
+        var isLoading: Bool = false
         var willCloseBook: Bool
         
-        init(fromBook: WordBook,
-             toMoveWords: [Word],
-             wordBooks: [WordBook] = [WordBook](),
-             selectedID: String? = nil,
-             isLoading: Bool = false) {
+        init(fromBook: StudySet, toMoveWords: [StudyUnit]) {
             self.fromBook = fromBook
             self.toMoveWords = toMoveWords
-            self.wordBooks = wordBooks
-            self.selectedID = selectedID
-            self.isLoading = isLoading
             self.willCloseBook = fromBook.dayFromToday >= 28 ? true : false
         }
         
-        var selectedWordBook: WordBook? {
+        var selectedWordBook: StudySet? {
             if let selectedID = selectedID {
                 return wordBooks.first(where: { $0.id == selectedID })
             } else {
@@ -39,32 +32,15 @@ struct MoveWords: ReducerProtocol {
         }
     }
     
+    let ud = UserDefaultClient.shared
+    let cd = CoreDataClient.shared
+    
     enum Action: Equatable {
         case onAppear
-        case wordBookResponse(TaskResult<[WordBook]>)
         case updateSelection(String?)
         case updateWillCloseBook(willClose: Bool)
         case closeButtonTapped
-        case moveWordsResponse(TaskResult<Void>)
-        
-        static func == (lhs: Action, rhs: Action) -> Bool {
-            switch (lhs, rhs) {
-            case (.onAppear, .onAppear):
-                return true
-            case let (.wordBookResponse(lhsResult), .wordBookResponse(rhsResult)):
-                return lhsResult == rhsResult
-            case let (.updateSelection(lhsSelection), .updateSelection(rhsSelection)):
-                return lhsSelection == rhsSelection
-            case let (.updateWillCloseBook(lhsWillClose), .updateWillCloseBook(rhsWillClose)):
-                return lhsWillClose == rhsWillClose
-            case (.closeButtonTapped, .closeButtonTapped):
-                return true
-            case (.moveWordsResponse, .moveWordsResponse):
-                return true
-            default:
-                return false
-            }
-        }
+        case cancelButtonTapped
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -77,16 +53,7 @@ struct MoveWords: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.isLoading = true
-                return .task {
-                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
-                }
-                .cancellable(id: FetchWordBooksID.self)
-            case let .wordBookResponse(.success(wordBooks)):
-                state.wordBooks = wordBooks
-                state.isLoading = false
-                return .none
-            case .wordBookResponse(.failure):
-                state.wordBooks = []
+                state.wordBooks = try! cd.fetchSets()
                 state.isLoading = false
                 return .none
             case .updateSelection(let id):
@@ -97,28 +64,17 @@ struct MoveWords: ReducerProtocol {
                 return .none
             case .closeButtonTapped:
                 state.isLoading = true
-                return .task {
-                    [toBook = state.selectedWordBook,
-                     toMoveWords = state.toMoveWords,
-                     fromBook = state.fromBook,
-                     willCloseBook = state.willCloseBook] in
-                    await .moveWordsResponse(TaskResult {
-                        try await withThrowingTaskGroup(of: Void.self) { group in
-                            group.addTask { try await todayClient.updateReviewed(fromBook.id) }
-                            group.addTask { try await wordBookClient.moveWords(fromBook, toBook, toMoveWords) }
-                            if willCloseBook {
-                                group.addTask { try await wordBookClient.closeBook(fromBook) }
-                            }
-                            try await group.next()
-                        }
-                    })
-                }.cancellable(id: MoveWordsID.self)
-            case .moveWordsResponse(.success):
+                if let toBook = state.selectedWordBook {
+                    try! cd.moveUnits(state.toMoveWords,
+                                      from: state.fromBook,
+                                      to: toBook)
+                }
+                if state.willCloseBook {
+                    try! cd.updateSet(state.fromBook, closed: true)
+                }
                 state.isLoading = false
                 return .none
-            case let .moveWordsResponse(.failure(error)):
-                state.isLoading = false
-                print("디버그: \(error)")
+            case .cancelButtonTapped:
                 return .none
             }
         }
@@ -153,7 +109,7 @@ struct WordMoveView: View {
                 .padding(.horizontal, 20)
                 HStack {
                     Button("취소") {
-                        
+                        vs.send(.cancelButtonTapped)
                     }
                     Button(vs.selectedID != nil ? "이동" : "닫기") {
                         vs.send(.closeButtonTapped)
@@ -172,9 +128,8 @@ struct WordMoveView_Previews: PreviewProvider {
     static var previews: some View {
         WordMoveView(
             store: Store(
-                initialState: MoveWords.State(fromBook: WordBook(title: "타이틀"),
-                                              toMoveWords: [],
-                                              isLoading: false),
+                initialState: MoveWords.State(fromBook: StudySet(index: 0),
+                                              toMoveWords: .mock),
                 reducer: MoveWords()._printChanges()
             )
         )

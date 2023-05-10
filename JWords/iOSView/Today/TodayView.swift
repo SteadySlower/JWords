@@ -10,10 +10,10 @@ import ComposableArchitecture
 
 struct TodayList: ReducerProtocol {
     struct State: Equatable {
-        var studyWordBooks: [WordBook] = []
-        var reviewWordBooks: [WordBook] = []
-        var reviewedWordBooks: [WordBook] = []
-        var onlyFailWords: [Word] = []
+        var studyWordBooks: [StudySet] = []
+        var reviewWordBooks: [StudySet] = []
+        var reviewedWordBooks: [StudySet] = []
+        var onlyFailWords: [StudyUnit] = []
         var wordList: WordList.State?
         var todaySelection: TodaySelection.State?
         var isLoading: Bool = false
@@ -34,14 +34,16 @@ struct TodayList: ReducerProtocol {
             todaySelection = nil
         }
         
+        fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
+            studyWordBooks = todayBooks.study
+            reviewWordBooks = todayBooks.review
+            reviewedWordBooks = todayBooks.reviewed
+        }
+        
     }
     
-    @Dependency(\.wordBookClient) var wordBookClient
-    @Dependency(\.wordClient) var wordClient
-    @Dependency(\.todayClient) var todayClient
-    private enum FetchScheduleID {}
-    private enum GetOnlyFailID {}
-    private enum AutoAddID {}
+    let ud = UserDefaultClient.shared
+    let cd = CoreDataClient.shared
     
     enum Action: Equatable {
         case onAppear
@@ -52,7 +54,7 @@ struct TodayList: ReducerProtocol {
         case autoAddButtonTapped
         case showStudyView(Bool)
         case onlyFailCellTapped
-        case homeCellTapped(WordBook)
+        case homeCellTapped(StudySet)
         case scheduleResponse(TaskResult<TodayBooks>)
         case onlyFailResponse(TaskResult<[Word]>)
     }
@@ -61,32 +63,22 @@ struct TodayList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                state.isLoading = true
                 state.clear()
                 state.isLoading = true
-                return .task {
-                    await .scheduleResponse(TaskResult { try await getTodayBooks() })
-                }
-                .cancellable(id: FetchScheduleID.self)
-            case let .scheduleResponse(.success(books)):
-                state.studyWordBooks = books.study
-                state.reviewWordBooks = books.review
-                state.reviewedWordBooks = books.reviewed
-                return .task {
-                    await .onlyFailResponse(TaskResult { try await getOnlyFailWords(studyBooks: books.study) })
-                }
-                .cancellable(id: GetOnlyFailID.self)
-            case let .onlyFailResponse(.success(onlyFails)):
-                state.onlyFailWords = onlyFails
+                let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: ud.fetchSchedule())
+                state.addTodayBooks(todayBooks: todayBooks)
+                state.onlyFailWords = todayBooks.study.map { try! cd.fetchUnits(of: $0) }.reduce([], +)
                 state.isLoading = false
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent { state.todaySelection = nil }
                 return .none
             case .onlyFailCellTapped:
-                state.wordList = WordList.State(words: state.onlyFailWords)
+                state.wordList = WordList.State(units: state.onlyFailWords)
                 return .none
             case let .homeCellTapped(wordBook):
-                state.wordList = WordList.State(wordBook: wordBook)
+                state.wordList = WordList.State(set: wordBook)
                 return .none
             case .listButtonTapped:
                 state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
@@ -95,21 +87,17 @@ struct TodayList: ReducerProtocol {
             case .autoAddButtonTapped:
                 state.clear()
                 state.isLoading = true
-                return .task {
-                    let books = try await wordBookClient.wordBooks()
-                    try await todayClient.autoUpdateTodayBooks(books)
-                    return await .scheduleResponse(TaskResult { try await getTodayBooks() })
-                }
-                .cancellable(id: AutoAddID.self)
+                let sets = try! cd.fetchSets()
+                ud.authSetSchedule(sets: sets)
+                let todayBooks = TodayBooks(books: sets, schedule: ud.fetchSchedule())
+                state.addTodayBooks(todayBooks: todayBooks)
+                state.isLoading = false
+                return .none
             case let .todaySelection(action):
                 switch action {
-                case .updateTodayResponse(.success):
-                    state.clear()
-                    state.isLoading = true
-                    return .task {
-                        await .scheduleResponse(TaskResult { try await getTodayBooks() })
-                    }
-                    .cancellable(id: FetchScheduleID.self)
+                case .okButtonTapped:
+                    state.todaySelection = nil
+                    return .task { .onAppear }
                 case .cancelButtonTapped:
                     state.todaySelection = nil
                     return .none
@@ -130,48 +118,6 @@ struct TodayList: ReducerProtocol {
         }
         .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
             TodaySelection()
-        }
-    }
-    
-    private func getTodayBooks() async throws -> TodayBooks {
-        return try await withThrowingTaskGroup(of: Any.self, returning: TodayBooks.self) { group in
-            var books: [WordBook]?
-            var schedule: TodaySchedule?
-            group.addTask { try await wordBookClient.wordBooks() }
-            group.addTask { try await todayClient.getTodayBooks() }
-            
-            for try await result in group {
-                if let result = result as? [WordBook] {
-                    books = result
-                    continue
-                }
-                if let result = result as? TodaySchedule {
-                    schedule = result
-                    continue
-                }
-            }
-            
-            guard let books = books, let schedule = schedule else {
-                throw AppError.generic(massage: "Failed to fetch today's schedule")
-            }
-
-            return TodayBooks(books: books, schedule: schedule)
-        }
-    }
-    
-    private func getOnlyFailWords(studyBooks: [WordBook]) async throws -> [Word] {
-        return try await withThrowingTaskGroup(of: [Word].self, returning: [Word].self) { group in
-            var result = [Word]()
-            
-            for studyBook in studyBooks {
-                group.addTask { try await wordClient.words(studyBook) }
-            }
-            
-            for try await words in group {
-                result.append(contentsOf: words)
-            }
-            
-            return result.filter { $0.studyState != .success }
         }
     }
 
@@ -209,7 +155,7 @@ struct TodayView: View {
                     .disabled(vs.isLoading)
                     VStack(spacing: 8) {
                         ForEach(vs.studyWordBooks, id: \.id) { todayBook in
-                            HomeCell(wordBook: todayBook) {
+                            HomeCell(studySet: todayBook) {
                                 vs.send(.homeCellTapped(todayBook))
                             }
                         }
@@ -219,7 +165,7 @@ struct TodayView: View {
                     Text("오늘 복습할 단어")
                     VStack(spacing: 8) {
                         ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
-                            HomeCell(wordBook: reviewBook) {
+                            HomeCell(studySet: reviewBook) {
                                 vs.send(.homeCellTapped(reviewBook))
                             }
                         }

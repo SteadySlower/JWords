@@ -80,6 +80,14 @@ class HuriganaConverter {
         return result.filter { !$0.isEmpty }
     }
     
+    func huriToKanjiText(from hurigana: String) -> String {
+        hurigana
+            .split(separator: "`")
+            .map { Huri(String($0)) }
+            .map { $0.kanji.isEmpty ? $0.gana : $0.kanji }
+            .reduce("", +)
+    }
+    
 }
 
 fileprivate func trimHuri(_ token: String, _ gana: String) -> (String, String, String) {
