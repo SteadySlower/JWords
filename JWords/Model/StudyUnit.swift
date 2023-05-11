@@ -52,7 +52,7 @@ struct StudyUnit: Equatable, Identifiable {
         self.objectID = NSManagedObjectID()
         self.type = UnitType.allCases.randomElement()!
         self.studySets = []
-        self.kanjiText = "Kanji Text \(index)"
+        self.kanjiText = "感動\(index)⌜かんどう⌟`"
         self.kanjiImageID = nil
         self.meaningText = "Meaning Text \(index)"
         self.meaningImageID = nil

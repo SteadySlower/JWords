@@ -143,7 +143,7 @@ struct StudyCell_Previews: PreviewProvider {
     static var previews: some View {
         StudyCell(
             store: Store(
-                initialState: StudyWord.State(unit: .init(index: 0), frontType: .kanji),
+                initialState: StudyWord.State(unit: .init(index: 0), frontType: .meaning),
                 reducer: StudyWord()._printChanges()
             )
         )

@@ -138,3 +138,9 @@ extension BaseCell {
     
 }
 
+struct BaseCell_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        BaseCell(unit: .init(index: 0), frontType: .meaning)
+    }
+}
