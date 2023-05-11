@@ -92,6 +92,7 @@
 		5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */; };
 		5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */; };
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
+		5A7B48032A0C7BD300F7FE0F /* CenterFlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B48022A0C7BD300F7FE0F /* CenterFlexBox.swift */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
 		5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */; };
 		5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C6FDA29FBA3CC00DD84A4 /* SampleClient.swift */; };
@@ -235,6 +236,7 @@
 		5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppView.swift; sourceTree = "<group>"; };
 		5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCell.swift; sourceTree = "<group>"; };
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		5A7B48022A0C7BD300F7FE0F /* CenterFlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CenterFlexBox.swift; path = JWords/macView/Components/CenterFlexBox.swift; sourceTree = SOURCE_ROOT; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
 		5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardClient.swift; sourceTree = "<group>"; };
 		5A7C6FDA29FBA3CC00DD84A4 /* SampleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleClient.swift; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 				0622727229FC9C3400EEAD50 /* WordBookPicker.swift */,
 				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
 				06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */,
+				5A7B48022A0C7BD300F7FE0F /* CenterFlexBox.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -915,6 +918,7 @@
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
 				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
 				5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */,
+				5A7B48032A0C7BD300F7FE0F /* CenterFlexBox.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
 				5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */,
 				5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */,

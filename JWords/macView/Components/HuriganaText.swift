@@ -17,7 +17,7 @@ struct HuriganaText: View {
     }
 
     var body: some View {
-        WrappingHStack(horizontalSpacing: 0, verticalSpacing: fontSize / 2) {
+        CenterFlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2) {
             ForEach(huris) { huri in
                 huriView(for: huri)
             }
