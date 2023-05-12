@@ -18,7 +18,7 @@
 		06308A5E29FE14D900BDEE2D /* iOSHuriganaTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */; };
 		06308A6029FE2CDB00BDEE2D /* StudyUnitAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5F29FE2CDB00BDEE2D /* StudyUnitAddView.swift */; };
 		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
-		06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */; };
+		06308A6429FE2E6700BDEE2D /* LeadingFlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6329FE2E6700BDEE2D /* LeadingFlexBox.swift */; };
 		06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6529FE2ED500BDEE2D /* Huri.swift */; };
 		06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */; };
 		06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A702A048EFD00BDEE2D /* StudyUnit.swift */; };
@@ -166,7 +166,7 @@
 		06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSHuriganaTestView.swift; sourceTree = "<group>"; };
 		06308A5F29FE2CDB00BDEE2D /* StudyUnitAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitAddView.swift; sourceTree = "<group>"; };
 		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
-		06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WrappingHStack.swift; path = JWords/macView/Components/WrappingHStack.swift; sourceTree = SOURCE_ROOT; };
+		06308A6329FE2E6700BDEE2D /* LeadingFlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeadingFlexBox.swift; path = JWords/macView/Components/LeadingFlexBox.swift; sourceTree = SOURCE_ROOT; };
 		06308A6529FE2ED500BDEE2D /* Huri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Huri.swift; sourceTree = "<group>"; };
 		06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriUnit.swift; sourceTree = "<group>"; };
 		06308A702A048EFD00BDEE2D /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 				5A80ACF029FA535500E3F31A /* KanjiField.swift */,
 				0622727229FC9C3400EEAD50 /* WordBookPicker.swift */,
 				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
-				06308A6329FE2E6700BDEE2D /* WrappingHStack.swift */,
+				06308A6329FE2E6700BDEE2D /* LeadingFlexBox.swift */,
 				5A7B48022A0C7BD300F7FE0F /* CenterFlexBox.swift */,
 			);
 			path = Components;
@@ -909,7 +909,7 @@
 				06308A732A04902A00BDEE2D /* StudySet.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,
 				06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */,
-				06308A6429FE2E6700BDEE2D /* WrappingHStack.swift in Sources */,
+				06308A6429FE2E6700BDEE2D /* LeadingFlexBox.swift in Sources */,
 				067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */,
 				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
 				5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */,
