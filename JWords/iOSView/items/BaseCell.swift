@@ -16,6 +16,24 @@ struct BaseCell: View {
     private let dragAmount: CGSize
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
+    var frontText: String {
+        switch frontType {
+        case .kanji:
+            return unit.kanjiText ?? ""
+        case .meaning:
+            return unit.meaningText ?? ""
+        }
+    }
+    
+    var backText: String {
+        switch frontType {
+        case .kanji:
+            return unit.meaningText ?? ""
+        case .meaning:
+            return unit.kanjiText ?? ""
+        }
+    }
+    
     init(unit: StudyUnit,
          frontType: FrontType,
          isFront: Bool = true,
@@ -25,38 +43,17 @@ struct BaseCell: View {
         self.isFront = isFront
         self.dragAmount = dragAmount
     }
-    
-    var frontText: String? {
-        switch frontType {
-        case .meaning:
-            return unit.kanjiText
-        case .kanji:
-            return unit.meaningText
-        }
-    }
-    
-    // frontText를 제외한 두 가지 text에서 빈 text를 제외하고 띄어쓰기
-    var backText: String? {
-        switch frontType {
-        case .meaning:
-            return unit.meaningText
-        case .kanji:
-            return unit.kanjiText
-        }
-    }
 
     var body: some View {
         ZStack {
-            sizeDecisionView
             swipeGuide
             ZStack {
                 cellColor
-                cellFace(isFront ? frontText : backText)
+                cellFace
             }
             .offset(dragAmount)
         }
         .frame(width: deviceWidth * 0.9)
-//        .frame(minHeight: word.hasImage ? 200 : 100)
         #if os(iOS)
         .onAppear { deviceOrientationChanged() }
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
@@ -65,19 +62,7 @@ struct BaseCell: View {
 }
 
 extension BaseCell {
-    private var sizeDecisionView: some View {
-        ZStack {
-            ZStack {
-                cellFace(frontText)
-                Color.white
-            }
-            ZStack {
-                cellFace(backText)
-                Color.white
-            }
-        }
-    }
-    
+
     private var swipeGuide: some View {
         HStack {
             Image(systemName: "circle")
@@ -105,18 +90,15 @@ extension BaseCell {
         }
     }
     
-    @ViewBuilder
-    private func cellFace(_ text: String?) -> some View {
-        if let text = text {
-            VStack {
-                if text.isHurigana {
-                    HuriganaText(hurigana: text)
-                } else {
-                    Text(text)
-                }
+    private var cellFace: some View {
+        VStack {
+            if frontText.isHurigana {
+                HuriganaText(hurigana: frontText, hideYomi: isFront)
+            } else {
+                Text(frontText)
             }
-        } else {
-            EmptyView()
+            Text(backText)
+                .opacity(isFront ? 0 : 1)
         }
     }
     

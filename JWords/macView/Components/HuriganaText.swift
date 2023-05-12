@@ -10,10 +10,12 @@ import SwiftUI
 struct HuriganaText: View {
     private let huris: [Huri]
     private let fontSize: CGFloat
+    private let hideYomi: Bool
     
-    init(hurigana: String, fontSize: CGFloat = 20) {
+    init(hurigana: String, fontSize: CGFloat = 20, hideYomi: Bool = false) {
         self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
         self.fontSize = fontSize
+        self.hideYomi = hideYomi
     }
 
     var body: some View {
@@ -35,6 +37,7 @@ struct HuriganaText: View {
                     .font(.system(size: fontSize / 2))
                     .lineLimit(1)
                     .offset(y: -fontSize / 1.2)
+                    .opacity(hideYomi ? 0 : 1)
             }
         } else {
             Text(huri.gana)
