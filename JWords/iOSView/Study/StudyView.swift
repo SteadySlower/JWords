@@ -212,7 +212,8 @@ struct WordList: ReducerProtocol {
                 case .wordBookEditButtonTapped:
                     break
                 case .wordAddButtonTapped:
-                    break
+                    state.showSideBar = false
+                    return .task { .setAddModal(isPresented: true) }
                 }
                 state.showSideBar = false
                 return .none
