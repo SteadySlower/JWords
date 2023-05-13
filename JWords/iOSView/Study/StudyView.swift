@@ -174,7 +174,6 @@ struct WordList: ReducerProtocol {
                 switch action {
                 case .setFrontType(_):
                     state._words = IdentifiedArray(uniqueElements: state._words.map { StudyWord.State(unit: $0.unit, frontType: state.setting.frontType) })
-                    return .none
                 case .setStudyViewMode(let mode):
                     switch mode {
                     case .normal:
@@ -185,8 +184,6 @@ struct WordList: ReducerProtocol {
                     case .selection:
                         state.selectionWords = IdentifiedArrayOf(uniqueElements: state.words.map { SelectionWord.State(unit: $0.unit, frontType: state.setting.frontType) })
                     }
-                    state.showSideBar = false
-                    return .none
                 case .setStudyMode(let mode):
                     switch mode {
                     case .all, .excludeSuccess:
@@ -198,9 +195,13 @@ struct WordList: ReducerProtocol {
                             uniqueElements: state._words
                                 .map { StudyWord.State(unit: $0.unit, isLocked: true) })
                     }
-                    state.showSideBar = false
-                    return .none
+                case .wordBookEditButtonTapped:
+                    break
+                case .wordAddButtonTapped:
+                    break
                 }
+                state.showSideBar = false
+                return .none
             default:
                 return .none
             }
@@ -302,18 +303,15 @@ struct StudyView: View {
                     }
                     .disabled(vs.setting.studyViewMode != .normal)
                     Button("설정") {
-                        vs.send(.setSideBar(isPresented: true))
+                        vs.send(.setSideBar(isPresented: !vs.showSideBar))
                     }
                 }
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                HStack {
-                    Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
-                        vs.send(.setMoveModal(isPresented: true))
-                    }
-                    .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
-                    Button("+") { vs.send(.setAddModal(isPresented: true)) }
+                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                    vs.send(.setMoveModal(isPresented: true))
                 }
+                .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
             } }
             #endif
         }
