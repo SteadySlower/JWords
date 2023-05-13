@@ -87,6 +87,37 @@ struct WordList: ReducerProtocol {
             setting.studyViewMode = .normal
         }
         
+        fileprivate mutating func onFrontTypeChanged() {
+            _words = IdentifiedArray(uniqueElements: _words.map { StudyWord.State(unit: $0.unit, frontType: setting.frontType) })
+        }
+        
+        fileprivate mutating func onStudyViewModeChanged() {
+            let mode = setting.studyViewMode
+            switch mode {
+            case .normal:
+                editWords = []
+                selectionWords = []
+            case .edit:
+                editWords = IdentifiedArrayOf(uniqueElements: words.map { EditWord.State(unit: $0.unit, frontType: setting.frontType) })
+            case .selection:
+                selectionWords = IdentifiedArrayOf(uniqueElements: words.map { SelectionWord.State(unit: $0.unit, frontType: setting.frontType) })
+            }
+        }
+        
+        fileprivate mutating func onStudyModeChanged() {
+            let mode = setting.studyMode
+            switch mode {
+            case .all, .excludeSuccess:
+                _words = IdentifiedArray(
+                    uniqueElements: _words
+                        .map { StudyWord.State(unit: $0.unit, isLocked: false) })
+            case .onlyFail:
+                _words = IdentifiedArray(
+                    uniqueElements: _words
+                        .map { StudyWord.State(unit: $0.unit, isLocked: true) })
+            }
+        }
+        
     }
 
     enum Action: Equatable {
@@ -173,28 +204,11 @@ struct WordList: ReducerProtocol {
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):
-                    state._words = IdentifiedArray(uniqueElements: state._words.map { StudyWord.State(unit: $0.unit, frontType: state.setting.frontType) })
-                case .setStudyViewMode(let mode):
-                    switch mode {
-                    case .normal:
-                        state.editWords = []
-                        state.selectionWords = []
-                    case .edit:
-                        state.editWords = IdentifiedArrayOf(uniqueElements: state.words.map { EditWord.State(unit: $0.unit, frontType: state.setting.frontType) })
-                    case .selection:
-                        state.selectionWords = IdentifiedArrayOf(uniqueElements: state.words.map { SelectionWord.State(unit: $0.unit, frontType: state.setting.frontType) })
-                    }
-                case .setStudyMode(let mode):
-                    switch mode {
-                    case .all, .excludeSuccess:
-                        state._words = IdentifiedArray(
-                            uniqueElements: state._words
-                                .map { StudyWord.State(unit: $0.unit, isLocked: false) })
-                    case .onlyFail:
-                        state._words = IdentifiedArray(
-                            uniqueElements: state._words
-                                .map { StudyWord.State(unit: $0.unit, isLocked: true) })
-                    }
+                    state.onFrontTypeChanged()
+                case .setStudyViewMode(_):
+                    state.onStudyViewModeChanged()
+                case .setStudyMode(_):
+                    state.onStudyModeChanged()
                 case .wordBookEditButtonTapped:
                     break
                 case .wordAddButtonTapped:
