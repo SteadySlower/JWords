@@ -298,11 +298,11 @@ struct StudyView: View {
             #if os(iOS)
             .toolbar { ToolbarItem {
                 HStack {
-                    Button("랜덤") {
+                    Button("♻️") {
                         vs.send(.randomButtonTapped)
                     }
                     .disabled(vs.setting.studyViewMode != .normal)
-                    Button("설정") {
+                    Button("⚙️") {
                         vs.send(.setSideBar(isPresented: !vs.showSideBar))
                     }
                 }
