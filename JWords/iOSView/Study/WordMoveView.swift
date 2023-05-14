@@ -54,7 +54,7 @@ struct MoveWords: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.isLoading = true
-                state.wordBooks = try! cd.fetchSets()
+                state.wordBooks = try! cd.fetchSets().filter { $0.id != state.fromBook.id }
                 state.isLoading = false
                 return .none
             case .updateSelection(let id):
