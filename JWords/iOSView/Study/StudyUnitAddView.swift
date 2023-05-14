@@ -180,7 +180,7 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
-                    Button("추가") { vs.send(.addButtonTapped) }
+                    Button(vs.unit == nil ? "추가" : "수정") { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
                 }
             }
