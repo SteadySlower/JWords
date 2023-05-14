@@ -211,6 +211,8 @@ struct WordList: ReducerProtocol {
                         uniqueElements: words
                             .map { StudyWord.State(unit: $0, isLocked: false) })
                     return .task { .setAddModal(isPresented: false) }
+                case .cancelButtonTapped:
+                    return .task { .setAddModal(isPresented: false) }
                 default:
                     return .none
                 }
