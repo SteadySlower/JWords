@@ -101,7 +101,7 @@ class CoreDataClient {
                     kanjiText: String,
                     kanjiImageID: String?,
                     meaningText: String,
-                    meaningImageID: String?) throws {
+                    meaningImageID: String?) throws -> StudyUnit {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
             print("디버그: StudyUnitMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -128,6 +128,7 @@ class CoreDataClient {
         
         do {
             try context.save()
+            return StudyUnit(from: mo)
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)

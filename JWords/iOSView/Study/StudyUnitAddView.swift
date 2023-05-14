@@ -66,6 +66,8 @@ struct AddingUnit: ReducerProtocol {
         case alertDismissed
         case cancelButtonTapped
         case addUnit
+        case unitEdited(StudyUnit)
+        case unitAdded(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -108,12 +110,13 @@ struct AddingUnit: ReducerProtocol {
                 return .none
             case .addUnit:
                 if let set = state.set {
-                    try! cd.insertUnit(in: set,
+                    let added = try! cd.insertUnit(in: set,
                                   type: state.unitType,
                                   kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
                                   kanjiImageID: nil,
                                   meaningText: state.meaningText,
                                   meaningImageID: nil)
+                    return .task { .unitAdded(added) }
                 } else if let unit = state.unit {
                     // unit 수정
                 }

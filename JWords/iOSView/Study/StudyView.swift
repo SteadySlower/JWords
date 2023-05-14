@@ -197,8 +197,23 @@ struct WordList: ReducerProtocol {
                 }
                 return .none
             // actions from side bar and modals
-            case .editWord(let editWordAction):
-                return .none
+            case .editWord(let action):
+                switch action {
+                default:
+                    return .none
+                }
+            case .addUnit(let action):
+                switch action {
+                case let .unitAdded(unit):
+                    var words = state._words.map { $0.unit }
+                    words.append(unit)
+                    state._words = IdentifiedArray(
+                        uniqueElements: words
+                            .map { StudyWord.State(unit: $0, isLocked: false) })
+                    return .task { .setAddModal(isPresented: false) }
+                default:
+                    return .none
+                }
             case .moveWords(let action):
                 return .none
             case .sideBar(let action):
