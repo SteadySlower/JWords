@@ -151,6 +151,13 @@ struct AddingUnit: ReducerProtocol {
                     return .task { .unitAdded(added) }
                 }
                 return .none
+            case .deleteUnit:
+                if let unit = state.unit,
+                   let set = state.set {
+                    let deleted = try! cd.removeUnit(unit, from: set)
+                    return .task { .unitDeleted(deleted) }
+                }
+                return .none
             default:
                 return .none
             }
