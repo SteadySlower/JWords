@@ -25,9 +25,15 @@ struct WordList: ReducerProtocol {
         var moveWords: MoveWords.State?
         var addUnit: AddingUnit.State?
         
-        var showEditModal: Bool = false
-        var showMoveModal: Bool = false
-        var showAddModal: Bool = false
+        var showEditModal: Bool {
+            toEditWord != nil
+        }
+        var showMoveModal: Bool {
+            moveWords != nil
+        }
+        var showAddModal: Bool {
+            addUnit != nil
+        }
         var showSideBar: Bool = false
         
         init(set: StudySet) {
@@ -64,7 +70,6 @@ struct WordList: ReducerProtocol {
         fileprivate mutating func editCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
             toEditWord = AddingUnit.State(unit: word)
-            showEditModal = true
         }
         
         fileprivate mutating func clearEdit() {
@@ -176,7 +181,7 @@ struct WordList: ReducerProtocol {
                 state.showSideBar = isPresented
                 return .none
             case .setEditModal(let isPresent):
-                state.showEditModal = isPresent
+                if !isPresent { state.toEditWord = nil }
                 return .none
             case .setMoveModal(let isPresent):
                 if isPresent {
@@ -185,11 +190,9 @@ struct WordList: ReducerProtocol {
                 } else {
                     state.clearMove()
                 }
-                state.showMoveModal = isPresent
                 return .none
             case .setAddModal(let isPresent):
                 guard let set = state.set else { return .none }
-                state.showAddModal = isPresent
                 if isPresent {
                     state.addUnit = AddingUnit.State(set: set)
                 } else {
