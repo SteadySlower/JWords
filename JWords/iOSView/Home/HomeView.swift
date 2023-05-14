@@ -62,9 +62,6 @@ struct HomeList: ReducerProtocol {
                 return .none
             case .inputBook(let action):
                 switch action {
-                case .addBookResponse(.success):
-                    state.inputBook = nil
-                    return .none
                 case .cancelButtonTapped:
                     state.inputBook = nil
                     return .none

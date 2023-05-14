@@ -18,6 +18,9 @@ enum AppError: Error, Equatable {
     case notConvertedToHuri
     case KanjiTooLong
     
+    // error when add study set
+    case emptyTitle
+    
     case imageCompressor(error: AppError.ImageCompressor)
     case imageUploader(error: AppError.ImageUploader)
     case wordService(error: AppError.WordService)
@@ -31,6 +34,8 @@ enum AppError: Error, Equatable {
             return "한자는 1글자 이상 저장할 수 없습니다."
         case .notConvertedToHuri:
             return "후리가나로 변환해야 저장할 수 있습니다."
+        case .emptyTitle:
+            return "제목이 비어 있습니다."
         default:
             return "알 수 없는 에러입니다."
         }

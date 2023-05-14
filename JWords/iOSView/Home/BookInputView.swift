@@ -16,6 +16,7 @@ struct InputBook: ReducerProtocol {
         var title: String
         var preferredFrontType: FrontType
         var isLoading: Bool = false
+        var alert: AlertState<Action>?
         
         init(set: StudySet? = nil) {
             self.set = set
@@ -32,30 +33,13 @@ struct InputBook: ReducerProtocol {
     enum Action: Equatable {
         case updateTitle(String)
         case updatePreferredFrontType(FrontType)
+        case showErrorAlert(AppError)
+        case alertDismissed
         case addButtonTapped
         case cancelButtonTapped
-        case addBookResponse(TaskResult<Void>)
-        
-        static func == (lhs: InputBook.Action, rhs: InputBook.Action) -> Bool {
-            switch (lhs, rhs) {
-            case let (.updateTitle(lhsTitle), .updateTitle(rhsTitle)):
-                return lhsTitle == rhsTitle
-            case let (.updatePreferredFrontType(lhsType), .updatePreferredFrontType(rhsType)):
-                return lhsType == rhsType
-            case (.addButtonTapped, .addButtonTapped):
-                return true
-            case (.cancelButtonTapped, .cancelButtonTapped):
-                return true
-            case (.addBookResponse, .addBookResponse):
-                return true
-            default:
-                return false
-            }
-        }
     }
     
-    @Dependency(\.wordBookClient) var wordBookClient
-    private enum AddBookID {}
+    private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -66,15 +50,17 @@ struct InputBook: ReducerProtocol {
             case let .updatePreferredFrontType(type):
                 state.preferredFrontType = type
                 return .none
+            case .showErrorAlert(let error):
+                state.alert = error.simpleAlert(action: Action.self)
+                return .none
+            case .alertDismissed:
+                state.alert = nil
+                return .none
             case .addButtonTapped:
-                guard !state.title.isEmpty else { return .none }
-                state.isLoading = true
-                return .task { [title = state.title, type = state.preferredFrontType] in
-                    await .addBookResponse(TaskResult { try await wordBookClient.addBook(title, type) })
+                guard !state.title.isEmpty else {
+                    return .task { .showErrorAlert(.emptyTitle) }
                 }
-            case .addBookResponse(.success):
-                state.isLoading = false
-                state.clear()
+                state.isLoading = true
                 return .none
             default:
                 return .none
@@ -107,6 +93,10 @@ struct WordBookAddModal: View {
                     }
                 }
             }
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
             .loadingView(vs.isLoading)
             .padding()
         }
