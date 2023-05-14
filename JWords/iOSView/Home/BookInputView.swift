@@ -12,9 +12,16 @@ import ComposableArchitecture
 struct InputBook: ReducerProtocol {
     
     struct State: Equatable {
-        var title: String = ""
-        var preferredFrontType: FrontType = .kanji
+        let set: StudySet?
+        var title: String
+        var preferredFrontType: FrontType
         var isLoading: Bool = false
+        
+        init(set: StudySet? = nil) {
+            self.set = set
+            self.title = set?.title ?? ""
+            self.preferredFrontType = set?.preferredFrontType ?? .kanji
+        }
         
         mutating func clear() {
             title = ""
