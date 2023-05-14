@@ -38,6 +38,7 @@ struct InputBook: ReducerProtocol {
         case addButtonTapped
         case cancelButtonTapped
         case setAdded
+        case setEdited(StudySet)
     }
     
     private let cd = CoreDataClient.shared
@@ -62,7 +63,18 @@ struct InputBook: ReducerProtocol {
                     return .task { .showErrorAlert(.emptyTitle) }
                 }
                 state.isLoading = true
-                try! cd.insertSet(title: state.title, preferredFrontType: state.preferredFrontType)
+                if let set = state.set {
+                    let edited = try! cd.updateSet(set,
+                                                   title: state.title,
+                                                   isAutoSchedule: true,
+                                                   preferredFrontType: state.preferredFrontType,
+                                                   closed: set.closed)
+                    return .task { .setEdited(edited) }
+                } else {
+                    try! cd.insertSet(title: state.title,
+                                      isAutoSchedule: true,
+                                      preferredFrontType: state.preferredFrontType)
+                }
                 state.isLoading = false
                 return .task { .setAdded }
             default:

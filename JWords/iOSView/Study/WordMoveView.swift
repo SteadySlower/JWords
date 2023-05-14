@@ -71,7 +71,12 @@ struct MoveWords: ReducerProtocol {
                                       to: toBook)
                 }
                 if state.willCloseBook {
-                    try! cd.updateSet(state.fromBook, closed: true)
+                    let toClose = state.fromBook
+                    _ = try! cd.updateSet(toClose,
+                                          title: toClose.title,
+                                          isAutoSchedule: toClose.isAutoSchedule,
+                                          preferredFrontType: toClose.preferredFrontType,
+                                          closed: true)
                 }
                 state.isLoading = false
                 return .task { .onMoved }

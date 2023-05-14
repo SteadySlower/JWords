@@ -23,7 +23,7 @@ struct CoreDataTestView: View {
                         Text(studySet.title + " \(studySet.createdAt.onlyDate)")
                         HStack {
                             NavigationLink("📖") { CDTStudyView(set: studySet) }
-                            Button("🗑️") { try! cd.updateSet(studySet, closed: true) }
+                            Button("🗑️") { try! cd.updateSet(studySet, title: studySet.title, isAutoSchedule: studySet.isAutoSchedule, preferredFrontType: studySet.preferredFrontType, closed: true) }
                         }
                     }
                     .padding(10)
@@ -49,7 +49,10 @@ struct CDTSetAddingModal: View {
     var body: some View {
         VStack {
             TextField("제목 입력", text: $title)
-            Button("저장") { try! cd.insertSet(title: title); dismiss() }
+            Button("저장") {
+                try! cd.insertSet(title: title, isAutoSchedule: true, preferredFrontType: .kanji)
+                dismiss()
+            }
         }
     }
     
