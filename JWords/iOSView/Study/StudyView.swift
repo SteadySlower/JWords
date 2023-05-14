@@ -234,6 +234,13 @@ struct WordList: ReducerProtocol {
                     state._words.update(newState, at: index)
                     state.setting.studyViewMode = .normal
                     return .task { .setEditModal(isPresented: false) }
+                case let .unitDeleted(unit):
+                    let words = state._words.map { $0.unit }.filter { $0.id != unit.id }
+                    state._words = IdentifiedArray(
+                        uniqueElements: words
+                            .map { StudyWord.State(unit: $0, isLocked: false) })
+                    state.clearEdit()
+                    return .task { .setEditModal(isPresented: false) }
                 case .cancelButtonTapped:
                     return .task { .setEditModal(isPresented: false) }
                 default:
