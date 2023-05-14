@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct HomeList: ReducerProtocol {
     struct State: Equatable {
-        var wordBooks:[WordBook] = []
+        var wordBooks:[StudySet] = []
         var wordList: WordList.State?
         var inputBook: InputBook.State?
         var isLoading: Bool = false
@@ -33,34 +33,27 @@ struct HomeList: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
-        case wordBookResponse(TaskResult<[WordBook]>)
-        case homeCellTapped(WordBook)
+        case homeCellTapped(StudySet)
         case setInputBookModal(isPresent: Bool)
         case showStudyView(Bool)
         case wordList(action: WordList.Action)
         case inputBook(action: InputBook.Action)
     }
     
-    @Dependency(\.wordBookClient) var wordBookClient
+    let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
                 state.clear()
-                state.isLoading = true
-                return .task {
-                    await .wordBookResponse(TaskResult { try await wordBookClient.wordBooks() })
-                }
-            case let .wordBookResponse(.success(books)):
-                state.wordBooks = books
-                state.isLoading = false
+                state.wordBooks = try! cd.fetchSets()
                 return .none
             case .setInputBookModal(let isPresent):
                 state.inputBook = isPresent ? InputBook.State() : nil
                 return .none
             case let .homeCellTapped(wordBook):
-                state.wordList = WordList.State(wordBook: wordBook)
+                state.wordList = WordList.State(set: wordBook)
                 return .none
             case .wordList(let action):
                 if action == WordList.Action.dismiss {
@@ -69,7 +62,8 @@ struct HomeList: ReducerProtocol {
                 return .none
             case .inputBook(let action):
                 switch action {
-                case .addBookResponse(.success):
+                case .setAdded:
+                    state.wordBooks = try! cd.fetchSets()
                     state.inputBook = nil
                     return .none
                 case .cancelButtonTapped:
@@ -111,7 +105,7 @@ struct HomeView: View {
                 { EmptyView() }
                 VStack(spacing: 8) {
                     ForEach(vs.wordBooks, id: \.id) { wordBook in
-                        HomeCell(wordBook: wordBook) { vs.send(.homeCellTapped(wordBook)) }
+                        HomeCell(studySet: wordBook) { vs.send(.homeCellTapped(wordBook)) }
                     }
                 }
             }

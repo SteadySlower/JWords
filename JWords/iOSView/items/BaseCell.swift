@@ -10,84 +10,50 @@ import Kingfisher
 
 struct BaseCell: View {
     
-    private let word: Word
+    private let unit: StudyUnit
     private let frontType: FrontType
     private let isFront: Bool
     private let dragAmount: CGSize
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
-    init(word: Word,
+    var frontText: String {
+        switch frontType {
+        case .kanji:
+            return unit.kanjiText ?? ""
+        case .meaning:
+            return unit.meaningText ?? ""
+        }
+    }
+    
+    var backText: String {
+        switch frontType {
+        case .kanji:
+            return unit.meaningText ?? ""
+        case .meaning:
+            return unit.kanjiText ?? ""
+        }
+    }
+    
+    init(unit: StudyUnit,
          frontType: FrontType,
          isFront: Bool = true,
          dragAmount: CGSize = .zero) {
-        self.word = word
+        self.unit = unit
         self.frontType = frontType
         self.isFront = isFront
         self.dragAmount = dragAmount
     }
-    
-    var frontText: String {
-        switch frontType {
-        case .meaning:
-            return word.meaningText
-        case .kanji:
-            return word.kanjiText
-        }
-    }
-    
-    var frontImageURLs: [URL] {
-        switch frontType {
-        case .meaning:
-            return [word.meaningImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
-        case .kanji:
-            return [word.kanjiImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
-        }
-    }
-    
-    // frontText를 제외한 두 가지 text에서 빈 text를 제외하고 띄어쓰기
-    var backText: String {
-        switch frontType {
-        case .meaning:
-            return [word.ganaText, word.kanjiText]
-                .filter { !$0.isEmpty }
-                .joined(separator: "\n")
-        case .kanji:
-            return [word.ganaText, word.meaningText]
-                .filter { !$0.isEmpty }
-                .joined(separator: "\n")
-        }
-    }
-    
-    var backImageURLs: [URL] {
-        switch frontType {
-        case .meaning:
-            return [word.kanjiImageURL, word.ganaImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
-        case .kanji:
-            return [word.ganaImageURL, word.meaningImageURL]
-                .filter { !$0.isEmpty }
-                .compactMap { URL(string: $0) }
-        }
-    }
 
     var body: some View {
         ZStack {
-            sizeDecisionView
             swipeGuide
             ZStack {
                 cellColor
-                cellFace(isFront ? frontText : backText,
-                         isFront ? frontImageURLs : backImageURLs)
+                cellFace
             }
             .offset(dragAmount)
         }
         .frame(width: deviceWidth * 0.9)
-        .frame(minHeight: word.hasImage ? 200 : 100)
         #if os(iOS)
         .onAppear { deviceOrientationChanged() }
         .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
@@ -96,19 +62,7 @@ struct BaseCell: View {
 }
 
 extension BaseCell {
-    private var sizeDecisionView: some View {
-        ZStack {
-            ZStack {
-                cellFace(frontText, frontImageURLs)
-                Color.white
-            }
-            ZStack {
-                cellFace(backText, backImageURLs)
-                Color.white
-            }
-        }
-    }
-    
+
     private var swipeGuide: some View {
         HStack {
             Image(systemName: "circle")
@@ -126,7 +80,7 @@ extension BaseCell {
     
     @ViewBuilder
     private var cellColor: some View {
-        switch word.studyState {
+        switch unit.studyState {
         case .undefined:
             Color.white
         case .success:
@@ -136,17 +90,15 @@ extension BaseCell {
         }
     }
     
-    private func cellFace(_ text: String, _ imageURLs: [URL]) -> some View {
+    private var cellFace: some View {
         VStack {
-            Text(text)
-                .font(.system(size: fontSize(of: text)))
-            VStack {
-                ForEach(imageURLs, id: \.self) { url in
-                    KFImage(url)
-                        .resizable()
-                        .scaledToFit()
-                }
+            if frontText.isHurigana {
+                HuriganaText(hurigana: frontText, hideYomi: isFront)
+            } else {
+                Text(frontText)
             }
+            Text(backText)
+                .opacity(isFront ? 0 : 1)
         }
     }
     
@@ -168,3 +120,9 @@ extension BaseCell {
     
 }
 
+struct BaseCell_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        BaseCell(unit: .init(index: 0), frontType: .meaning)
+    }
+}
