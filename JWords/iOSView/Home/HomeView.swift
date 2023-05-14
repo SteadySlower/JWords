@@ -62,6 +62,10 @@ struct HomeList: ReducerProtocol {
                 return .none
             case .inputBook(let action):
                 switch action {
+                case .setAdded:
+                    state.wordBooks = try! cd.fetchSets()
+                    state.inputBook = nil
+                    return .none
                 case .cancelButtonTapped:
                     state.inputBook = nil
                     return .none

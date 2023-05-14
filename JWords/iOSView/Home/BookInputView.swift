@@ -37,6 +37,7 @@ struct InputBook: ReducerProtocol {
         case alertDismissed
         case addButtonTapped
         case cancelButtonTapped
+        case setAdded
     }
     
     private let cd = CoreDataClient.shared
@@ -61,7 +62,9 @@ struct InputBook: ReducerProtocol {
                     return .task { .showErrorAlert(.emptyTitle) }
                 }
                 state.isLoading = true
-                return .none
+                try! cd.insertSet(title: state.title, preferredFrontType: state.preferredFrontType)
+                state.isLoading = false
+                return .task { .setAdded }
             default:
                 return .none
             }
