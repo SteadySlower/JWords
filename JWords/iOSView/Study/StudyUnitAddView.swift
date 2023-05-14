@@ -33,8 +33,8 @@ struct AddingUnit: ReducerProtocol {
             self.alert = nil
         }
         
-        init(unit: StudyUnit) {
-            self.set = nil
+        init(set: StudySet, unit: StudyUnit) {
+            self.set = set
             self.unit = unit
             self.unitType = unit.type
             self.meaningText = unit.meaningText ?? ""
@@ -51,6 +51,22 @@ struct AddingUnit: ReducerProtocol {
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
         }
+        
+        mutating func setDeleteAlertState() {
+            guard let set = set else { return }
+            alert = AlertState<Action> {
+                TextState("단어 삭제")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("취소")
+                }
+                ButtonState(role: .destructive, action: .deleteUnit) {
+                    TextState("삭제")
+                }
+            } message: {
+                TextState("이 단어를 '\(set.title)'에서 삭제합니다.\n(다른 단어장에서는 삭제되지 않습니다.)")
+            }
+        }
     
     }
     
@@ -64,9 +80,12 @@ struct AddingUnit: ReducerProtocol {
         case addButtonTapped
         case showErrorAlert(AppError)
         case alertDismissed
+        case deleteButtonTapped
         case cancelButtonTapped
         case addUnit
+        case deleteUnit
         case unitEdited(StudyUnit)
+        case unitDeleted(StudyUnit)
         case unitAdded(StudyUnit)
     }
     
@@ -102,6 +121,9 @@ struct AddingUnit: ReducerProtocol {
                 }
                 print("디버그: \(state.huriText.hurigana)")
                 return .task { .addUnit }
+            case .deleteButtonTapped:
+                state.setDeleteAlertState()
+                return .none
             case .showErrorAlert(let error):
                 state.alert = error.simpleAlert(action: Action.self)
                 return .none
@@ -180,6 +202,11 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
+                    if vs.unit != nil && vs.set != nil {
+                        Button("삭제") {
+                            vs.send(.deleteButtonTapped)
+                        }.foregroundColor(.red)
+                    }
                     Button(vs.unit == nil ? "추가" : "수정") { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
                 }

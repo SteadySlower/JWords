@@ -74,7 +74,8 @@ struct WordList: ReducerProtocol {
         
         fileprivate mutating func editCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
-            toEditWord = AddingUnit.State(unit: word)
+            guard let set = set else { return }
+            toEditWord = AddingUnit.State(set: set, unit: word)
         }
         
         fileprivate mutating func clearEdit() {
