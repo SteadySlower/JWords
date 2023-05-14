@@ -205,6 +205,8 @@ struct WordList: ReducerProtocol {
                     state._words.update(newState, at: index)
                     state.setting.studyViewMode = .normal
                     return .task { .setEditModal(isPresented: false) }
+                case .cancelButtonTapped:
+                    return .task { .setEditModal(isPresented: false) }
                 default:
                     return .none
                 }
