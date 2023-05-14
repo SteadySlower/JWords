@@ -23,6 +23,7 @@ struct AddingUnit: ReducerProtocol {
         
         var isEditingKanji = true
         
+        // when adding new unit
         init(set: StudySet) {
             self.set = set
             self.unit = nil
@@ -33,6 +34,7 @@ struct AddingUnit: ReducerProtocol {
             self.alert = nil
         }
         
+        // when editing existing unit
         init(set: StudySet, unit: StudyUnit) {
             self.set = set
             self.unit = unit
@@ -131,15 +133,7 @@ struct AddingUnit: ReducerProtocol {
                 state.alert = nil
                 return .none
             case .addUnit:
-                if let set = state.set {
-                    let added = try! cd.insertUnit(in: set,
-                                  type: state.unitType,
-                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
-                                  kanjiImageID: nil,
-                                  meaningText: state.meaningText,
-                                  meaningImageID: nil)
-                    return .task { .unitAdded(added) }
-                } else if let unit = state.unit {
+                if let unit = state.unit {
                     let edited = try! cd.editUnit(of: unit,
                                                   type: state.unitType,
                                                   kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
@@ -147,6 +141,14 @@ struct AddingUnit: ReducerProtocol {
                                                   meaningText: state.meaningText,
                                                   meaningImageID: nil)
                     return .task { .unitEdited(edited) }
+                } else if let set = state.set {
+                    let added = try! cd.insertUnit(in: set,
+                                  type: state.unitType,
+                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                  kanjiImageID: nil,
+                                  meaningText: state.meaningText,
+                                  meaningImageID: nil)
+                    return .task { .unitAdded(added) }
                 }
                 return .none
             default:
