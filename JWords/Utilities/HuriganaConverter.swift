@@ -73,6 +73,7 @@ class HuriganaConverter {
         
         for huri in huris {
             for kanji in huri.kanji {
+                guard kanji.isKanji else { continue }
                 result.append(String(kanji))
             }
         }
