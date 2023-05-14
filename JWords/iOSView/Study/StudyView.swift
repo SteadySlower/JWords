@@ -226,6 +226,8 @@ struct WordList: ReducerProtocol {
                 }
             case .moveWords(let action):
                 switch action {
+                case .onMoved:
+                    return .task { .dismiss }
                 case .cancelButtonTapped:
                     return .task { .setMoveModal(isPresented: false) }
                 default:
