@@ -69,14 +69,16 @@ struct InputBook: ReducerProtocol {
                                                    isAutoSchedule: true,
                                                    preferredFrontType: state.preferredFrontType,
                                                    closed: set.closed)
+                    state.isLoading = false
                     return .task { .setEdited(edited) }
                 } else {
                     try! cd.insertSet(title: state.title,
                                       isAutoSchedule: true,
                                       preferredFrontType: state.preferredFrontType)
+                    state.isLoading = false
+                    return .task { .setAdded }
                 }
-                state.isLoading = false
-                return .task { .setAdded }
+
             default:
                 return .none
             }

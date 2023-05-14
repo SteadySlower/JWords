@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct WordList: ReducerProtocol {
     struct State: Equatable {
-        let set: StudySet?
+        var set: StudySet?
         var isLoading: Bool = false
         
         // state for cells of each StudyViewMode
@@ -21,9 +21,14 @@ struct WordList: ReducerProtocol {
         
         // state for side bar and modals
         var setting: StudySetting.State
+        var editSet: InputBook.State?
         var toEditWord: AddingUnit.State?
         var moveWords: MoveWords.State?
         var addUnit: AddingUnit.State?
+        
+        var showEditSetModal: Bool {
+            editSet != nil
+        }
         
         var showEditModal: Bool {
             toEditWord != nil
@@ -129,6 +134,7 @@ struct WordList: ReducerProtocol {
         case onAppear
         case setMoveModal(isPresented: Bool)
         case editButtonTapped
+        case setEditSetModal(isPresented: Bool)
         case setEditModal(isPresented: Bool)
         case setAddModal(isPresented: Bool)
         case setSideBar(isPresented: Bool)
@@ -136,6 +142,7 @@ struct WordList: ReducerProtocol {
         case closeButtonTapped
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
+        case editSet(action: InputBook.Action)
         case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
         case addUnit(action: AddingUnit.Action)
@@ -180,6 +187,14 @@ struct WordList: ReducerProtocol {
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
                 return .none
+            case .setEditSetModal(let isPresented):
+                if isPresented {
+                    guard let set = state.set else { return .none }
+                    state.editSet = InputBook.State(set: set)
+                } else {
+                    state.editSet = nil
+                }
+                return .none
             case .setEditModal(let isPresent):
                 if !isPresent { state.toEditWord = nil }
                 return .none
@@ -200,6 +215,16 @@ struct WordList: ReducerProtocol {
                 }
                 return .none
             // actions from side bar and modals
+            case .editSet(let action):
+                switch action {
+                case .setEdited(let set):
+                    state.set = set
+                    return .task { .setEditSetModal(isPresented: false) }
+                case .cancelButtonTapped:
+                    return .task { .setEditSetModal(isPresented: false) }
+                default:
+                    return .none
+                }
             case .editWord(let action):
                 switch action {
                 case .unitEdited(let unit):
@@ -245,7 +270,8 @@ struct WordList: ReducerProtocol {
                 case .setStudyMode(_):
                     state.onStudyModeChanged()
                 case .wordBookEditButtonTapped:
-                    break
+                    state.showSideBar = false
+                    return .task { .setEditSetModal(isPresented: true) }
                 case .wordAddButtonTapped:
                     state.showSideBar = false
                     return .task { .setAddModal(isPresented: true) }
@@ -273,6 +299,9 @@ struct WordList: ReducerProtocol {
         }
         .ifLet(\.addUnit, action: /Action.addUnit(action:)) {
             AddingUnit()
+        }
+        .ifLet(\.editSet, action: /Action.editSet(action:)) {
+            InputBook()
         }
     }
     
@@ -343,6 +372,14 @@ struct StudyView: View {
             ) {
                 IfLetStore(self.store.scope(state: \.addUnit, action: WordList.Action.addUnit(action:))) {
                     StudyUnitAddView(store: $0)
+                }
+            }
+            .sheet(isPresented: vs.binding(
+                get: \.showEditSetModal,
+                send: WordList.Action.setEditSetModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.editSet, action: WordList.Action.editSet(action:))) {
+                    WordBookAddModal(store: $0)
                 }
             }
             #if os(iOS)
