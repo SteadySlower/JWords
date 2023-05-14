@@ -118,7 +118,13 @@ struct AddingUnit: ReducerProtocol {
                                   meaningImageID: nil)
                     return .task { .unitAdded(added) }
                 } else if let unit = state.unit {
-                    // unit 수정
+                    let edited = try! cd.editUnit(of: unit,
+                                                  type: state.unitType,
+                                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                                  kanjiImageID: nil,
+                                                  meaningText: state.meaningText,
+                                                  meaningImageID: nil)
+                    return .task { .unitEdited(edited) }
                 }
                 return .none
             default:

@@ -199,6 +199,12 @@ struct WordList: ReducerProtocol {
             // actions from side bar and modals
             case .editWord(let action):
                 switch action {
+                case .unitEdited(let unit):
+                    guard let index = state._words.index(id: unit.id) else { return .none }
+                    let newState = StudyWord.State(unit: unit, frontType: state.setting.frontType)
+                    state._words.update(newState, at: index)
+                    state.setting.studyViewMode = .normal
+                    return .task { .setEditModal(isPresented: false) }
                 default:
                     return .none
                 }
