@@ -169,6 +169,30 @@ class CoreDataClient {
         }
     }
     
+    func removeUnit(_ unit: StudyUnit, from set: StudySet) throws -> StudyUnit {
+        guard let unitMO = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let setMO = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        unitMO.removeFromSet(setMO)
+        
+        do {
+            try context.save()
+            return StudyUnit(from: unitMO)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+    }
+    
     func fetchAllKanjis() throws -> [StudyUnit] {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
