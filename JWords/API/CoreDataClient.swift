@@ -136,6 +136,38 @@ class CoreDataClient {
         }
     }
     
+    func editUnit(of unit: StudyUnit,
+                    type: UnitType,
+                    kanjiText: String,
+                    kanjiImageID: String?,
+                    meaningText: String,
+                  meaningImageID: String?) throws -> StudyUnit {
+        
+        guard let mo = try context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        HuriganaConverter.shared.extractKanjis(from: kanjiText)
+            .compactMap { try? getKanjiMO($0) }
+            .forEach { mo.addToKanjiOfWord($0) }
+        
+        mo.type = Int16(type.rawValue)
+        if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
+        mo.kanjiImageID = kanjiImageID
+        if !meaningText.isEmpty { mo.meaningText = meaningText }
+        mo.meaningImageID = meaningImageID
+
+        do {
+            try context.save()
+            return StudyUnit(from: mo)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func fetchAllKanjis() throws -> [StudyUnit] {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
