@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import CoreData
 
-enum UnitType: CaseIterable {
+enum UnitType: Int, CaseIterable {
     case word, kanji, sentence
     
     var description: String {
@@ -19,16 +20,44 @@ enum UnitType: CaseIterable {
     }
 }
 
-struct StudyUnit: Equatable, Identifiable, Sendable {
+struct StudyUnit: Equatable, Identifiable {
     
     let id: String
+    let objectID: NSManagedObjectID
     let type: UnitType
-    let studySetID: String
-    let kanjiText: String
-    let kanjiImageID: String
-    let meaningText: String
-    let meaningImageID: String
+    let studySets: [StudySet]
+    let kanjiText: String?
+    let kanjiImageID: String?
+    let meaningText: String?
+    let meaningImageID: String?
     var studyState: StudyState
     let createdAt: Date
+    
+    init(from mo: StudyUnitMO) {
+        self.id = mo.id ?? ""
+        self.objectID = mo.objectID
+        self.type = UnitType(rawValue: Int(mo.type)) ?? .word
+        self.kanjiText = mo.kanjiText
+        self.kanjiImageID = mo.kanjiImageID
+        self.meaningText = mo.meaningText
+        self.meaningImageID = mo.meaningImageID
+        self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
+        self.createdAt = mo.createdAt ?? Date()
+        self.studySets = mo.set?.array.compactMap { $0 as? StudySetMO }.map { StudySet(from: $0) } ?? []
+    }
+    
+    // intializer for mocking
+    init(index: Int) {
+        self.id = UUID().uuidString
+        self.objectID = NSManagedObjectID()
+        self.type = UnitType.allCases.randomElement()!
+        self.studySets = []
+        self.kanjiText = "感動\(index)⌜かんどう⌟`"
+        self.kanjiImageID = nil
+        self.meaningText = "Meaning Text \(index)"
+        self.meaningImageID = nil
+        self.studyState = .undefined
+        self.createdAt = Date()
+    }
     
 }

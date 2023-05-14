@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct WordList: ReducerProtocol {
     struct State: Equatable {
-        let wordBook: WordBook?
+        var set: StudySet?
         var isLoading: Bool = false
         
         // state for cells of each StudyViewMode
@@ -21,23 +21,34 @@ struct WordList: ReducerProtocol {
         
         // state for side bar and modals
         var setting: StudySetting.State
-        var toEditWord: InputWord.State?
+        var editSet: InputBook.State?
+        var toEditWord: AddingUnit.State?
         var moveWords: MoveWords.State?
         var addUnit: AddingUnit.State?
         
-        var showEditModal: Bool = false
-        var showMoveModal: Bool = false
-        var showAddModal: Bool = false
-        var showSideBar: Bool = false
-        
-        init(wordBook: WordBook) {
-            self.wordBook = wordBook
-            self.setting = .init(frontMode: wordBook.preferredFrontType)
+        var showEditSetModal: Bool {
+            editSet != nil
         }
         
-        init(words: [Word]) {
-            self.wordBook = nil
-            self._words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(word: $0) })
+        var showEditModal: Bool {
+            toEditWord != nil
+        }
+        var showMoveModal: Bool {
+            moveWords != nil
+        }
+        var showAddModal: Bool {
+            addUnit != nil
+        }
+        var showSideBar: Bool = false
+        
+        init(set: StudySet) {
+            self.set = set
+            self.setting = .init(frontMode: set.preferredFrontType)
+        }
+        
+        init(units: [StudyUnit]) {
+            self.set = nil
+            self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
             self.setting = .init()
         }
         
@@ -53,18 +64,17 @@ struct WordList: ReducerProtocol {
             }
         }
         
-        var toMoveWords: [Word] {
+        var toMoveWords: [StudyUnit] {
             if setting.studyViewMode == .selection {
-                return selectionWords.filter { $0.isSelected }.map { $0.word }
+                return selectionWords.filter { $0.isSelected }.map { $0.unit }
             } else {
-                return _words.filter { $0.studyState != .success }.map { $0.word }
+                return _words.filter { $0.studyState != .success }.map { $0.unit }
             }
         }
         
         fileprivate mutating func editCellTapped(id: String) {
-            guard let word = _words.filter({ $0.id == id }).first?.word else { return }
-            toEditWord = InputWord.State(word: word)
-            showEditModal = true
+            guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
+            toEditWord = AddingUnit.State(unit: word)
         }
         
         fileprivate mutating func clearEdit() {
@@ -79,22 +89,52 @@ struct WordList: ReducerProtocol {
             setting.studyViewMode = .normal
         }
         
-        fileprivate mutating func editWord(word: Word) throws {
+        fileprivate mutating func editWord(word: StudyUnit) throws {
             guard let index = _words.index(id: word.id) else {
                 throw AppError.noMatchingWord(id: word.id)
             }
-            _words[index] = StudyWord.State(word: word, frontType: setting.frontType)
+            _words[index] = StudyWord.State(unit: word, frontType: setting.frontType)
             setting.studyViewMode = .normal
+        }
+        
+        fileprivate mutating func onFrontTypeChanged() {
+            _words = IdentifiedArray(uniqueElements: _words.map { StudyWord.State(unit: $0.unit, frontType: setting.frontType) })
+        }
+        
+        fileprivate mutating func onStudyViewModeChanged() {
+            let mode = setting.studyViewMode
+            switch mode {
+            case .normal:
+                editWords = []
+                selectionWords = []
+            case .edit:
+                editWords = IdentifiedArrayOf(uniqueElements: words.map { EditWord.State(unit: $0.unit, frontType: setting.frontType) })
+            case .selection:
+                selectionWords = IdentifiedArrayOf(uniqueElements: words.map { SelectionWord.State(unit: $0.unit, frontType: setting.frontType) })
+            }
+        }
+        
+        fileprivate mutating func onStudyModeChanged() {
+            let mode = setting.studyMode
+            switch mode {
+            case .all, .excludeSuccess:
+                _words = IdentifiedArray(
+                    uniqueElements: _words
+                        .map { StudyWord.State(unit: $0.unit, isLocked: false) })
+            case .onlyFail:
+                _words = IdentifiedArray(
+                    uniqueElements: _words
+                        .map { StudyWord.State(unit: $0.unit, isLocked: true) })
+            }
         }
         
     }
 
     enum Action: Equatable {
         case onAppear
-        case wordsResponse(TaskResult<[Word]>)
-        case imageFetchResponse(TaskResult<Bool>)
         case setMoveModal(isPresented: Bool)
         case editButtonTapped
+        case setEditSetModal(isPresented: Bool)
         case setEditModal(isPresented: Bool)
         case setAddModal(isPresented: Bool)
         case setSideBar(isPresented: Bool)
@@ -102,7 +142,8 @@ struct WordList: ReducerProtocol {
         case closeButtonTapped
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
-        case editWord(action: InputWord.Action)
+        case editSet(action: InputBook.Action)
+        case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
         case addUnit(action: AddingUnit.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
@@ -110,10 +151,8 @@ struct WordList: ReducerProtocol {
         case dismiss
     }
     
-    @Dependency(\.wordClient) var wordClient
-    @Dependency(\.imageClient) var imageClient
-    private enum FetchWordsID {}
-    private enum FetchImagesID {}
+    let ud = UserDefaultClient.shared
+    let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.setting, action: /Action.sideBar(action:)) {
@@ -124,28 +163,16 @@ struct WordList: ReducerProtocol {
             // actions for the list it self
             case .onAppear:
                 state.isLoading = true
-                guard let wordBook = state.wordBook else {
-                    let words = state._words.map { $0.word }
-                    return .task {
-                        await .imageFetchResponse(TaskResult { try await imageClient.prefetchImages(words) })
-                    }
-                    .cancellable(id: FetchImagesID.self)
+                guard let set = state.set else {
+                    state.isLoading = false
+                    return .none
                 }
-                return .task {
-                    await .wordsResponse(TaskResult { try await wordClient.words(wordBook) })
-                }
-                .cancellable(id: FetchWordsID.self)
-            case let .wordsResponse(.success(words)):
-                state._words = IdentifiedArrayOf(uniqueElements: words.map { StudyWord.State(word: $0, frontType: state.setting.frontType) })
-                return .task {
-                    await .imageFetchResponse(TaskResult { try await imageClient.prefetchImages(words) })
-                }
-                .cancellable(id: FetchImagesID.self)
-            case .imageFetchResponse:
+                let units = try! cd.fetchUnits(of: set)
+                state._words = IdentifiedArrayOf(
+                    uniqueElements: units.map {
+                        StudyWord.State(unit: $0, frontType: state.setting.frontType)
+                    })
                 state.isLoading = false
-                return .none
-            case .wordsResponse(.failure):
-                state._words = []
                 return .none
             case .randomButtonTapped:
                 state._words.shuffle()
@@ -160,81 +187,97 @@ struct WordList: ReducerProtocol {
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
                 return .none
+            case .setEditSetModal(let isPresented):
+                if isPresented {
+                    guard let set = state.set else { return .none }
+                    state.editSet = InputBook.State(set: set)
+                } else {
+                    state.editSet = nil
+                }
+                return .none
             case .setEditModal(let isPresent):
-                state.showEditModal = isPresent
+                if !isPresent { state.toEditWord = nil }
                 return .none
             case .setMoveModal(let isPresent):
                 if isPresent {
-                    guard let fromBook = state.wordBook else { return .none }
+                    guard let fromBook = state.set else { return .none }
                     state.moveWords = MoveWords.State(fromBook: fromBook, toMoveWords: state.toMoveWords)
                 } else {
                     state.clearMove()
                 }
-                state.showMoveModal = isPresent
                 return .none
             case .setAddModal(let isPresent):
-                state.showAddModal = isPresent
+                guard let set = state.set else { return .none }
                 if isPresent {
-                    state.addUnit = AddingUnit.State()
+                    state.addUnit = AddingUnit.State(set: set)
                 } else {
                     state.addUnit = nil
                 }
                 return .none
             // actions from side bar and modals
-            case .editWord(let editWordAction):
-                switch editWordAction {
-                case let .editWordResponse(.success(word)):
-                    do {
-                        try state.editWord(word: word)
-                    } catch {
-                        print(error)
-                        return .none
-                    }
-                    state.clearEdit()
-                    state.showEditModal = false
+            case .editSet(let action):
+                switch action {
+                case .setEdited(let set):
+                    state.set = set
+                    return .task { .setEditSetModal(isPresented: false) }
+                case .cancelButtonTapped:
+                    return .task { .setEditSetModal(isPresented: false) }
                 default:
-                    break
+                    return .none
                 }
-                return .none
+            case .editWord(let action):
+                switch action {
+                case .unitEdited(let unit):
+                    guard let index = state._words.index(id: unit.id) else { return .none }
+                    let newState = StudyWord.State(unit: unit, frontType: state.setting.frontType)
+                    state._words.update(newState, at: index)
+                    state.setting.studyViewMode = .normal
+                    return .task { .setEditModal(isPresented: false) }
+                case .cancelButtonTapped:
+                    return .task { .setEditModal(isPresented: false) }
+                default:
+                    return .none
+                }
+            case .addUnit(let action):
+                switch action {
+                case let .unitAdded(unit):
+                    var words = state._words.map { $0.unit }
+                    words.append(unit)
+                    state._words = IdentifiedArray(
+                        uniqueElements: words
+                            .map { StudyWord.State(unit: $0, isLocked: false) })
+                    return .task { .setAddModal(isPresented: false) }
+                case .cancelButtonTapped:
+                    return .task { .setAddModal(isPresented: false) }
+                default:
+                    return .none
+                }
             case .moveWords(let action):
                 switch action {
-                case .moveWordsResponse(.success):
+                case .onMoved:
                     return .task { .dismiss }
+                case .cancelButtonTapped:
+                    return .task { .setMoveModal(isPresented: false) }
                 default:
-                    break
+                    return .none
                 }
-                return .none
             case .sideBar(let action):
                 switch action {
                 case .setFrontType(_):
-                    state._words = IdentifiedArray(uniqueElements: state._words.map { StudyWord.State(word: $0.word, frontType: state.setting.frontType) })
-                    return .none
-                case .setStudyViewMode(let mode):
-                    switch mode {
-                    case .normal:
-                        state.editWords = []
-                        state.selectionWords = []
-                    case .edit:
-                        state.editWords = IdentifiedArrayOf(uniqueElements: state.words.map { EditWord.State(word: $0.word, frontType: state.setting.frontType) })
-                    case .selection:
-                        state.selectionWords = IdentifiedArrayOf(uniqueElements: state.words.map { SelectionWord.State(word: $0.word, frontType: state.setting.frontType) })
-                    }
+                    state.onFrontTypeChanged()
+                case .setStudyViewMode(_):
+                    state.onStudyViewModeChanged()
+                case .setStudyMode(_):
+                    state.onStudyModeChanged()
+                case .wordBookEditButtonTapped:
                     state.showSideBar = false
-                    return .none
-                case .setStudyMode(let mode):
-                    switch mode {
-                    case .all, .excludeSuccess:
-                        state._words = IdentifiedArray(
-                            uniqueElements: state._words
-                                .map { StudyWord.State(word: $0.word, isLocked: false) })
-                    case .onlyFail:
-                        state._words = IdentifiedArray(
-                            uniqueElements: state._words
-                                .map { StudyWord.State(word: $0.word, isLocked: true) })
-                    }
+                    return .task { .setEditSetModal(isPresented: true) }
+                case .wordAddButtonTapped:
                     state.showSideBar = false
-                    return .none
+                    return .task { .setAddModal(isPresented: true) }
                 }
+                state.showSideBar = false
+                return .none
             default:
                 return .none
             }
@@ -249,13 +292,16 @@ struct WordList: ReducerProtocol {
             SelectionWord()
         }
         .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
-            InputWord()
+            AddingUnit()
         }
         .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
             MoveWords()
         }
         .ifLet(\.addUnit, action: /Action.addUnit(action:)) {
             AddingUnit()
+        }
+        .ifLet(\.editSet, action: /Action.editSet(action:)) {
+            InputBook()
         }
     }
     
@@ -296,7 +342,7 @@ struct StudyView: View {
                 }
             }
             .loadingView(vs.isLoading)
-            .navigationTitle(vs.wordBook?.title ?? "틀린 단어 모아보기")
+            .navigationTitle(vs.set?.title ?? "틀린 단어 모아보기")
             .onAppear { vs.send(.onAppear) }
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
@@ -317,7 +363,7 @@ struct StudyView: View {
                 send: WordList.Action.setEditModal(isPresented:))
             ) {
                 IfLetStore(self.store.scope(state: \.toEditWord, action: WordList.Action.editWord(action:))) {
-                    WordInputView(store: $0)
+                    StudyUnitAddView(store: $0)
                 }
             }
             .sheet(isPresented: vs.binding(
@@ -328,26 +374,31 @@ struct StudyView: View {
                     StudyUnitAddView(store: $0)
                 }
             }
+            .sheet(isPresented: vs.binding(
+                get: \.showEditSetModal,
+                send: WordList.Action.setEditSetModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.editSet, action: WordList.Action.editSet(action:))) {
+                    WordBookAddModal(store: $0)
+                }
+            }
             #if os(iOS)
             .toolbar { ToolbarItem {
                 HStack {
-                    Button("랜덤") {
+                    Button("♻️") {
                         vs.send(.randomButtonTapped)
                     }
                     .disabled(vs.setting.studyViewMode != .normal)
-                    Button("설정") {
-                        vs.send(.setSideBar(isPresented: true))
+                    Button("⚙️") {
+                        vs.send(.setSideBar(isPresented: !vs.showSideBar))
                     }
                 }
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                HStack {
-                    Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
-                        vs.send(.setMoveModal(isPresented: true))
-                    }
-                    .disabled(vs.wordBook == nil || vs.setting.studyViewMode == .edit)
-                    Button("+") { vs.send(.setAddModal(isPresented: true)) }
+                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                    vs.send(.setMoveModal(isPresented: true))
                 }
+                .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
             } }
             #endif
         }
@@ -356,10 +407,10 @@ struct StudyView: View {
 
 struct StudyView_Previews: PreviewProvider {
     
-    private static let mockWords: [Word] = {
-        var result = [Word]()
+    private static let mockWords: [StudyUnit] = {
+        var result = [StudyUnit]()
         for i in 0..<10 {
-            result.append(Word(index: i))
+            result.append(StudyUnit(index: i))
         }
         return result
     }()
@@ -368,7 +419,7 @@ struct StudyView_Previews: PreviewProvider {
         NavigationView {
             StudyView(
                 store: Store(
-                    initialState: WordList.State(words: mockWords),
+                    initialState: WordList.State(units: mockWords),
                     reducer: WordList()._printChanges()
                 )
             )
@@ -380,7 +431,7 @@ struct StudyView_Previews: PreviewProvider {
         NavigationView {
             StudyView(
                 store: Store(
-                    initialState: WordList.State(wordBook: .mock),
+                    initialState: WordList.State(units: .mock),
                     reducer: WordList()._printChanges()
                 )
             )

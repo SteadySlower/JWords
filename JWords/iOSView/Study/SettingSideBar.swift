@@ -42,6 +42,8 @@ struct StudySetting: ReducerProtocol {
         case setStudyMode(StudyMode)
         case setFrontType(FrontType)
         case setStudyViewMode(StudyViewMode)
+        case wordBookEditButtonTapped
+        case wordAddButtonTapped
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -55,6 +57,10 @@ struct StudySetting: ReducerProtocol {
                 return .none
             case .setStudyViewMode(let mode):
                 state.studyViewMode = mode
+                return .none
+            case .wordBookEditButtonTapped:
+                return .none
+            case .wordAddButtonTapped:
                 return .none
             }
         }
@@ -101,6 +107,14 @@ struct SettingSideBar: View {
                         .tag(StudyViewMode.edit)
                 }
                 .pickerStyle(.segmented)
+                .padding()
+                Button("단어장 수정") {
+                    vs.send(.wordBookEditButtonTapped)
+                }
+                .padding()
+                Button("단어 추가") {
+                    vs.send(.wordAddButtonTapped)
+                }
                 .padding()
                 Spacer()
             }

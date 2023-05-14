@@ -13,13 +13,13 @@ import ComposableArchitecture
 struct SelectionWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
-        let word: Word
+        let unit: StudyUnit
         let frontType: FrontType
         var isSelected: Bool
         
-        init(word: Word, frontType: FrontType = .kanji) {
-            self.id = word.id
-            self.word = word
+        init(unit: StudyUnit, frontType: FrontType = .kanji) {
+            self.id = unit.id
+            self.unit = unit
             self.frontType = frontType
             self.isSelected = false
         }
@@ -53,7 +53,7 @@ struct SelectionCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(word: vs.word,
+            BaseCell(unit: vs.unit,
                      frontType: vs.frontType)
                 .overlay { vs.isSelected ? AnyView(selectedOverlay) : AnyView(unselectedOverlay) }
                 .onTapGesture { vs.send(.cellTapped) }
@@ -96,7 +96,7 @@ struct SelectionCell_Previews: PreviewProvider {
     static var previews: some View {
         SelectionCell(
             store: Store(
-                initialState: SelectionWord.State(word: Word()),
+                initialState: SelectionWord.State(unit: StudyUnit(index: 0)),
                 reducer: SelectionWord()._printChanges()
             )
         )

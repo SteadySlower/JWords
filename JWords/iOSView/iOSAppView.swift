@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 enum Tab {
-    case today, home
+    case today, home, test
 }
 
 struct iOSApp: ReducerProtocol {
@@ -44,6 +44,9 @@ struct iOSApp: ReducerProtocol {
                     state.todayList = TodayList.State()
                 case .home:
                     state.homeList = HomeList.State()
+                // TODO: remove when coredata conversion is finished
+                default:
+                    break
                 }
                 return .none
             default:
@@ -95,6 +98,11 @@ struct iOSAppView: View {
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
+                NavigationView {
+                    CoreDataTestView()
+                }
+                .tabItem { Image(systemName: "pencil") }
+                .tag(Tab.test)
             }
         }
     }

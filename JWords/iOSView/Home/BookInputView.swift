@@ -12,9 +12,17 @@ import ComposableArchitecture
 struct InputBook: ReducerProtocol {
     
     struct State: Equatable {
-        var title: String = ""
-        var preferredFrontType: FrontType = .kanji
+        let set: StudySet?
+        var title: String
+        var preferredFrontType: FrontType
         var isLoading: Bool = false
+        var alert: AlertState<Action>?
+        
+        init(set: StudySet? = nil) {
+            self.set = set
+            self.title = set?.title ?? ""
+            self.preferredFrontType = set?.preferredFrontType ?? .kanji
+        }
         
         mutating func clear() {
             title = ""
@@ -25,30 +33,15 @@ struct InputBook: ReducerProtocol {
     enum Action: Equatable {
         case updateTitle(String)
         case updatePreferredFrontType(FrontType)
+        case showErrorAlert(AppError)
+        case alertDismissed
         case addButtonTapped
         case cancelButtonTapped
-        case addBookResponse(TaskResult<Void>)
-        
-        static func == (lhs: InputBook.Action, rhs: InputBook.Action) -> Bool {
-            switch (lhs, rhs) {
-            case let (.updateTitle(lhsTitle), .updateTitle(rhsTitle)):
-                return lhsTitle == rhsTitle
-            case let (.updatePreferredFrontType(lhsType), .updatePreferredFrontType(rhsType)):
-                return lhsType == rhsType
-            case (.addButtonTapped, .addButtonTapped):
-                return true
-            case (.cancelButtonTapped, .cancelButtonTapped):
-                return true
-            case (.addBookResponse, .addBookResponse):
-                return true
-            default:
-                return false
-            }
-        }
+        case setAdded
+        case setEdited(StudySet)
     }
     
-    @Dependency(\.wordBookClient) var wordBookClient
-    private enum AddBookID {}
+    private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -59,16 +52,33 @@ struct InputBook: ReducerProtocol {
             case let .updatePreferredFrontType(type):
                 state.preferredFrontType = type
                 return .none
-            case .addButtonTapped:
-                guard !state.title.isEmpty else { return .none }
-                state.isLoading = true
-                return .task { [title = state.title, type = state.preferredFrontType] in
-                    await .addBookResponse(TaskResult { try await wordBookClient.addBook(title, type) })
-                }
-            case .addBookResponse(.success):
-                state.isLoading = false
-                state.clear()
+            case .showErrorAlert(let error):
+                state.alert = error.simpleAlert(action: Action.self)
                 return .none
+            case .alertDismissed:
+                state.alert = nil
+                return .none
+            case .addButtonTapped:
+                guard !state.title.isEmpty else {
+                    return .task { .showErrorAlert(.emptyTitle) }
+                }
+                state.isLoading = true
+                if let set = state.set {
+                    let edited = try! cd.updateSet(set,
+                                                   title: state.title,
+                                                   isAutoSchedule: true,
+                                                   preferredFrontType: state.preferredFrontType,
+                                                   closed: set.closed)
+                    state.isLoading = false
+                    return .task { .setEdited(edited) }
+                } else {
+                    try! cd.insertSet(title: state.title,
+                                      isAutoSchedule: true,
+                                      preferredFrontType: state.preferredFrontType)
+                    state.isLoading = false
+                    return .task { .setAdded }
+                }
+
             default:
                 return .none
             }
@@ -100,6 +110,10 @@ struct WordBookAddModal: View {
                     }
                 }
             }
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
             .loadingView(vs.isLoading)
             .padding()
         }

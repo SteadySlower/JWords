@@ -9,14 +9,44 @@ import SwiftUI
 import ComposableArchitecture
 
 struct AddingUnit: ReducerProtocol {
+    
+    private let cd = CoreDataClient.shared
+    
     struct State: Equatable {
-        var unitType: UnitType = .word
-        var meaningText: String = ""
-        var kanjiText: String = ""
-        var huriText = EditHuriganaText.State(hurigana: "")
+        let set: StudySet?
+        let unit: StudyUnit?
+        var unitType: UnitType
+        var meaningText: String
+        var kanjiText: String
+        var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
         var isEditingKanji = true
+        
+        init(set: StudySet) {
+            self.set = set
+            self.unit = nil
+            self.unitType = .word
+            self.meaningText = ""
+            self.kanjiText = ""
+            self.huriText = EditHuriganaText.State(hurigana: "")
+            self.alert = nil
+        }
+        
+        init(unit: StudyUnit) {
+            self.set = nil
+            self.unit = unit
+            self.unitType = unit.type
+            self.meaningText = unit.meaningText ?? ""
+            if unit.type != .kanji {
+                self.huriText = EditHuriganaText.State(hurigana: unit.kanjiText ?? "")
+                self.kanjiText = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText ?? "")
+                isEditingKanji = false
+            } else {
+                self.kanjiText = unit.kanjiText ?? ""
+                self.huriText = EditHuriganaText.State(hurigana: "")
+            }
+        }
         
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
@@ -35,6 +65,9 @@ struct AddingUnit: ReducerProtocol {
         case showErrorAlert(AppError)
         case alertDismissed
         case cancelButtonTapped
+        case addUnit
+        case unitEdited(StudyUnit)
+        case unitAdded(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -68,12 +101,31 @@ struct AddingUnit: ReducerProtocol {
                     return .task { .showErrorAlert(.KanjiTooLong) }
                 }
                 print("디버그: \(state.huriText.hurigana)")
-                return .none
+                return .task { .addUnit }
             case .showErrorAlert(let error):
                 state.alert = error.simpleAlert(action: Action.self)
                 return .none
             case .alertDismissed:
                 state.alert = nil
+                return .none
+            case .addUnit:
+                if let set = state.set {
+                    let added = try! cd.insertUnit(in: set,
+                                  type: state.unitType,
+                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                  kanjiImageID: nil,
+                                  meaningText: state.meaningText,
+                                  meaningImageID: nil)
+                    return .task { .unitAdded(added) }
+                } else if let unit = state.unit {
+                    let edited = try! cd.editUnit(of: unit,
+                                                  type: state.unitType,
+                                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                                  kanjiImageID: nil,
+                                                  meaningText: state.meaningText,
+                                                  meaningImageID: nil)
+                    return .task { .unitEdited(edited) }
+                }
                 return .none
             default:
                 return .none
@@ -142,11 +194,11 @@ struct StudyUnitAddView: View {
     }
 }
 
-struct StudyUnitAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        StudyUnitAddView(store: Store(
-            initialState: AddingUnit.State(),
-            reducer: AddingUnit())
-        )
-    }
-}
+//struct StudyUnitAddView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StudyUnitAddView(store: Store(
+//            initialState: AddingUnit.State(set: Study),
+//            reducer: AddingUnit())
+//        )
+//    }
+//}

@@ -12,16 +12,16 @@ import ComposableArchitecture
 
 struct InputWord: ReducerProtocol {
     struct State: Equatable {
-        var word: Word?
+        var word: StudyUnit?
         var meaningText: String
         var kanjiText: String
         var ganaText: String
         
-        init(word: Word) {
+        init(word: StudyUnit) {
             self.word = word
-            self.meaningText = word.meaningText
-            self.kanjiText = word.kanjiText
-            self.ganaText = word.ganaText
+            self.meaningText = word.meaningText ?? ""
+            self.kanjiText = word.kanjiText ?? ""
+            self.ganaText = ""
         }
         
         init() {
@@ -41,11 +41,7 @@ struct InputWord: ReducerProtocol {
         case updateKanjiText(String)
         case updateGanaText(String)
         case saveButtonTapped
-        case editWordResponse(TaskResult<Word>)
     }
-    
-    @Dependency(\.wordClient) var wordClient
-    private enum EditWordID {}
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -60,32 +56,24 @@ struct InputWord: ReducerProtocol {
                 state.ganaText = text
                 return .none
             case .saveButtonTapped:
-                if let word = state.word {
-                    let wordInput = WordInput(wordBookID: word.wordBookID,
-                                              meaningText: state.meaningText,
-                                              meaningImage: nil,
-                                              ganaText: state.ganaText,
-                                              ganaImage: nil,
-                                              kanjiText: state.kanjiText,
-                                              kanjiImage: nil)
-                    return .task {
-                        await .editWordResponse(TaskResult { try await wordClient.edit(word, wordInput) })
-                    }.cancellable(id: EditWordID.self)
-                }
-                return .none
-            case .editWordResponse(.success(_)):
-                return .none
-            case let .editWordResponse(.failure(error)):
-                // handle error
-                print(error)
+                //                if let word = state.word {
+                //                    let wordInput = WordInput(wordBookID: word.wordBookID,
+                //                                              meaningText: state.meaningText,
+                //                                              meaningImage: nil,
+                //                                              ganaText: state.ganaText,
+                //                                              ganaImage: nil,
+                //                                              kanjiText: state.kanjiText,
+                //                                              kanjiImage: nil)
+                //                    return .task {
+                //                        await .editWordResponse(TaskResult { try await wordClient.edit(word, wordInput) })
+                //                    }.cancellable(id: EditWordID.self)
+                //                }
                 return .none
             }
         }
+        
     }
-
 }
-
-
 
 struct WordInputView: View {
     let store: StoreOf<InputWord>
@@ -99,9 +87,6 @@ struct WordInputView: View {
                     .border(.black)
                     .padding()
                 TextEditor(text: vs.binding(get: \.kanjiText, send: InputWord.Action.updateKanjiText))
-                    .border(.black)
-                    .padding()
-                TextEditor(text: vs.binding(get: \.ganaText, send: InputWord.Action.updateGanaText))
                     .border(.black)
                     .padding()
                 Button("저장") {

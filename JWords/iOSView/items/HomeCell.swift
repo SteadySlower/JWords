@@ -9,12 +9,12 @@ import SwiftUI
 import ComposableArchitecture
 
 struct HomeCell: View {
-    private let wordBook: WordBook
+    private let studySet: StudySet
     private let onTapped: () -> Void
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    init(wordBook: WordBook, onTapped: @escaping () -> Void) {
-        self.wordBook = wordBook
+    init(studySet: StudySet, onTapped: @escaping () -> Void) {
+        self.studySet = studySet
         self.onTapped = onTapped
     }
     
@@ -25,7 +25,7 @@ struct HomeCell: View {
             } label: {
                 VStack {
                     HStack {
-                        Text(wordBook.title)
+                        Text(studySet.title)
                         Spacer()
                     }
                     HStack {
@@ -42,7 +42,7 @@ struct HomeCell: View {
     }
     
     private var dateTextColor: Color {
-        switch wordBook.schedule {
+        switch studySet.schedule {
         case .none: return .black
         case .study: return .blue
         case .review: return .pink
@@ -50,7 +50,7 @@ struct HomeCell: View {
     }
     
     private var dateText: String {
-        let dayGap = wordBook.dayFromToday
+        let dayGap = studySet.dayFromToday
         return dayGap == 0 ? "今日" : "\(dayGap)日前"
     }
 }
