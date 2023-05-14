@@ -35,7 +35,7 @@ struct AddingUnit: ReducerProtocol {
         }
         
         // when editing existing unit
-        init(set: StudySet, unit: StudyUnit) {
+        init(set: StudySet?, unit: StudyUnit) {
             self.set = set
             self.unit = unit
             self.unitType = unit.type
@@ -54,6 +54,10 @@ struct AddingUnit: ReducerProtocol {
             !kanjiText.isEmpty && !meaningText.isEmpty
         }
         
+        var showDeleteButton: Bool {
+            return set != nil && unit != nil
+        }
+
         mutating func setDeleteAlertState() {
             guard let set = set else { return }
             alert = AlertState<Action> {
@@ -211,7 +215,7 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
-                    if vs.unit != nil && vs.set != nil {
+                    if vs.showDeleteButton {
                         Button("삭제") {
                             vs.send(.deleteButtonTapped)
                         }.foregroundColor(.red)

@@ -32,9 +32,11 @@ struct StudySetting: ReducerProtocol {
         var studyMode: StudyMode = .all
         var frontType: FrontType
         var studyViewMode: StudyViewMode = .normal
+        let showEditButtons: Bool
         
-        init(frontMode: FrontType = .kanji) {
+        init(frontMode: FrontType = .kanji, showEditButtons: Bool = true) {
             self.frontType = frontMode
+            self.showEditButtons = showEditButtons
         }
     }
     
@@ -108,15 +110,18 @@ struct SettingSideBar: View {
                 }
                 .pickerStyle(.segmented)
                 .padding()
-                Button("단어장 수정") {
-                    vs.send(.wordBookEditButtonTapped)
+                if vs.showEditButtons {
+                    Button("단어장 수정") {
+                        vs.send(.wordBookEditButtonTapped)
+                    }
+                    .padding()
+                    Button("단어 추가") {
+                        vs.send(.wordAddButtonTapped)
+                    }
+                    .padding()
                 }
-                .padding()
-                Button("단어 추가") {
-                    vs.send(.wordAddButtonTapped)
-                }
-                .padding()
                 Spacer()
+
             }
         }
     }
