@@ -241,6 +241,14 @@ class CoreDataClient {
             mo.addToSet(toSetMO)
         }
         
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
     }
     
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
