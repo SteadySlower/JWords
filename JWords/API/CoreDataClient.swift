@@ -22,7 +22,7 @@ class CoreDataClient {
         return container.viewContext
     }()
     
-    func insertSet(title: String, isAutoSchedule: Bool = true, preferredFrontType: FrontType = .kanji) throws {
+    func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
             print("디버그: StudySetMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -59,22 +59,23 @@ class CoreDataClient {
     }
     
     func updateSet(_ set: StudySet,
-                   title: String? = nil,
-                   isAutoSchedule: Bool? = nil,
-                   preferredFrontType: FrontType? = nil,
-                   closed: Bool? = nil) throws {
-        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+                   title: String,
+                   isAutoSchedule: Bool,
+                   preferredFrontType: FrontType,
+                   closed: Bool) throws -> StudySet {
+        guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
         }
         
-        if let title = title { set.title = title }
-        if let isAutoSchedule = isAutoSchedule { set.isAutoSchedule = isAutoSchedule  }
-        if let preferredFrontType = preferredFrontType { set.preferredFrontType = Int16(preferredFrontType.rawValue) }
-        if let closed = closed { set.closed = closed }
+        mo.title = title
+        mo.isAutoSchedule = isAutoSchedule
+        mo.preferredFrontType = Int16(preferredFrontType.rawValue)
+        mo.closed = closed
         
         do {
             try context.save()
+            return StudySet(from: mo)
         } catch {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
