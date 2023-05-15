@@ -101,6 +101,7 @@
 		5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */; };
 		5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACF029FA535500E3F31A /* KanjiField.swift */; };
 		5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C02A11BBB40027B408 /* KanjiList.swift */; };
+		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
 		5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698729F227BA00B5A02E /* WordBookClient.swift */; };
 		5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698929F234B000B5A02E /* TodayClient.swift */; };
 		5A8DCD7828E3E80E0078E197 /* MockWordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */; };
@@ -246,6 +247,7 @@
 		5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GanaField.swift; path = JWords/macView/Components/GanaField.swift; sourceTree = SOURCE_ROOT; };
 		5A80ACF029FA535500E3F31A /* KanjiField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiField.swift; path = JWords/macView/Components/KanjiField.swift; sourceTree = SOURCE_ROOT; };
 		5A8843C02A11BBB40027B408 /* KanjiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiList.swift; sourceTree = "<group>"; };
+		5A8843C22A11BBDF0027B408 /* Kanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanji.swift; sourceTree = "<group>"; };
 		5A8B698729F227BA00B5A02E /* WordBookClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookClient.swift; sourceTree = "<group>"; };
 		5A8B698929F234B000B5A02E /* TodayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayClient.swift; sourceTree = "<group>"; };
 		5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBook.swift; sourceTree = "<group>"; };
@@ -663,6 +665,7 @@
 				5A653FEA2907C1C800E3466E /* TodaySchedule.swift */,
 				06BC606C297E9A7500AA67E6 /* FrontType.swift */,
 				0624735C29C6D8580076DBE4 /* InputType.swift */,
+				5A8843C22A11BBDF0027B408 /* Kanji.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -905,6 +908,7 @@
 				0622727C29FDEADC00EEAD50 /* HuriganaTestView.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
 				06308A6029FE2CDB00BDEE2D /* StudyUnitAddView.swift in Sources */,
+				5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */,
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
