@@ -6,15 +6,38 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
-struct KanjiList: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct KanjiList: ReducerProtocol {
+    struct State: Equatable {
+        var kanjis: [Kanji] = []
+        var editKanji: AddingUnit.State?
+        
+        var showEditModal: Bool {
+            editKanji != nil
+        }
     }
+    
+    enum Action: Equatable {
+        case onAppear
+    }
+    
+    let cd = CoreDataClient.shared
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                state.kanjis = try! cd.fetchAllKanjis()
+                return .none
+            }
+        }
+    }
+
 }
 
-struct KanjiList_Previews: PreviewProvider {
-    static var previews: some View {
-        KanjiList()
+struct KanjiListView: View {
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
