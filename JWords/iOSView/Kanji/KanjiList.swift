@@ -20,6 +20,8 @@ struct KanjiList: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
+        case editKanji(kanji: Kanji, meaningText: String)
+        case wordButtonTapped(in: Kanji)
     }
     
     let cd = CoreDataClient.shared
@@ -29,6 +31,8 @@ struct KanjiList: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.kanjis = try! cd.fetchAllKanjis()
+                return .none
+            default:
                 return .none
             }
         }
@@ -45,7 +49,9 @@ struct KanjiListView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(vs.kanjis, id: \.id) { kanji in
-                        KanjiCell(kanji: kanji)
+                        KanjiCell(kanji: kanji,
+                                  editKanjiMeaning: { vs.send(.editKanji(kanji: $0, meaningText: $1)) },
+                                  wordButtonTapped: { vs.send(.wordButtonTapped(in: kanji)) })
                     }
                 }
             }
