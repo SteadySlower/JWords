@@ -11,11 +11,6 @@ import ComposableArchitecture
 struct KanjiList: ReducerProtocol {
     struct State: Equatable {
         var kanjis: [Kanji] = []
-        var editKanji: AddingUnit.State?
-        
-        var showEditModal: Bool {
-            editKanji != nil
-        }
     }
     
     enum Action: Equatable {
