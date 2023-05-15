@@ -49,7 +49,7 @@ struct WordList: ReducerProtocol {
         init(units: [StudyUnit]) {
             self.set = nil
             self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
-            self.setting = .init()
+            self.setting = .init(showEditButtons: false)
         }
         
         var words: IdentifiedArrayOf<StudyWord.State> {
@@ -74,7 +74,7 @@ struct WordList: ReducerProtocol {
         
         fileprivate mutating func editCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
-            toEditWord = AddingUnit.State(unit: word)
+            toEditWord = AddingUnit.State(set: set, unit: word)
         }
         
         fileprivate mutating func clearEdit() {
@@ -232,6 +232,13 @@ struct WordList: ReducerProtocol {
                     let newState = StudyWord.State(unit: unit, frontType: state.setting.frontType)
                     state._words.update(newState, at: index)
                     state.setting.studyViewMode = .normal
+                    return .task { .setEditModal(isPresented: false) }
+                case let .unitDeleted(unit):
+                    let words = state._words.map { $0.unit }.filter { $0.id != unit.id }
+                    state._words = IdentifiedArray(
+                        uniqueElements: words
+                            .map { StudyWord.State(unit: $0, isLocked: false) })
+                    state.clearEdit()
                     return .task { .setEditModal(isPresented: false) }
                 case .cancelButtonTapped:
                     return .task { .setEditModal(isPresented: false) }

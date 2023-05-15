@@ -23,6 +23,7 @@ struct AddingUnit: ReducerProtocol {
         
         var isEditingKanji = true
         
+        // when adding new unit
         init(set: StudySet) {
             self.set = set
             self.unit = nil
@@ -33,8 +34,9 @@ struct AddingUnit: ReducerProtocol {
             self.alert = nil
         }
         
-        init(unit: StudyUnit) {
-            self.set = nil
+        // when editing existing unit
+        init(set: StudySet?, unit: StudyUnit) {
+            self.set = set
             self.unit = unit
             self.unitType = unit.type
             self.meaningText = unit.meaningText ?? ""
@@ -51,6 +53,26 @@ struct AddingUnit: ReducerProtocol {
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
         }
+        
+        var showDeleteButton: Bool {
+            return set != nil && unit != nil
+        }
+
+        mutating func setDeleteAlertState() {
+            guard let set = set else { return }
+            alert = AlertState<Action> {
+                TextState("단어 삭제")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("취소")
+                }
+                ButtonState(role: .destructive, action: .deleteUnit) {
+                    TextState("삭제")
+                }
+            } message: {
+                TextState("이 단어를 '\(set.title)'에서 삭제합니다.\n(다른 단어장에서는 삭제되지 않습니다.)")
+            }
+        }
     
     }
     
@@ -64,9 +86,12 @@ struct AddingUnit: ReducerProtocol {
         case addButtonTapped
         case showErrorAlert(AppError)
         case alertDismissed
+        case deleteButtonTapped
         case cancelButtonTapped
         case addUnit
+        case deleteUnit
         case unitEdited(StudyUnit)
+        case unitDeleted(StudyUnit)
         case unitAdded(StudyUnit)
     }
     
@@ -102,6 +127,9 @@ struct AddingUnit: ReducerProtocol {
                 }
                 print("디버그: \(state.huriText.hurigana)")
                 return .task { .addUnit }
+            case .deleteButtonTapped:
+                state.setDeleteAlertState()
+                return .none
             case .showErrorAlert(let error):
                 state.alert = error.simpleAlert(action: Action.self)
                 return .none
@@ -109,15 +137,7 @@ struct AddingUnit: ReducerProtocol {
                 state.alert = nil
                 return .none
             case .addUnit:
-                if let set = state.set {
-                    let added = try! cd.insertUnit(in: set,
-                                  type: state.unitType,
-                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
-                                  kanjiImageID: nil,
-                                  meaningText: state.meaningText,
-                                  meaningImageID: nil)
-                    return .task { .unitAdded(added) }
-                } else if let unit = state.unit {
+                if let unit = state.unit {
                     let edited = try! cd.editUnit(of: unit,
                                                   type: state.unitType,
                                                   kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
@@ -125,6 +145,21 @@ struct AddingUnit: ReducerProtocol {
                                                   meaningText: state.meaningText,
                                                   meaningImageID: nil)
                     return .task { .unitEdited(edited) }
+                } else if let set = state.set {
+                    let added = try! cd.insertUnit(in: set,
+                                  type: state.unitType,
+                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                  kanjiImageID: nil,
+                                  meaningText: state.meaningText,
+                                  meaningImageID: nil)
+                    return .task { .unitAdded(added) }
+                }
+                return .none
+            case .deleteUnit:
+                if let unit = state.unit,
+                   let set = state.set {
+                    let deleted = try! cd.removeUnit(unit, from: set)
+                    return .task { .unitDeleted(deleted) }
                 }
                 return .none
             default:
@@ -180,7 +215,12 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
-                    Button("추가") { vs.send(.addButtonTapped) }
+                    if vs.showDeleteButton {
+                        Button("삭제") {
+                            vs.send(.deleteButtonTapped)
+                        }.foregroundColor(.red)
+                    }
+                    Button(vs.unit == nil ? "추가" : "수정") { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
                 }
             }
