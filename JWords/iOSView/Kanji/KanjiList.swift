@@ -53,17 +53,3 @@ struct KanjiListView: View {
         }
     }
 }
-
-struct KanjiCell: View {
-    
-    let kanji: Kanji
-    
-    var body: some View {
-        HStack {
-            Text(kanji.kanjiText ?? "")
-            Text(kanji.meaningText ?? "")
-        }
-        .padding(10)
-    }
-    
-}
