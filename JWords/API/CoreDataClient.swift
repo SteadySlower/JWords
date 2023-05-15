@@ -193,12 +193,12 @@ class CoreDataClient {
         
     }
     
-    func fetchAllKanjis() throws -> [StudyUnit] {
+    func fetchAllKanjis() throws -> [Kanji] {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
         
         do {
-            return try context.fetch(fetchRequest).map { StudyUnit(from: $0) }
+            return try context.fetch(fetchRequest).map { Kanji(from: $0) }
         } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
