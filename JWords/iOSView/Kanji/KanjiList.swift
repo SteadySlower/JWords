@@ -32,6 +32,11 @@ struct KanjiList: ReducerProtocol {
             case .onAppear:
                 state.kanjis = try! cd.fetchAllKanjis()
                 return .none
+            case let .editKanji(kanji, meaningText):
+                let edited = try! cd.editKanji(kanji: kanji, meaningText: meaningText)
+                guard let index = state.kanjis.firstIndex(of: kanji) else { return .none }
+                state.kanjis[index] = edited
+                return .none
             default:
                 return .none
             }
