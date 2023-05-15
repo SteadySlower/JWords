@@ -37,7 +37,33 @@ struct KanjiList: ReducerProtocol {
 }
 
 struct KanjiListView: View {
+    
+    let store: StoreOf<KanjiList>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        WithViewStore(store, observe: { $0 }) { vs in
+            ScrollView {
+                LazyVStack {
+                    ForEach(vs.kanjis, id: \.id) { kanji in
+                        KanjiCell(kanji: kanji)
+                    }
+                }
+            }
+            .onAppear { vs.send(.onAppear) }
+        }
     }
+}
+
+struct KanjiCell: View {
+    
+    let kanji: Kanji
+    
+    var body: some View {
+        HStack {
+            Text(kanji.kanjiText ?? "")
+            Text(kanji.meaningText ?? "")
+        }
+        .padding(10)
+    }
+    
 }

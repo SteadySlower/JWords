@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 enum Tab {
-    case today, home, test
+    case today, home, kanji, test
 }
 
 struct iOSApp: ReducerProtocol {
@@ -18,6 +18,7 @@ struct iOSApp: ReducerProtocol {
         var selectedTab: Tab = .today
         var todayList: TodayList.State? = TodayList.State()
         var homeList: HomeList.State?
+        var kanjiList: KanjiList.State?
         
         mutating func clearList() {
             todayList = nil
@@ -29,6 +30,7 @@ struct iOSApp: ReducerProtocol {
         case tabChanged(Tab)
         case todayList(action: TodayList.Action)
         case homeList(action: HomeList.Action)
+        case kanjiList(action: KanjiList.Action)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -44,6 +46,8 @@ struct iOSApp: ReducerProtocol {
                     state.todayList = TodayList.State()
                 case .home:
                     state.homeList = HomeList.State()
+                case .kanji:
+                    state.kanjiList = KanjiList.State()
                 // TODO: remove when coredata conversion is finished
                 default:
                     break
@@ -58,6 +62,9 @@ struct iOSApp: ReducerProtocol {
         }
         .ifLet(\.homeList, action: /Action.homeList(action:)) {
             HomeList()
+        }
+        .ifLet(\.kanjiList, action: /Action.kanjiList(action:)) {
+            KanjiList()
         }
     }
     
@@ -95,6 +102,23 @@ struct iOSAppView: View {
                 }
                 .tabItem { Image(systemName: "house") }
                 .tag(Tab.home)
+                #if os(iOS)
+                .navigationViewStyle(.stack)
+                #endif
+                NavigationView {
+                    IfLetStore(self.store.scope(
+                        state: \.kanjiList,
+                        action: iOSApp.Action.kanjiList(action:))
+                    ) {
+                        KanjiListView(store: $0)
+                    }
+                }
+                .tabItem {
+                    Image(uiImage:
+                            ImageRenderer(content: Text("漢").font(.title)).uiImage ?? UIImage()
+                    )
+                }
+                .tag(Tab.kanji)
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
