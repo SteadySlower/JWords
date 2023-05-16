@@ -14,10 +14,22 @@ struct KanjiList: ReducerProtocol {
     // FIXME: move it to proper place
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     
+    enum KanjiListFilter: Equatable, CaseIterable {
+        case all, meaningless
+        
+        var pickerText: String {
+            switch self {
+            case .all: return "전부"
+            case .meaningless: return "뜻 없음"
+            }
+        }
+    }
+    
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<StudyKanji.State> = []
         var wordList: WordList.State?
         var isLastPage = false
+        var filter: KanjiListFilter = .all
         
         var showStudyView: Bool {
             wordList != nil
@@ -27,6 +39,7 @@ struct KanjiList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case fetchKanjis
+        case setFilter(KanjiListFilter)
         case studyKanji(id: StudyKanji.State.ID, action: StudyKanji.Action)
         case wordList(action: WordList.Action)
         case showStudyView(Bool)
@@ -48,6 +61,9 @@ struct KanjiList: ReducerProtocol {
                     uniqueElements: moreArray.map {
                         StudyKanji.State(kanji: $0)
                     })
+                return .none
+            case let .setFilter(filter):
+                state.filter = filter
                 return .none
             case let .studyKanji(id, action):
                 switch action {
@@ -89,7 +105,17 @@ struct KanjiListView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
+            VStack {
+                Picker("", selection: vs.binding(
+                    get: \.filter,
+                    send: KanjiList.Action.setFilter)
+                ) {
+                    ForEach(KanjiList.KanjiListFilter.allCases, id: \.self) {
+                        Text($0.pickerText)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
@@ -100,21 +126,22 @@ struct KanjiListView: View {
                                 get: \.showStudyView,
                                 send: KanjiList.Action.showStudyView))
                 { EmptyView() }
-                LazyVStack {
-                    ForEachStore(
-                      self.store.scope(state: \.kanjis, action: KanjiList.Action.studyKanji(id:action:))
-                    ) {
-                        KanjiCell(store: $0)
-                    }
-                    if !vs.isLastPage {
-                        ProgressView()
-//                            .scaleEffect(5.0)
-                            .foregroundColor(.gray)
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    vs.send(.fetchKanjis)
+                ScrollView {
+                    LazyVStack {
+                        ForEachStore(
+                          self.store.scope(state: \.kanjis, action: KanjiList.Action.studyKanji(id:action:))
+                        ) {
+                            KanjiCell(store: $0)
+                        }
+                        if !vs.isLastPage {
+                            ProgressView()
+                                .foregroundColor(.gray)
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        vs.send(.fetchKanjis)
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
             }
