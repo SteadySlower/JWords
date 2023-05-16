@@ -90,8 +90,8 @@ struct CDTStudyView: View {
                             Text(unit.kanjiText ?? "")
                             Text(unit.meaningText ?? "")
                             Button("샘플 보기") {
-                                alertContent = try! cd.fetchSampleUnit(ofKanji: unit)
-                                showAlert = true
+//                                alertContent = try! cd.fetchSampleUnit(ofKanji: unit)
+//                                showAlert = true
                             }
                         } else {
                             HuriganaText(hurigana: unit.kanjiText ?? "")
@@ -126,7 +126,7 @@ struct CDTStudyView: View {
         .toolbar { ToolbarItem {
             HStack {
                 Button("⏳") { units = try! cd.fetchUnits(of: set); print(units) }
-                Button("🈯️") { units = try! cd.fetchAllKanjis() }
+//                Button("🈯️") { units = try! cd.fetchAllKanjis() }
                 Button("+") { showModal = true }
             }
         }}

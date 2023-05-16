@@ -13,6 +13,7 @@ struct WordList: ReducerProtocol {
     struct State: Equatable {
         var set: StudySet?
         var isLoading: Bool = false
+        let navigationTitle: String
         
         // state for cells of each StudyViewMode
         var _words: IdentifiedArrayOf<StudyWord.State> = []
@@ -43,11 +44,20 @@ struct WordList: ReducerProtocol {
         
         init(set: StudySet) {
             self.set = set
+            self.navigationTitle = set.title
             self.setting = .init(frontMode: set.preferredFrontType)
         }
         
         init(units: [StudyUnit]) {
             self.set = nil
+            self.navigationTitle = "틀린 단어 모아보기"
+            self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
+            self.setting = .init(showEditButtons: false)
+        }
+        
+        init(kanji: Kanji, units: [StudyUnit]) {
+            self.set = nil
+            self.navigationTitle = "\(kanji.kanjiText ?? "")가 쓰이는 단어"
             self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
             self.setting = .init(showEditButtons: false)
         }
@@ -349,7 +359,7 @@ struct StudyView: View {
                 }
             }
             .loadingView(vs.isLoading)
-            .navigationTitle(vs.set?.title ?? "틀린 단어 모아보기")
+            .navigationTitle(vs.navigationTitle)
             .onAppear { vs.send(.onAppear) }
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,

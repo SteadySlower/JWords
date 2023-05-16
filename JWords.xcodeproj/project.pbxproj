@@ -100,6 +100,9 @@
 		5A80ACED29FA4A6000E3F31A /* MeaningField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */; };
 		5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */; };
 		5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACF029FA535500E3F31A /* KanjiField.swift */; };
+		5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C02A11BBB40027B408 /* KanjiList.swift */; };
+		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
+		5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C42A11CA630027B408 /* KanjiCell.swift */; };
 		5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698729F227BA00B5A02E /* WordBookClient.swift */; };
 		5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B698929F234B000B5A02E /* TodayClient.swift */; };
 		5A8DCD7828E3E80E0078E197 /* MockWordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */; };
@@ -244,6 +247,9 @@
 		5A80ACEC29FA4A6000E3F31A /* MeaningField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MeaningField.swift; path = JWords/macView/Components/MeaningField.swift; sourceTree = SOURCE_ROOT; };
 		5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GanaField.swift; path = JWords/macView/Components/GanaField.swift; sourceTree = SOURCE_ROOT; };
 		5A80ACF029FA535500E3F31A /* KanjiField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiField.swift; path = JWords/macView/Components/KanjiField.swift; sourceTree = SOURCE_ROOT; };
+		5A8843C02A11BBB40027B408 /* KanjiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiList.swift; sourceTree = "<group>"; };
+		5A8843C22A11BBDF0027B408 /* Kanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanji.swift; sourceTree = "<group>"; };
+		5A8843C42A11CA630027B408 /* KanjiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCell.swift; sourceTree = "<group>"; };
 		5A8B698729F227BA00B5A02E /* WordBookClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBookClient.swift; sourceTree = "<group>"; };
 		5A8B698929F234B000B5A02E /* TodayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayClient.swift; sourceTree = "<group>"; };
 		5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBook.swift; sourceTree = "<group>"; };
@@ -530,6 +536,7 @@
 		5A67DC1D286942E800AC156C /* iOSView */ = {
 			isa = PBXGroup;
 			children = (
+				5A8843BF2A11BBA10027B408 /* Kanji */,
 				06E917582A073F0E002289B4 /* Test */,
 				5A735AF928D809B500CADF9B /* Today */,
 				5A67DC2E2869491E00AC156C /* items */,
@@ -614,6 +621,15 @@
 			path = Today;
 			sourceTree = "<group>";
 		};
+		5A8843BF2A11BBA10027B408 /* Kanji */ = {
+			isa = PBXGroup;
+			children = (
+				5A8843C02A11BBB40027B408 /* KanjiList.swift */,
+				5A8843C42A11CA630027B408 /* KanjiCell.swift */,
+			);
+			path = Kanji;
+			sourceTree = "<group>";
+		};
 		5A8DCD7628E3E8070078E197 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +668,7 @@
 				5A653FEA2907C1C800E3466E /* TodaySchedule.swift */,
 				06BC606C297E9A7500AA67E6 /* FrontType.swift */,
 				0624735C29C6D8580076DBE4 /* InputType.swift */,
+				5A8843C22A11BBDF0027B408 /* Kanji.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -872,6 +889,7 @@
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
+				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
@@ -893,6 +911,7 @@
 				0622727C29FDEADC00EEAD50 /* HuriganaTestView.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
 				06308A6029FE2CDB00BDEE2D /* StudyUnitAddView.swift in Sources */,
+				5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */,
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */,
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
@@ -916,6 +935,7 @@
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */,
 				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
 				5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */,
 				5A7B48032A0C7BD300F7FE0F /* CenterFlexBox.swift in Sources */,

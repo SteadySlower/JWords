@@ -193,12 +193,37 @@ class CoreDataClient {
         
     }
     
-    func fetchAllKanjis() throws -> [StudyUnit] {
+    func fetchAllKanjis() throws -> [Kanji] {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
         
         do {
-            return try context.fetch(fetchRequest).map { StudyUnit(from: $0) }
+            return try context.fetch(fetchRequest).map { Kanji(from: $0) }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    // API for pagination
+    func fetchAllKanjis(after: Kanji?, filter: KanjiList.KanjiListFilter) throws -> [Kanji] {
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        let typePredicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
+        var predicates = [typePredicate]
+        if let after = after {
+            predicates.append(NSPredicate(format: "createdAt < %@", after.createdAt as NSDate))
+        }
+        if filter == .meaningless {
+            predicates.append(NSPredicate(format: "meaningText == nil OR meaningText == ''"))
+        }
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        fetchRequest.predicate = compoundPredicate
+        let sortDescriptor = NSSortDescriptor(key: "createdAt", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.fetchLimit = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
+        
+        do {
+            return try context.fetch(fetchRequest).map { Kanji(from: $0) }
         } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
@@ -218,7 +243,7 @@ class CoreDataClient {
         return kanjis.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
     }
     
-    func fetchSampleUnit(ofKanji kanji: StudyUnit) throws -> [StudyUnit] {
+    func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -229,6 +254,25 @@ class CoreDataClient {
         }
         
         return samples.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+    }
+    
+    func editKanji(kanji: Kanji, meaningText: String) throws -> Kanji {
+        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.meaningText = meaningText
+        
+        do {
+            try context.save()
+            return Kanji(from: mo)
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
     }
     
     func updateStudyState(unit: StudyUnit, newState: StudyState) throws {
