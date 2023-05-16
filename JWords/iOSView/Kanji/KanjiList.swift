@@ -54,7 +54,7 @@ struct KanjiList: ReducerProtocol {
                 return .task { .fetchKanjis }
             case .fetchKanjis:
                 let last = state.kanjis.last?.kanji
-                let fetched = try! cd.fetchAllKanjis(after: last)
+                let fetched = try! cd.fetchAllKanjis(after: last, filter: state.filter)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
                 let moreArray = state.kanjis.map { $0.kanji } + fetched
                 state.kanjis = IdentifiedArrayOf(
@@ -63,8 +63,10 @@ struct KanjiList: ReducerProtocol {
                     })
                 return .none
             case let .setFilter(filter):
+                state.kanjis = []
                 state.filter = filter
-                return .none
+                state.isLastPage = false
+                return .task { .fetchKanjis }
             case let .studyKanji(id, action):
                 switch action {
                 case let .onKanjiEdited(kanji):

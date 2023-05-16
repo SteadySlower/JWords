@@ -206,12 +206,15 @@ class CoreDataClient {
     }
     
     // API for pagination
-    func fetchAllKanjis(after: Kanji?) throws -> [Kanji] {
+    func fetchAllKanjis(after: Kanji?, filter: KanjiList.KanjiListFilter) throws -> [Kanji] {
         let fetchRequest = StudyUnitMO.fetchRequest()
         let typePredicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
         var predicates = [typePredicate]
         if let after = after {
             predicates.append(NSPredicate(format: "createdAt < %@", after.createdAt as NSDate))
+        }
+        if filter == .meaningless {
+            predicates.append(NSPredicate(format: "meaningText == nil OR meaningText == ''"))
         }
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.predicate = compoundPredicate
