@@ -34,6 +34,7 @@ struct StudyKanji: ReducerProtocol {
         case updateMeaningText(String)
         case wordButtonTapped
         case inputButtonTapped
+        case cancelEditButtonTapped
         case onKanjiEdited(Kanji)
     }
     
@@ -53,6 +54,10 @@ struct StudyKanji: ReducerProtocol {
                 guard !state.meaningText.isEmpty else { return .none }
                 let edited = try! cd.editKanji(kanji: state.kanji, meaningText: state.meaningText)
                 return .task { .onKanjiEdited(edited) }
+            case .cancelEditButtonTapped:
+                state.isEditing = false
+                state.meaningText = ""
+                return .none
             default:
                 return .none
             }
@@ -74,6 +79,8 @@ struct KanjiCell: View {
                             .font(.system(size: 40))
                         if vs.isEditing {
                             HStack {
+                                Button("취소") { vs.send(.cancelEditButtonTapped)  }
+                                    .foregroundColor(.red)
                                 TextField("뜻 입력", text: vs.binding(get: \.meaningText, send: StudyKanji.Action.updateMeaningText))
                                     .frame(width: Constants.Size.deviceWidth * 0.3)
                                     .border(.black)
