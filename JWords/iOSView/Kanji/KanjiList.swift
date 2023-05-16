@@ -148,6 +148,10 @@ struct KanjiListView: View {
                 }
             }
             .onAppear { vs.send(.onAppear) }
+            .navigationTitle("한자 모아보기")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
         }
     }
 }
