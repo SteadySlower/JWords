@@ -121,6 +121,26 @@ struct StudyCell: View {
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
+            .overlay(
+                kanjiSampleButton { }
+                    .hide(dragAmount != .zero)
+            )
+        }
+    }
+    
+    private func kanjiSampleButton(onTapped: () -> Void) -> some View {
+        HStack {
+            VStack {
+                Button {
+                    
+                } label: {
+                    Text("漢")
+                        .padding(.top, 8)
+                        .padding(.leading, 8)
+                }
+                Spacer()
+            }
+            Spacer()
         }
     }
     
