@@ -205,6 +205,28 @@ class CoreDataClient {
         }
     }
     
+    // API for pagination
+    func fetchAllKanjis(after: Kanji?) throws -> [Kanji] {
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        let typePredicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
+        var predicates = [typePredicate]
+        if let after = after {
+            predicates.append(NSPredicate(format: "createdAt < %@", after.createdAt as NSDate))
+        }
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        fetchRequest.predicate = compoundPredicate
+        let sortDescriptor = NSSortDescriptor(key: "createdAt", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.fetchLimit = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
+        
+        do {
+            return try context.fetch(fetchRequest).map { Kanji(from: $0) }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func fetchKanjis(usedIn unit: StudyUnit) throws -> [StudyUnit] {
         guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")

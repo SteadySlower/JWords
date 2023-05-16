@@ -8,10 +8,16 @@
 import SwiftUI
 import ComposableArchitecture
 
+
+
 struct KanjiList: ReducerProtocol {
+    // FIXME: move it to proper place
+    static let NUMBER_OF_KANJI_IN_A_PAGE = 20
+    
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<StudyKanji.State> = []
         var wordList: WordList.State?
+        var isLastPage = false
         
         var showStudyView: Bool {
             wordList != nil
@@ -20,6 +26,7 @@ struct KanjiList: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
+        case fetchKanjis
         case studyKanji(id: StudyKanji.State.ID, action: StudyKanji.Action)
         case wordList(action: WordList.Action)
         case showStudyView(Bool)
@@ -31,8 +38,14 @@ struct KanjiList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                return .task { .fetchKanjis }
+            case .fetchKanjis:
+                let last = state.kanjis.last?.kanji
+                let fetched = try! cd.fetchAllKanjis(after: last)
+                if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
+                let moreArray = state.kanjis.map { $0.kanji } + fetched
                 state.kanjis = IdentifiedArrayOf(
-                    uniqueElements: try! cd.fetchAllKanjis().map {
+                    uniqueElements: moreArray.map {
                         StudyKanji.State(kanji: $0)
                     })
                 return .none
@@ -92,6 +105,16 @@ struct KanjiListView: View {
                       self.store.scope(state: \.kanjis, action: KanjiList.Action.studyKanji(id:action:))
                     ) {
                         KanjiCell(store: $0)
+                    }
+                    if !vs.isLastPage {
+                        ProgressView()
+//                            .scaleEffect(5.0)
+                            .foregroundColor(.gray)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    vs.send(.fetchKanjis)
+                                }
+                            }
                     }
                 }
             }
