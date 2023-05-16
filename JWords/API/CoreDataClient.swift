@@ -218,7 +218,7 @@ class CoreDataClient {
         return kanjis.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
     }
     
-    func fetchSampleUnit(ofKanji kanji: StudyUnit) throws -> [StudyUnit] {
+    func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
