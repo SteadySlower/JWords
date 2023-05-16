@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct KanjiList: ReducerProtocol {
     struct State: Equatable {
-        var kanjis: [Kanji] = []
+        var kanjis: IdentifiedArrayOf<StudyKanji.State> = []
         var wordList: WordList.State?
         
         var showStudyView: Bool {
@@ -20,8 +20,7 @@ struct KanjiList: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
-        case editKanji(kanji: Kanji, meaningText: String)
-        case wordButtonTapped(in: Kanji)
+        case studyKanji(id: StudyKanji.State.ID, action: StudyKanji.Action)
         case wordList(action: WordList.Action)
         case showStudyView(Bool)
     }
@@ -32,17 +31,26 @@ struct KanjiList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                state.kanjis = try! cd.fetchAllKanjis()
+                state.kanjis = IdentifiedArrayOf(
+                    uniqueElements: try! cd.fetchAllKanjis().map {
+                        StudyKanji.State(kanji: $0)
+                    })
                 return .none
-            case let .editKanji(kanji, meaningText):
-                let edited = try! cd.editKanji(kanji: kanji, meaningText: meaningText)
-                guard let index = state.kanjis.firstIndex(of: kanji) else { return .none }
-                state.kanjis[index] = edited
-                return .none
-            case let .wordButtonTapped(kanji):
-                let words = try! cd.fetchSampleUnit(ofKanji: kanji)
-                state.wordList = WordList.State(kanji: kanji, units: words)
-                return .none
+            case let .studyKanji(id, action):
+                switch action {
+                case let .onKanjiEdited(kanji):
+                    guard let index = state.kanjis.index(id: id) else { return .none }
+                    state.kanjis.update(StudyKanji.State(kanji: kanji), at: index)
+                    return .none
+                case .wordButtonTapped:
+                    guard let index = state.kanjis.index(id: id) else { return .none }
+                    let kanji = state.kanjis[index].kanji
+                    let words = try! cd.fetchSampleUnit(ofKanji: kanji)
+                    state.wordList = WordList.State(kanji: kanji, units: words)
+                    return .none
+                default:
+                    return .none
+                }
             case .showStudyView(let isPresent):
                 if !isPresent {
                     state.wordList = nil
@@ -54,6 +62,9 @@ struct KanjiList: ReducerProtocol {
         }
         .ifLet(\.wordList, action: /Action.wordList(action:)) {
             WordList()
+        }
+        .forEach(\.kanjis, action: /Action.studyKanji(id:action:)) {
+            StudyKanji()
         }
     }
 
@@ -77,10 +88,10 @@ struct KanjiListView: View {
                                 send: KanjiList.Action.showStudyView))
                 { EmptyView() }
                 LazyVStack {
-                    ForEach(vs.kanjis, id: \.id) { kanji in
-                        KanjiCell(kanji: kanji,
-                                  editKanjiMeaning: { vs.send(.editKanji(kanji: $0, meaningText: $1)) },
-                                  wordButtonTapped: { vs.send(.wordButtonTapped(in: kanji)) })
+                    ForEachStore(
+                      self.store.scope(state: \.kanjis, action: KanjiList.Action.studyKanji(id:action:))
+                    ) {
+                        KanjiCell(store: $0)
                     }
                 }
             }
