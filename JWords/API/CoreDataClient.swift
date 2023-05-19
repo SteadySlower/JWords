@@ -230,7 +230,7 @@ class CoreDataClient {
         }
     }
     
-    func fetchKanjis(usedIn unit: StudyUnit) throws -> [StudyUnit] {
+    func fetchKanjis(usedIn unit: StudyUnit) throws -> [Kanji] {
         guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -240,7 +240,7 @@ class CoreDataClient {
             return []
         }
         
-        return kanjis.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+        return kanjis.compactMap { $0 as? StudyUnitMO }.map { Kanji(from: $0) }
     }
     
     func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
