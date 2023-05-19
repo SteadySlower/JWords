@@ -15,18 +15,21 @@ struct AddingUnit: ReducerProtocol {
     struct State: Equatable {
         let set: StudySet?
         let unit: StudyUnit?
+        let kanji: Kanji?
         var unitType: UnitType
         var meaningText: String
         var kanjiText: String
         var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
-        var isEditingKanji = true
+        var isEditingKanji: Bool = true
+        var isKanjiEditable: Bool = true
         
         // when adding new unit
         init(set: StudySet) {
             self.set = set
             self.unit = nil
+            self.kanji = nil
             self.unitType = .word
             self.meaningText = ""
             self.kanjiText = ""
@@ -38,6 +41,7 @@ struct AddingUnit: ReducerProtocol {
         init(set: StudySet?, unit: StudyUnit) {
             self.set = set
             self.unit = unit
+            self.kanji = nil
             self.unitType = unit.type
             self.meaningText = unit.meaningText ?? ""
             if unit.type != .kanji {
@@ -48,6 +52,18 @@ struct AddingUnit: ReducerProtocol {
                 self.kanjiText = unit.kanjiText ?? ""
                 self.huriText = EditHuriganaText.State(hurigana: "")
             }
+        }
+        
+        // when Editing Kanji
+        init(kanji: Kanji) {
+            self.set = nil
+            self.unit = nil
+            self.unitType = .kanji
+            self.meaningText = kanji.meaningText ?? ""
+            self.kanjiText = kanji.kanjiText ?? ""
+            self.huriText = EditHuriganaText.State(hurigana: kanji.kanjiText ?? "")
+            self.isEditingKanji = false
+            self.isKanjiEditable = false
         }
         
         var ableToAdd: Bool {

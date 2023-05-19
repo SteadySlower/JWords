@@ -56,6 +56,7 @@ struct StudyWord: ReducerProtocol {
         case cellTapped
         case cellDoubleTapped
         case cellDrag(direction: SwipeDirection)
+        case addKanjiMeaningTapped(Kanji)
         case showErrorAlert
         case alertDismissed
         case kanjiButtonTapped
@@ -107,6 +108,8 @@ struct StudyWord: ReducerProtocol {
                     state.kanjis = []
                 }
                 return .none
+            default:
+                return .none
             }
         }
     }
@@ -149,7 +152,7 @@ struct StudyCell: View {
                     .hide(vs.isFront)
             )
             .overlay(
-                kanjiPopup(vs.kanjis)
+                kanjiPopup(vs.kanjis) { vs.send(.addKanjiMeaningTapped($0)) }
                     .padding(.top, 14)
                     .padding(.leading, 14)
                     .onTapGesture { vs.send(.kanjiButtonTapped) }
@@ -174,12 +177,16 @@ struct StudyCell: View {
     }
     
     @ViewBuilder
-    private func kanjiPopup(_ kanjis: [Kanji]) -> some View {
+    private func kanjiPopup(_ kanjis: [Kanji], addMeaningButtonTapped: @escaping (Kanji) -> Void) -> some View {
         if !kanjis.isEmpty {
             VStack {
                 VStack {
                     ForEach(kanjis, id: \.id) { kanji in
-                        Text("\(kanji.kanjiText ?? ""): \(kanji.meaningText ?? "(뜻 없음)")")
+                        if let meaningText = kanji.meaningText {
+                            Text("\(kanji.kanjiText ?? ""): \(meaningText)")
+                        } else {
+                            Button("\(kanji.kanjiText ?? ""): (뜻 추가하기)") { addMeaningButtonTapped(kanji) }
+                        }
                     }
                 }
                 .speechBubble()
