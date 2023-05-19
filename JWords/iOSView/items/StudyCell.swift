@@ -142,12 +142,17 @@ struct StudyCell: View {
               dismiss: .alertDismissed
             )
             .overlay(
-                ZStack {
-                    kanjiSampleButton { vs.send(.kanjiButtonTapped) }
-                        .hide(dragAmount != .zero)
-                    kanjiPopup(vs.kanjis)
-                        .onTapGesture { vs.send(.kanjiButtonTapped) }
-                }
+                kanjiSampleButton { vs.send(.kanjiButtonTapped) }
+                    .padding(.top, 8)
+                    .padding(.leading, 8)
+                    .hide(dragAmount != .zero)
+            )
+            .overlay(
+                kanjiPopup(vs.kanjis)
+                    .padding(.top, 14)
+                    .padding(.leading, 14)
+                    .onTapGesture { vs.send(.kanjiButtonTapped) }
+                    .hide(dragAmount != .zero)
             )
         }
     }
@@ -159,8 +164,6 @@ struct StudyCell: View {
                     onTapped()
                 } label: {
                     Text("漢")
-                        .padding(.top, 8)
-                        .padding(.leading, 8)
                 }
                 Spacer()
             }
@@ -168,25 +171,26 @@ struct StudyCell: View {
         }
     }
     
+    @ViewBuilder
     private func kanjiPopup(_ kanjis: [Kanji]) -> some View {
-        Group {
-            if !kanjis.isEmpty {
+        if !kanjis.isEmpty {
+            VStack {
                 VStack {
                     ForEach(kanjis, id: \.id) { kanji in
                         Text("\(kanji.kanjiText ?? ""): \(kanji.meaningText ?? "")")
                     }
-                    Text("     ")
-                    Text("     ")
-                    Text("     ")
-                    Text("     ")
-                    Text("     ")
-                    Text("     ")
+                        Text("   \n\n\n\n\n\n\n\n\n  ")
+                        Text("     ")
+                        Text("     ")
+                        Text("     ")
+                        Text("     ")
+                        Text("     ")
                 }
                 .speechBubble()
-                .padding(.leading, 14)
-            } else {
-                EmptyView()
+                Spacer()
             }
+        } else {
+            EmptyView()
         }
     }
 }
