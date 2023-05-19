@@ -146,6 +146,7 @@ struct StudyCell: View {
                     .padding(.top, 8)
                     .padding(.leading, 8)
                     .hide(dragAmount != .zero)
+                    .hide(vs.isFront)
             )
             .overlay(
                 kanjiPopup(vs.kanjis)
@@ -153,6 +154,7 @@ struct StudyCell: View {
                     .padding(.leading, 14)
                     .onTapGesture { vs.send(.kanjiButtonTapped) }
                     .hide(dragAmount != .zero)
+                    .hide(vs.isFront)
             )
         }
     }
@@ -177,14 +179,8 @@ struct StudyCell: View {
             VStack {
                 VStack {
                     ForEach(kanjis, id: \.id) { kanji in
-                        Text("\(kanji.kanjiText ?? ""): \(kanji.meaningText ?? "")")
+                        Text("\(kanji.kanjiText ?? ""): \(kanji.meaningText ?? "(뜻 없음)")")
                     }
-                        Text("   \n\n\n\n\n\n\n\n\n  ")
-                        Text("     ")
-                        Text("     ")
-                        Text("     ")
-                        Text("     ")
-                        Text("     ")
                 }
                 .speechBubble()
                 Spacer()
