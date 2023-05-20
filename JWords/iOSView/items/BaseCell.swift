@@ -96,7 +96,7 @@ extension BaseCell {
         
         return VStack {
             if frontText.isHurigana {
-                HuriganaText(hurigana: frontText, fontSize: frontFontSize, hideYomi: isFront)
+                HuriganaText(hurigana: frontText, fontSize: frontFontSize, hideYomi: isFront, alignment: unit.type == .sentence ? .leading : .center)
             } else {
                 Text(frontText)
                     .font(.system(size: frontFontSize))
