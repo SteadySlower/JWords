@@ -97,7 +97,7 @@ struct CDTStudyView: View {
                             HuriganaText(hurigana: unit.kanjiText ?? "")
                             Text(unit.meaningText ?? "")
                             Button("한자 보기") {
-                                alertContent = try! cd.fetchKanjis(usedIn: unit)
+//                                alertContent = try! cd.fetchKanjis(usedIn: unit)
                                 showAlert = true
                             }
                         }

@@ -16,6 +16,7 @@ struct StudyWord: ReducerProtocol {
         var unit: StudyUnit
         let isLocked: Bool
         let frontType: FrontType
+        var kanjis: [Kanji] = []
         var studyState: StudyState {
             get {
                 unit.studyState
@@ -25,8 +26,23 @@ struct StudyWord: ReducerProtocol {
             }
         }
         var isFront: Bool = true
+        var showKanjis: Bool {
+            get {
+                !kanjis.isEmpty
+            }
+            set(bool) {
+                if !bool {
+                    kanjis = []
+                }
+            }
+        }
         
         var alert: AlertState<Action>?
+        var toEditKanji: AddingUnit.State?
+        
+        var showEditModal: Bool {
+            toEditKanji != nil
+        }
         
         init(unit: StudyUnit, frontType: FrontType = .kanji, isLocked: Bool = false) {
             self.id = unit.id
@@ -45,10 +61,15 @@ struct StudyWord: ReducerProtocol {
         case cellTapped
         case cellDoubleTapped
         case cellDrag(direction: SwipeDirection)
+        case addKanjiMeaningTapped(Kanji)
         case showErrorAlert
         case alertDismissed
+        case kanjiButtonTapped
+        case editKanji(action: AddingUnit.Action)
+        case setKanjiEditModal(isPresented: Bool)
     }
     
+    private let cd = CoreDataClient.shared
     @Dependency(\.cdWordClient) var wordClient
     private enum UpdateStudyStateID {}
     
@@ -87,7 +108,35 @@ struct StudyWord: ReducerProtocol {
             case .alertDismissed:
                 state.alert = nil
                 return .none
+            case .kanjiButtonTapped:
+                if state.kanjis.isEmpty {
+                    state.kanjis = try! cd.fetchKanjis(usedIn: state.unit)
+                } else {
+                    state.kanjis = []
+                }
+                return .none
+            case .addKanjiMeaningTapped(let kanji):
+                state.toEditKanji = AddingUnit.State(kanji: kanji)
+                return .none
+            case .editKanji(let action):
+                switch action {
+                case .kanjiEdited(let kanji):
+                    guard let index = state.kanjis.firstIndex(where: { $0.id == kanji.id }) else { return .none }
+                    state.kanjis[index] = kanji
+                    state.toEditKanji = nil
+                    return .none
+                case .cancelButtonTapped:
+                    state.toEditKanji = nil
+                    return .none
+                default:
+                    return .none
+                }
+            default:
+                return .none
             }
+        }
+        .ifLet(\.toEditKanji, action: /Action.editKanji(action:)) {
+            AddingUnit()
         }
     }
 
@@ -121,9 +170,67 @@ struct StudyCell: View {
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
+            .sheet(isPresented: vs.binding(
+                get: \.showEditModal,
+                send: StudyWord.Action.setKanjiEditModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.toEditKanji, action: StudyWord.Action.editKanji(action:))) {
+                    StudyUnitAddView(store: $0)
+                }
+            }
+            .overlay(
+                kanjiSampleButton { vs.send(.kanjiButtonTapped) }
+                    .padding(.top, 8)
+                    .padding(.leading, 8)
+                    .hide(dragAmount != .zero)
+                    .hide(vs.isFront)
+                    .hide(vs.unit.type == .kanji)
+            )
+            .overlay(
+                kanjiPopup(vs.kanjis) { vs.send(.addKanjiMeaningTapped($0)) }
+                    .padding(.top, 14)
+                    .padding(.leading, 14)
+                    .onTapGesture { vs.send(.kanjiButtonTapped) }
+                    .hide(dragAmount != .zero)
+                    .hide(vs.isFront)
+            )
         }
     }
     
+    private func kanjiSampleButton(onTapped: @escaping () -> Void) -> some View {
+        HStack {
+            VStack {
+                Button {
+                    onTapped()
+                } label: {
+                    Text("漢")
+                }
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+    
+    @ViewBuilder
+    private func kanjiPopup(_ kanjis: [Kanji], addMeaningButtonTapped: @escaping (Kanji) -> Void) -> some View {
+        if !kanjis.isEmpty {
+            VStack {
+                VStack {
+                    ForEach(kanjis, id: \.id) { kanji in
+                        if let meaningText = kanji.meaningText {
+                            Text("\(kanji.kanjiText ?? ""): \(meaningText)")
+                        } else {
+                            Button("\(kanji.kanjiText ?? ""): (뜻 추가하기)") { addMeaningButtonTapped(kanji) }
+                        }
+                    }
+                }
+                .speechBubble()
+                Spacer()
+            }
+        } else {
+            EmptyView()
+        }
+    }
 }
 
 

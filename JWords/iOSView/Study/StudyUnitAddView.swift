@@ -15,18 +15,21 @@ struct AddingUnit: ReducerProtocol {
     struct State: Equatable {
         let set: StudySet?
         let unit: StudyUnit?
+        let kanji: Kanji?
         var unitType: UnitType
         var meaningText: String
         var kanjiText: String
         var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
-        var isEditingKanji = true
+        var isEditingKanji: Bool = true
+        var isKanjiEditable: Bool = true
         
         // when adding new unit
         init(set: StudySet) {
             self.set = set
             self.unit = nil
+            self.kanji = nil
             self.unitType = .word
             self.meaningText = ""
             self.kanjiText = ""
@@ -38,6 +41,7 @@ struct AddingUnit: ReducerProtocol {
         init(set: StudySet?, unit: StudyUnit) {
             self.set = set
             self.unit = unit
+            self.kanji = nil
             self.unitType = unit.type
             self.meaningText = unit.meaningText ?? ""
             if unit.type != .kanji {
@@ -48,6 +52,19 @@ struct AddingUnit: ReducerProtocol {
                 self.kanjiText = unit.kanjiText ?? ""
                 self.huriText = EditHuriganaText.State(hurigana: "")
             }
+        }
+        
+        // when Editing Kanji
+        init(kanji: Kanji) {
+            self.set = nil
+            self.unit = nil
+            self.kanji = kanji
+            self.unitType = .kanji
+            self.meaningText = kanji.meaningText ?? ""
+            self.kanjiText = kanji.kanjiText ?? ""
+            self.huriText = EditHuriganaText.State(hurigana: kanji.kanjiText ?? "")
+            self.isEditingKanji = false
+            self.isKanjiEditable = false
         }
         
         var ableToAdd: Bool {
@@ -93,12 +110,14 @@ struct AddingUnit: ReducerProtocol {
         case unitEdited(StudyUnit)
         case unitDeleted(StudyUnit)
         case unitAdded(StudyUnit)
+        case kanjiEdited(Kanji)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .setUnitType(let type):
+                if state.kanji != nil { return .none }
                 state.unitType = type
                 if type == .kanji {
                     state.isEditingKanji = true
@@ -153,6 +172,9 @@ struct AddingUnit: ReducerProtocol {
                                   meaningText: state.meaningText,
                                   meaningImageID: nil)
                     return .task { .unitAdded(added) }
+                } else if let kanji = state.kanji {
+                    let edited = try! cd.editKanji(kanji: kanji, meaningText: state.meaningText)
+                    return .task { .kanjiEdited(edited) }
                 }
                 return .none
             case .deleteUnit:
