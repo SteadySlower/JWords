@@ -54,7 +54,7 @@ struct EditableHuriganaText: View {
 
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            CenterFlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2) {
+            FlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2, alignment: .leading) {
                 ForEach(vs.huris, id: \.id) { huri in
                     EditableHuriUnit(huri: huri, fontSize: fontSize) { vs.send(.onGanaUpdated($0)) }
                 }

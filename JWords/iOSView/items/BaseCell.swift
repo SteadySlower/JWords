@@ -91,24 +91,33 @@ extension BaseCell {
     }
     
     private var cellFace: some View {
-        VStack {
+        let frontFontSize = fontSize(of: frontText)
+        let backFontSize = fontSize(of: backText)
+        
+        return VStack {
             if frontText.isHurigana {
-                HuriganaText(hurigana: frontText, hideYomi: isFront)
+                HuriganaText(hurigana: frontText, fontSize: frontFontSize, hideYomi: isFront, alignment: unit.type == .sentence ? .leading : .center)
             } else {
                 Text(frontText)
+                    .font(.system(size: frontFontSize))
             }
             Text(backText)
+                .font(.system(size: backFontSize))
                 .opacity(isFront ? 0 : 1)
         }
+        .padding(.vertical, 30)
+        .padding(.horizontal, 8)
     }
     
     private func fontSize(of text: String) -> CGFloat {
-        if text.count <= 10 {
-            return 45
-        } else if text.count <= 30 {
-            return 35
-        } else {
+        if text.count == 1 {
+            return 40
+        } else if text.count <= 10 {
             return 30
+        } else if text.count <= 10 {
+            return 25
+        } else {
+            return 20
         }
     }
     

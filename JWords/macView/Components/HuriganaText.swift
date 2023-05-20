@@ -11,15 +11,17 @@ struct HuriganaText: View {
     private let huris: [Huri]
     private let fontSize: CGFloat
     private let hideYomi: Bool
+    private let alignment: FlexBox.Alignment
     
-    init(hurigana: String, fontSize: CGFloat = 20, hideYomi: Bool = false) {
+    init(hurigana: String, fontSize: CGFloat = 20, hideYomi: Bool = false, alignment: FlexBox.Alignment = .center) {
         self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
         self.fontSize = fontSize
         self.hideYomi = hideYomi
+        self.alignment = alignment
     }
 
     var body: some View {
-        CenterFlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2) {
+        FlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2, alignment: alignment) {
             ForEach(huris) { huri in
                 huriView(for: huri)
             }
