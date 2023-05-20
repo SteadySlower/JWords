@@ -58,6 +58,7 @@ struct AddingUnit: ReducerProtocol {
         init(kanji: Kanji) {
             self.set = nil
             self.unit = nil
+            self.kanji = kanji
             self.unitType = .kanji
             self.meaningText = kanji.meaningText ?? ""
             self.kanjiText = kanji.kanjiText ?? ""
@@ -109,12 +110,14 @@ struct AddingUnit: ReducerProtocol {
         case unitEdited(StudyUnit)
         case unitDeleted(StudyUnit)
         case unitAdded(StudyUnit)
+        case kanjiEdited(Kanji)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .setUnitType(let type):
+                if state.kanji != nil { return .none }
                 state.unitType = type
                 if type == .kanji {
                     state.isEditingKanji = true
@@ -169,6 +172,9 @@ struct AddingUnit: ReducerProtocol {
                                   meaningText: state.meaningText,
                                   meaningImageID: nil)
                     return .task { .unitAdded(added) }
+                } else if let kanji = state.kanji {
+                    let edited = try! cd.editKanji(kanji: kanji, meaningText: state.meaningText)
+                    return .task { .kanjiEdited(edited) }
                 }
                 return .none
             case .deleteUnit:

@@ -38,6 +38,11 @@ struct StudyWord: ReducerProtocol {
         }
         
         var alert: AlertState<Action>?
+        var toEditKanji: AddingUnit.State?
+        
+        var showEditModal: Bool {
+            toEditKanji != nil
+        }
         
         init(unit: StudyUnit, frontType: FrontType = .kanji, isLocked: Bool = false) {
             self.id = unit.id
@@ -60,6 +65,8 @@ struct StudyWord: ReducerProtocol {
         case showErrorAlert
         case alertDismissed
         case kanjiButtonTapped
+        case editKanji(action: AddingUnit.Action)
+        case setKanjiEditModal(isPresented: Bool)
     }
     
     private let cd = CoreDataClient.shared
@@ -108,9 +115,28 @@ struct StudyWord: ReducerProtocol {
                     state.kanjis = []
                 }
                 return .none
+            case .addKanjiMeaningTapped(let kanji):
+                state.toEditKanji = AddingUnit.State(kanji: kanji)
+                return .none
+            case .editKanji(let action):
+                switch action {
+                case .kanjiEdited(let kanji):
+                    guard let index = state.kanjis.firstIndex(where: { $0.id == kanji.id }) else { return .none }
+                    state.kanjis[index] = kanji
+                    state.toEditKanji = nil
+                    return .none
+                case .cancelButtonTapped:
+                    state.toEditKanji = nil
+                    return .none
+                default:
+                    return .none
+                }
             default:
                 return .none
             }
+        }
+        .ifLet(\.toEditKanji, action: /Action.editKanji(action:)) {
+            AddingUnit()
         }
     }
 
@@ -144,6 +170,14 @@ struct StudyCell: View {
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
+            .sheet(isPresented: vs.binding(
+                get: \.showEditModal,
+                send: StudyWord.Action.setKanjiEditModal(isPresented:))
+            ) {
+                IfLetStore(self.store.scope(state: \.toEditKanji, action: StudyWord.Action.editKanji(action:))) {
+                    StudyUnitAddView(store: $0)
+                }
+            }
             .overlay(
                 kanjiSampleButton { vs.send(.kanjiButtonTapped) }
                     .padding(.top, 8)
