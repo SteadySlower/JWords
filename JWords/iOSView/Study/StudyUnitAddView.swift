@@ -144,7 +144,6 @@ struct AddingUnit: ReducerProtocol {
                 } else if state.unitType == .kanji && state.kanjiText.count > 1 {
                     return .task { .showErrorAlert(.KanjiTooLong) }
                 }
-                print("디버그: \(state.huriText.hurigana)")
                 return .task { .addUnit }
             case .deleteButtonTapped:
                 state.setDeleteAlertState()
