@@ -13,11 +13,13 @@ struct MacApp: ReducerProtocol {
     struct State: Equatable {
         var addBook = AddBook.State()
         var addWord = AddWord.State()
+        var wordList = MacWordList.State()
     }
     
     enum Action: Equatable {
         case addBook(action: AddBook.Action)
         case addWord(action: AddWord.Action)
+        case wordList(action: MacWordList.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -33,6 +35,9 @@ struct MacApp: ReducerProtocol {
         Scope(state: \.addWord, action: /Action.addWord(action:)) {
             AddWord()
         }
+        Scope(state: \.wordList, action: /Action.wordList(action:)) {
+            MacWordList()
+        }
     }
     
 }
@@ -42,30 +47,22 @@ struct MacAppView: View {
     let store: StoreOf<MacApp>
     
     var body: some View {
-        NavigationView {
-            VStack (alignment: .leading) {
-                NavigationLink {
-                    MacAddBookView(store: store.scope(
-                        state: \.addBook,
-                        action: MacApp.Action.addBook(action:))
-                    )
-                } label: {
-                    Text("add book")
-                }
-                NavigationLink {
-                    MacAddWordView(store: store.scope(
-                        state: \.addWord,
-                        action: MacApp.Action.addWord(action:))
-                    )
-                } label: {
-                    Text("add word")
-                }
-//                NavigationLink {
-//                    HuriganaTestView()
-//                } label: {
-//                    Text("hurigana test")
-//                }
-            }
+        TabView {
+            MacAddBookView(store: store.scope(
+                state: \.addBook,
+                action: MacApp.Action.addBook(action:))
+            )
+            .tabItem { Text("단어장 추가") }
+            MacAddWordView(store: store.scope(
+                state: \.addWord,
+                action: MacApp.Action.addWord(action:))
+            )
+            .tabItem { Text("단어 추가") }
+            MacStudyView(store: store.scope(
+                state: \.wordList,
+                action: MacApp.Action.wordList(action:))
+            )
+            .tabItem { Text("단어 공부") }
         }
         .navigationViewStyle(.automatic)
     }
