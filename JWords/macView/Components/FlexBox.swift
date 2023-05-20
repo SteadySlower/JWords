@@ -1,18 +1,26 @@
 //
-//  CenterFlexBox.swift
+//  FlexBox.swift
 //  JWords
 //
-//  Created by Jong Won Moon on 2023/05/11.
+//  Created by JW Moon on 2023/05/21.
 //
 
 import SwiftUI
 
-struct CenterFlexBox: Layout {
-    private var horizontalSpacing: CGFloat
-    private var verticalSpacing: CGFloat
-    public init(horizontalSpacing: CGFloat, verticalSpacing: CGFloat? = nil) {
+struct FlexBox: Layout {
+    
+    enum Alignment {
+        case leading, center
+    }
+    
+    private let horizontalSpacing: CGFloat
+    private let verticalSpacing: CGFloat
+    private let alignment: Alignment
+    
+    public init(horizontalSpacing: CGFloat, verticalSpacing: CGFloat, alignment: Alignment) {
         self.horizontalSpacing = horizontalSpacing
-        self.verticalSpacing = verticalSpacing ?? horizontalSpacing
+        self.verticalSpacing = verticalSpacing
+        self.alignment = alignment
     }
     
     public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
@@ -37,7 +45,46 @@ struct CenterFlexBox: Layout {
     }
     
     public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        switch alignment {
+        case .leading:
+            placeSubviewsByLeading(in: bounds, proposal: proposal, subviews: subviews, cache: &cache)
+        case .center:
+            placeSubviewsByCenter(in: bounds, proposal: proposal, subviews: subviews, cache: &cache)
+        }
+    }
+    
+    private func placeSubviewsByLeading(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let height = subviews.map { $0.dimensions(in: proposal).height }.max() ?? 0 // subview의 높이 중 최대값
+        guard !subviews.isEmpty else { return } // subview가 없으면 리턴
         
+        // 첫줄 시작점
+        var x = bounds.minX // 부모뷰의 가장 왼쪽
+        var y = bounds.minY // 첫 row의 위치
+        
+        subviews.forEach { subview in
+            // 줄바꿈을 하는 경우: (현재 x좌표 + 현재 subview의 너비) > 부모뷰의 오른쪽 끝 x좌표
+            if x + subview.dimensions(in: proposal).width > bounds.maxX  {
+                x = bounds.minX // 다시 부모뷰의 가장 왼쪽
+                y += height + verticalSpacing // 다음 row의 위치
+            }
+            
+            // subview 위치
+            subview.place(
+                at: CGPoint(x: x, y: y),
+                anchor: .topLeading, // 좌표의 기준 (좌상단)
+                proposal: ProposedViewSize(
+                    width: subview.dimensions(in: proposal).width,
+                    height: subview.dimensions(in: proposal).height
+                )
+            )
+            
+            // 다음 subview의 x좌표 = 현재 subview의 x좌표 + 현재 subview의 너비 + 수평 간격
+            x += subview.dimensions(in: proposal).width + horizontalSpacing
+
+        }
+    }
+    
+    private func placeSubviewsByCenter(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         let height = subviews.map { $0.dimensions(in: proposal).height }.max() ?? 0
         guard !subviews.isEmpty else { return }
         // 일단 y좌표 최상단에서 시작
@@ -95,4 +142,5 @@ struct CenterFlexBox: Layout {
             x += sv.dimensions(in: proposal).width + horizontalSpacing
         }
     }
+    
 }
