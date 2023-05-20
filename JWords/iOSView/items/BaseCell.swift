@@ -105,6 +105,8 @@ extension BaseCell {
                 .font(.system(size: backFontSize))
                 .opacity(isFront ? 0 : 1)
         }
+        .padding(.vertical, 30)
+        .padding(.horizontal, 8)
     }
     
     private func fontSize(of text: String) -> CGFloat {
