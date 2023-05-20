@@ -149,8 +149,16 @@ class CoreDataClient {
             throw AppError.coreData
         }
         
-        HuriganaConverter.shared.extractKanjis(from: kanjiText)
-            .compactMap { try? getKanjiMO($0) }
+        let previousKanjis = mo.kanjiOfWord ?? []
+        let nowKanjis = HuriganaConverter.shared.extractKanjis(from: kanjiText)
+                            .compactMap { try? getKanjiMO($0) }
+        let toRemoveKanjis = Set(_immutableCocoaSet: previousKanjis)
+                            .subtracting(Set(nowKanjis))
+        
+        toRemoveKanjis
+            .forEach { mo.removeFromKanjiOfWord($0) }
+        
+        nowKanjis
             .forEach { mo.addToKanjiOfWord($0) }
         
         mo.type = Int16(type.rawValue)
