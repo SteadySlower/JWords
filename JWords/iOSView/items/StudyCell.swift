@@ -17,6 +17,7 @@ struct StudyWord: ReducerProtocol {
         let isLocked: Bool
         let frontType: FrontType
         var kanjis: [Kanji] = []
+        let showKanjiButton: Bool
         var studyState: StudyState {
             get {
                 unit.studyState
@@ -49,6 +50,10 @@ struct StudyWord: ReducerProtocol {
             self.unit = unit
             self.isLocked = isLocked
             self.frontType = frontType
+            self.showKanjiButton = {
+                guard unit.type != .kanji else { return false }
+                return HuriganaConverter.shared.extractKanjis(from: unit.kanjiText ?? "").count == 0 ? false : true
+            }()
         }
 
     }
@@ -184,7 +189,7 @@ struct StudyCell: View {
                     .padding(.leading, 8)
                     .hide(dragAmount != .zero)
                     .hide(vs.isFront)
-                    .hide(vs.unit.type == .kanji)
+                    .hide(!vs.showKanjiButton)
             )
             .overlay(
                 kanjiPopup(vs.kanjis) { vs.send(.addKanjiMeaningTapped($0)) }
