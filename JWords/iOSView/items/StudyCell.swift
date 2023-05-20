@@ -184,6 +184,7 @@ struct StudyCell: View {
                     .padding(.leading, 8)
                     .hide(dragAmount != .zero)
                     .hide(vs.isFront)
+                    .hide(vs.unit.type == .kanji)
             )
             .overlay(
                 kanjiPopup(vs.kanjis) { vs.send(.addKanjiMeaningTapped($0)) }
