@@ -229,7 +229,9 @@ struct StudyCell: View {
                         }
                     }
                 }
+                #if os(iOS)
                 .speechBubble()
+                #endif
                 Spacer()
             }
         } else {
