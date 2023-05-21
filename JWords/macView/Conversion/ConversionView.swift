@@ -58,6 +58,14 @@ struct ConversionView: View {
                         action: ConversionList.Action.selectWordBook(action:))
                     )
                 }
+                HStack {
+                    ScrollView {
+                        
+                    }
+                    ScrollView {
+                        
+                    }
+                }
             }
         }
     }

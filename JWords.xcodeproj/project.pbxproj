@@ -161,7 +161,7 @@
 
 /* Begin PBXFileReference section */
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
-		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/macView/ConversionView.swift; sourceTree = SOURCE_ROOT; };
+		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
 		0622726829F3B69100EEAD50 /* ImageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageClient.swift; sourceTree = "<group>"; };
 		0622727229FC9C3400EEAD50 /* WordBookPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WordBookPicker.swift; path = JWords/macView/Components/WordBookPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -314,6 +314,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		061C9E822A19D5DA00E099B5 /* Conversion */ = {
+			isa = PBXGroup;
+			children = (
+				061C9E7E2A19862F00E099B5 /* ConversionView.swift */,
+			);
+			path = Conversion;
+			sourceTree = "<group>";
+		};
 		0624735929C6D1360076DBE4 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -597,12 +605,12 @@
 		5A67DC2F2869527A00AC156C /* MacView */ = {
 			isa = PBXGroup;
 			children = (
+				061C9E822A19D5DA00E099B5 /* Conversion */,
 				0624735929C6D1360076DBE4 /* Components */,
 				5A67DC302869529700AC156C /* MacAppView.swift */,
 				06BC609929AEF04600AA67E6 /* MacAddWordView.swift */,
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
 				0622727B29FDEADC00EEAD50 /* HuriganaTestView.swift */,
-				061C9E7E2A19862F00E099B5 /* ConversionView.swift */,
 			);
 			path = MacView;
 			sourceTree = "<group>";
