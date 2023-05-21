@@ -13,13 +13,13 @@ struct MacApp: ReducerProtocol {
     struct State: Equatable {
         var addBook = AddBook.State()
         var addWord = AddWord.State()
-        var wordList = MacWordList.State()
+        var conversionList = ConversionList.State()
     }
     
     enum Action: Equatable {
         case addBook(action: AddBook.Action)
         case addWord(action: AddWord.Action)
-        case wordList(action: MacWordList.Action)
+        case conversionList(action: ConversionList.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -35,8 +35,8 @@ struct MacApp: ReducerProtocol {
         Scope(state: \.addWord, action: /Action.addWord(action:)) {
             AddWord()
         }
-        Scope(state: \.wordList, action: /Action.wordList(action:)) {
-            MacWordList()
+        Scope(state: \.conversionList, action: /Action.conversionList(action:)) {
+            ConversionList()
         }
     }
     
@@ -58,11 +58,11 @@ struct MacAppView: View {
                 action: MacApp.Action.addWord(action:))
             )
             .tabItem { Text("단어 추가") }
-            MacStudyView(store: store.scope(
-                state: \.wordList,
-                action: MacApp.Action.wordList(action:))
+            ConversionView(store: store.scope(
+                state: \.conversionList,
+                action: MacApp.Action.conversionList(action:))
             )
-            .tabItem { Text("단어 공부") }
+            .tabItem { Text("데이터 이동") }
         }
         .navigationViewStyle(.automatic)
     }

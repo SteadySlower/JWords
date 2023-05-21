@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MacWordList: ReducerProtocol {
+struct ConversionList: ReducerProtocol {
     struct State: Equatable {
         var setList = [StudySet]()
         var selectedID: String? = nil
@@ -19,26 +19,31 @@ struct MacWordList: ReducerProtocol {
     }
     
     enum Action: Equatable {
+        case onAppear
         case updateNowSet(String?)
     }
+    
+    private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                state.setList = try! cd.fetchSets()
             case .updateNowSet(let id):
                 state.selectedID = id
-                return .none
             default:
-                return .none
+                break
             }
+            return .none
         }
     }
     
 }
 
-struct MacStudyView: View {
+struct ConversionView: View {
     
-    let store: StoreOf<MacWordList>
+    let store: StoreOf<ConversionList>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -46,7 +51,7 @@ struct MacStudyView: View {
                 Picker("", selection:
                         vs.binding(
                              get: \.selectedID,
-                             send: MacWordList.Action.updateNowSet)
+                             send: ConversionList.Action.updateNowSet)
                 ) {
                     Text("선택된 단어장 없음")
                         .tag(nil as String?)
@@ -62,10 +67,10 @@ struct MacStudyView: View {
 
 struct MacStudyView_Previews: PreviewProvider {
     static var previews: some View {
-        MacStudyView(
+        ConversionView(
             store: Store(
-                initialState: MacWordList.State(),
-                reducer: MacWordList()._printChanges()
+                initialState: ConversionList.State(),
+                reducer: ConversionList()._printChanges()
             )
         )
     }
