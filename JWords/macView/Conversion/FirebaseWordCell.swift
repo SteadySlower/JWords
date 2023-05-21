@@ -24,6 +24,7 @@ struct FirebaseWord: ReducerProtocol {
     
     enum Action: Equatable {
         case editHuriText(action: EditHuriganaText.Action)
+        case moveButtonTapped
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -88,6 +89,9 @@ struct FirebaseWordCell: View {
                             .resizable()
                             .scaledToFit()
                     }
+                }
+                Button("이동 하기") {
+                    vs.send(.moveButtonTapped)
                 }
             }
             .border(.black)
