@@ -32,7 +32,7 @@ struct ConversionList: ReducerProtocol {
             switch action {
             case .selectWordBook(let action):
                 switch action {
-                case .updateID(_):
+                case .bookUpdated:
                     guard let book = state.firebaseBook.selectedBook else { return .none }
                     return .task {
                         await .wordsResponse( TaskResult { try await wordClient.words(book) } )

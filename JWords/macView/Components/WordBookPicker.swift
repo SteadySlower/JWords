@@ -50,6 +50,7 @@ struct SelectWordBook: ReducerProtocol {
         case onAppear
         case booksResponse(TaskResult<[WordBook]>)
         case updateID(String?)
+        case bookUpdated
         case wordCountResponse(TaskResult<Int>)
     }
     
@@ -75,7 +76,7 @@ struct SelectWordBook: ReducerProtocol {
                 .cancellable(id: fetchWordCountID.self)
             case let .wordCountResponse(.success(count)):
                 state.wordCount = count
-                return .none
+                return .task { .bookUpdated }
             default:
                 return .none
             }
