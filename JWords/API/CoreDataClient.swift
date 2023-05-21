@@ -11,16 +11,20 @@ import CoreData
 class CoreDataClient {
     
     static let shared = CoreDataClient()
+    private let context: NSManagedObjectContext
     
-    private lazy var context: NSManagedObjectContext = {
-        let container = NSPersistentContainer(name: "jwords")
+    init() {
+        let container = NSPersistentCloudKitContainer(name: "jwords")
+        container.persistentStoreDescriptions.first!.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
-        return container.viewContext
-    }()
+        self.context = container.viewContext
+    }
     
     func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
