@@ -17,6 +17,14 @@ struct EditableHuriUnit: View {
     @State var showAlert: Bool = false
     @State var text: String = ""
     
+    var offsetCoefficient: CGFloat {
+        #if os(iOS)
+        return 1.2
+        #elseif os(macOS)
+        return 0.9
+        #endif
+    }
+    
     var body: some View {
         Group {
             if !huri.kanji.isEmpty {
@@ -28,7 +36,7 @@ struct EditableHuriUnit: View {
                     }
                     .font(.system(size: fontSize / 2))
                     .lineLimit(1)
-                    .offset(y: -fontSize / 1.2)
+                    .offset(y: -fontSize / offsetCoefficient)
                 }
             } else {
                 Text(huri.gana)
