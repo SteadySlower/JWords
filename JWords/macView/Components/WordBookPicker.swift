@@ -15,6 +15,11 @@ struct SelectWordBook: ReducerProtocol {
         var selectedID: String? = nil
         var wordCount: Int? = nil
         var didFetched = false
+        let pickerName: String
+        
+        init(pickerName: String = "") {
+            self.pickerName = pickerName
+        }
         
         var selectedBook: WordBook? {
             wordBooks.first(where: { $0.id == selectedID })
@@ -85,7 +90,7 @@ struct WordBookPicker: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             HStack {
-                Picker("", selection:
+                Picker(vs.pickerName, selection:
                         vs.binding(
                              get: \.selectedID,
                              send: SelectWordBook.Action.updateID)
