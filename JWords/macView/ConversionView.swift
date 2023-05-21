@@ -10,32 +10,32 @@ import ComposableArchitecture
 
 struct ConversionList: ReducerProtocol {
     struct State: Equatable {
-        var setList = [StudySet]()
-        var selectedID: String? = nil
-        
-        var selectedSet: StudySet? {
-            setList.first(where: { $0.id == selectedID })
-        }
+        var coredataSet = SelectStudySet.State(pickerName: "CoreData 단어장")
+        var firebaseBook = SelectWordBook.State(pickerName: "Firebase 단어장")
     }
     
     enum Action: Equatable {
-        case onAppear
-        case updateNowSet(String?)
+        case selectStudySet(action: SelectStudySet.Action)
+        case selectWordBook(action: SelectWordBook.Action)
     }
     
     private let cd = CoreDataClient.shared
+    @Dependency(\.wordBookClient) var wordBookClient
+    private enum fetchBooksID {}
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
-                state.setList = try! cd.fetchSets()
-            case .updateNowSet(let id):
-                state.selectedID = id
             default:
                 break
             }
             return .none
+        }
+        Scope(state: \.coredataSet, action: /Action.selectStudySet(action:)) {
+            SelectStudySet()
+        }
+        Scope(state: \.firebaseBook, action: /Action.selectWordBook(action:)) {
+            SelectWordBook()
         }
     }
     
@@ -48,17 +48,15 @@ struct ConversionView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                Picker("", selection:
-                        vs.binding(
-                             get: \.selectedID,
-                             send: ConversionList.Action.updateNowSet)
-                ) {
-                    Text("선택된 단어장 없음")
-                        .tag(nil as String?)
-                    ForEach(vs.setList, id: \.id) { book in
-                        Text(book.title)
-                            .tag(book.id as String?)
-                    }
+                HStack {
+                    StudySetPicker(store: store.scope(
+                        state: \.coredataSet,
+                        action: ConversionList.Action.selectStudySet(action:))
+                    )
+                    WordBookPicker(store: store.scope(
+                        state: \.firebaseBook,
+                        action: ConversionList.Action.selectWordBook(action:))
+                    )
                 }
             }
         }
