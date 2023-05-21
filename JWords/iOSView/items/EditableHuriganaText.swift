@@ -50,7 +50,12 @@ struct EditHuriganaText: ReducerProtocol {
 
 struct EditableHuriganaText: View {
     let store: StoreOf<EditHuriganaText>
-    let fontSize: CGFloat = 20
+    let fontSize: CGFloat
+    
+    init(store: StoreOf<EditHuriganaText>, fontsize: CGFloat = 20) {
+        self.store = store
+        self.fontSize = fontsize
+    }
 
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
