@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Kingfisher
 
 struct FirebaseWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
@@ -38,16 +39,58 @@ struct FirebaseWord: ReducerProtocol {
 struct FirebaseWordCell: View {
     
     let store: StoreOf<FirebaseWord>
+    let fontSize: CGFloat = 20
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                Text(vs.word.kanjiText)
-                EditableHuriganaText(store: store.scope(
-                    state: \.huriText,
-                    action: FirebaseWord.Action.editHuriText(action:))
-                )
+            ZStack {}.frame(height: 50)
+            VStack(alignment: .leading) {
+                HStack(alignment: .top) {
+                    Text("후리가나: ")
+                        .font(.system(size: fontSize))
+                    EditableHuriganaText(
+                        store: store.scope(
+                            state: \.huriText,
+                            action: FirebaseWord.Action.editHuriText(action:)),
+                        fontsize: fontSize
+                    )
+                }
+                HStack(alignment: .top) {
+                    Text("가나: ")
+                    Text(vs.word.ganaText)
+                }
+                .font(.system(size: fontSize))
+                HStack {
+                    Text("뜻: ")
+                    Text(vs.word.meaningText)
+                }
+                .font(.system(size: fontSize))
+                if !vs.word.kanjiImageURL.isEmpty {
+                    HStack {
+                        Text("한자 이미지: ")
+                        KFImage(URL(string: vs.word.kanjiImageURL))
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+                if !vs.word.ganaImageURL.isEmpty {
+                    HStack {
+                        Text("가나 이미지: ")
+                        KFImage(URL(string: vs.word.ganaImageURL))
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+                if !vs.word.meaningImageURL.isEmpty {
+                    HStack {
+                        Text("뜻 이미지: ")
+                        KFImage(URL(string:vs.word.meaningImageURL))
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
             }
+            .border(.black)
         }
     }
 }
