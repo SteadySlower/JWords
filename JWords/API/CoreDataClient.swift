@@ -87,6 +87,20 @@ class CoreDataClient {
         }
     }
     
+    func countUnits(in set: StudySet) throws -> Int {
+        guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let result = mo.units?.count else {
+            print("디버그: setMO의 units가 nil")
+            throw AppError.coreData
+        }
+        
+        return result
+    }
+    
     func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
         guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
