@@ -25,15 +25,38 @@ struct FirebaseWord: ReducerProtocol {
     enum Action: Equatable {
         case editHuriText(action: EditHuriganaText.Action)
         case moveButtonTapped
+        case onMove(TaskResult<ConversionInput>)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
+            switch action {
+            case .moveButtonTapped:
+                return .task { [ state = state ] in
+                    let kanjiImage = try await downloadImage(from: state.word.kanjiImageURL)
+                    let meaningImage = try await downloadImage(from: state.word.meaningImageURL)
+                    return await .onMove( TaskResult {
+                        ConversionInput(type: .kanji,
+                                        kanjiText: state.huriText.hurigana,
+                                        kanjiImage: kanjiImage,
+                                        meaningText: state.word.meaningText,
+                                        meaningImage: meaningImage)
+                    } )
+                }
+            default: break
+            }
             return .none
         }
         Scope(state: \.huriText, action: /Action.editHuriText(action:)) {
             EditHuriganaText()
         }
+    }
+    
+    func downloadImage(from string: String) async throws -> Data? {
+        if string.isEmpty { return nil }
+        let url  = URL(string: string)!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return data
     }
 }
 

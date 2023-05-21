@@ -13,6 +13,7 @@ struct ConversionList: ReducerProtocol {
         var coredataSet = SelectStudySet.State(pickerName: "CoreData 단어장")
         var firebaseBook = SelectWordBook.State(pickerName: "Firebase 단어장")
         var words: IdentifiedArrayOf<FirebaseWord.State> = []
+        var conversionInput: ConversionInput?
     }
     
     enum Action: Equatable {
@@ -44,6 +45,12 @@ struct ConversionList: ReducerProtocol {
                     uniqueElements: words.map {
                         FirebaseWord.State(word: $0)
                     })
+            case .word(_, let action):
+                switch action {
+                case let .onMove(.success(conversionInput)):
+                    state.conversionInput = conversionInput
+                default: break
+                }
             default:
                 break
             }
@@ -70,10 +77,34 @@ struct ConversionView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
                 HStack {
-                    StudySetPicker(store: store.scope(
-                        state: \.coredataSet,
-                        action: ConversionList.Action.selectStudySet(action:))
-                    )
+                    VStack {
+                        StudySetPicker(store: store.scope(
+                            state: \.coredataSet,
+                            action: ConversionList.Action.selectStudySet(action:))
+                        )
+                        if let input = vs.conversionInput {
+                            VStack(alignment: .leading) {
+                                Text("한자: \(input.kanjiText)")
+                                Text("뜻: \(input.meaningText)")
+                                if let kanjiImage = input.kanjiImage {
+                                    VStack(alignment: .leading) {
+                                        Text("한자 이미지")
+                                        Image(nsImage: NSImage(data: kanjiImage)!)
+                                            .resizable()
+                                            .scaledToFit()
+                                    }
+                                }
+                                if let meaningImage = input.meaningImage {
+                                    VStack(alignment: .leading) {
+                                        Text("뜻 이미지")
+                                        Image(nsImage: NSImage(data: meaningImage)!)
+                                            .resizable()
+                                            .scaledToFit()
+                                    }
+                                }
+                            }
+                        }
+                    }
                     VStack {
                         WordBookPicker(store: store.scope(
                             state: \.firebaseBook,
