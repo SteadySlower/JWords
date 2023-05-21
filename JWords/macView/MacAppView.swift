@@ -48,6 +48,11 @@ struct MacAppView: View {
     
     var body: some View {
         TabView {
+            ConversionView(store: store.scope(
+                state: \.conversionList,
+                action: MacApp.Action.conversionList(action:))
+            )
+            .tabItem { Text("데이터 이동") }
             MacAddBookView(store: store.scope(
                 state: \.addBook,
                 action: MacApp.Action.addBook(action:))
@@ -58,12 +63,6 @@ struct MacAppView: View {
                 action: MacApp.Action.addWord(action:))
             )
             .tabItem { Text("단어 추가") }
-            ConversionView(store: store.scope(
-                state: \.conversionList,
-                action: MacApp.Action.conversionList(action:))
-            )
-            .tabItem { Text("데이터 이동") }
         }
-        .navigationViewStyle(.automatic)
     }
 }
