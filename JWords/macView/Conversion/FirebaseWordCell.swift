@@ -7,13 +7,22 @@
 
 import SwiftUI
 import ComposableArchitecture
-import Kingfisher
 
 struct FirebaseWord: ReducerProtocol {
+    
+    struct Images: Equatable {
+        var meaning: Data? = nil
+        var kanji: Data? = nil
+        var gana: Data? = nil
+    }
+    
     struct State: Equatable, Identifiable {
         let id: String
         let word: Word
         var huriText: EditHuriganaText.State
+        var kanjiImage: Data?
+        var ganaImage: Data?
+        var meaningImage: Data?
         
         init(word: Word) {
             self.id = word.id
@@ -23,25 +32,34 @@ struct FirebaseWord: ReducerProtocol {
     }
     
     enum Action: Equatable {
+        case onAppear
+        case imageDownLoaded(TaskResult<Images>)
         case editHuriText(action: EditHuriganaText.Action)
         case moveButtonTapped
-        case onMove(TaskResult<ConversionInput>)
+        case onMove(ConversionInput)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                return .task { [word = state.word] in
+                    await .imageDownLoaded( TaskResult { try await downloadImages(of: word) } )
+                }
+            case let .imageDownLoaded(.success(images)):
+                state.kanjiImage = images.kanji
+                state.ganaImage = images.gana
+                state.meaningImage = images.meaning
+                return .none
             case .moveButtonTapped:
-                return .task { [ state = state ] in
-                    let kanjiImage = try await downloadImage(from: state.word.kanjiImageURL)
-                    let meaningImage = try await downloadImage(from: state.word.meaningImageURL)
-                    return await .onMove( TaskResult {
+                return .task { [state = state] in
+                    .onMove(
                         ConversionInput(type: .kanji,
                                         kanjiText: state.huriText.hurigana,
-                                        kanjiImage: kanjiImage,
+                                        kanjiImage: state.kanjiImage,
                                         meaningText: state.word.meaningText,
-                                        meaningImage: meaningImage)
-                    } )
+                                        meaningImage: state.meaningImage)
+                    )
                 }
             default: break
             }
@@ -52,11 +70,24 @@ struct FirebaseWord: ReducerProtocol {
         }
     }
     
-    func downloadImage(from string: String) async throws -> Data? {
-        if string.isEmpty { return nil }
-        let url  = URL(string: string)!
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return data
+    func downloadImages(of word: Word) async throws -> Images {
+        var result = Images()
+        if !word.kanjiImageURL.isEmpty {
+            let url = URL(string: word.kanjiImageURL)!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            result.kanji = data
+        }
+        if !word.ganaImageURL.isEmpty {
+            let url = URL(string: word.ganaImageURL)!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            result.gana = data
+        }
+        if !word.meaningImageURL.isEmpty {
+            let url = URL(string: word.meaningImageURL)!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            result.meaning = data
+        }
+        return result
     }
 }
 
@@ -89,26 +120,26 @@ struct FirebaseWordCell: View {
                     Text(vs.word.meaningText)
                 }
                 .font(.system(size: fontSize))
-                if !vs.word.kanjiImageURL.isEmpty {
+                if let image = vs.kanjiImage {
                     HStack {
                         Text("한자 이미지: ")
-                        KFImage(URL(string: vs.word.kanjiImageURL))
+                        Image(nsImage: NSImage(data: image)!)
                             .resizable()
                             .scaledToFit()
                     }
                 }
-                if !vs.word.ganaImageURL.isEmpty {
+                if let image = vs.ganaImage {
                     HStack {
                         Text("가나 이미지: ")
-                        KFImage(URL(string: vs.word.ganaImageURL))
+                        Image(nsImage: NSImage(data: image)!)
                             .resizable()
                             .scaledToFit()
                     }
                 }
-                if !vs.word.meaningImageURL.isEmpty {
+                if let image = vs.meaningImage {
                     HStack {
                         Text("뜻 이미지: ")
-                        KFImage(URL(string:vs.word.meaningImageURL))
+                        Image(nsImage: NSImage(data: image)!)
                             .resizable()
                             .scaledToFit()
                     }
@@ -118,6 +149,7 @@ struct FirebaseWordCell: View {
                 }
             }
             .border(.black)
+            .onAppear { vs.send(.onAppear) }
         }
     }
 }

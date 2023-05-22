@@ -47,7 +47,7 @@ struct ConversionList: ReducerProtocol {
                     })
             case .word(_, let action):
                 switch action {
-                case let .onMove(.success(conversionInput)):
+                case let .onMove(conversionInput):
                     state.conversionInput = conversionInput
                 default: break
                 }
