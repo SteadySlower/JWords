@@ -127,6 +127,8 @@ struct FirebaseWordCell: View {
                             .resizable()
                             .scaledToFit()
                     }
+                } else if !vs.word.kanjiImageURL.isEmpty {
+                    ProgressView()
                 }
                 if let image = vs.ganaImage {
                     HStack {
@@ -135,6 +137,8 @@ struct FirebaseWordCell: View {
                             .resizable()
                             .scaledToFit()
                     }
+                } else if !vs.word.ganaImageURL.isEmpty {
+                    ProgressView()
                 }
                 if let image = vs.meaningImage {
                     HStack {
@@ -143,6 +147,8 @@ struct FirebaseWordCell: View {
                             .resizable()
                             .scaledToFit()
                     }
+                } else if !vs.word.meaningImageURL.isEmpty {
+                    ProgressView()
                 }
                 Button("이동 하기") {
                     vs.send(.moveButtonTapped)
