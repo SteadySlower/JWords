@@ -24,6 +24,14 @@ struct FirebaseWord: ReducerProtocol {
         var ganaImage: Data?
         var meaningImage: Data?
         
+        var conversionInput: ConversionInput {
+            ConversionInput(type: .kanji,
+                            kanjiText: huriText.hurigana,
+                            kanjiImage: kanjiImage,
+                            meaningText: word.meaningText,
+                            meaningImage: meaningImage)
+        }
+        
         init(word: Word) {
             self.id = word.id
             self.word = word
@@ -52,14 +60,8 @@ struct FirebaseWord: ReducerProtocol {
                 state.meaningImage = images.meaning
                 return .none
             case .moveButtonTapped:
-                return .task { [state = state] in
-                    .onMove(
-                        ConversionInput(type: .kanji,
-                                        kanjiText: state.huriText.hurigana,
-                                        kanjiImage: state.kanjiImage,
-                                        meaningText: state.word.meaningText,
-                                        meaningImage: state.meaningImage)
-                    )
+                return .task { [conversionInput = state.conversionInput] in
+                    .onMove(conversionInput)
                 }
             default: break
             }
