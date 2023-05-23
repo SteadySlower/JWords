@@ -11,9 +11,9 @@ class CKImageUploader {
     
     static let shared = CKImageUploader()
     
-    let db = CKContainer.default().privateCloudDatabase
+    let db = CKContainer(identifier: "iCloud.JWords_iCloud").privateCloudDatabase
     
-    func saveImage(id: String, data: Data) async throws {
+    func saveImage(id: String, data: Data) async throws -> String {
         let imageRecordID = CKRecord.ID(recordName: id)
         let imageRecord = CKRecord(recordType: "Image", recordID: imageRecordID)
         let imageAsset = CKAsset(fileURL: getFileURL(of: id))
@@ -28,9 +28,10 @@ class CKImageUploader {
         return try await withCheckedThrowingContinuation { continuation in
             db.save(imageRecord) { (record, error) in
                 if let error = error {
+                    print("디버그: \(error)")
                     continuation.resume(with: .failure(AppError.cloudKit))
                 } else {
-                    continuation.resume(with: .success(()))
+                    continuation.resume(with: .success(id))
                 }
             }
         }
@@ -42,6 +43,7 @@ class CKImageUploader {
         return try await withCheckedThrowingContinuation { continuation in
             db.fetch(withRecordID: imageRecordID) { (record, error) in
                 if let error = error {
+                    print("디버그: \(error)")
                     continuation.resume(with: .failure(AppError.cloudKit))
                 } else if let record = record,
                           let asset = record["image"] as? CKAsset,
