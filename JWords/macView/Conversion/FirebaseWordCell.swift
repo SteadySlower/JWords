@@ -19,13 +19,14 @@ struct FirebaseWord: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
         let word: Word
+        var type: UnitType
         var huriText: EditHuriganaText.State
         var kanjiImage: Data?
         var ganaImage: Data?
         var meaningImage: Data?
         
         var conversionInput: ConversionInput {
-            ConversionInput(type: .kanji,
+            ConversionInput(type: type,
                             kanjiText: huriText.hurigana,
                             kanjiImage: kanjiImage,
                             meaningText: word.meaningText,
@@ -36,12 +37,22 @@ struct FirebaseWord: ReducerProtocol {
             self.id = word.id
             self.word = word
             self.huriText = .init(hurigana: HuriganaConverter.shared.convert(word.kanjiText))
+            if word.kanjiText.count == 1 {
+                self.type = .kanji
+            } else if word.kanjiText.count > 10 {
+                self.type = .sentence
+            } else if word.hasImage && word.kanjiText.isEmpty {
+                self.type = .sentence
+            } else {
+                self.type = .word
+            }
         }
     }
     
     enum Action: Equatable {
         case onAppear
         case imageDownLoaded(TaskResult<Images>)
+        case updateType(UnitType)
         case editHuriText(action: EditHuriganaText.Action)
         case moveButtonTapped
         case onMove(ConversionInput)
@@ -102,6 +113,15 @@ struct FirebaseWordCell: View {
         WithViewStore(store, observe: { $0 }) { vs in
             ZStack {}.frame(height: 50)
             VStack(alignment: .leading) {
+                Picker("타입", selection:
+                        vs.binding(get: \.type,
+                                   send: FirebaseWord.Action.updateType)
+                ) {
+                    ForEach(UnitType.allCases, id: \.self) { type in
+                        Text(type.description)
+                    }
+                }
+                .pickerStyle(.segmented)
                 HStack(alignment: .top) {
                     Text("후리가나: ")
                         .font(.system(size: fontSize))

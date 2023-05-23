@@ -84,6 +84,7 @@ struct ConversionView: View {
                         )
                         if let input = vs.conversionInput {
                             VStack(alignment: .leading) {
+                                Text("타입: \(input.type.description)")
                                 Text("한자: \(input.kanjiText)")
                                 Text("뜻: \(input.meaningText)")
                                 if let kanjiImage = input.kanjiImage {
