@@ -20,6 +20,7 @@ struct ConversionList: ReducerProtocol {
         case selectWordBook(action: SelectWordBook.Action)
         case wordsResponse(TaskResult<[Word]>)
         case word(id: FirebaseWord.State.ID, action: FirebaseWord.Action)
+        case onConverted(TaskResult<StudyUnit>)
     }
     
     private let cd = CoreDataClient.shared
@@ -47,7 +48,7 @@ struct ConversionList: ReducerProtocol {
                     })
             case .word(_, let action):
                 switch action {
-                case let .onMove(conversionInput):
+                case let .onMove(conversionInput)
                     break
                 default: break
                 }

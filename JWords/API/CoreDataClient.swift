@@ -403,8 +403,8 @@ extension CoreDataClient {
         mo.type = Int16(input.type.rawValue)
         if !input.kanjiText.isEmpty { mo.kanjiText = input.kanjiText }
         if !input.meaningText.isEmpty { mo.meaningText = input.meaningText }
-        mo.studyState = Int16(StudyState.undefined.rawValue)
-        mo.createdAt = Date()
+        mo.studyState = Int16(input.studyState.rawValue)
+        mo.createdAt = input.createdAt
         mo.addToSet(set)
         
         do {

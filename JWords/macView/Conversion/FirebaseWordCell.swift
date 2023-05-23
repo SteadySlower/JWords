@@ -30,7 +30,9 @@ struct FirebaseWord: ReducerProtocol {
                             kanjiText: huriText.hurigana,
                             kanjiImage: kanjiImage,
                             meaningText: word.meaningText,
-                            meaningImage: meaningImage)
+                            meaningImage: meaningImage,
+                            studyState: word.studyState,
+                            createdAt: word.createdAt)
         }
         
         init(word: Word) {

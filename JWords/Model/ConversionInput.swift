@@ -14,5 +14,7 @@ struct ConversionInput: Equatable {
     let kanjiImage: Data?
     let meaningText: String
     let meaningImage: Data?
+    let studyState: StudyState
+    let createdAt: Date
     
 }
