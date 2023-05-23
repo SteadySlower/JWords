@@ -11,6 +11,7 @@ enum AppError: Error, Equatable {
     case generic(massage: String)
     case noMatchingWord(id: String)
     case coreData
+    case cloudKit
     
     case unknown
     
