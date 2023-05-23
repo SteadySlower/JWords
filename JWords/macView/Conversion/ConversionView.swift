@@ -13,9 +13,6 @@ struct ConversionList: ReducerProtocol {
         var coredataSet = SelectStudySet.State(pickerName: "CoreData 단어장")
         var firebaseBook = SelectWordBook.State(pickerName: "Firebase 단어장")
         var words: IdentifiedArrayOf<FirebaseWord.State> = []
-        var conversionInput: ConversionInput?
-        var testImage: Data?
-        var isUploading: Bool = false
     }
     
     enum Action: Equatable {
@@ -23,10 +20,6 @@ struct ConversionList: ReducerProtocol {
         case selectWordBook(action: SelectWordBook.Action)
         case wordsResponse(TaskResult<[Word]>)
         case word(id: FirebaseWord.State.ID, action: FirebaseWord.Action)
-        case imageTest
-        case onImageUpload(TaskResult<String>)
-        case showTestImage
-        case onImageDownload(TaskResult<Data>)
     }
     
     private let cd = CoreDataClient.shared
@@ -55,28 +48,9 @@ struct ConversionList: ReducerProtocol {
             case .word(_, let action):
                 switch action {
                 case let .onMove(conversionInput):
-                    state.conversionInput = conversionInput
+                    break
                 default: break
                 }
-            case .imageTest:
-                if let kanjiImage = state.conversionInput?.kanjiImage {
-                    let id = "test_kanji_image"
-                    state.isUploading = true
-                    return .task { await .onImageUpload( TaskResult { try await iu.saveImage(id: id, data: kanjiImage) } ) }
-                }
-                break
-            case .onImageUpload(let id):
-                state.isUploading = false
-                break
-            case .showTestImage:
-                let id = "test_kanji_image"
-                return .task { await .onImageDownload(
-                    TaskResult { try await iu.fetchImage(id: id) }
-                ) }
-            case let .onImageDownload(.success(data)):
-                state.testImage = data
-            case let .onImageDownload(.failure(error)):
-                print("디버그: \(error)")
             default:
                 break
             }
@@ -108,43 +82,6 @@ struct ConversionView: View {
                             state: \.coredataSet,
                             action: ConversionList.Action.selectStudySet(action:))
                         )
-                        if let input = vs.conversionInput {
-                            VStack(alignment: .leading) {
-                                Text("타입: \(input.type.description)")
-                                Text("한자: \(input.kanjiText)")
-                                Text("뜻: \(input.meaningText)")
-                                if let kanjiImage = input.kanjiImage {
-                                    VStack(alignment: .leading) {
-                                        Text("한자 이미지")
-                                        Image(nsImage: NSImage(data: kanjiImage)!)
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                                if let meaningImage = input.meaningImage {
-                                    VStack(alignment: .leading) {
-                                        Text("뜻 이미지")
-                                        Image(nsImage: NSImage(data: meaningImage)!)
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }
-                                Button("이미지 테스트 저장") {
-                                    vs.send(.imageTest)
-                                }
-                                .loadingView(vs.isUploading)
-                            }
-                        }
-                        if let testImage = vs.testImage {
-                            Image(nsImage: NSImage(data: testImage)!)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Button("테스트 이미지 불러오기") {
-                                vs.send(.showTestImage)
-                            }
-                            .loadingView(vs.isUploading)
-                        }
                     }
                     VStack {
                         WordBookPicker(store: store.scope(
