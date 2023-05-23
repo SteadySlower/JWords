@@ -13,7 +13,8 @@ class CKImageUploader {
     
     let db = CKContainer(identifier: "iCloud.JWords_iCloud").privateCloudDatabase
     
-    func saveImage(id: String, data: Data) async throws -> String {
+    func saveImage(data: Data) async throws -> String {
+        let id = "image_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         let imageRecordID = CKRecord.ID(recordName: id)
         let imageRecord = CKRecord(recordType: "Image", recordID: imageRecordID)
         let imageAsset = CKAsset(fileURL: getFileURL(of: id))
