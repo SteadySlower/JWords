@@ -104,6 +104,7 @@
 		5A80ACEF29FA4FDE00E3F31A /* GanaField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */; };
 		5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A80ACF029FA535500E3F31A /* KanjiField.swift */; };
 		5A8614D82A1C627300000653 /* CKImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8614D72A1C627300000653 /* CKImageUploader.swift */; };
+		5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8614D92A1C9ABA00000653 /* CoreDataWordCell.swift */; };
 		5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C02A11BBB40027B408 /* KanjiList.swift */; };
 		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
 		5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C42A11CA630027B408 /* KanjiCell.swift */; };
@@ -255,6 +256,7 @@
 		5A80ACEE29FA4FDE00E3F31A /* GanaField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GanaField.swift; path = JWords/macView/Components/GanaField.swift; sourceTree = SOURCE_ROOT; };
 		5A80ACF029FA535500E3F31A /* KanjiField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiField.swift; path = JWords/macView/Components/KanjiField.swift; sourceTree = SOURCE_ROOT; };
 		5A8614D72A1C627300000653 /* CKImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKImageUploader.swift; sourceTree = "<group>"; };
+		5A8614D92A1C9ABA00000653 /* CoreDataWordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreDataWordCell.swift; path = JWords/macView/Conversion/CoreDataWordCell.swift; sourceTree = SOURCE_ROOT; };
 		5A8843C02A11BBB40027B408 /* KanjiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiList.swift; sourceTree = "<group>"; };
 		5A8843C22A11BBDF0027B408 /* Kanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanji.swift; sourceTree = "<group>"; };
 		5A8843C42A11CA630027B408 /* KanjiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCell.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 			children = (
 				061C9E7E2A19862F00E099B5 /* ConversionView.swift */,
 				061C9E832A19D62D00E099B5 /* FirebaseWordCell.swift */,
+				5A8614D92A1C9ABA00000653 /* CoreDataWordCell.swift */,
 			);
 			path = Conversion;
 			sourceTree = "<group>";
@@ -919,6 +922,7 @@
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
 				06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */,
+				5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
