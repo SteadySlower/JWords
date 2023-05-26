@@ -375,7 +375,7 @@ class CoreDataClient {
 
 // MARK: Conversion
 extension CoreDataClient {
-    func conversion(input: ConversionInput, in set: StudySet) async throws -> StudyUnit {
+    func convert(input: ConversionInput, in set: StudySet) async throws -> StudyUnit {
         
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
             print("디버그: StudyUnitMO 객체를 만들 수 없음")
