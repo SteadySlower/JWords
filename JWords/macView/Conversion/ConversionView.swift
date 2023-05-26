@@ -13,12 +13,14 @@ struct ConversionList: ReducerProtocol {
         var coredataSet = SelectStudySet.State(pickerName: "CoreData 단어장")
         var firebaseBook = SelectWordBook.State(pickerName: "Firebase 단어장")
         var words: IdentifiedArrayOf<FirebaseWord.State> = []
+        var units: IdentifiedArrayOf<CoreDataWord.State> = []
     }
     
     enum Action: Equatable {
         case selectStudySet(action: SelectStudySet.Action)
         case selectWordBook(action: SelectWordBook.Action)
         case wordsResponse(TaskResult<[Word]>)
+        case unit(id: CoreDataWord.State.ID, action: CoreDataWord.Action)
         case word(id: FirebaseWord.State.ID, action: FirebaseWord.Action)
         case onConverted(TaskResult<StudyUnit>)
     }
@@ -32,10 +34,24 @@ struct ConversionList: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .selectStudySet(let action):
+                switch action {
+                case .idUpdated:
+                    guard let set = state.coredataSet.selectedSet else {
+                        state.units = []
+                        break
+                    }
+                    state.units = IdentifiedArrayOf(
+                        uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
+                default: break
+                }
             case .selectWordBook(let action):
                 switch action {
                 case .bookUpdated:
-                    guard let book = state.firebaseBook.selectedBook else { return .none }
+                    guard let book = state.firebaseBook.selectedBook else {
+                        state.words = []
+                        return .none
+                    }
                     return .task {
                         await .wordsResponse( TaskResult { try await wordClient.words(book) } )
                     }
@@ -48,14 +64,24 @@ struct ConversionList: ReducerProtocol {
                     })
             case .word(_, let action):
                 switch action {
-                case let .onMove(conversionInput)
-                    break
+                case let .onMove(conversionInput):
+                    guard let set = state.coredataSet.selectedSet else { break }
+                    return .task {
+                        await .onConverted( TaskResult { try await cd.convert(input: conversionInput, in: set) } )
+                    }
                 default: break
                 }
+            case .onConverted:
+                guard let set = state.coredataSet.selectedSet else { break }
+                state.units = IdentifiedArrayOf(
+                    uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
             default:
                 break
             }
             return .none
+        }
+        .forEach(\.units, action: /Action.unit(id:action:)) {
+            CoreDataWord()
         }
         .forEach(\.words, action: /Action.word(id:action:)) {
             FirebaseWord()
@@ -83,6 +109,15 @@ struct ConversionView: View {
                             state: \.coredataSet,
                             action: ConversionList.Action.selectStudySet(action:))
                         )
+                        ScrollView {
+                            VStack(spacing: 10) {
+                                ForEachStore(
+                                    self.store.scope(state: \.units, action: ConversionList.Action.unit(id:action:))
+                                  ) {
+                                      CoreDataWordCell(store: $0)
+                                  }
+                            }
+                        }
                     }
                     VStack {
                         WordBookPicker(store: store.scope(

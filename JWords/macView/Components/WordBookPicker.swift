@@ -69,7 +69,7 @@ struct SelectWordBook: ReducerProtocol {
             case .updateID(let id):
                 state.selectedID = id
                 state.wordCount = nil
-                guard let book = state.selectedBook else { return .none }
+                guard let book = state.selectedBook else { return .task { .bookUpdated } }
                 return .task {
                     await .wordCountResponse(TaskResult { try await wordBookClient.wordCount(book) })
                 }

@@ -38,6 +38,7 @@ struct SelectStudySet: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case updateID(String?)
+        case idUpdated
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -48,11 +49,13 @@ struct SelectStudySet: ReducerProtocol {
                 return .none
             case .updateID(let id):
                 state.selectedID = id
+                state.unitCount = nil
                 guard let set = state.selectedSet else {
-                    state.unitCount = nil
-                    return .none
+                    return .task { .idUpdated }
                 }
                 state.unitCount = try! cd.countUnits(in: set)
+                return .task { .idUpdated }
+            default:
                 return .none
             }
         }
