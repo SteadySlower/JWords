@@ -69,6 +69,11 @@ struct ConversionList: ReducerProtocol {
                     return .task {
                         await .onConverted( TaskResult { try await cd.convert(input: conversionInput, in: set) } )
                     }
+                case let .onEditAndMove(unit, meaning):
+                    guard let set = state.coredataSet.selectedSet else { break }
+                    return .task {
+                        await .onConverted( TaskResult { try await cd.convert(unit: unit, newMeaning: meaning, in: set) } )
+                    }
                 default: break
                 }
             case .onConverted:

@@ -65,7 +65,9 @@ struct FirebaseWord: ReducerProtocol {
         case moveButtonTapped
         case existing(StudyUnit)
         case updateOverlappingText(String)
+        case editAndMoveButtonTapped
         case onMove(ConversionInput)
+        case onEditAndMove(StudyUnit, String)
     }
     
     private let cd = CoreDataClient.shared
@@ -93,6 +95,11 @@ struct FirebaseWord: ReducerProtocol {
                 }
             case .updateOverlappingText(let text):
                 state.overlappingMeaningText = text
+            case .editAndMoveButtonTapped:
+                guard let unit = state.overlappingUnit else { break }
+                return .task { [meaningText = state.overlappingMeaningText] in
+                    .onEditAndMove(unit, meaningText)
+                }
             default: break
             }
             return .none
@@ -205,8 +212,14 @@ struct FirebaseWordCell: View {
                         Text("뜻 이미지 " + "\(unit.meaningImageID == nil ? "없음" : "있음")")
                     }
                 }
-                Button(vs.overlappingUnit == nil ? "이동 하기" : "수정 및 추가") {
-                    vs.send(.moveButtonTapped)
+                if vs.overlappingUnit == nil {
+                    Button("이동 하기") {
+                        vs.send(.moveButtonTapped)
+                    }
+                } else {
+                    Button("수정 및 추가") {
+                        vs.send(.editAndMoveButtonTapped)
+                    }
                 }
             }
             .border(.black)
