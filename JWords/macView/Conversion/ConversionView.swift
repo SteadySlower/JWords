@@ -142,6 +142,15 @@ struct ConversionView: View {
                             }
                         }
                     }
+                    if !vs.filteredWords.isEmpty {
+                        VStack {
+                            Button("<-") {
+                                
+                            }
+                            Spacer()
+                        }
+                        .padding(.top, 30)
+                    }
                     VStack {
                         WordBookPicker(store: store.scope(
                             state: \.firebaseBook,
