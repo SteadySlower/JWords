@@ -187,8 +187,19 @@ struct FirebaseWordCell: View {
                     ProgressView()
                 }
                 if let unit = vs.overlappingUnit {
-                    HStack {
+                    VStack(alignment: .leading) {
                         Text("이미 존재하는 단어입니다.")
+                        HStack(alignment: .top) {
+                            Text("후리가나: ")
+                            HuriganaText(hurigana: unit.kanjiText ?? "", alignment: .leading)
+                        }
+                        HStack(alignment: .top) {
+                            Text("뜻: ")
+                            Text(unit.meaningText ?? "뜻 텍스트는 없음")
+                            Spacer()
+                        }
+                        Text("한자 이미지 " + "\(unit.kanjiImageID == nil ? "없음" : "있음")")
+                        Text("뜻 이미지 " + "\(unit.meaningImageID == nil ? "없음" : "있음")")
                     }
                 }
                 Button(vs.overlappingUnit == nil ? "이동 하기" : "수정 및 추가") {
