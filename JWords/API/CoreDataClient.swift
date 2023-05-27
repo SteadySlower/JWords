@@ -418,4 +418,20 @@ extension CoreDataClient {
         
         
     }
+    
+    func checkIfExist(_ kanjiText: String) throws -> StudyUnit? {
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanjiText)
+        
+        do {
+            if let fetched = try context.fetch(fetchRequest).first {
+                return StudyUnit(from: fetched)
+            } else {
+                return nil
+            }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
 }
