@@ -26,6 +26,7 @@ struct FirebaseWord: ReducerProtocol {
         var meaningImage: Data?
         
         var overlappingUnit: StudyUnit?
+        var overlappingMeaningText: String = ""
         
         var conversionInput: ConversionInput {
             
@@ -63,6 +64,7 @@ struct FirebaseWord: ReducerProtocol {
         case editHuriText(action: EditHuriganaText.Action)
         case moveButtonTapped
         case existing(StudyUnit)
+        case updateOverlappingText(String)
         case onMove(ConversionInput)
     }
     
@@ -83,11 +85,14 @@ struct FirebaseWord: ReducerProtocol {
             case .moveButtonTapped:
                 if let exist = try! cd.checkIfExist(state.conversionInput.kanjiText) {
                     state.overlappingUnit = exist
+                    state.overlappingMeaningText = exist.meaningText ?? ""
                     return .none
                 }
                 return .task { [conversionInput = state.conversionInput] in
                     .onMove(conversionInput)
                 }
+            case .updateOverlappingText(let text):
+                state.overlappingMeaningText = text
             default: break
             }
             return .none
@@ -193,11 +198,9 @@ struct FirebaseWordCell: View {
                             Text("후리가나: ")
                             HuriganaText(hurigana: unit.kanjiText ?? "", alignment: .leading)
                         }
-                        HStack(alignment: .top) {
-                            Text("뜻: ")
-                            Text(unit.meaningText ?? "뜻 텍스트는 없음")
-                            Spacer()
-                        }
+                        TextEditor(text: vs.binding(
+                            get: \.overlappingMeaningText,
+                            send: FirebaseWord.Action.updateOverlappingText))
                         Text("한자 이미지 " + "\(unit.kanjiImageID == nil ? "없음" : "있음")")
                         Text("뜻 이미지 " + "\(unit.meaningImageID == nil ? "없음" : "있음")")
                     }
