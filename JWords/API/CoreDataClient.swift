@@ -437,4 +437,30 @@ extension CoreDataClient {
             throw AppError.coreData
         }
     }
+    
+    func convert(unit: StudyUnit, newMeaning: String, in set: StudySet) throws -> StudyUnit {
+        
+        guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.meaningText = newMeaning
+        mo.addToSet(set)
+        
+        do {
+            try context.save()
+            return StudyUnit(from: mo)
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+    }
 }
