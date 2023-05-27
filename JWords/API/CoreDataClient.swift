@@ -420,6 +420,9 @@ extension CoreDataClient {
     }
     
     func checkIfExist(_ kanjiText: String) throws -> StudyUnit? {
+        
+        if kanjiText.isEmpty { return nil }
+        
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanjiText)
         
