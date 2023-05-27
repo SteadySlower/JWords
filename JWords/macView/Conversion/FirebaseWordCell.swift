@@ -28,6 +28,8 @@ struct FirebaseWord: ReducerProtocol {
         var overlappingUnit: StudyUnit?
         var overlappingMeaningText: String = ""
         
+        var converted: Bool = false
+        
         var conversionInput: ConversionInput {
             
             let kanjiText = type == .kanji ? word.kanjiText : huriText.hurigana
@@ -61,6 +63,10 @@ struct FirebaseWord: ReducerProtocol {
             self.word = word
             self.huriText = .init(hurigana: HuriganaConverter.shared.convert(word.kanjiText))
             self.type = type
+        }
+        
+        mutating func onCoverted() {
+            converted = true
         }
     }
     

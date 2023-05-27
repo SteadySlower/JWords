@@ -15,6 +15,10 @@ struct ConversionList: ReducerProtocol {
         var typeForAll: UnitType? = nil
         var words: IdentifiedArrayOf<FirebaseWord.State> = []
         var units: IdentifiedArrayOf<CoreDataWord.State> = []
+        
+        var filteredWords: IdentifiedArrayOf<FirebaseWord.State> {
+            words.filter { !$0.converted }
+        }
     }
     
     enum Action: Equatable {
@@ -54,6 +58,7 @@ struct ConversionList: ReducerProtocol {
                         state.words = []
                         return .none
                     }
+                    state.typeForAll = nil
                     return .task {
                         await .wordsResponse( TaskResult { try await wordClient.words(book) } )
                     }
@@ -86,8 +91,11 @@ struct ConversionList: ReducerProtocol {
                     state.typeForAll = nil
                 default: break
                 }
-            case .onConverted:
+            case let .onConverted(.success(unit)):
                 guard let set = state.coredataSet.selectedSet else { break }
+                if let index = state.words.index { $0.huriText.hurigana == unit.kanjiText } {
+                    state.words[index].onCoverted()
+                }
                 state.units = IdentifiedArrayOf(
                     uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
             default:
@@ -154,7 +162,7 @@ struct ConversionView: View {
                         ScrollView {
                             VStack(spacing: 10) {
                                 ForEachStore(
-                                    self.store.scope(state: \.words, action: ConversionList.Action.word(id:action:))
+                                    self.store.scope(state: \.filteredWords, action: ConversionList.Action.word(id:action:))
                                   ) {
                                       FirebaseWordCell(store: $0)
                                   }
