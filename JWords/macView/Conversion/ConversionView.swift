@@ -12,6 +12,7 @@ struct ConversionList: ReducerProtocol {
     struct State: Equatable {
         var coredataSet = SelectStudySet.State(pickerName: "CoreData 단어장")
         var firebaseBook = SelectWordBook.State(pickerName: "Firebase 단어장")
+        var typeForAll: UnitType? = nil
         var words: IdentifiedArrayOf<FirebaseWord.State> = []
         var units: IdentifiedArrayOf<CoreDataWord.State> = []
     }
@@ -19,6 +20,7 @@ struct ConversionList: ReducerProtocol {
     enum Action: Equatable {
         case selectStudySet(action: SelectStudySet.Action)
         case selectWordBook(action: SelectWordBook.Action)
+        case updateAllType(UnitType?)
         case wordsResponse(TaskResult<[Word]>)
         case unit(id: CoreDataWord.State.ID, action: CoreDataWord.Action)
         case word(id: FirebaseWord.State.ID, action: FirebaseWord.Action)
@@ -57,6 +59,12 @@ struct ConversionList: ReducerProtocol {
                     }
                 default: break
                 }
+            case .updateAllType(let type):
+                state.typeForAll = type
+                if let type = type {
+                    state.words = IdentifiedArrayOf(
+                        uniqueElements: state.words.map { FirebaseWord.State(word: $0.word, type: type) })
+                }
             case let .wordsResponse(.success(words)):
                 state.words = IdentifiedArrayOf(
                     uniqueElements: words.map {
@@ -74,6 +82,8 @@ struct ConversionList: ReducerProtocol {
                     return .task {
                         await .onConverted( TaskResult { try await cd.convert(unit: unit, newMeaning: meaning, in: set) } )
                     }
+                case .updateType:
+                    state.typeForAll = nil
                 default: break
                 }
             case .onConverted:
@@ -129,6 +139,18 @@ struct ConversionView: View {
                             state: \.firebaseBook,
                             action: ConversionList.Action.selectWordBook(action:))
                         )
+                        Picker("타입 일괄 변경", selection:
+                                vs.binding(
+                                     get: \.typeForAll,
+                                     send: ConversionList.Action.updateAllType)
+                        ) {
+                            Text("일괄 선택 없음")
+                                .tag(nil as UnitType?)
+                            ForEach(UnitType.allCases, id: \.self) { type in
+                                Text(type.description)
+                                    .tag(type as UnitType?)
+                            }
+                        }
                         ScrollView {
                             VStack(spacing: 10) {
                                 ForEachStore(

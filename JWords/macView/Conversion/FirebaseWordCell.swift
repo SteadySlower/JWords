@@ -55,6 +55,13 @@ struct FirebaseWord: ReducerProtocol {
                 self.type = .word
             }
         }
+        
+        init(word: Word, type: UnitType) {
+            self.id = word.id
+            self.word = word
+            self.huriText = .init(hurigana: HuriganaConverter.shared.convert(word.kanjiText))
+            self.type = type
+        }
     }
     
     enum Action: Equatable {
@@ -79,6 +86,8 @@ struct FirebaseWord: ReducerProtocol {
                 return .task { [word = state.word] in
                     await .imageDownLoaded( TaskResult { try await downloadImages(of: word) } )
                 }
+            case .updateType(let type):
+                state.type = type
             case let .imageDownLoaded(.success(images)):
                 state.kanjiImage = images.kanji
                 state.ganaImage = images.gana
