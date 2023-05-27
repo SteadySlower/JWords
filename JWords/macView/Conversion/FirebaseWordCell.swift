@@ -25,9 +25,14 @@ struct FirebaseWord: ReducerProtocol {
         var ganaImage: Data?
         var meaningImage: Data?
         
+        var overlappingUnit: StudyUnit?
+        
         var conversionInput: ConversionInput {
-            ConversionInput(type: type,
-                            kanjiText: huriText.hurigana,
+            
+            let kanjiText = type == .kanji ? word.kanjiText : huriText.hurigana
+            
+            return ConversionInput(type: type,
+                            kanjiText: kanjiText,
                             kanjiImage: kanjiImage,
                             meaningText: word.meaningText,
                             meaningImage: meaningImage,
@@ -57,8 +62,11 @@ struct FirebaseWord: ReducerProtocol {
         case updateType(UnitType)
         case editHuriText(action: EditHuriganaText.Action)
         case moveButtonTapped
+        case existing(StudyUnit)
         case onMove(ConversionInput)
     }
+    
+    private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -73,6 +81,10 @@ struct FirebaseWord: ReducerProtocol {
                 state.meaningImage = images.meaning
                 return .none
             case .moveButtonTapped:
+                if let exist = try! cd.checkIfExist(state.conversionInput.kanjiText) {
+                    state.overlappingUnit = exist
+                    return .none
+                }
                 return .task { [conversionInput = state.conversionInput] in
                     .onMove(conversionInput)
                 }
@@ -174,7 +186,12 @@ struct FirebaseWordCell: View {
                 } else if !vs.word.meaningImageURL.isEmpty {
                     ProgressView()
                 }
-                Button("이동 하기") {
+                if let unit = vs.overlappingUnit {
+                    HStack {
+                        Text("이미 존재하는 단어입니다.")
+                    }
+                }
+                Button(vs.overlappingUnit == nil ? "이동 하기" : "수정 및 추가") {
                     vs.send(.moveButtonTapped)
                 }
             }
