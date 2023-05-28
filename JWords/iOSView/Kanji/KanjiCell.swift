@@ -120,6 +120,7 @@ struct KanjiCell: View {
                                 Button("입력") { vs.send(.inputButtonTapped) }
                             }
                         } else {
+                            #if os(iOS)
                             if let imageData = vs.meaningImage,
                                 let uiImage = UIImage(data: imageData) {
                                 Image(uiImage: uiImage)
@@ -131,6 +132,7 @@ struct KanjiCell: View {
                                 Text(vs.kanji.meaningText ?? "???")
                                     .font(.system(size: 20))
                             }
+                            #endif
                         }
                     }
                 }
