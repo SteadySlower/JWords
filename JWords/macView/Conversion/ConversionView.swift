@@ -19,6 +19,8 @@ struct ConversionList: ReducerProtocol {
         var filteredWords: IdentifiedArrayOf<FirebaseWord.State> {
             words.filter { !$0.converted }
         }
+        
+        var isLoading = false
     }
     
     enum Action: Equatable {
@@ -31,6 +33,8 @@ struct ConversionList: ReducerProtocol {
         case onConverted(TaskResult<StudyUnit>)
         case onAllConverted(TaskResult<[StudyUnit]>)
         case totalConvertButtonTapped
+        
+        case resetButtonTapped
     }
     
     private let cd = CoreDataClient.shared
@@ -42,6 +46,9 @@ struct ConversionList: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .resetButtonTapped:
+                try! cd.resetCoreData()
+                return .none
             case .selectStudySet(let action):
                 switch action {
                 case .idUpdated:
@@ -101,7 +108,14 @@ struct ConversionList: ReducerProtocol {
                 state.units = IdentifiedArrayOf(
                     uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
             case .totalConvertButtonTapped:
-                guard let set = state.coredataSet.selectedSet else { break }
+                guard let set = state.coredataSet.selectedSet else {
+                    let book = state.firebaseBook.selectedBook!
+                    try! cd.convertBook(book: book)
+                    state.coredataSet.sets = try! cd.fetchSets()
+                    state.coredataSet.selectedID = state.coredataSet.sets[0].id
+                    return .none
+                }
+                state.isLoading = true
                 var inputs = [ConversionInput]()
                 for i in 0..<state.words.count {
                     if let exist = try! cd.checkIfExist(state.words[i].conversionInput.kanjiText) {
@@ -123,6 +137,7 @@ struct ConversionList: ReducerProtocol {
                 guard let set = state.coredataSet.selectedSet else { break }
                 state.units = IdentifiedArrayOf(
                     uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
+                state.isLoading = false
             default:
                 break
             }
@@ -153,6 +168,9 @@ struct ConversionView: View {
             VStack {
                 HStack {
                     VStack {
+                        Button("데이터 리셋") {
+                            vs.send(.resetButtonTapped)
+                        }
                         StudySetPicker(store: store.scope(
                             state: \.coredataSet,
                             action: ConversionList.Action.selectStudySet(action:))
@@ -167,6 +185,7 @@ struct ConversionView: View {
                             }
                         }
                     }
+                    .loadingView(vs.isLoading)
                     if !vs.filteredWords.isEmpty {
                         VStack {
                             Button("<-") {

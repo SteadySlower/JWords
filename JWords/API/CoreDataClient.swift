@@ -375,6 +375,29 @@ class CoreDataClient {
 
 // MARK: Conversion
 extension CoreDataClient {
+    
+    func convertBook(book: WordBook) throws {
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
+            print("디버그: StudySetMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.id = "set_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        mo.title = book.title
+        mo.preferredFrontType = Int16(book.preferredFrontType.rawValue)
+        mo.isAutoSchedule = true
+        mo.closed = false
+        mo.createdAt = book.createdAt
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func convert(input: ConversionInput, in set: StudySet) async throws -> StudyUnit {
         
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
@@ -503,6 +526,31 @@ extension CoreDataClient {
         do {
             try context.save()
             return StudyUnit(from: mo)
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+    }
+    
+    func resetCoreData() throws {
+        let setFetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
+        let unitFetchRequest: NSFetchRequest<StudyUnitMO> = StudyUnitMO.fetchRequest()
+        
+        do {
+            let sets = try context.fetch(setFetchRequest)
+            for set in sets {
+                context.delete(set)
+            }
+            
+            let units = try context.fetch(unitFetchRequest)
+            for unit in units {
+                context.delete(unit)
+            }
+            
+            try context.save()
+
         } catch {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
