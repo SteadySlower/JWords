@@ -79,7 +79,12 @@ final class FirestoreDB: Database {
 extension FirestoreDB {
     
     func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
-        wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
+        
+        
+        wordBookRef
+            .whereField("title", isGreaterThanOrEqualTo: "한자")
+            .whereField("title", isLessThanOrEqualTo: "한자" + "\u{f8ff}")
+            .getDocuments { snapshot, error in
             if let error = error {
                 completionHandler(nil, error)
             }
@@ -116,6 +121,45 @@ extension FirestoreDB {
         }
     }
     
+    
+//    func fetchWordBooks(completionHandler: @escaping CompletionWithData<[WordBook]>) {
+//        wordBookRef.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
+//            if let error = error {
+//                completionHandler(nil, error)
+//            }
+//
+//            guard let documents = snapshot?.documents else {
+//                let error = AppError.Firebase.noDocument
+//                completionHandler(nil, error)
+//                return
+//            }
+//
+//            var wordBooks = [WordBook]()
+//
+//            for document in documents {
+//                let id = document.documentID
+//                var dict = document.data()
+//
+//                guard let timestamp = dict["timestamp"] as? Timestamp else {
+//                    let error = AppError.Firebase.noTimestamp
+//                    completionHandler(nil, error)
+//                    return
+//                }
+//
+//                dict["createdAt"] = timestamp.dateValue()
+//
+//                do {
+//                    wordBooks.append(try WordBook(id: id, dict: dict))
+//                } catch let error {
+//                    completionHandler(nil, error)
+//                    return
+//                }
+//            }
+//
+//            completionHandler(wordBooks, nil)
+//        }
+//    }
+//
     func insertWordBook(title: String, preferredFrontType: FrontType, completionHandler: @escaping CompletionWithoutData) {
         let data: [String : Any] = [
             "title": title,

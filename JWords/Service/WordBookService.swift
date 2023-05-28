@@ -40,8 +40,8 @@ class WordBookServiceImpl: WordBookService {
                 return
             }
             
-            let filtered = wordBook.filter { $0.closed != true }
-            completionHandler(filtered, nil)
+//            let filtered = wordBook.filter { $0.closed != true }
+            completionHandler(wordBook, nil)
         }
     }
     

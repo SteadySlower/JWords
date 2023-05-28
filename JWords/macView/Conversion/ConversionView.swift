@@ -200,9 +200,11 @@ struct ConversionView: View {
                             Button("Core Data 리셋") {
                                 vs.send(.resetButtonTapped)
                             }
+                            .disabled(vs.isLoading)
                             Button("현재 Set close") {
                                 vs.send(.closeSetButtonTapped)
                             }
+                            .disabled(vs.isLoading)
                         }
                         StudySetPicker(store: store.scope(
                             state: \.coredataSet,
@@ -224,6 +226,7 @@ struct ConversionView: View {
                             Button("<-") {
                                 vs.send(.totalConvertButtonTapped)
                             }
+                            .disabled(vs.isLoading)
                             Spacer()
                         }
                         .padding(.top, 30)
