@@ -29,6 +29,8 @@ struct ConversionList: ReducerProtocol {
         case unit(id: CoreDataWord.State.ID, action: CoreDataWord.Action)
         case word(id: FirebaseWord.State.ID, action: FirebaseWord.Action)
         case onConverted(TaskResult<StudyUnit>)
+        case onAllConverted(TaskResult<[StudyUnit]>)
+        case totalConvertButtonTapped
     }
     
     private let cd = CoreDataClient.shared
@@ -93,9 +95,32 @@ struct ConversionList: ReducerProtocol {
                 }
             case let .onConverted(.success(unit)):
                 guard let set = state.coredataSet.selectedSet else { break }
-                if let index = state.words.index { $0.huriText.hurigana == unit.kanjiText } {
+                if let index = state.words.index { $0.conversionInput.kanjiText == unit.kanjiText } {
                     state.words[index].onCoverted()
                 }
+                state.units = IdentifiedArrayOf(
+                    uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
+            case .totalConvertButtonTapped:
+                guard let set = state.coredataSet.selectedSet else { break }
+                var inputs = [ConversionInput]()
+                for i in 0..<state.words.count {
+                    if let exist = try! cd.checkIfExist(state.words[i].conversionInput.kanjiText) {
+                        state.words[i].overlappingUnit = exist
+                        state.words[i].overlappingMeaningText = exist.meaningText ?? ""
+                    } else {
+                        inputs.append(state.words[i].conversionInput)
+                    }
+                }
+                return .task { [inputs = inputs] in
+                    await .onAllConverted( TaskResult { try await cd.convert(inputs: inputs, in: set) } )
+                }
+            case let .onAllConverted(.success(units)):
+                for unit in units {
+                    if let index = state.words.index { $0.conversionInput.kanjiText == unit.kanjiText } {
+                        state.words[index].onCoverted()
+                    }
+                }
+                guard let set = state.coredataSet.selectedSet else { break }
                 state.units = IdentifiedArrayOf(
                     uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
             default:
@@ -145,7 +170,7 @@ struct ConversionView: View {
                     if !vs.filteredWords.isEmpty {
                         VStack {
                             Button("<-") {
-                                
+                                vs.send(.totalConvertButtonTapped)
                             }
                             Spacer()
                         }
