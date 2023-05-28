@@ -183,6 +183,7 @@ struct FirebaseWordCell: View {
                     Text(vs.word.meaningText)
                 }
                 .font(.system(size: fontSize))
+                #if os(macOS)
                 if let image = vs.kanjiImage {
                     HStack {
                         Text("한자 이미지: ")
@@ -213,6 +214,7 @@ struct FirebaseWordCell: View {
                 } else if !vs.word.meaningImageURL.isEmpty {
                     ProgressView()
                 }
+                #endif
                 if let unit = vs.overlappingUnit {
                     VStack(alignment: .leading) {
                         Text("이미 존재하는 단어입니다.")

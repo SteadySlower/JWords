@@ -82,6 +82,7 @@ struct CoreDataWordCell: View {
                     Text(vs.unit.meaningText ?? "")
                 }
                 .font(.system(size: fontSize))
+                #if os(macOS)
                 if let image = vs.kanjiImage {
                     HStack {
                         Text("한자 이미지: ")
@@ -98,6 +99,7 @@ struct CoreDataWordCell: View {
                             .scaledToFit()
                     }
                 }
+                #endif
             }
             .border(.black)
             .onAppear { vs.send(.onAppear) }
