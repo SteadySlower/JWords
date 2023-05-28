@@ -21,6 +21,23 @@ struct ConversionList: ReducerProtocol {
         }
         
         var isLoading = false
+        
+        var alert: AlertState<Action>?
+        
+        mutating func setResetAlertState() {
+            alert = AlertState<Action> {
+                TextState("코어데이터 전체 삭제")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("취소")
+                }
+                ButtonState(role: .destructive, action: .resetCoreData) {
+                    TextState("삭제")
+                }
+            } message: {
+                TextState("코어 데이터의 모든 데이터 삭제됨")
+            }
+        }
     }
     
     enum Action: Equatable {
@@ -33,8 +50,10 @@ struct ConversionList: ReducerProtocol {
         case onConverted(TaskResult<StudyUnit>)
         case onAllConverted(TaskResult<[StudyUnit]>)
         case totalConvertButtonTapped
-        
+        case closeSetButtonTapped
         case resetButtonTapped
+        case resetCoreData
+        case alertDismissed
     }
     
     private let cd = CoreDataClient.shared
@@ -47,8 +66,11 @@ struct ConversionList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .resetButtonTapped:
+                state.setResetAlertState()
+            case .resetCoreData:
                 try! cd.resetCoreData()
-                return .none
+            case .alertDismissed:
+                state.alert = nil
             case .selectStudySet(let action):
                 switch action {
                 case .idUpdated:
@@ -60,6 +82,12 @@ struct ConversionList: ReducerProtocol {
                         uniqueElements: try! cd.fetchUnits(of: set).map { CoreDataWord.State(unit: $0) })
                 default: break
                 }
+            case .closeSetButtonTapped:
+                guard let nowSet = state.coredataSet.selectedSet else { break }
+                try! cd.closeSet(nowSet)
+                state.coredataSet.resetState()
+                state.units = []
+                state.coredataSet.sets = try! cd.fetchSets()
             case .selectWordBook(let action):
                 switch action {
                 case .bookUpdated:
@@ -168,8 +196,13 @@ struct ConversionView: View {
             VStack {
                 HStack {
                     VStack {
-                        Button("데이터 리셋") {
-                            vs.send(.resetButtonTapped)
+                        HStack {
+                            Button("Core Data 리셋") {
+                                vs.send(.resetButtonTapped)
+                            }
+                            Button("현재 Set close") {
+                                vs.send(.closeSetButtonTapped)
+                            }
                         }
                         StudySetPicker(store: store.scope(
                             state: \.coredataSet,
@@ -224,6 +257,10 @@ struct ConversionView: View {
                     }
                 }
             }
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
 }

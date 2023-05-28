@@ -31,6 +31,12 @@ struct SelectStudySet: ReducerProtocol {
         mutating func onUnitAdded() {
             self.unitCount? += 1
         }
+        
+        mutating func resetState() {
+            sets = []
+            selectedID = nil
+            unitCount = nil
+        }
     }
     
     private let cd = CoreDataClient.shared

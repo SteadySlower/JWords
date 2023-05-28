@@ -102,6 +102,23 @@ class CoreDataClient {
         return result
     }
     
+    func closeSet(_ set: StudySet) throws {
+        guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.closed = true
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
         guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
