@@ -17,6 +17,8 @@ struct SelectWordBook: ReducerProtocol {
         var didFetched = false
         let pickerName: String
         
+        var convertTable = [String:Bool]()
+        
         init(pickerName: String = "") {
             self.pickerName = pickerName
         }
@@ -46,6 +48,8 @@ struct SelectWordBook: ReducerProtocol {
     private enum fetchBooksID {}
     private enum fetchWordCountID {}
     
+    private let cd = CoreDataClient.shared
+    
     enum Action: Equatable {
         case onAppear
         case booksResponse(TaskResult<[WordBook]>)
@@ -65,6 +69,9 @@ struct SelectWordBook: ReducerProtocol {
             case let .booksResponse(.success(books)):
                 state.didFetched = true
                 state.wordBooks = books
+                for book in books {
+                    state.convertTable[book.id] = try! cd.checkIfExist(book: book)
+                }
                 return .none
             case .updateID(let id):
                 state.selectedID = id
@@ -99,7 +106,7 @@ struct WordBookPicker: View {
                     Text(vs.pickerDefaultText)
                         .tag(nil as String?)
                     ForEach(vs.wordBooks, id: \.id) { book in
-                        Text(book.title)
+                        Text(book.title + "\(vs.convertTable[book.id, default: false] ? " (이미 이동)" : "")")
                             .tag(book.id as String?)
                     }
                 }

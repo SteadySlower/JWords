@@ -393,6 +393,18 @@ class CoreDataClient {
 // MARK: Conversion
 extension CoreDataClient {
     
+    func checkIfExist(book: WordBook) throws -> Bool {
+        let fetchRequest = StudySetMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", book.title)
+        
+        do {
+            return try !context.fetch(fetchRequest).isEmpty
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func convertBook(book: WordBook) throws {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
             print("디버그: StudySetMO 객체를 만들 수 없음")
