@@ -104,8 +104,9 @@ struct ConversionList: ReducerProtocol {
             case .updateAllType(let type):
                 state.typeForAll = type
                 if let type = type {
-                    state.words = IdentifiedArrayOf(
-                        uniqueElements: state.words.map { FirebaseWord.State(word: $0.word, type: type) })
+                    for i in 0..<state.words.count {
+                        state.words[i].changeType(type)
+                    }
                 }
             case let .wordsResponse(.success(words)):
                 state.words = IdentifiedArrayOf(

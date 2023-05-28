@@ -68,6 +68,10 @@ struct FirebaseWord: ReducerProtocol {
         mutating func onCoverted() {
             converted = true
         }
+        
+        mutating func changeType(_ type: UnitType) {
+            self.type = type
+        }
     }
     
     enum Action: Equatable {
