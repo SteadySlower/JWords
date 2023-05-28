@@ -15,6 +15,9 @@ struct StudyKanji: ReducerProtocol {
         var meaningText: String = ""
         var isEditing: Bool = false
         
+        var kanjiImage: Data?
+        var meaningImage: Data?
+        
         var displayMeaning: String {
             if let meaning = kanji.meaningText {
                 return !meaning.isEmpty ? meaning : "???"
@@ -30,6 +33,9 @@ struct StudyKanji: ReducerProtocol {
     }
     
     enum Action: Equatable {
+        case onAppear
+        case onKanjiImageDownloaded(TaskResult<Data>)
+        case onMeaningImageDownloaded(TaskResult<Data>)
         case editButtonTapped
         case updateMeaningText(String)
         case wordButtonTapped
@@ -39,10 +45,36 @@ struct StudyKanji: ReducerProtocol {
     }
     
     private let cd = CoreDataClient.shared
+    private let ck = CKImageUploader.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                var effects = [EffectPublisher<StudyKanji.Action, Never>]()
+                if let kanjiImageID = state.kanji.kanjiImageID {
+                    effects.append(.task {
+                        await .onKanjiImageDownloaded(
+                            TaskResult { try await ck.fetchImage(id: kanjiImageID) }
+                        )
+                        
+                    })
+                }
+                if let meaningImageID = state.kanji.meaningImageID {
+                    effects.append(.task {
+                        await .onMeaningImageDownloaded(
+                            TaskResult { try await ck.fetchImage(id: meaningImageID) }
+                        )
+                        
+                    })
+                }
+                return .merge(effects)
+            case let .onKanjiImageDownloaded(.success(data)):
+                state.kanjiImage = data
+                return .none
+            case let .onMeaningImageDownloaded(.success(data)):
+                state.meaningImage = data
+                return .none
             case .editButtonTapped:
                 state.isEditing = true
                 state.meaningText = state.kanji.meaningText ?? ""
@@ -72,7 +104,7 @@ struct KanjiCell: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
+            VStack {
                 HStack {
                     VStack(spacing: 10) {
                         Text(vs.kanji.kanjiText ?? "")
@@ -88,8 +120,17 @@ struct KanjiCell: View {
                                 Button("입력") { vs.send(.inputButtonTapped) }
                             }
                         } else {
-                            Text(vs.kanji.meaningText ?? "???")
-                                .font(.system(size: 20))
+                            if let imageData = vs.meaningImage,
+                                let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                            } else if vs.kanji.meaningImageID != nil {
+                                ProgressView()
+                            } else {
+                                Text(vs.kanji.meaningText ?? "???")
+                                    .font(.system(size: 20))
+                            }
                         }
                     }
                 }
@@ -99,6 +140,7 @@ struct KanjiCell: View {
                         Button("✏️") {
                             vs.send(.editButtonTapped)
                         }
+                        .hide(vs.kanji.meaningImageID != nil)
                         Button("단어 보기") {
                             vs.send(.wordButtonTapped)
                         }
@@ -109,6 +151,7 @@ struct KanjiCell: View {
             .padding(.vertical, 5)
             .border(.black)
             .padding(.vertical, 5)
+            .onAppear { vs.send(.onAppear) }
         }
     }
 
