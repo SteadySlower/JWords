@@ -213,6 +213,31 @@ class CoreDataClient {
         }
     }
     
+    func addExistingUnit(unit: StudyUnit, meaningText: String, in set: StudySet) throws -> StudyUnit {
+        guard let mo = try context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        if !meaningText.isEmpty { mo.meaningText = meaningText }
+        mo.addToSet(set)
+        
+        do {
+            try context.save()
+            return StudyUnit(from: mo)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    
     func removeUnit(_ unit: StudyUnit, from set: StudySet) throws -> StudyUnit {
         guard let unitMO = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
