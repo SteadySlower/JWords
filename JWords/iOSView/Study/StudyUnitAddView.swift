@@ -10,23 +10,44 @@ import ComposableArchitecture
 
 struct AddingUnit: ReducerProtocol {
     
+    enum Mode: Equatable {
+        case insert
+        case editUnit
+        case editKanji
+        case addExist(existing: StudyUnit)
+    }
+    
+    enum Field: Hashable {
+        case kanji, meaning
+    }
+    
     private let cd = CoreDataClient.shared
     
     struct State: Equatable {
+        @BindingState var focusedField: Field?
+        
         let set: StudySet?
         let unit: StudyUnit?
         let kanji: Kanji?
+        var mode: Mode
         var unitType: UnitType
         var meaningText: String
         var kanjiText: String
         var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
+        var hurigana: String {
+            huriText.hurigana
+        }
+        
+        var lastestQuery: String = ""
+        
         var isEditingKanji: Bool = true
         var isKanjiEditable: Bool = true
         
         // when adding new unit
         init(set: StudySet) {
+            self.mode = .insert
             self.set = set
             self.unit = nil
             self.kanji = nil
@@ -39,6 +60,7 @@ struct AddingUnit: ReducerProtocol {
         
         // when editing existing unit
         init(set: StudySet?, unit: StudyUnit) {
+            self.mode = .editUnit
             self.set = set
             self.unit = unit
             self.kanji = nil
@@ -56,6 +78,7 @@ struct AddingUnit: ReducerProtocol {
         
         // when Editing Kanji
         init(kanji: Kanji) {
+            self.mode = .editKanji
             self.set = nil
             self.unit = nil
             self.kanji = kanji
@@ -90,15 +113,33 @@ struct AddingUnit: ReducerProtocol {
                 TextState("이 단어를 '\(set.title)'에서 삭제합니다.\n(다른 단어장에서는 삭제되지 않습니다.)")
             }
         }
+        
+        mutating func setExistAlert() {
+            let kanjiText = self.kanjiText
+            let type = unitType
+            alert = AlertState<Action> {
+                TextState("표제어 중복")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("\(kanjiText)와 동일한 \(type.description)이(가) 존재합니다")
+            }
+        }
     
     }
     
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
+        case focusFieldChanged(Field?)
         case setUnitType(UnitType)
         case updateKanjiText(String)
         case updateMeaningText(String)
+        case onKanjiEditFinished
         case editHuriText(action: EditHuriganaText.Action)
-        case kanjiTextButtonTapped
+        case editKanjiTextButtonTapped
+        case checkIfExist
         case meaningButtonTapped
         case addButtonTapped
         case showErrorAlert(AppError)
@@ -114,29 +155,63 @@ struct AddingUnit: ReducerProtocol {
     }
     
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
+            case .focusFieldChanged(let field):
+                if let field = field,
+                   field == .meaning {
+                    return .task { .onKanjiEditFinished }
+                }
+                return .none
             case .setUnitType(let type):
                 if state.kanji != nil { return .none }
                 state.unitType = type
                 if type == .kanji {
                     state.isEditingKanji = true
                 }
-                return .none
+                return .task { .checkIfExist }
             case .updateKanjiText(let text):
+                switch state.mode {
+                case .addExist:
+                    state.mode = .insert
+                default:
+                    break
+                }
                 state.kanjiText = text
                 return .none
             case .updateMeaningText(let text):
                 state.meaningText = text
                 return .none
-            case .kanjiTextButtonTapped:
-                if !state.isEditingKanji {
-                    state.isEditingKanji = true
-                    return .none
+            case .editKanjiTextButtonTapped:
+                state.isEditingKanji = true
+                return .none
+            case .onKanjiEditFinished:
+                if state.unitType != .kanji && state.isEditingKanji == true {
+                    let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
+                    state.huriText = EditHuriganaText.State(hurigana: hurigana)
+                    state.isEditingKanji = false
                 }
-                let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
-                state.huriText = EditHuriganaText.State(hurigana: hurigana)
-                state.isEditingKanji = false
+                return .task { .checkIfExist }
+            case .editHuriText(let action):
+                if action == .onHuriUpdated {
+                    state.focusedField = .meaning
+                    return .task { .checkIfExist }
+                }
+                return .none
+            case .checkIfExist:
+                guard state.mode != .editUnit && state.mode != .editKanji else { return .none }
+                let kanjiText = state.unitType == .kanji ? state.kanjiText : state.hurigana
+                if kanjiText == state.lastestQuery { return .none }
+                state.lastestQuery = kanjiText
+                let unit = try! cd.checkIfExist(kanjiText)
+                if let unit = unit {
+                    state.mode = .addExist(existing: unit)
+                    state.meaningText = unit.meaningText ?? ""
+                    state.setExistAlert()
+                } else {
+                    state.mode = .insert
+                }
                 return .none
             case .addButtonTapped:
                 if state.unitType != .kanji && state.isEditingKanji {
@@ -155,7 +230,18 @@ struct AddingUnit: ReducerProtocol {
                 state.alert = nil
                 return .none
             case .addUnit:
-                if let unit = state.unit {
+                switch state.mode {
+                case .insert:
+                    guard let set = state.set else { return .none }
+                    let added = try! cd.insertUnit(in: set,
+                                                   type: state.unitType,
+                                                   kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
+                                                   kanjiImageID: nil,
+                                                   meaningText: state.meaningText,
+                                                   meaningImageID: nil)
+                    return .task { .unitAdded(added) }
+                case .editUnit:
+                    guard let unit = state.unit else { return .none }
                     let edited = try! cd.editUnit(of: unit,
                                                   type: state.unitType,
                                                   kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
@@ -163,19 +249,17 @@ struct AddingUnit: ReducerProtocol {
                                                   meaningText: state.meaningText,
                                                   meaningImageID: nil)
                     return .task { .unitEdited(edited) }
-                } else if let set = state.set {
-                    let added = try! cd.insertUnit(in: set,
-                                  type: state.unitType,
-                                  kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
-                                  kanjiImageID: nil,
-                                  meaningText: state.meaningText,
-                                  meaningImageID: nil)
-                    return .task { .unitAdded(added) }
-                } else if let kanji = state.kanji {
+                case .editKanji:
+                    guard let kanji = state.kanji else { return .none }
                     let edited = try! cd.editKanji(kanji: kanji, meaningText: state.meaningText)
                     return .task { .kanjiEdited(edited) }
+                case .addExist(let unit):
+                    guard let set = state.set else { return .none }
+                    let addedExist = try! cd.addExistingUnit(unit: unit,
+                                                             meaningText: state.meaningText,
+                                                             in: set)
+                    return .task { .unitAdded(addedExist) }
                 }
-                return .none
             case .deleteUnit:
                 if let unit = state.unit,
                    let set = state.set {
@@ -197,6 +281,7 @@ struct AddingUnit: ReducerProtocol {
 struct StudyUnitAddView: View {
     
     let store: StoreOf<AddingUnit>
+    @FocusState var focusedField: AddingUnit.Field?
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -214,6 +299,7 @@ struct StudyUnitAddView: View {
                     if vs.isEditingKanji {
                         TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
                             .border(.black)
+                            .focused($focusedField, equals: .kanji)
                     } else {
                         VStack {
                             EditableHuriganaText(store: store.scope(
@@ -223,14 +309,17 @@ struct StudyUnitAddView: View {
                             Spacer()
                         }
                     }
-                    Button(vs.isEditingKanji ? "변환" : "수정") { vs.send(.kanjiTextButtonTapped) }
-                        .disabled(vs.unitType == .kanji)
+                    if !vs.isEditingKanji {
+                        Button("수정") { vs.send(.editKanjiTextButtonTapped) }
+                            .disabled(vs.unitType == .kanji)
+                    }
                 }
                 .frame(height: 100)
                 HStack {
                     TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
                         .border(.black)
                         .frame(height: 100)
+                        .focused($focusedField, equals: .meaning)
                     Button("검색") { vs.send(.meaningButtonTapped) }
                 }
                 .padding(.bottom, 20)
@@ -247,10 +336,12 @@ struct StudyUnitAddView: View {
             }
             .padding(.horizontal, 10)
             .presentationDetents([.medium])
+            .onChange(of: focusedField, perform: { vs.send(.focusFieldChanged($0)) })
             .alert(
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
+            .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
     }
 }
