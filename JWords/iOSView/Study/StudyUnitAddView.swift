@@ -36,11 +36,14 @@ struct AddingUnit: ReducerProtocol {
         var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
+        var checkExistQuery: String {
+            unitType == .kanji ? kanjiText : huriText.hurigana
+        }
+        
         var hurigana: String {
             huriText.hurigana
         }
         
-        var lastestQuery: String = ""
         
         var isEditingKanji: Bool = true
         var isKanjiEditable: Bool = true
@@ -132,14 +135,13 @@ struct AddingUnit: ReducerProtocol {
     
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case focusFieldChanged(Field?)
         case setUnitType(UnitType)
+        case focusFieldChanged(Field?)
         case updateKanjiText(String)
         case updateMeaningText(String)
-        case onKanjiEditFinished
         case editHuriText(action: EditHuriganaText.Action)
         case editKanjiTextButtonTapped
-        case checkIfExist
+        case checkIfExist(String)
         case meaningButtonTapped
         case addButtonTapped
         case showErrorAlert(AppError)
@@ -160,8 +162,13 @@ struct AddingUnit: ReducerProtocol {
             switch action {
             case .focusFieldChanged(let field):
                 if let field = field,
-                   field == .meaning {
-                    return .task { .onKanjiEditFinished }
+                   field == .meaning,
+                   state.unitType != .kanji,
+                   !state.kanjiText.isEmpty,
+                   state.isEditingKanji == true {
+                    let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
+                    state.huriText = EditHuriganaText.State(hurigana: hurigana)
+                    state.isEditingKanji = false
                 }
                 return .none
             case .setUnitType(let type):
@@ -170,7 +177,7 @@ struct AddingUnit: ReducerProtocol {
                 if type == .kanji {
                     state.isEditingKanji = true
                 }
-                return .task { .checkIfExist }
+                return .none
             case .updateKanjiText(let text):
                 switch state.mode {
                 case .addExist:
@@ -186,25 +193,9 @@ struct AddingUnit: ReducerProtocol {
             case .editKanjiTextButtonTapped:
                 state.isEditingKanji = true
                 return .none
-            case .onKanjiEditFinished:
-                if state.unitType != .kanji && state.isEditingKanji == true {
-                    let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
-                    state.huriText = EditHuriganaText.State(hurigana: hurigana)
-                    state.isEditingKanji = false
-                }
-                return .task { .checkIfExist }
-            case .editHuriText(let action):
-                if action == .onHuriUpdated {
-                    state.focusedField = .meaning
-                    return .task { .checkIfExist }
-                }
-                return .none
-            case .checkIfExist:
+            case .checkIfExist(let query):
                 guard state.mode != .editUnit && state.mode != .editKanji else { return .none }
-                let kanjiText = state.unitType == .kanji ? state.kanjiText : state.hurigana
-                if kanjiText == state.lastestQuery { return .none }
-                state.lastestQuery = kanjiText
-                let unit = try! cd.checkIfExist(kanjiText)
+                let unit = try! cd.checkIfExist(query)
                 if let unit = unit {
                     state.mode = .addExist(existing: unit)
                     state.meaningText = unit.meaningText ?? ""
@@ -337,6 +328,7 @@ struct StudyUnitAddView: View {
             .padding(.horizontal, 10)
             .presentationDetents([.medium])
             .onChange(of: focusedField, perform: { vs.send(.focusFieldChanged($0)) })
+            .onChange(of: vs.checkExistQuery, perform: { vs.send(.checkIfExist($0))})
             .alert(
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
