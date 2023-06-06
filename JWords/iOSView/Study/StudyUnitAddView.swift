@@ -11,10 +11,10 @@ import ComposableArchitecture
 struct AddingUnit: ReducerProtocol {
     
     enum Mode: Equatable {
-        case insert
-        case editUnit
-        case editKanji
-        case addExist(existing: StudyUnit)
+        case insert(set: StudySet)
+        case editUnit(set: StudySet?, unit: StudyUnit)
+        case editKanji(kanji: Kanji)
+        case addExist(set: StudySet, existing: StudyUnit)
     }
     
     enum Field: Hashable {
@@ -26,9 +26,6 @@ struct AddingUnit: ReducerProtocol {
     struct State: Equatable {
         @BindingState var focusedField: Field?
         
-        let set: StudySet?
-        let unit: StudyUnit?
-        let kanji: Kanji?
         var mode: Mode
         var unitType: UnitType
         var meaningText: String
@@ -50,10 +47,7 @@ struct AddingUnit: ReducerProtocol {
         
         // when adding new unit
         init(set: StudySet) {
-            self.mode = .insert
-            self.set = set
-            self.unit = nil
-            self.kanji = nil
+            self.mode = .insert(set: set)
             self.unitType = .word
             self.meaningText = ""
             self.kanjiText = ""
@@ -63,10 +57,7 @@ struct AddingUnit: ReducerProtocol {
         
         // when editing existing unit
         init(set: StudySet?, unit: StudyUnit) {
-            self.mode = .editUnit
-            self.set = set
-            self.unit = unit
-            self.kanji = nil
+            self.mode = .editUnit(set: set, unit: unit)
             self.unitType = unit.type
             self.meaningText = unit.meaningText ?? ""
             if unit.type != .kanji {
@@ -81,10 +72,7 @@ struct AddingUnit: ReducerProtocol {
         
         // when Editing Kanji
         init(kanji: Kanji) {
-            self.mode = .editKanji
-            self.set = nil
-            self.unit = nil
-            self.kanji = kanji
+            self.mode = .editKanji(kanji: kanji)
             self.unitType = .kanji
             self.meaningText = kanji.meaningText ?? ""
             self.kanjiText = kanji.kanjiText ?? ""
@@ -98,7 +86,12 @@ struct AddingUnit: ReducerProtocol {
         }
         
         var showDeleteButton: Bool {
-            return set != nil && unit != nil
+            switch mode {
+            case .editUnit(_, _):
+                return true
+            default:
+                return false
+            }
         }
 
         mutating func setDeleteAlertState() {
