@@ -13,12 +13,14 @@ struct MacApp: ReducerProtocol {
     struct State: Equatable {
         var addBook = AddBook.State()
         var addWord = AddWord.State()
+        var addSet = InputBook.State()
         var conversionList = ConversionList.State()
     }
     
     enum Action: Equatable {
         case addBook(action: AddBook.Action)
         case addWord(action: AddWord.Action)
+        case addSet(action: InputBook.Action)
         case conversionList(action: ConversionList.Action)
     }
     
@@ -38,6 +40,9 @@ struct MacApp: ReducerProtocol {
         Scope(state: \.conversionList, action: /Action.conversionList(action:)) {
             ConversionList()
         }
+        Scope(state: \.addSet, action: /Action.addSet(action:)) {
+            InputBook()
+        }
     }
     
 }
@@ -53,6 +58,11 @@ struct MacAppView: View {
                 action: MacApp.Action.conversionList(action:))
             )
             .tabItem { Text("데이터 이동") }
+            MacSetAddView(store: store.scope(
+                state: \.addSet,
+                action: MacApp.Action.addSet(action:))
+            )
+                .tabItem { Text("단어장 추가 (신)") }
             MacAddBookView(store: store.scope(
                 state: \.addBook,
                 action: MacApp.Action.addBook(action:))
