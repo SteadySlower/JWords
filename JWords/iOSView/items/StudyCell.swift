@@ -121,7 +121,7 @@ struct StudyWord: ReducerProtocol {
                 }
                 return .none
             case .addKanjiMeaningTapped(let kanji):
-                state.toEditKanji = AddingUnit.State(kanji: kanji)
+                state.toEditKanji = AddingUnit.State(mode: .editKanji(kanji: kanji))
                 return .none
             case .editKanji(let action):
                 switch action {
