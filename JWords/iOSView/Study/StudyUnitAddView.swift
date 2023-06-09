@@ -12,7 +12,7 @@ struct AddingUnit: ReducerProtocol {
     
     enum Mode: Equatable {
         case insert(set: StudySet)
-        case editUnit(set: StudySet?, unit: StudyUnit)
+        case editUnit(unit: StudyUnit)
         case editKanji(kanji: Kanji)
         case addExist(set: StudySet, existing: StudyUnit)
     }
@@ -41,57 +41,47 @@ struct AddingUnit: ReducerProtocol {
             huriText.hurigana
         }
         
-        
         var isEditingKanji: Bool = true
         var isKanjiEditable: Bool = true
         
-        // when adding new unit
-        init(set: StudySet) {
-            self.mode = .insert(set: set)
-            self.unitType = .word
-            self.meaningText = ""
-            self.kanjiText = ""
-            self.huriText = EditHuriganaText.State(hurigana: "")
-            self.alert = nil
-        }
-        
-        // when editing existing unit
-        init(set: StudySet?, unit: StudyUnit) {
-            self.mode = .editUnit(set: set, unit: unit)
-            self.unitType = unit.type
-            self.meaningText = unit.meaningText ?? ""
-            if unit.type != .kanji {
-                self.huriText = EditHuriganaText.State(hurigana: unit.kanjiText ?? "")
-                self.kanjiText = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText ?? "")
-                isEditingKanji = false
-            } else {
-                self.kanjiText = unit.kanjiText ?? ""
+        init(mode: Mode) {
+            self.mode = mode
+            switch mode {
+            case .insert(_):
+                self.unitType = .word
+                self.meaningText = ""
+                self.kanjiText = ""
                 self.huriText = EditHuriganaText.State(hurigana: "")
+                self.alert = nil
+                return
+            case .editUnit(let unit):
+                self.mode = .editUnit(unit: unit)
+                self.unitType = unit.type
+                self.meaningText = unit.meaningText ?? ""
+                if unit.type != .kanji {
+                    self.huriText = EditHuriganaText.State(hurigana: unit.kanjiText ?? "")
+                    self.kanjiText = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText ?? "")
+                    isEditingKanji = false
+                } else {
+                    self.kanjiText = unit.kanjiText ?? ""
+                    self.huriText = EditHuriganaText.State(hurigana: "")
+                }
+                return
+            case .editKanji(let kanji):
+                self.unitType = .kanji
+                self.meaningText = kanji.meaningText ?? ""
+                self.kanjiText = kanji.kanjiText ?? ""
+                self.huriText = EditHuriganaText.State(hurigana: kanji.kanjiText ?? "")
+                self.isEditingKanji = false
+                self.isKanjiEditable = false
+                return
+            default:
+                return
             }
-        }
-        
-        // when Editing Kanji
-        init(kanji: Kanji) {
-            self.mode = .editKanji(kanji: kanji)
-            self.unitType = .kanji
-            self.meaningText = kanji.meaningText ?? ""
-            self.kanjiText = kanji.kanjiText ?? ""
-            self.huriText = EditHuriganaText.State(hurigana: kanji.kanjiText ?? "")
-            self.isEditingKanji = false
-            self.isKanjiEditable = false
         }
         
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
-        }
-        
-        var showDeleteButton: Bool {
-            switch mode {
-            case .editUnit(_, _):
-                return true
-            default:
-                return false
-            }
         }
         
         mutating func setExistAlert() {
