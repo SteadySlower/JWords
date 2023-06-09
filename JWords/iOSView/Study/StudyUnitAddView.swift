@@ -76,12 +76,26 @@ struct AddingUnit: ReducerProtocol {
                 self.isKanjiEditable = false
                 return
             default:
+                self.unitType = .word
+                self.meaningText = ""
+                self.kanjiText = ""
+                self.huriText = EditHuriganaText.State(hurigana: "")
+                self.alert = nil
                 return
             }
         }
         
         var ableToAdd: Bool {
             !kanjiText.isEmpty && !meaningText.isEmpty
+        }
+        
+        var okButtonText: String {
+            switch mode {
+            case .insert(_), .addExist(_, _):
+                return "추가"
+            case .editUnit(_), .editKanji(_):
+                return "수정"
+            }
         }
         
         mutating func setExistAlert() {
@@ -191,8 +205,7 @@ struct AddingUnit: ReducerProtocol {
                 return .none
             case .addUnit:
                 switch state.mode {
-                case .insert:
-                    guard let set = state.set else { return .none }
+                case .insert(let set):
                     let added = try! cd.insertUnit(in: set,
                                                    type: state.unitType,
                                                    kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
@@ -200,8 +213,7 @@ struct AddingUnit: ReducerProtocol {
                                                    meaningText: state.meaningText,
                                                    meaningImageID: nil)
                     return .task { .unitAdded(added) }
-                case .editUnit:
-                    guard let unit = state.unit else { return .none }
+                case .editUnit(let unit):
                     let edited = try! cd.editUnit(of: unit,
                                                   type: state.unitType,
                                                   kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
@@ -209,12 +221,10 @@ struct AddingUnit: ReducerProtocol {
                                                   meaningText: state.meaningText,
                                                   meaningImageID: nil)
                     return .task { .unitEdited(edited) }
-                case .editKanji:
-                    guard let kanji = state.kanji else { return .none }
+                case .editKanji(let kanji):
                     let edited = try! cd.editKanji(kanji: kanji, meaningText: state.meaningText)
                     return .task { .kanjiEdited(edited) }
-                case .addExist(let unit):
-                    guard let set = state.set else { return .none }
+                case .addExist(let set, let unit):
                     let addedExist = try! cd.addExistingUnit(unit: unit,
                                                              meaningText: state.meaningText,
                                                              in: set)
@@ -278,7 +288,7 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
-                    Button(vs.unit == nil ? "추가" : "수정") { vs.send(.addButtonTapped) }
+                    Button(vs.okButtonText) { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
                 }
             }
