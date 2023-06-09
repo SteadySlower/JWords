@@ -93,22 +93,6 @@ struct AddingUnit: ReducerProtocol {
                 return false
             }
         }
-
-        mutating func setDeleteAlertState() {
-            guard let set = set else { return }
-            alert = AlertState<Action> {
-                TextState("단어 삭제")
-            } actions: {
-                ButtonState(role: .cancel) {
-                    TextState("취소")
-                }
-                ButtonState(role: .destructive, action: .deleteUnit) {
-                    TextState("삭제")
-                }
-            } message: {
-                TextState("이 단어를 '\(set.title)'에서 삭제합니다.\n(다른 단어장에서는 삭제되지 않습니다.)")
-            }
-        }
         
         mutating func setExistAlert() {
             let kanjiText = self.kanjiText
@@ -139,12 +123,9 @@ struct AddingUnit: ReducerProtocol {
         case addButtonTapped
         case showErrorAlert(AppError)
         case alertDismissed
-        case deleteButtonTapped
         case cancelButtonTapped
         case addUnit
-        case deleteUnit
         case unitEdited(StudyUnit)
-        case unitDeleted(StudyUnit)
         case unitAdded(StudyUnit)
         case kanjiEdited(Kanji)
     }
@@ -204,9 +185,6 @@ struct AddingUnit: ReducerProtocol {
                     return .task { .showErrorAlert(.KanjiTooLong) }
                 }
                 return .task { .addUnit }
-            case .deleteButtonTapped:
-                state.setDeleteAlertState()
-                return .none
             case .showErrorAlert(let error):
                 state.alert = error.simpleAlert(action: Action.self)
                 return .none
@@ -244,13 +222,6 @@ struct AddingUnit: ReducerProtocol {
                                                              in: set)
                     return .task { .unitAdded(addedExist) }
                 }
-            case .deleteUnit:
-                if let unit = state.unit,
-                   let set = state.set {
-                    let deleted = try! cd.removeUnit(unit, from: set)
-                    return .task { .unitDeleted(deleted) }
-                }
-                return .none
             default:
                 return .none
             }
@@ -309,11 +280,6 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
-                    if vs.showDeleteButton {
-                        Button("삭제") {
-                            vs.send(.deleteButtonTapped)
-                        }.foregroundColor(.red)
-                    }
                     Button(vs.unit == nil ? "추가" : "수정") { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
                 }
