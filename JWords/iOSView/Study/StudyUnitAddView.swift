@@ -148,8 +148,8 @@ struct AddingUnit: ReducerProtocol {
                 return .none
             case .updateKanjiText(let text):
                 switch state.mode {
-                case .addExist:
-                    state.mode = .insert
+                case .addExist(let set, _):
+                    state.mode = .insert(set: set)
                 default:
                     break
                 }
@@ -162,14 +162,18 @@ struct AddingUnit: ReducerProtocol {
                 state.isEditingKanji = true
                 return .none
             case .checkIfExist(let query):
-                guard state.mode != .editUnit && state.mode != .editKanji else { return .none }
-                let unit = try! cd.checkIfExist(query)
-                if let unit = unit {
-                    state.mode = .addExist(existing: unit)
-                    state.meaningText = unit.meaningText ?? ""
-                    state.setExistAlert()
-                } else {
-                    state.mode = .insert
+                switch state.mode {
+                case .insert(let set), .addExist(let set, _):
+                    let unit = try! cd.checkIfExist(query)
+                    if let unit = unit {
+                        state.mode = .addExist(set: set, existing: unit)
+                        state.meaningText = unit.meaningText ?? ""
+                        state.setExistAlert()
+                    } else {
+                        state.mode = .insert(set: set)
+                    }
+                case .editUnit(_), .editKanji(_):
+                    break
                 }
                 return .none
             case .addButtonTapped:
