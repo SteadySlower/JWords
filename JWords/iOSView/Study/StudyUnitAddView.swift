@@ -136,10 +136,14 @@ struct AddingUnit: ReducerProtocol {
                 }
                 return .none
             case .setUnitType(let type):
-                if state.kanji != nil { return .none }
-                state.unitType = type
-                if type == .kanji {
-                    state.isEditingKanji = true
+                switch state.mode {
+                case .editKanji(_):
+                    break
+                default:
+                    state.unitType = type
+                    if type == .kanji {
+                        state.isEditingKanji = true
+                    }
                 }
                 return .none
             case .updateKanjiText(let text):
