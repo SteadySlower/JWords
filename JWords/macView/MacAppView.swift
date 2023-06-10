@@ -15,6 +15,7 @@ struct MacApp: ReducerProtocol {
         var addWord = AddWord.State()
         var addSet = InputBook.State()
         var conversionList = ConversionList.State()
+        var addUnit = SelectSetAddUnit.State()
     }
     
     enum Action: Equatable {
@@ -22,6 +23,7 @@ struct MacApp: ReducerProtocol {
         case addWord(action: AddWord.Action)
         case addSet(action: InputBook.Action)
         case conversionList(action: ConversionList.Action)
+        case addUnit(action: SelectSetAddUnit.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -43,6 +45,9 @@ struct MacApp: ReducerProtocol {
         Scope(state: \.addSet, action: /Action.addSet(action:)) {
             InputBook()
         }
+        Scope(state: \.addUnit, action: /Action.addUnit(action:)) {
+            SelectSetAddUnit()
+        }
     }
     
 }
@@ -62,7 +67,12 @@ struct MacAppView: View {
                 state: \.addSet,
                 action: MacApp.Action.addSet(action:))
             )
-                .tabItem { Text("단어장 추가 (신)") }
+            .tabItem { Text("단어장 추가 (신)") }
+            MacAddUnitView(store: store.scope(
+                state: \.addUnit,
+                action: MacApp.Action.addUnit(action:))
+            )
+            .tabItem { Text("단어 추가 (신)") }
             MacAddBookView(store: store.scope(
                 state: \.addBook,
                 action: MacApp.Action.addBook(action:))
