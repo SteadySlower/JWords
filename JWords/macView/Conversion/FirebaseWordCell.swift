@@ -21,6 +21,7 @@ struct FirebaseWord: ReducerProtocol {
         let word: Word
         var type: UnitType
         var huriText: EditHuriganaText.State
+        var meaningText: String
         var kanjiImage: Data?
         var ganaImage: Data?
         var meaningImage: Data?
@@ -37,7 +38,7 @@ struct FirebaseWord: ReducerProtocol {
             return ConversionInput(type: type,
                             kanjiText: kanjiText,
                             kanjiImage: kanjiImage,
-                            meaningText: word.meaningText,
+                            meaningText: meaningText,
                             meaningImage: meaningImage,
                             studyState: word.studyState,
                             createdAt: word.createdAt)
@@ -47,6 +48,7 @@ struct FirebaseWord: ReducerProtocol {
             self.id = word.id
             self.word = word
             self.huriText = .init(hurigana: HuriganaConverter.shared.convert(word.kanjiText))
+            self.meaningText = word.meaningText
             if word.kanjiText.count == 1 {
                 self.type = .kanji
             } else if word.kanjiText.count > 10 {
@@ -62,6 +64,7 @@ struct FirebaseWord: ReducerProtocol {
             self.id = word.id
             self.word = word
             self.huriText = .init(hurigana: HuriganaConverter.shared.convert(word.kanjiText))
+            self.meaningText = word.meaningText
             self.type = type
         }
         
@@ -81,6 +84,7 @@ struct FirebaseWord: ReducerProtocol {
         case editHuriText(action: EditHuriganaText.Action)
         case moveButtonTapped
         case existing(StudyUnit)
+        case updateMeaningText(String)
         case updateOverlappingText(String)
         case editAndMoveButtonTapped
         case onMove(ConversionInput)
@@ -112,6 +116,8 @@ struct FirebaseWord: ReducerProtocol {
                 return .task { [conversionInput = state.conversionInput] in
                     .onMove(conversionInput)
                 }
+            case .updateMeaningText(let text):
+                state.meaningText = text
             case .updateOverlappingText(let text):
                 state.overlappingMeaningText = text
             case .editAndMoveButtonTapped:
@@ -184,7 +190,9 @@ struct FirebaseWordCell: View {
                 .font(.system(size: fontSize))
                 HStack {
                     Text("뜻: ")
-                    Text(vs.word.meaningText)
+                    TextEditor(text: vs.binding(
+                        get: \.meaningText,
+                        send: FirebaseWord.Action.updateMeaningText))
                 }
                 .font(.system(size: fontSize))
                 #if os(macOS)
