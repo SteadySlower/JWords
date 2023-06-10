@@ -118,6 +118,7 @@ struct AddingUnit: ReducerProtocol {
         case binding(BindingAction<State>)
         case setUnitType(UnitType)
         case focusFieldChanged(Field?)
+        case onTab(Field)
         case updateKanjiText(String)
         case updateMeaningText(String)
         case editHuriText(action: EditHuriganaText.Action)
@@ -167,10 +168,24 @@ struct AddingUnit: ReducerProtocol {
                 default:
                     break
                 }
+                if text.hasTab {
+                    return .task { .onTab(.kanji) }
+                }
                 state.kanjiText = text
                 return .none
             case .updateMeaningText(let text):
+                if text.hasTab {
+                    return .task { .onTab(.meaning) }
+                }
                 state.meaningText = text
+                return .none
+            case .onTab(let field):
+                switch field {
+                case .kanji:
+                    state.focusedField = .meaning
+                case .meaning:
+                    break
+                }
                 return .none
             case .editKanjiTextButtonTapped:
                 state.isEditingKanji = true
