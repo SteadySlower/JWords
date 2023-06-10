@@ -78,7 +78,10 @@ struct InputBook: ReducerProtocol {
                     state.isLoading = false
                     return .task { .setAdded }
                 }
-
+            case .setAdded:
+                state.title = ""
+                state.preferredFrontType = .kanji
+                return .none
             default:
                 return .none
             }
