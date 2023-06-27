@@ -46,6 +46,8 @@ struct AddingUnit: ReducerProtocol {
         var isEditingKanji: Bool = true
         var isKanjiEditable: Bool = true
         
+        var isLoading: Bool = false
+        
         init(mode: Mode) {
             self.mode = mode
             switch mode {
@@ -355,11 +357,21 @@ struct StudyUnitAddView: View {
                 }
                 .frame(height: vs.meaningImage == nil ? 100 : 200)
                 .padding(.bottom, 20)
+                #if os(iOS)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
                     Button(vs.okButtonText) { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
                 }
+                #elseif os(macOS)
+                if !vs.isLoading {
+                    Button(vs.okButtonText) { vs.send(.addButtonTapped) }
+                        .disabled(!vs.ableToAdd)
+                } else {
+                    ProgressView()
+                }
+
+                #endif
             }
             .padding(.horizontal, 10)
             .presentationDetents([.medium])
