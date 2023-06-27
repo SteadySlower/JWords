@@ -29,7 +29,9 @@ struct AddingUnit: ReducerProtocol {
         var mode: Mode
         var unitType: UnitType
         var meaningText: String
+        var meaningImage: InputImageType?
         var kanjiText: String
+        var kanjiImage: InputImageType?
         var huriText: EditHuriganaText.State
         var alert: AlertState<Action>?
         
@@ -117,22 +119,32 @@ struct AddingUnit: ReducerProtocol {
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case setUnitType(UnitType)
+        // field 이동 관련
         case focusFieldChanged(Field?)
         case onTab(Field)
+        // 한자, 뜻, 후리가나 업데이트 관련
         case updateKanjiText(String)
         case updateMeaningText(String)
         case editHuriText(action: EditHuriganaText.Action)
         case editKanjiTextButtonTapped
+        
+        // 겹치는 단어 관련
         case checkIfExist(String)
-        case meaningButtonTapped
+//        case meaningButtonTapped
+        
+        // 추가 버튼 관련
         case addButtonTapped
-        case showErrorAlert(AppError)
-        case alertDismissed
         case cancelButtonTapped
         case addUnit
+        
+        // 추가/수정 완료시c
         case unitEdited(StudyUnit)
         case unitAdded(StudyUnit)
         case kanjiEdited(Kanji)
+        
+        // alert 관련
+        case showErrorAlert(AppError)
+        case alertDismissed
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -300,7 +312,7 @@ struct StudyUnitAddView: View {
                         .border(.black)
                         .frame(height: 100)
                         .focused($focusedField, equals: .meaning)
-                    Button("검색") { vs.send(.meaningButtonTapped) }
+//                    Button("검색") { vs.send(.meaningButtonTapped) }
                 }
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
