@@ -136,9 +136,7 @@ class CoreDataClient {
     func insertUnit(in set: StudySet,
                     type: UnitType,
                     kanjiText: String,
-                    kanjiImageID: String?,
-                    meaningText: String,
-                    meaningImageID: String?) throws -> StudyUnit {
+                    meaningText: String) throws -> StudyUnit {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
             print("디버그: StudyUnitMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -156,9 +154,7 @@ class CoreDataClient {
         mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         mo.type = Int16(type.rawValue)
         if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
-        mo.kanjiImageID = kanjiImageID
         if !meaningText.isEmpty { mo.meaningText = meaningText }
-        mo.meaningImageID = meaningImageID
         mo.studyState = Int16(StudyState.undefined.rawValue)
         mo.createdAt = Date()
         mo.addToSet(set)

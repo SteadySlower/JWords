@@ -256,9 +256,7 @@ struct AddingUnit: ReducerProtocol {
                     let added = try! cd.insertUnit(in: set,
                                                    type: state.unitType,
                                                    kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
-                                                   kanjiImageID: nil,
-                                                   meaningText: state.meaningText,
-                                                   meaningImageID: nil)
+                                                   meaningText: state.meaningText)
                     return .task { .unitAdded(added) }
                 case .editUnit(let unit):
                     let edited = try! cd.editUnit(of: unit,
