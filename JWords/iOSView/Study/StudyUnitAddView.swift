@@ -276,6 +276,7 @@ struct StudyUnitAddView: View {
                 HStack {
                     if vs.isEditingKanji {
                         TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
+                            .font(.system(size: 30))
                             .border(.black)
                             .focused($focusedField, equals: .kanji)
                     } else {
@@ -295,6 +296,7 @@ struct StudyUnitAddView: View {
                 .frame(height: 100)
                 HStack {
                     TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
+                        .font(.system(size: 30))
                         .border(.black)
                         .frame(height: 100)
                         .focused($focusedField, equals: .meaning)
