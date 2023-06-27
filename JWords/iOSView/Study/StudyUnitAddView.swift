@@ -132,6 +132,10 @@ struct AddingUnit: ReducerProtocol {
         case checkIfExist(String)
 //        case meaningButtonTapped
         
+        // 이미지 버튼 관련
+        case kanjiImageButtonTapped
+        case meaningImageButtonTapped
+        
         // 추가 버튼 관련
         case addButtonTapped
         case cancelButtonTapped
@@ -146,6 +150,8 @@ struct AddingUnit: ReducerProtocol {
         case showErrorAlert(AppError)
         case alertDismissed
     }
+    
+    @Dependency(\.pasteBoardClient) var pasteBoardClient
     
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
@@ -215,6 +221,20 @@ struct AddingUnit: ReducerProtocol {
                     }
                 case .editUnit(_), .editKanji(_):
                     break
+                }
+                return .none
+            case .kanjiImageButtonTapped:
+                if state.kanjiImage == nil {
+                    state.kanjiImage = pasteBoardClient.fetchImage()
+                } else {
+                    state.kanjiImage = nil
+                }
+                return .none
+            case .meaningImageButtonTapped:
+                if state.meaningImage == nil {
+                    state.meaningImage = pasteBoardClient.fetchImage()
+                } else {
+                    state.meaningImage = nil
                 }
                 return .none
             case .addButtonTapped:
@@ -303,11 +323,18 @@ struct StudyUnitAddView: View {
                             Button("수정") { vs.send(.editKanjiTextButtonTapped) }
                                 .disabled(vs.unitType == .kanji)
                         }
-
                     }
-                    Button("일본어 이미지") {}
+                    #if os(macOS)
+                    if let kanjiImage = vs.kanjiImage {
+                        Image(nsImage: kanjiImage).resizable()
+                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                            .onTapGesture { vs.send(.kanjiImageButtonTapped) }
+                    } else {
+                        Button("일본어 이미지") { vs.send(.kanjiImageButtonTapped) }
+                    }
+                    #endif
                 }
-                .frame(height: vs.kanjiImage == nil ? 100 : 200)
+                .frame(height: vs.kanjiImage == nil ? 100 : 250)
                 .padding(.bottom, 20)
                 VStack {
                     HStack {
@@ -318,7 +345,15 @@ struct StudyUnitAddView: View {
                             .focused($focusedField, equals: .meaning)
     //                    Button("검색") { vs.send(.meaningButtonTapped) }
                     }
-                    Button("뜻 이미지") {}
+                    #if os(macOS)
+                    if let meaningImage = vs.meaningImage {
+                        Image(nsImage: meaningImage).resizable()
+                            .frame(width: Constants.Size.deviceWidth * 0.8, height: 150)
+                            .onTapGesture { vs.send(.meaningImageButtonTapped) }
+                    } else {
+                        Button("뜻 이미지") { vs.send(.meaningImageButtonTapped) }
+                    }
+                    #endif
                 }
                 .frame(height: vs.meaningImage == nil ? 100 : 200)
                 .padding(.bottom, 20)
