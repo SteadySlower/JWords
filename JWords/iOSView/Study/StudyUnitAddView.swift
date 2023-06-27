@@ -285,7 +285,7 @@ struct StudyUnitAddView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                HStack {
+                VStack {
                     if vs.isEditingKanji {
                         TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
                             .font(.system(size: 30))
@@ -305,16 +305,22 @@ struct StudyUnitAddView: View {
                         }
 
                     }
+                    Button("일본어 이미지") {}
                 }
-                .frame(height: 100)
-                HStack {
-                    TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
-                        .font(.system(size: 30))
-                        .border(.black)
-                        .frame(height: 100)
-                        .focused($focusedField, equals: .meaning)
-//                    Button("검색") { vs.send(.meaningButtonTapped) }
+                .frame(height: vs.kanjiImage == nil ? 100 : 200)
+                .padding(.bottom, 20)
+                VStack {
+                    HStack {
+                        TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
+                            .font(.system(size: 30))
+                            .border(.black)
+                            .frame(height: 100)
+                            .focused($focusedField, equals: .meaning)
+    //                    Button("검색") { vs.send(.meaningButtonTapped) }
+                    }
+                    Button("뜻 이미지") {}
                 }
+                .frame(height: vs.meaningImage == nil ? 100 : 200)
                 .padding(.bottom, 20)
                 HStack(spacing: 100) {
                     Button("취소") { vs.send(.cancelButtonTapped) }
