@@ -292,17 +292,18 @@ struct StudyUnitAddView: View {
                             .border(.black)
                             .focused($focusedField, equals: .kanji)
                     } else {
-                        VStack {
-                            EditableHuriganaText(store: store.scope(
-                                state: \.huriText,
-                                action: AddingUnit.Action.editHuriText(action:))
-                            )
-                            Spacer()
+                        HStack {
+                            VStack {
+                                EditableHuriganaText(store: store.scope(
+                                    state: \.huriText,
+                                    action: AddingUnit.Action.editHuriText(action:))
+                                )
+                                Spacer()
+                            }
+                            Button("수정") { vs.send(.editKanjiTextButtonTapped) }
+                                .disabled(vs.unitType == .kanji)
                         }
-                    }
-                    if !vs.isEditingKanji {
-                        Button("수정") { vs.send(.editKanjiTextButtonTapped) }
-                            .disabled(vs.unitType == .kanji)
+
                     }
                 }
                 .frame(height: 100)
