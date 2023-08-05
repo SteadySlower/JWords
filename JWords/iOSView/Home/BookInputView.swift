@@ -78,10 +78,48 @@ struct InputBook: ReducerProtocol {
                     state.isLoading = false
                     return .task { .setAdded }
                 }
-
+            case .setAdded:
+                state.title = ""
+                state.preferredFrontType = .kanji
+                return .none
             default:
                 return .none
             }
+        }
+    }
+}
+
+// TODO: 현재 Mobile 버전과 뷰가 완전히 동일한데 필요할 때 수정
+struct MacSetAddView: View {
+    let store: StoreOf<InputBook>
+    
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            VStack {
+                TextField("단어장 이름", text: vs.binding(get: \.title, send: InputBook.Action.updateTitle))
+                    .padding()
+                Picker("", selection: vs.binding(get: \.preferredFrontType, send: InputBook.Action.updatePreferredFrontType)) {
+                    ForEach(FrontType.allCases, id: \.self) {
+                        Text($0.preferredTypeText)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
+                HStack {
+                    Button("추가"){
+                        vs.send(.addButtonTapped)
+                    }
+                    Button("취소", role: .cancel) {
+                        vs.send(.cancelButtonTapped)
+                    }
+                }
+            }
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
+            .loadingView(vs.isLoading)
+            .padding()
         }
     }
 }

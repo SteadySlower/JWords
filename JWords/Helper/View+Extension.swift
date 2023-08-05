@@ -99,6 +99,8 @@ extension View {
 
 // MARK: CornerRadius
 
+#if os(iOS)
+
 private struct CornerRadiusShape: Shape {
     var radius = CGFloat.infinity
     var corners = UIRectCorner.allCorners
@@ -177,3 +179,5 @@ extension View {
         ModifiedContent(content: self, modifier: SpeechBubbleStyle(direction: direction, maxWidth: maxWidth, color: color, alignment: alignment) )
     }
 }
+
+#endif

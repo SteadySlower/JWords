@@ -43,7 +43,7 @@ struct StudyUnit: Equatable, Identifiable {
         self.meaningImageID = mo.meaningImageID
         self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
         self.createdAt = mo.createdAt ?? Date()
-        self.studySets = mo.set?.array.compactMap { $0 as? StudySetMO }.map { StudySet(from: $0) } ?? []
+        self.studySets = mo.set?.compactMap { $0 as? StudySetMO }.map { StudySet(from: $0) } ?? []
     }
     
     // intializer for mocking

@@ -111,12 +111,12 @@ struct CDTStudyView: View {
                 }
             }
         }
-        .sheet(isPresented: $showModal) {
-            StudyUnitAddView(store: Store(
-                initialState: AddingUnit.State(set: set),
-                reducer: AddingUnit())
-            )
-        }
+//        .sheet(isPresented: $showModal) {
+//            StudyUnitAddView(store: Store(
+//                initialState: AddingUnit.State(set: set),
+//                reducer: AddingUnit())
+//            )
+//        }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("연결 보기"),
                   message: Text(alertMessage),

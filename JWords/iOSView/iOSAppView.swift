@@ -114,9 +114,11 @@ struct iOSAppView: View {
                     }
                 }
                 .tabItem {
+                #if os(iOS)
                     Image(uiImage:
                             ImageRenderer(content: Text("漢").font(.title)).uiImage ?? UIImage()
                     )
+                #endif
                 }
                 .tag(Tab.kanji)
                 #if os(iOS)

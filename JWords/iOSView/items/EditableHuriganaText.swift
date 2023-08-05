@@ -32,6 +32,7 @@ struct EditHuriganaText: ReducerProtocol {
     
     enum Action: Equatable {
         case onGanaUpdated(Huri)
+        case onHuriUpdated
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -39,7 +40,7 @@ struct EditHuriganaText: ReducerProtocol {
             switch action {
             case .onGanaUpdated(let huri):
                 state.updateHuri(huri)
-                return .none
+                return .task { .onHuriUpdated }
             default:
                 return .none
             }
@@ -50,7 +51,12 @@ struct EditHuriganaText: ReducerProtocol {
 
 struct EditableHuriganaText: View {
     let store: StoreOf<EditHuriganaText>
-    let fontSize: CGFloat = 20
+    let fontSize: CGFloat
+    
+    init(store: StoreOf<EditHuriganaText>, fontsize: CGFloat = 20) {
+        self.store = store
+        self.fontSize = fontsize
+    }
 
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in

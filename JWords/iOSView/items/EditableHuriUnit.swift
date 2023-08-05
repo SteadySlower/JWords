@@ -17,6 +17,14 @@ struct EditableHuriUnit: View {
     @State var showAlert: Bool = false
     @State var text: String = ""
     
+    var yOffSet: CGFloat {
+        #if os(iOS)
+        return -fontSize / 1.2
+        #elseif os(macOS)
+        return -fontSize / 0.9
+        #endif
+    }
+    
     var body: some View {
         Group {
             if !huri.kanji.isEmpty {
@@ -28,13 +36,14 @@ struct EditableHuriUnit: View {
                     }
                     .font(.system(size: fontSize / 2))
                     .lineLimit(1)
-                    .offset(y: -fontSize / 1.2)
+                    .offset(y: yOffSet)
                 }
             } else {
                 Text(huri.gana)
                     .font(.system(size: fontSize))
             }
         }
+        .padding(.top, -yOffSet)
         .alert("후리가나 수정", isPresented: $showAlert) {
             TextField(huri.gana, text: $text)
             Button("수정") {

@@ -15,6 +15,13 @@ struct SelectWordBook: ReducerProtocol {
         var selectedID: String? = nil
         var wordCount: Int? = nil
         var didFetched = false
+        let pickerName: String
+        
+        var convertTable = [String:Bool]()
+        
+        init(pickerName: String = "") {
+            self.pickerName = pickerName
+        }
         
         var selectedBook: WordBook? {
             wordBooks.first(where: { $0.id == selectedID })
@@ -41,10 +48,13 @@ struct SelectWordBook: ReducerProtocol {
     private enum fetchBooksID {}
     private enum fetchWordCountID {}
     
+    private let cd = CoreDataClient.shared
+    
     enum Action: Equatable {
         case onAppear
         case booksResponse(TaskResult<[WordBook]>)
         case updateID(String?)
+        case bookUpdated
         case wordCountResponse(TaskResult<Int>)
     }
     
@@ -59,18 +69,21 @@ struct SelectWordBook: ReducerProtocol {
             case let .booksResponse(.success(books)):
                 state.didFetched = true
                 state.wordBooks = books
+                for book in books {
+                    state.convertTable[book.id] = try! cd.checkIfExist(book: book)
+                }
                 return .none
             case .updateID(let id):
                 state.selectedID = id
                 state.wordCount = nil
-                guard let book = state.selectedBook else { return .none }
+                guard let book = state.selectedBook else { return .task { .bookUpdated } }
                 return .task {
                     await .wordCountResponse(TaskResult { try await wordBookClient.wordCount(book) })
                 }
                 .cancellable(id: fetchWordCountID.self)
             case let .wordCountResponse(.success(count)):
                 state.wordCount = count
-                return .none
+                return .task { .bookUpdated }
             default:
                 return .none
             }
@@ -85,7 +98,7 @@ struct WordBookPicker: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             HStack {
-                Picker("", selection:
+                Picker(vs.pickerName, selection:
                         vs.binding(
                              get: \.selectedID,
                              send: SelectWordBook.Action.updateID)
@@ -93,7 +106,7 @@ struct WordBookPicker: View {
                     Text(vs.pickerDefaultText)
                         .tag(nil as String?)
                     ForEach(vs.wordBooks, id: \.id) { book in
-                        Text(book.title)
+                        Text(book.title + "\(vs.convertTable[book.id, default: false] ? " (이미 이동)" : "")")
                             .tag(book.id as String?)
                     }
                 }

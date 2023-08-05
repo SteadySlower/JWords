@@ -11,16 +11,21 @@ import CoreData
 class CoreDataClient {
     
     static let shared = CoreDataClient()
+    private let context: NSManagedObjectContext
+    private let iu = CKImageUploader.shared
     
-    private lazy var context: NSManagedObjectContext = {
-        let container = NSPersistentContainer(name: "jwords")
+    init() {
+        let container = NSPersistentCloudKitContainer(name: "jwords")
+        container.persistentStoreDescriptions.first!.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
-        return container.viewContext
-    }()
+        self.context = container.viewContext
+    }
     
     func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
@@ -83,6 +88,37 @@ class CoreDataClient {
         }
     }
     
+    func countUnits(in set: StudySet) throws -> Int {
+        guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let result = mo.units?.count else {
+            print("디버그: setMO의 units가 nil")
+            throw AppError.coreData
+        }
+        
+        return result
+    }
+    
+    func closeSet(_ set: StudySet) throws {
+        guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.closed = true
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
         guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
@@ -100,9 +136,7 @@ class CoreDataClient {
     func insertUnit(in set: StudySet,
                     type: UnitType,
                     kanjiText: String,
-                    kanjiImageID: String?,
-                    meaningText: String,
-                    meaningImageID: String?) throws -> StudyUnit {
+                    meaningText: String) throws -> StudyUnit {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
             print("디버그: StudyUnitMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -120,9 +154,7 @@ class CoreDataClient {
         mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         mo.type = Int16(type.rawValue)
         if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
-        mo.kanjiImageID = kanjiImageID
         if !meaningText.isEmpty { mo.meaningText = meaningText }
-        mo.meaningImageID = meaningImageID
         mo.studyState = Int16(StudyState.undefined.rawValue)
         mo.createdAt = Date()
         mo.addToSet(set)
@@ -176,6 +208,31 @@ class CoreDataClient {
             throw AppError.coreData
         }
     }
+    
+    func addExistingUnit(unit: StudyUnit, meaningText: String, in set: StudySet) throws -> StudyUnit {
+        guard let mo = try context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        if !meaningText.isEmpty { mo.meaningText = meaningText }
+        mo.addToSet(set)
+        
+        do {
+            try context.save()
+            return StudyUnit(from: mo)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     
     func removeUnit(_ unit: StudyUnit, from set: StudySet) throws -> StudyUnit {
         guard let unitMO = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
@@ -351,5 +408,204 @@ class CoreDataClient {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
+    }
+}
+
+// MARK: Conversion
+extension CoreDataClient {
+    
+    func checkIfExist(book: WordBook) throws -> Bool {
+        let fetchRequest = StudySetMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", book.title)
+        
+        do {
+            return try !context.fetch(fetchRequest).isEmpty
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func convertBook(book: WordBook) throws {
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
+            print("디버그: StudySetMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.id = "set_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        mo.title = book.title
+        mo.preferredFrontType = Int16(book.preferredFrontType.rawValue)
+        mo.isAutoSchedule = true
+        mo.closed = false
+        mo.createdAt = book.createdAt
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func convert(input: ConversionInput, in set: StudySet) async throws -> StudyUnit {
+        
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
+            print("디버그: StudyUnitMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        if let kanjiImage = input.kanjiImage {
+            mo.kanjiImageID = try await iu.saveImage(data: kanjiImage)
+        }
+        
+        if let meaningImage = input.meaningImage {
+            mo.meaningImageID = try await iu.saveImage(data: meaningImage)
+        }
+        
+        HuriganaConverter.shared.extractKanjis(from: input.kanjiText)
+            .compactMap { try? getKanjiMO($0) }
+            .forEach { mo.addToKanjiOfWord($0) }
+        
+        mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        mo.type = Int16(input.type.rawValue)
+        if !input.kanjiText.isEmpty { mo.kanjiText = input.kanjiText }
+        if !input.meaningText.isEmpty { mo.meaningText = input.meaningText }
+        mo.studyState = Int16(input.studyState.rawValue)
+        mo.createdAt = input.createdAt
+        mo.addToSet(set)
+        
+        do {
+            try context.save()
+            return StudyUnit(from: mo)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+    }
+    
+    func convert(inputs: [ConversionInput], in set: StudySet) async throws -> [StudyUnit] {
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        var addedMO = [StudyUnitMO]()
+        
+        for input in inputs {
+            guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
+                print("디버그: StudyUnitMO 객체를 만들 수 없음")
+                throw AppError.coreData
+            }
+            
+            if let kanjiImage = input.kanjiImage {
+                mo.kanjiImageID = try await iu.saveImage(data: kanjiImage)
+            }
+            
+            if let meaningImage = input.meaningImage {
+                mo.meaningImageID = try await iu.saveImage(data: meaningImage)
+            }
+            
+            HuriganaConverter.shared.extractKanjis(from: input.kanjiText)
+                .compactMap { try? getKanjiMO($0) }
+                .forEach { mo.addToKanjiOfWord($0) }
+            
+            mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+            mo.type = Int16(input.type.rawValue)
+            if !input.kanjiText.isEmpty { mo.kanjiText = input.kanjiText }
+            if !input.meaningText.isEmpty { mo.meaningText = input.meaningText }
+            mo.studyState = Int16(input.studyState.rawValue)
+            mo.createdAt = input.createdAt
+            mo.addToSet(set)
+            
+            addedMO.append(mo)
+        }
+        
+        do {
+            try context.save()
+            return addedMO.map { StudyUnit(from: $0) }
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+    }
+    
+    func checkIfExist(_ kanjiText: String) throws -> StudyUnit? {
+        
+        if kanjiText.isEmpty { return nil }
+        
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanjiText)
+        
+        do {
+            if let fetched = try context.fetch(fetchRequest).first {
+                return StudyUnit(from: fetched)
+            } else {
+                return nil
+            }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func convert(unit: StudyUnit, newMeaning: String, in set: StudySet) throws -> StudyUnit {
+        
+        guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.meaningText = newMeaning
+        mo.addToSet(set)
+        
+        do {
+            try context.save()
+            return StudyUnit(from: mo)
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
+    }
+    
+    func resetCoreData() throws {
+        let setFetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
+        let unitFetchRequest: NSFetchRequest<StudyUnitMO> = StudyUnitMO.fetchRequest()
+        
+        do {
+            let sets = try context.fetch(setFetchRequest)
+            for set in sets {
+                context.delete(set)
+            }
+            
+            let units = try context.fetch(unitFetchRequest)
+            for unit in units {
+                context.delete(unit)
+            }
+            
+            try context.save()
+
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+        
     }
 }
