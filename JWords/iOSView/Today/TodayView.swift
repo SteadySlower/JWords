@@ -36,7 +36,7 @@ struct TodayList: ReducerProtocol {
         
         fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
             studyWordBooks = todayBooks.study
-            reviewWordBooks = todayBooks.review
+            reviewWordBooks = todayBooks.review.filter { !reviewedWordBooks.contains($0) }
             reviewedWordBooks = todayBooks.reviewed
         }
         
@@ -63,13 +63,7 @@ struct TodayList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                state.isLoading = true
-                state.clear()
-                state.isLoading = true
-                let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: ud.fetchSchedule())
-                state.addTodayBooks(todayBooks: todayBooks)
-                state.onlyFailWords = todayBooks.study.map { try! cd.fetchUnits(of: $0) }.reduce([], +)
-                state.isLoading = false
+                fetchSchedule(&state)
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent { state.todaySelection = nil }
@@ -119,6 +113,19 @@ struct TodayList: ReducerProtocol {
         .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
             TodaySelection()
         }
+    }
+    
+    private func fetchSchedule(_ state: inout TodayList.State) {
+        state.isLoading = true
+        state.clear()
+        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: ud.fetchSchedule())
+        state.addTodayBooks(todayBooks: todayBooks)
+        state.onlyFailWords =
+            todayBooks.study
+                .map { try! cd.fetchUnits(of: $0) }
+                .reduce([], +)
+                .filter { $0.studyState != .success }
+        state.isLoading = false
     }
 
 }
