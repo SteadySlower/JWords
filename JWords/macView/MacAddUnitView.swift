@@ -37,8 +37,12 @@ struct SelectSetAddUnit: ReducerProtocol {
                     state.updateAddUnit()
                 default: break
                 }
-            default:
-                break
+            case let .addUnit(action):
+                switch action {
+                case .unitAdded:
+                    state.selectSet.onUnitAdded()
+                default: break
+                }
             }
             return .none
         }
