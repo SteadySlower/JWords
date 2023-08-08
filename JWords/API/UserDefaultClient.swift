@@ -40,6 +40,13 @@ final class UserDefaultClient {
         setDate(key: .createdAt, value: Date())
     }
     
+    func addReviewedSet(reviewed: StudySet) {
+        var reviewedIDs = arrayOfString(for: .reviewedSets)
+        reviewedIDs.append(reviewed.id)
+        setArrayOfString(key: .reviewedSets, value: reviewedIDs)
+        setDate(key: .createdAt, value: Date())
+    }
+    
     private func arrayOfString(for key: UserDefaultKey) -> [String] {
         return userDefaults.stringArray(forKey: key.rawValue) ?? []
     }

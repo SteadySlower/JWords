@@ -41,7 +41,7 @@ struct MoveWords: ReducerProtocol {
         case updateWillCloseBook(willClose: Bool)
         case closeButtonTapped
         case cancelButtonTapped
-        case onMoved
+        case onMoved(from: StudySet)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -79,7 +79,7 @@ struct MoveWords: ReducerProtocol {
                                           closed: true)
                 }
                 state.isLoading = false
-                return .task { .onMoved }
+                return .task { [from = state.fromBook] in .onMoved(from: from) }
             default:
                 return .none
             }

@@ -158,6 +158,7 @@ struct WordList: ReducerProtocol {
         case addUnit(action: AddingUnit.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
+        case onWordsMoved(from: StudySet)
         case dismiss
     }
     
@@ -264,8 +265,8 @@ struct WordList: ReducerProtocol {
                 }
             case .moveWords(let action):
                 switch action {
-                case .onMoved:
-                    return .task { .dismiss }
+                case .onMoved(let set):
+                    return .task { .onWordsMoved(from: set) }
                 case .cancelButtonTapped:
                     return .task { .setMoveModal(isPresented: false) }
                 default:
@@ -288,6 +289,8 @@ struct WordList: ReducerProtocol {
                 }
                 state.showSideBar = false
                 return .none
+            case .onWordsMoved:
+                return .task { .dismiss }
             default:
                 return .none
             }
@@ -320,7 +323,6 @@ struct WordList: ReducerProtocol {
 struct StudyView: View {
     
     let store: StoreOf<WordList>
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in

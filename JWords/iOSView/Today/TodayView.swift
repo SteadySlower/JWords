@@ -99,8 +99,13 @@ struct TodayList: ReducerProtocol {
                     return .none
                 }
             case .wordList(let action):
-                if action == WordList.Action.dismiss {
+                switch action  {
+                case .onWordsMoved(let reviewed):
+                    ud.addReviewedSet(reviewed: reviewed)
+                case .dismiss:
                     state.wordList = nil
+                default:
+                    break
                 }
                 return .none
             default:
