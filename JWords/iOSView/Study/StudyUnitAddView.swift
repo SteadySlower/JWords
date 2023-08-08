@@ -102,6 +102,14 @@ struct AddingUnit: ReducerProtocol {
             }
         }
         
+        mutating func clearInputs() {
+            unitType = .word
+            meaningText = ""
+            kanjiText = ""
+            huriText = EditHuriganaText.State(hurigana: "")
+            isEditingKanji = true
+        }
+        
         mutating func setExistAlert() {
             let kanjiText = self.kanjiText
             let type = unitType
@@ -259,6 +267,7 @@ struct AddingUnit: ReducerProtocol {
                                                    type: state.unitType,
                                                    kanjiText: state.unitType != .kanji ? state.huriText.hurigana : state.kanjiText,
                                                    meaningText: state.meaningText)
+                    state.clearInputs()
                     return .task { .unitAdded(added) }
                 case .editUnit(let unit):
                     let edited = try! cd.editUnit(of: unit,
