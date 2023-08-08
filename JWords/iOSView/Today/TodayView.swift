@@ -83,8 +83,7 @@ struct TodayList: ReducerProtocol {
                 state.isLoading = true
                 let sets = try! cd.fetchSets()
                 ud.authSetSchedule(sets: sets)
-                let todayBooks = TodayBooks(books: sets, schedule: ud.fetchSchedule())
-                state.addTodayBooks(todayBooks: todayBooks)
+                fetchSchedule(&state)
                 state.isLoading = false
                 return .none
             case let .todaySelection(action):
