@@ -367,6 +367,7 @@ struct StudyUnitAddView: View {
                 if !vs.isLoading {
                     Button(vs.okButtonText) { vs.send(.addButtonTapped) }
                         .disabled(!vs.ableToAdd)
+                        .keyboardShortcut(.return, modifiers: [.control])
                 } else {
                     ProgressView()
                 }
