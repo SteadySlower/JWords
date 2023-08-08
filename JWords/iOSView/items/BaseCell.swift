@@ -91,12 +91,15 @@ extension BaseCell {
     }
     
     private var cellFace: some View {
-        let frontFontSize = fontSize(of: frontText)
-        let backFontSize = fontSize(of: backText)
+        let frontFontSize: CGFloat = fontSize(of: frontText)
+        let backFontSize: CGFloat = 25
         
         return VStack {
             if frontText.isHurigana {
-                HuriganaText(hurigana: frontText, fontSize: frontFontSize, hideYomi: isFront, alignment: unit.type == .sentence ? .leading : .center)
+                HuriganaText(hurigana: frontText,
+                             fontSize: frontFontSize,
+                             hideYomi: isFront,
+                             alignment: unit.type == .sentence ? .leading : .center)
             } else {
                 Text(frontText)
                     .font(.system(size: frontFontSize))
@@ -111,11 +114,11 @@ extension BaseCell {
     
     private func fontSize(of text: String) -> CGFloat {
         if text.count == 1 {
+            return 50
+        } else if text.count <= 20 {
             return 40
-        } else if text.count <= 10 {
-            return 30
-        } else if text.count <= 10 {
-            return 25
+        } else if text.count <= 30 {
+            return 35
         } else {
             return 20
         }
