@@ -108,6 +108,7 @@ struct AddingUnit: ReducerProtocol {
             kanjiText = ""
             huriText = EditHuriganaText.State(hurigana: "")
             isEditingKanji = true
+            focusedField = .kanji
         }
         
         mutating func setExistAlert() {
