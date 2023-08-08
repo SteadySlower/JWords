@@ -11,7 +11,7 @@ class CKImageUploader {
     
     static let shared = CKImageUploader()
     
-    let db = CKContainer(identifier: "iCloud.JWords_iCloud").privateCloudDatabase
+    let db = CKContainer(identifier: "iCloud.JWords").privateCloudDatabase
     
     func saveImage(data: Data) async throws -> String {
         let id = "image_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
