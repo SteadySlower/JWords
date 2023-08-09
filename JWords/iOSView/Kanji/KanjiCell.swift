@@ -7,6 +7,9 @@
 
 import SwiftUI
 import ComposableArchitecture
+#if os(macOS)
+import Cocoa
+#endif
 
 struct StudyKanji: ReducerProtocol {
     struct State: Equatable, Identifiable {
@@ -109,6 +112,14 @@ struct KanjiCell: View {
                     VStack(spacing: 10) {
                         Text(vs.kanji.kanjiText ?? "")
                             .font(.system(size: 40))
+                        #if os(macOS)
+                            .onTapGesture {
+                                // TODO: MUST refactor
+                                let pasteboard = NSPasteboard.general
+                                pasteboard.clearContents()
+                                pasteboard.writeObjects([vs.kanji.kanjiText! as NSPasteboardWriting])
+                            }
+                        #endif
                         if vs.isEditing {
                             HStack {
                                 Button("취소") { vs.send(.cancelEditButtonTapped)  }
