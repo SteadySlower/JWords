@@ -42,7 +42,7 @@ struct TodayList: ReducerProtocol {
         
     }
     
-    let ud = UserDefaultClient.shared
+    let kv = KVStorageClient.shared
     let cd = CoreDataClient.shared
     
     enum Action: Equatable {
@@ -82,7 +82,7 @@ struct TodayList: ReducerProtocol {
                 state.clear()
                 state.isLoading = true
                 let sets = try! cd.fetchSets()
-                ud.authSetSchedule(sets: sets)
+                kv.autoSetSchedule(sets: sets)
                 fetchSchedule(&state)
                 state.isLoading = false
                 return .none
@@ -100,7 +100,7 @@ struct TodayList: ReducerProtocol {
             case .wordList(let action):
                 switch action  {
                 case .onWordsMoved(let reviewed):
-                    ud.addReviewedSet(reviewed: reviewed)
+                    kv.addReviewedSet(reviewed: reviewed)
                 case .dismiss:
                     state.wordList = nil
                 default:
@@ -122,7 +122,7 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: ud.fetchSchedule())
+        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: kv.fetchSchedule())
         state.addTodayBooks(todayBooks: todayBooks)
         state.onlyFailWords =
             todayBooks.study

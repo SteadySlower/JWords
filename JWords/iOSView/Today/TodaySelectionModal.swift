@@ -50,7 +50,7 @@ struct TodaySelection: ReducerProtocol {
         
     }
     
-    let ud = UserDefaultClient.shared
+    let kv = KVStorageClient.shared
     let cd = CoreDataClient.shared
     
     enum Action: Equatable {        
@@ -77,7 +77,7 @@ struct TodaySelection: ReducerProtocol {
             case .okButtonTapped:
                 state.isLoading = true
                 let newSchedule = getTodaySchedule(state.schedules, state.reviewedBooks.map { $0.id })
-                ud.updateSchedule(todaySchedule: newSchedule)
+                kv.updateSchedule(todaySchedule: newSchedule)
                 state.isLoading = false
                 return .none
             default:
