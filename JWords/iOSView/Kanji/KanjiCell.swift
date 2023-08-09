@@ -140,11 +140,11 @@ struct KanjiCell: View {
                             } else if vs.kanji.meaningImageID != nil {
                                 ProgressView()
                             } else {
-                                Text(vs.kanji.meaningText ?? "???")
+                                Text(vs.displayMeaning)
                                     .font(.system(size: 20))
                             }
                             #elseif os(macOS)
-                            Text(vs.kanji.meaningText ?? "???")
+                            Text(vs.displayMeaning)
                                 .font(.system(size: 20))
                             #endif
                         }
