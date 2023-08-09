@@ -15,6 +15,7 @@ import AppKit
 struct PasteBoardClient {
     private static let pb = PasteBoard.general
     var fetchImage: () -> InputImageType?
+    var copyString: (String) -> Void
 }
 
 extension DependencyValues {
@@ -34,6 +35,14 @@ extension PasteBoardClient: DependencyKey {
         guard let imgData = pb.data(forType: type) else { return nil }
         return InputImageType(data: imgData)
         #endif
+    },
+    copyString: { string in
+        #if os(iOS)
+        pb.string = string
+        #elseif os(macOS)
+        pb.clearContents()
+        pb.writeObjects([string as NSPasteboardWriting])
+        #endif
     }
   )
 }
@@ -46,11 +55,13 @@ extension PasteBoardClient: TestDependencyKey {
         #elseif os(macOS)
         return NSImage(named:"Sample Image")
         #endif
-    }
+    },
+    copyString: { _ in }
   )
 
   static let testValue = Self(
-    fetchImage: unimplemented("\(Self.self).fetchImage")
+    fetchImage: unimplemented("\(Self.self).fetchImage"),
+    copyString: unimplemented("\(Self.self).copyString")
   )
 }
 

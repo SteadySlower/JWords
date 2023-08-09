@@ -7,9 +7,13 @@
 
 import SwiftUI
 import ComposableArchitecture
+#if os(macOS)
+import Cocoa
+#endif
 
 struct StudyKanji: ReducerProtocol {
     struct State: Equatable, Identifiable {
+        @BindingState var willEditMeaning: Bool = false
         let id: String
         let kanji: Kanji
         var meaningText: String = ""
@@ -32,10 +36,12 @@ struct StudyKanji: ReducerProtocol {
         }
     }
     
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
         case onAppear
         case onKanjiImageDownloaded(TaskResult<Data>)
         case onMeaningImageDownloaded(TaskResult<Data>)
+        case onKanjiTapped(String)
         case editButtonTapped
         case updateMeaningText(String)
         case wordButtonTapped
@@ -46,8 +52,10 @@ struct StudyKanji: ReducerProtocol {
     
     private let cd = CoreDataClient.shared
     private let ck = CKImageUploader.shared
+    @Dependency(\.pasteBoardClient) var pasteBoardClient
     
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -75,7 +83,11 @@ struct StudyKanji: ReducerProtocol {
             case let .onMeaningImageDownloaded(.success(data)):
                 state.meaningImage = data
                 return .none
+            case .onKanjiTapped(let kanji):
+                pasteBoardClient.copyString(kanji)
+                return .task { .editButtonTapped }
             case .editButtonTapped:
+                state.willEditMeaning = true
                 state.isEditing = true
                 state.meaningText = state.kanji.meaningText ?? ""
                 return .none
@@ -101,6 +113,7 @@ struct StudyKanji: ReducerProtocol {
 struct KanjiCell: View {
     
     let store: StoreOf<StudyKanji>
+    @FocusState private var willEditMeaning: Bool
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -109,6 +122,11 @@ struct KanjiCell: View {
                     VStack(spacing: 10) {
                         Text(vs.kanji.kanjiText ?? "")
                             .font(.system(size: 40))
+                        #if os(macOS)
+                            .onTapGesture {
+                                vs.send(.onKanjiTapped(vs.kanji.kanjiText ?? ""))
+                            }
+                        #endif
                         if vs.isEditing {
                             HStack {
                                 Button("취소") { vs.send(.cancelEditButtonTapped)  }
@@ -117,6 +135,8 @@ struct KanjiCell: View {
                                     .frame(width: Constants.Size.deviceWidth * 0.3)
                                     .border(.black)
                                     .multilineTextAlignment(.center)
+                                    .focused($willEditMeaning)
+                                    .onSubmit { vs.send(.inputButtonTapped) }
                                 Button("입력") { vs.send(.inputButtonTapped) }
                             }
                         } else {
@@ -129,9 +149,12 @@ struct KanjiCell: View {
                             } else if vs.kanji.meaningImageID != nil {
                                 ProgressView()
                             } else {
-                                Text(vs.kanji.meaningText ?? "???")
+                                Text(vs.displayMeaning)
                                     .font(.system(size: 20))
                             }
+                            #elseif os(macOS)
+                            Text(vs.displayMeaning)
+                                .font(.system(size: 20))
                             #endif
                         }
                     }
@@ -154,6 +177,7 @@ struct KanjiCell: View {
             .border(.black)
             .padding(.vertical, 5)
             .onAppear { vs.send(.onAppear) }
+            .synchronize(vs.binding(\.$willEditMeaning), self.$willEditMeaning)
         }
     }
 

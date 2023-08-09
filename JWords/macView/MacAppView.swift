@@ -16,6 +16,7 @@ struct MacApp: ReducerProtocol {
         var addSet = InputBook.State()
         var conversionList = ConversionList.State()
         var addUnit = SelectSetAddUnit.State()
+        var kanjiList = KanjiList.State()
     }
     
     enum Action: Equatable {
@@ -24,6 +25,7 @@ struct MacApp: ReducerProtocol {
         case addSet(action: InputBook.Action)
         case conversionList(action: ConversionList.Action)
         case addUnit(action: SelectSetAddUnit.Action)
+        case kanjiList(action: KanjiList.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -47,6 +49,9 @@ struct MacApp: ReducerProtocol {
         }
         Scope(state: \.addUnit, action: /Action.addUnit(action:)) {
             SelectSetAddUnit()
+        }
+        Scope(state: \.kanjiList, action: /Action.kanjiList(action:)) {
+            KanjiList()
         }
     }
     
@@ -83,6 +88,11 @@ struct MacAppView: View {
                 action: MacApp.Action.addWord(action:))
             )
             .tabItem { Text("단어 추가") }
+            KanjiListView(store: store.scope(
+                state: \.kanjiList,
+                action: MacApp.Action.kanjiList(action:))
+            )
+            .tabItem { Text("한자 리스트") }
         }
     }
 }
