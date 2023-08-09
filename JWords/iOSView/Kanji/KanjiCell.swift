@@ -143,6 +143,9 @@ struct KanjiCell: View {
                                 Text(vs.kanji.meaningText ?? "???")
                                     .font(.system(size: 20))
                             }
+                            #elseif os(macOS)
+                            Text(vs.kanji.meaningText ?? "???")
+                                .font(.system(size: 20))
                             #endif
                         }
                     }
