@@ -27,14 +27,17 @@ final class KVStorageClient {
     
     private func setDate(key: KVStorageKey, value: Date) {
         kv.set(value, forKey: key.rawValue)
+        kv.synchronize()
     }
     
     private func setArrayOfString(key: KVStorageKey, value: [String]) {
         kv.set(value, forKey: key.rawValue)
+        kv.synchronize()
     }
     
     private func remove(key: KVStorageKey) {
         kv.removeObject(forKey: key.rawValue)
+        kv.synchronize()
     }
 }
 
