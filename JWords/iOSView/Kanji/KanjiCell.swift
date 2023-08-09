@@ -39,6 +39,7 @@ struct StudyKanji: ReducerProtocol {
         case onAppear
         case onKanjiImageDownloaded(TaskResult<Data>)
         case onMeaningImageDownloaded(TaskResult<Data>)
+        case onKanjiTapped(String)
         case editButtonTapped
         case updateMeaningText(String)
         case wordButtonTapped
@@ -49,6 +50,7 @@ struct StudyKanji: ReducerProtocol {
     
     private let cd = CoreDataClient.shared
     private let ck = CKImageUploader.shared
+    @Dependency(\.pasteBoardClient) var pasteBoardClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -77,6 +79,9 @@ struct StudyKanji: ReducerProtocol {
                 return .none
             case let .onMeaningImageDownloaded(.success(data)):
                 state.meaningImage = data
+                return .none
+            case .onKanjiTapped(let kanji):
+                pasteBoardClient.copyString(kanji)
                 return .none
             case .editButtonTapped:
                 state.isEditing = true
@@ -113,12 +118,7 @@ struct KanjiCell: View {
                         Text(vs.kanji.kanjiText ?? "")
                             .font(.system(size: 40))
                         #if os(macOS)
-                            .onTapGesture {
-                                // TODO: MUST refactor
-                                let pasteboard = NSPasteboard.general
-                                pasteboard.clearContents()
-                                pasteboard.writeObjects([vs.kanji.kanjiText! as NSPasteboardWriting])
-                            }
+                            .onTapGesture { vs.send(.onKanjiTapped(vs.kanji.kanjiText ?? "")) }
                         #endif
                         if vs.isEditing {
                             HStack {
