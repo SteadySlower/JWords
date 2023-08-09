@@ -130,6 +130,7 @@ struct KanjiCell: View {
                                     .border(.black)
                                     .multilineTextAlignment(.center)
                                     .focused($willEditMeaning)
+                                    .onSubmit { vs.send(.inputButtonTapped) }
                                 Button("입력") { vs.send(.inputButtonTapped) }
                             }
                         } else {
