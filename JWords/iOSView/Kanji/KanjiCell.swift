@@ -13,6 +13,7 @@ import Cocoa
 
 struct StudyKanji: ReducerProtocol {
     struct State: Equatable, Identifiable {
+        @BindingState var willEditMeaning: Bool = false
         let id: String
         let kanji: Kanji
         var meaningText: String = ""
@@ -35,7 +36,8 @@ struct StudyKanji: ReducerProtocol {
         }
     }
     
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
         case onAppear
         case onKanjiImageDownloaded(TaskResult<Data>)
         case onMeaningImageDownloaded(TaskResult<Data>)
@@ -53,6 +55,7 @@ struct StudyKanji: ReducerProtocol {
     @Dependency(\.pasteBoardClient) var pasteBoardClient
     
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -84,6 +87,7 @@ struct StudyKanji: ReducerProtocol {
                 pasteBoardClient.copyString(kanji)
                 return .task { .editButtonTapped }
             case .editButtonTapped:
+                state.willEditMeaning = true
                 state.isEditing = true
                 state.meaningText = state.kanji.meaningText ?? ""
                 return .none
@@ -121,7 +125,6 @@ struct KanjiCell: View {
                         #if os(macOS)
                             .onTapGesture {
                                 vs.send(.onKanjiTapped(vs.kanji.kanjiText ?? ""))
-                                willEditMeaning = true
                             }
                         #endif
                         if vs.isEditing {
@@ -161,7 +164,6 @@ struct KanjiCell: View {
                     VStack(spacing: 10) {
                         Button("✏️") {
                             vs.send(.editButtonTapped)
-                            willEditMeaning = true
                         }
                         .hide(vs.kanji.meaningImageID != nil)
                         Button("단어 보기") {
@@ -175,6 +177,7 @@ struct KanjiCell: View {
             .border(.black)
             .padding(.vertical, 5)
             .onAppear { vs.send(.onAppear) }
+            .synchronize(vs.binding(\.$willEditMeaning), self.$willEditMeaning)
         }
     }
 
