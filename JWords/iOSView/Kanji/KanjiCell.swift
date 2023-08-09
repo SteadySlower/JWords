@@ -82,7 +82,7 @@ struct StudyKanji: ReducerProtocol {
                 return .none
             case .onKanjiTapped(let kanji):
                 pasteBoardClient.copyString(kanji)
-                return .none
+                return .task { .editButtonTapped }
             case .editButtonTapped:
                 state.isEditing = true
                 state.meaningText = state.kanji.meaningText ?? ""
@@ -119,7 +119,10 @@ struct KanjiCell: View {
                         Text(vs.kanji.kanjiText ?? "")
                             .font(.system(size: 40))
                         #if os(macOS)
-                            .onTapGesture { vs.send(.onKanjiTapped(vs.kanji.kanjiText ?? "")) }
+                            .onTapGesture {
+                                vs.send(.onKanjiTapped(vs.kanji.kanjiText ?? ""))
+                                willEditMeaning = true
+                            }
                         #endif
                         if vs.isEditing {
                             HStack {
