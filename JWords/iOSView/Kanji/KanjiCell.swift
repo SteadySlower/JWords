@@ -109,6 +109,7 @@ struct StudyKanji: ReducerProtocol {
 struct KanjiCell: View {
     
     let store: StoreOf<StudyKanji>
+    @FocusState private var willEditMeaning: Bool
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -128,6 +129,7 @@ struct KanjiCell: View {
                                     .frame(width: Constants.Size.deviceWidth * 0.3)
                                     .border(.black)
                                     .multilineTextAlignment(.center)
+                                    .focused($willEditMeaning)
                                 Button("입력") { vs.send(.inputButtonTapped) }
                             }
                         } else {
@@ -155,6 +157,7 @@ struct KanjiCell: View {
                     VStack(spacing: 10) {
                         Button("✏️") {
                             vs.send(.editButtonTapped)
+                            willEditMeaning = true
                         }
                         .hide(vs.kanji.meaningImageID != nil)
                         Button("단어 보기") {
