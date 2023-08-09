@@ -1,22 +1,49 @@
 //
-//  UserDefaultClient.swift
+//  KVStorageClient.swift
 //  JWords
 //
-//  Created by Jong Won Moon on 2023/05/08.
+//  Created by Jong Won Moon on 2023/08/09.
 //
 
 import Foundation
 
-enum UserDefaultKey: String, CaseIterable {
+enum KVStorageKey: String {
     case studySets, reviewSets, reviewedSets, createdAt
 }
 
-final class UserDefaultClient {
+final class KVStorageClient {
     
-    static let shared = UserDefaultClient()
+    static let shared = KVStorageClient()
+    
+    private let kv = NSUbiquitousKeyValueStore.default
+    
+    private func arrayOfString(for key: KVStorageKey) -> [String] {
+        return kv.array(forKey: key.rawValue) as? [String] ?? []
+    }
+    
+    private func date(for key: KVStorageKey) -> Date {
+        return kv.object(forKey: key.rawValue) as? Date ?? Date()
+    }
+    
+    private func setDate(key: KVStorageKey, value: Date) {
+        kv.set(value, forKey: key.rawValue)
+        kv.synchronize()
+    }
+    
+    private func setArrayOfString(key: KVStorageKey, value: [String]) {
+        kv.set(value, forKey: key.rawValue)
+        kv.synchronize()
+    }
+    
+    private func remove(key: KVStorageKey) {
+        kv.removeObject(forKey: key.rawValue)
+        kv.synchronize()
+    }
+}
 
-    private let userDefaults = UserDefaults.standard
-    
+// public Methods
+
+extension KVStorageClient {
     func fetchSchedule() -> TodaySchedule {
         TodaySchedule(studyIDs: arrayOfString(for: .studySets),
                       reviewIDs: arrayOfString(for: .reviewSets),
@@ -24,7 +51,7 @@ final class UserDefaultClient {
                       createdAt: date(for: .createdAt))
     }
     
-    func authSetSchedule(sets: [StudySet]) {
+    func autoSetSchedule(sets: [StudySet]) {
         let studySets = sets.filter { $0.schedule == .study }.map { $0.id }
         let reviewSets = sets.filter { $0.schedule == .review }.map { $0.id }
         setArrayOfString(key: .studySets, value: studySets)
@@ -46,25 +73,4 @@ final class UserDefaultClient {
         setArrayOfString(key: .reviewedSets, value: reviewedIDs)
         setDate(key: .createdAt, value: Date())
     }
-    
-    private func arrayOfString(for key: UserDefaultKey) -> [String] {
-        return userDefaults.stringArray(forKey: key.rawValue) ?? []
-    }
-    
-    private func date(for key: UserDefaultKey) -> Date {
-        return userDefaults.object(forKey: key.rawValue) as? Date ?? Date()
-    }
-    
-    private func setDate(key: UserDefaultKey, value: Date) {
-        userDefaults.set(value, forKey: key.rawValue)
-    }
-    
-    private func setArrayOfString(key: UserDefaultKey, value: [String]) {
-        userDefaults.set(value, forKey: key.rawValue)
-    }
-    
-    private func remove(key: UserDefaultKey) {
-        userDefaults.removeObject(forKey: key.rawValue)
-    }
-    
 }

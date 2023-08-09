@@ -130,7 +130,7 @@ class CoreDataClient {
             throw AppError.coreData
         }
         
-        return units.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+        return units.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }.sorted(by: { $0.createdAt < $1.createdAt })
     }
     
     func insertUnit(in set: StudySet,

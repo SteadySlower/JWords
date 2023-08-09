@@ -36,13 +36,13 @@ struct TodayList: ReducerProtocol {
         
         fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
             studyWordBooks = todayBooks.study
-            reviewWordBooks = todayBooks.review
+            reviewWordBooks = todayBooks.review.filter { !reviewedWordBooks.contains($0) }
             reviewedWordBooks = todayBooks.reviewed
         }
         
     }
     
-    let ud = UserDefaultClient.shared
+    let kv = KVStorageClient.shared
     let cd = CoreDataClient.shared
     
     enum Action: Equatable {
@@ -63,13 +63,7 @@ struct TodayList: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                state.isLoading = true
-                state.clear()
-                state.isLoading = true
-                let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: ud.fetchSchedule())
-                state.addTodayBooks(todayBooks: todayBooks)
-                state.onlyFailWords = todayBooks.study.map { try! cd.fetchUnits(of: $0) }.reduce([], +)
-                state.isLoading = false
+                fetchSchedule(&state)
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent { state.todaySelection = nil }
@@ -88,9 +82,8 @@ struct TodayList: ReducerProtocol {
                 state.clear()
                 state.isLoading = true
                 let sets = try! cd.fetchSets()
-                ud.authSetSchedule(sets: sets)
-                let todayBooks = TodayBooks(books: sets, schedule: ud.fetchSchedule())
-                state.addTodayBooks(todayBooks: todayBooks)
+                kv.autoSetSchedule(sets: sets)
+                fetchSchedule(&state)
                 state.isLoading = false
                 return .none
             case let .todaySelection(action):
@@ -105,8 +98,13 @@ struct TodayList: ReducerProtocol {
                     return .none
                 }
             case .wordList(let action):
-                if action == WordList.Action.dismiss {
+                switch action  {
+                case .onWordsMoved(let reviewed):
+                    kv.addReviewedSet(reviewed: reviewed)
+                case .dismiss:
                     state.wordList = nil
+                default:
+                    break
                 }
                 return .none
             default:
@@ -119,6 +117,20 @@ struct TodayList: ReducerProtocol {
         .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
             TodaySelection()
         }
+    }
+    
+    private func fetchSchedule(_ state: inout TodayList.State) {
+        state.isLoading = true
+        state.clear()
+        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: kv.fetchSchedule())
+        state.addTodayBooks(todayBooks: todayBooks)
+        state.onlyFailWords =
+            todayBooks.study
+                .map { try! cd.fetchUnits(of: $0) }
+                .reduce([], +)
+                .filter { $0.studyState != .success }
+                .sorted(by: { $0.createdAt < $1.createdAt })
+        state.isLoading = false
     }
 
 }
