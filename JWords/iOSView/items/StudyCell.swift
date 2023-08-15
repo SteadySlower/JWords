@@ -187,11 +187,6 @@ struct StudyCell: View {
             }
             .overlay(
                 showKanjisButton(vs)
-                    .padding(.bottom, 8)
-                    .padding(.trailing, 8)
-                    .hide(dragAmount != .zero)
-                    .hide(vs.isFront)
-                    .hide(!vs.showKanjiButton)
             )
             .overlay(
                 kanjiPopup(vs.kanjis) { vs.send(.addKanjiMeaningTapped($0)) }
@@ -216,6 +211,11 @@ struct StudyCell: View {
                         .font(.title3)
                 }
             }
+            .padding(.bottom, 8)
+            .padding(.trailing, 8)
+            .hide(dragAmount != .zero)
+            .hide(vs.isFront)
+            .hide(!vs.showKanjiButton)
         }
     }
     
