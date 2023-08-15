@@ -149,6 +149,8 @@ struct StudyWord: ReducerProtocol {
 
 struct StudyCell: View {
     
+    typealias VS = ViewStore<StudyWord.State, StudyWord.Action>
+    
     let store: StoreOf<StudyWord>
     
     @GestureState private var dragAmount = CGSize.zero
@@ -161,10 +163,16 @@ struct StudyCell: View {
     // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(unit: vs.unit,
-                     frontType: vs.frontType,
-                     isFront: vs.isFront,
-                     dragAmount: dragAmount)
+            VStack(spacing: 0) {
+                BaseCell(unit: vs.unit,
+                         frontType: vs.frontType,
+                         isFront: vs.isFront,
+                         dragAmount: dragAmount)
+                if vs.showKanjis {
+                    kanjiList(vs)
+                        .opacity(vs.isFront ? 0 : 1)
+                }
+            }
             .gesture(dragGesture
                 .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
                 .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
@@ -184,60 +192,45 @@ struct StudyCell: View {
                 }
             }
             .overlay(
-                kanjiSampleButton { vs.send(.kanjiButtonTapped) }
-                    .padding(.top, 8)
-                    .padding(.leading, 8)
-                    .hide(dragAmount != .zero)
-                    .hide(vs.isFront)
-                    .hide(!vs.showKanjiButton)
-            )
-            .overlay(
-                kanjiPopup(vs.kanjis) { vs.send(.addKanjiMeaningTapped($0)) }
-                    .padding(.top, 14)
-                    .padding(.leading, 14)
-                    .onTapGesture { vs.send(.kanjiButtonTapped) }
-                    .hide(dragAmount != .zero)
-                    .hide(vs.isFront)
+                showKanjisButton(vs)
             )
         }
     }
     
-    private func kanjiSampleButton(onTapped: @escaping () -> Void) -> some View {
-        HStack {
-            VStack {
-                Button {
-                    onTapped()
-                } label: {
-                    Text("漢")
-                }
-                Spacer()
-            }
+    private func showKanjisButton(_ vs: VS) -> some View {
+        VStack {
             Spacer()
+            HStack {
+                Spacer()
+                Button {
+                    vs.send(.kanjiButtonTapped)
+                } label: {
+                    Text("漢 ") + Text(vs.showKanjis ? "🔼" : "🔽")
+                }
+                .font(.system(size: 24))
+                .padding(.bottom, vs.showKanjis ? 0 : 8)
+                .padding(.trailing, vs.showKanjis ? 0 : 8)
+
+            }
         }
+        .hide(dragAmount != .zero)
+        .hide(vs.isFront)
+        .hide(!vs.showKanjiButton)
     }
     
-    @ViewBuilder
-    private func kanjiPopup(_ kanjis: [Kanji], addMeaningButtonTapped: @escaping (Kanji) -> Void) -> some View {
-        if !kanjis.isEmpty {
-            VStack {
-                VStack {
-                    ForEach(kanjis, id: \.id) { kanji in
-                        if let meaningText = kanji.meaningText {
-                            Text("\(kanji.kanjiText ?? ""): \(meaningText)")
-                        } else {
-                            Button("\(kanji.kanjiText ?? ""): (뜻 추가하기)") { addMeaningButtonTapped(kanji) }
-                        }
-                    }
+    private func kanjiList(_ vs: VS) -> some View {
+        VStack {
+            ForEach(vs.kanjis, id: \.id) { kanji in
+                if let meaningText = kanji.meaningText {
+                    Text("\(kanji.kanjiText ?? ""): \(meaningText)")
+                } else {
+                    Button("\(kanji.kanjiText ?? ""): (뜻 추가하기)") { vs.send(.addKanjiMeaningTapped(kanji)) }
                 }
-                #if os(iOS)
-                .speechBubble()
-                #endif
-                Spacer()
             }
-        } else {
-            EmptyView()
         }
+        .font(.system(size: 24))
     }
+    
 }
 
 

@@ -48,7 +48,7 @@ struct BaseCell: View {
         ZStack {
             swipeGuide
             ZStack {
-                cellColor
+                Color.cellColor(unit.studyState)
                 cellFace
             }
             .offset(dragAmount)
@@ -76,18 +76,6 @@ extension BaseCell {
                 .foregroundColor(.red)
         }
         .background { Color.white }
-    }
-    
-    @ViewBuilder
-    private var cellColor: some View {
-        switch unit.studyState {
-        case .undefined:
-            Color.white
-        case .success:
-            Color(red: 207/256, green: 240/256, blue: 204/256)
-        case .fail:
-            Color(red: 253/256, green: 253/256, blue: 150/256)
-        }
     }
     
     private var cellFace: some View {
