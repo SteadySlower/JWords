@@ -206,8 +206,8 @@ struct StudyCell: View {
                     vs.send(.kanjiButtonTapped)
                 } label: {
                     Text("漢 ") + Text(vs.showKanjis ? "🔼" : "🔽")
-                        .font(.title3)
                 }
+                .font(.system(size: 24))
                 .padding(.bottom, vs.showKanjis ? 0 : 8)
                 .padding(.trailing, vs.showKanjis ? 0 : 8)
 
