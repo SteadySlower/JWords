@@ -208,8 +208,8 @@ struct StudyCell: View {
                     Text("漢 ") + Text(vs.showKanjis ? "🔼" : "🔽")
                         .font(.title3)
                 }
-                .padding(.bottom, 8)
-                .padding(.trailing, 8)
+                .padding(.bottom, vs.showKanjis ? 0 : 8)
+                .padding(.trailing, vs.showKanjis ? 0 : 8)
 
             }
         }
