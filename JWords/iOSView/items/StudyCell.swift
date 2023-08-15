@@ -149,6 +149,8 @@ struct StudyWord: ReducerProtocol {
 
 struct StudyCell: View {
     
+    typealias VS = ViewStore<StudyWord.State, StudyWord.Action>
+    
     let store: StoreOf<StudyWord>
     
     @GestureState private var dragAmount = CGSize.zero
@@ -184,9 +186,9 @@ struct StudyCell: View {
                 }
             }
             .overlay(
-                kanjiSampleButton { vs.send(.kanjiButtonTapped) }
-                    .padding(.top, 8)
-                    .padding(.leading, 8)
+                showKanjisButton(vs)
+                    .padding(.bottom, 8)
+                    .padding(.trailing, 8)
                     .hide(dragAmount != .zero)
                     .hide(vs.isFront)
                     .hide(!vs.showKanjiButton)
@@ -202,17 +204,18 @@ struct StudyCell: View {
         }
     }
     
-    private func kanjiSampleButton(onTapped: @escaping () -> Void) -> some View {
-        HStack {
+    private func showKanjisButton(_ vs: VS) -> some View {
+        Button {
+            vs.send(.kanjiButtonTapped)
+        } label: {
             VStack {
-                Button {
-                    onTapped()
-                } label: {
-                    Text("漢")
-                }
                 Spacer()
+                HStack {
+                    Spacer()
+                    Text("漢 🔽")
+                        .font(.title3)
+                }
             }
-            Spacer()
         }
     }
     
