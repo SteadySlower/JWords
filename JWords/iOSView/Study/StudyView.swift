@@ -295,7 +295,9 @@ struct WordList: ReducerProtocol {
                 switch action {
                 case let .unitAdded(unit):
                     var words = state._words.map { $0.unit }
-                    words.append(unit)
+                    if !words.contains(unit) {
+                        words.append(unit)
+                    }
                     state._words = IdentifiedArray(
                         uniqueElements: words
                             .map { StudyWord.State(unit: $0, isLocked: false) })
