@@ -398,6 +398,14 @@ class CoreDataClient {
         
         unitMO.removeFromSet(setMO)
         setMO.removeFromUnits(unitMO)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
     }
     
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
