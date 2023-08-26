@@ -129,6 +129,7 @@ struct TodayList: ReducerProtocol {
                 .map { try! cd.fetchUnits(of: $0) }
                 .reduce([], +)
                 .filter { $0.studyState != .success }
+                .removeOverlapping()
                 .sorted(by: { $0.createdAt < $1.createdAt })
         state.isLoading = false
     }

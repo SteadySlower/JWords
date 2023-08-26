@@ -40,6 +40,7 @@
 		0697715B28CCD05100569280 /* MockWordBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715A28CCD05000569280 /* MockWordBookService.swift */; };
 		0697715F28CF030D00569280 /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715E28CF030C00569280 /* Random.swift */; };
 		069941852A99EFFC00B5D769 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941842A99EFFC00B5D769 /* DeleteCell.swift */; };
+		069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941862A9A066B00B5D769 /* Array+Extension.swift */; };
 		06A1F4E228670DA8003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E128670DA8003440B0 /* Quick */; };
 		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
@@ -200,6 +201,7 @@
 		0697715A28CCD05000569280 /* MockWordBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBookService.swift; sourceTree = "<group>"; };
 		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		069941842A99EFFC00B5D769 /* DeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCell.swift; sourceTree = "<group>"; };
+		069941862A9A066B00B5D769 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06A564D5289E9C5100DBC2E0 /* WordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputView.swift; sourceTree = "<group>"; };
 		06B2DA3B29EA33F8009C67EF /* WordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordClient.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				0688A1D329B3345E0057B2DB /* String+Extension.swift */,
 				0622727929FCFC2600EEAD50 /* Character+Extension.swift */,
 				06C0DDB52A8B24CA00F1CB52 /* Color+Extension.swift */,
+				069941862A9A066B00B5D769 /* Array+Extension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -920,6 +923,7 @@
 				061C9E842A19D62D00E099B5 /* FirebaseWordCell.swift in Sources */,
 				06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */,
 				5A5FF62F286A8F69000150A7 /* ImageUploader.swift in Sources */,
+				069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */,
 				5A67DC20286942FE00AC156C /* HomeView.swift in Sources */,
 				069941852A99EFFC00B5D769 /* DeleteCell.swift in Sources */,
 				061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */,
