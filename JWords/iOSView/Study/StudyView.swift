@@ -19,6 +19,7 @@ struct WordList: ReducerProtocol {
         var _words: IdentifiedArrayOf<StudyWord.State> = []
         var editWords: IdentifiedArrayOf<EditWord.State> = []
         var selectionWords: IdentifiedArrayOf<SelectionWord.State> = []
+        var deleteWords: IdentifiedArrayOf<DeleteWord.State> = []
         
         // state for side bar and modals
         var setting: StudySetting.State
@@ -152,6 +153,7 @@ struct WordList: ReducerProtocol {
         case closeButtonTapped
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
+        case deleteWords(id: DeleteWord.State.ID, action: DeleteWord.Action)
         case editSet(action: InputBook.Action)
         case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
@@ -303,6 +305,9 @@ struct WordList: ReducerProtocol {
         }
         .forEach(\.selectionWords, action: /Action.selectionWords(id:action:)) {
             SelectionWord()
+        }
+        .forEach(\.deleteWords, action: /Action.deleteWords(id:action:)) {
+            DeleteWord()
         }
         .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
             AddingUnit()
