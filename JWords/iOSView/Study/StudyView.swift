@@ -108,6 +108,18 @@ struct WordList: ReducerProtocol {
             }
         }
         
+        private mutating func showDeleteUnableAlert() {
+            alert = AlertState<Action> {
+                TextState("단어 삭제 불가")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("틀린 단어 모아보기에서는 단어를 삭제할 수 없습니다.")
+            }
+        }
+        
         fileprivate mutating func onUnitDeleted(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
             _words.remove(id: id)
@@ -145,6 +157,11 @@ struct WordList: ReducerProtocol {
             case .selection:
                 selectionWords = IdentifiedArrayOf(uniqueElements: words.map { SelectionWord.State(unit: $0.unit, frontType: setting.frontType) })
             case .delete:
+                guard set != nil else {
+                    showDeleteUnableAlert()
+                    setting.studyViewMode = .normal
+                    return
+                }
                 deleteWords = IdentifiedArrayOf(uniqueElements: words.map { DeleteWord.State(unit: $0.unit, frontType: setting.frontType) })
             }
         }
