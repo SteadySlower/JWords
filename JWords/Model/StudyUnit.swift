@@ -20,7 +20,7 @@ enum UnitType: Int, CaseIterable {
     }
 }
 
-struct StudyUnit: Equatable, Identifiable {
+struct StudyUnit: Equatable, Identifiable, Hashable {
     
     let id: String
     let objectID: NSManagedObjectID
@@ -58,6 +58,10 @@ struct StudyUnit: Equatable, Identifiable {
         self.meaningImageID = nil
         self.studyState = .undefined
         self.createdAt = Date()
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
 }

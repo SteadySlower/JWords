@@ -19,6 +19,7 @@ struct WordList: ReducerProtocol {
         var _words: IdentifiedArrayOf<StudyWord.State> = []
         var editWords: IdentifiedArrayOf<EditWord.State> = []
         var selectionWords: IdentifiedArrayOf<SelectionWord.State> = []
+        var deleteWords: IdentifiedArrayOf<DeleteWord.State> = []
         
         // state for side bar and modals
         var setting: StudySetting.State
@@ -26,6 +27,9 @@ struct WordList: ReducerProtocol {
         var toEditWord: AddingUnit.State?
         var moveWords: MoveWords.State?
         var addUnit: AddingUnit.State?
+        
+        // alert
+        var alert: AlertState<Action>?
         
         var showEditSetModal: Bool {
             editSet != nil
@@ -87,9 +91,40 @@ struct WordList: ReducerProtocol {
             toEditWord = AddingUnit.State(mode: .editUnit(unit: word))
         }
         
-        fileprivate mutating func clearEdit() {
-            editWords = []
-            toEditWord = nil
+        fileprivate mutating func deleteCellTapped(id: String) {
+            guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
+            let wordDisplayText = HuriganaConverter.shared.huriToKanjiText(from: word.kanjiText ?? "")
+            
+            alert = AlertState<Action> {
+                TextState("\(wordDisplayText)를 현재 단어장에서 삭제합니까?")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("취소")
+                }
+                ButtonState(role: .destructive, action: .deleteUnit(unit: word)) {
+                    TextState("삭제")
+                }
+            } message: {
+                TextState("이 단어를 삭제합니다. 다른 단어장에 저장된 같은 단어는 삭제되지 않습니다.")
+            }
+        }
+        
+        private mutating func showDeleteUnableAlert() {
+            alert = AlertState<Action> {
+                TextState("단어 삭제 불가")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("틀린 단어 모아보기에서는 단어를 삭제할 수 없습니다.")
+            }
+        }
+        
+        fileprivate mutating func onUnitDeleted(id: String) {
+            guard (_words.filter({ $0.id == id }).first?.unit) != nil else { return }
+            _words.remove(id: id)
+            deleteWords = []
             setting.studyViewMode = .normal
         }
         
@@ -117,10 +152,18 @@ struct WordList: ReducerProtocol {
             case .normal:
                 editWords = []
                 selectionWords = []
+                deleteWords = []
             case .edit:
                 editWords = IdentifiedArrayOf(uniqueElements: words.map { EditWord.State(unit: $0.unit, frontType: setting.frontType) })
             case .selection:
                 selectionWords = IdentifiedArrayOf(uniqueElements: words.map { SelectionWord.State(unit: $0.unit, frontType: setting.frontType) })
+            case .delete:
+                guard set != nil else {
+                    showDeleteUnableAlert()
+                    setting.studyViewMode = .normal
+                    return
+                }
+                deleteWords = IdentifiedArrayOf(uniqueElements: words.map { DeleteWord.State(unit: $0.unit, frontType: setting.frontType) })
             }
         }
         
@@ -152,6 +195,9 @@ struct WordList: ReducerProtocol {
         case closeButtonTapped
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
+        case deleteWords(id: DeleteWord.State.ID, action: DeleteWord.Action)
+        case deleteUnit(unit: StudyUnit)
+        case onUnitDeleted(id: String)
         case editSet(action: InputBook.Action)
         case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
@@ -159,6 +205,7 @@ struct WordList: ReducerProtocol {
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
         case onWordsMoved(from: StudySet)
+        case alertDismissed
         case dismiss
     }
     
@@ -194,6 +241,19 @@ struct WordList: ReducerProtocol {
                     state.editCellTapped(id: id)
                 }
                 return .none
+            case .deleteWords(let id, let action):
+                switch action {
+                case .cellTapped:
+                    state.deleteCellTapped(id: id)
+                }
+                return .none
+            case .deleteUnit(let unit):
+                guard let set = state.set else { return .none }
+                try! cd.deleteUnit(unit: unit, from: set)
+                return .task { .onUnitDeleted(id: unit.id) }
+            case .onUnitDeleted(let id):
+                state.onUnitDeleted(id: id)
+                return .task { .alertDismissed }
             // actions for side bar and modal presentation
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
@@ -253,7 +313,9 @@ struct WordList: ReducerProtocol {
                 switch action {
                 case let .unitAdded(unit):
                     var words = state._words.map { $0.unit }
-                    words.append(unit)
+                    if !words.contains(unit) {
+                        words.append(unit)
+                    }
                     state._words = IdentifiedArray(
                         uniqueElements: words
                             .map { StudyWord.State(unit: $0, isLocked: false) })
@@ -291,6 +353,9 @@ struct WordList: ReducerProtocol {
                 return .none
             case .onWordsMoved:
                 return .task { .dismiss }
+            case .alertDismissed:
+                state.alert = nil
+                return .none
             default:
                 return .none
             }
@@ -303,6 +368,9 @@ struct WordList: ReducerProtocol {
         }
         .forEach(\.selectionWords, action: /Action.selectionWords(id:action:)) {
             SelectionWord()
+        }
+        .forEach(\.deleteWords, action: /Action.deleteWords(id:action:)) {
+            DeleteWord()
         }
         .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
             AddingUnit()
@@ -351,6 +419,14 @@ struct StudyView: View {
                             SelectionCell(store: $0)
                         }
                     }
+                } else if vs.setting.studyViewMode == .delete {
+                    LazyVStack(spacing: 32) {
+                        ForEachStore(
+                            self.store.scope(state: \.deleteWords, action: WordList.Action.deleteWords(id:action:))
+                        ) {
+                            DeleteCell(store: $0)
+                        }
+                    }
                 }
             }
             .loadingView(vs.isLoading)
@@ -394,6 +470,10 @@ struct StudyView: View {
                     WordBookAddModal(store: $0)
                 }
             }
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
             #if os(iOS)
             .toolbar { ToolbarItem {
                 HStack {

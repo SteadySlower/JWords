@@ -385,6 +385,21 @@ class CoreDataClient {
         
     }
     
+    func deleteUnit(unit: StudyUnit, from set: StudySet) throws {
+        guard let unitMO = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let setMO = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        unitMO.removeFromSet(setMO)
+        setMO.removeFromUnits(unitMO)
+    }
+    
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
         let fetchRequest = StudyUnitMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanji)

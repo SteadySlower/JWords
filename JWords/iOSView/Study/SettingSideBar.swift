@@ -25,6 +25,7 @@ enum StudyViewMode: Hashable, Equatable {
     case normal
     case selection
     case edit
+    case delete
 }
 
 struct StudySetting: ReducerProtocol {
@@ -107,6 +108,8 @@ struct SettingSideBar: View {
                         .tag(StudyViewMode.selection)
                     Text("수정")
                         .tag(StudyViewMode.edit)
+                    Text("삭제")
+                        .tag(StudyViewMode.delete)
                 }
                 .pickerStyle(.segmented)
                 .padding()
