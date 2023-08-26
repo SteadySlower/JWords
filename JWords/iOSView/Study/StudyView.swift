@@ -121,7 +121,7 @@ struct WordList: ReducerProtocol {
         }
         
         fileprivate mutating func onUnitDeleted(id: String) {
-            guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
+            guard (_words.filter({ $0.id == id }).first?.unit) != nil else { return }
             _words.remove(id: id)
             deleteWords = []
             setting.studyViewMode = .normal
