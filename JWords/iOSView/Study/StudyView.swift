@@ -93,9 +93,10 @@ struct WordList: ReducerProtocol {
         
         fileprivate mutating func deleteCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
+            let wordDisplayText = HuriganaConverter.shared.huriToKanjiText(from: word.kanjiText ?? "")
             
             alert = AlertState<Action> {
-                TextState("이 단어를 현재 단어장에서 삭제합니까?")
+                TextState("\(wordDisplayText)를 현재 단어장에서 삭제합니까?")
             } actions: {
                 ButtonState(role: .cancel) {
                     TextState("취소")
