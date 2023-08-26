@@ -108,9 +108,10 @@ struct WordList: ReducerProtocol {
             }
         }
         
-        fileprivate mutating func clearEdit() {
-            editWords = []
-            toEditWord = nil
+        fileprivate mutating func onUnitDeleted(id: String) {
+            guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
+            _words.remove(id: id)
+            deleteWords = []
             setting.studyViewMode = .normal
         }
         
@@ -138,6 +139,7 @@ struct WordList: ReducerProtocol {
             case .normal:
                 editWords = []
                 selectionWords = []
+                deleteWords = []
             case .edit:
                 editWords = IdentifiedArrayOf(uniqueElements: words.map { EditWord.State(unit: $0.unit, frontType: setting.frontType) })
             case .selection:
@@ -177,6 +179,7 @@ struct WordList: ReducerProtocol {
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
         case deleteWords(id: DeleteWord.State.ID, action: DeleteWord.Action)
         case deleteUnit(unit: StudyUnit)
+        case onUnitDeleted(id: String)
         case editSet(action: InputBook.Action)
         case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
@@ -226,6 +229,13 @@ struct WordList: ReducerProtocol {
                     state.deleteCellTapped(id: id)
                 }
                 return .none
+            case .deleteUnit(let unit):
+                guard let set = state.set else { return .none }
+                try! cd.deleteUnit(unit: unit, from: set)
+                return .task { .onUnitDeleted(id: unit.id) }
+            case .onUnitDeleted(let id):
+                state.onUnitDeleted(id: id)
+                return .task { .alertDismissed }
             // actions for side bar and modal presentation
             case .setSideBar(let isPresented):
                 state.showSideBar = isPresented
