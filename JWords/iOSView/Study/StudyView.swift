@@ -28,6 +28,9 @@ struct WordList: ReducerProtocol {
         var moveWords: MoveWords.State?
         var addUnit: AddingUnit.State?
         
+        // alert
+        var alert: AlertState<Action>?
+        
         var showEditSetModal: Bool {
             editSet != nil
         }
@@ -86,6 +89,23 @@ struct WordList: ReducerProtocol {
         fileprivate mutating func editCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
             toEditWord = AddingUnit.State(mode: .editUnit(unit: word))
+        }
+        
+        fileprivate mutating func deleteCellTapped(id: String) {
+            guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
+            
+            alert = AlertState<Action> {
+                TextState("이 단어를 현재 단어장에서 삭제합니까?")
+            } actions: {
+                ButtonState(role: .cancel) {
+                    TextState("취소")
+                }
+                ButtonState(role: .destructive, action: .deleteUnit(unit: word)) {
+                    TextState("삭제")
+                }
+            } message: {
+                TextState("이 단어를 삭제합니다. 다른 단어장에 저장된 같은 단어는 삭제되지 않습니다.")
+            }
         }
         
         fileprivate mutating func clearEdit() {
@@ -156,6 +176,7 @@ struct WordList: ReducerProtocol {
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
         case editWords(id: EditWord.State.ID, action: EditWord.Action)
         case deleteWords(id: DeleteWord.State.ID, action: DeleteWord.Action)
+        case deleteUnit(unit: StudyUnit)
         case editSet(action: InputBook.Action)
         case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
@@ -163,6 +184,7 @@ struct WordList: ReducerProtocol {
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
         case onWordsMoved(from: StudySet)
+        case alertDismissed
         case dismiss
     }
     
@@ -196,6 +218,12 @@ struct WordList: ReducerProtocol {
                 switch action {
                 case .cellTapped:
                     state.editCellTapped(id: id)
+                }
+                return .none
+            case .deleteWords(let id, let action):
+                switch action {
+                case .cellTapped:
+                    state.deleteCellTapped(id: id)
                 }
                 return .none
             // actions for side bar and modal presentation
@@ -295,6 +323,9 @@ struct WordList: ReducerProtocol {
                 return .none
             case .onWordsMoved:
                 return .task { .dismiss }
+            case .alertDismissed:
+                state.alert = nil
+                return .none
             default:
                 return .none
             }
@@ -409,6 +440,10 @@ struct StudyView: View {
                     WordBookAddModal(store: $0)
                 }
             }
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
             #if os(iOS)
             .toolbar { ToolbarItem {
                 HStack {
