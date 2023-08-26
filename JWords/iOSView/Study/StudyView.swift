@@ -122,6 +122,8 @@ struct WordList: ReducerProtocol {
                 editWords = IdentifiedArrayOf(uniqueElements: words.map { EditWord.State(unit: $0.unit, frontType: setting.frontType) })
             case .selection:
                 selectionWords = IdentifiedArrayOf(uniqueElements: words.map { SelectionWord.State(unit: $0.unit, frontType: setting.frontType) })
+            case .delete:
+                deleteWords = IdentifiedArrayOf(uniqueElements: words.map { DeleteWord.State(unit: $0.unit, frontType: setting.frontType) })
             }
         }
         
@@ -354,6 +356,14 @@ struct StudyView: View {
                             self.store.scope(state: \.selectionWords, action: WordList.Action.selectionWords(id:action:))
                         ) {
                             SelectionCell(store: $0)
+                        }
+                    }
+                } else if vs.setting.studyViewMode == .delete {
+                    LazyVStack(spacing: 32) {
+                        ForEachStore(
+                            self.store.scope(state: \.deleteWords, action: WordList.Action.deleteWords(id:action:))
+                        ) {
+                            DeleteCell(store: $0)
                         }
                     }
                 }
