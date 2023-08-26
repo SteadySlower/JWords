@@ -34,13 +34,22 @@ struct DeleteWord: ReducerProtocol {
 }
 
 struct DeleteCell: View {
+    
+    let store: StoreOf<DeleteWord>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct DeleteCell_Previews: PreviewProvider {
-    static var previews: some View {
-        DeleteCell()
+        WithViewStore(store, observe: { $0 }) { vs in
+            BaseCell(unit: vs.unit,
+                     frontType: vs.frontType)
+                .overlay(
+                    Image(systemName: "trash")
+                        .resizable()
+                        .foregroundColor(.red)
+                        .opacity(0.5)
+                        .scaledToFit()
+                        .padding()
+                )
+                .onTapGesture { vs.send(.cellTapped) }
+        }
     }
 }
