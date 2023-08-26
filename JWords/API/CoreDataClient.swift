@@ -397,6 +397,7 @@ class CoreDataClient {
         }
         
         unitMO.removeFromSet(setMO)
+        setMO.removeFromUnits(unitMO)
     }
     
     private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
