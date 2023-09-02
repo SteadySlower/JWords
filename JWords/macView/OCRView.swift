@@ -19,13 +19,17 @@ struct OCR: ReducerProtocol {
         case imageTapped
     }
     
+    @Dependency(\.pasteBoardClient) var pasteBoardClient
+    
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .buttonTapped:
+                state.image = pasteBoardClient.fetchImage()
                 return .none
             case .imageTapped:
+                state.image = nil
                 return .none
             }
         }
