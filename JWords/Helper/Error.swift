@@ -12,6 +12,7 @@ enum AppError: Error, Equatable {
     case noMatchingWord(id: String)
     case coreData
     case cloudKit
+    case ocr
     
     case unknown
     
