@@ -13,14 +13,14 @@ class OCRClient {
     
     static let shared = OCRClient()
     
-    // TODO: add Error Handling
-    private func ocr(from cgImage: CGImage, completionHandler: @escaping ([String]) -> Void) {
+    private func ocr(from cgImage: CGImage, completionHandler: @escaping ([String], AppError?) -> Void) {
         let requestHandler = VNImageRequestHandler(cgImage: cgImage)
         
         let request = VNRecognizeTextRequest { request, error in
             
             guard let observations =
                     request.results as? [VNRecognizedTextObservation] else {
+                completionHandler([], AppError.ocr)
                 return
             }
             
@@ -28,7 +28,7 @@ class OCRClient {
                 return observation.topCandidates(1).first?.string
             }
             
-            completionHandler(recognizedStrings)
+            completionHandler(recognizedStrings, nil)
             
         }
         
@@ -48,17 +48,14 @@ class OCRClient {
             throw AppError.ocr
         }
         
-        return try await withCheckedThrowingContinuation {
-            continuation in
-            
-            ocr(from: cgImage) { strings in
-                for string in strings {
-                    print("디버그: \(string)")
+        return try await withCheckedThrowingContinuation { continuation in
+            ocr(from: cgImage) { strings, error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
                 }
                 continuation.resume(with: .success(strings))
             }
         }
-
     }
     
 }
