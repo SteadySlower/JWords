@@ -11,12 +11,14 @@ import ComposableArchitecture
 struct OCR: ReducerProtocol {
     struct State: Equatable {
         var image: InputImageType?
-        var ocrResult: String = ""
+        var ocrResult: [String] = []
     }
     
     enum Action: Equatable {
         case buttonTapped
         case imageTapped
+        case imageFetched
+        case ocrResponse(TaskResult<[String]>)
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -27,9 +29,20 @@ struct OCR: ReducerProtocol {
             switch action {
             case .buttonTapped:
                 state.image = pasteBoardClient.fetchImage()
-                return .none
+                return .task { .imageFetched }
             case .imageTapped:
                 state.image = nil
+                state.ocrResult = []
+                return .none
+            case .imageFetched:
+                guard let image = state.image else { return .none }
+                return .task {
+                    await .ocrResponse(TaskResult { try await OCRClient.shared.ocr(from: image) })
+                }
+            case .ocrResponse(.success(let strings)):
+                state.ocrResult = strings
+                return .none
+            default:
                 return .none
             }
         }
@@ -62,7 +75,11 @@ struct OCRView: View {
                         Text("뜻 이미지")
                     }
                 }
-                Text("OCR 결과: \(vs.ocrResult)")
+                VStack {
+                    ForEach(vs.ocrResult, id: \.self) { result in
+                        Text(result)
+                    }
+                }
             }
         }
     }
