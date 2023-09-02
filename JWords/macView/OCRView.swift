@@ -72,7 +72,7 @@ struct OCRView: View {
                     Button {
                         vs.send(.buttonTapped)
                     } label: {
-                        Text("뜻 이미지")
+                        Text("초 고급 기술, 사진에서 일본어 추출")
                     }
                 }
                 VStack {
