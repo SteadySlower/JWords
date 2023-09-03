@@ -10,12 +10,20 @@ import ComposableArchitecture
 
 struct OCR: ReducerProtocol {
     struct State: Equatable {
+        
+        enum Mode: Equatable {
+            case insert(set: StudySet)
+            case addExist(set: StudySet, existing: StudyUnit)
+        }
+        
         // OCR
         var image: InputImageType?
         var koreanOcrResult: [OCRResult] = []
         var japaneseOcrResult: [OCRResult] = []
         
         // input
+        var selectSet = SelectStudySet.State(pickerName: "단어장")
+        
         var kanjiString: String = ""
         var meaningString: String = ""
         var huriText: EditHuriganaText.State?
@@ -29,6 +37,7 @@ struct OCR: ReducerProtocol {
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case ocrTapped(lang: OCRLang, string: String)
         
+        case selectSet(SelectStudySet.Action)
         case updateKanjiString(String)
         case updateMeaningString(String)
         case convertButtonTapped
@@ -93,6 +102,9 @@ struct OCR: ReducerProtocol {
         .ifLet(\.huriText, action: /Action.huriText) {
             EditHuriganaText()
         }
+        Scope(state: \.selectSet, action: /Action.selectSet) {
+            SelectStudySet()
+        }
     }
 
 }
@@ -106,6 +118,10 @@ struct OCRView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
                 VStack {
+                    StudySetPicker(store: store.scope(
+                        state: \.selectSet,
+                        action: OCR.Action.selectSet)
+                    )
                     if let image = vs.image {
                         VStack {
                             OCRResultView(image: image, koreanResults: vs.koreanOcrResult, japaneseResults: vs.japaneseOcrResult) { vs.send(.ocrTapped(lang: $0, string: $1)) }
@@ -152,7 +168,9 @@ struct OCRView: View {
                                 .frame(height: 100)
                         }
                     }
-
+                    Button("저장") {
+                        
+                    }
                 }
             }
             .padding(.top, 50)
