@@ -10,9 +10,14 @@ import ComposableArchitecture
 
 struct OCR: ReducerProtocol {
     struct State: Equatable {
+        // OCR
         var image: InputImageType?
         var koreanOcrResult: [OCRResult] = []
         var japaneseOcrResult: [OCRResult] = []
+        
+        // input
+        var kanjiString: String = ""
+        var meaningString: String = ""
     }
     
     enum Action: Equatable {
@@ -21,6 +26,10 @@ struct OCR: ReducerProtocol {
         case imageFetched
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
+        case ocrTapped(lang: OCRLang, string: String)
+        
+        case updateKanjiString(String)
+        case updateMeaningString(String)
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -51,6 +60,20 @@ struct OCR: ReducerProtocol {
             case .japaneseOcrResponse(.success(let results)):
                 state.japaneseOcrResult = results
                 return .none
+            case .updateKanjiString(let string):
+                state.kanjiString = string
+                return .none
+            case .updateMeaningString(let string):
+                state.meaningString = string
+                return .none
+            case .ocrTapped(let lang, let string):
+                switch lang {
+                case .korean:
+                    state.meaningString = string
+                case .japanese:
+                    state.kanjiString = string
+                }
+                return .none
             default:
                 return .none
             }
@@ -69,9 +92,13 @@ struct OCRView: View {
             ScrollView {
                 VStack {
                     if let image = vs.image {
-                        OCRResultView(image: image, koreanResults: vs.koreanOcrResult, japaneseResults: vs.japaneseOcrResult)
-                            .frame(width: image.size.width, height: image.size.height)
-                            .onTapGesture { vs.send(.imageTapped) }
+                        VStack {
+                            OCRResultView(image: image, koreanResults: vs.koreanOcrResult, japaneseResults: vs.japaneseOcrResult) { vs.send(.ocrTapped(lang: $0, string: $1)) }
+                                .frame(width: image.size.width, height: image.size.height)
+                            Button("이미지 리셋") {
+                                vs.send(.imageTapped)
+                            }
+                        }
                     } else {
                         Button {
                             vs.send(.buttonTapped)
@@ -81,21 +108,24 @@ struct OCRView: View {
                     }
                     HStack {
                         VStack {
-                            Text("일본어")
-                            ForEach(vs.japaneseOcrResult) { result in
-                                Text(result.string)
-                            }
+                            Text("単語")
+                            TextEditor(text: vs.binding(get: \.kanjiString, send: OCR.Action.updateKanjiString))
+                                .font(.system(size: 30))
+                                .border(.black)
+                                .frame(height: 100)
                         }
                         VStack {
-                            Text("한글")
-                            ForEach(vs.koreanOcrResult) { result in
-                                Text(result.string)
-                            }
+                            Text("意味")
+                            TextEditor(text: vs.binding(get: \.meaningString, send: OCR.Action.updateMeaningString))
+                                .font(.system(size: 30))
+                                .border(.black)
+                                .frame(height: 100)
                         }
                     }
 
                 }
             }
+            .padding(.top, 50)
         }
     }
 }

@@ -12,6 +12,7 @@ struct OCRResultView: View {
     let image: InputImageType
     let koreanResults: [OCRResult]
     let japaneseResults: [OCRResult]
+    let ocrTapped: (OCRLang, String) -> Void
     
     var body: some View {
         GeometryReader { geometry in
@@ -58,7 +59,7 @@ struct OCRResultView: View {
 
         
         return Button {
-            print("디버그: \(result.string)")
+            ocrTapped(lang, result.string)
         } label: {
             ZStack {
                 Circle()
