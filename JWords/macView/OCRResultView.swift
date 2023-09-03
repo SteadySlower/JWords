@@ -42,8 +42,7 @@ struct OCRResultView: View {
 }
 
 fileprivate func convert(boundingBox: CGRect, to bounds: CGRect) -> CGRect {
-    
-    print("디버그: 원래 \(bounds)")
+
     let imageWidth = bounds.width
     let imageHeight = bounds.height
 
@@ -58,8 +57,6 @@ fileprivate func convert(boundingBox: CGRect, to bounds: CGRect) -> CGRect {
     // Rescale normalized coordinates.
     rect.size.width *= imageWidth
     rect.size.height *= imageHeight
-    
-    print("디버그: \(boundingBox) -> \(rect)")
 
     return rect
 }
