@@ -18,6 +18,7 @@ struct OCR: ReducerProtocol {
         // input
         var kanjiString: String = ""
         var meaningString: String = ""
+        var huriText: EditHuriganaText.State?
     }
     
     enum Action: Equatable {
@@ -30,6 +31,9 @@ struct OCR: ReducerProtocol {
         
         case updateKanjiString(String)
         case updateMeaningString(String)
+        case convertButtonTapped
+        case revertButtonTapped
+        case huriText(EditHuriganaText.Action)
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -71,12 +75,23 @@ struct OCR: ReducerProtocol {
                 case .korean:
                     state.meaningString = string
                 case .japanese:
+                    state.huriText = nil
                     state.kanjiString = string
                 }
+                return .none
+            case .convertButtonTapped:
+                let huri = HuriganaConverter.shared.convert(state.kanjiString)
+                state.huriText = EditHuriganaText.State(hurigana: huri)
+                return .none
+            case .revertButtonTapped:
+                state.huriText = nil
                 return .none
             default:
                 return .none
             }
+        }
+        .ifLet(\.huriText, action: /Action.huriText) {
+            EditHuriganaText()
         }
     }
 
@@ -109,10 +124,25 @@ struct OCRView: View {
                     HStack {
                         VStack {
                             Text("単語")
-                            TextEditor(text: vs.binding(get: \.kanjiString, send: OCR.Action.updateKanjiString))
-                                .font(.system(size: 30))
-                                .border(.black)
-                                .frame(height: 100)
+                            if vs.huriText != nil {
+                                IfLetStore(self.store.scope(state: \.huriText,
+                                                            action: OCR.Action.huriText)
+                                ) {
+                                    EditableHuriganaText(store: $0)
+                                }
+                                Button("수정") {
+                                    vs.send(.revertButtonTapped)
+                                }
+                            } else {
+                                TextEditor(text: vs.binding(get: \.kanjiString, send: OCR.Action.updateKanjiString))
+                                    .font(.system(size: 30))
+                                    .border(.black)
+                                    .frame(height: 100)
+                                Button("변환") {
+                                    vs.send(.convertButtonTapped)
+                                }
+                            }
+
                         }
                         VStack {
                             Text("意味")
@@ -126,6 +156,7 @@ struct OCRView: View {
                 }
             }
             .padding(.top, 50)
+            .padding(.horizontal, 10)
         }
     }
 }
