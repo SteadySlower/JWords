@@ -22,8 +22,8 @@ struct OCRResultView: View {
                     ForEach(koreanResults) { result in
                         let pixelRect = convert(boundingBox: result.position, to: geometry.frame(in: .local))
                         let buttonPosition = CGPoint(
-                            x: pixelRect.maxX,
-                            y: (pixelRect.minY - 5)
+                            x: pixelRect.minX - 5,
+                            y: pixelRect.midY
                         )
                         copyButton(lang: .korean, result: result)
                             .position(buttonPosition)
@@ -33,8 +33,8 @@ struct OCRResultView: View {
                     ForEach(japaneseResults) { result in
                         let pixelRect = convert(boundingBox: result.position, to: geometry.frame(in: .local))
                         let buttonPosition = CGPoint(
-                            x: pixelRect.maxX,
-                            y: (pixelRect.maxY + 5)
+                            x: pixelRect.maxX + 5,
+                            y: pixelRect.midY
                         )
                         copyButton(lang: .japanese, result: result)
                             .position(buttonPosition)
