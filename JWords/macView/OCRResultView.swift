@@ -21,21 +21,23 @@ struct OCRResultView: View {
                 .overlay(
                     ForEach(koreanResults) { result in
                         let pixelRect = convert(boundingBox: result.position, to: geometry.frame(in: .local))
-                        Rectangle()
-                            .fill(Color.blue.opacity(0.5))
-                            .frame(width: pixelRect.width,
-                                   height: pixelRect.height)
-                            .position(x: pixelRect.midX, y: pixelRect.midY)
+                        let buttonPosition = CGPoint(
+                            x: pixelRect.maxX,
+                            y: (pixelRect.minY - 5)
+                        )
+                        copyButton(lang: .korean, result: result)
+                            .position(buttonPosition)
                     }
                 )
                 .overlay(
                     ForEach(japaneseResults) { result in
                         let pixelRect = convert(boundingBox: result.position, to: geometry.frame(in: .local))
-                        Rectangle()
-                            .fill(Color.red.opacity(0.5))
-                            .frame(width: pixelRect.width,
-                                   height: pixelRect.height)
-                            .position(x: pixelRect.midX, y: pixelRect.midY)
+                        let buttonPosition = CGPoint(
+                            x: pixelRect.maxX,
+                            y: (pixelRect.maxY + 5)
+                        )
+                        copyButton(lang: .japanese, result: result)
+                            .position(buttonPosition)
                     }
                 )
         }
@@ -48,6 +50,24 @@ struct OCRResultView: View {
         #elseif os(macOS)
         Image(nsImage: image)
         #endif
+    }
+    
+    private func copyButton(lang: OCRLang, result: OCRResult) -> some View {
+        let size: CGFloat = 20
+        let color = lang == .korean ? Color.blue.opacity(0.5) : Color.red.opacity(0.5)
+
+        
+        return Button {
+            print("디버그: \(result.string)")
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(color)
+                Text(lang == .korean ? "韓" : "日")
+                    .font(.system(size: size))
+            }
+            .frame(width: size, height: size)
+        }
     }
     
 }
