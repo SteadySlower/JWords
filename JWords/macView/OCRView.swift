@@ -12,8 +12,8 @@ struct OCR: ReducerProtocol {
     struct State: Equatable {
         
         enum Mode: Equatable {
-            case insert(set: StudySet)
-            case addExist(set: StudySet, existing: StudyUnit)
+            case insert
+            case addExist(existing: StudyUnit)
         }
         
         // OCR
@@ -22,11 +22,32 @@ struct OCR: ReducerProtocol {
         var japaneseOcrResult: [OCRResult] = []
         
         // input
+        var mode: Mode = .insert
         var selectSet = SelectStudySet.State(pickerName: "단어장")
-        
         var kanjiString: String = ""
         var meaningString: String = ""
         var huriText: EditHuriganaText.State?
+        var alert: AlertState<Action>?
+        
+        fileprivate mutating func clearUserInput() {
+            mode = .insert
+            kanjiString = ""
+            meaningString = ""
+            huriText = nil
+        }
+        
+        fileprivate mutating func setExistAlert() {
+            let alreadyExist = kanjiString
+            alert = AlertState<Action> {
+                TextState("표제어 중복")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("\(alreadyExist)와 동일한 단어가 존재합니다")
+            }
+        }
     }
     
     enum Action: Equatable {
@@ -43,9 +64,12 @@ struct OCR: ReducerProtocol {
         case convertButtonTapped
         case revertButtonTapped
         case huriText(EditHuriganaText.Action)
+        case alertDismissed
+        case saveButtonTapped
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
+    private let cd = CoreDataClient.shared
     
     
     var body: some ReducerProtocol<State, Action> {
@@ -91,9 +115,22 @@ struct OCR: ReducerProtocol {
             case .convertButtonTapped:
                 let huri = HuriganaConverter.shared.convert(state.kanjiString)
                 state.huriText = EditHuriganaText.State(hurigana: huri)
+                let unit = try! cd.checkIfExist(huri)
+                if let unit = unit {
+                    state.mode = .addExist(existing: unit)
+                    state.meaningString = unit.meaningText ?? ""
+                    state.setExistAlert()
+                } else {
+                    state.mode = .insert
+                }
                 return .none
             case .revertButtonTapped:
                 state.huriText = nil
+                return .none
+            case .alertDismissed:
+                state.alert = nil
+                return .none
+            case .saveButtonTapped:
                 return .none
             default:
                 return .none
@@ -168,13 +205,19 @@ struct OCRView: View {
                                 .frame(height: 100)
                         }
                     }
-                    Button("저장") {
+                    Button(vs.mode == .insert
+                           ? "새 단어 추가"
+                           : "기존 단어 단어장에 추가") {
                         
                     }
                 }
             }
             .padding(.top, 50)
             .padding(.horizontal, 10)
+            .alert(
+              self.store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
 }
