@@ -9,7 +9,7 @@ import Foundation
 import Vision
 import Cocoa
 
-struct OCRResult: Identifiable {
+struct OCRResult: Identifiable, Equatable {
     let id: UUID = .init()
     let string: String
     let position: CGRect
