@@ -10,7 +10,8 @@ import Vision
 
 struct OCRResultView: View {
     let image: InputImageType
-    let results: [OCRResult]
+    let koreanResults: [OCRResult]
+    let japaneseResults: [OCRResult]
     
     var body: some View {
         GeometryReader { geometry in
@@ -18,10 +19,20 @@ struct OCRResultView: View {
                 .resizable()
                 .frame(width: geometry.size.width, height: geometry.size.height)
                 .overlay(
-                    ForEach(results) { result in
+                    ForEach(koreanResults) { result in
                         let pixelRect = convert(boundingBox: result.position, to: geometry.frame(in: .local))
                         Rectangle()
                             .fill(Color.blue.opacity(0.5))
+                            .frame(width: pixelRect.width,
+                                   height: pixelRect.height)
+                            .position(x: pixelRect.midX, y: pixelRect.midY)
+                    }
+                )
+                .overlay(
+                    ForEach(japaneseResults) { result in
+                        let pixelRect = convert(boundingBox: result.position, to: geometry.frame(in: .local))
+                        Rectangle()
+                            .fill(Color.red.opacity(0.5))
                             .frame(width: pixelRect.width,
                                    height: pixelRect.height)
                             .position(x: pixelRect.midX, y: pixelRect.midY)

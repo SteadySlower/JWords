@@ -13,6 +13,19 @@ import UIKit
 import Cocoa
 #endif
 
+enum OCRLang {
+    case korean, japanese
+    
+    var recognitionLanguage: String {
+        switch self {
+        case .korean:
+            return "ko"
+        case .japanese:
+            return "ja"
+        }
+    }
+}
+
 struct OCRResult: Identifiable, Equatable {
     let id: UUID = .init()
     let string: String
@@ -30,7 +43,7 @@ class OCRClient {
     
     static let shared = OCRClient()
     
-    private func ocr(from image: InputImageType, completionHandler: @escaping ([OCRResult], AppError?) -> Void) {
+    private func ocr(from image: InputImageType, lang: OCRLang, completionHandler: @escaping ([OCRResult], AppError?) -> Void) {
         
         #if os(iOS)
         guard let cgImage = image.cgImage else {
@@ -73,7 +86,7 @@ class OCRClient {
             
         }
         
-        request.recognitionLanguages = ["ja"]
+        request.recognitionLanguages = [lang.recognitionLanguage]
 
         do {
             try requestHandler.perform([request])
@@ -82,9 +95,9 @@ class OCRClient {
         }
     }
     
-    func ocr(from image: InputImageType) async throws -> [OCRResult] {
+    func ocr(from image: InputImageType, lang: OCRLang) async throws -> [OCRResult] {
         return try await withCheckedThrowingContinuation { continuation in
-            ocr(from: image) { rects, error in
+            ocr(from: image, lang: lang) { rects, error in
                 if let error = error {
                     continuation.resume(with: .failure(error))
                 }
