@@ -29,6 +29,10 @@ struct OCR: ReducerProtocol {
         var huriText: EditHuriganaText.State?
         var alert: AlertState<Action>?
         
+        var huriString: String? {
+            huriText?.hurigana
+        }
+        
         fileprivate mutating func clearUserInput() {
             mode = .insert
             kanjiString = ""
@@ -48,6 +52,43 @@ struct OCR: ReducerProtocol {
                 TextState("\(alreadyExist)와 동일한 단어가 존재합니다")
             }
         }
+        
+        fileprivate mutating func setNoSetAlert() {
+            alert = AlertState<Action> {
+                TextState("단어장 선택 안됨")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("단어장을 선택해주세요")
+            }
+        }
+        
+        fileprivate mutating func setNoHuriAlert() {
+            alert = AlertState<Action> {
+                TextState("가나 변환 필요")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("저장하기 전에 후리가나로 변환해야 합니다.")
+            }
+        }
+        
+        fileprivate mutating func setNoMeaningAlert() {
+            alert = AlertState<Action> {
+                TextState("뜻 없음")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("뜻이 없습니다.")
+            }
+        }
+        
     }
     
     enum Action: Equatable {
@@ -126,11 +167,24 @@ struct OCR: ReducerProtocol {
                 return .none
             case .revertButtonTapped:
                 state.huriText = nil
+                state.mode = .insert
                 return .none
             case .alertDismissed:
                 state.alert = nil
                 return .none
             case .saveButtonTapped:
+                guard let set = state.selectSet.selectedSet else {
+                    state.setNoSetAlert()
+                    return .none
+                }
+                guard let huri = state.huriString else {
+                    state.setNoHuriAlert()
+                    return .none
+                }
+                guard !state.meaningString.isEmpty else {
+                    state.setNoMeaningAlert()
+                    return .none
+                }
                 return .none
             default:
                 return .none
@@ -194,6 +248,7 @@ struct OCRView: View {
                                 Button("변환") {
                                     vs.send(.convertButtonTapped)
                                 }
+                                .disabled(vs.kanjiString.isEmpty)
                             }
 
                         }
@@ -207,8 +262,9 @@ struct OCRView: View {
                     }
                     Button(vs.mode == .insert
                            ? "새 단어 추가"
-                           : "기존 단어 단어장에 추가") {
-                        
+                           : "기존 단어 단어장에 추가"
+                    ) {
+                        vs.send(.saveButtonTapped)
                     }
                 }
             }
