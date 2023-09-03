@@ -7,7 +7,11 @@
 
 import Foundation
 import Vision
+#if os(iOS)
+import UIKit
+#elseif os(macOS)
 import Cocoa
+#endif
 
 struct OCRResult: Identifiable, Equatable {
     let id: UUID = .init()
@@ -28,11 +32,19 @@ class OCRClient {
     
     private func ocr(from image: InputImageType, completionHandler: @escaping ([OCRResult], AppError?) -> Void) {
         
+        #if os(iOS)
+        guard let cgImage = image.cgImage else {
+            print("디버그 cgImage 만들기 실패")
+            completionHandler([], .ocr)
+            return
+        }
+        #elseif os(macOS)
         guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
             print("디버그 cgImage 만들기 실패")
             completionHandler([], .ocr)
             return
         }
+        #endif
         
         let requestHandler = VNImageRequestHandler(cgImage: cgImage)
         

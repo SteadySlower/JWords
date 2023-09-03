@@ -9,12 +9,12 @@ import SwiftUI
 import Vision
 
 struct OCRResultView: View {
-    let image: NSImage
+    let image: InputImageType
     let results: [OCRResult]
     
     var body: some View {
         GeometryReader { geometry in
-            Image(nsImage: image)
+            imageView
                 .resizable()
                 .frame(width: geometry.size.width, height: geometry.size.height)
                 .overlay(
@@ -30,6 +30,15 @@ struct OCRResultView: View {
         }
         .border(Color.black)
     }
+    
+    private var imageView: Image {
+        #if os(iOS)
+        Image(uiImage: image)
+        #elseif os(macOS)
+        Image(nsImage: image)
+        #endif
+    }
+    
 }
 
 fileprivate func convert(boundingBox: CGRect, to bounds: CGRect) -> CGRect {
