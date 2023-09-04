@@ -224,11 +224,12 @@ struct OCR: ReducerProtocol {
 
 // TODO: move this to somewhere proper
 
-#if os(iOS)
 fileprivate func dismissKeyBoard() {
+    #if os(iOS)
     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    #endif
 }
-#endif
+
 
 fileprivate func resizeImage(_ image: InputImageType, to newSize: CGSize) -> InputImageType? {
     #if os(iOS)
