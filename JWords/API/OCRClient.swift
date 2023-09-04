@@ -86,6 +86,7 @@ class OCRClient {
             
         }
         
+        request.recognitionLevel = .accurate
         request.recognitionLanguages = [lang.recognitionLanguage]
 
         do {
