@@ -326,7 +326,7 @@ struct OCRView: View {
                     }
                 }
             }
-            .padding(.top, 50)
+            .padding(.vertical, 50)
             .padding(.horizontal, 10)
             .alert(
               self.store.scope(state: \.alert),
