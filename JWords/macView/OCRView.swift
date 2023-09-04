@@ -282,7 +282,7 @@ struct OCRView: View {
                         Button {
                             vs.send(.buttonTapped)
                         } label: {
-                            Text("초 고급 기술, 사진에서 일본어 추출")
+                            Text("클립보드에서 이미지 가져오기")
                         }
                     }
                     HStack {
