@@ -185,6 +185,18 @@ struct OCR: ReducerProtocol {
                     state.setNoMeaningAlert()
                     return .none
                 }
+                switch state.mode {
+                case .insert:
+                    _ = try! cd.insertUnit(in: set,
+                                           type: .word,
+                                           kanjiText: huri,
+                                           meaningText: state.meaningString)
+                case .addExist(let unit):
+                    _ = try! cd.addExistingUnit(unit: unit,
+                                                meaningText: state.meaningString,
+                                                in: set)
+                }
+                state.clearUserInput()
                 return .none
             default:
                 return .none
