@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 enum Tab {
-    case today, home, kanji, test
+    case today, home, kanji, ocr
 }
 
 struct iOSApp: ReducerProtocol {
@@ -19,10 +19,13 @@ struct iOSApp: ReducerProtocol {
         var todayList: TodayList.State? = TodayList.State()
         var homeList: HomeList.State?
         var kanjiList: KanjiList.State?
+        var ocr: OCR.State?
         
         mutating func clearList() {
             todayList = nil
             homeList = nil
+            kanjiList = nil
+            ocr = nil
         }
     }
     
@@ -31,6 +34,7 @@ struct iOSApp: ReducerProtocol {
         case todayList(action: TodayList.Action)
         case homeList(action: HomeList.Action)
         case kanjiList(action: KanjiList.Action)
+        case ocr(action: OCR.Action)
     }
     
     @Dependency(\.wordBookClient) var wordBookClient
@@ -48,9 +52,8 @@ struct iOSApp: ReducerProtocol {
                     state.homeList = HomeList.State()
                 case .kanji:
                     state.kanjiList = KanjiList.State()
-                // TODO: remove when coredata conversion is finished
-                default:
-                    break
+                case .ocr:
+                    state.ocr = OCR.State()
                 }
                 return .none
             default:
@@ -65,6 +68,9 @@ struct iOSApp: ReducerProtocol {
         }
         .ifLet(\.kanjiList, action: /Action.kanjiList(action:)) {
             KanjiList()
+        }
+        .ifLet(\.ocr, action: /Action.ocr(action:)) {
+            OCR()
         }
     }
     
@@ -125,10 +131,15 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    CoreDataTestView()
+                    IfLetStore(self.store.scope(
+                        state: \.ocr,
+                        action: iOSApp.Action.ocr(action:))
+                    ) {
+                        OCRView(store: $0)
+                    }
                 }
                 .tabItem { Image(systemName: "pencil") }
-                .tag(Tab.test)
+                .tag(Tab.ocr)
             }
         }
     }
