@@ -206,6 +206,7 @@ struct OCR: ReducerProtocol {
                                                 in: set)
                 }
                 state.clearUserInput()
+                state.selectSet.onUnitAdded()
                 return .none
             default:
                 return .none
