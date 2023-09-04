@@ -117,8 +117,14 @@ struct OCR: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .buttonTapped:
-                guard let fetchedImage = pasteBoardClient.fetchImage() else { return .none }
-                state.image = fetchedImage
+                guard
+                    let fetchedImage = pasteBoardClient.fetchImage(),
+                    let resizedImage = resizeImage(fetchedImage,
+                                                   to: .init(
+                                                    width: Constants.Size.deviceWidth - 10,
+                                                    height: Constants.Size.deviceHeight / 2)
+                    ) else { return .none }
+                state.image = resizedImage
                 return .merge(
                     .task {
                         await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: fetchedImage, lang: .japanese) })
@@ -212,6 +218,36 @@ struct OCR: ReducerProtocol {
 
 }
 
+// TODO: move this to somewhere proper
+
+fileprivate func resizeImage(_ image: InputImageType, to newSize: CGSize) -> InputImageType? {
+    #if os(iOS)
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+    image.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
+    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return resizedImage
+    #elseif os(macOS)
+    // Convert NSImage to CGImage
+    let newSizeWidth = newSize.width
+    let newSizeHeight = newSize.height
+
+     let newImage = NSImage(size: newSize)
+
+     newImage.lockFocus()
+
+     NSGraphicsContext.current?.imageInterpolation = .high
+
+     image.draw(in: NSRect(x: 0, y: 0, width: newSizeWidth, height: newSizeHeight),
+                from: NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height),
+                operation: .sourceOver,
+                fraction: 1.0)
+
+     newImage.unlockFocus()
+
+     return newImage
+     #endif
+}
 
 struct OCRView: View {
     
