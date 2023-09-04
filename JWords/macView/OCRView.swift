@@ -329,6 +329,19 @@ struct OCRView: View {
             }
             .padding(.vertical, 50)
             .padding(.horizontal, 10)
+            .navigationTitle("단어 스캔으로 입력하기")
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        dismissKeyBoard()
+                    } label: {
+                        Image(systemName: "keyboard.chevron.compact.down")
+                    }
+                }
+            }
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
             .alert(
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
