@@ -38,6 +38,9 @@ struct OCR: ReducerProtocol {
             kanjiString = ""
             meaningString = ""
             huriText = nil
+            #if os(iOS)
+            dismissKeyBoard()
+            #endif
         }
         
         fileprivate mutating func setExistAlert() {
@@ -219,6 +222,12 @@ struct OCR: ReducerProtocol {
 }
 
 // TODO: move this to somewhere proper
+
+#if os(iOS)
+fileprivate func dismissKeyBoard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+}
+#endif
 
 fileprivate func resizeImage(_ image: InputImageType, to newSize: CGSize) -> InputImageType? {
     #if os(iOS)
