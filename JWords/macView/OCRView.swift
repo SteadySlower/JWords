@@ -130,10 +130,10 @@ struct OCR: ReducerProtocol {
                 state.image = resizedImage
                 return .merge(
                     .task {
-                        await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: fetchedImage, lang: .japanese) })
+                        await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
                     },
                     .task {
-                        await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: fetchedImage, lang: .korean) })
+                        await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .korean) })
                     }
                 )
             case .imageTapped:
