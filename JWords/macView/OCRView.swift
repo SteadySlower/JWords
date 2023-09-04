@@ -307,7 +307,7 @@ struct OCRView: View {
                                 }
                                 .disabled(vs.kanjiString.isEmpty)
                             }
-
+                            Spacer()
                         }
                         VStack {
                             Text("意味")
@@ -315,6 +315,7 @@ struct OCRView: View {
                                 .font(.system(size: 30))
                                 .border(.black)
                                 .frame(height: 100)
+                            Spacer()
                         }
                     }
                     Button(vs.mode == .insert
