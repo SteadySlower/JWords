@@ -30,6 +30,7 @@ class KanjiWikiClient {
                 ondoku: detail["ondoku"] ?? "",
                 kundoku: detail["kundoku"] ?? ""
             )
+            db[key] = wikiKanji
         }
         
         self.db = db
