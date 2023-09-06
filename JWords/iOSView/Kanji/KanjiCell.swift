@@ -111,6 +111,8 @@ struct KanjiCell: View {
                             Text(vs.displayMeaning)
                                 .font(.system(size: 20))
                         }
+                        Text("음독: \(vs.kanji.ondoku)")
+                        Text("훈독: \(vs.kanji.kundoku)")
                     }
                 }
                 HStack {
