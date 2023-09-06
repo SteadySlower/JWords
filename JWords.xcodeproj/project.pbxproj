@@ -123,6 +123,9 @@
 		5AA9097B2A83237B0075AFB9 /* KVStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
+		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
+		5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */; };
+		5ABE510D2AA7164B0052A551 /* KanjiWikiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
 		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
@@ -284,6 +287,9 @@
 		5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVStorageClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
+		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
+		5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiWikiClient.swift; sourceTree = "<group>"; };
+		5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiWikiView.swift; path = JWords/macView/KanjiWikiView.swift; sourceTree = SOURCE_ROOT; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
 		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -450,6 +456,7 @@
 		06CEF2452866F1C800A620CC /* JWords */ = {
 			isa = PBXGroup;
 			children = (
+				5ABE51072AA7124F0052A551 /* StudyData */,
 				0647529E29B45AB90047E84A /* GoogleService-Info.plist */,
 				5A8FF2E528DAF33E00B5E934 /* Info.plist */,
 				067840F229C5914D0019ABA8 /* Base */,
@@ -570,6 +577,7 @@
 				5A8614D72A1C627300000653 /* CKImageUploader.swift */,
 				5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */,
 				06496B0A2AA311140061DCA9 /* OCRClient.swift */,
+				5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -646,6 +654,7 @@
 				0622727B29FDEADC00EEAD50 /* HuriganaTestView.swift */,
 				06496B082AA30CF10061DCA9 /* OCRView.swift */,
 				06496B0C2AA32DCA0061DCA9 /* OCRResultView.swift */,
+				5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */,
 			);
 			path = MacView;
 			sourceTree = "<group>";
@@ -684,6 +693,14 @@
 				5A6BBF7B28E68E10003D9A4D /* MockWord.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		5ABE51072AA7124F0052A551 /* StudyData */ = {
+			isa = PBXGroup;
+			children = (
+				5ABE51082AA7127C0052A551 /* kanjiList.json */,
+			);
+			path = StudyData;
 			sourceTree = "<group>";
 		};
 		5ACE0A6F2869985F00A57660 /* Service */ = {
@@ -880,6 +897,7 @@
 				06CEF24E2866F1CB00A620CC /* Preview Assets.xcassets in Resources */,
 				06CEF24B2866F1CB00A620CC /* Assets.xcassets in Resources */,
 				0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */,
+				5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -965,6 +983,7 @@
 				06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
 				5A67DC27286944FF00AC156C /* Size.swift in Sources */,
+				5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */,
 				0622727C29FDEADC00EEAD50 /* HuriganaTestView.swift in Sources */,
 				5A5740A828BDA8900080A2E2 /* Sample.swift in Sources */,
 				06308A6029FE2CDB00BDEE2D /* StudyUnitAddView.swift in Sources */,
@@ -994,6 +1013,7 @@
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
+				5ABE510D2AA7164B0052A551 /* KanjiWikiView.swift in Sources */,
 				5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */,
 				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
 				06496B0D2AA32DCA0061DCA9 /* OCRResultView.swift in Sources */,

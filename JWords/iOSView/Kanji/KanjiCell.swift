@@ -19,15 +19,8 @@ struct StudyKanji: ReducerProtocol {
         var meaningText: String = ""
         var isEditing: Bool = false
         
-        var kanjiImage: Data?
-        var meaningImage: Data?
-        
         var displayMeaning: String {
-            if let meaning = kanji.meaningText {
-                return !meaning.isEmpty ? meaning : "???"
-            } else {
-                return "???"
-            }
+            kanji.meaningText.isEmpty ? "???" : kanji.meaningText
         }
         
         init(kanji: Kanji) {
@@ -39,8 +32,6 @@ struct StudyKanji: ReducerProtocol {
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case onAppear
-        case onKanjiImageDownloaded(TaskResult<Data>)
-        case onMeaningImageDownloaded(TaskResult<Data>)
         case onKanjiTapped(String)
         case editButtonTapped
         case updateMeaningText(String)
@@ -59,29 +50,6 @@ struct StudyKanji: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                var effects = [EffectPublisher<StudyKanji.Action, Never>]()
-                if let kanjiImageID = state.kanji.kanjiImageID {
-                    effects.append(.task {
-                        await .onKanjiImageDownloaded(
-                            TaskResult { try await ck.fetchImage(id: kanjiImageID) }
-                        )
-                        
-                    })
-                }
-                if let meaningImageID = state.kanji.meaningImageID {
-                    effects.append(.task {
-                        await .onMeaningImageDownloaded(
-                            TaskResult { try await ck.fetchImage(id: meaningImageID) }
-                        )
-                        
-                    })
-                }
-                return .merge(effects)
-            case let .onKanjiImageDownloaded(.success(data)):
-                state.kanjiImage = data
-                return .none
-            case let .onMeaningImageDownloaded(.success(data)):
-                state.meaningImage = data
                 return .none
             case .onKanjiTapped(let kanji):
                 pasteBoardClient.copyString(kanji)
@@ -89,7 +57,7 @@ struct StudyKanji: ReducerProtocol {
             case .editButtonTapped:
                 state.willEditMeaning = true
                 state.isEditing = true
-                state.meaningText = state.kanji.meaningText ?? ""
+                state.meaningText = state.kanji.meaningText
                 return .none
             case .updateMeaningText(let text):
                 state.meaningText = text
@@ -120,11 +88,11 @@ struct KanjiCell: View {
             VStack {
                 HStack {
                     VStack(spacing: 10) {
-                        Text(vs.kanji.kanjiText ?? "")
+                        Text(vs.kanji.kanjiText)
                             .font(.system(size: 40))
                         #if os(macOS)
                             .onTapGesture {
-                                vs.send(.onKanjiTapped(vs.kanji.kanjiText ?? ""))
+                                vs.send(.onKanjiTapped(vs.kanji.kanjiText))
                             }
                         #endif
                         if vs.isEditing {
@@ -140,23 +108,11 @@ struct KanjiCell: View {
                                 Button("입력") { vs.send(.inputButtonTapped) }
                             }
                         } else {
-                            #if os(iOS)
-                            if let imageData = vs.meaningImage,
-                                let uiImage = UIImage(data: imageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFit()
-                            } else if vs.kanji.meaningImageID != nil {
-                                ProgressView()
-                            } else {
-                                Text(vs.displayMeaning)
-                                    .font(.system(size: 20))
-                            }
-                            #elseif os(macOS)
                             Text(vs.displayMeaning)
                                 .font(.system(size: 20))
-                            #endif
                         }
+                        Text("음독: \(vs.kanji.ondoku)")
+                        Text("훈독: \(vs.kanji.kundoku)")
                     }
                 }
                 HStack {
@@ -165,7 +121,6 @@ struct KanjiCell: View {
                         Button("✏️") {
                             vs.send(.editButtonTapped)
                         }
-                        .hide(vs.kanji.meaningImageID != nil)
                         Button("단어 보기") {
                             vs.send(.wordButtonTapped)
                         }

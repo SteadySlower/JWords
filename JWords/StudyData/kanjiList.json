@@ -1,0 +1,10677 @@
+{
+  "歌": {
+    "meaning": "노래 가",
+    "ondoku": "か",
+    "kundoku": "うた"
+  },
+  "家": {
+    "meaning": "집 가",
+    "ondoku": "か、け",
+    "kundoku": "いえ、や"
+  },
+  "加": {
+    "meaning": "더할 가",
+    "ondoku": "か",
+    "kundoku": "くわえる、くわわる"
+  },
+  "街": {
+    "meaning": "거리 가",
+    "ondoku": "がい、かい",
+    "kundoku": "まち"
+  },
+  "価": {
+    "meaning": "값 가",
+    "ondoku": "か",
+    "kundoku": "あたい"
+  },
+  "可": {
+    "meaning": "옳을 가",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "仮": {
+    "meaning": "거짓 가",
+    "ondoku": "か、け",
+    "kundoku": "かり"
+  },
+  "佳": {
+    "meaning": "아름다울 가",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "苛": {
+    "meaning": "가혹할 가",
+    "ondoku": "か",
+    "kundoku": "いら"
+  },
+  "架": {
+    "meaning": "시렁 가",
+    "ondoku": "か",
+    "kundoku": "かける、かかる"
+  },
+  "嫁": {
+    "meaning": "시집갈 가",
+    "ondoku": "か",
+    "kundoku": "よめ、とつぐ"
+  },
+  "暇": {
+    "meaning": "틈/겨를 가",
+    "ondoku": "か",
+    "kundoku": "ひま"
+  },
+  "稼": {
+    "meaning": "심을 가",
+    "ondoku": "か",
+    "kundoku": "かせぐ"
+  },
+  "角": {
+    "meaning": "뿔 각",
+    "ondoku": "かく",
+    "kundoku": "かど、つの"
+  },
+  "各": {
+    "meaning": "각각 각",
+    "ondoku": "かく",
+    "kundoku": "おの"
+  },
+  "覚": {
+    "meaning": "깨달을 각",
+    "ondoku": "かく",
+    "kundoku": "おぼえる、さます、さめる"
+  },
+  "刻": {
+    "meaning": "새길 각",
+    "ondoku": "こく",
+    "kundoku": "きざむ"
+  },
+  "閣": {
+    "meaning": "집 각",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "却": {
+    "meaning": "물리칠 각",
+    "ondoku": "きゃく",
+    "kundoku": ""
+  },
+  "殻": {
+    "meaning": "껍질 각",
+    "ondoku": "かく",
+    "kundoku": "から"
+  },
+  "脚": {
+    "meaning": "다리 각",
+    "ondoku": "きゃく、きゃ",
+    "kundoku": "あし"
+  },
+  "間": {
+    "meaning": "사이 간",
+    "ondoku": "かん、けん",
+    "kundoku": "あいだ、ま"
+  },
+  "刊": {
+    "meaning": "새길 간",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "幹": {
+    "meaning": "줄기 간",
+    "ondoku": "かん",
+    "kundoku": "みき"
+  },
+  "干": {
+    "meaning": "방패 간",
+    "ondoku": "かん",
+    "kundoku": "ほす、ひる"
+  },
+  "看": {
+    "meaning": "볼 간",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "簡": {
+    "meaning": "대쪽 간",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "肝": {
+    "meaning": "간 간",
+    "ondoku": "かん",
+    "kundoku": "きも"
+  },
+  "墾": {
+    "meaning": "개간할 간",
+    "ondoku": "こん",
+    "kundoku": ""
+  },
+  "懇": {
+    "meaning": "간절할 간",
+    "ondoku": "こん",
+    "kundoku": "ねんごろ"
+  },
+  "喝": {
+    "meaning": "꾸짖을 갈",
+    "ondoku": "かつ",
+    "kundoku": ""
+  },
+  "渇": {
+    "meaning": "목마를 갈",
+    "ondoku": "かつ",
+    "kundoku": "かわく"
+  },
+  "葛": {
+    "meaning": "칡 갈",
+    "ondoku": "かつ",
+    "kundoku": "くず"
+  },
+  "褐": {
+    "meaning": "갈색 갈",
+    "ondoku": "かつ",
+    "kundoku": ""
+  },
+  "感": {
+    "meaning": "느낄 감",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "減": {
+    "meaning": "덜 감",
+    "ondoku": "げん",
+    "kundoku": "へる、へらす"
+  },
+  "甘": {
+    "meaning": "달 감",
+    "ondoku": "かん",
+    "kundoku": "あまい、あまえる、あまやかす、あまんじる"
+  },
+  "勘": {
+    "meaning": "헤아릴 감",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "紺": {
+    "meaning": "감색 감",
+    "ondoku": "こん",
+    "kundoku": ""
+  },
+  "堪": {
+    "meaning": "견딜 감",
+    "ondoku": "かん、たん",
+    "kundoku": "たえる"
+  },
+  "敢": {
+    "meaning": "감히 감",
+    "ondoku": "かん",
+    "kundoku": "あえて"
+  },
+  "監": {
+    "meaning": "볼 감",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "憾": {
+    "meaning": "섭섭할 감",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "鑑": {
+    "meaning": "거울 감",
+    "ondoku": "かん",
+    "kundoku": "かんがみる"
+  },
+  "甲": {
+    "meaning": "갑옷 갑",
+    "ondoku": "こう、かん",
+    "kundoku": ""
+  },
+  "岬": {
+    "meaning": "곶 갑",
+    "ondoku": "",
+    "kundoku": "みさき"
+  },
+  "強": {
+    "meaning": "강할 강",
+    "ondoku": "きょう、ごう",
+    "kundoku": "つよい、つよまる、つよめる、しいる"
+  },
+  "康": {
+    "meaning": "편안할 강",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "講": {
+    "meaning": "외울 강",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "降": {
+    "meaning": "내릴 강/항복할 항",
+    "ondoku": "こう",
+    "kundoku": "おりる、おろす、ふる"
+  },
+  "鋼": {
+    "meaning": "강철 강",
+    "ondoku": "こう",
+    "kundoku": "はがね"
+  },
+  "江": {
+    "meaning": "강 강",
+    "ondoku": "こう",
+    "kundoku": "え"
+  },
+  "岡": {
+    "meaning": "언덕 강",
+    "ondoku": "きゅう",
+    "kundoku": "おか"
+  },
+  "剛": {
+    "meaning": "굳셀 강",
+    "ondoku": "ごう",
+    "kundoku": ""
+  },
+  "綱": {
+    "meaning": "벼리 강",
+    "ondoku": "こう",
+    "kundoku": "つな"
+  },
+  "開": {
+    "meaning": "열 개",
+    "ondoku": "かい",
+    "kundoku": "ひらく、ひらける、あく、あける"
+  },
+  "改": {
+    "meaning": "고칠 개",
+    "ondoku": "かい",
+    "kundoku": "あらためる、あらたまる"
+  },
+  "個": {
+    "meaning": "낱 개",
+    "ondoku": "こ",
+    "kundoku": ""
+  },
+  "介": {
+    "meaning": "끼일 개",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "皆": {
+    "meaning": "다 개",
+    "ondoku": "かい",
+    "kundoku": "みな"
+  },
+  "慨": {
+    "meaning": "분개할 개",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "蓋": {
+    "meaning": "덮을 개",
+    "ondoku": "がい",
+    "kundoku": "ふた"
+  },
+  "箇": {
+    "meaning": "낱 개",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "概": {
+    "meaning": "대개 개",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "客": {
+    "meaning": "손 객",
+    "ondoku": "きゃく、かく",
+    "kundoku": ""
+  },
+  "坑": {
+    "meaning": "구덩이 갱",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "去": {
+    "meaning": "갈 거",
+    "ondoku": "きょ、こ",
+    "kundoku": "さる"
+  },
+  "挙": {
+    "meaning": "들 거",
+    "ondoku": "きょ",
+    "kundoku": "あがる、あげる"
+  },
+  "居": {
+    "meaning": "살 거",
+    "ondoku": "きょ",
+    "kundoku": "いる"
+  },
+  "巨": {
+    "meaning": "클 거",
+    "ondoku": "きょ",
+    "kundoku": ""
+  },
+  "拒": {
+    "meaning": "막을 거",
+    "ondoku": "きょ",
+    "kundoku": "こばむ"
+  },
+  "拠": {
+    "meaning": "근거 거",
+    "ondoku": "きょ",
+    "kundoku": ""
+  },
+  "据": {
+    "meaning": "일할 거",
+    "ondoku": "",
+    "kundoku": "すえる、すわる"
+  },
+  "距": {
+    "meaning": "떨어질 거",
+    "ondoku": "きょ",
+    "kundoku": ""
+  },
+  "裾": {
+    "meaning": "옷자락 거",
+    "ondoku": "",
+    "kundoku": "すそ"
+  },
+  "建": {
+    "meaning": "세울 건",
+    "ondoku": "けん、こん",
+    "kundoku": "たてる、たつ"
+  },
+  "健": {
+    "meaning": "굳셀 건",
+    "ondoku": "けん",
+    "kundoku": "すこやか"
+  },
+  "件": {
+    "meaning": "물건 건",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "巾": {
+    "meaning": "수건 건",
+    "ondoku": "きん",
+    "kundoku": ""
+  },
+  "乾": {
+    "meaning": "마를 건",
+    "ondoku": "かん",
+    "kundoku": "かわく、かわかす"
+  },
+  "鍵": {
+    "meaning": "열쇠 건",
+    "ondoku": "けん",
+    "kundoku": "かぎ"
+  },
+  "乞": {
+    "meaning": "빌 걸",
+    "ondoku": "",
+    "kundoku": "こう"
+  },
+  "傑": {
+    "meaning": "뛰어날 걸",
+    "ondoku": "けつ",
+    "kundoku": ""
+  },
+  "検": {
+    "meaning": "검사할 검",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "倹": {
+    "meaning": "검소할 검",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "剣": {
+    "meaning": "칼 검",
+    "ondoku": "けん",
+    "kundoku": "つるぎ"
+  },
+  "掲": {
+    "meaning": "걸 게",
+    "ondoku": "けい",
+    "kundoku": "かかげる"
+  },
+  "憩": {
+    "meaning": "쉴 게",
+    "ondoku": "けい",
+    "kundoku": "いこう"
+  },
+  "格": {
+    "meaning": "격식 격",
+    "ondoku": "かく、こう",
+    "kundoku": ""
+  },
+  "激": {
+    "meaning": "격할 격",
+    "ondoku": "げき",
+    "kundoku": "はげしい"
+  },
+  "隔": {
+    "meaning": "사이뜰 격",
+    "ondoku": "かく",
+    "kundoku": "へだてる、へだたる"
+  },
+  "撃": {
+    "meaning": "칠 격",
+    "ondoku": "げき",
+    "kundoku": "うつ"
+  },
+  "犬": {
+    "meaning": "개 견",
+    "ondoku": "けん",
+    "kundoku": "いぬ"
+  },
+  "見": {
+    "meaning": "볼 견",
+    "ondoku": "けん",
+    "kundoku": "みる、みえる、みせる"
+  },
+  "絹": {
+    "meaning": "비단 견",
+    "ondoku": "けん",
+    "kundoku": "きぬ"
+  },
+  "肩": {
+    "meaning": "어깨 견",
+    "ondoku": "けん",
+    "kundoku": "かた"
+  },
+  "堅": {
+    "meaning": "굳을 견",
+    "ondoku": "けん",
+    "kundoku": "かたい"
+  },
+  "遣": {
+    "meaning": "보낼 견",
+    "ondoku": "けん",
+    "kundoku": "つかう、つかわす"
+  },
+  "繭": {
+    "meaning": "고치 견",
+    "ondoku": "けん",
+    "kundoku": "まゆ"
+  },
+  "決": {
+    "meaning": "결단할 결",
+    "ondoku": "けつ",
+    "kundoku": "きめる、きまる"
+  },
+  "欠": {
+    "meaning": "이지러질 결",
+    "ondoku": "けつ",
+    "kundoku": "かける、かく、かかす"
+  },
+  "結": {
+    "meaning": "맺을 결",
+    "ondoku": "けつ",
+    "kundoku": "むすぶ、ゆう、ゆわえる"
+  },
+  "潔": {
+    "meaning": "깨끗할 결",
+    "ondoku": "けつ",
+    "kundoku": "いさぎよい"
+  },
+  "兼": {
+    "meaning": "겸할 겸",
+    "ondoku": "けん",
+    "kundoku": "かねる"
+  },
+  "謙": {
+    "meaning": "겸손할 겸",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "鎌": {
+    "meaning": "낫 겸",
+    "ondoku": "",
+    "kundoku": "かま"
+  },
+  "京": {
+    "meaning": "서울 경",
+    "ondoku": "きょう、けい、きん",
+    "kundoku": ""
+  },
+  "軽": {
+    "meaning": "가벼울 경",
+    "ondoku": "けい",
+    "kundoku": "かるい、かろやか"
+  },
+  "径": {
+    "meaning": "지름길/ 길 경",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "景": {
+    "meaning": "볕 경",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "鏡": {
+    "meaning": "거울 경",
+    "ondoku": "きょう",
+    "kundoku": "かがみ"
+  },
+  "競": {
+    "meaning": "다툴 경",
+    "ondoku": "けい、きょう",
+    "kundoku": "きそう、せる"
+  },
+  "経": {
+    "meaning": "지날/ 글 경",
+    "ondoku": "けい、きょう",
+    "kundoku": "へる"
+  },
+  "耕": {
+    "meaning": "밭 갈 경",
+    "ondoku": "こう",
+    "kundoku": "たがやす"
+  },
+  "境": {
+    "meaning": "지경 경",
+    "ondoku": "きょう、けい",
+    "kundoku": "さかい"
+  },
+  "敬": {
+    "meaning": "공경할 경",
+    "ondoku": "けい",
+    "kundoku": "うやまう"
+  },
+  "警": {
+    "meaning": "깨우칠 경",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "茎": {
+    "meaning": "줄기 경",
+    "ondoku": "けい",
+    "kundoku": "くき"
+  },
+  "更": {
+    "meaning": "고칠 경/ 다시 갱",
+    "ondoku": "こう",
+    "kundoku": "さら、ふける、ふかす"
+  },
+  "頃": {
+    "meaning": "잠깐 경",
+    "ondoku": "",
+    "kundoku": "ころ"
+  },
+  "梗": {
+    "meaning": "줄기 경",
+    "ondoku": "こう、きょう",
+    "kundoku": ""
+  },
+  "硬": {
+    "meaning": "굳을 경",
+    "ondoku": "こう",
+    "kundoku": "かたい"
+  },
+  "傾": {
+    "meaning": "기울 경",
+    "ondoku": "けい",
+    "kundoku": "かたむく、かたむける"
+  },
+  "慶": {
+    "meaning": "경사 경",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "憬": {
+    "meaning": "깨달을 경",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "鯨": {
+    "meaning": "고래 경",
+    "ondoku": "げい",
+    "kundoku": "くじら"
+  },
+  "驚": {
+    "meaning": "놀랄 경",
+    "ondoku": "きょう",
+    "kundoku": "おどろく、おどろかす"
+  },
+  "計": {
+    "meaning": "셀 계",
+    "ondoku": "けい",
+    "kundoku": "はかる、はかろう"
+  },
+  "係": {
+    "meaning": "맬 계",
+    "ondoku": "けい",
+    "kundoku": "かかる、かかり"
+  },
+  "界": {
+    "meaning": "지경 계",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "階": {
+    "meaning": "섬돌 계",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "季": {
+    "meaning": "계절 계",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "械": {
+    "meaning": "기계 계",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "系": {
+    "meaning": "이을 계",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "届": {
+    "meaning": "이를 계",
+    "ondoku": "",
+    "kundoku": "とどける、とどく"
+  },
+  "戒": {
+    "meaning": "경계할 계",
+    "ondoku": "かい",
+    "kundoku": "いましめる"
+  },
+  "契": {
+    "meaning": "맺을 계",
+    "ondoku": "けい",
+    "kundoku": "ちぎる"
+  },
+  "啓": {
+    "meaning": "열 계",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "渓": {
+    "meaning": "시내 계",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "継": {
+    "meaning": "이을 계",
+    "ondoku": "けい",
+    "kundoku": "つぐ"
+  },
+  "稽": {
+    "meaning": "머무를 계",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "鶏": {
+    "meaning": "닭 계",
+    "ondoku": "けい",
+    "kundoku": "にわとり"
+  },
+  "古": {
+    "meaning": "옛 고",
+    "ondoku": "こ",
+    "kundoku": "ふるい、ふるす"
+  },
+  "考": {
+    "meaning": "생각할 고",
+    "ondoku": "こう",
+    "kundoku": "かんがえる"
+  },
+  "高": {
+    "meaning": "높을 고",
+    "ondoku": "こう",
+    "kundoku": "たかい、たか、たかまる、たかめる"
+  },
+  "苦": {
+    "meaning": "쓸 고",
+    "ondoku": "く",
+    "kundoku": "くるしい、くるしむ、くるしめる、にがい"
+  },
+  "庫": {
+    "meaning": "곳집 고",
+    "ondoku": "こ、く",
+    "kundoku": ""
+  },
+  "告": {
+    "meaning": "고할 고",
+    "ondoku": "こく",
+    "kundoku": "つげる"
+  },
+  "固": {
+    "meaning": "굳을 고",
+    "ondoku": "こ",
+    "kundoku": "かたい、かたまる、かためる"
+  },
+  "故": {
+    "meaning": "연고 고",
+    "ondoku": "こ",
+    "kundoku": "ゆえ"
+  },
+  "尻": {
+    "meaning": "꽁무니 고",
+    "ondoku": "",
+    "kundoku": "しり"
+  },
+  "股": {
+    "meaning": "넓적다리 고",
+    "ondoku": "こ",
+    "kundoku": "また"
+  },
+  "孤": {
+    "meaning": "외로울 고",
+    "ondoku": "こ",
+    "kundoku": ""
+  },
+  "拷": {
+    "meaning": "칠 고",
+    "ondoku": "ごう",
+    "kundoku": ""
+  },
+  "枯": {
+    "meaning": "마를 고",
+    "ondoku": "こ",
+    "kundoku": "かれる、からす"
+  },
+  "雇": {
+    "meaning": "품 팔 고",
+    "ondoku": "こ",
+    "kundoku": "やとう"
+  },
+  "鼓": {
+    "meaning": "북 고",
+    "ondoku": "こ",
+    "kundoku": "つづみ"
+  },
+  "稿": {
+    "meaning": "원고 고",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "錮": {
+    "meaning": "막을 고",
+    "ondoku": "こ",
+    "kundoku": ""
+  },
+  "顧": {
+    "meaning": "돌아볼 고",
+    "ondoku": "こ",
+    "kundoku": "かえりみる"
+  },
+  "谷": {
+    "meaning": "골짜기 곡",
+    "ondoku": "こく",
+    "kundoku": "たに"
+  },
+  "曲": {
+    "meaning": "굽을 곡",
+    "ondoku": "きょく",
+    "kundoku": "まがる、まげる"
+  },
+  "穀": {
+    "meaning": "곡식 곡",
+    "ondoku": "こく",
+    "kundoku": ""
+  },
+  "困": {
+    "meaning": "곤할 곤",
+    "ondoku": "こん",
+    "kundoku": "こまる"
+  },
+  "昆": {
+    "meaning": "벌레 곤",
+    "ondoku": "こん",
+    "kundoku": ""
+  },
+  "骨": {
+    "meaning": "뼈 골",
+    "ondoku": "こつ",
+    "kundoku": "ほね"
+  },
+  "空": {
+    "meaning": "빌 공",
+    "ondoku": "くう",
+    "kundoku": "そら、から、あく、あける"
+  },
+  "工": {
+    "meaning": "장인 공",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "公": {
+    "meaning": "공평할 공",
+    "ondoku": "こう",
+    "kundoku": "おおやけ"
+  },
+  "功": {
+    "meaning": "공 공",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "共": {
+    "meaning": "한가지 공",
+    "ondoku": "きょう",
+    "kundoku": "とも"
+  },
+  "供": {
+    "meaning": "이바지할 공",
+    "ondoku": "きょう、く",
+    "kundoku": "とも、そなえる"
+  },
+  "孔": {
+    "meaning": "구멍 공",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "攻": {
+    "meaning": "칠 공",
+    "ondoku": "こう",
+    "kundoku": "せめる"
+  },
+  "恐": {
+    "meaning": "두려울 공",
+    "ondoku": "きょう",
+    "kundoku": "おそれる、おそろしい"
+  },
+  "恭": {
+    "meaning": "공손할 공",
+    "ondoku": "きょう",
+    "kundoku": "うやうやしい"
+  },
+  "貢": {
+    "meaning": "바칠 공",
+    "ondoku": "こう、く",
+    "kundoku": "みつぐ"
+  },
+  "控": {
+    "meaning": "당길 공",
+    "ondoku": "こう",
+    "kundoku": "ひかえる"
+  },
+  "科": {
+    "meaning": "과목 과",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "果": {
+    "meaning": "실과 과",
+    "ondoku": "か",
+    "kundoku": "はたす、はてる"
+  },
+  "課": {
+    "meaning": "공부할 과",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "過": {
+    "meaning": "지날 과",
+    "ondoku": "か",
+    "kundoku": "すぎる、すごす、あやまつ"
+  },
+  "菓": {
+    "meaning": "과자 과",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "誇": {
+    "meaning": "자랑할 과",
+    "ondoku": "こ",
+    "kundoku": "ほこる、ほこらしい"
+  },
+  "寡": {
+    "meaning": "적을 과",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "鍋": {
+    "meaning": "냄비 과",
+    "ondoku": "",
+    "kundoku": "なべ"
+  },
+  "郭": {
+    "meaning": "둘레 곽",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "館": {
+    "meaning": "집 관",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "官": {
+    "meaning": "벼슬 관",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "管": {
+    "meaning": "대롱 관",
+    "ondoku": "かん",
+    "kundoku": "くだ"
+  },
+  "関": {
+    "meaning": "관계할 관",
+    "ondoku": "かん",
+    "kundoku": "せき、かかわる"
+  },
+  "観": {
+    "meaning": "볼 관",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "慣": {
+    "meaning": "익숙할 관",
+    "ondoku": "かん",
+    "kundoku": "なれる、ならす"
+  },
+  "串": {
+    "meaning": "꿸 관",
+    "ondoku": "",
+    "kundoku": "くし"
+  },
+  "缶": {
+    "meaning": "두레박 관",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "冠": {
+    "meaning": "갓 관",
+    "ondoku": "かん",
+    "kundoku": "かんむり"
+  },
+  "貫": {
+    "meaning": "꿸 관",
+    "ondoku": "かん",
+    "kundoku": "つらぬく"
+  },
+  "棺": {
+    "meaning": "널 관",
+    "ondoku": "かん",
+    "kundoku": "ひつぎ"
+  },
+  "款": {
+    "meaning": "항목 관",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "寛": {
+    "meaning": "너그러울 관",
+    "ondoku": "かん",
+    "kundoku": "くつろぐ"
+  },
+  "括": {
+    "meaning": "묶을 괄",
+    "ondoku": "かつ",
+    "kundoku": "くくる"
+  },
+  "広": {
+    "meaning": "넓을 광",
+    "ondoku": "こう",
+    "kundoku": "ひろい、ひろまる、ひろめる、ひろがる、ひろげる"
+  },
+  "光": {
+    "meaning": "빛 광",
+    "ondoku": "こう",
+    "kundoku": "ひかる、ひかり"
+  },
+  "鉱": {
+    "meaning": "쇳돌 광",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "狂": {
+    "meaning": "미칠 광",
+    "ondoku": "きょう",
+    "kundoku": "くるう、くるおしい"
+  },
+  "掛": {
+    "meaning": "걸 괘",
+    "ondoku": "",
+    "kundoku": "かける、かかる"
+  },
+  "怪": {
+    "meaning": "괴이할 괴",
+    "ondoku": "かい",
+    "kundoku": "あやしい、あやしむ"
+  },
+  "拐": {
+    "meaning": "후릴 괴",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "塊": {
+    "meaning": "덩어리 괴",
+    "ondoku": "かい",
+    "kundoku": "かたまり"
+  },
+  "壊": {
+    "meaning": "무너질 괴",
+    "ondoku": "かい",
+    "kundoku": "こわす、こわれる"
+  },
+  "校": {
+    "meaning": "학교 교",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "交": {
+    "meaning": "사귈 교",
+    "ondoku": "こう",
+    "kundoku": "まじわる、まじえる、まざる、かう、かわす"
+  },
+  "教": {
+    "meaning": "가르칠 교",
+    "ondoku": "きょう",
+    "kundoku": "おしえる、おそわる"
+  },
+  "橋": {
+    "meaning": "다리 교",
+    "ondoku": "きょう",
+    "kundoku": "はし"
+  },
+  "巧": {
+    "meaning": "공교할 교",
+    "ondoku": "こう",
+    "kundoku": "たくみ"
+  },
+  "郊": {
+    "meaning": "들 교",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "絞": {
+    "meaning": "목맬 교",
+    "ondoku": "こう",
+    "kundoku": "しぼる、しめる、しまる"
+  },
+  "較": {
+    "meaning": "견줄 교",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "矯": {
+    "meaning": "바로잡을 교",
+    "ondoku": "きょう",
+    "kundoku": "ためる"
+  },
+  "九": {
+    "meaning": "아홉 구",
+    "ondoku": "きゅう、く",
+    "kundoku": "ここの、ここのつ"
+  },
+  "口": {
+    "meaning": "입 구",
+    "ondoku": "こう、く",
+    "kundoku": "くち"
+  },
+  "区": {
+    "meaning": "구분할 구",
+    "ondoku": "く",
+    "kundoku": ""
+  },
+  "究": {
+    "meaning": "연구할 구",
+    "ondoku": "きゅう",
+    "kundoku": "きわめる"
+  },
+  "具": {
+    "meaning": "갖출 구",
+    "ondoku": "ぐ",
+    "kundoku": "そなわる"
+  },
+  "球": {
+    "meaning": "공 구",
+    "ondoku": "きゅう",
+    "kundoku": "たま"
+  },
+  "求": {
+    "meaning": "구할 구",
+    "ondoku": "きゅう",
+    "kundoku": "もとめる"
+  },
+  "救": {
+    "meaning": "구원할 구",
+    "ondoku": "きゅう",
+    "kundoku": "すくう"
+  },
+  "久": {
+    "meaning": "오랠 구",
+    "ondoku": "きゅう、く",
+    "kundoku": "ひさしい"
+  },
+  "句": {
+    "meaning": "글귀 구",
+    "ondoku": "く",
+    "kundoku": ""
+  },
+  "旧": {
+    "meaning": "예 구",
+    "ondoku": "きゅう",
+    "kundoku": ""
+  },
+  "構": {
+    "meaning": "얽을 구",
+    "ondoku": "こう",
+    "kundoku": "かまえる、かまう"
+  },
+  "勾": {
+    "meaning": "굽을 구",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "丘": {
+    "meaning": "언덕 구",
+    "ondoku": "こう",
+    "kundoku": "おか"
+  },
+  "臼": {
+    "meaning": "절구 구",
+    "ondoku": "きゅう",
+    "kundoku": "うす"
+  },
+  "殴": {
+    "meaning": "때릴 구",
+    "ondoku": "おう",
+    "kundoku": "なぐる"
+  },
+  "欧": {
+    "meaning": "구라파 구",
+    "ondoku": "おう",
+    "kundoku": ""
+  },
+  "拘": {
+    "meaning": "잡을 구",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "惧": {
+    "meaning": "두려워할 구",
+    "ondoku": "ぐ",
+    "kundoku": ""
+  },
+  "駆": {
+    "meaning": "몰 구",
+    "ondoku": "く",
+    "kundoku": "かける、かる"
+  },
+  "溝": {
+    "meaning": "도랑 구",
+    "ondoku": "こう",
+    "kundoku": "みぞ"
+  },
+  "駒": {
+    "meaning": "망아지 구",
+    "ondoku": "",
+    "kundoku": "こま"
+  },
+  "購": {
+    "meaning": "살 구",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "国": {
+    "meaning": "나라 국",
+    "ondoku": "こく",
+    "kundoku": "くに"
+  },
+  "局": {
+    "meaning": "판 국",
+    "ondoku": "きょく",
+    "kundoku": ""
+  },
+  "菊": {
+    "meaning": "국화 국",
+    "ondoku": "きく",
+    "kundoku": ""
+  },
+  "君": {
+    "meaning": "임금 군",
+    "ondoku": "くん",
+    "kundoku": "きみ"
+  },
+  "軍": {
+    "meaning": "군사 군",
+    "ondoku": "ぐん",
+    "kundoku": ""
+  },
+  "郡": {
+    "meaning": "고을 군",
+    "ondoku": "ぐん",
+    "kundoku": ""
+  },
+  "群": {
+    "meaning": "무리 군",
+    "ondoku": "ぐん",
+    "kundoku": "むれる、むら"
+  },
+  "屈": {
+    "meaning": "굽힐 굴",
+    "ondoku": "くつ",
+    "kundoku": ""
+  },
+  "掘": {
+    "meaning": "팔 굴",
+    "ondoku": "くつ",
+    "kundoku": "ほる"
+  },
+  "堀": {
+    "meaning": "굴 굴",
+    "ondoku": "",
+    "kundoku": "ほり"
+  },
+  "窟": {
+    "meaning": "굴 굴",
+    "ondoku": "くつ",
+    "kundoku": ""
+  },
+  "弓": {
+    "meaning": "활 궁",
+    "ondoku": "きゅう",
+    "kundoku": "ゆみ"
+  },
+  "宮": {
+    "meaning": "집 궁",
+    "ondoku": "きゅう、ぐう、く",
+    "kundoku": "みや"
+  },
+  "窮": {
+    "meaning": "다할/ 궁할 궁",
+    "ondoku": "きゅう",
+    "kundoku": "きわめる、きわまる"
+  },
+  "券": {
+    "meaning": "문서 권",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "巻": {
+    "meaning": "책 권",
+    "ondoku": "かん",
+    "kundoku": "まく、まき"
+  },
+  "権": {
+    "meaning": "권세 권",
+    "ondoku": "けん、ごん",
+    "kundoku": ""
+  },
+  "拳": {
+    "meaning": "주먹 권",
+    "ondoku": "けん",
+    "kundoku": "こぶし"
+  },
+  "圏": {
+    "meaning": "우리 권",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "勧": {
+    "meaning": "권할 권",
+    "ondoku": "かん",
+    "kundoku": "すすめる"
+  },
+  "机": {
+    "meaning": "책상 궤",
+    "ondoku": "き",
+    "kundoku": "つくえ"
+  },
+  "軌": {
+    "meaning": "바퀴자국 궤",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "潰": {
+    "meaning": "무너질 궤",
+    "ondoku": "かい",
+    "kundoku": "つぶす、つぶれる"
+  },
+  "帰": {
+    "meaning": "돌아갈 귀",
+    "ondoku": "き",
+    "kundoku": "かえる、かえす"
+  },
+  "貴": {
+    "meaning": "귀할 귀",
+    "ondoku": "き",
+    "kundoku": "たっとい、たっとぶ、とうとい、とうとぶ"
+  },
+  "鬼": {
+    "meaning": "귀신 귀",
+    "ondoku": "き",
+    "kundoku": "おに"
+  },
+  "亀": {
+    "meaning": "거북 귀/ 터질 균",
+    "ondoku": "き",
+    "kundoku": "かめ"
+  },
+  "規": {
+    "meaning": "법 규",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "叫": {
+    "meaning": "부르짖을 규",
+    "ondoku": "きょう",
+    "kundoku": "さけぶ"
+  },
+  "糾": {
+    "meaning": "규탄할 규",
+    "ondoku": "きゅう",
+    "kundoku": ""
+  },
+  "均": {
+    "meaning": "고를 균",
+    "ondoku": "きん",
+    "kundoku": ""
+  },
+  "菌": {
+    "meaning": "버섯 균",
+    "ondoku": "きん",
+    "kundoku": ""
+  },
+  "極": {
+    "meaning": "다할 극",
+    "ondoku": "きょく、ごく",
+    "kundoku": "きわめる、きわまる、きわみ"
+  },
+  "劇": {
+    "meaning": "심할 극",
+    "ondoku": "げき",
+    "kundoku": ""
+  },
+  "克": {
+    "meaning": "이길 극",
+    "ondoku": "こく",
+    "kundoku": ""
+  },
+  "隙": {
+    "meaning": "틈 극",
+    "ondoku": "げき",
+    "kundoku": "すき"
+  },
+  "近": {
+    "meaning": "가까울 근",
+    "ondoku": "きん",
+    "kundoku": "ちかい"
+  },
+  "根": {
+    "meaning": "뿌리 근",
+    "ondoku": "こん",
+    "kundoku": "ね"
+  },
+  "勤": {
+    "meaning": "부지런할 근",
+    "ondoku": "きん",
+    "kundoku": "つとめる、つとまる"
+  },
+  "筋": {
+    "meaning": "힘줄 근",
+    "ondoku": "きん",
+    "kundoku": "すじ"
+  },
+  "斤": {
+    "meaning": "근 근",
+    "ondoku": "きん",
+    "kundoku": ""
+  },
+  "僅": {
+    "meaning": "겨우 근",
+    "ondoku": "きん",
+    "kundoku": "わずか"
+  },
+  "謹": {
+    "meaning": "삼갈 근",
+    "ondoku": "きん",
+    "kundoku": "つつしむ"
+  },
+  "金": {
+    "meaning": "쇠 금",
+    "ondoku": "きん、こん",
+    "kundoku": "かね、かな"
+  },
+  "今": {
+    "meaning": "이제 금",
+    "ondoku": "こん、きん",
+    "kundoku": "いま"
+  },
+  "禁": {
+    "meaning": "금할 금",
+    "ondoku": "きん",
+    "kundoku": ""
+  },
+  "琴": {
+    "meaning": "거문고 금",
+    "ondoku": "きん",
+    "kundoku": "こと"
+  },
+  "錦": {
+    "meaning": "비단 금",
+    "ondoku": "きん",
+    "kundoku": "にしき"
+  },
+  "襟": {
+    "meaning": "옷깃 금",
+    "ondoku": "きん",
+    "kundoku": "えり"
+  },
+  "急": {
+    "meaning": "급할 급",
+    "ondoku": "きゅう",
+    "kundoku": "いそぐ"
+  },
+  "級": {
+    "meaning": "등급 급",
+    "ondoku": "きゅう",
+    "kundoku": ""
+  },
+  "給": {
+    "meaning": "줄 급",
+    "ondoku": "きゅう",
+    "kundoku": ""
+  },
+  "及": {
+    "meaning": "미칠 급",
+    "ondoku": "きゅう",
+    "kundoku": "およぶ、および、およぼす"
+  },
+  "扱": {
+    "meaning": "미칠 급",
+    "ondoku": "",
+    "kundoku": "あつかう"
+  },
+  "肯": {
+    "meaning": "즐길 긍",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "気": {
+    "meaning": "기운 기",
+    "ondoku": "き、け",
+    "kundoku": ""
+  },
+  "汽": {
+    "meaning": "물 끓는 김 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "記": {
+    "meaning": "기록할 기",
+    "ondoku": "き",
+    "kundoku": "しるす"
+  },
+  "期": {
+    "meaning": "기약할 기",
+    "ondoku": "き、ご",
+    "kundoku": ""
+  },
+  "起": {
+    "meaning": "일어날 기",
+    "ondoku": "き",
+    "kundoku": "おきる、おこる、おこす"
+  },
+  "紀": {
+    "meaning": "벼리 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "旗": {
+    "meaning": "기 기",
+    "ondoku": "き",
+    "kundoku": "はた"
+  },
+  "器": {
+    "meaning": "그릇 기",
+    "ondoku": "き",
+    "kundoku": "うつわ"
+  },
+  "機": {
+    "meaning": "베틀 기",
+    "ondoku": "き",
+    "kundoku": "はた"
+  },
+  "技": {
+    "meaning": "재주 기",
+    "ondoku": "ぎ",
+    "kundoku": "わざ"
+  },
+  "寄": {
+    "meaning": "부칠 기",
+    "ondoku": "き",
+    "kundoku": "よる、よせる"
+  },
+  "基": {
+    "meaning": "터 기",
+    "ondoku": "き",
+    "kundoku": "もと、もとい"
+  },
+  "己": {
+    "meaning": "몸 기",
+    "ondoku": "こ、き",
+    "kundoku": "おのれ"
+  },
+  "企": {
+    "meaning": "꾀할 기",
+    "ondoku": "き",
+    "kundoku": "くわだてる、たくらむ"
+  },
+  "肌": {
+    "meaning": "살 기",
+    "ondoku": "",
+    "kundoku": "はだ"
+  },
+  "伎": {
+    "meaning": "재간 기",
+    "ondoku": "ぎ、き",
+    "kundoku": ""
+  },
+  "岐": {
+    "meaning": "갈림길 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "忌": {
+    "meaning": "꺼릴 기",
+    "ondoku": "き",
+    "kundoku": "いむ、いまわしい"
+  },
+  "奇": {
+    "meaning": "기특할 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "祈": {
+    "meaning": "빌 기",
+    "ondoku": "き",
+    "kundoku": "いのる"
+  },
+  "既": {
+    "meaning": "이미 기",
+    "ondoku": "き",
+    "kundoku": "すでに"
+  },
+  "飢": {
+    "meaning": "주릴 기",
+    "ondoku": "き",
+    "kundoku": "うえる"
+  },
+  "埼": {
+    "meaning": "갑 기",
+    "ondoku": "",
+    "kundoku": "さい"
+  },
+  "崎": {
+    "meaning": "험할 기",
+    "ondoku": "",
+    "kundoku": "さき"
+  },
+  "幾": {
+    "meaning": "몇 기",
+    "ondoku": "き",
+    "kundoku": "いく"
+  },
+  "棋": {
+    "meaning": "바둑 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "欺": {
+    "meaning": "속일 기",
+    "ondoku": "ぎ",
+    "kundoku": "あざむく"
+  },
+  "碁": {
+    "meaning": "바둑 기",
+    "ondoku": "ご",
+    "kundoku": ""
+  },
+  "棄": {
+    "meaning": "버릴 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "畿": {
+    "meaning": "경기 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "騎": {
+    "meaning": "말탈 기",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "緊": {
+    "meaning": "긴할 긴",
+    "ondoku": "きん",
+    "kundoku": ""
+  },
+  "吉": {
+    "meaning": "길할 길",
+    "ondoku": "きち、きつ",
+    "kundoku": ""
+  },
+  "喫": {
+    "meaning": "먹을 끽",
+    "ondoku": "きつ",
+    "kundoku": ""
+  },
+  "那": {
+    "meaning": "어찌 나",
+    "ondoku": "な",
+    "kundoku": ""
+  },
+  "奈": {
+    "meaning": "어찌 나",
+    "ondoku": "な",
+    "kundoku": ""
+  },
+  "諾": {
+    "meaning": "허락할 낙",
+    "ondoku": "だく",
+    "kundoku": ""
+  },
+  "難": {
+    "meaning": "어려울 난",
+    "ondoku": "なん",
+    "kundoku": "かたい、むずかしい"
+  },
+  "暖": {
+    "meaning": "따뜻할 난",
+    "ondoku": "だん",
+    "kundoku": "あたたか、あたたかい、あたたまる、あたためる"
+  },
+  "男": {
+    "meaning": "사내 남",
+    "ondoku": "だん、なん",
+    "kundoku": "おとこ"
+  },
+  "南": {
+    "meaning": "남녘 남",
+    "ondoku": "なん",
+    "kundoku": "みなみ"
+  },
+  "納": {
+    "meaning": "들일 납",
+    "ondoku": "のう、なつ",
+    "kundoku": "おさまる、おさめる"
+  },
+  "娘": {
+    "meaning": "여자 낭",
+    "ondoku": "",
+    "kundoku": "むすめ"
+  },
+  "内": {
+    "meaning": "안 내",
+    "ondoku": "ない、だい",
+    "kundoku": "うち"
+  },
+  "匂": {
+    "meaning": "향내 내",
+    "ondoku": "",
+    "kundoku": "みおう"
+  },
+  "耐": {
+    "meaning": "견딜 내",
+    "ondoku": "たい",
+    "kundoku": "たえる"
+  },
+  "女": {
+    "meaning": "여자 녀",
+    "ondoku": "じょ、にょ、にょう",
+    "kundoku": "おんな"
+  },
+  "年": {
+    "meaning": "해 년",
+    "ondoku": "ねん",
+    "kundoku": "とし"
+  },
+  "念": {
+    "meaning": "생각 념",
+    "ondoku": "ねん",
+    "kundoku": ""
+  },
+  "寧": {
+    "meaning": "편안할 녕",
+    "ondoku": "ねい",
+    "kundoku": ""
+  },
+  "努": {
+    "meaning": "힘쓸 노",
+    "ondoku": "ど",
+    "kundoku": "つとめる"
+  },
+  "奴": {
+    "meaning": "종 노",
+    "ondoku": "ど",
+    "kundoku": "やつ、やっこ"
+  },
+  "怒": {
+    "meaning": "성낼 노",
+    "ondoku": "ど",
+    "kundoku": "いかる、おこる"
+  },
+  "農": {
+    "meaning": "농사 농",
+    "ondoku": "のう",
+    "kundoku": ""
+  },
+  "濃": {
+    "meaning": "짙을 농",
+    "ondoku": "のう",
+    "kundoku": "こい"
+  },
+  "脳": {
+    "meaning": "골 뇌",
+    "ondoku": "のう",
+    "kundoku": ""
+  },
+  "悩": {
+    "meaning": "번뇌할 뇌",
+    "ondoku": "のう",
+    "kundoku": "なやむ、なやます、なやましい"
+  },
+  "尿": {
+    "meaning": "오줌 뇨",
+    "ondoku": "にょう",
+    "kundoku": ""
+  },
+  "能": {
+    "meaning": "능할 능",
+    "ondoku": "のう",
+    "kundoku": ""
+  },
+  "尼": {
+    "meaning": "여승 니",
+    "ondoku": "に",
+    "kundoku": "あま"
+  },
+  "泥": {
+    "meaning": "진흙 니",
+    "ondoku": "でい",
+    "kundoku": "どろ"
+  },
+  "匿": {
+    "meaning": "숨길 닉",
+    "ondoku": "とく",
+    "kundoku": ""
+  },
+  "多": {
+    "meaning": "많을 다",
+    "ondoku": "た",
+    "kundoku": "おおい"
+  },
+  "短": {
+    "meaning": "짧을 단",
+    "ondoku": "たん",
+    "kundoku": "みじかい"
+  },
+  "単": {
+    "meaning": "홑 단",
+    "ondoku": "たん",
+    "kundoku": ""
+  },
+  "団": {
+    "meaning": "둥글 단",
+    "ondoku": "だん、とん",
+    "kundoku": ""
+  },
+  "断": {
+    "meaning": "끊을 단",
+    "ondoku": "だん",
+    "kundoku": "たつ、ことわる"
+  },
+  "段": {
+    "meaning": "층계 단",
+    "ondoku": "だん",
+    "kundoku": ""
+  },
+  "丹": {
+    "meaning": "붉을 단",
+    "ondoku": "たん",
+    "kundoku": ""
+  },
+  "旦": {
+    "meaning": "아침 단",
+    "ondoku": "たん、だん",
+    "kundoku": ""
+  },
+  "但": {
+    "meaning": "다만 단",
+    "ondoku": "",
+    "kundoku": "ただし"
+  },
+  "端": {
+    "meaning": "끝 단",
+    "ondoku": "たん",
+    "kundoku": "はし、は、はた"
+  },
+  "壇": {
+    "meaning": "단 단",
+    "ondoku": "だん、たん",
+    "kundoku": ""
+  },
+  "鍛": {
+    "meaning": "쇠 불릴 단",
+    "ondoku": "たん",
+    "kundoku": "きたえる"
+  },
+  "達": {
+    "meaning": "통달할 달",
+    "ondoku": "たつ",
+    "kundoku": ""
+  },
+  "談": {
+    "meaning": "말씀 담",
+    "ondoku": "だん",
+    "kundoku": ""
+  },
+  "担": {
+    "meaning": "멜 담",
+    "ondoku": "たん",
+    "kundoku": "かつぐ、になう"
+  },
+  "胆": {
+    "meaning": "쓸개 담",
+    "ondoku": "たん",
+    "kundoku": ""
+  },
+  "淡": {
+    "meaning": "맑을 담",
+    "ondoku": "たん",
+    "kundoku": "あわい"
+  },
+  "曇": {
+    "meaning": "흐릴 담",
+    "ondoku": "どん",
+    "kundoku": "くもる"
+  },
+  "答": {
+    "meaning": "대답할 답",
+    "ondoku": "とう",
+    "kundoku": "こたえる"
+  },
+  "踏": {
+    "meaning": "밟을 답",
+    "ondoku": "とう",
+    "kundoku": "ふむ、ふまえる"
+  },
+  "当": {
+    "meaning": "마땅할 당",
+    "ondoku": "とう",
+    "kundoku": "あたる、あてる"
+  },
+  "堂": {
+    "meaning": "집 당",
+    "ondoku": "どう",
+    "kundoku": ""
+  },
+  "党": {
+    "meaning": "무리 당",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "糖": {
+    "meaning": "엿 당",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "唐": {
+    "meaning": "당나라/ 당황할 당",
+    "ondoku": "とう",
+    "kundoku": "から"
+  },
+  "大": {
+    "meaning": "큰 대",
+    "ondoku": "だい、たい",
+    "kundoku": "おお、おおいに、おおきい"
+  },
+  "台": {
+    "meaning": "대 대/ 태풍 태",
+    "ondoku": "だい、たい",
+    "kundoku": ""
+  },
+  "代": {
+    "meaning": "대신할 대",
+    "ondoku": "だい、たい",
+    "kundoku": "かわる、かえる、よ、しろ"
+  },
+  "対": {
+    "meaning": "대할 대",
+    "ondoku": "たい、つい",
+    "kundoku": ""
+  },
+  "待": {
+    "meaning": "기다릴 대",
+    "ondoku": "たい",
+    "kundoku": "まつ"
+  },
+  "帯": {
+    "meaning": "띠 대",
+    "ondoku": "たい",
+    "kundoku": "おびる、おび"
+  },
+  "隊": {
+    "meaning": "무리 대",
+    "ondoku": "たい",
+    "kundoku": ""
+  },
+  "貸": {
+    "meaning": "빌릴 대",
+    "ondoku": "たい",
+    "kundoku": "かす"
+  },
+  "袋": {
+    "meaning": "자루 대",
+    "ondoku": "たい",
+    "kundoku": "ふくろ"
+  },
+  "戴": {
+    "meaning": "일 대",
+    "ondoku": "たい",
+    "kundoku": "いただく"
+  },
+  "徳": {
+    "meaning": "큰 덕",
+    "ondoku": "とく",
+    "kundoku": ""
+  },
+  "刀": {
+    "meaning": "칼 도",
+    "ondoku": "とう",
+    "kundoku": "かたな"
+  },
+  "図": {
+    "meaning": "그림 도",
+    "ondoku": "ず、と",
+    "kundoku": "はかる"
+  },
+  "道": {
+    "meaning": "길 도",
+    "ondoku": "どう、とう",
+    "kundoku": "みち"
+  },
+  "度": {
+    "meaning": "법도 도",
+    "ondoku": "ど、と、たく",
+    "kundoku": "たび"
+  },
+  "島": {
+    "meaning": "섬 도",
+    "ondoku": "とう",
+    "kundoku": "しま"
+  },
+  "都": {
+    "meaning": "도읍 도",
+    "ondoku": "と、つ",
+    "kundoku": "みやこ"
+  },
+  "徒": {
+    "meaning": "무리 도",
+    "ondoku": "とどう",
+    "kundoku": ""
+  },
+  "導": {
+    "meaning": "인도할 도",
+    "ondoku": "とう",
+    "kundoku": "みちびく"
+  },
+  "到": {
+    "meaning": "이를 도",
+    "ondoku": "ちょう",
+    "kundoku": "いたる"
+  },
+  "挑": {
+    "meaning": "돋울 도",
+    "ondoku": "とう",
+    "kundoku": "いどむ"
+  },
+  "逃": {
+    "meaning": "도망할 도",
+    "ondoku": "とう",
+    "kundoku": "にげる、にがす、のがす、のがれる"
+  },
+  "倒": {
+    "meaning": "넘어질 도",
+    "ondoku": "とう",
+    "kundoku": "たおれる、たおす"
+  },
+  "途": {
+    "meaning": "길 도",
+    "ondoku": "と",
+    "kundoku": ""
+  },
+  "桃": {
+    "meaning": "복숭아 도",
+    "ondoku": "とう",
+    "kundoku": "もも"
+  },
+  "悼": {
+    "meaning": "슬퍼할 도",
+    "ondoku": "とう",
+    "kundoku": "いたむ"
+  },
+  "盗": {
+    "meaning": "도둑 도",
+    "ondoku": "とう",
+    "kundoku": "ぬすむ"
+  },
+  "陶": {
+    "meaning": "질그릇 도",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "渡": {
+    "meaning": "건널 도",
+    "ondoku": "と",
+    "kundoku": "わたる、わたす"
+  },
+  "跳": {
+    "meaning": "뛸 도",
+    "ondoku": "ちょう",
+    "kundoku": "はねる、とぶ"
+  },
+  "塗": {
+    "meaning": "칠할 도",
+    "ondoku": "と",
+    "kundoku": "ぬる"
+  },
+  "稲": {
+    "meaning": "벼 도",
+    "ondoku": "とう",
+    "kundoku": "いね、いな"
+  },
+  "賭": {
+    "meaning": "내기 도",
+    "ondoku": "と",
+    "kundoku": "かける"
+  },
+  "読": {
+    "meaning": "읽을 독",
+    "ondoku": "どく、とく、とう",
+    "kundoku": "よむ"
+  },
+  "毒": {
+    "meaning": "독 독",
+    "ondoku": "どく",
+    "kundoku": ""
+  },
+  "独": {
+    "meaning": "홀로 독",
+    "ondoku": "どく",
+    "kundoku": "ひとり"
+  },
+  "督": {
+    "meaning": "감독할 독",
+    "ondoku": "とく",
+    "kundoku": ""
+  },
+  "篤": {
+    "meaning": "도타울 독",
+    "ondoku": "とく",
+    "kundoku": ""
+  },
+  "豚": {
+    "meaning": "돼지 돈",
+    "ondoku": "とん",
+    "kundoku": "ぶた"
+  },
+  "頓": {
+    "meaning": "조아릴 돈",
+    "ondoku": "とん",
+    "kundoku": ""
+  },
+  "突": {
+    "meaning": "갑자기 돌",
+    "ondoku": "とつ",
+    "kundoku": "つく"
+  },
+  "冬": {
+    "meaning": "겨울 동",
+    "ondoku": "とう",
+    "kundoku": "ふゆ"
+  },
+  "同": {
+    "meaning": "한가지 동",
+    "ondoku": "どう",
+    "kundoku": "おなじ"
+  },
+  "東": {
+    "meaning": "동녘 동",
+    "ondoku": "とう",
+    "kundoku": "ひがし"
+  },
+  "動": {
+    "meaning": "움직일 동",
+    "ondoku": "どう",
+    "kundoku": "うごく、うごかす"
+  },
+  "童": {
+    "meaning": "아이 동",
+    "ondoku": "どう",
+    "kundoku": "わらべ"
+  },
+  "働": {
+    "meaning": "일할 동",
+    "ondoku": "どう",
+    "kundoku": "はたらく"
+  },
+  "銅": {
+    "meaning": "구리 동",
+    "ondoku": "どう",
+    "kundoku": ""
+  },
+  "洞": {
+    "meaning": "골 동/밝을 통",
+    "ondoku": "どう",
+    "kundoku": "ほら"
+  },
+  "凍": {
+    "meaning": "얼 동",
+    "ondoku": "とう",
+    "kundoku": "こおる、こごえる"
+  },
+  "胴": {
+    "meaning": "몸통 동",
+    "ondoku": "どう",
+    "kundoku": ""
+  },
+  "棟": {
+    "meaning": "마룻대 동",
+    "ondoku": "とう",
+    "kundoku": "むね、むな"
+  },
+  "憧": {
+    "meaning": "동경할 동",
+    "ondoku": "どう、しょう",
+    "kundoku": "あこがれる"
+  },
+  "瞳": {
+    "meaning": "눈동자 동",
+    "ondoku": "どう",
+    "kundoku": "ひとみ"
+  },
+  "頭": {
+    "meaning": "머리 두",
+    "ondoku": "とう、ず、と",
+    "kundoku": "あたま、かしら"
+  },
+  "豆": {
+    "meaning": "콩 두",
+    "ondoku": "とう、ず",
+    "kundoku": "まめ"
+  },
+  "斗": {
+    "meaning": "말 두",
+    "ondoku": "ととう",
+    "kundoku": ""
+  },
+  "痘": {
+    "meaning": "역질 두",
+    "ondoku": "とん",
+    "kundoku": ""
+  },
+  "屯": {
+    "meaning": "진칠 둔",
+    "ondoku": "どん",
+    "kundoku": ""
+  },
+  "鈍": {
+    "meaning": "둔할 둔",
+    "ondoku": "とく",
+    "kundoku": "にぶい、にぶる"
+  },
+  "得": {
+    "meaning": "얻을 득",
+    "ondoku": "とう、と",
+    "kundoku": "える、うる"
+  },
+  "登": {
+    "meaning": "오를 등",
+    "ondoku": "とう",
+    "kundoku": "のぼる"
+  },
+  "等": {
+    "meaning": "무리 등",
+    "ondoku": "とうとう",
+    "kundoku": "ひとしい"
+  },
+  "灯": {
+    "meaning": "등불 등",
+    "ondoku": "とう",
+    "kundoku": "ひ"
+  },
+  "謄": {
+    "meaning": "베낄 등",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "藤": {
+    "meaning": "등나무 등",
+    "ondoku": "とう",
+    "kundoku": "ふじ"
+  },
+  "騰": {
+    "meaning": "오를 등",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "裸": {
+    "meaning": "벗을 라",
+    "ondoku": "ら",
+    "kundoku": "はだか"
+  },
+  "羅": {
+    "meaning": "벌일 라",
+    "ondoku": "ら",
+    "kundoku": ""
+  },
+  "楽": {
+    "meaning": "즐길 락/노래 악",
+    "ondoku": "らく、がく",
+    "kundoku": "たのしい、たのしむ"
+  },
+  "落": {
+    "meaning": "떨어질 락",
+    "ondoku": "らく",
+    "kundoku": "おちる、おとす"
+  },
+  "絡": {
+    "meaning": "이을/얽을 락",
+    "ondoku": "らく",
+    "kundoku": "からむ、からまる、からめる"
+  },
+  "酪": {
+    "meaning": "쇠젖 락",
+    "ondoku": "らく",
+    "kundoku": ""
+  },
+  "卵": {
+    "meaning": "알 란",
+    "ondoku": "らん",
+    "kundoku": "たまご"
+  },
+  "乱": {
+    "meaning": "어지러울 란",
+    "ondoku": "らん",
+    "kundoku": "みだれる、みだす"
+  },
+  "欄": {
+    "meaning": "난간 란",
+    "ondoku": "らん",
+    "kundoku": ""
+  },
+  "辣": {
+    "meaning": "매울 랄",
+    "ondoku": "らつ",
+    "kundoku": ""
+  },
+  "覧": {
+    "meaning": "볼 람",
+    "ondoku": "らん",
+    "kundoku": ""
+  },
+  "嵐": {
+    "meaning": "남기 람",
+    "ondoku": "らん",
+    "kundoku": "あらし"
+  },
+  "濫": {
+    "meaning": "넘칠 람",
+    "ondoku": "らん",
+    "kundoku": ""
+  },
+  "藍": {
+    "meaning": "쪽 람",
+    "ondoku": "らん",
+    "kundoku": "あい"
+  },
+  "拉": {
+    "meaning": "끌 랍",
+    "ondoku": "ら",
+    "kundoku": ""
+  },
+  "朗": {
+    "meaning": "밝을 랑",
+    "ondoku": "ろう",
+    "kundoku": "ほがらか"
+  },
+  "郎": {
+    "meaning": "사내 랑",
+    "ondoku": "ろう",
+    "kundoku": ""
+  },
+  "浪": {
+    "meaning": "물결 랑",
+    "ondoku": "ろう",
+    "kundoku": ""
+  },
+  "廊": {
+    "meaning": "행랑 랑",
+    "ondoku": "ろう",
+    "kundoku": ""
+  },
+  "来": {
+    "meaning": "올 래",
+    "ondoku": "らい",
+    "kundoku": "くる、きたる、きたす"
+  },
+  "冷": {
+    "meaning": "찰 랭",
+    "ondoku": "れい",
+    "kundoku": "つめたい、ひえる、ひや、ひやす、ひやかす、ひめる、さます"
+  },
+  "略": {
+    "meaning": "간략할 략",
+    "ondoku": "りゃく",
+    "kundoku": ""
+  },
+  "両": {
+    "meaning": "두 량",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "良": {
+    "meaning": "어질 량",
+    "ondoku": "りょう",
+    "kundoku": "よい"
+  },
+  "量": {
+    "meaning": "헤아릴 량",
+    "ondoku": "りょう",
+    "kundoku": "はかる"
+  },
+  "涼": {
+    "meaning": "서늘할 량",
+    "ondoku": "りょう",
+    "kundoku": "すずしい、すずむ"
+  },
+  "糧": {
+    "meaning": "양식 량",
+    "ondoku": "りょう、ろう",
+    "kundoku": "かて"
+  },
+  "旅": {
+    "meaning": "나그네 려",
+    "ondoku": "りょ",
+    "kundoku": "たび"
+  },
+  "戻": {
+    "meaning": "어그러질 려",
+    "ondoku": "れい",
+    "kundoku": "もどす、もどる"
+  },
+  "呂": {
+    "meaning": "음률 려",
+    "ondoku": "ろ",
+    "kundoku": ""
+  },
+  "励": {
+    "meaning": "힘쓸 려",
+    "ondoku": "れい",
+    "kundoku": "はげむ、はげます"
+  },
+  "侶": {
+    "meaning": "짝 려",
+    "ondoku": "りょ",
+    "kundoku": ""
+  },
+  "慮": {
+    "meaning": "생각할 려",
+    "ondoku": "りょ",
+    "kundoku": ""
+  },
+  "麗": {
+    "meaning": "고울 려",
+    "ondoku": "れい",
+    "kundoku": "うるわしい"
+  },
+  "力": {
+    "meaning": "힘 력",
+    "ondoku": "りょく、りき",
+    "kundoku": "ちから"
+  },
+  "歴": {
+    "meaning": "지낼 력",
+    "ondoku": "れき",
+    "kundoku": ""
+  },
+  "暦": {
+    "meaning": "책력 력",
+    "ondoku": "れき",
+    "kundoku": "こよみ"
+  },
+  "練": {
+    "meaning": "익힐 련",
+    "ondoku": "れん",
+    "kundoku": "ねる"
+  },
+  "連": {
+    "meaning": "잇닿을 련",
+    "ondoku": "れん",
+    "kundoku": "つらなる、つらねる、つれる"
+  },
+  "恋": {
+    "meaning": "그리워할 련",
+    "ondoku": "れん",
+    "kundoku": "こう、こい、こいしい"
+  },
+  "錬": {
+    "meaning": "불릴/단련할 련",
+    "ondoku": "れん",
+    "kundoku": "ねる"
+  },
+  "列": {
+    "meaning": "벌일 렬",
+    "ondoku": "れつ",
+    "kundoku": ""
+  },
+  "劣": {
+    "meaning": "못할 렬",
+    "ondoku": "れつ",
+    "kundoku": "おとる"
+  },
+  "烈": {
+    "meaning": "매울 렬",
+    "ondoku": "れつ",
+    "kundoku": ""
+  },
+  "裂": {
+    "meaning": "찢을 렬",
+    "ondoku": "れつ",
+    "kundoku": "さく、さける"
+  },
+  "廉": {
+    "meaning": "청렴할 렴",
+    "ondoku": "れん",
+    "kundoku": ""
+  },
+  "猟": {
+    "meaning": "사냥 렵",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "令": {
+    "meaning": "하여금 령",
+    "ondoku": "れい",
+    "kundoku": ""
+  },
+  "領": {
+    "meaning": "거느릴 령",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "鈴": {
+    "meaning": "방울 령",
+    "ondoku": "れい、りん",
+    "kundoku": "すず"
+  },
+  "零": {
+    "meaning": "떨어질 령/영 령",
+    "ondoku": "れい",
+    "kundoku": ""
+  },
+  "霊": {
+    "meaning": "신령 령",
+    "ondoku": "れい、りょう",
+    "kundoku": "たま"
+  },
+  "齢": {
+    "meaning": "나이 령",
+    "ondoku": "れい",
+    "kundoku": ""
+  },
+  "礼": {
+    "meaning": "예도 례",
+    "ondoku": "れい、らい",
+    "kundoku": ""
+  },
+  "例": {
+    "meaning": "법식 례",
+    "ondoku": "れい",
+    "kundoku": "たどえる"
+  },
+  "隷": {
+    "meaning": "종 례",
+    "ondoku": "れい",
+    "kundoku": ""
+  },
+  "路": {
+    "meaning": "길 로",
+    "ondoku": "ろ",
+    "kundoku": "じ"
+  },
+  "老": {
+    "meaning": "늙을 로",
+    "ondoku": "ろう",
+    "kundoku": "おいる、ふける"
+  },
+  "労": {
+    "meaning": "일할 로",
+    "ondoku": "ろう",
+    "kundoku": ""
+  },
+  "炉": {
+    "meaning": "화로 로",
+    "ondoku": "ろ",
+    "kundoku": ""
+  },
+  "虜": {
+    "meaning": "사로잡을 로",
+    "ondoku": "りょ",
+    "kundoku": "とりこ"
+  },
+  "露": {
+    "meaning": "이슬 로",
+    "ondoku": "ろ、ろう",
+    "kundoku": "つゆ"
+  },
+  "緑": {
+    "meaning": "푸를 록",
+    "ondoku": "りょく、ろく",
+    "kundoku": "みどり"
+  },
+  "録": {
+    "meaning": "기록할 록",
+    "ondoku": "ろく",
+    "kundoku": ""
+  },
+  "鹿": {
+    "meaning": "사슴 록",
+    "ondoku": "ろく",
+    "kundoku": "しか、か"
+  },
+  "麓": {
+    "meaning": "산기슭 록",
+    "ondoku": "ろく",
+    "kundoku": "ふもと"
+  },
+  "論": {
+    "meaning": "논할 론",
+    "ondoku": "ろん",
+    "kundoku": ""
+  },
+  "弄": {
+    "meaning": "희롱할 롱",
+    "ondoku": "ろう",
+    "kundoku": "もてあそぶ"
+  },
+  "滝": {
+    "meaning": "비 올 롱",
+    "ondoku": "",
+    "kundoku": "たき"
+  },
+  "籠": {
+    "meaning": "대바구니 롱",
+    "ondoku": "ろう",
+    "kundoku": "かご、こもる"
+  },
+  "雷": {
+    "meaning": "우레 뢰",
+    "ondoku": "らい",
+    "kundoku": "かみなり"
+  },
+  "賂": {
+    "meaning": "뇌물 뢰",
+    "ondoku": "ろ",
+    "kundoku": "まいない"
+  },
+  "頼": {
+    "meaning": "의뢰할 뢰",
+    "ondoku": "らい",
+    "kundoku": "たのむ、たのもしい、たよる"
+  },
+  "瀬": {
+    "meaning": "여울 뢰",
+    "ondoku": "",
+    "kundoku": "せ"
+  },
+  "料": {
+    "meaning": "헤아릴 료",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "了": {
+    "meaning": "마칠 료",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "僚": {
+    "meaning": "동료 료",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "寮": {
+    "meaning": "동관 료",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "療": {
+    "meaning": "병 고칠 료",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "瞭": {
+    "meaning": "밝을 료",
+    "ondoku": "りょう",
+    "kundoku": ""
+  },
+  "竜": {
+    "meaning": "용 룡",
+    "ondoku": "りゅう",
+    "kundoku": "たつ"
+  },
+  "涙": {
+    "meaning": "눈물 루",
+    "ondoku": "るい",
+    "kundoku": "なみだ"
+  },
+  "累": {
+    "meaning": "여러/자주 루",
+    "ondoku": "るい",
+    "kundoku": ""
+  },
+  "塁": {
+    "meaning": "보루 루",
+    "ondoku": "るい",
+    "kundoku": ""
+  },
+  "楼": {
+    "meaning": "다락 루",
+    "ondoku": "ろう",
+    "kundoku": ""
+  },
+  "漏": {
+    "meaning": "샐 루",
+    "ondoku": "ろう",
+    "kundoku": "もる、もれる、もらす"
+  },
+  "流": {
+    "meaning": "흐를 류",
+    "ondoku": "りゅう、る",
+    "kundoku": "ながれる、ながす"
+  },
+  "類": {
+    "meaning": "무리 류",
+    "ondoku": "るい",
+    "kundoku": ""
+  },
+  "留": {
+    "meaning": "머무를 류",
+    "ondoku": "りゅう、る",
+    "kundoku": "とめる、とまる、とどまる"
+  },
+  "柳": {
+    "meaning": "버들 류",
+    "ondoku": "りゅう",
+    "kundoku": "やなぎ"
+  },
+  "硫": {
+    "meaning": "유황 류",
+    "ondoku": "りゅう",
+    "kundoku": ""
+  },
+  "瑠": {
+    "meaning": "맑은 유리 류",
+    "ondoku": "る",
+    "kundoku": ""
+  },
+  "陸": {
+    "meaning": "뭍 륙",
+    "ondoku": "りき",
+    "kundoku": ""
+  },
+  "輪": {
+    "meaning": "바퀴 륜",
+    "ondoku": "りん",
+    "kundoku": "わ"
+  },
+  "倫": {
+    "meaning": "인륜 륜",
+    "ondoku": "りん",
+    "kundoku": ""
+  },
+  "率": {
+    "meaning": "비율 률/거느릴 솔",
+    "ondoku": "りつ、そつ",
+    "kundoku": "ひきいる"
+  },
+  "律": {
+    "meaning": "법칙 률",
+    "ondoku": "りつ、りち",
+    "kundoku": ""
+  },
+  "慄": {
+    "meaning": "떨릴 률",
+    "ondoku": "りつ",
+    "kundoku": ""
+  },
+  "隆": {
+    "meaning": "높을 륭",
+    "ondoku": "りゅう",
+    "kundoku": ""
+  },
+  "陵": {
+    "meaning": "언덕 릉",
+    "ondoku": "りょう",
+    "kundoku": "みささぎ"
+  },
+  "理": {
+    "meaning": "다스릴 리",
+    "ondoku": "り",
+    "kundoku": ""
+  },
+  "里": {
+    "meaning": "마을 리",
+    "ondoku": "り",
+    "kundoku": "さと"
+  },
+  "利": {
+    "meaning": "이로울 리",
+    "ondoku": "り",
+    "kundoku": "きく"
+  },
+  "裏": {
+    "meaning": "속 리",
+    "ondoku": "り",
+    "kundoku": "うら"
+  },
+  "吏": {
+    "meaning": "관리 리",
+    "ondoku": "り",
+    "kundoku": ""
+  },
+  "厘": {
+    "meaning": "이 리",
+    "ondoku": "りん",
+    "kundoku": ""
+  },
+  "梨": {
+    "meaning": "배나무 리",
+    "ondoku": "り",
+    "kundoku": "なし"
+  },
+  "痢": {
+    "meaning": "설사 리",
+    "ondoku": "り",
+    "kundoku": ""
+  },
+  "履": {
+    "meaning": "밟을 리",
+    "ondoku": "り",
+    "kundoku": "はく"
+  },
+  "璃": {
+    "meaning": "유리 리",
+    "ondoku": "り",
+    "kundoku": ""
+  },
+  "離": {
+    "meaning": "떠날 리",
+    "ondoku": "り",
+    "kundoku": "はなれる、はなす"
+  },
+  "隣": {
+    "meaning": "이웃 린",
+    "ondoku": "りん",
+    "kundoku": "となり、となる"
+  },
+  "林": {
+    "meaning": "수풀 림",
+    "ondoku": "りん",
+    "kundoku": "はやし"
+  },
+  "臨": {
+    "meaning": "임할 림",
+    "ondoku": "りん",
+    "kundoku": "のぞむ"
+  },
+  "立": {
+    "meaning": "설 립",
+    "ondoku": "りつ、りゅう",
+    "kundoku": "たつ、たてる"
+  },
+  "粒": {
+    "meaning": "낟알 립",
+    "ondoku": "りゅう",
+    "kundoku": "つぶ"
+  },
+  "馬": {
+    "meaning": "말 마",
+    "ondoku": "ば",
+    "kundoku": "うま、ま"
+  },
+  "麻": {
+    "meaning": "삼 마",
+    "ondoku": "ま",
+    "kundoku": "あさ"
+  },
+  "摩": {
+    "meaning": "문지를 마",
+    "ondoku": "ま",
+    "kundoku": ""
+  },
+  "磨": {
+    "meaning": "갈 마",
+    "ondoku": "ま",
+    "kundoku": "みがく"
+  },
+  "魔": {
+    "meaning": "마귀 마",
+    "ondoku": "ま",
+    "kundoku": ""
+  },
+  "幕": {
+    "meaning": "장막 막",
+    "ondoku": "まく",
+    "kundoku": ""
+  },
+  "漠": {
+    "meaning": "넓을/사막 막",
+    "ondoku": "ばく",
+    "kundoku": ""
+  },
+  "膜": {
+    "meaning": "꺼풀/막 막",
+    "ondoku": "まく",
+    "kundoku": ""
+  },
+  "万": {
+    "meaning": "일만 만",
+    "ondoku": "まん、ばん",
+    "kundoku": ""
+  },
+  "満": {
+    "meaning": "찰 만",
+    "ondoku": "まん",
+    "kundoku": "みちる、みたす"
+  },
+  "晩": {
+    "meaning": "늦을 만",
+    "ondoku": "ばん",
+    "kundoku": ""
+  },
+  "蛮": {
+    "meaning": "오랑캐 만",
+    "ondoku": "ばん",
+    "kundoku": ""
+  },
+  "湾": {
+    "meaning": "물굽이 만",
+    "ondoku": "わん",
+    "kundoku": ""
+  },
+  "漫": {
+    "meaning": "흩어질 만",
+    "ondoku": "まん",
+    "kundoku": ""
+  },
+  "慢": {
+    "meaning": "거만할 만",
+    "ondoku": "まん",
+    "kundoku": ""
+  },
+  "末": {
+    "meaning": "끝 말",
+    "ondoku": "まつ、ばつ",
+    "kundoku": "すえ"
+  },
+  "抹": {
+    "meaning": "지울 말",
+    "ondoku": "まつ",
+    "kundoku": ""
+  },
+  "望": {
+    "meaning": "바랄 망",
+    "ondoku": "ぼう、もう",
+    "kundoku": "のぞむ"
+  },
+  "亡": {
+    "meaning": "망할 망",
+    "ondoku": "ぼう、もう",
+    "kundoku": "ない"
+  },
+  "忘": {
+    "meaning": "잊을 망",
+    "ondoku": "ぼう",
+    "kundoku": "わすれる"
+  },
+  "忙": {
+    "meaning": "바쁠 망",
+    "ondoku": "ぼう",
+    "kundoku": "いそがしい"
+  },
+  "妄": {
+    "meaning": "망령될 망",
+    "ondoku": "もう",
+    "kundoku": ""
+  },
+  "網": {
+    "meaning": "그물 망",
+    "ondoku": "もう",
+    "kundoku": "あみ"
+  },
+  "毎": {
+    "meaning": "매양 매",
+    "ondoku": "まい",
+    "kundoku": ""
+  },
+  "売": {
+    "meaning": "팔 매",
+    "ondoku": "ばい",
+    "kundoku": "うる、うれる"
+  },
+  "妹": {
+    "meaning": "누이 매",
+    "ondoku": "まい",
+    "kundoku": "いもうと"
+  },
+  "買": {
+    "meaning": "살 매",
+    "ondoku": "ばい",
+    "kundoku": "かう"
+  },
+  "梅": {
+    "meaning": "매화 매",
+    "ondoku": "ばい",
+    "kundoku": "うめ"
+  },
+  "枚": {
+    "meaning": "낱 매",
+    "ondoku": "まい",
+    "kundoku": ""
+  },
+  "昧": {
+    "meaning": "어두울 매",
+    "ondoku": "まい",
+    "kundoku": ""
+  },
+  "埋": {
+    "meaning": "묻을 매",
+    "ondoku": "まい",
+    "kundoku": "うめる、うまる、うもれる"
+  },
+  "媒": {
+    "meaning": "중매 매",
+    "ondoku": "ばい",
+    "kundoku": ""
+  },
+  "魅": {
+    "meaning": "매혹할 매",
+    "ondoku": "み",
+    "kundoku": ""
+  },
+  "罵": {
+    "meaning": "꾸짖을 매",
+    "ondoku": "ば",
+    "kundoku": "ののしる"
+  },
+  "麦": {
+    "meaning": "보리 맥",
+    "ondoku": "ばく",
+    "kundoku": "むぎ"
+  },
+  "脈": {
+    "meaning": "줄기 맥",
+    "ondoku": "みゃく",
+    "kundoku": ""
+  },
+  "盟": {
+    "meaning": "맹세 맹",
+    "ondoku": "めい",
+    "kundoku": ""
+  },
+  "盲": {
+    "meaning": "소경/ 눈 멀 맹",
+    "ondoku": "もう",
+    "kundoku": ""
+  },
+  "猛": {
+    "meaning": "사나울 맹",
+    "ondoku": "もう",
+    "kundoku": ""
+  },
+  "面": {
+    "meaning": "낮 면",
+    "ondoku": "めん",
+    "kundoku": "おも、おもて、つら"
+  },
+  "勉": {
+    "meaning": "힘쓸 면",
+    "ondoku": "べん",
+    "kundoku": ""
+  },
+  "綿": {
+    "meaning": "솜 면",
+    "ondoku": "めん",
+    "kundoku": "わた"
+  },
+  "免": {
+    "meaning": "면할 면",
+    "ondoku": "めん",
+    "kundoku": "まぬかれる"
+  },
+  "眠": {
+    "meaning": "잘 면",
+    "ondoku": "みん",
+    "kundoku": "ねむる、ねむい"
+  },
+  "麺": {
+    "meaning": "밀가루 면",
+    "ondoku": "めん",
+    "kundoku": ""
+  },
+  "滅": {
+    "meaning": "꺼질/ 멸할 멸",
+    "ondoku": "めつ",
+    "kundoku": "ほろびる、ほろぼす"
+  },
+  "蔑": {
+    "meaning": "업신여길 멸",
+    "ondoku": "べつ",
+    "kundoku": "さげすむ"
+  },
+  "名": {
+    "meaning": "이름 명",
+    "ondoku": "めい、みょう",
+    "kundoku": "な"
+  },
+  "明": {
+    "meaning": "밝을 명",
+    "ondoku": "みょう、めい",
+    "kundoku": "あかり、あかるい、あかるむ、あからむ、あきらか、あくる、あける、あく、あかす"
+  },
+  "鳴": {
+    "meaning": "울 명",
+    "ondoku": "めい",
+    "kundoku": "なる、なく、ならす"
+  },
+  "皿": {
+    "meaning": "그릇 명",
+    "ondoku": "",
+    "kundoku": "さら"
+  },
+  "命": {
+    "meaning": "목숨 명",
+    "ondoku": "めい、みょう",
+    "kundoku": "いのち"
+  },
+  "冥": {
+    "meaning": "어두울 명",
+    "ondoku": "めい、みょう",
+    "kundoku": ""
+  },
+  "銘": {
+    "meaning": "새길 명",
+    "ondoku": "めい",
+    "kundoku": ""
+  },
+  "毛": {
+    "meaning": "터럭 모",
+    "ondoku": "もう",
+    "kundoku": "け"
+  },
+  "母": {
+    "meaning": "어머니 모",
+    "ondoku": "ぼ",
+    "kundoku": "はは"
+  },
+  "模": {
+    "meaning": "본뜰 모",
+    "ondoku": "も、ぼ",
+    "kundoku": ""
+  },
+  "暮": {
+    "meaning": "저물 모",
+    "ondoku": "ぼ",
+    "kundoku": "くれる、くらす"
+  },
+  "矛": {
+    "meaning": "창 모",
+    "ondoku": "む",
+    "kundoku": "ほこ"
+  },
+  "侮": {
+    "meaning": "업신여길 모",
+    "ondoku": "ぶ",
+    "kundoku": "あなどる"
+  },
+  "冒": {
+    "meaning": "무릅쓸 모",
+    "ondoku": "ぼう",
+    "kundoku": "おかす"
+  },
+  "某": {
+    "meaning": "아무 모",
+    "ondoku": "ぼう",
+    "kundoku": ""
+  },
+  "耗": {
+    "meaning": "소모할 모",
+    "ondoku": "もう、こう",
+    "kundoku": "へらす、へる"
+  },
+  "募": {
+    "meaning": "모을/뽑을 모",
+    "ondoku": "ぼ",
+    "kundoku": "つのる"
+  },
+  "帽": {
+    "meaning": "모자 모",
+    "ondoku": "ぼう",
+    "kundoku": ""
+  },
+  "慕": {
+    "meaning": "그릴 모",
+    "ondoku": "ぼ",
+    "kundoku": "したう"
+  },
+  "貌": {
+    "meaning": "모양 모",
+    "ondoku": "ぼう",
+    "kundoku": "かお、かたち"
+  },
+  "謀": {
+    "meaning": "꾀 모",
+    "ondoku": "ぼう、む",
+    "kundoku": "はかる"
+  },
+  "木": {
+    "meaning": "나무 목",
+    "ondoku": "もく、ぼく",
+    "kundoku": "き、こ"
+  },
+  "目": {
+    "meaning": "눈 목",
+    "ondoku": "もく、ぼく",
+    "kundoku": "め、ま"
+  },
+  "牧": {
+    "meaning": "칠 목",
+    "ondoku": "ぼく",
+    "kundoku": "まき"
+  },
+  "睦": {
+    "meaning": "화목할 목",
+    "ondoku": "ぼく",
+    "kundoku": "むつまじい"
+  },
+  "没": {
+    "meaning": "빠질 몰",
+    "ondoku": "ぼつ",
+    "kundoku": ""
+  },
+  "夢": {
+    "meaning": "꿈 몽",
+    "ondoku": "む",
+    "kundoku": "ゆめ"
+  },
+  "墓": {
+    "meaning": "무덤 묘",
+    "ondoku": "ぼ",
+    "kundoku": "はか"
+  },
+  "妙": {
+    "meaning": "묘할 묘",
+    "ondoku": "みょう",
+    "kundoku": ""
+  },
+  "苗": {
+    "meaning": "모 묘",
+    "ondoku": "びょう、みょう",
+    "kundoku": "なえ、なわ"
+  },
+  "畝": {
+    "meaning": "이랑 묘",
+    "ondoku": "",
+    "kundoku": "うね、せ"
+  },
+  "描": {
+    "meaning": "그릴 묘",
+    "ondoku": "びょう",
+    "kundoku": "えがく、かく"
+  },
+  "猫": {
+    "meaning": "고양이 묘",
+    "ondoku": "びょう",
+    "kundoku": "ねこ"
+  },
+  "無": {
+    "meaning": "없을 무",
+    "ondoku": "む、ぶ",
+    "kundoku": "ない"
+  },
+  "武": {
+    "meaning": "호반 무",
+    "ondoku": "ぶ、む",
+    "kundoku": ""
+  },
+  "務": {
+    "meaning": "힘쓸 무",
+    "ondoku": "む",
+    "kundoku": "つとめる、つとまる"
+  },
+  "貿": {
+    "meaning": "무역할 무",
+    "ondoku": "ぼう",
+    "kundoku": ""
+  },
+  "茂": {
+    "meaning": "무성할 무",
+    "ondoku": "も",
+    "kundoku": "しげる"
+  },
+  "舞": {
+    "meaning": "춤출 무",
+    "ondoku": "ぶ",
+    "kundoku": "まう、まい"
+  },
+  "霧": {
+    "meaning": "안개 무",
+    "ondoku": "む",
+    "kundoku": "きり"
+  },
+  "墨": {
+    "meaning": "먹 묵",
+    "ondoku": "ぼく",
+    "kundoku": "すみ"
+  },
+  "黙": {
+    "meaning": "잠잠할 묵",
+    "ondoku": "もく",
+    "kundoku": "だまる"
+  },
+  "文": {
+    "meaning": "글월 문",
+    "ondoku": "ぶん、もん",
+    "kundoku": "ふみ"
+  },
+  "門": {
+    "meaning": "문 문",
+    "ondoku": "もん",
+    "kundoku": "かど"
+  },
+  "聞": {
+    "meaning": "들을 문",
+    "ondoku": "ぶん、もん",
+    "kundoku": "きく、きこえる"
+  },
+  "問": {
+    "meaning": "물을 문",
+    "ondoku": "もん",
+    "kundoku": "とう、とん"
+  },
+  "蚊": {
+    "meaning": "모기 문",
+    "ondoku": "",
+    "kundoku": "か"
+  },
+  "紋": {
+    "meaning": "무늬 문",
+    "ondoku": "もん",
+    "kundoku": ""
+  },
+  "物": {
+    "meaning": "물건 물",
+    "ondoku": "ぶつ、もつ",
+    "kundoku": "もの"
+  },
+  "米": {
+    "meaning": "쌀 미",
+    "ondoku": "べい、まい",
+    "kundoku": "こめ"
+  },
+  "美": {
+    "meaning": "아름다울 미",
+    "ondoku": "び",
+    "kundoku": "うつくしい"
+  },
+  "味": {
+    "meaning": "맛 미",
+    "ondoku": "み",
+    "kundoku": "あじ、あじわう"
+  },
+  "未": {
+    "meaning": "아닐 미",
+    "ondoku": "み",
+    "kundoku": ""
+  },
+  "迷": {
+    "meaning": "미혹할 미",
+    "ondoku": "めい",
+    "kundoku": "まよう"
+  },
+  "尾": {
+    "meaning": "꼬리 미",
+    "ondoku": "び",
+    "kundoku": "お"
+  },
+  "弥": {
+    "meaning": "미륵 미",
+    "ondoku": "み",
+    "kundoku": "や"
+  },
+  "眉": {
+    "meaning": "눈썹 미",
+    "ondoku": "び、み",
+    "kundoku": "まゆ"
+  },
+  "微": {
+    "meaning": "작을 미",
+    "ondoku": "び",
+    "kundoku": ""
+  },
+  "謎": {
+    "meaning": "수수께끼 미",
+    "ondoku": "",
+    "kundoku": "なぞ"
+  },
+  "民": {
+    "meaning": "백성 민",
+    "ondoku": "みん",
+    "kundoku": "たみ"
+  },
+  "敏": {
+    "meaning": "민감할 민",
+    "ondoku": "びん",
+    "kundoku": ""
+  },
+  "密": {
+    "meaning": "빽빽할 밀",
+    "ondoku": "みつ",
+    "kundoku": ""
+  },
+  "蜜": {
+    "meaning": "꿀 밀",
+    "ondoku": "みつ",
+    "kundoku": ""
+  },
+  "博": {
+    "meaning": "넓을 박",
+    "ondoku": "はく、ばく",
+    "kundoku": ""
+  },
+  "朴": {
+    "meaning": "성씨 박",
+    "ondoku": "ぼく",
+    "kundoku": ""
+  },
+  "泊": {
+    "meaning": "머무를/ 배 댈 박",
+    "ondoku": "はく",
+    "kundoku": "とまる、とめる"
+  },
+  "拍": {
+    "meaning": "칠 박",
+    "ondoku": "はく、ひょう",
+    "kundoku": ""
+  },
+  "迫": {
+    "meaning": "핍박할 박",
+    "ondoku": "はく",
+    "kundoku": "せまる"
+  },
+  "剝": {
+    "meaning": "벗길 박",
+    "ondoku": "はく",
+    "kundoku": "はがす、はぐ、はがれる、むく"
+  },
+  "舶": {
+    "meaning": "배 박",
+    "ondoku": "はく",
+    "kundoku": ""
+  },
+  "撲": {
+    "meaning": "칠 박",
+    "ondoku": "ぼく",
+    "kundoku": ""
+  },
+  "薄": {
+    "meaning": "엷을 박",
+    "ondoku": "はく",
+    "kundoku": "うすい、うすまる、うすめる、うすらぐ、うすれる、すすき、せまる"
+  },
+  "縛": {
+    "meaning": "얽을 박",
+    "ondoku": "ばく",
+    "kundoku": "しばる"
+  },
+  "半": {
+    "meaning": "반 반",
+    "ondoku": "はん",
+    "kundoku": "なかば"
+  },
+  "反": {
+    "meaning": "돌이킬 반",
+    "ondoku": "はん、ほん、たん",
+    "kundoku": "そる、そらす"
+  },
+  "返": {
+    "meaning": "돌이킬 반",
+    "ondoku": "へん",
+    "kundoku": "かえす、かえる"
+  },
+  "飯": {
+    "meaning": "밥 반",
+    "ondoku": "はん",
+    "kundoku": "ぬし"
+  },
+  "班": {
+    "meaning": "나눌 반",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "伴": {
+    "meaning": "짝 반",
+    "ondoku": "はん、ばん",
+    "kundoku": "ともなう"
+  },
+  "畔": {
+    "meaning": "밭두둑 반",
+    "ondoku": "はん",
+    "kundoku": "あぜ、ほとり"
+  },
+  "般": {
+    "meaning": "일반 반",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "斑": {
+    "meaning": "얼룩 반",
+    "ondoku": "はん",
+    "kundoku": "まだら、ぶち"
+  },
+  "搬": {
+    "meaning": "옮길 반",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "頒": {
+    "meaning": "나눌 반",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "盤": {
+    "meaning": "소반 반",
+    "ondoku": "ばん",
+    "kundoku": ""
+  },
+  "発": {
+    "meaning": "필 발",
+    "ondoku": "はつ",
+    "kundoku": ""
+  },
+  "抜": {
+    "meaning": "뽑을 발",
+    "ondoku": "ばつ",
+    "kundoku": "ぬかす、ぬく、ぬける、ぬかる"
+  },
+  "勃": {
+    "meaning": "우쩍 일어날 발",
+    "ondoku": "ぼつ",
+    "kundoku": "おこる"
+  },
+  "鉢": {
+    "meaning": "바리때 발",
+    "ondoku": "はち",
+    "kundoku": ""
+  },
+  "髪": {
+    "meaning": "터럭 발",
+    "ondoku": "はつ",
+    "kundoku": "かみ"
+  },
+  "方": {
+    "meaning": "모 방",
+    "ondoku": "ほう",
+    "kundoku": "かた"
+  },
+  "放": {
+    "meaning": "놓을 방",
+    "ondoku": "ほう",
+    "kundoku": "はなつ、はなれる、はなす、ほうる"
+  },
+  "訪": {
+    "meaning": "찾을 방",
+    "ondoku": "ほう",
+    "kundoku": "おとずれる、たずねる"
+  },
+  "防": {
+    "meaning": "막을 방",
+    "ondoku": "ぼう",
+    "kundoku": "ふせぐ"
+  },
+  "妨": {
+    "meaning": "방해할 방",
+    "ondoku": "ぼう",
+    "kundoku": "さまたげる"
+  },
+  "邦": {
+    "meaning": "나라 방",
+    "ondoku": "ほう",
+    "kundoku": "くに"
+  },
+  "芳": {
+    "meaning": "꽃다울 방",
+    "ondoku": "ほう",
+    "kundoku": "かんばしい、よし"
+  },
+  "坊": {
+    "meaning": "동네 방",
+    "ondoku": "ぼう、ぼっ",
+    "kundoku": ""
+  },
+  "房": {
+    "meaning": "방 방",
+    "ondoku": "ぼう",
+    "kundoku": "ふさ"
+  },
+  "肪": {
+    "meaning": "살찔 방",
+    "ondoku": "ぼう",
+    "kundoku": ""
+  },
+  "倣": {
+    "meaning": "본뜰 방",
+    "ondoku": "ほう",
+    "kundoku": "ならう"
+  },
+  "紡": {
+    "meaning": "길쌈 방",
+    "ondoku": "ぼう",
+    "kundoku": "つむぐ"
+  },
+  "傍": {
+    "meaning": "곁 방",
+    "ondoku": "ぼう",
+    "kundoku": "かたわら、そば"
+  },
+  "配": {
+    "meaning": "나눌 배",
+    "ondoku": "はい",
+    "kundoku": "くばる"
+  },
+  "倍": {
+    "meaning": "곱 배",
+    "ondoku": "ばい",
+    "kundoku": ""
+  },
+  "拝": {
+    "meaning": "절 배",
+    "ondoku": "はい",
+    "kundoku": "おがむ"
+  },
+  "背": {
+    "meaning": "등 배",
+    "ondoku": "はい",
+    "kundoku": "せ、せい、そむく、そむける"
+  },
+  "俳": {
+    "meaning": "배우 배",
+    "ondoku": "はい",
+    "kundoku": ""
+  },
+  "杯": {
+    "meaning": "잔 배",
+    "ondoku": "はい",
+    "kundoku": "さかずき"
+  },
+  "排": {
+    "meaning": "배척할 배",
+    "ondoku": "はい",
+    "kundoku": ""
+  },
+  "陪": {
+    "meaning": "모실 배",
+    "ondoku": "ばい",
+    "kundoku": ""
+  },
+  "培": {
+    "meaning": "배양할 배",
+    "ondoku": "ばい",
+    "kundoku": "つちかう"
+  },
+  "輩": {
+    "meaning": "무리 배",
+    "ondoku": "はい",
+    "kundoku": ""
+  },
+  "賠": {
+    "meaning": "물어줄 배",
+    "ondoku": "ばい",
+    "kundoku": ""
+  },
+  "白": {
+    "meaning": "흰 백",
+    "ondoku": "はく、びゃく",
+    "kundoku": "しる、しら、しろい"
+  },
+  "百": {
+    "meaning": "일백 백",
+    "ondoku": "ひゃく",
+    "kundoku": ""
+  },
+  "伯": {
+    "meaning": "맏 백",
+    "ondoku": "はく",
+    "kundoku": ""
+  },
+  "番": {
+    "meaning": "차례 번",
+    "ondoku": "ばん",
+    "kundoku": ""
+  },
+  "繁": {
+    "meaning": "번성할 번",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "煩": {
+    "meaning": "번거로울 번",
+    "ondoku": "はん、ぼん",
+    "kundoku": "わずらう、わずらわす、わずらわしい"
+  },
+  "藩": {
+    "meaning": "울타리 번",
+    "ondoku": "はん",
+    "kundoku": "まがき"
+  },
+  "翻": {
+    "meaning": "번역할 번",
+    "ondoku": "ほん",
+    "kundoku": "ひるがえる、ひるがえす"
+  },
+  "伐": {
+    "meaning": "칠 벌",
+    "ondoku": "ばつ",
+    "kundoku": "うつ、きる"
+  },
+  "罰": {
+    "meaning": "벌할 벌",
+    "ondoku": "ばつ、ばち",
+    "kundoku": ""
+  },
+  "閥": {
+    "meaning": "문벌 벌",
+    "ondoku": "ばつ",
+    "kundoku": ""
+  },
+  "犯": {
+    "meaning": "범할 범",
+    "ondoku": "はん",
+    "kundoku": "おかす"
+  },
+  "凡": {
+    "meaning": "무릇 범",
+    "ondoku": "はん、ぼん",
+    "kundoku": "およそ、すべて"
+  },
+  "氾": {
+    "meaning": "넘칠 범",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "汎": {
+    "meaning": "넓을 범",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "帆": {
+    "meaning": "돛 범",
+    "ondoku": "はん",
+    "kundoku": "ほ"
+  },
+  "範": {
+    "meaning": "법 범",
+    "ondoku": "はん",
+    "kundoku": "のり"
+  },
+  "法": {
+    "meaning": "법 법",
+    "ondoku": "ほう、ほっ、はっ",
+    "kundoku": ""
+  },
+  "壁": {
+    "meaning": "벽 벽",
+    "ondoku": "へき",
+    "kundoku": "かべ"
+  },
+  "癖": {
+    "meaning": "버릇 벽",
+    "ondoku": "へき",
+    "kundoku": "くせ"
+  },
+  "璧": {
+    "meaning": "구슬 벽",
+    "ondoku": "へき",
+    "kundoku": ""
+  },
+  "辺": {
+    "meaning": "가 변",
+    "ondoku": "へん",
+    "kundoku": "あたり、べ"
+  },
+  "変": {
+    "meaning": "변할 변",
+    "ondoku": "へん",
+    "kundoku": "かわる、かえる"
+  },
+  "弁": {
+    "meaning": "말씀 변",
+    "ondoku": "べん",
+    "kundoku": ""
+  },
+  "別": {
+    "meaning": "나눌 별",
+    "ondoku": "べつ",
+    "kundoku": "わかれる"
+  },
+  "病": {
+    "meaning": "병 병",
+    "ondoku": "びょう、へい",
+    "kundoku": "やむ、やまい"
+  },
+  "兵": {
+    "meaning": "병사 병",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "並": {
+    "meaning": "나란히 병",
+    "ondoku": "へい",
+    "kundoku": "なみ、ならべる、ならぶ、ならびに"
+  },
+  "丙": {
+    "meaning": "남녘 병",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "併": {
+    "meaning": "아우를 병",
+    "ondoku": "へい",
+    "kundoku": "あわせる、しかし"
+  },
+  "柄": {
+    "meaning": "자루 병",
+    "ondoku": "へい",
+    "kundoku": "え、がら、つか"
+  },
+  "瓶": {
+    "meaning": "병 병",
+    "ondoku": "びん",
+    "kundoku": ""
+  },
+  "塀": {
+    "meaning": "담 병",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "餅": {
+    "meaning": "떡 병",
+    "ondoku": "へい",
+    "kundoku": "もち"
+  },
+  "歩": {
+    "meaning": "걸음 보",
+    "ondoku": "ほ、ぶ、ふ",
+    "kundoku": "あるく、あゆむ"
+  },
+  "保": {
+    "meaning": "지킬 보",
+    "ondoku": "ほ",
+    "kundoku": "たもつ"
+  },
+  "報": {
+    "meaning": "갚을 보",
+    "ondoku": "ほう",
+    "kundoku": "しらせる、むくいる"
+  },
+  "宝": {
+    "meaning": "보배 보",
+    "ondoku": "ほう",
+    "kundoku": "たから"
+  },
+  "補": {
+    "meaning": "기울 보",
+    "ondoku": "ほ",
+    "kundoku": "おぎなう"
+  },
+  "普": {
+    "meaning": "넓을 보",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "譜": {
+    "meaning": "족보 보",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "服": {
+    "meaning": "옷 복",
+    "ondoku": "ふく",
+    "kundoku": ""
+  },
+  "福": {
+    "meaning": "복 복",
+    "ondoku": "ふく",
+    "kundoku": ""
+  },
+  "復": {
+    "meaning": "회복할 복/ 다시 부",
+    "ondoku": "ふく",
+    "kundoku": ""
+  },
+  "複": {
+    "meaning": "겹칠 복",
+    "ondoku": "ふく",
+    "kundoku": ""
+  },
+  "腹": {
+    "meaning": "배 복",
+    "ondoku": "ふく",
+    "kundoku": "はら"
+  },
+  "伏": {
+    "meaning": "엎드릴 복",
+    "ondoku": "ふく",
+    "kundoku": "ふせる、ふす"
+  },
+  "僕": {
+    "meaning": "종 복",
+    "ondoku": "ぼく",
+    "kundoku": ""
+  },
+  "覆": {
+    "meaning": "뒤집힐 복/ 덮을 부",
+    "ondoku": "ふく",
+    "kundoku": "おおう、くつがえす、くつがえる"
+  },
+  "本": {
+    "meaning": "근본 본",
+    "ondoku": "ほん",
+    "kundoku": "もと"
+  },
+  "棒": {
+    "meaning": "막대 봉",
+    "ondoku": "ぼう",
+    "kundoku": ""
+  },
+  "奉": {
+    "meaning": "받들 봉",
+    "ondoku": "ぶ、ほう",
+    "kundoku": "たてまつる"
+  },
+  "封": {
+    "meaning": "봉할 봉",
+    "ondoku": "ふう、ほう",
+    "kundoku": ""
+  },
+  "俸": {
+    "meaning": "녹 봉",
+    "ondoku": "ほう",
+    "kundoku": ""
+  },
+  "峰": {
+    "meaning": "봉우리 봉",
+    "ondoku": "ほう",
+    "kundoku": "みね"
+  },
+  "蜂": {
+    "meaning": "벌 봉",
+    "ondoku": "ほう",
+    "kundoku": "はち"
+  },
+  "縫": {
+    "meaning": "꿰맬 봉",
+    "ondoku": "ほう",
+    "kundoku": "ぬう"
+  },
+  "父": {
+    "meaning": "아비 부",
+    "ondoku": "ふ",
+    "kundoku": "ちち"
+  },
+  "負": {
+    "meaning": "질 부",
+    "ondoku": "ふ",
+    "kundoku": "まける、まかす、おう"
+  },
+  "部": {
+    "meaning": "떼 부",
+    "ondoku": "ぶ",
+    "kundoku": "べ"
+  },
+  "夫": {
+    "meaning": "지아비 부",
+    "ondoku": "ふ、ふう",
+    "kundoku": "おっと"
+  },
+  "付": {
+    "meaning": "줄 부",
+    "ondoku": "ふ",
+    "kundoku": "つく、つける"
+  },
+  "府": {
+    "meaning": "마을 부",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "副": {
+    "meaning": "버금 부",
+    "ondoku": "ふく",
+    "kundoku": ""
+  },
+  "婦": {
+    "meaning": "며느리 부",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "富": {
+    "meaning": "부유할 부",
+    "ondoku": "ふ、ふう",
+    "kundoku": "とむ、とみ"
+  },
+  "否": {
+    "meaning": "아닐 부",
+    "ondoku": "ひ",
+    "kundoku": "いな"
+  },
+  "扶": {
+    "meaning": "도울 부",
+    "ondoku": "ふ",
+    "kundoku": "おもむく"
+  },
+  "阜": {
+    "meaning": "언덕 부",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "附": {
+    "meaning": "붙을 부",
+    "ondoku": "ふ",
+    "kundoku": "つく、つける"
+  },
+  "赴": {
+    "meaning": "갈 부",
+    "ondoku": "ふ",
+    "kundoku": "おもむく"
+  },
+  "訃": {
+    "meaning": "부고 부",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "浮": {
+    "meaning": "뜰 부",
+    "ondoku": "ふ",
+    "kundoku": "うく、うかれる、うかぶ、うかべる"
+  },
+  "剖": {
+    "meaning": "쪼갤 부",
+    "ondoku": "ぼう",
+    "kundoku": ""
+  },
+  "釜": {
+    "meaning": "가마솥 부",
+    "ondoku": "ふ",
+    "kundoku": "かま"
+  },
+  "符": {
+    "meaning": "부호 부",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "腐": {
+    "meaning": "썩을 부",
+    "ondoku": "ふ",
+    "kundoku": "くさる、くされる、くさらす"
+  },
+  "敷": {
+    "meaning": "펼 부",
+    "ondoku": "ふ",
+    "kundoku": "しく"
+  },
+  "賦": {
+    "meaning": "부세 부",
+    "ondoku": "ふ",
+    "kundoku": ""
+  },
+  "膚": {
+    "meaning": "살갗 부",
+    "ondoku": "ふ",
+    "kundoku": "はだ"
+  },
+  "簿": {
+    "meaning": "문서 부",
+    "ondoku": "ぼ",
+    "kundoku": ""
+  },
+  "北": {
+    "meaning": "북녘 북/ 달아날 배",
+    "ondoku": "ほく",
+    "kundoku": "きた"
+  },
+  "分": {
+    "meaning": "나눌 분",
+    "ondoku": "ぶん、ふん、ぶ",
+    "kundoku": "わける、わかれる、わかる、わかつ"
+  },
+  "粉": {
+    "meaning": "가루 분",
+    "ondoku": "ふん",
+    "kundoku": "こ、こな"
+  },
+  "奮": {
+    "meaning": "떨칠 분",
+    "ondoku": "ふん",
+    "kundoku": "ふるう"
+  },
+  "奔": {
+    "meaning": "달릴 분",
+    "ondoku": "ほん、はしる",
+    "kundoku": ""
+  },
+  "盆": {
+    "meaning": "동이 분",
+    "ondoku": "ぼん",
+    "kundoku": ""
+  },
+  "紛": {
+    "meaning": "어지러울 분",
+    "ondoku": "ふん",
+    "kundoku": "まぎれる、まぎらす、まぎらわす、まぎらわしい"
+  },
+  "雰": {
+    "meaning": "눈날릴 분",
+    "ondoku": "ふん",
+    "kundoku": ""
+  },
+  "噴": {
+    "meaning": "뿜을 분",
+    "ondoku": "ふん",
+    "kundoku": "ふく"
+  },
+  "憤": {
+    "meaning": "분할 분",
+    "ondoku": "ふん",
+    "kundoku": "いきどおる"
+  },
+  "墳": {
+    "meaning": "무덤 분",
+    "ondoku": "ふん",
+    "kundoku": ""
+  },
+  "不": {
+    "meaning": "아니 불/ 아니 부",
+    "ondoku": "ふ、ぶ",
+    "kundoku": ""
+  },
+  "仏": {
+    "meaning": "부처 불",
+    "ondoku": "ぶつ",
+    "kundoku": "ほとけ"
+  },
+  "払": {
+    "meaning": "떨칠 불",
+    "ondoku": "ふつ",
+    "kundoku": "はらう"
+  },
+  "崩": {
+    "meaning": "무너질 붕",
+    "ondoku": "ほう",
+    "kundoku": "くずれる、くずす"
+  },
+  "棚": {
+    "meaning": "사다리 붕",
+    "ondoku": "たな",
+    "kundoku": ""
+  },
+  "悲": {
+    "meaning": "슬플 비",
+    "ondoku": "ひ",
+    "kundoku": "かなしい、かなしむ"
+  },
+  "鼻": {
+    "meaning": "코 비",
+    "ondoku": "び",
+    "kundoku": "はな"
+  },
+  "飛": {
+    "meaning": "날 비",
+    "ondoku": "ひ",
+    "kundoku": "とぶ、とばす"
+  },
+  "費": {
+    "meaning": "쓸 비",
+    "ondoku": "ひ",
+    "kundoku": "ついやす、ついえる"
+  },
+  "比": {
+    "meaning": "견줄 비",
+    "ondoku": "ひ",
+    "kundoku": "くらべる"
+  },
+  "非": {
+    "meaning": "아닐 비",
+    "ondoku": "ひ",
+    "kundoku": ""
+  },
+  "肥": {
+    "meaning": "살찔 비",
+    "ondoku": "ひ",
+    "kundoku": "こえる、こえ、こやす"
+  },
+  "備": {
+    "meaning": "갖출 비",
+    "ondoku": "び",
+    "kundoku": "そなえる、そなわる"
+  },
+  "批": {
+    "meaning": "비평할 비",
+    "ondoku": "ひ",
+    "kundoku": ""
+  },
+  "秘": {
+    "meaning": "숨길 비",
+    "ondoku": "ひ",
+    "kundoku": "ひめる"
+  },
+  "妃": {
+    "meaning": "왕비 비",
+    "ondoku": "ひ",
+    "kundoku": ""
+  },
+  "沸": {
+    "meaning": "끓을 비",
+    "ondoku": "ふつ",
+    "kundoku": "わく、わかす"
+  },
+  "泌": {
+    "meaning": "분비할 비/ 스며흐를 필",
+    "ondoku": "ひ、ひつ",
+    "kundoku": ""
+  },
+  "卑": {
+    "meaning": "낮을 비",
+    "ondoku": "ひ",
+    "kundoku": "いやしい、いやしむ、いやしめる"
+  },
+  "扉": {
+    "meaning": "사립문 비",
+    "ondoku": "ひ",
+    "kundoku": "とびら"
+  },
+  "碑": {
+    "meaning": "비석 비",
+    "ondoku": "ひ",
+    "kundoku": "いしぶみ"
+  },
+  "貧": {
+    "meaning": "가난할 빈",
+    "ondoku": "ひん、びん",
+    "kundoku": "まずしい"
+  },
+  "浜": {
+    "meaning": "물가 빈",
+    "ondoku": "ひん",
+    "kundoku": "はま"
+  },
+  "賓": {
+    "meaning": "손 빈",
+    "ondoku": "ひん",
+    "kundoku": ""
+  },
+  "頻": {
+    "meaning": "자주 빈",
+    "ondoku": "ひん",
+    "kundoku": ""
+  },
+  "氷": {
+    "meaning": "얼음 빙",
+    "ondoku": "ひょう",
+    "kundoku": "こおり、ひ"
+  },
+  "四": {
+    "meaning": "넉 사",
+    "ondoku": "し、よ、よつ、よん",
+    "kundoku": ""
+  },
+  "糸": {
+    "meaning": "실 사",
+    "ondoku": "し",
+    "kundoku": "いと"
+  },
+  "寺": {
+    "meaning": "절 사",
+    "ondoku": "じ",
+    "kundoku": "てら"
+  },
+  "社": {
+    "meaning": "모일 사",
+    "ondoku": "しゃ",
+    "kundoku": "やしろ"
+  },
+  "思": {
+    "meaning": "생각 사",
+    "ondoku": "し",
+    "kundoku": "おもう"
+  },
+  "写": {
+    "meaning": "베낄 사",
+    "ondoku": "しゃ",
+    "kundoku": "うつす、うつる"
+  },
+  "仕": {
+    "meaning": "섬길 사",
+    "ondoku": "し",
+    "kundoku": "つかえる"
+  },
+  "死": {
+    "meaning": "죽을 사",
+    "ondoku": "し",
+    "kundoku": "しぬ"
+  },
+  "事": {
+    "meaning": "일 사",
+    "ondoku": "じ、ず",
+    "kundoku": "こと"
+  },
+  "使": {
+    "meaning": "하여금 사",
+    "ondoku": "し",
+    "kundoku": "つかう"
+  },
+  "士": {
+    "meaning": "선비 사",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "史": {
+    "meaning": "사기 사",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "司": {
+    "meaning": "맡을 사",
+    "ondoku": "し",
+    "kundoku": "つかさどる"
+  },
+  "辞": {
+    "meaning": "말씀 사",
+    "ondoku": "じ",
+    "kundoku": "やめる"
+  },
+  "似": {
+    "meaning": "닮을 사",
+    "ondoku": "じ",
+    "kundoku": "にる"
+  },
+  "舎": {
+    "meaning": "집 사",
+    "ondoku": "しゃ",
+    "kundoku": ""
+  },
+  "査": {
+    "meaning": "조사할 사",
+    "ondoku": "さ",
+    "kundoku": ""
+  },
+  "師": {
+    "meaning": "스승 사",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "飼": {
+    "meaning": "기를 사",
+    "ondoku": "し",
+    "kundoku": "かう"
+  },
+  "謝": {
+    "meaning": "사례할 사",
+    "ondoku": "しゃ",
+    "kundoku": "あやまる"
+  },
+  "私": {
+    "meaning": "사사로울 사",
+    "ondoku": "し",
+    "kundoku": "わたくし、わたし"
+  },
+  "砂": {
+    "meaning": "모래 사",
+    "ondoku": "さ、しゃ",
+    "kundoku": "すな"
+  },
+  "射": {
+    "meaning": "쏠 사",
+    "ondoku": "しゃ",
+    "kundoku": "いる"
+  },
+  "捨": {
+    "meaning": "버릴 사",
+    "ondoku": "しゃ",
+    "kundoku": "すてる"
+  },
+  "詞": {
+    "meaning": "말 사",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "沙": {
+    "meaning": "모래 사",
+    "ondoku": "さ",
+    "kundoku": "すな"
+  },
+  "伺": {
+    "meaning": "엿볼 사",
+    "ondoku": "し",
+    "kundoku": "うかがう"
+  },
+  "邪": {
+    "meaning": "간사할 사",
+    "ondoku": "じゃ",
+    "kundoku": ""
+  },
+  "卸": {
+    "meaning": "풀 사",
+    "ondoku": "",
+    "kundoku": "おろす、おろし"
+  },
+  "唆": {
+    "meaning": "부추길 사",
+    "ondoku": "さ",
+    "kundoku": "そそのかす"
+  },
+  "斜": {
+    "meaning": "비스듬할 사",
+    "ondoku": "しゃ",
+    "kundoku": "ななめ"
+  },
+  "蛇": {
+    "meaning": "뱀 사",
+    "ondoku": "じゃ、だ",
+    "kundoku": "へび"
+  },
+  "赦": {
+    "meaning": "용서할 사",
+    "ondoku": "しゃ",
+    "kundoku": ""
+  },
+  "詐": {
+    "meaning": "속일 사",
+    "ondoku": "さ",
+    "kundoku": ""
+  },
+  "嗣": {
+    "meaning": "이을 사",
+    "ondoku": "し",
+    "kundoku": "つぐ"
+  },
+  "賜": {
+    "meaning": "줄 사",
+    "ondoku": "し",
+    "kundoku": "たまわる"
+  },
+  "削": {
+    "meaning": "깎을 삭",
+    "ondoku": "さく",
+    "kundoku": "けずる"
+  },
+  "山": {
+    "meaning": "뫼 산",
+    "ondoku": "さん",
+    "kundoku": "やま"
+  },
+  "算": {
+    "meaning": "셈 산",
+    "ondoku": "さん",
+    "kundoku": ""
+  },
+  "産": {
+    "meaning": "낳을 산",
+    "ondoku": "さん",
+    "kundoku": "うむ、うまれる、うぶ"
+  },
+  "散": {
+    "meaning": "흩을 산",
+    "ondoku": "さん",
+    "kundoku": "ちる、ちらす、ちらかす、ちらかる"
+  },
+  "酸": {
+    "meaning": "실 산",
+    "ondoku": "さん",
+    "kundoku": "すい"
+  },
+  "傘": {
+    "meaning": "우산 산",
+    "ondoku": "さん",
+    "kundoku": "かさ"
+  },
+  "殺": {
+    "meaning": "죽일 살/ 덜 쇄",
+    "ondoku": "さつ、さい、せつ",
+    "kundoku": "ころす"
+  },
+  "三": {
+    "meaning": "석 삼",
+    "ondoku": "さん",
+    "kundoku": "み、みつ"
+  },
+  "森": {
+    "meaning": "수풀 삼",
+    "ondoku": "しん",
+    "kundoku": "もり"
+  },
+  "杉": {
+    "meaning": "삼나무 삼",
+    "ondoku": "",
+    "kundoku": "すぎ"
+  },
+  "挿": {
+    "meaning": "꽂을 삽",
+    "ondoku": "そう",
+    "kundoku": "さす"
+  },
+  "渋": {
+    "meaning": "떫을 삽",
+    "ondoku": "じゅう",
+    "kundoku": "しぶ、しぶい、しぶる"
+  },
+  "上": {
+    "meaning": "윗 상",
+    "ondoku": "じょう",
+    "kundoku": "うえ、うわ、かみ、あげる、あがる、のぼる"
+  },
+  "商": {
+    "meaning": "장사 상",
+    "ondoku": "しょう",
+    "kundoku": "あきなう"
+  },
+  "相": {
+    "meaning": "서로 상",
+    "ondoku": "そう、しょう",
+    "kundoku": "あい"
+  },
+  "想": {
+    "meaning": "생각 상",
+    "ondoku": "そう、そ",
+    "kundoku": "おもう"
+  },
+  "箱": {
+    "meaning": "상자 상",
+    "ondoku": "",
+    "kundoku": "はこ"
+  },
+  "象": {
+    "meaning": "코끼리 상",
+    "ondoku": "しょう、ぞう",
+    "kundoku": ""
+  },
+  "賞": {
+    "meaning": "상줄 상",
+    "ondoku": "しょう",
+    "kundoku": "ほめる、めでる"
+  },
+  "状": {
+    "meaning": "형상 상/ 문서 장",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "常": {
+    "meaning": "항상 상",
+    "ondoku": "じょう",
+    "kundoku": "つね、とこ"
+  },
+  "像": {
+    "meaning": "모양 상",
+    "ondoku": "ぞう",
+    "kundoku": ""
+  },
+  "傷": {
+    "meaning": "다칠 상",
+    "ondoku": "しょう",
+    "kundoku": "きず、いたむ、いためる"
+  },
+  "床": {
+    "meaning": "평상 상",
+    "ondoku": "しょう",
+    "kundoku": "とこ、ゆか"
+  },
+  "尚": {
+    "meaning": "오히려 상",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "祥": {
+    "meaning": "상서로울 상",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "桑": {
+    "meaning": "뽕나무 상",
+    "ondoku": "そう",
+    "kundoku": "くわ"
+  },
+  "爽": {
+    "meaning": "시원할 상",
+    "ondoku": "そう",
+    "kundoku": "さわやか"
+  },
+  "喪": {
+    "meaning": "잃을 상",
+    "ondoku": "そう",
+    "kundoku": "も"
+  },
+  "詳": {
+    "meaning": "자세할 상",
+    "ondoku": "しょう",
+    "kundoku": "くわしい"
+  },
+  "償": {
+    "meaning": "갚을 상",
+    "ondoku": "しょう",
+    "kundoku": "つぐなう"
+  },
+  "霜": {
+    "meaning": "서리 상",
+    "ondoku": "そう",
+    "kundoku": "しも"
+  },
+  "璽": {
+    "meaning": "옥새 새",
+    "ondoku": "じ",
+    "kundoku": ""
+  },
+  "色": {
+    "meaning": "빛 색",
+    "ondoku": "しょく、しき",
+    "kundoku": "いろ"
+  },
+  "索": {
+    "meaning": "찾을 색/ 동아줄 삭",
+    "ondoku": "さく",
+    "kundoku": ""
+  },
+  "塞": {
+    "meaning": "막힐 색/ 변방 새",
+    "ondoku": "そく、さい",
+    "kundoku": "ふさぐ、ふさがる"
+  },
+  "生": {
+    "meaning": "날 생",
+    "ondoku": "せい、しょう",
+    "kundoku": "いきる、いかす、いける、うまれる、はえる、なま"
+  },
+  "牲": {
+    "meaning": "희생 생",
+    "ondoku": "せい",
+    "kundoku": ""
+  },
+  "西": {
+    "meaning": "서녘 서",
+    "ondoku": "せい、さい",
+    "kundoku": "にし"
+  },
+  "書": {
+    "meaning": "글 서",
+    "ondoku": "しょ",
+    "kundoku": "かく"
+  },
+  "暑": {
+    "meaning": "더울 서",
+    "ondoku": "しょ",
+    "kundoku": "あつい"
+  },
+  "序": {
+    "meaning": "차례 서",
+    "ondoku": "じょ",
+    "kundoku": ""
+  },
+  "署": {
+    "meaning": "마을 서",
+    "ondoku": "しょ",
+    "kundoku": ""
+  },
+  "叙": {
+    "meaning": "펼 서",
+    "ondoku": "じょ",
+    "kundoku": "のべる"
+  },
+  "徐": {
+    "meaning": "천천히 할 서",
+    "ondoku": "じょ",
+    "kundoku": "おもむろ"
+  },
+  "逝": {
+    "meaning": "갈 서",
+    "ondoku": "せい",
+    "kundoku": "ゆく、いく"
+  },
+  "庶": {
+    "meaning": "여러 서",
+    "ondoku": "しょ",
+    "kundoku": ""
+  },
+  "婿": {
+    "meaning": "사위 서",
+    "ondoku": "せい",
+    "kundoku": "むこ"
+  },
+  "緒": {
+    "meaning": "실마리 서",
+    "ondoku": "しょ、ちょ",
+    "kundoku": "お"
+  },
+  "誓": {
+    "meaning": "맹세할 서",
+    "ondoku": "せい",
+    "kundoku": "ちかう"
+  },
+  "夕": {
+    "meaning": "저녁 석",
+    "ondoku": "せき",
+    "kundoku": "ゆう"
+  },
+  "石": {
+    "meaning": "돌 석",
+    "ondoku": "せき、しゃく、こく",
+    "kundoku": "いし"
+  },
+  "昔": {
+    "meaning": "예 석",
+    "ondoku": "せき、しゃく",
+    "kundoku": "むかし"
+  },
+  "席": {
+    "meaning": "자리 좌",
+    "ondoku": "ざ",
+    "kundoku": "すわる"
+  },
+  "析": {
+    "meaning": "쪼갤 석",
+    "ondoku": "せき",
+    "kundoku": ""
+  },
+  "釈": {
+    "meaning": "풀 석",
+    "ondoku": "しゃく",
+    "kundoku": ""
+  },
+  "惜": {
+    "meaning": "아낄 석",
+    "ondoku": "せき",
+    "kundoku": "おしい、おしむ"
+  },
+  "潟": {
+    "meaning": "개펄 석",
+    "ondoku": "",
+    "kundoku": "かた"
+  },
+  "先": {
+    "meaning": "먼저 선",
+    "ondoku": "せん",
+    "kundoku": "さき"
+  },
+  "船": {
+    "meaning": "배 선",
+    "ondoku": "せん",
+    "kundoku": "ふね、ふな"
+  },
+  "線": {
+    "meaning": "줄 선",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "選": {
+    "meaning": "고를 선",
+    "ondoku": "せん",
+    "kundoku": "えらぶ"
+  },
+  "宣": {
+    "meaning": "베풀 선",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "善": {
+    "meaning": "착할 선",
+    "ondoku": "せん",
+    "kundoku": "よい"
+  },
+  "仙": {
+    "meaning": "신선 선",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "扇": {
+    "meaning": "부채 선",
+    "ondoku": "せん",
+    "kundoku": "おうぎ"
+  },
+  "旋": {
+    "meaning": "돌 선",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "羨": {
+    "meaning": "부러워할 선",
+    "ondoku": "せん",
+    "kundoku": "うらやむ、うらやましい"
+  },
+  "腺": {
+    "meaning": "샘 선",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "禅": {
+    "meaning": "선 선",
+    "ondoku": "ぜん",
+    "kundoku": ""
+  },
+  "膳": {
+    "meaning": "반찬 선",
+    "ondoku": "ぜん",
+    "kundoku": ""
+  },
+  "鮮": {
+    "meaning": "고울 선",
+    "ondoku": "せん",
+    "kundoku": "あざやか"
+  },
+  "繕": {
+    "meaning": "기울 선",
+    "ondoku": "ぜん",
+    "kundoku": "つくろう"
+  },
+  "雪": {
+    "meaning": "눈 설",
+    "ondoku": "せつ",
+    "kundoku": "ゆき"
+  },
+  "説": {
+    "meaning": "말씀 설/ 달랠 세",
+    "ondoku": "せつ、ぜい",
+    "kundoku": "とく"
+  },
+  "舌": {
+    "meaning": "혀 설",
+    "ondoku": "ぜつ",
+    "kundoku": "した"
+  },
+  "設": {
+    "meaning": "베풀 설",
+    "ondoku": "せつ",
+    "kundoku": "もうける"
+  },
+  "繊": {
+    "meaning": "가늘 섬",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "渉": {
+    "meaning": "건널 섭",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "摂": {
+    "meaning": "다스릴/ 잡을 섭",
+    "ondoku": "せつ",
+    "kundoku": ""
+  },
+  "星": {
+    "meaning": "별 성",
+    "ondoku": "せい、しょう",
+    "kundoku": "ほし"
+  },
+  "声": {
+    "meaning": "소리 성",
+    "ondoku": "せい、しょう",
+    "kundoku": "こえ、こわ"
+  },
+  "成": {
+    "meaning": "이룰 성",
+    "ondoku": "せい、じょう",
+    "kundoku": "なす、なる"
+  },
+  "省": {
+    "meaning": "살필 성/ 덜 생",
+    "ondoku": "せい、しょう",
+    "kundoku": "かえりみる、はぶく"
+  },
+  "性": {
+    "meaning": "성품 성",
+    "ondoku": "せい、しょう",
+    "kundoku": ""
+  },
+  "城": {
+    "meaning": "성 성",
+    "ondoku": "じょう",
+    "kundoku": "しろ"
+  },
+  "盛": {
+    "meaning": "성할 성",
+    "ondoku": "せい、じょう",
+    "kundoku": "もる、さかる、さかん"
+  },
+  "誠": {
+    "meaning": "정성 성",
+    "ondoku": "せい",
+    "kundoku": "まこと"
+  },
+  "聖": {
+    "meaning": "성인 성",
+    "ondoku": "せい",
+    "kundoku": ""
+  },
+  "姓": {
+    "meaning": "성씨 성",
+    "ondoku": "せい、しょう",
+    "kundoku": ""
+  },
+  "醒": {
+    "meaning": "깰 성",
+    "ondoku": "せい",
+    "kundoku": "さめる、さます"
+  },
+  "細": {
+    "meaning": "가늘 세",
+    "ondoku": "さい",
+    "kundoku": "ほそい、ほそる、こまか、こまかい"
+  },
+  "世": {
+    "meaning": "인간/ 세상 세",
+    "ondoku": "せい、せ",
+    "kundoku": "よ"
+  },
+  "税": {
+    "meaning": "세금 세",
+    "ondoku": "ぜい",
+    "kundoku": ""
+  },
+  "勢": {
+    "meaning": "형세 세",
+    "ondoku": "せい",
+    "kundoku": "いきおい"
+  },
+  "洗": {
+    "meaning": "씻을 세",
+    "ondoku": "せん",
+    "kundoku": "あらう"
+  },
+  "歳": {
+    "meaning": "해 세",
+    "ondoku": "さい、せい",
+    "kundoku": ""
+  },
+  "小": {
+    "meaning": "작을 소",
+    "ondoku": "しょう",
+    "kundoku": "ちいさい、こ、お"
+  },
+  "少": {
+    "meaning": "적을 소",
+    "ondoku": "しょう",
+    "kundoku": "すくない、すこし"
+  },
+  "所": {
+    "meaning": "바 소",
+    "ondoku": "しょ",
+    "kundoku": "ところ"
+  },
+  "昭": {
+    "meaning": "밝을 소",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "消": {
+    "meaning": "사라질 소",
+    "ondoku": "しょう",
+    "kundoku": "きえる、けす"
+  },
+  "笑": {
+    "meaning": "웃음 소",
+    "ondoku": "しょう",
+    "kundoku": "わらう、えむ"
+  },
+  "巣": {
+    "meaning": "새집 소",
+    "ondoku": "そう",
+    "kundoku": "す"
+  },
+  "焼": {
+    "meaning": "불사를 소",
+    "ondoku": "しょう",
+    "kundoku": "やく、やける"
+  },
+  "素": {
+    "meaning": "본디/ 흴 소",
+    "ondoku": "す、そ",
+    "kundoku": ""
+  },
+  "召": {
+    "meaning": "부를 소",
+    "ondoku": "しょう",
+    "kundoku": "めす"
+  },
+  "沼": {
+    "meaning": "못 소",
+    "ondoku": "しょう",
+    "kundoku": "ぬま"
+  },
+  "咲": {
+    "meaning": "꽃필 소",
+    "ondoku": "",
+    "kundoku": "さく"
+  },
+  "宵": {
+    "meaning": "밤 소",
+    "ondoku": "しょう",
+    "kundoku": "よい"
+  },
+  "紹": {
+    "meaning": "이을 소",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "掃": {
+    "meaning": "쓸 소",
+    "ondoku": "そう",
+    "kundoku": "はく"
+  },
+  "訴": {
+    "meaning": "호소할 소",
+    "ondoku": "そ",
+    "kundoku": "うったえる"
+  },
+  "疎": {
+    "meaning": "성길 소",
+    "ondoku": "そ",
+    "kundoku": "うとい、うとむ"
+  },
+  "塑": {
+    "meaning": "흙 빚을 소",
+    "ondoku": "そ",
+    "kundoku": ""
+  },
+  "遡": {
+    "meaning": "거스를 소",
+    "ondoku": "そ",
+    "kundoku": "さかのぼる"
+  },
+  "騒": {
+    "meaning": "떠들 소",
+    "ondoku": "そ",
+    "kundoku": "さわぐ、さわがしい"
+  },
+  "速": {
+    "meaning": "빠를 속",
+    "ondoku": "そく",
+    "kundoku": "はやい、はやめる、はやまる、すみやか"
+  },
+  "束": {
+    "meaning": "묶을 속",
+    "ondoku": "そく",
+    "kundoku": "たば、たばねる"
+  },
+  "続": {
+    "meaning": "이을 속",
+    "ondoku": "ぞく",
+    "kundoku": "つづく、つづける"
+  },
+  "属": {
+    "meaning": "무리 속",
+    "ondoku": "ぞく",
+    "kundoku": ""
+  },
+  "俗": {
+    "meaning": "풍속 속",
+    "ondoku": "ぞく",
+    "kundoku": ""
+  },
+  "孫": {
+    "meaning": "손자 손",
+    "ondoku": "そん",
+    "kundoku": "まご"
+  },
+  "損": {
+    "meaning": "덜 손",
+    "ondoku": "そん",
+    "kundoku": "そこなう、そこねる"
+  },
+  "遜": {
+    "meaning": "겸손할 손",
+    "ondoku": "そん",
+    "kundoku": "へりくだる"
+  },
+  "送": {
+    "meaning": "보낼 송",
+    "ondoku": "そう",
+    "kundoku": "おくる"
+  },
+  "松": {
+    "meaning": "소나무 송",
+    "ondoku": "しょう",
+    "kundoku": "まつ"
+  },
+  "訟": {
+    "meaning": "송사할 송",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "刷": {
+    "meaning": "인쇄할 쇄",
+    "ondoku": "さつ",
+    "kundoku": "する"
+  },
+  "砕": {
+    "meaning": "부술 쇄",
+    "ondoku": "さい",
+    "kundoku": "くだく、くだける"
+  },
+  "鎖": {
+    "meaning": "쇠사슬 쇄",
+    "ondoku": "さ",
+    "kundoku": "くさり"
+  },
+  "衰": {
+    "meaning": "쇠할 쇠",
+    "ondoku": "すい",
+    "kundoku": "おとろえる"
+  },
+  "水": {
+    "meaning": "물 수",
+    "ondoku": "すい",
+    "kundoku": "みず"
+  },
+  "手": {
+    "meaning": "손 수",
+    "ondoku": "しゅ",
+    "kundoku": "て、た"
+  },
+  "首": {
+    "meaning": "머리 수",
+    "ondoku": "しゅ",
+    "kundoku": "くび"
+  },
+  "数": {
+    "meaning": "셈 수",
+    "ondoku": "すう、す",
+    "kundoku": "かず、かぞえる"
+  },
+  "守": {
+    "meaning": "지킬 수",
+    "ondoku": "しゅ、す",
+    "kundoku": "まもる、もり"
+  },
+  "受": {
+    "meaning": "받을 수",
+    "ondoku": "じゅ",
+    "kundoku": "うける、うかる"
+  },
+  "修": {
+    "meaning": "닦을 수",
+    "ondoku": "しゅう、しゅ",
+    "kundoku": "おさめる、おさまる"
+  },
+  "授": {
+    "meaning": "줄 수",
+    "ondoku": "じゅ",
+    "kundoku": "さずける、さずかる"
+  },
+  "輸": {
+    "meaning": "보낼 수",
+    "ondoku": "ゆ",
+    "kundoku": ""
+  },
+  "収": {
+    "meaning": "거둘 수",
+    "ondoku": "しゅう",
+    "kundoku": "おさまる、おさめる"
+  },
+  "垂": {
+    "meaning": "드리울 수",
+    "ondoku": "すい",
+    "kundoku": "たれる、たらす"
+  },
+  "樹": {
+    "meaning": "나무 수",
+    "ondoku": "じゅ",
+    "kundoku": ""
+  },
+  "囚": {
+    "meaning": "가둘 수",
+    "ondoku": "しゅう",
+    "kundoku": ""
+  },
+  "秀": {
+    "meaning": "빼어날 수",
+    "ondoku": "しゅう",
+    "kundoku": "ひいでる"
+  },
+  "寿": {
+    "meaning": "목숨 수",
+    "ondoku": "じゅ",
+    "kundoku": "ことぶき"
+  },
+  "狩": {
+    "meaning": "사냥할 수",
+    "ondoku": "しゅ",
+    "kundoku": "かる"
+  },
+  "帥": {
+    "meaning": "장수 수",
+    "ondoku": "すい",
+    "kundoku": ""
+  },
+  "捜": {
+    "meaning": "찾을 수",
+    "ondoku": "そう",
+    "kundoku": "さがす"
+  },
+  "殊": {
+    "meaning": "다를 수",
+    "ondoku": "しゅ",
+    "kundoku": "こと"
+  },
+  "袖": {
+    "meaning": "소매 수",
+    "ondoku": "しゅう",
+    "kundoku": "そで"
+  },
+  "粋": {
+    "meaning": "순수할 수",
+    "ondoku": "すい",
+    "kundoku": "いき"
+  },
+  "羞": {
+    "meaning": "부끄러울 수",
+    "ondoku": "しゅう",
+    "kundoku": ""
+  },
+  "遂": {
+    "meaning": "드디어 수",
+    "ondoku": "すい",
+    "kundoku": "とげる"
+  },
+  "須": {
+    "meaning": "모름지기 수",
+    "ondoku": "す",
+    "kundoku": "すべからく"
+  },
+  "痩": {
+    "meaning": "여윌 수",
+    "ondoku": "そう",
+    "kundoku": "やせる"
+  },
+  "随": {
+    "meaning": "따를 수",
+    "ondoku": "ずい",
+    "kundoku": ""
+  },
+  "睡": {
+    "meaning": "졸음 수",
+    "ondoku": "すい",
+    "kundoku": ""
+  },
+  "酬": {
+    "meaning": "갚을 수",
+    "ondoku": "しゅう",
+    "kundoku": ""
+  },
+  "愁": {
+    "meaning": "근심 수",
+    "ondoku": "しゅう",
+    "kundoku": "うれえる、うれい"
+  },
+  "需": {
+    "meaning": "쓰일/ 쓸 수",
+    "ondoku": "じゅ",
+    "kundoku": ""
+  },
+  "誰": {
+    "meaning": "누구 수",
+    "ondoku": "",
+    "kundoku": "だれ"
+  },
+  "穂": {
+    "meaning": "이삭 수",
+    "ondoku": "すい",
+    "kundoku": "ほ"
+  },
+  "獣": {
+    "meaning": "짐승 수",
+    "ondoku": "じゅう",
+    "kundoku": "けもの"
+  },
+  "髄": {
+    "meaning": "뼛골 수",
+    "ondoku": "ずい",
+    "kundoku": ""
+  },
+  "宿": {
+    "meaning": "잘 숙",
+    "ondoku": "しゅく",
+    "kundoku": "やど、やどる、やどす"
+  },
+  "熟": {
+    "meaning": "익을 숙",
+    "ondoku": "じゅく",
+    "kundoku": "うれる"
+  },
+  "叔": {
+    "meaning": "아저씨 숙",
+    "ondoku": "しゅく",
+    "kundoku": ""
+  },
+  "淑": {
+    "meaning": "맑을 숙",
+    "ondoku": "しゅく",
+    "kundoku": ""
+  },
+  "粛": {
+    "meaning": "엄숙할 숙",
+    "ondoku": "しゅく",
+    "kundoku": ""
+  },
+  "塾": {
+    "meaning": "글방 숙",
+    "ondoku": "じゅく",
+    "kundoku": ""
+  },
+  "順": {
+    "meaning": "순할 순",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "純": {
+    "meaning": "순수할 순",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "旬": {
+    "meaning": "열흘 순",
+    "ondoku": "じゅん、しゅん",
+    "kundoku": ""
+  },
+  "巡": {
+    "meaning": "돌/ 순행할 순",
+    "ondoku": "じゅん",
+    "kundoku": "めぐる"
+  },
+  "盾": {
+    "meaning": "방패 순",
+    "ondoku": "じゅん",
+    "kundoku": "たて"
+  },
+  "唇": {
+    "meaning": "입술 순",
+    "ondoku": "しん",
+    "kundoku": "くちびる"
+  },
+  "殉": {
+    "meaning": "따라죽을 순",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "循": {
+    "meaning": "돌 순",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "瞬": {
+    "meaning": "눈 깜짝일 순",
+    "ondoku": "しゅん",
+    "kundoku": "またたく"
+  },
+  "述": {
+    "meaning": "펼 술",
+    "ondoku": "じゅつ",
+    "kundoku": "のべる"
+  },
+  "術": {
+    "meaning": "재주 술",
+    "ondoku": "じゅつ",
+    "kundoku": ""
+  },
+  "崇": {
+    "meaning": "높을 숭",
+    "ondoku": "すう",
+    "kundoku": ""
+  },
+  "膝": {
+    "meaning": "무릎 슬",
+    "ondoku": "しつ",
+    "kundoku": "ひざ"
+  },
+  "拾": {
+    "meaning": "주울 습/ 열 십",
+    "ondoku": "しゅう",
+    "kundoku": "ひろう"
+  },
+  "習": {
+    "meaning": "익힐 습",
+    "ondoku": "しゅう",
+    "kundoku": "ならう"
+  },
+  "湿": {
+    "meaning": "젖을 습",
+    "ondoku": "しつ",
+    "kundoku": "しめる、しめす、しめっぽい"
+  },
+  "襲": {
+    "meaning": "엄습할 습",
+    "ondoku": "しゅう",
+    "kundoku": "おそう"
+  },
+  "乗": {
+    "meaning": "탈 승",
+    "ondoku": "じょう",
+    "kundoku": "のる、のせる"
+  },
+  "勝": {
+    "meaning": "이길 승",
+    "ondoku": "しょう",
+    "kundoku": "かつ、まさる"
+  },
+  "承": {
+    "meaning": "이을 승",
+    "ondoku": "しょう",
+    "kundoku": "うけたまわる"
+  },
+  "升": {
+    "meaning": "되 승",
+    "ondoku": "しょう",
+    "kundoku": "ます"
+  },
+  "昇": {
+    "meaning": "오를 승",
+    "ondoku": "しょう",
+    "kundoku": "のぼる"
+  },
+  "僧": {
+    "meaning": "중 승",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "縄": {
+    "meaning": "노끈 승",
+    "ondoku": "じょう",
+    "kundoku": "なわ"
+  },
+  "市": {
+    "meaning": "저자 시",
+    "ondoku": "し",
+    "kundoku": "いち"
+  },
+  "矢": {
+    "meaning": "화살 시",
+    "ondoku": "し",
+    "kundoku": "や"
+  },
+  "時": {
+    "meaning": "때 시",
+    "ondoku": "じ",
+    "kundoku": "とき"
+  },
+  "始": {
+    "meaning": "비로소 시",
+    "ondoku": "し",
+    "kundoku": "はじめる、はじまる"
+  },
+  "詩": {
+    "meaning": "시 시",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "試": {
+    "meaning": "시험 시",
+    "ondoku": "し",
+    "kundoku": "ためす、こころみる"
+  },
+  "示": {
+    "meaning": "보일 시",
+    "ondoku": "じ、し",
+    "kundoku": "しめす"
+  },
+  "視": {
+    "meaning": "볼 시",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "侍": {
+    "meaning": "모실 시",
+    "ondoku": "じ",
+    "kundoku": "さむらい"
+  },
+  "柿": {
+    "meaning": "감나무 시",
+    "ondoku": "し",
+    "kundoku": "かき"
+  },
+  "施": {
+    "meaning": "베풀 시",
+    "ondoku": "し、せ",
+    "kundoku": "ほどこす"
+  },
+  "是": {
+    "meaning": "옳을 시",
+    "ondoku": "ぜ",
+    "kundoku": ""
+  },
+  "食": {
+    "meaning": "밥/ 먹을 식",
+    "ondoku": "しょく、じき",
+    "kundoku": "たべる、くう、くらう"
+  },
+  "式": {
+    "meaning": "법 식",
+    "ondoku": "しき",
+    "kundoku": ""
+  },
+  "息": {
+    "meaning": "쉴 식",
+    "ondoku": "そく",
+    "kundoku": "いき"
+  },
+  "植": {
+    "meaning": "심을 식",
+    "ondoku": "しょく",
+    "kundoku": "うえる、うわる"
+  },
+  "識": {
+    "meaning": "알 식",
+    "ondoku": "しき",
+    "kundoku": ""
+  },
+  "拭": {
+    "meaning": "씻을 식",
+    "ondoku": "しょく",
+    "kundoku": "ふく、ぬぐう"
+  },
+  "殖": {
+    "meaning": "불릴 식",
+    "ondoku": "しょく",
+    "kundoku": "ふえる、ふやす"
+  },
+  "飾": {
+    "meaning": "꾸밀 식",
+    "ondoku": "しょく",
+    "kundoku": "かざる"
+  },
+  "新": {
+    "meaning": "새 신",
+    "ondoku": "しん",
+    "kundoku": "あたらしい、あらた、にい"
+  },
+  "申": {
+    "meaning": "거듭 신",
+    "ondoku": "しん",
+    "kundoku": "もうす"
+  },
+  "身": {
+    "meaning": "몸 신",
+    "ondoku": "しん",
+    "kundoku": "み"
+  },
+  "神": {
+    "meaning": "귀신 신",
+    "ondoku": "しん、じん",
+    "kundoku": "かみ、かん、こう"
+  },
+  "臣": {
+    "meaning": "신하 신",
+    "ondoku": "しん、じん",
+    "kundoku": ""
+  },
+  "信": {
+    "meaning": "믿을 신",
+    "ondoku": "しん",
+    "kundoku": ""
+  },
+  "迅": {
+    "meaning": "빠를 신",
+    "ondoku": "じん",
+    "kundoku": ""
+  },
+  "伸": {
+    "meaning": "펼 신",
+    "ondoku": "しん",
+    "kundoku": "のびる、のばす、のべる"
+  },
+  "辛": {
+    "meaning": "매울 신",
+    "ondoku": "しん",
+    "kundoku": "からい"
+  },
+  "娠": {
+    "meaning": "아이 밸 신",
+    "ondoku": "しん",
+    "kundoku": ""
+  },
+  "紳": {
+    "meaning": "신사 신",
+    "ondoku": "しん",
+    "kundoku": ""
+  },
+  "慎": {
+    "meaning": "삼갈 신",
+    "ondoku": "しん",
+    "kundoku": "つつしむ"
+  },
+  "腎": {
+    "meaning": "콩팥 신",
+    "ondoku": "じん",
+    "kundoku": ""
+  },
+  "薪": {
+    "meaning": "섶 신",
+    "ondoku": "しん",
+    "kundoku": "たきぎ"
+  },
+  "室": {
+    "meaning": "집 실",
+    "ondoku": "しつ",
+    "kundoku": "むろ"
+  },
+  "実": {
+    "meaning": "열매 실",
+    "ondoku": "じつ",
+    "kundoku": "み、みのる"
+  },
+  "失": {
+    "meaning": "잃을 실",
+    "ondoku": "しつ",
+    "kundoku": "うしなう"
+  },
+  "心": {
+    "meaning": "마음 심",
+    "ondoku": "しん",
+    "kundoku": "こころ"
+  },
+  "深": {
+    "meaning": "깊을 심",
+    "ondoku": "しん",
+    "kundoku": "ふかい、ふかまる、ふかめる"
+  },
+  "芯": {
+    "meaning": "등심초 심",
+    "ondoku": "しん",
+    "kundoku": ""
+  },
+  "甚": {
+    "meaning": "심할 심",
+    "ondoku": "じん",
+    "kundoku": "はなはだ、はなはだしい"
+  },
+  "尋": {
+    "meaning": "찾을 심",
+    "ondoku": "じん",
+    "kundoku": "たずねる"
+  },
+  "審": {
+    "meaning": "살필 심",
+    "ondoku": "しん",
+    "kundoku": ""
+  },
+  "十": {
+    "meaning": "열 십",
+    "ondoku": "じゅう",
+    "kundoku": "と、とお"
+  },
+  "双": {
+    "meaning": "두 쌍/ 쌍",
+    "ondoku": "そう",
+    "kundoku": "ふた"
+  },
+  "氏": {
+    "meaning": "각시/ 성씨 씨",
+    "ondoku": "し",
+    "kundoku": "うじ"
+  },
+  "児": {
+    "meaning": "아이 아",
+    "ondoku": "じ、に",
+    "kundoku": ""
+  },
+  "芽": {
+    "meaning": "싹 아",
+    "ondoku": "が",
+    "kundoku": "め"
+  },
+  "我": {
+    "meaning": "나 아",
+    "ondoku": "が",
+    "kundoku": "われ、わ"
+  },
+  "牙": {
+    "meaning": "어금니 아",
+    "ondoku": "が、け",
+    "kundoku": "きば"
+  },
+  "亜": {
+    "meaning": "버금 아",
+    "ondoku": "あが",
+    "kundoku": ""
+  },
+  "雅": {
+    "meaning": "맑을 아",
+    "ondoku": "が",
+    "kundoku": ""
+  },
+  "餓": {
+    "meaning": "주릴 아",
+    "ondoku": "が",
+    "kundoku": ""
+  },
+  "悪": {
+    "meaning": "악할 악/ 미워할 오",
+    "ondoku": "あく、お",
+    "kundoku": "わるい"
+  },
+  "岳": {
+    "meaning": "큰 산 악",
+    "ondoku": "がく",
+    "kundoku": "たけ"
+  },
+  "握": {
+    "meaning": "쥘 악",
+    "ondoku": "あく",
+    "kundoku": "にぎる"
+  },
+  "顎": {
+    "meaning": "턱 악",
+    "ondoku": "がく",
+    "kundoku": "あご"
+  },
+  "顔": {
+    "meaning": "낯 안",
+    "ondoku": "がん",
+    "kundoku": "かお"
+  },
+  "安": {
+    "meaning": "편안 안",
+    "ondoku": "あん",
+    "kundoku": "やすい"
+  },
+  "岸": {
+    "meaning": "언덕 안",
+    "ondoku": "がん",
+    "kundoku": "きし"
+  },
+  "案": {
+    "meaning": "책상 안",
+    "ondoku": "あん",
+    "kundoku": ""
+  },
+  "眼": {
+    "meaning": "눈 안",
+    "ondoku": "がん、げん",
+    "kundoku": "まなこ"
+  },
+  "謁": {
+    "meaning": "뵐 알",
+    "ondoku": "えつ",
+    "kundoku": ""
+  },
+  "岩": {
+    "meaning": "바위 암",
+    "ondoku": "がん",
+    "kundoku": "いわ"
+  },
+  "暗": {
+    "meaning": "어두울 암",
+    "ondoku": "あん",
+    "kundoku": "くらい"
+  },
+  "俺": {
+    "meaning": "나 암",
+    "ondoku": "",
+    "kundoku": "おれ"
+  },
+  "闇": {
+    "meaning": "숨을 암",
+    "ondoku": "",
+    "kundoku": "やみ"
+  },
+  "圧": {
+    "meaning": "누를 압",
+    "ondoku": "あつ",
+    "kundoku": ""
+  },
+  "押": {
+    "meaning": "누를 압",
+    "ondoku": "おう",
+    "kundoku": "おう、おさえる"
+  },
+  "央": {
+    "meaning": "가운데 앙",
+    "ondoku": "おう",
+    "kundoku": ""
+  },
+  "仰": {
+    "meaning": "우러를 앙",
+    "ondoku": "ぎょう、こう",
+    "kundoku": "おおぐ、おおせ"
+  },
+  "愛": {
+    "meaning": "사랑 애",
+    "ondoku": "あい",
+    "kundoku": ""
+  },
+  "哀": {
+    "meaning": "슬플 애",
+    "ondoku": "あい",
+    "kundoku": "あわれ、あわれむ"
+  },
+  "挨": {
+    "meaning": "밀칠 애",
+    "ondoku": "あい",
+    "kundoku": ""
+  },
+  "涯": {
+    "meaning": "물가 애",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "崖": {
+    "meaning": "언덕 애",
+    "ondoku": "がい",
+    "kundoku": "がけ"
+  },
+  "曖": {
+    "meaning": "희미할 애",
+    "ondoku": "あい",
+    "kundoku": ""
+  },
+  "液": {
+    "meaning": "진 액",
+    "ondoku": "えき",
+    "kundoku": ""
+  },
+  "額": {
+    "meaning": "이마 액",
+    "ondoku": "がく",
+    "kundoku": "ひたい"
+  },
+  "厄": {
+    "meaning": "액 액",
+    "ondoku": "やく",
+    "kundoku": ""
+  },
+  "桜": {
+    "meaning": "앵두 앵",
+    "ondoku": "おう",
+    "kundoku": "さくら"
+  },
+  "夜": {
+    "meaning": "밤 야",
+    "ondoku": "や",
+    "kundoku": "よ、よる"
+  },
+  "野": {
+    "meaning": "들 야",
+    "ondoku": "や",
+    "kundoku": "の"
+  },
+  "冶": {
+    "meaning": "불릴 야",
+    "ondoku": "や",
+    "kundoku": ""
+  },
+  "弱": {
+    "meaning": "약할 약",
+    "ondoku": "じゃく",
+    "kundoku": "よわい、よわまる、よわめる、よわる"
+  },
+  "薬": {
+    "meaning": "약 약",
+    "ondoku": "やく",
+    "kundoku": "くすり"
+  },
+  "約": {
+    "meaning": "맺을 약",
+    "ondoku": "やく",
+    "kundoku": ""
+  },
+  "若": {
+    "meaning": "같을 약",
+    "ondoku": "じゃく、にゃく",
+    "kundoku": "わかい、もしくは"
+  },
+  "躍": {
+    "meaning": "뛸 약",
+    "ondoku": "やく",
+    "kundoku": "おどる"
+  },
+  "羊": {
+    "meaning": "양 양",
+    "ondoku": "よう",
+    "kundoku": "ひつじ"
+  },
+  "洋": {
+    "meaning": "큰 바다 양",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "陽": {
+    "meaning": "볕 양",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "様": {
+    "meaning": "모양 양",
+    "ondoku": "よう",
+    "kundoku": "さま"
+  },
+  "養": {
+    "meaning": "기를 양",
+    "ondoku": "よう",
+    "kundoku": "やしなう"
+  },
+  "揚": {
+    "meaning": "날릴 양",
+    "ondoku": "よう",
+    "kundoku": "あげる、あがる"
+  },
+  "瘍": {
+    "meaning": "헐 양",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "壌": {
+    "meaning": "흙덩이 양",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "嬢": {
+    "meaning": "아가씨 양",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "譲": {
+    "meaning": "사양할 양",
+    "ondoku": "じょう",
+    "kundoku": "ゆずる"
+  },
+  "醸": {
+    "meaning": "술빚을 양",
+    "ondoku": "じょう",
+    "kundoku": "かもす"
+  },
+  "魚": {
+    "meaning": "물고기 어",
+    "ondoku": "ぎょ",
+    "kundoku": "さかな、うお"
+  },
+  "語": {
+    "meaning": "말씀 어",
+    "ondoku": "ご",
+    "kundoku": "かたる、かたらう"
+  },
+  "漁": {
+    "meaning": "고기 잡을 어",
+    "ondoku": "ぎょ、きょう",
+    "kundoku": ""
+  },
+  "御": {
+    "meaning": "거느릴 어",
+    "ondoku": "ぎょ、ご",
+    "kundoku": "おん"
+  },
+  "億": {
+    "meaning": "억 억",
+    "ondoku": "おく",
+    "kundoku": ""
+  },
+  "抑": {
+    "meaning": "누를 억",
+    "ondoku": "よく",
+    "kundoku": "おさえる"
+  },
+  "憶": {
+    "meaning": "생각할 억",
+    "ondoku": "おく",
+    "kundoku": ""
+  },
+  "臆": {
+    "meaning": "가슴 억",
+    "ondoku": "おく",
+    "kundoku": ""
+  },
+  "言": {
+    "meaning": "말씀 언",
+    "ondoku": "げん、ごん",
+    "kundoku": "いう、こと"
+  },
+  "厳": {
+    "meaning": "엄할 엄",
+    "ondoku": "げん、ごん",
+    "kundoku": "おごそか、きびしい"
+  },
+  "業": {
+    "meaning": "업 업",
+    "ondoku": "ぎょう、ごう",
+    "kundoku": "わざ"
+  },
+  "余": {
+    "meaning": "나/ 남을 여",
+    "ondoku": "よ",
+    "kundoku": "あまる、あます"
+  },
+  "与": {
+    "meaning": "더불/ 줄 여",
+    "ondoku": "よ",
+    "kundoku": "あたえる"
+  },
+  "如": {
+    "meaning": "같을 여",
+    "ondoku": "じょ、にょ",
+    "kundoku": ""
+  },
+  "役": {
+    "meaning": "부릴 역",
+    "ondoku": "やく、えき",
+    "kundoku": ""
+  },
+  "駅": {
+    "meaning": "역 역",
+    "ondoku": "えき",
+    "kundoku": ""
+  },
+  "易": {
+    "meaning": "바꿀 역/ 쉬울 이",
+    "ondoku": "えき、い",
+    "kundoku": "やさしい"
+  },
+  "逆": {
+    "meaning": "거스를 역",
+    "ondoku": "ぎゃく",
+    "kundoku": "さか、さからう"
+  },
+  "域": {
+    "meaning": "지경 역",
+    "ondoku": "いき",
+    "kundoku": ""
+  },
+  "訳": {
+    "meaning": "번역할 역",
+    "ondoku": "やく",
+    "kundoku": "わけ"
+  },
+  "疫": {
+    "meaning": "전염병 역",
+    "ondoku": "えき、やく",
+    "kundoku": ""
+  },
+  "研": {
+    "meaning": "갈 연",
+    "ondoku": "けん",
+    "kundoku": "とぐ"
+  },
+  "然": {
+    "meaning": "그럴 연",
+    "ondoku": "ぜん、ねん",
+    "kundoku": ""
+  },
+  "演": {
+    "meaning": "펼 연",
+    "ondoku": "えん",
+    "kundoku": ""
+  },
+  "燃": {
+    "meaning": "탈 연",
+    "ondoku": "ねん",
+    "kundoku": "もえる、もやす、もす"
+  },
+  "延": {
+    "meaning": "늘일 연",
+    "ondoku": "えん",
+    "kundoku": "のびる、のべる、のばす"
+  },
+  "沿": {
+    "meaning": "물 따라갈 연",
+    "ondoku": "えん",
+    "kundoku": "そう"
+  },
+  "宴": {
+    "meaning": "잔치 연",
+    "ondoku": "えん",
+    "kundoku": ""
+  },
+  "軟": {
+    "meaning": "연할 연",
+    "ondoku": "なん",
+    "kundoku": "やわらか、やわらかい"
+  },
+  "煙": {
+    "meaning": "연기 연",
+    "ondoku": "えん",
+    "kundoku": "けむり、けむる、けむい、けむたい"
+  },
+  "鉛": {
+    "meaning": "납 연",
+    "ondoku": "えん",
+    "kundoku": "なまり"
+  },
+  "縁": {
+    "meaning": "인연 연",
+    "ondoku": "えん",
+    "kundoku": "ふち"
+  },
+  "熱": {
+    "meaning": "더울 열",
+    "ondoku": "ねつ",
+    "kundoku": "あつい"
+  },
+  "悦": {
+    "meaning": "기쁠 열",
+    "ondoku": "えつ",
+    "kundoku": ""
+  },
+  "閲": {
+    "meaning": "볼 열",
+    "ondoku": "えつ",
+    "kundoku": ""
+  },
+  "塩": {
+    "meaning": "소금 염",
+    "ondoku": "えん",
+    "kundoku": "しお"
+  },
+  "染": {
+    "meaning": "물들 염",
+    "ondoku": "せん",
+    "kundoku": "そめる、そまる、しみる、しみ"
+  },
+  "炎": {
+    "meaning": "불꽃 염",
+    "ondoku": "えん",
+    "kundoku": "ほのお"
+  },
+  "捻": {
+    "meaning": "비틀 염",
+    "ondoku": "ねん",
+    "kundoku": "いねる"
+  },
+  "艶": {
+    "meaning": "고울 염",
+    "ondoku": "えん",
+    "kundoku": "つや、つややか、あでやか、たまめかしい"
+  },
+  "葉": {
+    "meaning": "잎 엽",
+    "ondoku": "よう",
+    "kundoku": "は"
+  },
+  "泳": {
+    "meaning": "헤엄칠 영",
+    "ondoku": "えい",
+    "kundoku": "およぐ"
+  },
+  "英": {
+    "meaning": "꽃부리 영",
+    "ondoku": "えい",
+    "kundoku": ""
+  },
+  "栄": {
+    "meaning": "영화 영",
+    "ondoku": "えい",
+    "kundoku": "さかえる、はえ"
+  },
+  "永": {
+    "meaning": "길 영",
+    "ondoku": "えい",
+    "kundoku": "ながい"
+  },
+  "営": {
+    "meaning": "경영할 영",
+    "ondoku": "えい",
+    "kundoku": "いとなむ"
+  },
+  "映": {
+    "meaning": "비칠 영",
+    "ondoku": "えい",
+    "kundoku": "うつる、うつす、はえる"
+  },
+  "迎": {
+    "meaning": "맞을 영",
+    "ondoku": "げい",
+    "kundoku": "むかえる"
+  },
+  "詠": {
+    "meaning": "읊을 영",
+    "ondoku": "えい",
+    "kundoku": "よむ"
+  },
+  "影": {
+    "meaning": "그림자 영",
+    "ondoku": "えい",
+    "kundoku": "かげ"
+  },
+  "予": {
+    "meaning": "미리 예",
+    "ondoku": "よ",
+    "kundoku": "あらかじめ"
+  },
+  "芸": {
+    "meaning": "재주 예",
+    "ondoku": "げい",
+    "kundoku": ""
+  },
+  "預": {
+    "meaning": "맡길/ 미리 예",
+    "ondoku": "よ",
+    "kundoku": "あずける、あずかる"
+  },
+  "鋭": {
+    "meaning": "날카로울 예",
+    "ondoku": "えい",
+    "kundoku": "するどい"
+  },
+  "刈": {
+    "meaning": "벨 예",
+    "ondoku": "",
+    "kundoku": "かる"
+  },
+  "詣": {
+    "meaning": "이를 예",
+    "ondoku": "けい",
+    "kundoku": "もうでる"
+  },
+  "誉": {
+    "meaning": "기릴/ 명예 예",
+    "ondoku": "よ",
+    "kundoku": "ほまれ"
+  },
+  "五": {
+    "meaning": "다섯 오",
+    "ondoku": "ご",
+    "kundoku": "いつ、いつつ"
+  },
+  "午": {
+    "meaning": "낮 오",
+    "ondoku": "ご",
+    "kundoku": ""
+  },
+  "誤": {
+    "meaning": "그르칠 오",
+    "ondoku": "ご",
+    "kundoku": "あやまる"
+  },
+  "汚": {
+    "meaning": "더러울 오",
+    "ondoku": "お",
+    "kundoku": "けがす、けがれる、けがらわしい、よごす、よごれる、きたない"
+  },
+  "呉": {
+    "meaning": "성씨 오",
+    "ondoku": "ご",
+    "kundoku": ""
+  },
+  "娯": {
+    "meaning": "즐길 오",
+    "ondoku": "ご",
+    "kundoku": ""
+  },
+  "悟": {
+    "meaning": "깨달을 오",
+    "ondoku": "ご",
+    "kundoku": "さとる"
+  },
+  "奥": {
+    "meaning": "깊을 오",
+    "ondoku": "おう",
+    "kundoku": "おく"
+  },
+  "傲": {
+    "meaning": "거만할 오",
+    "ondoku": "ごう",
+    "kundoku": ""
+  },
+  "玉": {
+    "meaning": "구슬 옥",
+    "ondoku": "ぎょく",
+    "kundoku": "たま"
+  },
+  "屋": {
+    "meaning": "집 옥",
+    "ondoku": "おく",
+    "kundoku": "や"
+  },
+  "沃": {
+    "meaning": "물 댈 옥",
+    "ondoku": "よく",
+    "kundoku": ""
+  },
+  "獄": {
+    "meaning": "감옥 옥",
+    "ondoku": "ごく",
+    "kundoku": ""
+  },
+  "温": {
+    "meaning": "따뜻할 온",
+    "ondoku": "おん",
+    "kundoku": "あたたかい、あたたまる、あたためる"
+  },
+  "穏": {
+    "meaning": "편안할 온",
+    "ondoku": "おん",
+    "kundoku": "おだやか"
+  },
+  "翁": {
+    "meaning": "늙은이 옹",
+    "ondoku": "おう",
+    "kundoku": "おきな"
+  },
+  "擁": {
+    "meaning": "낄 옹",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "瓦": {
+    "meaning": "기와 와",
+    "ondoku": "が",
+    "kundoku": "かわら"
+  },
+  "渦": {
+    "meaning": "소용돌이 와",
+    "ondoku": "か",
+    "kundoku": "うず"
+  },
+  "完": {
+    "meaning": "완전할 완",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "宛": {
+    "meaning": "완연할 완",
+    "ondoku": "",
+    "kundoku": "あてる"
+  },
+  "玩": {
+    "meaning": "희롱할 완",
+    "ondoku": "がん",
+    "kundoku": ""
+  },
+  "腕": {
+    "meaning": "팔뚝 완",
+    "ondoku": "わん",
+    "kundoku": "うで"
+  },
+  "頑": {
+    "meaning": "완고할 완",
+    "ondoku": "がん",
+    "kundoku": ""
+  },
+  "緩": {
+    "meaning": "느릴 완",
+    "ondoku": "かん",
+    "kundoku": "ゆるい、ゆるやか、ゆるむ、ゆるめる"
+  },
+  "王": {
+    "meaning": "임금 왕",
+    "ondoku": "おう",
+    "kundoku": ""
+  },
+  "往": {
+    "meaning": "갈 왕",
+    "ondoku": "おう",
+    "kundoku": ""
+  },
+  "旺": {
+    "meaning": "왕성할 왕",
+    "ondoku": "おう",
+    "kundoku": ""
+  },
+  "外": {
+    "meaning": "바깥 외",
+    "ondoku": "がい、げ",
+    "kundoku": "そと、ほか、はずす、はずれる"
+  },
+  "畏": {
+    "meaning": "두려워할 외",
+    "ondoku": "い",
+    "kundoku": "おそれる"
+  },
+  "曜": {
+    "meaning": "빛날 요",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "要": {
+    "meaning": "요긴할 요",
+    "ondoku": "よう",
+    "kundoku": "いる"
+  },
+  "凹": {
+    "meaning": "오목할 요",
+    "ondoku": "おう",
+    "kundoku": "ほこ、へこむ、へこます"
+  },
+  "妖": {
+    "meaning": "아리따울 요",
+    "ondoku": "よう",
+    "kundoku": "あやしい"
+  },
+  "揺": {
+    "meaning": "흔들 요",
+    "ondoku": "よう",
+    "kundoku": "ゆれる、ゆる、ゆらぐ、ゆるぐ、ゆする、ゆさぶる、ゆすぶる"
+  },
+  "腰": {
+    "meaning": "허리 요",
+    "ondoku": "よう",
+    "kundoku": "こし"
+  },
+  "窯": {
+    "meaning": "기와 가마 요",
+    "ondoku": "よう",
+    "kundoku": "かま"
+  },
+  "謡": {
+    "meaning": "노래 요",
+    "ondoku": "よう",
+    "kundoku": "うたい、うたう"
+  },
+  "浴": {
+    "meaning": "목욕할 욕",
+    "ondoku": "よく",
+    "kundoku": "あびる、あびせる"
+  },
+  "欲": {
+    "meaning": "하고자 할 욕",
+    "ondoku": "よく",
+    "kundoku": "ほっする、ほしい"
+  },
+  "辱": {
+    "meaning": "욕될 욕",
+    "ondoku": "じょく",
+    "kundoku": "はずかしめる"
+  },
+  "用": {
+    "meaning": "쓸 용",
+    "ondoku": "よう",
+    "kundoku": "もちいる"
+  },
+  "勇": {
+    "meaning": "날랠 용",
+    "ondoku": "ゆう",
+    "kundoku": "いさむ、いさましい"
+  },
+  "容": {
+    "meaning": "모양 용",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "冗": {
+    "meaning": "쓸데없을 용",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "庸": {
+    "meaning": "떳떳할 용",
+    "ondoku": "よう",
+    "kundoku": ""
+  },
+  "湧": {
+    "meaning": "물 솟을 용",
+    "ondoku": "ゆう",
+    "kundoku": "わく"
+  },
+  "溶": {
+    "meaning": "녹을 용",
+    "ondoku": "よう",
+    "kundoku": "とける、とかす、とく"
+  },
+  "踊": {
+    "meaning": "뛸 용",
+    "ondoku": "よう",
+    "kundoku": "おどる、おどり"
+  },
+  "右": {
+    "meaning": "오른쪽 우",
+    "ondoku": "う、ゆう",
+    "kundoku": "みぎ"
+  },
+  "雨": {
+    "meaning": "비 우",
+    "ondoku": "う",
+    "kundoku": "あめ、あま"
+  },
+  "牛": {
+    "meaning": "소 우",
+    "ondoku": "ぎゅう",
+    "kundoku": "うし"
+  },
+  "友": {
+    "meaning": "벗 우",
+    "ondoku": "ゆう",
+    "kundoku": "とも"
+  },
+  "羽": {
+    "meaning": "깃 우",
+    "ondoku": "う",
+    "kundoku": "は、はね、わ"
+  },
+  "宇": {
+    "meaning": "집 우",
+    "ondoku": "う",
+    "kundoku": ""
+  },
+  "郵": {
+    "meaning": "우편 우",
+    "ondoku": "ゆう",
+    "kundoku": ""
+  },
+  "優": {
+    "meaning": "넉넉할 우",
+    "ondoku": "ゆう",
+    "kundoku": "やさしい、すぐれる"
+  },
+  "又": {
+    "meaning": "또 우",
+    "ondoku": "",
+    "kundoku": "また"
+  },
+  "芋": {
+    "meaning": "토란 우",
+    "ondoku": "",
+    "kundoku": "いも"
+  },
+  "偶": {
+    "meaning": "짝 우",
+    "ondoku": "ぐう",
+    "kundoku": ""
+  },
+  "遇": {
+    "meaning": "만날 우",
+    "ondoku": "ぐう",
+    "kundoku": ""
+  },
+  "隅": {
+    "meaning": "모퉁이 우",
+    "ondoku": "ぐう",
+    "kundoku": "すみ"
+  },
+  "愚": {
+    "meaning": "어리석을 우",
+    "ondoku": "ぐ",
+    "kundoku": "おろか"
+  },
+  "虞": {
+    "meaning": "염려할 우",
+    "ondoku": "ぐ",
+    "kundoku": "おそれ"
+  },
+  "憂": {
+    "meaning": "근심 우",
+    "ondoku": "ゆう",
+    "kundoku": "うれえる、うれい"
+  },
+  "雲": {
+    "meaning": "구름 운",
+    "ondoku": "うん",
+    "kundoku": "くも"
+  },
+  "運": {
+    "meaning": "옮길 운",
+    "ondoku": "うん",
+    "kundoku": "はこぶ"
+  },
+  "韻": {
+    "meaning": "운율 운",
+    "ondoku": "いん",
+    "kundoku": ""
+  },
+  "鬱": {
+    "meaning": "막힐 울",
+    "ondoku": "うつ",
+    "kundoku": ""
+  },
+  "雄": {
+    "meaning": "수컷 웅",
+    "ondoku": "ゆう",
+    "kundoku": "おす、お"
+  },
+  "熊": {
+    "meaning": "곰 웅",
+    "ondoku": "",
+    "kundoku": "くま"
+  },
+  "円": {
+    "meaning": "둥글 원",
+    "ondoku": "えん",
+    "kundoku": "まるい"
+  },
+  "元": {
+    "meaning": "으뜸 원",
+    "ondoku": "げん、がん",
+    "kundoku": "もと"
+  },
+  "原": {
+    "meaning": "언덕 원",
+    "ondoku": "げん",
+    "kundoku": "はら"
+  },
+  "遠": {
+    "meaning": "멀 원",
+    "ondoku": "えん、おん",
+    "kundoku": "とおい"
+  },
+  "園": {
+    "meaning": "동산 원",
+    "ondoku": "えん",
+    "kundoku": "その"
+  },
+  "院": {
+    "meaning": "집 원",
+    "ondoku": "いん",
+    "kundoku": ""
+  },
+  "員": {
+    "meaning": "인원 원",
+    "ondoku": "いん",
+    "kundoku": ""
+  },
+  "願": {
+    "meaning": "원할 원",
+    "ondoku": "がん",
+    "kundoku": "ねがう"
+  },
+  "源": {
+    "meaning": "근원 원",
+    "ondoku": "げん",
+    "kundoku": "みなもと"
+  },
+  "怨": {
+    "meaning": "원망할 원",
+    "ondoku": "えん、おん",
+    "kundoku": "うらむ"
+  },
+  "垣": {
+    "meaning": "담 원",
+    "ondoku": "",
+    "kundoku": "かき"
+  },
+  "援": {
+    "meaning": "도울 원",
+    "ondoku": "えん",
+    "kundoku": ""
+  },
+  "媛": {
+    "meaning": "미인 원",
+    "ondoku": "えん",
+    "kundoku": "ひめ"
+  },
+  "猿": {
+    "meaning": "원숭이 원",
+    "ondoku": "えん",
+    "kundoku": "さる"
+  },
+  "月": {
+    "meaning": "달 월",
+    "ondoku": "げつ、がつ",
+    "kundoku": "つき"
+  },
+  "越": {
+    "meaning": "넘을 월",
+    "ondoku": "えつ",
+    "kundoku": "こす、こえる"
+  },
+  "委": {
+    "meaning": "맡길 위",
+    "ondoku": "い",
+    "kundoku": "ゆだねる"
+  },
+  "位": {
+    "meaning": "자리 위",
+    "ondoku": "い",
+    "kundoku": "くらい"
+  },
+  "囲": {
+    "meaning": "에워쌀 위",
+    "ondoku": "い",
+    "kundoku": "かこむ、かこう"
+  },
+  "胃": {
+    "meaning": "밥통 위",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "衛": {
+    "meaning": "지킬 위",
+    "ondoku": "えい",
+    "kundoku": ""
+  },
+  "危": {
+    "meaning": "위태할 위",
+    "ondoku": "き",
+    "kundoku": "あぶない、あやうい、あやぶむ"
+  },
+  "威": {
+    "meaning": "위엄 위",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "為": {
+    "meaning": "할 위",
+    "ondoku": "い",
+    "kundoku": "ため、なす、なる"
+  },
+  "萎": {
+    "meaning": "시들 위",
+    "ondoku": "い",
+    "kundoku": "なえる、しおれる、しぼむ"
+  },
+  "偽": {
+    "meaning": "거짓 위",
+    "ondoku": "ぎ",
+    "kundoku": "にせ、いつわる"
+  },
+  "尉": {
+    "meaning": "벼슬 위",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "偉": {
+    "meaning": "클 위",
+    "ondoku": "い",
+    "kundoku": "えらい"
+  },
+  "違": {
+    "meaning": "어긋날 위",
+    "ondoku": "い",
+    "kundoku": "ちがう、ちがえる"
+  },
+  "慰": {
+    "meaning": "위로할 위",
+    "ondoku": "い",
+    "kundoku": "なぐさめる、なぐさむ"
+  },
+  "緯": {
+    "meaning": "위도 위",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "由": {
+    "meaning": "말미암을 유",
+    "ondoku": "ゆ、ゆう、ゆい",
+    "kundoku": "よし"
+  },
+  "有": {
+    "meaning": "있을 유",
+    "ondoku": "ゆう、う",
+    "kundoku": "ある"
+  },
+  "油": {
+    "meaning": "기름 유",
+    "ondoku": "ゆ",
+    "kundoku": "あぶら"
+  },
+  "遊": {
+    "meaning": "놀 유",
+    "ondoku": "ゆう、ゆ",
+    "kundoku": "あそぶ"
+  },
+  "幼": {
+    "meaning": "어릴 유",
+    "ondoku": "よう",
+    "kundoku": "おさない"
+  },
+  "乳": {
+    "meaning": "젖 유",
+    "ondoku": "にゅう",
+    "kundoku": "ちち、ち"
+  },
+  "遺": {
+    "meaning": "남길 유",
+    "ondoku": "い、ゆい",
+    "kundoku": ""
+  },
+  "柔": {
+    "meaning": "부드러울 유",
+    "ondoku": "じゅう、にゅう",
+    "kundoku": "やわらか、やわらかい"
+  },
+  "幽": {
+    "meaning": "그윽할 유",
+    "ondoku": "ゆう",
+    "kundoku": ""
+  },
+  "唯": {
+    "meaning": "오직 유",
+    "ondoku": "ゆい、い",
+    "kundoku": "ただ"
+  },
+  "悠": {
+    "meaning": "유유자적할 유",
+    "ondoku": "ゆう",
+    "kundoku": ""
+  },
+  "愉": {
+    "meaning": "즐거울 유",
+    "ondoku": "ゆ",
+    "kundoku": ""
+  },
+  "喩": {
+    "meaning": "비유할 유",
+    "ondoku": "ゆ",
+    "kundoku": ""
+  },
+  "猶": {
+    "meaning": "오히려 유",
+    "ondoku": "ゆう",
+    "kundoku": ""
+  },
+  "裕": {
+    "meaning": "넉넉할 유",
+    "ondoku": "ゆう",
+    "kundoku": ""
+  },
+  "誘": {
+    "meaning": "꾈 유",
+    "ondoku": "ゆう",
+    "kundoku": "さそう"
+  },
+  "維": {
+    "meaning": "벼리 유",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "諭": {
+    "meaning": "타이를 유",
+    "ondoku": "ゆ",
+    "kundoku": "さとす"
+  },
+  "儒": {
+    "meaning": "선비 유",
+    "ondoku": "じゅ",
+    "kundoku": ""
+  },
+  "癒": {
+    "meaning": "병 나을 유",
+    "ondoku": "ゆ",
+    "kundoku": "いえる、いやす"
+  },
+  "六": {
+    "meaning": "여섯 육",
+    "ondoku": "ろく",
+    "kundoku": "む、むつ、むい、むっつ"
+  },
+  "肉": {
+    "meaning": "고기 육",
+    "ondoku": "にく",
+    "kundoku": ""
+  },
+  "育": {
+    "meaning": "기를 육",
+    "ondoku": "いく",
+    "kundoku": "そだつ、そだてる、はぐくむ"
+  },
+  "潤": {
+    "meaning": "불을 윤",
+    "ondoku": "じゅん",
+    "kundoku": "うるおう、うるおす、うるむ"
+  },
+  "融": {
+    "meaning": "녹을 융",
+    "ondoku": "ゆう",
+    "kundoku": ""
+  },
+  "銀": {
+    "meaning": "은 은",
+    "ondoku": "ぎん",
+    "kundoku": ""
+  },
+  "恩": {
+    "meaning": "은혜 은",
+    "ondoku": "おん",
+    "kundoku": ""
+  },
+  "隠": {
+    "meaning": "숨을 은",
+    "ondoku": "いん",
+    "kundoku": "かくす、かくれる"
+  },
+  "乙": {
+    "meaning": "새 을",
+    "ondoku": "おつ",
+    "kundoku": ""
+  },
+  "音": {
+    "meaning": "소리 음",
+    "ondoku": "おん、いん",
+    "kundoku": "おと、ね"
+  },
+  "飲": {
+    "meaning": "마실 음",
+    "ondoku": "いん",
+    "kundoku": "のむ"
+  },
+  "吟": {
+    "meaning": "읊을 음",
+    "ondoku": "ぎん",
+    "kundoku": ""
+  },
+  "陰": {
+    "meaning": "그늘 음",
+    "ondoku": "いん",
+    "kundoku": "かげ、かげる"
+  },
+  "淫": {
+    "meaning": "음란할 음",
+    "ondoku": "いん",
+    "kundoku": "みだら"
+  },
+  "泣": {
+    "meaning": "울 읍",
+    "ondoku": "きゅう",
+    "kundoku": "なく"
+  },
+  "応": {
+    "meaning": "응할 응",
+    "ondoku": "おう",
+    "kundoku": "こたえる"
+  },
+  "凝": {
+    "meaning": "엉길 응",
+    "ondoku": "ぎょう",
+    "kundoku": "こる、こらす"
+  },
+  "医": {
+    "meaning": "의원 의",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "意": {
+    "meaning": "뜻 의",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "衣": {
+    "meaning": "옷 의",
+    "ondoku": "い",
+    "kundoku": "ころも"
+  },
+  "議": {
+    "meaning": "의논할 의",
+    "ondoku": "ぎ",
+    "kundoku": ""
+  },
+  "義": {
+    "meaning": "옳을 의",
+    "ondoku": "ぎ",
+    "kundoku": ""
+  },
+  "疑": {
+    "meaning": "의심할 의",
+    "ondoku": "ぎ",
+    "kundoku": "うたがう"
+  },
+  "依": {
+    "meaning": "의지할 의",
+    "ondoku": "い、え",
+    "kundoku": ""
+  },
+  "宜": {
+    "meaning": "마땅 의",
+    "ondoku": "ぎ",
+    "kundoku": ""
+  },
+  "椅": {
+    "meaning": "의자 의",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "儀": {
+    "meaning": "거동 의",
+    "ondoku": "ぎ",
+    "kundoku": ""
+  },
+  "擬": {
+    "meaning": "비길 의",
+    "ondoku": "ぎ",
+    "kundoku": ""
+  },
+  "二": {
+    "meaning": "두 이",
+    "ondoku": "に",
+    "kundoku": "ふた、ふたつ"
+  },
+  "耳": {
+    "meaning": "귀 이",
+    "ondoku": "じ",
+    "kundoku": "みみ"
+  },
+  "以": {
+    "meaning": "써 이",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "移": {
+    "meaning": "옮길 이",
+    "ondoku": "い",
+    "kundoku": "うつる、うつす"
+  },
+  "異": {
+    "meaning": "다를 이",
+    "ondoku": "い",
+    "kundoku": "ことなる"
+  },
+  "弐": {
+    "meaning": "두/ 갖은두 이",
+    "ondoku": "に",
+    "kundoku": ""
+  },
+  "餌": {
+    "meaning": "미끼 이",
+    "ondoku": "じ",
+    "kundoku": "えさ、え"
+  },
+  "益": {
+    "meaning": "더할 익",
+    "ondoku": "えき、やく",
+    "kundoku": ""
+  },
+  "翌": {
+    "meaning": "다음날 익",
+    "ondoku": "よく",
+    "kundoku": ""
+  },
+  "溺": {
+    "meaning": "빠질 익",
+    "ondoku": "でき",
+    "kundoku": "おぼれる"
+  },
+  "翼": {
+    "meaning": "날개 익",
+    "ondoku": "よく",
+    "kundoku": "つばさ"
+  },
+  "人": {
+    "meaning": "사람 인",
+    "ondoku": "じん、にん",
+    "kundoku": "ひと"
+  },
+  "引": {
+    "meaning": "끌 인",
+    "ondoku": "いん",
+    "kundoku": "ひく、ひける"
+  },
+  "印": {
+    "meaning": "도장 인",
+    "ondoku": "いん",
+    "kundoku": "しるし"
+  },
+  "因": {
+    "meaning": "인할 인",
+    "ondoku": "いん",
+    "kundoku": "よる"
+  },
+  "仁": {
+    "meaning": "어질 인",
+    "ondoku": "じん、に",
+    "kundoku": ""
+  },
+  "認": {
+    "meaning": "알 인",
+    "ondoku": "にん",
+    "kundoku": "みとめる"
+  },
+  "刃": {
+    "meaning": "칼날 인",
+    "ondoku": "じん",
+    "kundoku": "は"
+  },
+  "忍": {
+    "meaning": "참을 인",
+    "ondoku": "にん",
+    "kundoku": "しのぶ、しのばせる"
+  },
+  "姻": {
+    "meaning": "혼인 인",
+    "ondoku": "いん",
+    "kundoku": ""
+  },
+  "咽": {
+    "meaning": "목구멍 인",
+    "ondoku": "いん",
+    "kundoku": "むせぶ"
+  },
+  "一": {
+    "meaning": "한 일",
+    "ondoku": "いち、いっ",
+    "kundoku": "ひと、ひとつ"
+  },
+  "日": {
+    "meaning": "날 일",
+    "ondoku": "にち、じつ",
+    "kundoku": "ひ、か"
+  },
+  "壱": {
+    "meaning": "한/ 갖은한 일",
+    "ondoku": "いち",
+    "kundoku": ""
+  },
+  "逸": {
+    "meaning": "편안할 일",
+    "ondoku": "いつ",
+    "kundoku": ""
+  },
+  "任": {
+    "meaning": "맡길 임",
+    "ondoku": "にん",
+    "kundoku": "まかせる、まかす"
+  },
+  "賃": {
+    "meaning": "품삯 임",
+    "ondoku": "ちん",
+    "kundoku": ""
+  },
+  "妊": {
+    "meaning": "아이밸 임",
+    "ondoku": "にん",
+    "kundoku": ""
+  },
+  "入": {
+    "meaning": "들 입",
+    "ondoku": "にゅう",
+    "kundoku": "いる、いれる、はいる"
+  },
+  "剰": {
+    "meaning": "남을 잉",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "子": {
+    "meaning": "아들 자",
+    "ondoku": "し、す",
+    "kundoku": "こ"
+  },
+  "字": {
+    "meaning": "글자 자",
+    "ondoku": "じ",
+    "kundoku": ""
+  },
+  "自": {
+    "meaning": "스스로 자",
+    "ondoku": "じ、し",
+    "kundoku": "みずから"
+  },
+  "姉": {
+    "meaning": "손윗누이 자",
+    "ondoku": "し",
+    "kundoku": "あね、ねえ"
+  },
+  "者": {
+    "meaning": "놈 자",
+    "ondoku": "しゃ",
+    "kundoku": "もの"
+  },
+  "資": {
+    "meaning": "재물 자",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "姿": {
+    "meaning": "모양 자",
+    "ondoku": "し",
+    "kundoku": "すがた"
+  },
+  "磁": {
+    "meaning": "자석 자",
+    "ondoku": "じ",
+    "kundoku": ""
+  },
+  "刺": {
+    "meaning": "찌를 자",
+    "ondoku": "し",
+    "kundoku": "さす、ささる"
+  },
+  "茨": {
+    "meaning": "가시나무 자",
+    "ondoku": "",
+    "kundoku": "いばら"
+  },
+  "恣": {
+    "meaning": "방자할 자",
+    "ondoku": "し",
+    "kundoku": "ほしいまま"
+  },
+  "紫": {
+    "meaning": "자주빛 자",
+    "ondoku": "し",
+    "kundoku": "むらさき"
+  },
+  "滋": {
+    "meaning": "불을 자",
+    "ondoku": "じ",
+    "kundoku": ""
+  },
+  "煮": {
+    "meaning": "삶을 자",
+    "ondoku": "しゃ",
+    "kundoku": "にる、にえる、にやす"
+  },
+  "慈": {
+    "meaning": "사랑 자",
+    "ondoku": "じ",
+    "kundoku": "いつくしむ"
+  },
+  "雌": {
+    "meaning": "암컷 자",
+    "ondoku": "し",
+    "kundoku": "めす、め"
+  },
+  "諮": {
+    "meaning": "물을 자",
+    "ondoku": "し",
+    "kundoku": "はかる"
+  },
+  "作": {
+    "meaning": "지을 작",
+    "ondoku": "さく、さ",
+    "kundoku": "つくる"
+  },
+  "昨": {
+    "meaning": "어제 작",
+    "ondoku": "さく",
+    "kundoku": ""
+  },
+  "酌": {
+    "meaning": "술 부을 작",
+    "ondoku": "しゃく",
+    "kundoku": "くむ"
+  },
+  "爵": {
+    "meaning": "벼슬 작",
+    "ondoku": "しゃく",
+    "kundoku": ""
+  },
+  "残": {
+    "meaning": "남을 잔",
+    "ondoku": "ざん",
+    "kundoku": "のこる、のこす"
+  },
+  "桟": {
+    "meaning": "사다리 잔",
+    "ondoku": "さん",
+    "kundoku": ""
+  },
+  "蚕": {
+    "meaning": "누에 잠",
+    "ondoku": "さん",
+    "kundoku": "かいこ"
+  },
+  "潜": {
+    "meaning": "잠길 잠",
+    "ondoku": "せん",
+    "kundoku": "ひそむ、もぐる"
+  },
+  "暫": {
+    "meaning": "잠깐 잠",
+    "ondoku": "ざん",
+    "kundoku": ""
+  },
+  "雑": {
+    "meaning": "섞일 잡",
+    "ondoku": "ざつ、ぞう",
+    "kundoku": ""
+  },
+  "長": {
+    "meaning": "긴 장",
+    "ondoku": "ちょう",
+    "kundoku": "ながい"
+  },
+  "場": {
+    "meaning": "마당 장",
+    "ondoku": "じょう",
+    "kundoku": "ば"
+  },
+  "章": {
+    "meaning": "글 장",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "帳": {
+    "meaning": "장막 장",
+    "ondoku": "ちょう",
+    "kundoku": ""
+  },
+  "腸": {
+    "meaning": "창자 장",
+    "ondoku": "ちょう",
+    "kundoku": ""
+  },
+  "張": {
+    "meaning": "베풀 장",
+    "ondoku": "ちょう",
+    "kundoku": "はる"
+  },
+  "将": {
+    "meaning": "장수 장",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "装": {
+    "meaning": "꾸밀 장",
+    "ondoku": "そう、しょう",
+    "kundoku": "よそおう"
+  },
+  "障": {
+    "meaning": "막을 장",
+    "ondoku": "しょう",
+    "kundoku": "さわる"
+  },
+  "蔵": {
+    "meaning": "감출 장",
+    "ondoku": "ぞう",
+    "kundoku": "くら"
+  },
+  "臓": {
+    "meaning": "오장 장",
+    "ondoku": "ぞう",
+    "kundoku": ""
+  },
+  "丈": {
+    "meaning": "어른 장",
+    "ondoku": "そう",
+    "kundoku": "たけ"
+  },
+  "匠": {
+    "meaning": "장인 장",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "壮": {
+    "meaning": "장할 장",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "荘": {
+    "meaning": "씩씩할/ 별장 장",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "掌": {
+    "meaning": "손바닥 장",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "粧": {
+    "meaning": "단장할 장",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "葬": {
+    "meaning": "장사지낼 장",
+    "ondoku": "そう",
+    "kundoku": "ほうむる"
+  },
+  "奨": {
+    "meaning": "장려할 장",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "才": {
+    "meaning": "재주 재",
+    "ondoku": "さい",
+    "kundoku": ""
+  },
+  "材": {
+    "meaning": "재목 재",
+    "ondoku": "ざい",
+    "kundoku": ""
+  },
+  "再": {
+    "meaning": "두 재",
+    "ondoku": "さい、さ",
+    "kundoku": "ふたたび"
+  },
+  "在": {
+    "meaning": "있을 재",
+    "ondoku": "ざい",
+    "kundoku": "ある"
+  },
+  "災": {
+    "meaning": "재앙 재",
+    "ondoku": "さい",
+    "kundoku": "わざわい"
+  },
+  "財": {
+    "meaning": "재물 재",
+    "ondoku": "ざい、さい",
+    "kundoku": ""
+  },
+  "裁": {
+    "meaning": "마를 재",
+    "ondoku": "さい",
+    "kundoku": "たつ、さばく"
+  },
+  "宰": {
+    "meaning": "재상 재",
+    "ondoku": "さい",
+    "kundoku": ""
+  },
+  "栽": {
+    "meaning": "심을 재",
+    "ondoku": "さい",
+    "kundoku": ""
+  },
+  "斎": {
+    "meaning": "재계할/ 집 재",
+    "ondoku": "さい",
+    "kundoku": ""
+  },
+  "載": {
+    "meaning": "실을 재",
+    "ondoku": "さい",
+    "kundoku": "のせる、のる"
+  },
+  "争": {
+    "meaning": "다툴 쟁",
+    "ondoku": "そう",
+    "kundoku": "あらそう"
+  },
+  "低": {
+    "meaning": "낮을 저",
+    "ondoku": "てい",
+    "kundoku": "ひくい、ひくめる、ひくまる"
+  },
+  "底": {
+    "meaning": "밑 저",
+    "ondoku": "てい",
+    "kundoku": "そこ"
+  },
+  "貯": {
+    "meaning": "쌓을 저",
+    "ondoku": "ちょ",
+    "kundoku": ""
+  },
+  "著": {
+    "meaning": "나타날 저",
+    "ondoku": "ちょ",
+    "kundoku": "あらわす、いちじるしい"
+  },
+  "狙": {
+    "meaning": "엿볼 저",
+    "ondoku": "そ",
+    "kundoku": "ねらう"
+  },
+  "抵": {
+    "meaning": "막을 저",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "邸": {
+    "meaning": "집 저",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "箸": {
+    "meaning": "젓가락 저",
+    "ondoku": "",
+    "kundoku": "はし"
+  },
+  "赤": {
+    "meaning": "붉을 적",
+    "ondoku": "せき、しゃく",
+    "kundoku": "あか、あかい、あからむ、あからめる"
+  },
+  "笛": {
+    "meaning": "피리 적",
+    "ondoku": "てき",
+    "kundoku": "ふえ"
+  },
+  "的": {
+    "meaning": "과녁 적",
+    "ondoku": "てき",
+    "kundoku": "まと"
+  },
+  "積": {
+    "meaning": "쌓을 적",
+    "ondoku": "せき",
+    "kundoku": "つむ、つもる"
+  },
+  "敵": {
+    "meaning": "맞을 적",
+    "ondoku": "てき",
+    "kundoku": "かなう"
+  },
+  "適": {
+    "meaning": "대적할 적",
+    "ondoku": "てき",
+    "kundoku": "かたき"
+  },
+  "績": {
+    "meaning": "길쌈할 적",
+    "ondoku": "せき",
+    "kundoku": ""
+  },
+  "寂": {
+    "meaning": "고요할 적",
+    "ondoku": "せき、じゃく",
+    "kundoku": "さび、さびしい、さびれる"
+  },
+  "賊": {
+    "meaning": "도둑 적",
+    "ondoku": "ぞく",
+    "kundoku": ""
+  },
+  "跡": {
+    "meaning": "발자취 적",
+    "ondoku": "せき",
+    "kundoku": "あと"
+  },
+  "滴": {
+    "meaning": "물방울 적",
+    "ondoku": "てき",
+    "kundoku": "しずく、したたる"
+  },
+  "嫡": {
+    "meaning": "정실 적",
+    "ondoku": "ちゃく",
+    "kundoku": ""
+  },
+  "摘": {
+    "meaning": "딸 적",
+    "ondoku": "てき",
+    "kundoku": "つむ"
+  },
+  "籍": {
+    "meaning": "문서 적",
+    "ondoku": "せき",
+    "kundoku": ""
+  },
+  "田": {
+    "meaning": "밭/ 논 전",
+    "ondoku": "でん",
+    "kundoku": "た"
+  },
+  "前": {
+    "meaning": "앞 전",
+    "ondoku": "ぜん",
+    "kundoku": "まえ"
+  },
+  "電": {
+    "meaning": "번개 전",
+    "ondoku": "でん",
+    "kundoku": ""
+  },
+  "全": {
+    "meaning": "온전할 전",
+    "ondoku": "ぜん",
+    "kundoku": "まったく"
+  },
+  "転": {
+    "meaning": "구를 전",
+    "ondoku": "てん",
+    "kundoku": "ころがる、ころげる、ころがす、ころぶ"
+  },
+  "伝": {
+    "meaning": "전할 전",
+    "ondoku": "でん",
+    "kundoku": "つたえる、つたわる、つたう"
+  },
+  "典": {
+    "meaning": "법 전",
+    "ondoku": "てん",
+    "kundoku": ""
+  },
+  "戦": {
+    "meaning": "싸움 전",
+    "ondoku": "せん",
+    "kundoku": "いくさ、たたかう"
+  },
+  "銭": {
+    "meaning": "돈 전",
+    "ondoku": "せん",
+    "kundoku": "ぜに"
+  },
+  "専": {
+    "meaning": "오로지 전",
+    "ondoku": "せん",
+    "kundoku": "もっぱら"
+  },
+  "展": {
+    "meaning": "펼 전",
+    "ondoku": "てん",
+    "kundoku": ""
+  },
+  "栓": {
+    "meaning": "마개 전",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "殿": {
+    "meaning": "전각 전",
+    "ondoku": "でん、てん",
+    "kundoku": "との、どの"
+  },
+  "塡": {
+    "meaning": "메울 전/ 누를 진",
+    "ondoku": "てん",
+    "kundoku": ""
+  },
+  "煎": {
+    "meaning": "달일 전",
+    "ondoku": "せん",
+    "kundoku": "いる"
+  },
+  "詮": {
+    "meaning": "설명할 전",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "箋": {
+    "meaning": "찌지 전",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "切": {
+    "meaning": "끊을 절/ 모두 체",
+    "ondoku": "せつ、さい",
+    "kundoku": "きる、きれる"
+  },
+  "折": {
+    "meaning": "꺾을 절",
+    "ondoku": "せつ",
+    "kundoku": "おる、おれる"
+  },
+  "節": {
+    "meaning": "마디 절",
+    "ondoku": "せつ、せち",
+    "kundoku": "ふし"
+  },
+  "絶": {
+    "meaning": "끊을 절",
+    "ondoku": "ぜつ",
+    "kundoku": "たえる、たやす、たつ"
+  },
+  "窃": {
+    "meaning": "훔칠 절",
+    "ondoku": "せつ",
+    "kundoku": ""
+  },
+  "店": {
+    "meaning": "가게 점",
+    "ondoku": "てん",
+    "kundoku": "みせ"
+  },
+  "点": {
+    "meaning": "점 점",
+    "ondoku": "てん",
+    "kundoku": ""
+  },
+  "占": {
+    "meaning": "점령할/ 점칠 점",
+    "ondoku": "せん",
+    "kundoku": "しめる、うらなう"
+  },
+  "粘": {
+    "meaning": "붙을 점",
+    "ondoku": "ねん",
+    "kundoku": "ねばる"
+  },
+  "漸": {
+    "meaning": "점점 점",
+    "ondoku": "ぜん",
+    "kundoku": ""
+  },
+  "接": {
+    "meaning": "이을 접",
+    "ondoku": "せつ",
+    "kundoku": "つぐ"
+  },
+  "正": {
+    "meaning": "바를 정",
+    "ondoku": "しょう、せい",
+    "kundoku": "ただしい、ただす、まさ"
+  },
+  "町": {
+    "meaning": "밭두둑 정",
+    "ondoku": "ちょう",
+    "kundoku": "まち"
+  },
+  "丁": {
+    "meaning": "고무래/ 장정 정",
+    "ondoku": "ちょう、てい",
+    "kundoku": ""
+  },
+  "定": {
+    "meaning": "정할 정",
+    "ondoku": "てい、じょう",
+    "kundoku": "さだめる、さだまる、さだか"
+  },
+  "庭": {
+    "meaning": "뜰 정",
+    "ondoku": "てい",
+    "kundoku": "にわ"
+  },
+  "整": {
+    "meaning": "가지런할 정",
+    "ondoku": "せい",
+    "kundoku": "ととのう、ととのえる"
+  },
+  "停": {
+    "meaning": "머무를 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "静": {
+    "meaning": "고요할 정",
+    "ondoku": "せい、じょう",
+    "kundoku": "しずか、しずまる、しずめる"
+  },
+  "政": {
+    "meaning": "정사 정",
+    "ondoku": "せい、しょう",
+    "kundoku": "まつりごと"
+  },
+  "情": {
+    "meaning": "뜻 정",
+    "ondoku": "じょう、せい",
+    "kundoku": "なさけ"
+  },
+  "程": {
+    "meaning": "한도/ 길 정",
+    "ondoku": "てい",
+    "kundoku": "ほど"
+  },
+  "精": {
+    "meaning": "정할 정",
+    "ondoku": "せい、しょう",
+    "kundoku": ""
+  },
+  "頂": {
+    "meaning": "정수리 정",
+    "ondoku": "ちょう",
+    "kundoku": "いただく、いたかき"
+  },
+  "井": {
+    "meaning": "우물 정",
+    "ondoku": "せい",
+    "kundoku": "い"
+  },
+  "丼": {
+    "meaning": "우물 정",
+    "ondoku": "とん",
+    "kundoku": "どんぶり"
+  },
+  "呈": {
+    "meaning": "드릴 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "廷": {
+    "meaning": "조정 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "征": {
+    "meaning": "칠 정",
+    "ondoku": "せい",
+    "kundoku": ""
+  },
+  "亭": {
+    "meaning": "정자 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "貞": {
+    "meaning": "곧을 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "訂": {
+    "meaning": "바로잡을 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "浄": {
+    "meaning": "깨끗할 정",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "偵": {
+    "meaning": "염탐할 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "晶": {
+    "meaning": "맑을 정",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "艇": {
+    "meaning": "배 정",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "錠": {
+    "meaning": "덩이 정",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "弟": {
+    "meaning": "아우 제",
+    "ondoku": "てい、だい、で",
+    "kundoku": "おとうと"
+  },
+  "第": {
+    "meaning": "차례 제",
+    "ondoku": "だい",
+    "kundoku": ""
+  },
+  "祭": {
+    "meaning": "제사 제",
+    "ondoku": "さい",
+    "kundoku": "まつる、まつり"
+  },
+  "題": {
+    "meaning": "제목 제",
+    "ondoku": "だい",
+    "kundoku": ""
+  },
+  "制": {
+    "meaning": "절제할 제",
+    "ondoku": "せい",
+    "kundoku": ""
+  },
+  "提": {
+    "meaning": "끌 제",
+    "ondoku": "てい",
+    "kundoku": "さげる"
+  },
+  "製": {
+    "meaning": "지을 제",
+    "ondoku": "せい",
+    "kundoku": ""
+  },
+  "際": {
+    "meaning": "즈음 제",
+    "ondoku": "さい",
+    "kundoku": "きわ"
+  },
+  "除": {
+    "meaning": "덜 제",
+    "ondoku": "じょ、じ",
+    "kundoku": "のぞく"
+  },
+  "済": {
+    "meaning": "건널 제",
+    "ondoku": "さい",
+    "kundoku": "すむ、すます"
+  },
+  "諸": {
+    "meaning": "모두 제",
+    "ondoku": "しょ",
+    "kundoku": ""
+  },
+  "斉": {
+    "meaning": "가지런할 제",
+    "ondoku": "せい",
+    "kundoku": ""
+  },
+  "帝": {
+    "meaning": "임금 제",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "剤": {
+    "meaning": "약제 제",
+    "ondoku": "ざい",
+    "kundoku": ""
+  },
+  "堤": {
+    "meaning": "둑 제",
+    "ondoku": "てい",
+    "kundoku": "つつみ"
+  },
+  "早": {
+    "meaning": "이를 조",
+    "ondoku": "そう、さっ",
+    "kundoku": "はやい、はやまる、はやめる"
+  },
+  "鳥": {
+    "meaning": "새 조",
+    "ondoku": "ちょう",
+    "kundoku": "とり"
+  },
+  "組": {
+    "meaning": "짤 조",
+    "ondoku": "そ",
+    "kundoku": "くむ、くみ"
+  },
+  "朝": {
+    "meaning": "아침 조",
+    "ondoku": "ちょう",
+    "kundoku": "あさ"
+  },
+  "助": {
+    "meaning": "도울 조",
+    "ondoku": "じょ",
+    "kundoku": "たすける、たすかる、すけ"
+  },
+  "調": {
+    "meaning": "조사할 조",
+    "ondoku": "ちょう",
+    "kundoku": "しらべる、ととのう、ととのえる"
+  },
+  "兆": {
+    "meaning": "조 조",
+    "ondoku": "ちょう",
+    "kundoku": "きざす"
+  },
+  "照": {
+    "meaning": "비칠 조",
+    "ondoku": "しょう",
+    "kundoku": "てる、てらす、てれる"
+  },
+  "条": {
+    "meaning": "가지 조",
+    "ondoku": "じょう",
+    "kundoku": ""
+  },
+  "祖": {
+    "meaning": "할아버지 조",
+    "ondoku": "そ",
+    "kundoku": ""
+  },
+  "造": {
+    "meaning": "지을 조",
+    "ondoku": "ぞう",
+    "kundoku": "つくる"
+  },
+  "潮": {
+    "meaning": "밀물/조수 조",
+    "ondoku": "ちょう",
+    "kundoku": "しお"
+  },
+  "操": {
+    "meaning": "잡을 조",
+    "ondoku": "そう",
+    "kundoku": "みさお、あやつる"
+  },
+  "爪": {
+    "meaning": "손톱 조",
+    "ondoku": "",
+    "kundoku": "つめ、つま"
+  },
+  "弔": {
+    "meaning": "조상할 조",
+    "ondoku": "ちょう",
+    "kundoku": "とむらう"
+  },
+  "阻": {
+    "meaning": "막힐 조",
+    "ondoku": "そ",
+    "kundoku": "はばむ"
+  },
+  "租": {
+    "meaning": "조세 조",
+    "ondoku": "そ",
+    "kundoku": ""
+  },
+  "措": {
+    "meaning": "둘 조",
+    "ondoku": "そ",
+    "kundoku": ""
+  },
+  "曹": {
+    "meaning": "무리 조",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "粗": {
+    "meaning": "조잡할 조",
+    "ondoku": "そ",
+    "kundoku": "あらい"
+  },
+  "彫": {
+    "meaning": "새길 조",
+    "ondoku": "ちょう",
+    "kundoku": "ほる"
+  },
+  "眺": {
+    "meaning": "바라볼 조",
+    "ondoku": "ちょう",
+    "kundoku": "ながめる"
+  },
+  "釣": {
+    "meaning": "낚을/낚시 조",
+    "ondoku": "ちょう",
+    "kundoku": "つる"
+  },
+  "詔": {
+    "meaning": "조서 조",
+    "ondoku": "しょう",
+    "kundoku": "みことのり"
+  },
+  "遭": {
+    "meaning": "만날 조",
+    "ondoku": "そう",
+    "kundoku": "あう"
+  },
+  "嘲": {
+    "meaning": "비웃을 조",
+    "ondoku": "ちょう",
+    "kundoku": "あざける"
+  },
+  "槽": {
+    "meaning": "구유 조",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "燥": {
+    "meaning": "마를 조",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "繰": {
+    "meaning": "고치 켤 조",
+    "ondoku": "",
+    "kundoku": "くる"
+  },
+  "藻": {
+    "meaning": "마름 조",
+    "ondoku": "そう",
+    "kundoku": "も"
+  },
+  "足": {
+    "meaning": "발 족",
+    "ondoku": "そく",
+    "kundoku": "あし、たりる、たす"
+  },
+  "族": {
+    "meaning": "겨레 족",
+    "ondoku": "ぞく",
+    "kundoku": ""
+  },
+  "存": {
+    "meaning": "있을 존",
+    "ondoku": "そん、ぞん",
+    "kundoku": ""
+  },
+  "尊": {
+    "meaning": "높을 존",
+    "ondoku": "そん",
+    "kundoku": "たっとい、とうとい、たっとぶ、とうとぶ"
+  },
+  "卒": {
+    "meaning": "마칠 졸",
+    "ondoku": "そつ",
+    "kundoku": ""
+  },
+  "拙": {
+    "meaning": "옹졸할 졸",
+    "ondoku": "せつ",
+    "kundoku": "つたない"
+  },
+  "終": {
+    "meaning": "마칠 종",
+    "ondoku": "しゅう",
+    "kundoku": "おわる、おえる"
+  },
+  "種": {
+    "meaning": "씨 종",
+    "ondoku": "しゅ",
+    "kundoku": "たね"
+  },
+  "宗": {
+    "meaning": "마루 종",
+    "ondoku": "しゅう、そう",
+    "kundoku": ""
+  },
+  "従": {
+    "meaning": "좇을 종",
+    "ondoku": "じゅう、しょう、じゅ",
+    "kundoku": "したがう、したがえる"
+  },
+  "縦": {
+    "meaning": "세로 종",
+    "ondoku": "じゅう",
+    "kundoku": "たて"
+  },
+  "腫": {
+    "meaning": "종기 종",
+    "ondoku": "しゅ",
+    "kundoku": "はれる、はらす"
+  },
+  "踪": {
+    "meaning": "자취 종",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "鐘": {
+    "meaning": "쇠북 종",
+    "ondoku": "しょう",
+    "kundoku": "かね"
+  },
+  "左": {
+    "meaning": "왼 좌",
+    "ondoku": "さ",
+    "kundoku": "ひだり"
+  },
+  "佐": {
+    "meaning": "도울 좌",
+    "ondoku": "さ",
+    "kundoku": ""
+  },
+  "挫": {
+    "meaning": "꺾을 좌",
+    "ondoku": "ざ",
+    "kundoku": ""
+  },
+  "罪": {
+    "meaning": "허물 죄",
+    "ondoku": "ざい",
+    "kundoku": "つみ"
+  },
+  "走": {
+    "meaning": "달릴 주",
+    "ondoku": "そう",
+    "kundoku": "はしる"
+  },
+  "昼": {
+    "meaning": "낮 주",
+    "ondoku": "ちゅう",
+    "kundoku": "ひる"
+  },
+  "週": {
+    "meaning": "돌 주",
+    "ondoku": "しゅう",
+    "kundoku": ""
+  },
+  "主": {
+    "meaning": "주인 주",
+    "ondoku": "しゅ、す",
+    "kundoku": "ぬし、おも"
+  },
+  "州": {
+    "meaning": "고을 주",
+    "ondoku": "しゅう、す",
+    "kundoku": ""
+  },
+  "住": {
+    "meaning": "살 주",
+    "ondoku": "じゅう",
+    "kundoku": "すむ、すまう"
+  },
+  "注": {
+    "meaning": "부을 주",
+    "ondoku": "ちゅう",
+    "kundoku": "そそぐ"
+  },
+  "柱": {
+    "meaning": "기둥 주",
+    "ondoku": "ちゅう",
+    "kundoku": "はしら"
+  },
+  "酒": {
+    "meaning": "술 주",
+    "ondoku": "しゅ",
+    "kundoku": "さけ、さか"
+  },
+  "周": {
+    "meaning": "두루 주",
+    "ondoku": "しゅう",
+    "kundoku": "まわり"
+  },
+  "宙": {
+    "meaning": "집 주",
+    "ondoku": "ちゅう",
+    "kundoku": ""
+  },
+  "奏": {
+    "meaning": "연주할 주",
+    "ondoku": "そう",
+    "kundoku": "かなでる"
+  },
+  "株": {
+    "meaning": "주식 주",
+    "ondoku": "",
+    "kundoku": "かぶ"
+  },
+  "朱": {
+    "meaning": "붉을 주",
+    "ondoku": "しゅ",
+    "kundoku": ""
+  },
+  "舟": {
+    "meaning": "배 주",
+    "ondoku": "しゅう",
+    "kundoku": "ふね、ふな"
+  },
+  "肘": {
+    "meaning": "팔꿈치 주",
+    "ondoku": "",
+    "kundoku": "ひじ"
+  },
+  "呪": {
+    "meaning": "빌 주",
+    "ondoku": "じゅ",
+    "kundoku": ""
+  },
+  "酎": {
+    "meaning": "진한 술 주",
+    "ondoku": "ちゅう",
+    "kundoku": ""
+  },
+  "珠": {
+    "meaning": "구슬 주",
+    "ondoku": "しゅ",
+    "kundoku": ""
+  },
+  "駐": {
+    "meaning": "머무를 주",
+    "ondoku": "ちゅう",
+    "kundoku": ""
+  },
+  "鋳": {
+    "meaning": "쇠불릴 주",
+    "ondoku": "ちゅう",
+    "kundoku": "いる"
+  },
+  "竹": {
+    "meaning": "대 죽",
+    "ondoku": "ちく",
+    "kundoku": "たけ"
+  },
+  "準": {
+    "meaning": "준비할 준",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "俊": {
+    "meaning": "준걸 준",
+    "ondoku": "しゅん",
+    "kundoku": ""
+  },
+  "准": {
+    "meaning": "승인할 준",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "遵": {
+    "meaning": "좇을 준",
+    "ondoku": "じゅん",
+    "kundoku": ""
+  },
+  "中": {
+    "meaning": "가운데 중",
+    "ondoku": "ちゅう、じゅう",
+    "kundoku": "なか"
+  },
+  "重": {
+    "meaning": "무거울 중",
+    "ondoku": "じゅう、ちょう",
+    "kundoku": "え、おもい、かさねる、かさなる"
+  },
+  "仲": {
+    "meaning": "버금 중",
+    "ondoku": "ちゅう",
+    "kundoku": "なか"
+  },
+  "衆": {
+    "meaning": "무리 중",
+    "ondoku": "しゅう、しゅ",
+    "kundoku": ""
+  },
+  "即": {
+    "meaning": "곧 즉",
+    "ondoku": "そく",
+    "kundoku": ""
+  },
+  "汁": {
+    "meaning": "즙 즙",
+    "ondoku": "じゅう",
+    "kundoku": "しる"
+  },
+  "証": {
+    "meaning": "증거 증",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "増": {
+    "meaning": "더할 증",
+    "ondoku": "ぞう",
+    "kundoku": "ます、ふえる、ふやす"
+  },
+  "蒸": {
+    "meaning": "찔 증",
+    "ondoku": "じょう",
+    "kundoku": "むす、むれる、むらす"
+  },
+  "症": {
+    "meaning": "증세 증",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "曽": {
+    "meaning": "일찍 증",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "憎": {
+    "meaning": "미울 증",
+    "ondoku": "ぞう",
+    "kundoku": "にくむ、にくい、にくらしい、にくしみ"
+  },
+  "贈": {
+    "meaning": "줄 증",
+    "ondoku": "ぞう、そう",
+    "kundoku": "おくる"
+  },
+  "止": {
+    "meaning": "그칠 지",
+    "ondoku": "し",
+    "kundoku": "とまる、とめる"
+  },
+  "地": {
+    "meaning": "땅 지",
+    "ondoku": "ち、じ",
+    "kundoku": ""
+  },
+  "池": {
+    "meaning": "못 지",
+    "ondoku": "ち",
+    "kundoku": "いけ"
+  },
+  "知": {
+    "meaning": "알 지",
+    "ondoku": "ち",
+    "kundoku": "しる"
+  },
+  "紙": {
+    "meaning": "종이 지",
+    "ondoku": "し",
+    "kundoku": "かみ"
+  },
+  "持": {
+    "meaning": "가질 지",
+    "ondoku": "じ",
+    "kundoku": "もつ"
+  },
+  "指": {
+    "meaning": "가리킬 지",
+    "ondoku": "し",
+    "kundoku": "ゆび、さす"
+  },
+  "支": {
+    "meaning": "지탱할 지",
+    "ondoku": "し",
+    "kundoku": "ささえる"
+  },
+  "志": {
+    "meaning": "뜻 지",
+    "ondoku": "し",
+    "kundoku": "こころざす、こころざし"
+  },
+  "枝": {
+    "meaning": "가지 지",
+    "ondoku": "し",
+    "kundoku": "えだ"
+  },
+  "至": {
+    "meaning": "이를 지",
+    "ondoku": "し",
+    "kundoku": "いたる"
+  },
+  "誌": {
+    "meaning": "기록할 지",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "旨": {
+    "meaning": "뜻 지",
+    "ondoku": "し",
+    "kundoku": "むね、うまい"
+  },
+  "芝": {
+    "meaning": "잡초 지",
+    "ondoku": "",
+    "kundoku": "しば"
+  },
+  "肢": {
+    "meaning": "팔다리 지",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "祉": {
+    "meaning": "복 지",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "脂": {
+    "meaning": "기름 지",
+    "ondoku": "し",
+    "kundoku": "あぶら"
+  },
+  "遅": {
+    "meaning": "더딜/늦을 지",
+    "ondoku": "ち",
+    "kundoku": "おくれる、おくらす、おそい"
+  },
+  "漬": {
+    "meaning": "담글 지",
+    "ondoku": "",
+    "kundoku": "つける、つかる"
+  },
+  "摯": {
+    "meaning": "잡을 지",
+    "ondoku": "し",
+    "kundoku": ""
+  },
+  "直": {
+    "meaning": "곧을 직",
+    "ondoku": "ちょく、じき",
+    "kundoku": "ただちに、なおす、なおる"
+  },
+  "職": {
+    "meaning": "직분 직",
+    "ondoku": "しょく",
+    "kundoku": ""
+  },
+  "織": {
+    "meaning": "짤 직",
+    "ondoku": "しょく、しき",
+    "kundoku": "おる"
+  },
+  "真": {
+    "meaning": "참 진",
+    "ondoku": "しん",
+    "kundoku": "ま"
+  },
+  "進": {
+    "meaning": "나아갈 진",
+    "ondoku": "しん",
+    "kundoku": "すすむ、すすめる"
+  },
+  "尽": {
+    "meaning": "다할 진",
+    "ondoku": "じん",
+    "kundoku": "つくす、つきる、つかす"
+  },
+  "津": {
+    "meaning": "나루 진",
+    "ondoku": "しん",
+    "kundoku": "つ"
+  },
+  "珍": {
+    "meaning": "보배 진",
+    "ondoku": "ちん",
+    "kundoku": "めずらしい"
+  },
+  "陣": {
+    "meaning": "진칠 진",
+    "ondoku": "じん",
+    "kundoku": ""
+  },
+  "振": {
+    "meaning": "떨칠 진",
+    "ondoku": "しん",
+    "kundoku": "ふる、ふるう、ふれる"
+  },
+  "陳": {
+    "meaning": "베풀/묵을 진",
+    "ondoku": "ちん",
+    "kundoku": ""
+  },
+  "診": {
+    "meaning": "진찰할 진",
+    "ondoku": "しん",
+    "kundoku": "みる"
+  },
+  "震": {
+    "meaning": "우레 진",
+    "ondoku": "しん",
+    "kundoku": "ふるう、ふるえる"
+  },
+  "鎮": {
+    "meaning": "진압할 진",
+    "ondoku": "ちん",
+    "kundoku": "しずめる、しずまる"
+  },
+  "質": {
+    "meaning": "바탕 질",
+    "ondoku": "しつ、しち",
+    "kundoku": ""
+  },
+  "叱": {
+    "meaning": "꾸짖을 질",
+    "ondoku": "しつ",
+    "kundoku": "しかる"
+  },
+  "迭": {
+    "meaning": "경질할 질",
+    "ondoku": "てつ",
+    "kundoku": ""
+  },
+  "疾": {
+    "meaning": "병 질",
+    "ondoku": "しつ",
+    "kundoku": ""
+  },
+  "秩": {
+    "meaning": "차례 질",
+    "ondoku": "ちつ",
+    "kundoku": ""
+  },
+  "窒": {
+    "meaning": "막힐 질",
+    "ondoku": "ちつ",
+    "kundoku": ""
+  },
+  "嫉": {
+    "meaning": "미워할 질",
+    "ondoku": "しつ",
+    "kundoku": "ねたむ、ねたましい"
+  },
+  "朕": {
+    "meaning": "나 짐",
+    "ondoku": "ちん",
+    "kundoku": ""
+  },
+  "集": {
+    "meaning": "모을 집",
+    "ondoku": "しゅう",
+    "kundoku": "あつまる、あつめる、つどう"
+  },
+  "執": {
+    "meaning": "잡을 집",
+    "ondoku": "しつ、しゅう",
+    "kundoku": "とる"
+  },
+  "徴": {
+    "meaning": "부를 징",
+    "ondoku": "ちょう",
+    "kundoku": ""
+  },
+  "澄": {
+    "meaning": "맑을 징",
+    "ondoku": "ちょう",
+    "kundoku": "すむ、すます"
+  },
+  "懲": {
+    "meaning": "징계할 징",
+    "ondoku": "ちょう",
+    "kundoku": "こりる、こらす、こらしめる"
+  },
+  "車": {
+    "meaning": "수레 차/수레 거",
+    "ondoku": "しゃ",
+    "kundoku": "くるま"
+  },
+  "茶": {
+    "meaning": "차 차/차 다",
+    "ondoku": "ちゃ、さ",
+    "kundoku": ""
+  },
+  "次": {
+    "meaning": "버금 차",
+    "ondoku": "じ、し",
+    "kundoku": "つぎ、つぐ"
+  },
+  "差": {
+    "meaning": "다를 차",
+    "ondoku": "さ",
+    "kundoku": "さす"
+  },
+  "借": {
+    "meaning": "빌릴 차",
+    "ondoku": "しゃく",
+    "kundoku": "かりる"
+  },
+  "且": {
+    "meaning": "또 차",
+    "ondoku": "",
+    "kundoku": "かつ"
+  },
+  "遮": {
+    "meaning": "가릴 차",
+    "ondoku": "しゃ",
+    "kundoku": "さえぎる"
+  },
+  "着": {
+    "meaning": "붙을 착",
+    "ondoku": "ちゃく、じゅく",
+    "kundoku": "きる、きせる、つく、つける"
+  },
+  "捉": {
+    "meaning": "잡을 착",
+    "ondoku": "そく",
+    "kundoku": "とらえる"
+  },
+  "搾": {
+    "meaning": "짤 착",
+    "ondoku": "さく",
+    "kundoku": "しぼる"
+  },
+  "錯": {
+    "meaning": "어긋날 착",
+    "ondoku": "さく",
+    "kundoku": ""
+  },
+  "賛": {
+    "meaning": "도울 찬",
+    "ondoku": "さん",
+    "kundoku": ""
+  },
+  "札": {
+    "meaning": "편지 찰",
+    "ondoku": "さつ",
+    "kundoku": "ふだ"
+  },
+  "察": {
+    "meaning": "살필 찰",
+    "ondoku": "さつ",
+    "kundoku": ""
+  },
+  "刹": {
+    "meaning": "절 찰",
+    "ondoku": "さつ、せつ",
+    "kundoku": ""
+  },
+  "拶": {
+    "meaning": "핍박할 찰",
+    "ondoku": "さつ",
+    "kundoku": ""
+  },
+  "擦": {
+    "meaning": "문지를 찰",
+    "ondoku": "さつ",
+    "kundoku": "する、すれる"
+  },
+  "参": {
+    "meaning": "참여할 참/석 삼",
+    "ondoku": "さん",
+    "kundoku": "まいる"
+  },
+  "惨": {
+    "meaning": "참혹할 참",
+    "ondoku": "さん、ざん",
+    "kundoku": "みじめ、むごい"
+  },
+  "斬": {
+    "meaning": "벨 참",
+    "ondoku": "ざん",
+    "kundoku": "きる"
+  },
+  "倉": {
+    "meaning": "곳집 창",
+    "ondoku": "そう",
+    "kundoku": "くら"
+  },
+  "唱": {
+    "meaning": "부를 창",
+    "ondoku": "しょう",
+    "kundoku": "となえる"
+  },
+  "窓": {
+    "meaning": "창 창",
+    "ondoku": "そう",
+    "kundoku": "まど"
+  },
+  "創": {
+    "meaning": "비롯할 창",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "彰": {
+    "meaning": "드러날 창",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "菜": {
+    "meaning": "나물 채",
+    "ondoku": "さい",
+    "kundoku": "な"
+  },
+  "採": {
+    "meaning": "캘 채",
+    "ondoku": "さい",
+    "kundoku": "とる"
+  },
+  "采": {
+    "meaning": "풍채 채",
+    "ondoku": "さい",
+    "kundoku": ""
+  },
+  "彩": {
+    "meaning": "채색 채",
+    "ondoku": "さい",
+    "kundoku": "いろどる"
+  },
+  "債": {
+    "meaning": "빚 채",
+    "ondoku": "さい",
+    "kundoku": ""
+  },
+  "責": {
+    "meaning": "꾸짖을 책",
+    "ondoku": "せき",
+    "kundoku": "せめる"
+  },
+  "冊": {
+    "meaning": "책 책",
+    "ondoku": "さつ、さく",
+    "kundoku": ""
+  },
+  "策": {
+    "meaning": "꾀 책",
+    "ondoku": "さく",
+    "kundoku": ""
+  },
+  "柵": {
+    "meaning": "울타리 책",
+    "ondoku": "さく",
+    "kundoku": ""
+  },
+  "妻": {
+    "meaning": "아내 처",
+    "ondoku": "さい",
+    "kundoku": "つま"
+  },
+  "処": {
+    "meaning": "곳 처",
+    "ondoku": "しょ",
+    "kundoku": ""
+  },
+  "凄": {
+    "meaning": "쓸쓸할 처",
+    "ondoku": "せい",
+    "kundoku": "すごい、すさまじい"
+  },
+  "尺": {
+    "meaning": "자 척",
+    "ondoku": "しゃく",
+    "kundoku": ""
+  },
+  "斥": {
+    "meaning": "물리칠 척",
+    "ondoku": "せき",
+    "kundoku": "しりぞける"
+  },
+  "拓": {
+    "meaning": "넓힐 척/박을 탁",
+    "ondoku": "たく",
+    "kundoku": ""
+  },
+  "隻": {
+    "meaning": "외짝 척",
+    "ondoku": "せき",
+    "kundoku": ""
+  },
+  "脊": {
+    "meaning": "등마루 척",
+    "ondoku": "せき",
+    "kundoku": ""
+  },
+  "捗": {
+    "meaning": "칠 척",
+    "ondoku": "ちょく",
+    "kundoku": "はかどる"
+  },
+  "戚": {
+    "meaning": "친척 척",
+    "ondoku": "せき",
+    "kundoku": ""
+  },
+  "千": {
+    "meaning": "일천 천",
+    "ondoku": "せん",
+    "kundoku": "ち"
+  },
+  "川": {
+    "meaning": "내 천",
+    "ondoku": "せん",
+    "kundoku": "かわ"
+  },
+  "天": {
+    "meaning": "하늘 천",
+    "ondoku": "てん",
+    "kundoku": "あめ、あま"
+  },
+  "浅": {
+    "meaning": "얕을 천",
+    "ondoku": "せん",
+    "kundoku": "あさい"
+  },
+  "泉": {
+    "meaning": "샘 천",
+    "ondoku": "せん",
+    "kundoku": "いずみ"
+  },
+  "践": {
+    "meaning": "밟을 천",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "遷": {
+    "meaning": "옮길 천",
+    "ondoku": "せん",
+    "kundoku": ""
+  },
+  "薦": {
+    "meaning": "천거할 천",
+    "ondoku": "せん",
+    "kundoku": "すすめる"
+  },
+  "鉄": {
+    "meaning": "쇠 철",
+    "ondoku": "てつ",
+    "kundoku": ""
+  },
+  "凸": {
+    "meaning": "볼록할 철",
+    "ondoku": "とつ",
+    "kundoku": "でこ"
+  },
+  "哲": {
+    "meaning": "밝을 철",
+    "ondoku": "てつ",
+    "kundoku": ""
+  },
+  "徹": {
+    "meaning": "통할 철",
+    "ondoku": "てつ",
+    "kundoku": ""
+  },
+  "撤": {
+    "meaning": "거둘 철",
+    "ondoku": "てつ",
+    "kundoku": ""
+  },
+  "添": {
+    "meaning": "더할 첨",
+    "ondoku": "てん",
+    "kundoku": "そえる、そう"
+  },
+  "畳": {
+    "meaning": "거듭 첩",
+    "ondoku": "じょう",
+    "kundoku": "たたむ、たたみ"
+  },
+  "貼": {
+    "meaning": "붙일 첩",
+    "ondoku": "ちょう、てん",
+    "kundoku": "はる"
+  },
+  "青": {
+    "meaning": "푸를 청",
+    "ondoku": "せい",
+    "kundoku": "あお、あおい"
+  },
+  "晴": {
+    "meaning": "갤 청",
+    "ondoku": "せい",
+    "kundoku": "はれる、はらす"
+  },
+  "清": {
+    "meaning": "맑을 청",
+    "ondoku": "せい、しょう",
+    "kundoku": "きよい、きよらか、きよまる、きよめる"
+  },
+  "庁": {
+    "meaning": "관청 청",
+    "ondoku": "ちょう",
+    "kundoku": ""
+  },
+  "請": {
+    "meaning": "청할 청",
+    "ondoku": "せい、しん",
+    "kundoku": "こう、うける"
+  },
+  "聴": {
+    "meaning": "들을 청",
+    "ondoku": "ちょう",
+    "kundoku": "きく"
+  },
+  "体": {
+    "meaning": "몸 체",
+    "ondoku": "たい、てい",
+    "kundoku": "からだ"
+  },
+  "逓": {
+    "meaning": "갈릴 체",
+    "ondoku": "てい",
+    "kundoku": ""
+  },
+  "逮": {
+    "meaning": "잡을 체",
+    "ondoku": "たい",
+    "kundoku": ""
+  },
+  "替": {
+    "meaning": "바꿀 체",
+    "ondoku": "たい",
+    "kundoku": "かえる、かわｒ"
+  },
+  "滞": {
+    "meaning": "막힐 체",
+    "ondoku": "たい",
+    "kundoku": "とどこおる"
+  },
+  "締": {
+    "meaning": "맺을 체",
+    "ondoku": "てい",
+    "kundoku": "しまる、しめる"
+  },
+  "諦": {
+    "meaning": "살필 체",
+    "ondoku": "てい、たい",
+    "kundoku": "あきらめる"
+  },
+  "草": {
+    "meaning": "풀 초",
+    "ondoku": "そう",
+    "kundoku": "くさ"
+  },
+  "秒": {
+    "meaning": "분초 초",
+    "ondoku": "びょう",
+    "kundoku": ""
+  },
+  "初": {
+    "meaning": "처음 초",
+    "ondoku": "しょ",
+    "kundoku": "はじめ、はじめて、はつ、うい、そめる"
+  },
+  "招": {
+    "meaning": "부를 초",
+    "ondoku": "しょう",
+    "kundoku": "まねく"
+  },
+  "抄": {
+    "meaning": "뽑을 초",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "肖": {
+    "meaning": "닮을/같을 초",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "酢": {
+    "meaning": "식초 초",
+    "ondoku": "さく",
+    "kundoku": "す"
+  },
+  "焦": {
+    "meaning": "탈 초",
+    "ondoku": "しょう",
+    "kundoku": "こげる、こがす、こがれる、あせる"
+  },
+  "硝": {
+    "meaning": "화약 초",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "超": {
+    "meaning": "뛰어넘을 초",
+    "ondoku": "ちょう",
+    "kundoku": "こえる、こす"
+  },
+  "礁": {
+    "meaning": "암초 초",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "礎": {
+    "meaning": "주춧돌 초",
+    "ondoku": "そ",
+    "kundoku": "いしずえ"
+  },
+  "促": {
+    "meaning": "재촉할 촉",
+    "ondoku": "そく",
+    "kundoku": "うながす"
+  },
+  "触": {
+    "meaning": "닿을 촉",
+    "ondoku": "しょく",
+    "kundoku": "ふれる、さわる"
+  },
+  "嘱": {
+    "meaning": "부탁할 촉",
+    "ondoku": "しょく",
+    "kundoku": ""
+  },
+  "村": {
+    "meaning": "마을 촌",
+    "ondoku": "そん",
+    "kundoku": "むら"
+  },
+  "寸": {
+    "meaning": "마디 촌",
+    "ondoku": "すん",
+    "kundoku": ""
+  },
+  "総": {
+    "meaning": "다 총",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "塚": {
+    "meaning": "무덤 총",
+    "ondoku": "",
+    "kundoku": "つか"
+  },
+  "銃": {
+    "meaning": "총 총",
+    "ondoku": "じゅう",
+    "kundoku": ""
+  },
+  "撮": {
+    "meaning": "사진 찍을 촬",
+    "ondoku": "さつ",
+    "kundoku": "とる"
+  },
+  "最": {
+    "meaning": "가장 최",
+    "ondoku": "さい",
+    "kundoku": "もっとも"
+  },
+  "催": {
+    "meaning": "재촉할 최",
+    "ondoku": "さい",
+    "kundoku": "もよおす"
+  },
+  "秋": {
+    "meaning": "가을 추",
+    "ondoku": "しゅう",
+    "kundoku": "あき"
+  },
+  "追": {
+    "meaning": "쫓을/따를 추",
+    "ondoku": "つい",
+    "kundoku": "おう"
+  },
+  "推": {
+    "meaning": "밀 추",
+    "ondoku": "すい",
+    "kundoku": "おす"
+  },
+  "抽": {
+    "meaning": "뽑을 추",
+    "ondoku": "ちゅう",
+    "kundoku": ""
+  },
+  "枢": {
+    "meaning": "지도리 추",
+    "ondoku": "すう",
+    "kundoku": ""
+  },
+  "椎": {
+    "meaning": "등골 추",
+    "ondoku": "つい",
+    "kundoku": "しい"
+  },
+  "墜": {
+    "meaning": "떨어질 추",
+    "ondoku": "つい",
+    "kundoku": ""
+  },
+  "醜": {
+    "meaning": "추할 추",
+    "ondoku": "しゅう",
+    "kundoku": "みにくい"
+  },
+  "祝": {
+    "meaning": "빌 축",
+    "ondoku": "しゅく、しゅう",
+    "kundoku": "いわう"
+  },
+  "築": {
+    "meaning": "쌓을 축",
+    "ondoku": "ちく",
+    "kundoku": "きずく"
+  },
+  "縮": {
+    "meaning": "줄일 축",
+    "ondoku": "しゅく",
+    "kundoku": "ちぢむ、ちぢまる、ちぢめる、ちぢれる、ちぢらす"
+  },
+  "逐": {
+    "meaning": "쫓을 축",
+    "ondoku": "ちく",
+    "kundoku": ""
+  },
+  "畜": {
+    "meaning": "짐승 축",
+    "ondoku": "ちく",
+    "kundoku": ""
+  },
+  "軸": {
+    "meaning": "굴대 축",
+    "ondoku": "じく",
+    "kundoku": ""
+  },
+  "蓄": {
+    "meaning": "모을 축",
+    "ondoku": "ちく",
+    "kundoku": "たくわえる"
+  },
+  "蹴": {
+    "meaning": "찰 축",
+    "ondoku": "しゅう",
+    "kundoku": "ける"
+  },
+  "春": {
+    "meaning": "봄 춘",
+    "ondoku": "しゅん",
+    "kundoku": "はる"
+  },
+  "出": {
+    "meaning": "날 출",
+    "ondoku": "しゅつ、すい",
+    "kundoku": "でる、だす"
+  },
+  "虫": {
+    "meaning": "벌레 충",
+    "ondoku": "ちゅう",
+    "kundoku": "むし"
+  },
+  "忠": {
+    "meaning": "충성 충",
+    "ondoku": "ちゅう",
+    "kundoku": ""
+  },
+  "充": {
+    "meaning": "채울 충",
+    "ondoku": "じゅう",
+    "kundoku": "あてる"
+  },
+  "沖": {
+    "meaning": "화할 충",
+    "ondoku": "ちゅう",
+    "kundoku": "おき"
+  },
+  "衷": {
+    "meaning": "속마음 충",
+    "ondoku": "ちゅう",
+    "kundoku": ""
+  },
+  "衝": {
+    "meaning": "찌를 충",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "取": {
+    "meaning": "가질 취",
+    "ondoku": "しゅ",
+    "kundoku": "とる"
+  },
+  "就": {
+    "meaning": "나아갈 취",
+    "ondoku": "しゅう、じゅ",
+    "kundoku": "つく、つける"
+  },
+  "吹": {
+    "meaning": "불 취",
+    "ondoku": "すい",
+    "kundoku": "ふく"
+  },
+  "炊": {
+    "meaning": "불 땔 취",
+    "ondoku": "すい",
+    "kundoku": "たく"
+  },
+  "臭": {
+    "meaning": "냄새 취",
+    "ondoku": "しゅう",
+    "kundoku": "くさい、におう"
+  },
+  "酔": {
+    "meaning": "취할 취",
+    "ondoku": "すい",
+    "kundoku": "よう"
+  },
+  "趣": {
+    "meaning": "뜻 취",
+    "ondoku": "しゅ",
+    "kundoku": "おもむき"
+  },
+  "側": {
+    "meaning": "곁 측",
+    "ondoku": "そく",
+    "kundoku": "がわ"
+  },
+  "測": {
+    "meaning": "헤아릴 측",
+    "ondoku": "そく",
+    "kundoku": "はかる"
+  },
+  "層": {
+    "meaning": "층 층",
+    "ondoku": "そう",
+    "kundoku": ""
+  },
+  "歯": {
+    "meaning": "이 치",
+    "ondoku": "し",
+    "kundoku": "は"
+  },
+  "治": {
+    "meaning": "다스릴 치",
+    "ondoku": "じ、ち",
+    "kundoku": "おさめる、おさまる、なおる、なおす"
+  },
+  "置": {
+    "meaning": "둘 치",
+    "ondoku": "ち",
+    "kundoku": "おく"
+  },
+  "値": {
+    "meaning": "값 치",
+    "ondoku": "ち",
+    "kundoku": "ね、あたい"
+  },
+  "恥": {
+    "meaning": "부끄러울 치",
+    "ondoku": "ち",
+    "kundoku": "はじ、はじる、はじらう、はずかしい"
+  },
+  "致": {
+    "meaning": "이를 치",
+    "ondoku": "ち",
+    "kundoku": "いたす"
+  },
+  "痴": {
+    "meaning": "어리석을 치",
+    "ondoku": "ち",
+    "kundoku": ""
+  },
+  "稚": {
+    "meaning": "어릴 치",
+    "ondoku": "ち",
+    "kundoku": ""
+  },
+  "緻": {
+    "meaning": "빽빽할 치",
+    "ondoku": "ち",
+    "kundoku": ""
+  },
+  "則": {
+    "meaning": "법칙 칙",
+    "ondoku": "そく",
+    "kundoku": ""
+  },
+  "勅": {
+    "meaning": "칙서 칙",
+    "ondoku": "ちょく",
+    "kundoku": ""
+  },
+  "親": {
+    "meaning": "친할 친",
+    "ondoku": "しん",
+    "kundoku": "おや、したしい、したしむ"
+  },
+  "七": {
+    "meaning": "일곱 칠",
+    "ondoku": "しち",
+    "kundoku": "なな、ななつ、なの"
+  },
+  "漆": {
+    "meaning": "옻 칠",
+    "ondoku": "しつ",
+    "kundoku": "うるし"
+  },
+  "針": {
+    "meaning": "바늘 침",
+    "ondoku": "しん",
+    "kundoku": "はり"
+  },
+  "沈": {
+    "meaning": "잠길 침",
+    "ondoku": "ちん",
+    "kundoku": "しずむ、しずめる"
+  },
+  "枕": {
+    "meaning": "배게 침",
+    "ondoku": "ちん",
+    "kundoku": "まくら"
+  },
+  "侵": {
+    "meaning": "침노할 침",
+    "ondoku": "しん",
+    "kundoku": "おかす"
+  },
+  "浸": {
+    "meaning": "잠길 침",
+    "ondoku": "しん",
+    "kundoku": "ひたす、ひたる"
+  },
+  "寝": {
+    "meaning": "잘 침",
+    "ondoku": "しん",
+    "kundoku": "ねる、ねかす"
+  },
+  "称": {
+    "meaning": "일컬을 칭",
+    "ondoku": "しょう",
+    "kundoku": ""
+  },
+  "快": {
+    "meaning": "쾌할 쾌",
+    "ondoku": "かい",
+    "kundoku": "こころよい"
+  },
+  "打": {
+    "meaning": "칠 타",
+    "ondoku": "だ",
+    "kundoku": "うつ"
+  },
+  "他": {
+    "meaning": "다를 타",
+    "ondoku": "た",
+    "kundoku": "ほか"
+  },
+  "妥": {
+    "meaning": "온당할 타",
+    "ondoku": "だ",
+    "kundoku": ""
+  },
+  "唾": {
+    "meaning": "침 타",
+    "ondoku": "だ",
+    "kundoku": "つば"
+  },
+  "堕": {
+    "meaning": "떨어질 타",
+    "ondoku": "だ",
+    "kundoku": ""
+  },
+  "惰": {
+    "meaning": "게으를 타",
+    "ondoku": "だ",
+    "kundoku": ""
+  },
+  "卓": {
+    "meaning": "높을 탁",
+    "ondoku": "たく",
+    "kundoku": ""
+  },
+  "託": {
+    "meaning": "부탁할 탁",
+    "ondoku": "たく",
+    "kundoku": ""
+  },
+  "濁": {
+    "meaning": "흐릴 탁",
+    "ondoku": "だく",
+    "kundoku": "にごる、にごす"
+  },
+  "濯": {
+    "meaning": "씻을 탁",
+    "ondoku": "たく",
+    "kundoku": ""
+  },
+  "炭": {
+    "meaning": "숯 탄",
+    "ondoku": "たん",
+    "kundoku": "すみ"
+  },
+  "誕": {
+    "meaning": "낳을 탄",
+    "ondoku": "たん",
+    "kundoku": ""
+  },
+  "弾": {
+    "meaning": "탄알 탄",
+    "ondoku": "だん",
+    "kundoku": "ひく、はずむ、たま"
+  },
+  "嘆": {
+    "meaning": "탄식할 탄",
+    "ondoku": "たん",
+    "kundoku": "なげく、なげかわしい"
+  },
+  "綻": {
+    "meaning": "터질 탄",
+    "ondoku": "たん",
+    "kundoku": "ほころびる、ほころぶ"
+  },
+  "脱": {
+    "meaning": "벗을 탈",
+    "ondoku": "だつ",
+    "kundoku": "ぬぐ、ぬげる"
+  },
+  "奪": {
+    "meaning": "빼앗을 탈",
+    "ondoku": "だつ",
+    "kundoku": "うばう"
+  },
+  "探": {
+    "meaning": "찾을 탐",
+    "ondoku": "たん",
+    "kundoku": "さぐる、さがす"
+  },
+  "貪": {
+    "meaning": "탐할 탐",
+    "ondoku": "どん",
+    "kundoku": "むさぼる"
+  },
+  "塔": {
+    "meaning": "탑 탑",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "搭": {
+    "meaning": "탈 탑",
+    "ondoku": "とう",
+    "kundoku": ""
+  },
+  "湯": {
+    "meaning": "끓일 탕",
+    "ondoku": "とう",
+    "kundoku": "ゆ"
+  },
+  "太": {
+    "meaning": "클 태",
+    "ondoku": "たい、た",
+    "kundoku": "ふとい、ふとる"
+  },
+  "態": {
+    "meaning": "모습 태",
+    "ondoku": "たい",
+    "kundoku": ""
+  },
+  "汰": {
+    "meaning": "사치할 태",
+    "ondoku": "た",
+    "kundoku": ""
+  },
+  "怠": {
+    "meaning": "게으를 태",
+    "ondoku": "たい",
+    "kundoku": "おこたる、なまける"
+  },
+  "胎": {
+    "meaning": "아이 밸 태",
+    "ondoku": "たい",
+    "kundoku": ""
+  },
+  "泰": {
+    "meaning": "클 태",
+    "ondoku": "たい",
+    "kundoku": ""
+  },
+  "駄": {
+    "meaning": "짐 실을 태",
+    "ondoku": "だ",
+    "kundoku": ""
+  },
+  "宅": {
+    "meaning": "집 택",
+    "ondoku": "たく",
+    "kundoku": ""
+  },
+  "択": {
+    "meaning": "가릴 택",
+    "ondoku": "たく",
+    "kundoku": ""
+  },
+  "沢": {
+    "meaning": "못 택",
+    "ondoku": "たく",
+    "kundoku": "さわ"
+  },
+  "土": {
+    "meaning": "흙 토",
+    "ondoku": "ど、と",
+    "kundoku": "つち"
+  },
+  "討": {
+    "meaning": "칠 토",
+    "ondoku": "とう",
+    "kundoku": "うつ"
+  },
+  "吐": {
+    "meaning": "토할 토",
+    "ondoku": "と",
+    "kundoku": "はく"
+  },
+  "通": {
+    "meaning": "통할 통",
+    "ondoku": "つう、つ",
+    "kundoku": "とおる、とおす、かよう"
+  },
+  "統": {
+    "meaning": "거느릴 통",
+    "ondoku": "とう",
+    "kundoku": "すべる"
+  },
+  "痛": {
+    "meaning": "아플 통",
+    "ondoku": "つう",
+    "kundoku": "いたい、いたむ、いためる"
+  },
+  "筒": {
+    "meaning": "통 통",
+    "ondoku": "とう",
+    "kundoku": "つつ"
+  },
+  "退": {
+    "meaning": "물러날 퇴",
+    "ondoku": "たい",
+    "kundoku": "しりぞく、しりぞける"
+  },
+  "堆": {
+    "meaning": "언덕/쌓을 퇴",
+    "ondoku": "たい",
+    "kundoku": "うずたかい"
+  },
+  "投": {
+    "meaning": "던질 투",
+    "ondoku": "とう",
+    "kundoku": "なげる"
+  },
+  "妬": {
+    "meaning": "샘낼 투",
+    "ondoku": "と",
+    "kundoku": "ねたむ、ねたましい"
+  },
+  "透": {
+    "meaning": "사무칠 투",
+    "ondoku": "とう",
+    "kundoku": "すく、すかす、すける"
+  },
+  "闘": {
+    "meaning": "싸울 투",
+    "ondoku": "とう",
+    "kundoku": "たたかう"
+  },
+  "特": {
+    "meaning": "특별할 특",
+    "ondoku": "とく",
+    "kundoku": ""
+  },
+  "波": {
+    "meaning": "물결 파",
+    "ondoku": "は",
+    "kundoku": "なみ"
+  },
+  "破": {
+    "meaning": "깨뜨릴 파",
+    "ondoku": "は",
+    "kundoku": "やぶる、やぶれる"
+  },
+  "派": {
+    "meaning": "갈래 파",
+    "ondoku": "は",
+    "kundoku": ""
+  },
+  "把": {
+    "meaning": "잡을 파",
+    "ondoku": "は",
+    "kundoku": ""
+  },
+  "婆": {
+    "meaning": "할머니 파",
+    "ondoku": "ば",
+    "kundoku": ""
+  },
+  "罷": {
+    "meaning": "마칠 파",
+    "ondoku": "ひ",
+    "kundoku": ""
+  },
+  "坂": {
+    "meaning": "언덕 판",
+    "ondoku": "はん",
+    "kundoku": "さか"
+  },
+  "板": {
+    "meaning": "널빤지 판",
+    "ondoku": "はん、ばん",
+    "kundoku": "いた"
+  },
+  "判": {
+    "meaning": "판단할 판",
+    "ondoku": "はん、ばん",
+    "kundoku": ""
+  },
+  "版": {
+    "meaning": "판목 판",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "阪": {
+    "meaning": "언덕 판",
+    "ondoku": "はん",
+    "kundoku": "さか"
+  },
+  "販": {
+    "meaning": "팔 판",
+    "ondoku": "はん",
+    "kundoku": ""
+  },
+  "八": {
+    "meaning": "여덟 팔",
+    "ondoku": "はち",
+    "kundoku": "や、やつ、やっつ、よう"
+  },
+  "貝": {
+    "meaning": "조개 패",
+    "ondoku": "",
+    "kundoku": "かい"
+  },
+  "敗": {
+    "meaning": "패할 패",
+    "ondoku": "はい",
+    "kundoku": "やぶれる"
+  },
+  "唄": {
+    "meaning": "염불 소리 패",
+    "ondoku": "",
+    "kundoku": "うた"
+  },
+  "覇": {
+    "meaning": "으뜸 패",
+    "ondoku": "は",
+    "kundoku": ""
+  },
+  "膨": {
+    "meaning": "부풀 팽",
+    "ondoku": "ぼう",
+    "kundoku": "ふくらむ、ふくれる"
+  },
+  "便": {
+    "meaning": "편할 편/오줌 변",
+    "ondoku": "べん、びん",
+    "kundoku": "たより"
+  },
+  "編": {
+    "meaning": "엮을 편",
+    "ondoku": "へん",
+    "kundoku": "あむ"
+  },
+  "片": {
+    "meaning": "조각 편",
+    "ondoku": "へん",
+    "kundoku": "かた"
+  },
+  "偏": {
+    "meaning": "치우칠 편",
+    "ondoku": "へん",
+    "kundoku": "かたよる"
+  },
+  "遍": {
+    "meaning": "두루 편",
+    "ondoku": "へん",
+    "kundoku": ""
+  },
+  "平": {
+    "meaning": "평평할 평",
+    "ondoku": "へい、びょう",
+    "kundoku": "たいら、ひら"
+  },
+  "評": {
+    "meaning": "평할 평",
+    "ondoku": "ひょう",
+    "kundoku": ""
+  },
+  "坪": {
+    "meaning": "들 평",
+    "ondoku": "",
+    "kundoku": "つぼ"
+  },
+  "肺": {
+    "meaning": "허파 폐",
+    "ondoku": "はい",
+    "kundoku": ""
+  },
+  "陛": {
+    "meaning": "대궐 섬돌 폐",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "閉": {
+    "meaning": "닫을 폐",
+    "ondoku": "へい",
+    "kundoku": "しまる、しめる、とじる、とざす"
+  },
+  "廃": {
+    "meaning": "버릴 폐",
+    "ondoku": "はい",
+    "kundoku": "すたれる、すたる"
+  },
+  "幣": {
+    "meaning": "화폐 폐",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "弊": {
+    "meaning": "폐단 폐",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "蔽": {
+    "meaning": "덮을 폐",
+    "ondoku": "へい",
+    "kundoku": ""
+  },
+  "包": {
+    "meaning": "쌀 포",
+    "ondoku": "ほう",
+    "kundoku": "つつむ"
+  },
+  "布": {
+    "meaning": "베 포",
+    "ondoku": "ぶ",
+    "kundoku": "ぬの"
+  },
+  "怖": {
+    "meaning": "두려워할 포",
+    "ondoku": "ぶ",
+    "kundoku": "こわい"
+  },
+  "抱": {
+    "meaning": "안을 포",
+    "ondoku": "ほう",
+    "kundoku": "だく、いだく、かかえる"
+  },
+  "泡": {
+    "meaning": "거품 포",
+    "ondoku": "ほう",
+    "kundoku": "あわ"
+  },
+  "胞": {
+    "meaning": "세포 포",
+    "ondoku": "ほう",
+    "kundoku": ""
+  },
+  "捕": {
+    "meaning": "잡을 포",
+    "ondoku": "ほ",
+    "kundoku": "とらえる、とらわれる、とる、つかまえる、つかまる"
+  },
+  "砲": {
+    "meaning": "대포 포",
+    "ondoku": "ほう",
+    "kundoku": ""
+  },
+  "浦": {
+    "meaning": "개 포",
+    "ondoku": "ほ",
+    "kundoku": "うら"
+  },
+  "哺": {
+    "meaning": "먹일 포",
+    "ondoku": "ほ",
+    "kundoku": ""
+  },
+  "飽": {
+    "meaning": "배부를 포",
+    "ondoku": "ほう",
+    "kundoku": "あきる、あかす"
+  },
+  "舗": {
+    "meaning": "펼/가게 포",
+    "ondoku": "ほ",
+    "kundoku": ""
+  },
+  "褒": {
+    "meaning": "기릴 포",
+    "ondoku": "ほう",
+    "kundoku": "ほめる"
+  },
+  "暴": {
+    "meaning": "사나울 폭",
+    "ondoku": "ぼう、ばく",
+    "kundoku": "あばく、あばれる"
+  },
+  "幅": {
+    "meaning": "폭 폭",
+    "ondoku": "ふく",
+    "kundoku": "はば"
+  },
+  "爆": {
+    "meaning": "불터질 폭",
+    "ondoku": "ばく",
+    "kundoku": ""
+  },
+  "表": {
+    "meaning": "겉 표",
+    "ondoku": "ひょう",
+    "kundoku": "おもて、あらわす、あらわれる"
+  },
+  "票": {
+    "meaning": "표 표",
+    "ondoku": "ひょう",
+    "kundoku": ""
+  },
+  "標": {
+    "meaning": "표할 표",
+    "ondoku": "ひょう",
+    "kundoku": ""
+  },
+  "俵": {
+    "meaning": "나누어 줄 표",
+    "ondoku": "ひょう",
+    "kundoku": "たわら"
+  },
+  "漂": {
+    "meaning": "떠다닐 표",
+    "ondoku": "ひょう",
+    "kundoku": "ただよう"
+  },
+  "品": {
+    "meaning": "물건 품",
+    "ondoku": "ひん",
+    "kundoku": "しな"
+  },
+  "風": {
+    "meaning": "바람 풍",
+    "ondoku": "ふう、ふ",
+    "kundoku": "かぜ、かざ"
+  },
+  "豊": {
+    "meaning": "풍년 풍",
+    "ondoku": "ほう",
+    "kundoku": "ゆたか"
+  },
+  "皮": {
+    "meaning": "가죽 피",
+    "ondoku": "ひ",
+    "kundoku": "かわ"
+  },
+  "彼": {
+    "meaning": "저 피",
+    "ondoku": "ひ",
+    "kundoku": "かれ、かの"
+  },
+  "披": {
+    "meaning": "헤칠 피",
+    "ondoku": "ひ",
+    "kundoku": ""
+  },
+  "疲": {
+    "meaning": "피곤할 피",
+    "ondoku": "ひ",
+    "kundoku": "つかれる"
+  },
+  "被": {
+    "meaning": "입을 피",
+    "ondoku": "ひ",
+    "kundoku": "こうむる"
+  },
+  "避": {
+    "meaning": "피할 피",
+    "ondoku": "ひ",
+    "kundoku": "さける"
+  },
+  "筆": {
+    "meaning": "붓 필",
+    "ondoku": "ひつ",
+    "kundoku": "ふで"
+  },
+  "必": {
+    "meaning": "반드시 필",
+    "ondoku": "ひつ",
+    "kundoku": "かならず"
+  },
+  "匹": {
+    "meaning": "짝 필",
+    "ondoku": "ひつ",
+    "kundoku": "ひき"
+  },
+  "乏": {
+    "meaning": "모자랄 핍",
+    "ondoku": "ぼう",
+    "kundoku": "とぼしい"
+  },
+  "下": {
+    "meaning": "아래 하",
+    "ondoku": "か、げ",
+    "kundoku": "した、しも、もと、さげる、さがる、おりる、おろす、くだる"
+  },
+  "何": {
+    "meaning": "어찌 하",
+    "ondoku": "か",
+    "kundoku": "なに、なん"
+  },
+  "夏": {
+    "meaning": "여름 하",
+    "ondoku": "か、げ",
+    "kundoku": "なつ"
+  },
+  "荷": {
+    "meaning": "멜 하",
+    "ondoku": "か",
+    "kundoku": "に"
+  },
+  "河": {
+    "meaning": "물 하",
+    "ondoku": "か",
+    "kundoku": "かわ"
+  },
+  "賀": {
+    "meaning": "하례할 하",
+    "ondoku": "が",
+    "kundoku": ""
+  },
+  "学": {
+    "meaning": "배울 학",
+    "ondoku": "がく",
+    "kundoku": "まなぶ"
+  },
+  "虐": {
+    "meaning": "모질 학",
+    "ondoku": "ぎゃく",
+    "kundoku": "しいたげる"
+  },
+  "鶴": {
+    "meaning": "학 학",
+    "ondoku": "かく",
+    "kundoku": "つる"
+  },
+  "寒": {
+    "meaning": "찰 한",
+    "ondoku": "かん",
+    "kundoku": "さむい"
+  },
+  "漢": {
+    "meaning": "한나라 한",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "限": {
+    "meaning": "제한할 한",
+    "ondoku": "げん",
+    "kundoku": "かぎる"
+  },
+  "汗": {
+    "meaning": "땀 한",
+    "ondoku": "かん",
+    "kundoku": "あせ"
+  },
+  "恨": {
+    "meaning": "한 한",
+    "ondoku": "こん",
+    "kundoku": "うらむ、うらめしい"
+  },
+  "閑": {
+    "meaning": "한가할 한",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "韓": {
+    "meaning": "나라 한",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "割": {
+    "meaning": "벨 할",
+    "ondoku": "かつ",
+    "kundoku": "わる、わり、われる、さく"
+  },
+  "轄": {
+    "meaning": "다스릴 할",
+    "ondoku": "かつ",
+    "kundoku": ""
+  },
+  "含": {
+    "meaning": "머금을 함",
+    "ondoku": "がん",
+    "kundoku": "ふくむ、ふくめる"
+  },
+  "陥": {
+    "meaning": "빠질 함",
+    "ondoku": "かん",
+    "kundoku": "おちいる、おとしいれる"
+  },
+  "艦": {
+    "meaning": "큰 배 함",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "合": {
+    "meaning": "합할 합",
+    "ondoku": "ごう、がっ、かっ",
+    "kundoku": "あう、あわす、あわせる"
+  },
+  "港": {
+    "meaning": "항구 항",
+    "ondoku": "こう",
+    "kundoku": "みなと"
+  },
+  "航": {
+    "meaning": "배 항",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "抗": {
+    "meaning": "겨룰 항",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "恒": {
+    "meaning": "항상 항",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "項": {
+    "meaning": "항목 항",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "海": {
+    "meaning": "바다 해",
+    "ondoku": "かい",
+    "kundoku": "うみ"
+  },
+  "害": {
+    "meaning": "해할 해",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "解": {
+    "meaning": "풀 해",
+    "ondoku": "かい、げ",
+    "kundoku": "とく、とける、とかす"
+  },
+  "該": {
+    "meaning": "각출/마땅 해",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "楷": {
+    "meaning": "본보기 해",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "諧": {
+    "meaning": "화할 해",
+    "ondoku": "かい",
+    "kundoku": ""
+  },
+  "骸": {
+    "meaning": "뼈 해",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "劾": {
+    "meaning": "꾸짖을 핵",
+    "ondoku": "がい",
+    "kundoku": ""
+  },
+  "核": {
+    "meaning": "씨 핵",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "行": {
+    "meaning": "갈 행",
+    "ondoku": "こう、ぎょう、あん",
+    "kundoku": "いく、ゆく、おこなう"
+  },
+  "幸": {
+    "meaning": "다행 행",
+    "ondoku": "こう",
+    "kundoku": "さいわい、さち、しあわせ"
+  },
+  "向": {
+    "meaning": "향할 향",
+    "ondoku": "こう",
+    "kundoku": "むく、むかう、むける、むこう"
+  },
+  "郷": {
+    "meaning": "시골 향",
+    "ondoku": "きょう、ごう",
+    "kundoku": ""
+  },
+  "享": {
+    "meaning": "누릴 향",
+    "ondoku": "きょう",
+    "kundoku": ""
+  },
+  "香": {
+    "meaning": "향기 향",
+    "ondoku": "こう",
+    "kundoku": "か、かおり、かおる"
+  },
+  "響": {
+    "meaning": "울릴 향",
+    "ondoku": "きょう",
+    "kundoku": "ひびく"
+  },
+  "許": {
+    "meaning": "허락할 허",
+    "ondoku": "きょ",
+    "kundoku": "ゆるす"
+  },
+  "虚": {
+    "meaning": "빌 허",
+    "ondoku": "きょ、こ",
+    "kundoku": "むなしい"
+  },
+  "憲": {
+    "meaning": "법 헌",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "軒": {
+    "meaning": "집 헌",
+    "ondoku": "けん",
+    "kundoku": "のき"
+  },
+  "献": {
+    "meaning": "드릴 헌",
+    "ondoku": "けん、こん",
+    "kundoku": ""
+  },
+  "験": {
+    "meaning": "시험 험",
+    "ondoku": "けん、げん",
+    "kundoku": ""
+  },
+  "険": {
+    "meaning": "험할 험",
+    "ondoku": "けん",
+    "kundoku": "けわしい"
+  },
+  "革": {
+    "meaning": "가죽 혁",
+    "ondoku": "かく",
+    "kundoku": "かわ"
+  },
+  "嚇": {
+    "meaning": "성낼 혁",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "県": {
+    "meaning": "고을 현",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "現": {
+    "meaning": "나타날 현",
+    "ondoku": "げん",
+    "kundoku": "あらわれる、あらわす"
+  },
+  "玄": {
+    "meaning": "검을 현",
+    "ondoku": "げん",
+    "kundoku": ""
+  },
+  "弦": {
+    "meaning": "시위 현",
+    "ondoku": "げん",
+    "kundoku": "つる"
+  },
+  "舷": {
+    "meaning": "뱃전 현",
+    "ondoku": "げん",
+    "kundoku": ""
+  },
+  "賢": {
+    "meaning": "어질 현",
+    "ondoku": "けん",
+    "kundoku": "かしこい"
+  },
+  "顕": {
+    "meaning": "나타날 현",
+    "ondoku": "けん",
+    "kundoku": ""
+  },
+  "懸": {
+    "meaning": "달 현",
+    "ondoku": "けん、け",
+    "kundoku": "かける、かかる"
+  },
+  "血": {
+    "meaning": "피 혈",
+    "ondoku": "けつ",
+    "kundoku": "ち"
+  },
+  "穴": {
+    "meaning": "구멍 혈",
+    "ondoku": "けつ",
+    "kundoku": "あな"
+  },
+  "嫌": {
+    "meaning": "싫어할 혐",
+    "ondoku": "けん、げん",
+    "kundoku": "きらう、いや"
+  },
+  "協": {
+    "meaning": "화합할 협",
+    "ondoku": "きょう",
+    "kundoku": ""
+  },
+  "峡": {
+    "meaning": "골짜기 협",
+    "ondoku": "きょう",
+    "kundoku": ""
+  },
+  "挟": {
+    "meaning": "낄 협",
+    "ondoku": "きょう",
+    "kundoku": "はさむ、はさまる"
+  },
+  "狭": {
+    "meaning": "좁을 협",
+    "ondoku": "きょう",
+    "kundoku": "せまい、せばめる、せばまる"
+  },
+  "脅": {
+    "meaning": "위협할 협",
+    "ondoku": "きょう",
+    "kundoku": "おびやかす、おどす、おどかす"
+  },
+  "脇": {
+    "meaning": "옆구리 협",
+    "ondoku": "",
+    "kundoku": "わき"
+  },
+  "頬": {
+    "meaning": "뺨 협",
+    "ondoku": "",
+    "kundoku": "ほお"
+  },
+  "兄": {
+    "meaning": "맏 형",
+    "ondoku": "きょう、けい",
+    "kundoku": "あに、にい"
+  },
+  "形": {
+    "meaning": "모양 형",
+    "ondoku": "けい、ぎょう",
+    "kundoku": "かた、かたち"
+  },
+  "型": {
+    "meaning": "모형 형",
+    "ondoku": "けい",
+    "kundoku": "かた"
+  },
+  "刑": {
+    "meaning": "형벌 형",
+    "ondoku": "けい",
+    "kundoku": ""
+  },
+  "桁": {
+    "meaning": "도리 형",
+    "ondoku": "こう",
+    "kundoku": "けた"
+  },
+  "蛍": {
+    "meaning": "반딧불 형",
+    "ondoku": "けい",
+    "kundoku": "ほたる"
+  },
+  "衡": {
+    "meaning": "저울대 형",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "恵": {
+    "meaning": "은혜 혜",
+    "ondoku": "けい、え",
+    "kundoku": "めぐむ"
+  },
+  "戸": {
+    "meaning": "집 호",
+    "ondoku": "こ",
+    "kundoku": "と"
+  },
+  "号": {
+    "meaning": "이름 호",
+    "ondoku": "ごう",
+    "kundoku": ""
+  },
+  "湖": {
+    "meaning": "호수 호",
+    "ondoku": "こ",
+    "kundoku": "みずうみ"
+  },
+  "好": {
+    "meaning": "좋을 호",
+    "ondoku": "こう",
+    "kundoku": "すく、このむ"
+  },
+  "護": {
+    "meaning": "도울 호",
+    "ondoku": "ご",
+    "kundoku": ""
+  },
+  "呼": {
+    "meaning": "부를 호",
+    "ondoku": "こ",
+    "kundoku": "よぶ"
+  },
+  "互": {
+    "meaning": "서로 호",
+    "ondoku": "ご",
+    "kundoku": "たがい"
+  },
+  "虎": {
+    "meaning": "범 호",
+    "ondoku": "こ",
+    "kundoku": "とら"
+  },
+  "弧": {
+    "meaning": "활 호",
+    "ondoku": "こ",
+    "kundoku": ""
+  },
+  "豪": {
+    "meaning": "호걸 호",
+    "ondoku": "ごう",
+    "kundoku": ""
+  },
+  "惑": {
+    "meaning": "미혹할 혹",
+    "ondoku": "わく",
+    "kundoku": "まどう"
+  },
+  "酷": {
+    "meaning": "심할 혹",
+    "ondoku": "こく",
+    "kundoku": ""
+  },
+  "混": {
+    "meaning": "섞을 혼",
+    "ondoku": "こん",
+    "kundoku": "まざる、まぜる、こむ"
+  },
+  "婚": {
+    "meaning": "혼인할 혼",
+    "ondoku": "こん",
+    "kundoku": ""
+  },
+  "魂": {
+    "meaning": "넋 혼",
+    "ondoku": "こん",
+    "kundoku": "たましい"
+  },
+  "紅": {
+    "meaning": "붉을 홍",
+    "ondoku": "こう、く",
+    "kundoku": "べに、くれない"
+  },
+  "洪": {
+    "meaning": "넓을 홍",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "虹": {
+    "meaning": "무지개 홍",
+    "ondoku": "にじ",
+    "kundoku": ""
+  },
+  "火": {
+    "meaning": "불 화",
+    "ondoku": "か",
+    "kundoku": "ひ、ほ"
+  },
+  "花": {
+    "meaning": "꽃 화",
+    "ondoku": "か",
+    "kundoku": "はな"
+  },
+  "画": {
+    "meaning": "그림 화/그을 획",
+    "ondoku": "が、かく",
+    "kundoku": ""
+  },
+  "話": {
+    "meaning": "말씀 화",
+    "ondoku": "わ",
+    "kundoku": "はなす、はなし"
+  },
+  "化": {
+    "meaning": "될 화",
+    "ondoku": "か、け",
+    "kundoku": "ばける、ばかす"
+  },
+  "和": {
+    "meaning": "화할 화",
+    "ondoku": "わ、お",
+    "kundoku": "なごむ、なごやか、やわらぐ、やわらげる"
+  },
+  "貨": {
+    "meaning": "재물 화",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "華": {
+    "meaning": "빛날 화",
+    "ondoku": "か、け",
+    "kundoku": "はなやか、はなばなしい"
+  },
+  "禍": {
+    "meaning": "재앙 화",
+    "ondoku": "か",
+    "kundoku": ""
+  },
+  "靴": {
+    "meaning": "신발 화",
+    "ondoku": "か",
+    "kundoku": "くつ"
+  },
+  "確": {
+    "meaning": "굳을 확",
+    "ondoku": "かく",
+    "kundoku": "たしか、たしかめる"
+  },
+  "拡": {
+    "meaning": "넓힐 확",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "穫": {
+    "meaning": "거둘 확",
+    "ondoku": "かく",
+    "kundoku": ""
+  },
+  "丸": {
+    "meaning": "둥글 환",
+    "ondoku": "がん",
+    "kundoku": "まる、まるい、まるめる"
+  },
+  "幻": {
+    "meaning": "헛보일 환",
+    "ondoku": "けん",
+    "kundoku": "まぼろし"
+  },
+  "患": {
+    "meaning": "근심 환",
+    "ondoku": "かん",
+    "kundoku": "わずらう"
+  },
+  "喚": {
+    "meaning": "부를 환",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "換": {
+    "meaning": "바꿀 환",
+    "ondoku": "かん",
+    "kundoku": "かえる、かわる"
+  },
+  "歓": {
+    "meaning": "기쁠 환",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "還": {
+    "meaning": "돌아올 환",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "環": {
+    "meaning": "고리 환",
+    "ondoku": "かん",
+    "kundoku": ""
+  },
+  "活": {
+    "meaning": "살 활",
+    "ondoku": "かつ",
+    "kundoku": "いかす"
+  },
+  "滑": {
+    "meaning": "미끄러울 활",
+    "ondoku": "かつ、こつ",
+    "kundoku": "すべる、なめらか"
+  },
+  "黄": {
+    "meaning": "누를 황",
+    "ondoku": "おう、こう",
+    "kundoku": "き、こ"
+  },
+  "皇": {
+    "meaning": "임금 황",
+    "ondoku": "こう、おう",
+    "kundoku": ""
+  },
+  "況": {
+    "meaning": "상황 황",
+    "ondoku": "きょう",
+    "kundoku": ""
+  },
+  "荒": {
+    "meaning": "거칠 황",
+    "ondoku": "こう",
+    "kundoku": "あらい、あれる、あらす"
+  },
+  "慌": {
+    "meaning": "어리둥절할 황",
+    "ondoku": "こう",
+    "kundoku": "あわてる、あわただしい"
+  },
+  "会": {
+    "meaning": "모일 회",
+    "ondoku": "かい、え",
+    "kundoku": "あう"
+  },
+  "回": {
+    "meaning": "돌 회",
+    "ondoku": "かい、え",
+    "kundoku": "まわる、まわす"
+  },
+  "絵": {
+    "meaning": "그림 회",
+    "ondoku": "え、かい",
+    "kundoku": ""
+  },
+  "灰": {
+    "meaning": "재 회",
+    "ondoku": "かい",
+    "kundoku": "はい"
+  },
+  "悔": {
+    "meaning": "뉘우칠 회",
+    "ondoku": "かい",
+    "kundoku": "くいる、くやむ、くやしい"
+  },
+  "栃": {
+    "meaning": "상수리나무 회",
+    "ondoku": "",
+    "kundoku": "とち"
+  },
+  "賄": {
+    "meaning": "뇌물 회",
+    "ondoku": "わい",
+    "kundoku": "まかなう"
+  },
+  "懐": {
+    "meaning": "품을 회",
+    "ondoku": "かい",
+    "kundoku": "なつかしい、なつかしむ、なつく、なつける、ふところ"
+  },
+  "獲": {
+    "meaning": "얻을 획",
+    "ondoku": "かく",
+    "kundoku": "える"
+  },
+  "横": {
+    "meaning": "가로 횡",
+    "ondoku": "おう",
+    "kundoku": "よこ"
+  },
+  "効": {
+    "meaning": "효과 효",
+    "ondoku": "こう",
+    "kundoku": "きく"
+  },
+  "孝": {
+    "meaning": "효도 효",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "暁": {
+    "meaning": "새벽 효",
+    "ondoku": "ぎょう",
+    "kundoku": "あかつき"
+  },
+  "酵": {
+    "meaning": "삭힐 효",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "後": {
+    "meaning": "뒤 후",
+    "ondoku": "ご、こう",
+    "kundoku": "のち、うしろ、あと、おくれる"
+  },
+  "候": {
+    "meaning": "기후 후",
+    "ondoku": "こう",
+    "kundoku": "そうろう"
+  },
+  "厚": {
+    "meaning": "두터울 후",
+    "ondoku": "こう",
+    "kundoku": "あつい"
+  },
+  "后": {
+    "meaning": "임금/왕후 후",
+    "ondoku": "こう",
+    "kundoku": "きさき"
+  },
+  "朽": {
+    "meaning": "썩을 후",
+    "ondoku": "きゅう",
+    "kundoku": "くちる"
+  },
+  "侯": {
+    "meaning": "제후 후",
+    "ondoku": "こう",
+    "kundoku": ""
+  },
+  "喉": {
+    "meaning": "목구멍 후",
+    "ondoku": "こう",
+    "kundoku": "のど"
+  },
+  "嗅": {
+    "meaning": "맡을 후",
+    "ondoku": "きゅう",
+    "kundoku": "かぐ"
+  },
+  "訓": {
+    "meaning": "가르칠 훈",
+    "ondoku": "くん",
+    "kundoku": ""
+  },
+  "勲": {
+    "meaning": "공 훈",
+    "ondoku": "くん",
+    "kundoku": "いさお"
+  },
+  "薫": {
+    "meaning": "향 풀 훈",
+    "ondoku": "くん",
+    "kundoku": "かおる"
+  },
+  "毀": {
+    "meaning": "헐 훼",
+    "ondoku": "き",
+    "kundoku": "こわす、こぼれる、こぼつ"
+  },
+  "揮": {
+    "meaning": "휘두를 휘",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "彙": {
+    "meaning": "무리 휘",
+    "ondoku": "い",
+    "kundoku": ""
+  },
+  "輝": {
+    "meaning": "빛날 휘",
+    "ondoku": "き",
+    "kundoku": "かがやく"
+  },
+  "休": {
+    "meaning": "쉴 휴",
+    "ondoku": "きゅう",
+    "kundoku": "やすむ、やすまる、やすめる"
+  },
+  "携": {
+    "meaning": "이끌 휴",
+    "ondoku": "けい",
+    "kundoku": "たずさえる、たずさわる"
+  },
+  "胸": {
+    "meaning": "가슴 흉",
+    "ondoku": "きょう",
+    "kundoku": "むね、むな"
+  },
+  "凶": {
+    "meaning": "흉할 흉",
+    "ondoku": "きょう",
+    "kundoku": ""
+  },
+  "黒": {
+    "meaning": "검을 흑",
+    "ondoku": "こく",
+    "kundoku": "くろ、くろい"
+  },
+  "痕": {
+    "meaning": "흔적 흔",
+    "ondoku": "こん",
+    "kundoku": "あと"
+  },
+  "吸": {
+    "meaning": "마실 흡",
+    "ondoku": "きゅう",
+    "kundoku": "すう"
+  },
+  "興": {
+    "meaning": "일어날 흥",
+    "ondoku": "こう、きょう",
+    "kundoku": "おこる、おこす"
+  },
+  "希": {
+    "meaning": "바랄 희",
+    "ondoku": "き",
+    "kundoku": ""
+  },
+  "喜": {
+    "meaning": "기쁠 희",
+    "ondoku": "き",
+    "kundoku": "よろこぶ"
+  },
+  "姫": {
+    "meaning": "계집 희",
+    "ondoku": "",
+    "kundoku": "ひめ"
+  },
+  "戯": {
+    "meaning": "놀이 희",
+    "ondoku": "ぎ",
+    "kundoku": "たわむれる"
+  },
+  "犠": {
+    "meaning": "희생할 희",
+    "ondoku": "ぎ",
+    "kundoku": ""
+  },
+  "詰": {
+    "meaning": "꾸짖을 힐",
+    "ondoku": "きつ",
+    "kundoku": "つめる、つまる、つむ"
+  },
+  "込": {
+    "meaning": "담을 입",
+    "ondoku": "",
+    "kundoku": "こむ、こめる"
+  },
+  "畑": {
+    "meaning": "화전 전",
+    "ondoku": "",
+    "kundoku": "はた、はたけ"
+  },
+  "枠": {
+    "meaning": "테두리 화",
+    "ondoku": "",
+    "kundoku": "わく"
+  },
+  "峠": {
+    "meaning": "고개 상",
+    "ondoku": "",
+    "kundoku": "とうげ"
+  }
+}

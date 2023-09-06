@@ -221,10 +221,10 @@ struct StudyCell: View {
     private func kanjiList(_ vs: VS) -> some View {
         VStack {
             ForEach(vs.kanjis, id: \.id) { kanji in
-                if let meaningText = kanji.meaningText {
-                    Text("\(kanji.kanjiText ?? ""): \(meaningText)")
+                if !kanji.meaningText.isEmpty {
+                    Text("\(kanji.kanjiText): \(kanji.meaningText)")
                 } else {
-                    Button("\(kanji.kanjiText ?? ""): (뜻 추가하기)") { vs.send(.addKanjiMeaningTapped(kanji)) }
+                    Button("\(kanji.kanjiText): (뜻 추가하기)") { vs.send(.addKanjiMeaningTapped(kanji)) }
                 }
             }
         }
