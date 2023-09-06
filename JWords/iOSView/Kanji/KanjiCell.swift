@@ -19,9 +19,6 @@ struct StudyKanji: ReducerProtocol {
         var meaningText: String = ""
         var isEditing: Bool = false
         
-        var kanjiImage: Data?
-        var meaningImage: Data?
-        
         var displayMeaning: String {
             kanji.meaningText.isEmpty ? "???" : kanji.meaningText
         }
@@ -35,8 +32,6 @@ struct StudyKanji: ReducerProtocol {
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case onAppear
-        case onKanjiImageDownloaded(TaskResult<Data>)
-        case onMeaningImageDownloaded(TaskResult<Data>)
         case onKanjiTapped(String)
         case editButtonTapped
         case updateMeaningText(String)
@@ -55,12 +50,6 @@ struct StudyKanji: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .none
-            case let .onKanjiImageDownloaded(.success(data)):
-                state.kanjiImage = data
-                return .none
-            case let .onMeaningImageDownloaded(.success(data)):
-                state.meaningImage = data
                 return .none
             case .onKanjiTapped(let kanji):
                 pasteBoardClient.copyString(kanji)
