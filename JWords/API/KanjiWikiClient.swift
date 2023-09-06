@@ -16,6 +16,8 @@ struct WikiKanji {
 
 class KanjiWikiClient {
     
+    static let shared = KanjiWikiClient()
+    
     private let db: [String : WikiKanji]
     
     init() {
