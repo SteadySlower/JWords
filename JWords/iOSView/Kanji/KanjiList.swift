@@ -14,22 +14,10 @@ struct KanjiList: ReducerProtocol {
     // FIXME: move it to proper place
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     
-    enum KanjiListFilter: Equatable, CaseIterable {
-        case all, meaningless
-        
-        var pickerText: String {
-            switch self {
-            case .all: return "전부"
-            case .meaningless: return "뜻 없음"
-            }
-        }
-    }
-    
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<StudyKanji.State> = []
         var wordList: WordList.State?
         var isLastPage = false
-        var filter: KanjiListFilter = .all
         
         var showStudyView: Bool {
             wordList != nil
@@ -39,7 +27,6 @@ struct KanjiList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case fetchKanjis
-        case setFilter(KanjiListFilter)
         case studyKanji(id: StudyKanji.State.ID, action: StudyKanji.Action)
         case wordList(action: WordList.Action)
         case showStudyView(Bool)
@@ -54,7 +41,7 @@ struct KanjiList: ReducerProtocol {
                 return .task { .fetchKanjis }
             case .fetchKanjis:
                 let last = state.kanjis.last?.kanji
-                let fetched = try! cd.fetchAllKanjis(after: last, filter: state.filter)
+                let fetched = try! cd.fetchAllKanjis(after: last)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
                 let moreArray = state.kanjis.map { $0.kanji } + fetched
                 state.kanjis = IdentifiedArrayOf(
@@ -62,11 +49,6 @@ struct KanjiList: ReducerProtocol {
                         StudyKanji.State(kanji: $0)
                     })
                 return .none
-            case let .setFilter(filter):
-                state.kanjis = []
-                state.filter = filter
-                state.isLastPage = false
-                return .task { .fetchKanjis }
             case let .studyKanji(id, action):
                 switch action {
                 case let .onKanjiEdited(kanji):
@@ -108,16 +90,6 @@ struct KanjiListView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                Picker("", selection: vs.binding(
-                    get: \.filter,
-                    send: KanjiList.Action.setFilter)
-                ) {
-                    ForEach(KanjiList.KanjiListFilter.allCases, id: \.self) {
-                        Text($0.pickerText)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
