@@ -35,8 +35,12 @@ struct iOSApp: ReducerProtocol {
         case homeList(action: HomeList.Action)
         case kanjiList(action: KanjiList.Action)
         case ocr(action: OCR.Action)
+        
+        // method to reset DB when updated
+        case onAppear
     }
     
+    let cd = CoreDataClient.shared
     @Dependency(\.wordBookClient) var wordBookClient
     
     var body: some ReducerProtocol<State, Action> {
@@ -54,6 +58,11 @@ struct iOSApp: ReducerProtocol {
                     state.kanjiList = KanjiList.State()
                 case .ocr:
                     state.ocr = OCR.State()
+                }
+                return .none
+            case .onAppear:
+                if (try! cd.fetchAllKanjis(after: nil).isEmpty) {
+                    try! cd.convertAllKanjisToStudyKanji()
                 }
                 return .none
             default:
@@ -141,6 +150,7 @@ struct iOSAppView: View {
                 .tabItem { Image(systemName: "pencil") }
                 .tag(Tab.ocr)
             }
+            .onAppear { vs.send(.onAppear) }
         }
     }
 }

@@ -635,10 +635,10 @@ extension CoreDataClient {
 
 extension CoreDataClient {
     
-    private func checkIfExist(kanji: Kanji) throws -> Bool {
+    private func checkIfExist(kanji: String) throws -> Bool {
         
         let fetchRequest = StudyKanjiMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji.kanjiText)
+        fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji)
         
         do {
             return (try context.fetch(fetchRequest).first != nil)
@@ -648,9 +648,14 @@ extension CoreDataClient {
         }
     }
     
-    func convertKanjisToStudyKanji(kanji: Kanji) throws {
+    private func convertKanjisToStudyKanji(kanji: StudyUnitMO) throws {
+        guard let kanjiText = kanji.kanjiText else {
+            print("디버그: kanjiText 없음")
+            return
+        }
+        
         // 중복 검사
-        guard !(try! checkIfExist(kanji: kanji)) else {
+        guard !(try! checkIfExist(kanji: kanjiText)) else {
             print("디버그: 이미 DB에 존재하는 한자")
             return
         }
@@ -666,7 +671,7 @@ extension CoreDataClient {
             throw AppError.coreData
         }
         
-        let wikiKanji = KanjiWikiClient.shared.getWikiKanji(kanji.kanjiText)
+        let wikiKanji = KanjiWikiClient.shared.getWikiKanji(kanjiText)
         
         studyKanjimo.id = "kanji_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         studyKanjimo.kanji = kanji.kanjiText
@@ -681,10 +686,31 @@ extension CoreDataClient {
         
         do {
             try context.save()
+            print("디버그) 이동한 kanji: \(studyKanjimo.kanji!)")
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
+        }
+    }
+    
+    private func fetchOldKanjis() throws -> [StudyUnitMO] {
+        let fetchRequest = StudyUnitMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
+        
+        do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func convertAllKanjisToStudyKanji() throws {
+        let oldKanjis = try! fetchOldKanjis()
+        
+        for kanji in oldKanjis {
+            try! convertKanjisToStudyKanji(kanji: kanji)
         }
     }
     
