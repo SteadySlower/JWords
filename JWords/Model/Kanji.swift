@@ -19,17 +19,6 @@ struct Kanji: Equatable {
     let createdAt: Date
     let usedIn: Int
     
-    init(from mo: StudyUnitMO) {
-        self.id = mo.id ?? UUID().uuidString
-        self.objectID = mo.objectID
-        self.kanjiText = mo.kanjiText ?? ""
-        self.meaningText = mo.meaningText ?? ""
-        self.ondoku = ""
-        self.kundoku = ""
-        self.createdAt = mo.createdAt ?? Date()
-        self.usedIn = mo.sampleForKanji?.count ?? 0
-    }
-    
     init(from mo: StudyKanjiMO) {
         self.id = mo.id ?? UUID().uuidString
         self.objectID = mo.objectID
