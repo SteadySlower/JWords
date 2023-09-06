@@ -10,6 +10,7 @@ import CoreData
 
 struct Kanji: Equatable {
     
+    let id: String
     let objectID: NSManagedObjectID
     let kanjiText: String
     let meaningText: String
@@ -19,6 +20,7 @@ struct Kanji: Equatable {
     let usedIn: Int
     
     init(from mo: StudyUnitMO) {
+        self.id = mo.id ?? UUID().uuidString
         self.objectID = mo.objectID
         self.kanjiText = mo.kanjiText ?? ""
         self.meaningText = mo.meaningText ?? ""
@@ -29,6 +31,7 @@ struct Kanji: Equatable {
     }
     
     init(from mo: StudyKanjiMO) {
+        self.id = mo.id ?? UUID().uuidString
         self.objectID = mo.objectID
         self.kanjiText = mo.kanji ?? ""
         self.meaningText = mo.meaning ?? ""
