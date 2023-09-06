@@ -149,12 +149,12 @@ class CoreDataClient {
         
         HuriganaConverter.shared.extractKanjis(from: kanjiText)
             .compactMap { try? getKanjiMO($0) }
-            .forEach { mo.addToKanjiOfWord($0) }
+            .forEach { mo.addToKanjis($0) }
         
         mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         mo.type = Int16(type.rawValue)
-        if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
-        if !meaningText.isEmpty { mo.meaningText = meaningText }
+        mo.kanjiText = kanjiText
+        mo.meaningText = meaningText
         mo.studyState = Int16(StudyState.undefined.rawValue)
         mo.createdAt = Date()
         mo.addToSet(set)
@@ -181,22 +181,22 @@ class CoreDataClient {
             throw AppError.coreData
         }
         
-        let previousKanjis = mo.kanjiOfWord ?? []
+        let previousKanjis = mo.kanjis ?? []
         let nowKanjis = HuriganaConverter.shared.extractKanjis(from: kanjiText)
                             .compactMap { try? getKanjiMO($0) }
         let toRemoveKanjis = Set(_immutableCocoaSet: previousKanjis)
                             .subtracting(Set(nowKanjis))
         
         toRemoveKanjis
-            .forEach { mo.removeFromKanjiOfWord($0) }
+            .forEach { mo.removeFromKanjis($0) }
         
         nowKanjis
-            .forEach { mo.addToKanjiOfWord($0) }
+            .forEach { mo.addToKanjis($0) }
         
         mo.type = Int16(type.rawValue)
-        if !kanjiText.isEmpty { mo.kanjiText = kanjiText }
+        mo.kanjiText = kanjiText
         mo.kanjiImageID = kanjiImageID
-        if !meaningText.isEmpty { mo.meaningText = meaningText }
+        mo.meaningText = meaningText
         mo.meaningImageID = meaningImageID
 
         do {
@@ -259,8 +259,7 @@ class CoreDataClient {
     }
     
     func fetchAllKanjis() throws -> [Kanji] {
-        let fetchRequest = StudyUnitMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
+        let fetchRequest = StudyKanjiMO.fetchRequest()
         
         do {
             return try context.fetch(fetchRequest).map { Kanji(from: $0) }
@@ -268,18 +267,15 @@ class CoreDataClient {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
+        
     }
     
     // API for pagination
-    func fetchAllKanjis(after: Kanji?, filter: KanjiList.KanjiListFilter) throws -> [Kanji] {
-        let fetchRequest = StudyUnitMO.fetchRequest()
-        let typePredicate = NSPredicate(format: "type == \(UnitType.kanji.rawValue)")
-        var predicates = [typePredicate]
+    func fetchAllKanjis(after: Kanji?) throws -> [Kanji] {
+        let fetchRequest = StudyKanjiMO.fetchRequest()
+        var predicates = [NSPredicate]()
         if let after = after {
             predicates.append(NSPredicate(format: "createdAt < %@", after.createdAt as NSDate))
-        }
-        if filter == .meaningless {
-            predicates.append(NSPredicate(format: "meaningText == nil OR meaningText == ''"))
         }
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.predicate = compoundPredicate
@@ -301,20 +297,20 @@ class CoreDataClient {
             throw AppError.coreData
         }
         
-        guard let kanjis = mo.kanjiOfWord else {
+        guard let kanjis = mo.kanjis else {
             return []
         }
         
-        return kanjis.compactMap { $0 as? StudyUnitMO }.map { Kanji(from: $0) }
+        return kanjis.compactMap { $0 as? StudyKanjiMO }.map { Kanji(from: $0) }
     }
     
     func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
-        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
+        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
         }
         
-        guard let samples = mo.sampleForKanji else {
+        guard let samples = mo.words else {
             return []
         }
         
@@ -322,12 +318,12 @@ class CoreDataClient {
     }
     
     func editKanji(kanji: Kanji, meaningText: String) throws -> Kanji {
-        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
+        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
         }
         
-        mo.meaningText = meaningText
+        mo.meaning = meaningText
         
         do {
             try context.save()
@@ -408,22 +404,24 @@ class CoreDataClient {
         }
     }
     
-    private func getKanjiMO(_ kanji: String) throws -> StudyUnitMO {
-        let fetchRequest = StudyUnitMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "kanjiText == %@", kanji)
+    private func getKanjiMO(_ kanji: String) throws -> StudyKanjiMO {
+        let fetchRequest = StudyKanjiMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji)
         
         do {
             if let fetched = try context.fetch(fetchRequest).first {
                 return fetched
             } else {
-                guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyUnit", into: context) as? StudyUnitMO else {
-                    print("디버그: StudyUnitMO 객체를 만들 수 없음")
+                guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyKanji", into: context) as? StudyKanjiMO else {
+                    print("디버그: StudyKanjiMO 객체를 만들 수 없음")
                     throw AppError.coreData
                 }
-                mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
-                mo.type = Int16(UnitType.kanji.rawValue)
-                mo.kanjiText = kanji
-                mo.studyState = Int16(StudyState.undefined.rawValue)
+                let wikiKanji = KanjiWikiClient.shared.getWikiKanji(kanji)
+                mo.id = "kanji_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+                mo.kanji = kanji
+                mo.meaning = wikiKanji?.meaning ?? ""
+                mo.ondoku = wikiKanji?.ondoku ?? ""
+                mo.kundoku = wikiKanji?.kundoku ?? ""
                 mo.createdAt = Date()
                 return mo
             }
@@ -493,7 +491,7 @@ extension CoreDataClient {
         
         HuriganaConverter.shared.extractKanjis(from: input.kanjiText)
             .compactMap { try? getKanjiMO($0) }
-            .forEach { mo.addToKanjiOfWord($0) }
+            .forEach { mo.addToKanjis($0) }
         
         mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
         mo.type = Int16(input.type.rawValue)
@@ -538,7 +536,7 @@ extension CoreDataClient {
             
             HuriganaConverter.shared.extractKanjis(from: input.kanjiText)
                 .compactMap { try? getKanjiMO($0) }
-                .forEach { mo.addToKanjiOfWord($0) }
+                .forEach { mo.addToKanjis($0) }
             
             mo.id = "unit_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
             mo.type = Int16(input.type.rawValue)
@@ -608,27 +606,86 @@ extension CoreDataClient {
     }
     
     func resetCoreData() throws {
-        let setFetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
-        let unitFetchRequest: NSFetchRequest<StudyUnitMO> = StudyUnitMO.fetchRequest()
+//        let setFetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
+//        let unitFetchRequest: NSFetchRequest<StudyUnitMO> = StudyUnitMO.fetchRequest()
+//
+//        do {
+//            let sets = try context.fetch(setFetchRequest)
+//            for set in sets {
+//                context.delete(set)
+//            }
+//
+//            let units = try context.fetch(unitFetchRequest)
+//            for unit in units {
+//                context.delete(unit)
+//            }
+//
+//            try context.save()
+//
+//        } catch {
+//            context.rollback()
+//            NSLog("CoreData Error: %s", error.localizedDescription)
+//            throw AppError.coreData
+//        }
+//
+    }
+}
+
+// MARK: Interim function to convert kanjis from StudyUnit to StudyKanji
+
+extension CoreDataClient {
+    
+    private func checkIfExist(kanji: Kanji) throws -> Bool {
+        
+        let fetchRequest = StudyKanjiMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji.kanjiText)
         
         do {
-            let sets = try context.fetch(setFetchRequest)
-            for set in sets {
-                context.delete(set)
-            }
-            
-            let units = try context.fetch(unitFetchRequest)
-            for unit in units {
-                context.delete(unit)
-            }
-            
-            try context.save()
-
+            return (try context.fetch(fetchRequest).first != nil)
         } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func convertKanjisToStudyKanji(kanji: Kanji) throws {
+        // 중복 검사
+        guard !(try! checkIfExist(kanji: kanji)) else {
+            print("디버그: 이미 DB에 존재하는 한자")
+            return
+        }
+        
+        // StudyUnitMO 찾기
+        guard let unitMO = try? context.existingObject(with: kanji.objectID) as? StudyUnitMO else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        // mo에 넣기
+        guard let studyKanjimo = NSEntityDescription.insertNewObject(forEntityName: "StudyKanji", into: context) as? StudyKanjiMO else {
+            throw AppError.coreData
+        }
+        
+        let wikiKanji = KanjiWikiClient.shared.getWikiKanji(kanji.kanjiText)
+        
+        studyKanjimo.id = "kanji_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        studyKanjimo.kanji = kanji.kanjiText
+        studyKanjimo.meaning = kanji.meaningText
+        studyKanjimo.ondoku = wikiKanji?.ondoku ?? ""
+        studyKanjimo.kundoku = wikiKanji?.kundoku ?? ""
+        studyKanjimo.createdAt = kanji.createdAt
+        
+        // mo에 unit과 연결
+        let words = unitMO.sampleForKanji ?? []
+        studyKanjimo.addToWords(words)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
         }
-        
     }
+    
 }
