@@ -11,14 +11,13 @@ import ComposableArchitecture
 struct AddUnitWithOCR: ReducerProtocol {
     struct State: Equatable {
 
-        // OCR
-        var image: InputImageType?
+        var ocr: OCR.State?
         var getImageButtons = GetImageForOCR.State()
-        var koreanOcrResult: [OCRResult] = []
-        var japaneseOcrResult: [OCRResult] = []
         
         var input = OCRInput.State()
         var alert: AlertState<Action>?
+        
+        var showOCR: Bool { ocr != nil }
         
         fileprivate mutating func setAlert(_ type: OCRInput.AlertType) {
             alert = AlertState<Action> {
@@ -34,12 +33,10 @@ struct AddUnitWithOCR: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case imageTapped
-        case imageFetched
+        case ocr(OCR.Action)
         case getImageButtons(GetImageForOCR.Action)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
-        case ocrTapped(lang: OCRLang, string: String)
         case input(OCRInput.Action)
         case dismissAlert
     }
@@ -53,14 +50,9 @@ struct AddUnitWithOCR: ReducerProtocol {
             case .getImageButtons(let action):
                 switch action {
                 case .clipBoardButtonTapped:
-                    guard
-                        let fetchedImage = pasteBoardClient.fetchImage(),
-                        let resizedImage = resizeImage(fetchedImage,
-                                                       to: .init(
-                                                        width: Constants.Size.deviceWidth - 10,
-                                                        height: Constants.Size.deviceHeight / 2)
-                        ) else { return .none }
-                    state.image = resizedImage
+                    guard let fetchedImage = pasteBoardClient.fetchImage(),
+                        let resizedImage = resizeImage(fetchedImage) else { return .none }
+                    state.ocr = .init(resizedImage)
                     return .merge(
                         .task {
                             await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
@@ -73,26 +65,26 @@ struct AddUnitWithOCR: ReducerProtocol {
                     // TODO: add logic
                     return .none
                 }
-            case .imageTapped:
-                state.image = nil
-                state.koreanOcrResult = []
-                state.japaneseOcrResult = []
-                return .none
             case .koreanOcrResponse(.success(let results)):
-                state.koreanOcrResult = results
+                state.ocr?.koreanOcrResult = results
                 return .none
             case .japaneseOcrResponse(.success(let results)):
-                state.japaneseOcrResult = results
+                state.ocr?.japaneseOcrResult = results
                 return .none
-            case .ocrTapped(let lang, let string):
-                switch lang {
-                case .korean:
-                    state.input.meaningString = string
-                case .japanese:
-                    state.input.huriText = nil
-                    state.input.kanjiString = string
+            case .ocr(let action):
+                switch action {
+                case .ocrMarkTapped(let lang, let text):
+                    switch lang {
+                    case .korean:
+                        state.input.meaningString = text
+                    case .japanese:
+                        state.input.kanjiString = text
+                    }
+                    return .none
+                case .removeImageButtonTapped:
+                    state.ocr = nil
+                    return .none
                 }
-                return .none
             case .input(let action):
                 switch action {
                 case .showAlert(let type):
@@ -108,6 +100,9 @@ struct AddUnitWithOCR: ReducerProtocol {
                 return .none
             }
         }
+        .ifLet(\.ocr, action: /Action.ocr) {
+            OCR()
+        }
         Scope(state: \.getImageButtons, action: /Action.getImageButtons) {
             GetImageForOCR()
         }
@@ -117,7 +112,19 @@ struct AddUnitWithOCR: ReducerProtocol {
     }
 }
 
-fileprivate func resizeImage(_ image: InputImageType, to newSize: CGSize) -> InputImageType? {
+fileprivate func resizeImage(_ image: InputImageType) -> InputImageType? {
+    // Calculate Size
+    let newWidth = Constants.Size.deviceWidth - 10
+    let newHeight = newWidth * (image.size.height / image.size.width)
+    let newSize = CGSize(width: newWidth, height: newHeight)
+    
+    print("디버그: \(newWidth), \(newHeight)")
+    
+    // If image is small enough, return original one
+    if image.size.width < newWidth {
+        return image
+    }
+    
     #if os(iOS)
     UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
     image.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
@@ -125,17 +132,13 @@ fileprivate func resizeImage(_ image: InputImageType, to newSize: CGSize) -> Inp
     UIGraphicsEndImageContext()
     return resizedImage
     #elseif os(macOS)
-    // Convert NSImage to CGImage
-    let newSizeWidth = newSize.width
-    let newSizeHeight = newSize.height
-
      let newImage = NSImage(size: newSize)
 
      newImage.lockFocus()
 
      NSGraphicsContext.current?.imageInterpolation = .high
 
-     image.draw(in: NSRect(x: 0, y: 0, width: newSizeWidth, height: newSizeHeight),
+     image.draw(in: NSRect(x: 0, y: 0, width: newWidth, height: newHeight),
                 from: NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height),
                 operation: .sourceOver,
                 fraction: 1.0)
@@ -154,14 +157,13 @@ struct OCRAddUnitView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
                 VStack {
-                    if let image = vs.image {
-                        VStack {
-                            OCRResultView(image: image, koreanResults: vs.koreanOcrResult, japaneseResults: vs.japaneseOcrResult) { vs.send(.ocrTapped(lang: $0, string: $1)) }
-                                .frame(width: image.size.width, height: image.size.height)
-                            Button("이미지 리셋") {
-                                vs.send(.imageTapped)
-                            }
+                    if vs.showOCR {
+                        IfLetStore(self.store.scope(state: \.ocr,
+                                                    action: AddUnitWithOCR.Action.ocr)
+                        ) {
+                            OCRView(store: $0)
                         }
+                        .frame(width: vs.ocr?.image.size.width, height: vs.ocr?.image.size.height)
                     } else {
                         ImageGetterButtons(store: store.scope(
                             state: \.getImageButtons,
