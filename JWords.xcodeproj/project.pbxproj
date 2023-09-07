@@ -28,9 +28,8 @@
 		06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A702A048EFD00BDEE2D /* StudyUnit.swift */; };
 		06308A732A04902A00BDEE2D /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A722A04902A00BDEE2D /* StudySet.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
-		06496B092AA30CF10061DCA9 /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B082AA30CF10061DCA9 /* OCRView.swift */; };
+		06496B092AA30CF10061DCA9 /* OCRAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
-		06496B0D2AA32DCA0061DCA9 /* OCRResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0C2AA32DCA0061DCA9 /* OCRResultView.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -122,6 +121,10 @@
 		5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */; };
 		5AA9097B2A83237B0075AFB9 /* KVStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
+		5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */; };
+		5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */; };
+		5AAF1E022AA96F8B00709CAE /* OCRInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */; };
+		5AAF1E042AA9965300709CAE /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E032AA9965300709CAE /* OCRView.swift */; };
 		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */; };
@@ -195,9 +198,8 @@
 		06308A702A048EFD00BDEE2D /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		06308A722A04902A00BDEE2D /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		06496B082AA30CF10061DCA9 /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCRView.swift; sourceTree = SOURCE_ROOT; };
+		06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRAddUnitView.swift; path = JWords/MacView/OCR/OCRAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		06496B0A2AA311140061DCA9 /* OCRClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRClient.swift; sourceTree = "<group>"; };
-		06496B0C2AA32DCA0061DCA9 /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/macView/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -286,6 +288,10 @@
 		5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultClient.swift; sourceTree = "<group>"; };
 		5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVStorageClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
+		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/macView/OCR/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageGetterButtons.swift; path = JWords/macView/OCR/ImageGetterButtons.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRInputView.swift; path = JWords/macView/OCR/OCRInputView.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1E032AA9965300709CAE /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiWikiClient.swift; sourceTree = "<group>"; };
@@ -645,6 +651,7 @@
 		5A67DC2F2869527A00AC156C /* MacView */ = {
 			isa = PBXGroup;
 			children = (
+				5AAF1DFC2AA9661E00709CAE /* OCR */,
 				061C9E822A19D5DA00E099B5 /* Conversion */,
 				0624735929C6D1360076DBE4 /* Components */,
 				5A67DC302869529700AC156C /* MacAppView.swift */,
@@ -652,8 +659,6 @@
 				5A67DC322869565A00AC156C /* MacAddBookView.swift */,
 				0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */,
 				0622727B29FDEADC00EEAD50 /* HuriganaTestView.swift */,
-				06496B082AA30CF10061DCA9 /* OCRView.swift */,
-				06496B0C2AA32DCA0061DCA9 /* OCRResultView.swift */,
 				5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */,
 			);
 			path = MacView;
@@ -693,6 +698,18 @@
 				5A6BBF7B28E68E10003D9A4D /* MockWord.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		5AAF1DFC2AA9661E00709CAE /* OCR */ = {
+			isa = PBXGroup;
+			children = (
+				06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */,
+				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
+				5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */,
+				5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */,
+				5AAF1E032AA9965300709CAE /* OCRView.swift */,
+			);
+			path = OCR;
 			sourceTree = "<group>";
 		};
 		5ABE51072AA7124F0052A551 /* StudyData */ = {
@@ -960,6 +977,7 @@
 				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
+				5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */,
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				06C0DDB62A8B24CA00F1CB52 /* Color+Extension.swift in Sources */,
@@ -968,13 +986,14 @@
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
 				06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */,
+				5AAF1E022AA96F8B00709CAE /* OCRInputView.swift in Sources */,
 				5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
-				06496B092AA30CF10061DCA9 /* OCRView.swift in Sources */,
+				06496B092AA30CF10061DCA9 /* OCRAddUnitView.swift in Sources */,
 				06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */,
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
@@ -994,6 +1013,7 @@
 				5AE1DB1A28C5D51B006DB89C /* SampleService.swift in Sources */,
 				5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */,
 				06308A5E29FE14D900BDEE2D /* iOSHuriganaTestView.swift in Sources */,
+				5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */,
 				5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
@@ -1001,6 +1021,7 @@
 				06E4066229C5578D0055B104 /* RepositoryManager.swift in Sources */,
 				06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */,
 				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
+				5AAF1E042AA9965300709CAE /* OCRView.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
 				5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */,
 				06308A732A04902A00BDEE2D /* StudySet.swift in Sources */,
@@ -1016,7 +1037,6 @@
 				5ABE510D2AA7164B0052A551 /* KanjiWikiView.swift in Sources */,
 				5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */,
 				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
-				06496B0D2AA32DCA0061DCA9 /* OCRResultView.swift in Sources */,
 				06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */,
 				5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
@@ -1226,6 +1246,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JWords/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCameraUsageDescription = "단어를 스캔하기 위해서 카메라를 사용합니다.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = "no screen";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
@@ -1267,6 +1288,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JWords/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCameraUsageDescription = "단어를 스캔하기 위해서 카메라를 사용합니다.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = "no screen";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
