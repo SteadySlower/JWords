@@ -8,6 +8,24 @@
 import SwiftUI
 import ComposableArchitecture
 
+private enum ImageSource {
+    case clipboard, camera
+    
+    var imageName: String {
+        switch self {
+        case.clipboard: return "list.clipboard"
+        case .camera: return "camera"
+        }
+    }
+    
+    var buttonText: String {
+        switch self {
+        case.clipboard: return "클립보드에서\n이미지 가져오기"
+        case .camera: return "카메라로 촬영하기"
+        }
+    }
+}
+
 struct GetImageForOCR: ReducerProtocol {
     struct State: Equatable {
         
@@ -33,47 +51,44 @@ struct ImageGetterButtons: View {
         WithViewStore(store, observe: { $0 }) { vs in
             HStack {
                 Spacer()
-                Button {
+                button(for: .clipboard) {
                     vs.send(.clipBoardButtonTapped)
-                } label: {
-                    VStack {
-                        Image(systemName: "list.clipboard")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text("클립보드에서\n이미지 가져오기")
-                    }
-                    .padding(8)
-                    .foregroundColor(.black)
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 1)
-                            .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
-                        )
                 }
                 Spacer()
-                Button {
+                button(for: .camera) {
                     vs.send(.cameraButtonTapped)
-                } label: {
-                    VStack {
-                        Spacer()
-                        Image(systemName: "camera")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text("카메라로 촬영하기")
-                        Spacer()
-                    }
-                    .padding(8)
-                    .foregroundColor(.black)
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 1)
-                            .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
-                    )
                 }
                 Spacer()
             }
         }
     }
+}
+
+// MARK: SubViews
+
+extension ImageGetterButtons {
+    
+    private func button(for imageSource: ImageSource, _ onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            VStack {
+                Spacer()
+                Image(systemName: imageSource.imageName)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Text(imageSource.buttonText)
+                Spacer()
+            }
+            .padding(8)
+            .foregroundColor(.black)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1)
+                    .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
+            )
+        }
+    }
+    
 }
