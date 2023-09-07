@@ -5,8 +5,10 @@
 //  Created by Jong Won Moon on 2023/09/07.
 //
 
-import UIKit
 import SwiftUI
+
+#if os(iOS)
+import UIKit
 
 struct CameraScanner: UIViewControllerRepresentable {
     private let imageSelected: (InputImageType) -> Void
@@ -51,3 +53,8 @@ struct CameraScanner: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<CameraScanner>) {
     }
 }
+#elseif os(macOS)
+
+#endif
+
+
