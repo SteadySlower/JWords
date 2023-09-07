@@ -281,11 +281,50 @@ struct OCRView: View {
                             }
                         }
                     } else {
-                        Button {
-                            vs.send(.buttonTapped)
-                        } label: {
-                            Text("클립보드에서 이미지 가져오기")
+                        HStack {
+                            Spacer()
+                            Button {
+                                vs.send(.buttonTapped)
+                            } label: {
+                                VStack {
+                                    Image(systemName: "list.clipboard")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                    Text("클립보드에서\n이미지 가져오기")
+                                }
+                                .padding(8)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                        .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
+                                    )
+                            }
+                            Spacer()
+                            Button {
+                                
+                            } label: {
+                                VStack {
+                                    Spacer()
+                                    Image(systemName: "camera")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                    Text("카메라로 촬영하기")
+                                    Spacer()
+                                }
+                                .padding(8)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                        .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
+                                )
+                            }
+                            Spacer()
                         }
+                        .padding(.vertical, 20)
                     }
                     HStack {
                         VStack {
@@ -328,7 +367,7 @@ struct OCRView: View {
                     }
                 }
             }
-            .padding(.vertical, 50)
+            .padding(.bottom, 50)
             .padding(.horizontal, 10)
             .navigationTitle("단어 스캔으로 입력하기")
             .toolbar {
