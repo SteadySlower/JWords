@@ -12,6 +12,7 @@ struct AddUnitWithOCR: ReducerProtocol {
     struct State: Equatable {
 
         var ocr: OCR.State?
+        var showCameraScanner: Bool = false
         var getImageButtons = GetImageForOCR.State()
         
         var input = OCRInput.State()
@@ -35,9 +36,12 @@ struct AddUnitWithOCR: ReducerProtocol {
     enum Action: Equatable {
         case ocr(OCR.Action)
         case getImageButtons(GetImageForOCR.Action)
+        case cameraImageSelected(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case input(OCRInput.Action)
+        case showCameraScanner(Bool)
+        case imageFetched(InputImageType)
         case dismissAlert
     }
     
@@ -50,21 +54,23 @@ struct AddUnitWithOCR: ReducerProtocol {
             case .getImageButtons(let action):
                 switch action {
                 case .clipBoardButtonTapped:
-                    guard let fetchedImage = pasteBoardClient.fetchImage(),
-                        let resizedImage = resizeImage(fetchedImage) else { return .none }
-                    state.ocr = .init(resizedImage)
-                    return .merge(
-                        .task {
-                            await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
-                        },
-                        .task {
-                            await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .korean) })
-                        }
-                    )
+                    guard let fetchedImage = pasteBoardClient.fetchImage() else { return .none }
+                    return .task { .imageFetched(fetchedImage) }
                 case .cameraButtonTapped:
-                    // TODO: add logic
+                    state.showCameraScanner = true
                     return .none
                 }
+            case .imageFetched(let image):
+                guard let resizedImage = resizeImage(image) else { return .none }
+                state.ocr = .init(resizedImage)
+                return .merge(
+                    .task {
+                        await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
+                    },
+                    .task {
+                        await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .korean) })
+                    }
+                )
             case .koreanOcrResponse(.success(let results)):
                 state.ocr?.koreanOcrResult = results
                 return .none
@@ -93,6 +99,11 @@ struct AddUnitWithOCR: ReducerProtocol {
                 default:
                     return .none
                 }
+            case .cameraImageSelected(let image):
+                return .task { .imageFetched(image) }
+            case .showCameraScanner(let show):
+                state.showCameraScanner = show
+                return .none
             case .dismissAlert:
                 state.alert = nil
                 return .none
@@ -189,6 +200,12 @@ struct OCRAddUnitView: View {
             }
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: vs.binding(
+                get: \.showCameraScanner,
+                send: AddUnitWithOCR.Action.showCameraScanner)
+            ) {
+                CameraScanner { vs.send(.cameraImageSelected($0)) }
+            }
             #endif
             .alert(
               self.store.scope(state: \.alert),
