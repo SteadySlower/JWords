@@ -123,6 +123,7 @@
 		5AA9097B2A83237B0075AFB9 /* KVStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */; };
+		5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */; };
 		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */; };
@@ -288,6 +289,7 @@
 		5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVStorageClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/macView/OCR/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageGetterButtons.swift; path = JWords/macView/OCR/ImageGetterButtons.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiWikiClient.swift; sourceTree = "<group>"; };
@@ -702,6 +704,7 @@
 				06496B082AA30CF10061DCA9 /* OCRView.swift */,
 				06496B0C2AA32DCA0061DCA9 /* OCRResultView.swift */,
 				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
+				5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */,
 			);
 			path = OCR;
 			sourceTree = "<group>";
@@ -971,6 +974,7 @@
 				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
+				5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */,
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				06C0DDB62A8B24CA00F1CB52 /* Color+Extension.swift in Sources */,
