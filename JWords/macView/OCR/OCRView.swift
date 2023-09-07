@@ -18,6 +18,7 @@ struct OCR: ReducerProtocol {
         
         // OCR
         var image: InputImageType?
+        var getImageButtons = GetImageForOCR.State()
         var koreanOcrResult: [OCRResult] = []
         var japaneseOcrResult: [OCRResult] = []
         
@@ -95,9 +96,9 @@ struct OCR: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case buttonTapped
         case imageTapped
         case imageFetched
+        case getImageButtons(GetImageForOCR.Action)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case ocrTapped(lang: OCRLang, string: String)
@@ -119,23 +120,29 @@ struct OCR: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .buttonTapped:
-                guard
-                    let fetchedImage = pasteBoardClient.fetchImage(),
-                    let resizedImage = resizeImage(fetchedImage,
-                                                   to: .init(
-                                                    width: Constants.Size.deviceWidth - 10,
-                                                    height: Constants.Size.deviceHeight / 2)
-                    ) else { return .none }
-                state.image = resizedImage
-                return .merge(
-                    .task {
-                        await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
-                    },
-                    .task {
-                        await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .korean) })
-                    }
-                )
+            case .getImageButtons(let action):
+                switch action {
+                case .clipBoardButtonTapped:
+                    guard
+                        let fetchedImage = pasteBoardClient.fetchImage(),
+                        let resizedImage = resizeImage(fetchedImage,
+                                                       to: .init(
+                                                        width: Constants.Size.deviceWidth - 10,
+                                                        height: Constants.Size.deviceHeight / 2)
+                        ) else { return .none }
+                    state.image = resizedImage
+                    return .merge(
+                        .task {
+                            await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
+                        },
+                        .task {
+                            await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .korean) })
+                        }
+                    )
+                case .cameraButtonTapped:
+                    // TODO: add logic
+                    return .none
+                }
             case .imageTapped:
                 state.image = nil
                 state.koreanOcrResult = []
@@ -218,6 +225,9 @@ struct OCR: ReducerProtocol {
         Scope(state: \.selectSet, action: /Action.selectSet) {
             SelectStudySet()
         }
+        Scope(state: \.getImageButtons, action: /Action.getImageButtons) {
+            GetImageForOCR()
+        }
     }
 
 }
@@ -281,49 +291,10 @@ struct OCRView: View {
                             }
                         }
                     } else {
-                        HStack {
-                            Spacer()
-                            Button {
-                                vs.send(.buttonTapped)
-                            } label: {
-                                VStack {
-                                    Image(systemName: "list.clipboard")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                    Text("클립보드에서\n이미지 가져오기")
-                                }
-                                .padding(8)
-                                .foregroundColor(.black)
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                        .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
-                                    )
-                            }
-                            Spacer()
-                            Button {
-                                
-                            } label: {
-                                VStack {
-                                    Spacer()
-                                    Image(systemName: "camera")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                    Text("카메라로 촬영하기")
-                                    Spacer()
-                                }
-                                .padding(8)
-                                .foregroundColor(.black)
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                        .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
-                                )
-                            }
-                            Spacer()
-                        }
+                        ImageGetterButtons(store: store.scope(
+                            state: \.getImageButtons,
+                            action: OCR.Action.getImageButtons)
+                        )
                         .padding(.vertical, 20)
                     }
                     HStack {
