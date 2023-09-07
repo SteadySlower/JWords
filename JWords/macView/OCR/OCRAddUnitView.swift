@@ -118,8 +118,6 @@ fileprivate func resizeImage(_ image: InputImageType) -> InputImageType? {
     let newHeight = newWidth * (image.size.height / image.size.width)
     let newSize = CGSize(width: newWidth, height: newHeight)
     
-    print("디버그: \(newWidth), \(newHeight)")
-    
     // If image is small enough, return original one
     if image.size.width < newWidth {
         return image
