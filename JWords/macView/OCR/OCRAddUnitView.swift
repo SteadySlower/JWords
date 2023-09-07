@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct OCR: ReducerProtocol {
+struct AddUnitWithOCR: ReducerProtocol {
     struct State: Equatable {
 
         // OCR
@@ -146,9 +146,9 @@ fileprivate func resizeImage(_ image: InputImageType, to newSize: CGSize) -> Inp
      #endif
 }
 
-struct OCRView: View {
+struct OCRAddUnitView: View {
     
-    let store: StoreOf<OCR>
+    let store: StoreOf<AddUnitWithOCR>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -165,13 +165,13 @@ struct OCRView: View {
                     } else {
                         ImageGetterButtons(store: store.scope(
                             state: \.getImageButtons,
-                            action: OCR.Action.getImageButtons)
+                            action: AddUnitWithOCR.Action.getImageButtons)
                         )
                         .padding(.vertical, 20)
                     }
                     OCRInputView(store: store.scope(
                         state: \.input,
-                        action: OCR.Action.input)
+                        action: AddUnitWithOCR.Action.input)
                     )
                 }
             }

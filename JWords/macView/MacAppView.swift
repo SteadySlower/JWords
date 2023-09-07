@@ -17,7 +17,7 @@ struct MacApp: ReducerProtocol {
         var conversionList = ConversionList.State()
         var addUnit = SelectSetAddUnit.State()
         var kanjiList = KanjiList.State()
-        var ocr = OCR.State()
+        var ocr = AddUnitWithOCR.State()
     }
     
     enum Action: Equatable {
@@ -27,7 +27,7 @@ struct MacApp: ReducerProtocol {
         case conversionList(action: ConversionList.Action)
         case addUnit(action: SelectSetAddUnit.Action)
         case kanjiList(action: KanjiList.Action)
-        case ocr(action: OCR.Action)
+        case ocr(action: AddUnitWithOCR.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -56,7 +56,7 @@ struct MacApp: ReducerProtocol {
             KanjiList()
         }
         Scope(state: \.ocr, action: /Action.ocr(action:)) {
-            OCR()
+            AddUnitWithOCR()
         }
     }
     
@@ -98,7 +98,7 @@ struct MacAppView: View {
                 action: MacApp.Action.kanjiList(action:))
             )
             .tabItem { Text("한자 리스트") }
-            OCRView(store: store.scope(
+            OCRAddUnitView(store: store.scope(
                 state: \.ocr,
                 action: MacApp.Action.ocr(action:))
             )

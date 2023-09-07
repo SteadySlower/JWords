@@ -19,7 +19,7 @@ struct iOSApp: ReducerProtocol {
         var todayList: TodayList.State? = TodayList.State()
         var homeList: HomeList.State?
         var kanjiList: KanjiList.State?
-        var ocr: OCR.State?
+        var ocr: AddUnitWithOCR.State?
         
         mutating func clearList() {
             todayList = nil
@@ -34,7 +34,7 @@ struct iOSApp: ReducerProtocol {
         case todayList(action: TodayList.Action)
         case homeList(action: HomeList.Action)
         case kanjiList(action: KanjiList.Action)
-        case ocr(action: OCR.Action)
+        case ocr(action: AddUnitWithOCR.Action)
         
         // method to reset DB when updated
         case onAppear
@@ -57,7 +57,7 @@ struct iOSApp: ReducerProtocol {
                 case .kanji:
                     state.kanjiList = KanjiList.State()
                 case .ocr:
-                    state.ocr = OCR.State()
+                    state.ocr = AddUnitWithOCR.State()
                 }
                 return .none
             case .onAppear:
@@ -79,7 +79,7 @@ struct iOSApp: ReducerProtocol {
             KanjiList()
         }
         .ifLet(\.ocr, action: /Action.ocr(action:)) {
-            OCR()
+            AddUnitWithOCR()
         }
     }
     
@@ -144,7 +144,7 @@ struct iOSAppView: View {
                         state: \.ocr,
                         action: iOSApp.Action.ocr(action:))
                     ) {
-                        OCRView(store: $0)
+                        OCRAddUnitView(store: $0)
                     }
                 }
                 .tabItem { Image(systemName: "pencil") }
