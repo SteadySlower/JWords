@@ -9,8 +9,12 @@ import UIKit
 import SwiftUI
 
 struct CameraScanner: UIViewControllerRepresentable {
-    @Binding var image: UIImage?
+    private let imageSelected: (InputImageType) -> Void
     @Environment(\.dismiss) var dismiss
+    
+    init(_ imageSelected: @escaping (InputImageType) -> Void) {
+        self.imageSelected = imageSelected
+    }
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: CameraScanner
@@ -21,7 +25,7 @@ struct CameraScanner: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
+                parent.imageSelected(uiImage)
             }
             parent.dismiss()
         }
