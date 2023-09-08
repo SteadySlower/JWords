@@ -76,56 +76,72 @@ struct SettingSideBar: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                Spacer()
-                Picker("", selection: vs.binding(
-                    get: \.studyMode,
-                    send: StudySetting.Action.setStudyMode)
-                ) {
-                    ForEach(StudyMode.allCases, id: \.self) {
-                        Text($0.pickerText)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                Picker("", selection: vs.binding(
-                    get: \.frontType,
-                    send: StudySetting.Action.setFrontType)
-                ) {
-                    ForEach(FrontType.allCases, id: \.self) {
-                        Text($0.pickerText)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                Picker("모드", selection: vs.binding(
-                    get: \.studyViewMode,
-                    send: StudySetting.Action.setStudyViewMode)
-                ) {
-                    Text("학습")
-                        .tag(StudyViewMode.normal)
-                    Text("선택")
-                        .tag(StudyViewMode.selection)
-                    Text("수정")
-                        .tag(StudyViewMode.edit)
-                    Text("삭제")
-                        .tag(StudyViewMode.delete)
-                }
-                .pickerStyle(.segmented)
-                .padding()
+            VStack(spacing: 10) {
                 if vs.showEditButtons {
-                    Button("단어장 수정") {
-                        vs.send(.wordBookEditButtonTapped)
-                    }
-                    .padding()
-                    Button("단어 추가") {
-                        vs.send(.wordAddButtonTapped)
+                    VStack(spacing: 10) {
+                        RectangleButton(
+                            image: Image(systemName: "rectangle.and.pencil.and.ellipsis"),
+                            title: "단어장 수정",
+                            isVertical: false
+                        ) { vs.send(.wordBookEditButtonTapped) }
+                        RectangleButton(
+                            image: Image(systemName: "plus"),
+                            title: "단어추가",
+                            isVertical: false
+                        ) { vs.send(.wordAddButtonTapped) }
                     }
                     .padding()
                 }
+                VStack(spacing: 5) {
+                    Text("단어 필터")
+                        .leadingAlignment()
+                    Picker("", selection: vs.binding(
+                        get: \.studyMode,
+                        send: StudySetting.Action.setStudyMode)
+                    ) {
+                        ForEach(StudyMode.allCases, id: \.self) {
+                            Text($0.pickerText)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding()
+                VStack(spacing: 5) {
+                    Text("앞면 유형")
+                        .leadingAlignment()
+                    Picker("", selection: vs.binding(
+                        get: \.frontType,
+                        send: StudySetting.Action.setFrontType)
+                    ) {
+                        ForEach(FrontType.allCases, id: \.self) {
+                            Text($0.pickerText)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding()
+                VStack(spacing: 5) {
+                    Text("단어 리스트 모드")
+                        .leadingAlignment()
+                    Picker("", selection: vs.binding(
+                        get: \.studyViewMode,
+                        send: StudySetting.Action.setStudyViewMode)
+                    ) {
+                        Text("학습")
+                            .tag(StudyViewMode.normal)
+                        Text("이동")
+                            .tag(StudyViewMode.selection)
+                        Text("수정")
+                            .tag(StudyViewMode.edit)
+                        Text("삭제")
+                            .tag(StudyViewMode.delete)
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding()
                 Spacer()
-
             }
+            .padding(.top, 100)
         }
     }
 }
