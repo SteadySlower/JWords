@@ -69,26 +69,10 @@ struct ImageGetterButtons: View {
 extension ImageGetterButtons {
     
     private func button(for imageSource: ImageSource, _ onTapped: @escaping () -> Void) -> some View {
-        Button {
-            onTapped()
-        } label: {
-            VStack {
-                Spacer()
-                Image(systemName: imageSource.imageName)
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                Text(imageSource.buttonText)
-                Spacer()
-            }
-            .padding(8)
-            .foregroundColor(.black)
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray, lineWidth: 1)
-                    .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
-            )
-        }
+        RectangleButton(
+            image: Image(systemName: imageSource.imageName),
+            title: imageSource.buttonText,
+            onTapped: onTapped)
     }
     
 }

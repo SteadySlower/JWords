@@ -125,6 +125,7 @@
 		5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */; };
 		5AAF1E022AA96F8B00709CAE /* OCRInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */; };
 		5AAF1E042AA9965300709CAE /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E032AA9965300709CAE /* OCRView.swift */; };
+		5AAF1E062AAABEA700709CAE /* RectangleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E052AAABEA700709CAE /* RectangleButton.swift */; };
 		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */; };
@@ -292,6 +293,7 @@
 		5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageGetterButtons.swift; path = JWords/macView/OCR/ImageGetterButtons.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRInputView.swift; path = JWords/macView/OCR/OCRInputView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E032AA9965300709CAE /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/macView/Components/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiWikiClient.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
 				061C9E7C2A19819800E099B5 /* FlexBox.swift */,
 				061C9E802A19CF8200E099B5 /* StudySetPicker.swift */,
+				5AAF1E052AAABEA700709CAE /* RectangleButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -995,6 +998,7 @@
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
 				06496B092AA30CF10061DCA9 /* OCRAddUnitView.swift in Sources */,
 				06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */,
+				5AAF1E062AAABEA700709CAE /* RectangleButton.swift in Sources */,
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
