@@ -16,23 +16,8 @@ struct BaseCell: View {
     private let dragAmount: CGSize
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
-    var frontText: String {
-        switch frontType {
-        case .kanji:
-            return unit.kanjiText ?? ""
-        case .meaning:
-            return unit.meaningText ?? ""
-        }
-    }
-    
-    var backText: String {
-        switch frontType {
-        case .kanji:
-            return unit.meaningText ?? ""
-        case .meaning:
-            return unit.kanjiText ?? ""
-        }
-    }
+    var kanjiText: String { unit.kanjiText ?? "" }
+    var meaningText: String { unit.meaningText ?? "" }
     
     init(unit: StudyUnit,
          frontType: FrontType,
@@ -79,20 +64,20 @@ extension BaseCell {
     }
     
     private var cellFace: some View {
-        let frontFontSize: CGFloat = fontSize(of: frontText)
+        let frontFontSize: CGFloat = fontSize(of: kanjiText)
         let backFontSize: CGFloat = 25
         
         return VStack {
-            if frontText.isHurigana {
-                HuriganaText(hurigana: frontText,
+            if kanjiText.isHurigana {
+                HuriganaText(hurigana: kanjiText,
                              fontSize: frontFontSize,
                              hideYomi: isFront,
                              alignment: unit.type == .sentence ? .leading : .center)
             } else {
-                Text(frontText)
+                Text(kanjiText)
                     .font(.system(size: frontFontSize))
             }
-            Text(backText)
+            Text(meaningText)
                 .font(.system(size: backFontSize))
                 .opacity(isFront ? 0 : 1)
         }
