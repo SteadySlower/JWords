@@ -61,7 +61,7 @@ struct WordList: ReducerProtocol {
         
         init(kanji: Kanji, units: [StudyUnit]) {
             self.set = nil
-            self.navigationTitle = "\(kanji.kanjiText ?? "")가 쓰이는 단어"
+            self.navigationTitle = "\(kanji.kanjiText)가 쓰이는 단어"
             self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
             self.setting = .init(showEditButtons: false)
         }

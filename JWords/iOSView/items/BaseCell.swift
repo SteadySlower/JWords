@@ -16,8 +16,8 @@ struct BaseCell: View {
     private let dragAmount: CGSize
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
-    var kanjiText: String { unit.kanjiText ?? "" }
-    var meaningText: String { unit.meaningText ?? "" }
+    var kanjiText: String { unit.kanjiText }
+    var meaningText: String { unit.meaningText }
     
     var showKanjiText: Bool {
         switch frontType {

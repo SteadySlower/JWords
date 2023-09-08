@@ -52,7 +52,7 @@ struct StudyWord: ReducerProtocol {
             self.frontType = frontType
             self.showKanjiButton = {
                 guard unit.type != .kanji else { return false }
-                return HuriganaConverter.shared.extractKanjis(from: unit.kanjiText ?? "").count == 0 ? false : true
+                return HuriganaConverter.shared.extractKanjis(from: unit.kanjiText).count == 0 ? false : true
             }()
         }
 

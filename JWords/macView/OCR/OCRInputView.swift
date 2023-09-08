@@ -90,7 +90,7 @@ struct OCRInput: ReducerProtocol {
                 let unit = try! cd.checkIfExist(huri)
                 if let unit = unit {
                     state.mode = .addExist(existing: unit)
-                    state.meaningString = unit.meaningText ?? ""
+                    state.meaningString = unit.meaningText
                     return .task { [existing = state.kanjiString] in
                             .showAlert(.alreadyExist(existing)) }
                 } else {
