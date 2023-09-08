@@ -19,6 +19,24 @@ struct BaseCell: View {
     var kanjiText: String { unit.kanjiText ?? "" }
     var meaningText: String { unit.meaningText ?? "" }
     
+    var showKanjiText: Bool {
+        switch frontType {
+        case .kanji:
+            return true
+        case .meaning:
+            return !isFront
+        }
+    }
+    
+    var showMeaningText: Bool {
+        switch frontType {
+        case .kanji:
+            return !isFront
+        case .meaning:
+            return true
+        }
+    }
+    
     init(unit: StudyUnit,
          frontType: FrontType,
          isFront: Bool = true,
@@ -73,13 +91,15 @@ extension BaseCell {
                              fontSize: frontFontSize,
                              hideYomi: isFront,
                              alignment: unit.type == .sentence ? .leading : .center)
+                .opacity(showKanjiText ? 1 : 0)
             } else {
                 Text(kanjiText)
                     .font(.system(size: frontFontSize))
+                    .opacity(showKanjiText ? 1 : 0)
             }
             Text(meaningText)
                 .font(.system(size: backFontSize))
-                .opacity(isFront ? 0 : 1)
+                .opacity(showMeaningText ? 1 : 0)
         }
         .padding(.vertical, 30)
         .padding(.horizontal, 8)
