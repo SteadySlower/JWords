@@ -110,7 +110,7 @@ struct FirebaseWord: ReducerProtocol {
             case .moveButtonTapped:
                 if let exist = try! cd.checkIfExist(state.conversionInput.kanjiText) {
                     state.overlappingUnit = exist
-                    state.overlappingMeaningText = exist.meaningText ?? ""
+                    state.overlappingMeaningText = exist.meaningText
                     return .none
                 }
                 return .task { [conversionInput = state.conversionInput] in
@@ -232,7 +232,7 @@ struct FirebaseWordCell: View {
                         Text("이미 존재하는 단어입니다.")
                         HStack(alignment: .top) {
                             Text("후리가나: ")
-                            HuriganaText(hurigana: unit.kanjiText ?? "", alignment: .leading)
+                            HuriganaText(hurigana: unit.kanjiText, alignment: .leading)
                         }
                         TextEditor(text: vs.binding(
                             get: \.overlappingMeaningText,

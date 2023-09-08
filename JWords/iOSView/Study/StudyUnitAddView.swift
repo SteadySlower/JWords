@@ -61,21 +61,21 @@ struct AddingUnit: ReducerProtocol {
             case .editUnit(let unit):
                 self.mode = .editUnit(unit: unit)
                 self.unitType = unit.type
-                self.meaningText = unit.meaningText ?? ""
+                self.meaningText = unit.meaningText
                 if unit.type != .kanji {
-                    self.huriText = EditHuriganaText.State(hurigana: unit.kanjiText ?? "")
-                    self.kanjiText = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText ?? "")
+                    self.huriText = EditHuriganaText.State(hurigana: unit.kanjiText)
+                    self.kanjiText = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText)
                     isEditingKanji = false
                 } else {
-                    self.kanjiText = unit.kanjiText ?? ""
+                    self.kanjiText = unit.kanjiText
                     self.huriText = EditHuriganaText.State(hurigana: "")
                 }
                 return
             case .editKanji(let kanji):
                 self.unitType = .kanji
-                self.meaningText = kanji.meaningText ?? ""
-                self.kanjiText = kanji.kanjiText ?? ""
-                self.huriText = EditHuriganaText.State(hurigana: kanji.kanjiText ?? "")
+                self.meaningText = kanji.meaningText
+                self.kanjiText = kanji.kanjiText
+                self.huriText = EditHuriganaText.State(hurigana: kanji.kanjiText)
                 self.isEditingKanji = false
                 self.isKanjiEditable = false
                 return
@@ -225,7 +225,7 @@ struct AddingUnit: ReducerProtocol {
                     let unit = try! cd.checkIfExist(query)
                     if let unit = unit {
                         state.mode = .addExist(set: set, existing: unit)
-                        state.meaningText = unit.meaningText ?? ""
+                        state.meaningText = unit.meaningText
                         state.setExistAlert()
                     } else {
                         state.mode = .insert(set: set)

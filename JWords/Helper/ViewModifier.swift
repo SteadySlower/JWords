@@ -24,6 +24,10 @@ extension View {
         modifier(LoadingView(isLoading: isLoading))
     }
     
+    func leadingAlignment() -> some View {
+        modifier(LeadingAligner())
+    }
+    
 }
 
 private struct CellSelectionEdge: ViewModifier {
@@ -81,4 +85,15 @@ private struct LoadingView: ViewModifier {
             content
         }
     }
+}
+
+private struct LeadingAligner: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        HStack {
+            content
+            Spacer()
+        }
+    }
+    
 }

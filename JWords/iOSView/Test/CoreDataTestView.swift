@@ -71,7 +71,7 @@ struct CDTStudyView: View {
     var alertMessage: String {
         var result = ""
         for unit in alertContent {
-            result += unit.kanjiText ?? ""
+            result += unit.kanjiText
             result += "\n"
         }
         return result
@@ -87,15 +87,15 @@ struct CDTStudyView: View {
                 ForEach(units) { unit in
                     VStack {
                         if unit.type == .kanji {
-                            Text(unit.kanjiText ?? "")
-                            Text(unit.meaningText ?? "")
+                            Text(unit.kanjiText)
+                            Text(unit.meaningText)
                             Button("샘플 보기") {
 //                                alertContent = try! cd.fetchSampleUnit(ofKanji: unit)
 //                                showAlert = true
                             }
                         } else {
-                            HuriganaText(hurigana: unit.kanjiText ?? "")
-                            Text(unit.meaningText ?? "")
+                            HuriganaText(hurigana: unit.kanjiText)
+                            Text(unit.meaningText)
                             Button("한자 보기") {
 //                                alertContent = try! cd.fetchKanjis(usedIn: unit)
                                 showAlert = true

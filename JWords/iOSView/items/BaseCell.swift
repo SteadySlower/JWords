@@ -16,21 +16,24 @@ struct BaseCell: View {
     private let dragAmount: CGSize
     @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
-    var frontText: String {
+    var kanjiText: String { unit.kanjiText }
+    var meaningText: String { unit.meaningText }
+    
+    var showKanjiText: Bool {
         switch frontType {
         case .kanji:
-            return unit.kanjiText ?? ""
+            return true
         case .meaning:
-            return unit.meaningText ?? ""
+            return !isFront
         }
     }
     
-    var backText: String {
+    var showMeaningText: Bool {
         switch frontType {
         case .kanji:
-            return unit.meaningText ?? ""
+            return !isFront
         case .meaning:
-            return unit.kanjiText ?? ""
+            return true
         }
     }
     
@@ -79,22 +82,24 @@ extension BaseCell {
     }
     
     private var cellFace: some View {
-        let frontFontSize: CGFloat = fontSize(of: frontText)
+        let frontFontSize: CGFloat = fontSize(of: kanjiText)
         let backFontSize: CGFloat = 25
         
         return VStack {
-            if frontText.isHurigana {
-                HuriganaText(hurigana: frontText,
+            if kanjiText.isHurigana {
+                HuriganaText(hurigana: kanjiText,
                              fontSize: frontFontSize,
                              hideYomi: isFront,
                              alignment: unit.type == .sentence ? .leading : .center)
+                .opacity(showKanjiText ? 1 : 0)
             } else {
-                Text(frontText)
+                Text(kanjiText)
                     .font(.system(size: frontFontSize))
+                    .opacity(showKanjiText ? 1 : 0)
             }
-            Text(backText)
+            Text(meaningText)
                 .font(.system(size: backFontSize))
-                .opacity(isFront ? 0 : 1)
+                .opacity(showMeaningText ? 1 : 0)
         }
         .padding(.vertical, 30)
         .padding(.horizontal, 8)

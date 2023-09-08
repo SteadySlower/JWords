@@ -26,9 +26,9 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
     let objectID: NSManagedObjectID
     let type: UnitType
     let studySets: [StudySet]
-    let kanjiText: String?
+    let kanjiText: String
     let kanjiImageID: String?
-    let meaningText: String?
+    let meaningText: String
     let meaningImageID: String?
     var studyState: StudyState
     let createdAt: Date
@@ -37,9 +37,9 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
         self.id = mo.id ?? ""
         self.objectID = mo.objectID
         self.type = UnitType(rawValue: Int(mo.type)) ?? .word
-        self.kanjiText = mo.kanjiText
+        self.kanjiText = mo.kanjiText ?? ""
         self.kanjiImageID = mo.kanjiImageID
-        self.meaningText = mo.meaningText
+        self.meaningText = mo.meaningText ?? ""
         self.meaningImageID = mo.meaningImageID
         self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
         self.createdAt = mo.createdAt ?? Date()

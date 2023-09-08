@@ -75,11 +75,11 @@ struct CoreDataWordCell: View {
                 HStack(alignment: .top) {
                     Text("후리가나: ")
                         .font(.system(size: fontSize))
-                    HuriganaText(hurigana: vs.unit.kanjiText ?? "", fontSize: fontSize)
+                    HuriganaText(hurigana: vs.unit.kanjiText, fontSize: fontSize)
                 }
                 HStack {
                     Text("뜻: ")
-                    Text(vs.unit.meaningText ?? "")
+                    Text(vs.unit.meaningText)
                 }
                 .font(.system(size: fontSize))
                 #if os(macOS)
