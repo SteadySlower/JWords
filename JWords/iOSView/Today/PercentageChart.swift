@@ -1,5 +1,5 @@
 //
-//  TodayStatusView.swift
+//  PercentageChart.swift
 //  JWords
 //
 //  Created by JW Moon on 2023/09/09.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TodayStatusView: View {
+struct PercentageChart: View {
     private let percentage: Float
     @State private var displayPercentage: Float = 0.0
     @State private var textPercentange: Float = 0.0
@@ -47,9 +47,9 @@ struct TodayStatusView: View {
     }
 }
 
-struct TodayStatusView_Previews: PreviewProvider {
+struct PercentageChart_Previews: PreviewProvider {
     static var previews: some View {
-        TodayStatusView(
+        PercentageChart(
             total: 100,
             wrong: 22
         )
