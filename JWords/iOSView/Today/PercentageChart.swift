@@ -12,8 +12,8 @@ struct PercentageChart: View {
     @State private var displayPercentage: Float = 0.0
     @State private var textPercentange: Float = 0.0
     
-    init(total: Int, wrong: Int) {
-        self.percentage = Float(wrong) / Float(total)
+    init(percentage: Float) {
+        self.percentage = percentage
     }
     
     var body: some View {
@@ -26,6 +26,7 @@ struct PercentageChart: View {
                 .rotationEffect(.degrees(-90))
             Text("\(String(format: "%.1f", textPercentange * 100))%")
                 .font(.body)
+                .fixedSize()
         }
         .onAppear {
             startAnimation()
@@ -49,9 +50,6 @@ struct PercentageChart: View {
 
 struct PercentageChart_Previews: PreviewProvider {
     static var previews: some View {
-        PercentageChart(
-            total: 100,
-            wrong: 22
-        )
+        PercentageChart(percentage: Float(22/100))
     }
 }
