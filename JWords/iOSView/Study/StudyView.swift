@@ -492,6 +492,7 @@ struct StudyView: View {
                 }
                 .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
             } }
+            .toolbar(.hidden, for: .tabBar)
             #endif
         }
     }
