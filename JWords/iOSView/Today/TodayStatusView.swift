@@ -7,12 +7,25 @@
 
 import SwiftUI
 
-struct TodayStatusView: View {
-    
+struct TodayStatus: Equatable {
     let books: Int
     let total: Int
     let wrong: Int
-    let onTapped: () -> Void
+}
+
+struct TodayStatusView: View {
+    
+    private let books: Int
+    private let total: Int
+    private let wrong: Int
+    private let onTapped: () -> Void
+    
+    init(status: TodayStatus, onTapped: @escaping () -> Void) {
+        self.books = status.books
+        self.total = status.total
+        self.wrong = status.wrong
+        self.onTapped = onTapped
+    }
     
     var body: some View {
         HStack {
