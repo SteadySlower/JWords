@@ -53,10 +53,10 @@ struct TodayStatusView: View {
 struct TodayStatusView_Previews: PreviewProvider {
     static var previews: some View {
         TodayStatusView(
-            books: 3,
-            total: 100,
-            wrong: 22
-        ) { print("디버그: 모아보기 클릭") }
+            status: TodayStatus(
+                books: 3,
+                total: 100,
+                wrong: 22)) { print("디버그: 모아보기 Tapped") }
         .frame(height: 100)
         .padding(.horizontal, 20)
     }
