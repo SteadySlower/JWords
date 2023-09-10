@@ -28,6 +28,7 @@ struct PercentageChart: View {
                 .font(.body)
                 .fixedSize()
         }
+        .padding(5)
         .onAppear {
             startAnimation()
         }
