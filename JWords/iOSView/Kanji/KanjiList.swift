@@ -43,8 +43,7 @@ struct KanjiList: ReducerProtocol {
                 let last = state.kanjis.last
                 let fetched = try! cd.fetchAllKanjis(after: last)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
-                let moreArray = state.kanjis + fetched
-                state.kanjis = moreArray
+                state.kanjis.append(contentsOf: fetched)
                 return .none
             case .kanjiCellTapped(let kanji):
                 let words = try! cd.fetchSampleUnit(ofKanji: kanji)
@@ -93,6 +92,7 @@ struct KanjiListView: View {
                             }
                             .foregroundColor(.black)
                         }
+                        .padding(.horizontal, 20)
                         if !vs.isLastPage {
                             ProgressView()
                                 .foregroundColor(.gray)
