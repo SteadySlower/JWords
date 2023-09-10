@@ -1257,6 +1257,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JWords/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "쿄탄칸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCameraUsageDescription = "단어를 스캔하기 위해서 카메라를 사용합니다.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1299,6 +1300,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JWords/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "쿄탄칸";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCameraUsageDescription = "단어를 스캔하기 위해서 카메라를 사용합니다.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
