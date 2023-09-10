@@ -156,8 +156,11 @@ struct TodayView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
-                VStack(spacing: 15) {
-                    VStack(spacing: 30) {
+                VStack(spacing: 30) {
+                    VStack(spacing: 20) {
+                        Text("공부 단어장")
+                            .font(.title)
+                            .trailingAlignment()
                         if let todayStatus = vs.todayStatus {
                             TodayStatusView(status: todayStatus) {
                                 vs.send(.todayStatusTapped)
@@ -172,8 +175,10 @@ struct TodayView: View {
                             }
                         }
                     }
-                    VStack(spacing: 10) {
-                        Text("오늘 복습할 단어")
+                    VStack(spacing: 20) {
+                        Text("복습 단어장")
+                            .font(.title)
+                            .trailingAlignment()
                         VStack(spacing: 8) {
                             ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
                                 HomeCell(studySet: reviewBook) {
