@@ -108,6 +108,7 @@ struct HomeView: View {
                         HomeCell(studySet: wordBook) { vs.send(.homeCellTapped(wordBook)) }
                     }
                 }
+                .padding(.horizontal, 20)
             }
             .navigationTitle("단어장 목록")
             #if os(iOS)
