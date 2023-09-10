@@ -217,8 +217,20 @@ struct TodayView: View {
             #endif
             .toolbar { ToolbarItem {
                 HStack {
-                    Button("List") { vs.send(.listButtonTapped) }
-                    Button("+") { vs.send(.autoAddButtonTapped) }
+                    Button {
+                        vs.send(.listButtonTapped)
+                    } label: {
+                        Image(systemName: "list.bullet.rectangle.portrait")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
+                    Button {
+                        vs.send(.autoAddButtonTapped)
+                    } label: {
+                        Image(systemName: "calendar.badge.plus")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
                 }
             }}
         }
