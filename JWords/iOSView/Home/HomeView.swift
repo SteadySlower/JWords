@@ -15,6 +15,7 @@ struct HomeList: ReducerProtocol {
         var wordList: WordList.State?
         var inputBook: InputBook.State?
         var isLoading: Bool = false
+        var includeClosed: Bool = false
         
         var showStudyView: Bool {
             wordList != nil
@@ -36,6 +37,7 @@ struct HomeList: ReducerProtocol {
         case homeCellTapped(StudySet)
         case setInputBookModal(isPresent: Bool)
         case showStudyView(Bool)
+        case updateIncludeClosed(Bool)
         case wordList(action: WordList.Action)
         case inputBook(action: InputBook.Action)
     }
@@ -47,7 +49,7 @@ struct HomeList: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.clear()
-                state.wordBooks = try! cd.fetchSets()
+                state.wordBooks = try! cd.fetchSets(includeClosed: state.includeClosed)
                 return .none
             case .setInputBookModal(let isPresent):
                 state.inputBook = isPresent ? InputBook.State() : nil
@@ -55,6 +57,9 @@ struct HomeList: ReducerProtocol {
             case let .homeCellTapped(wordBook):
                 state.wordList = WordList.State(set: wordBook)
                 return .none
+            case .updateIncludeClosed(let bool):
+                state.includeClosed = bool
+                return .task { .onAppear }
             case .wordList(let action):
                 if action == WordList.Action.dismiss {
                     state.wordList = nil
@@ -92,7 +97,30 @@ struct HomeView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
+            VStack {
+                Picker("닫힌 단어장", selection: vs.binding(
+                    get: \.includeClosed,
+                    send: HomeList.Action.updateIncludeClosed)
+                ) {
+                    Text("열린 단어장")
+                        .tag(false)
+                    Text("모든 단어장")
+                        .tag(true)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 100)
+                ScrollView {
+                    VStack(spacing: 8) {
+                        VStack {
+                            
+                        }
+                        .frame(height: 20)
+                        ForEach(vs.wordBooks, id: \.id) { wordBook in
+                            HomeCell(studySet: wordBook) { vs.send(.homeCellTapped(wordBook)) }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                }
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
@@ -103,11 +131,6 @@ struct HomeView: View {
                                 get: \.showStudyView,
                                 send: HomeList.Action.showStudyView))
                 { EmptyView() }
-                VStack(spacing: 8) {
-                    ForEach(vs.wordBooks, id: \.id) { wordBook in
-                        HomeCell(studySet: wordBook) { vs.send(.homeCellTapped(wordBook)) }
-                    }
-                }
             }
             .navigationTitle("단어장 목록")
             #if os(iOS)
@@ -127,7 +150,13 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem {
-                    Button("+") { vs.send(.setInputBookModal(isPresent: true)) }
+                    Button {
+                        vs.send(.setInputBookModal(isPresent: true))
+                    } label: {
+                        Image(systemName: "folder.badge.plus")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
                 }
             }
         }

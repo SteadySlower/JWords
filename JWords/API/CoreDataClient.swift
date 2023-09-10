@@ -53,7 +53,9 @@ class CoreDataClient {
         let fetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
         let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
         fetchRequest.sortDescriptors = [createdAtDesc]
-        fetchRequest.predicate = NSPredicate(format: "closed == false")
+        if !includeClosed {
+            fetchRequest.predicate = NSPredicate(format: "closed == false")
+        }
         
         do {
             return try self.context.fetch(fetchRequest).map { StudySet(from: $0) }
