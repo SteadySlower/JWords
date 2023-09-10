@@ -21,20 +21,22 @@ struct KanjiCell: View {
                     .font(.system(size: 100))
                 Spacer()
             }
-            VStack(alignment: .leading) {
+            Spacer()
+            VStack(alignment: .trailing) {
                 Text(kanji.meaningText)
                     .font(.system(size: 30))
-                VStack(alignment: .leading) {
+                VStack(alignment: .trailing) {
                     Text("음독")
                         .font(.system(size: 15))
                     Text(kanji.ondoku)
                 }
-                VStack(alignment: .leading) {
+                VStack(alignment: .trailing) {
                     Text("훈독")
                         .font(.system(size: 15))
                     Text(kanji.kundoku)
                 }
             }
+            .multilineTextAlignment(.trailing)
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 10)
