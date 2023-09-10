@@ -211,6 +211,10 @@ struct TodayView: View {
                     TodaySelectionModal(store: $0)
                 }
             }
+            .navigationTitle("今日単完")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar { ToolbarItem {
                 HStack {
                     Button("List") { vs.send(.listButtonTapped) }
