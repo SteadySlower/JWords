@@ -49,7 +49,7 @@ struct HomeList: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.clear()
-                state.wordBooks = try! cd.fetchSets()
+                state.wordBooks = try! cd.fetchSets(includeClosed: state.includeClosed)
                 return .none
             case .setInputBookModal(let isPresent):
                 state.inputBook = isPresent ? InputBook.State() : nil
@@ -59,7 +59,7 @@ struct HomeList: ReducerProtocol {
                 return .none
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
-                return .none
+                return .task { .onAppear }
             case .wordList(let action):
                 if action == WordList.Action.dismiss {
                     state.wordList = nil
