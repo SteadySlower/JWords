@@ -30,7 +30,9 @@ struct PercentageChart: View {
         }
         .padding(5)
         .onAppear {
-            startAnimation()
+            if displayPercentage == 0.0 && textPercentange == 0.0 {
+                startAnimation()
+            }
         }
     }
     
