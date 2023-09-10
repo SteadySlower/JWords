@@ -13,7 +13,7 @@ struct PercentageChart: View {
     @State private var textPercentange: Float = 0.0
     
     init(percentage: Float) {
-        self.percentage = percentage
+        self.percentage = (0.0...1.0).contains(percentage) ? percentage : 0.0
     }
     
     var body: some View {
