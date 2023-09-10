@@ -30,34 +30,14 @@ struct TodayStatusView: View {
     }
     
     var body: some View {
-        if books <= 0 {
-            emptyView
-        } else {
-            HStack {
-                PercentageChart(percentage: Float(wrong) / Float(total))
-                Spacer()
-                VStack(alignment: .trailing) {
-                    Text("단어장 \(books)권의\n모든 단어 \(total)개 중에")
-                        .font(.system(size: 15))
-                        .multilineTextAlignment(.trailing)
-                    Text("틀린 단어 \(wrong)개")
-                        .font(.system(size: 30))
-                        .multilineTextAlignment(.trailing)
-                    Button {
-                        onTapped()
-                    } label: {
-                        Text("모아보기 📖")
-                            .font(.system(size: 40))
-                    }
-                }
-                .minimumScaleFactor(0.5)
+        Button {
+            onTapped()
+        } label: {
+            if books <= 0 {
+                emptyView
+            } else {
+                statusView
             }
-            .padding(8)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray, lineWidth: 1)
-                    .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 5, y: 5)
-            )
         }
     }
     
@@ -69,17 +49,43 @@ struct TodayStatusView: View {
             Button {
                 onTapped()
             } label: {
-                Text("📚 여기를 눌러 자동으로 추가해주세요.")
+                Text("📚 자동으로 추가하기")
                     .font(.system(size: 30))
                     .lineLimit(1)
             }
         }
+        .foregroundColor(.black)
+        .padding(8)
         .minimumScaleFactor(0.5)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.gray, lineWidth: 1)
                 .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 5, y: 5)
         )
+    }
+    
+    private var statusView: some View {
+        HStack {
+            PercentageChart(percentage: Float(wrong) / Float(total))
+            Spacer()
+            VStack(alignment: .trailing) {
+                Text("단어장 \(books)권의\n모든 단어 \(total)개 중에")
+                    .font(.system(size: 15))
+                    .multilineTextAlignment(.trailing)
+                Text("틀린 단어 \(wrong)개")
+                    .font(.system(size: 30))
+                    .multilineTextAlignment(.trailing)
+            }
+            .minimumScaleFactor(0.5)
+        }
+        .foregroundColor(.black)
+        .padding(8)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.gray, lineWidth: 1)
+                .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 5, y: 5)
+        )
+
     }
 }
 
