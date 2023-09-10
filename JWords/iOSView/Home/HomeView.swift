@@ -128,7 +128,13 @@ struct HomeView: View {
             }
             .toolbar {
                 ToolbarItem {
-                    Button("+") { vs.send(.setInputBookModal(isPresent: true)) }
+                    Button {
+                        vs.send(.setInputBookModal(isPresent: true))
+                    } label: {
+                        Image(systemName: "folder.badge.plus")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
                 }
             }
         }
