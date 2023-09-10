@@ -14,6 +14,7 @@ struct TodayList: ReducerProtocol {
         var reviewWordBooks: [StudySet] = []
         var reviewedWordBooks: [StudySet] = []
         var onlyFailWords: [StudyUnit] = []
+        var todayStatus: TodayStatus?
         var wordList: WordList.State?
         var todaySelection: TodaySelection.State?
         var isLoading: Bool = false
@@ -30,6 +31,7 @@ struct TodayList: ReducerProtocol {
             studyWordBooks = []
             reviewWordBooks = []
             onlyFailWords = []
+            todayStatus = nil
             wordList = nil
             todaySelection = nil
         }
@@ -47,13 +49,14 @@ struct TodayList: ReducerProtocol {
     
     enum Action: Equatable {
         case onAppear
+        case onDisappear
         case wordList(action: WordList.Action)
         case todaySelection(action: TodaySelection.Action)
         case setSelectionModal(isPresent: Bool)
         case listButtonTapped
         case autoAddButtonTapped
         case showStudyView(Bool)
-        case onlyFailCellTapped
+        case todayStatusTapped
         case homeCellTapped(StudySet)
         case scheduleResponse(TaskResult<TodayBooks>)
         case onlyFailResponse(TaskResult<[Word]>)
@@ -65,12 +68,19 @@ struct TodayList: ReducerProtocol {
             case .onAppear:
                 fetchSchedule(&state)
                 return .none
+            case .onDisappear:
+                state.todayStatus = nil
+                return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent { state.todaySelection = nil }
                 return .none
-            case .onlyFailCellTapped:
-                state.wordList = WordList.State(units: state.onlyFailWords)
-                return .none
+            case .todayStatusTapped:
+                if state.todayStatus == .empty {
+                    return .task { .autoAddButtonTapped }
+                } else {
+                    state.wordList = WordList.State(units: state.onlyFailWords)
+                    return .none
+                }
             case let .homeCellTapped(wordBook):
                 state.wordList = WordList.State(set: wordBook)
                 return .none
@@ -124,13 +134,17 @@ struct TodayList: ReducerProtocol {
         state.clear()
         let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: kv.fetchSchedule())
         state.addTodayBooks(todayBooks: todayBooks)
-        state.onlyFailWords =
-            todayBooks.study
-                .map { try! cd.fetchUnits(of: $0) }
-                .reduce([], +)
-                .filter { $0.studyState != .success }
-                .removeOverlapping()
-                .sorted(by: { $0.createdAt < $1.createdAt })
+        let todayWords = todayBooks.study
+            .map { try! cd.fetchUnits(of: $0) }
+            .reduce([], +)
+        state.onlyFailWords = todayWords
+                    .filter { $0.studyState != .success }
+                    .removeOverlapping()
+                    .sorted(by: { $0.createdAt < $1.createdAt })
+        state.todayStatus = .init(
+            books: todayBooks.study.count,
+            total: todayWords.count,
+            wrong: state.onlyFailWords.count)
         state.isLoading = false
     }
 
@@ -142,51 +156,53 @@ struct TodayView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
-                VStack {
-                    NavigationLink(
-                        destination: IfLetStore(
-                                store.scope(
-                                    state: \.wordList,
-                                    action: TodayList.Action.wordList(action:))
-                                ) { StudyView(store: $0) },
-                        isActive: vs.binding(
-                                    get: \.showStudyView,
-                                    send: TodayList.Action.showStudyView))
-                    { EmptyView() }
-                    Text("오늘 학습할 단어")
-                    Button {
-                        vs.send(.onlyFailCellTapped)
-                    } label: {
-                        HStack {
-                            Text("틀린 \(vs.onlyFailWords.count) 단어만 모아보기")
-                            Spacer()
+                VStack(spacing: 30) {
+                    VStack(spacing: 20) {
+                        Text("공부 단어장")
+                            .font(.title)
+                            .trailingAlignment()
+                        if let todayStatus = vs.todayStatus {
+                            TodayStatusView(status: todayStatus) {
+                                vs.send(.todayStatusTapped)
+                            }
+                            .frame(height: 120)
                         }
-                        .padding(12)
+                        VStack(spacing: 8) {
+                            ForEach(vs.studyWordBooks, id: \.id) { todayBook in
+                                HomeCell(studySet: todayBook) {
+                                    vs.send(.homeCellTapped(todayBook))
+                                }
+                            }
+                        }
                     }
-                    .border(.gray, width: 1)
-                    .frame(height: 50)
-                    .disabled(vs.isLoading)
-                    VStack(spacing: 8) {
-                        ForEach(vs.studyWordBooks, id: \.id) { todayBook in
-                            HomeCell(studySet: todayBook) {
-                                vs.send(.homeCellTapped(todayBook))
+                    VStack(spacing: 20) {
+                        Text("복습 단어장")
+                            .font(.title)
+                            .trailingAlignment()
+                        VStack(spacing: 8) {
+                            ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
+                                HomeCell(studySet: reviewBook) {
+                                    vs.send(.homeCellTapped(reviewBook))
+                                }
                             }
                         }
                     }
                 }
-                VStack {
-                    Text("오늘 복습할 단어")
-                    VStack(spacing: 8) {
-                        ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
-                            HomeCell(studySet: reviewBook) {
-                                vs.send(.homeCellTapped(reviewBook))
-                            }
-                        }
-                    }
-                }
+                .padding(.horizontal, 20)
+                NavigationLink(
+                    destination: IfLetStore(
+                            store.scope(
+                                state: \.wordList,
+                                action: TodayList.Action.wordList(action:))
+                            ) { StudyView(store: $0) },
+                    isActive: vs.binding(
+                                get: \.showStudyView,
+                                send: TodayList.Action.showStudyView))
+                { EmptyView() }
             }
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
+            .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,
                 send: TodayList.Action.setSelectionModal(isPresent:))
@@ -195,13 +211,28 @@ struct TodayView: View {
                     TodaySelectionModal(store: $0)
                 }
             }
+            .navigationTitle("今日単完")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar { ToolbarItem {
                 HStack {
-                    Button("List") { vs.send(.listButtonTapped) }
-                    Button("+") { vs.send(.autoAddButtonTapped) }
+                    Button {
+                        vs.send(.listButtonTapped)
+                    } label: {
+                        Image(systemName: "list.bullet.rectangle.portrait")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
+                    Button {
+                        vs.send(.autoAddButtonTapped)
+                    } label: {
+                        Image(systemName: "calendar.badge.plus")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
                 }
             }}
-
         }
     }
 }

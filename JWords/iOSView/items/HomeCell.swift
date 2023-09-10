@@ -26,6 +26,7 @@ struct HomeCell: View {
                 VStack {
                     HStack {
                         Text(studySet.title)
+                            .foregroundColor(.black)
                         Spacer()
                     }
                     HStack {
@@ -37,8 +38,12 @@ struct HomeCell: View {
                 .padding(12)
             }
         }
-        .border(.gray, width: 1)
         .frame(height: 50)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.gray, lineWidth: 1)
+                .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 5, y: 5)
+        )
     }
     
     private var dateTextColor: Color {

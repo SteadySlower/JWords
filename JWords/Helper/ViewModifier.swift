@@ -28,6 +28,10 @@ extension View {
         modifier(LeadingAligner())
     }
     
+    func trailingAlignment() -> some View {
+        modifier(TrailingAligner())
+    }
+    
 }
 
 private struct CellSelectionEdge: ViewModifier {
@@ -93,6 +97,17 @@ private struct LeadingAligner: ViewModifier {
         HStack {
             content
             Spacer()
+        }
+    }
+    
+}
+
+private struct TrailingAligner: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        HStack {
+            Spacer()
+            content
         }
     }
     

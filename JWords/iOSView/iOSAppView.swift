@@ -148,6 +148,9 @@ struct iOSAppView: View {
                     }
                 }
                 .tabItem { Image(systemName: "pencil") }
+                #if os(iOS)
+                .navigationViewStyle(.stack)
+                #endif
                 .tag(Tab.ocr)
             }
             .onAppear { vs.send(.onAppear) }
