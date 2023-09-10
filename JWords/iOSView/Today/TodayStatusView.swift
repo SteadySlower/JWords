@@ -52,6 +52,12 @@ struct TodayStatusView: View {
                 }
                 .minimumScaleFactor(0.5)
             }
+            .padding(8)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1)
+                    .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 5, y: 5)
+            )
         }
     }
     
@@ -69,6 +75,11 @@ struct TodayStatusView: View {
             }
         }
         .minimumScaleFactor(0.5)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.gray, lineWidth: 1)
+                .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 5, y: 5)
+        )
     }
 }
 
