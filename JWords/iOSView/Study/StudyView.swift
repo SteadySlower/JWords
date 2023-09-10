@@ -12,6 +12,7 @@ import ComposableArchitecture
 struct WordList: ReducerProtocol {
     struct State: Equatable {
         var set: StudySet?
+        var kanji: Kanji?
         var isLoading: Bool = false
         let navigationTitle: String
         
@@ -46,6 +47,11 @@ struct WordList: ReducerProtocol {
         }
         var showSideBar: Bool = false
         
+        // TODO: make another view for kanji
+        var isKanjiView: Bool {
+            kanji != nil
+        }
+        
         init(set: StudySet) {
             self.set = set
             self.navigationTitle = set.title
@@ -61,8 +67,9 @@ struct WordList: ReducerProtocol {
         
         init(kanji: Kanji, units: [StudyUnit]) {
             self.set = nil
+            self.kanji = kanji
             self.navigationTitle = "\(kanji.kanjiText)가 쓰이는 단어"
-            self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
+            self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(sample: $0) })
             self.setting = .init(showEditButtons: false)
         }
         
@@ -397,10 +404,18 @@ struct StudyView: View {
             ScrollView {
                 if vs.setting.studyViewMode == .normal {
                     LazyVStack(spacing: 32) {
-                        ForEachStore(
-                          self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
-                        ) {
-                            StudyCell(store: $0)
+                        if !vs.isKanjiView {
+                            ForEachStore(
+                              self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
+                            ) {
+                                StudyCell(store: $0)
+                            }
+                        } else {
+                            ForEachStore(
+                              self.store.scope(state: \.words, action: WordList.Action.word(id:action:))
+                            ) {
+                                StudyCell(store: $0)
+                            }
                         }
                     }
                 } else if vs.setting.studyViewMode == .edit {
@@ -485,12 +500,14 @@ struct StudyView: View {
                         vs.send(.setSideBar(isPresented: !vs.showSideBar))
                     }
                 }
+                .hide(vs.isKanjiView)
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
                 Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
                     vs.send(.setMoveModal(isPresented: true))
                 }
                 .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
+                .hide(vs.isKanjiView)
             } }
             .toolbar(.hidden, for: .tabBar)
             #endif

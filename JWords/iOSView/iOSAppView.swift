@@ -61,9 +61,6 @@ struct iOSApp: ReducerProtocol {
                 }
                 return .none
             case .onAppear:
-                if (try! cd.fetchAllKanjis(after: nil).isEmpty) {
-                    try! cd.convertAllKanjisToStudyKanji()
-                }
                 return .none
             default:
                 return .none

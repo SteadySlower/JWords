@@ -15,7 +15,7 @@ struct KanjiList: ReducerProtocol {
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     
     struct State: Equatable {
-        var kanjis: IdentifiedArrayOf<StudyKanji.State> = []
+        var kanjis: [Kanji] = []
         var wordList: WordList.State?
         var isLastPage = false
         
@@ -27,7 +27,7 @@ struct KanjiList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case fetchKanjis
-        case studyKanji(id: StudyKanji.State.ID, action: StudyKanji.Action)
+        case kanjiCellTapped(Kanji)
         case wordList(action: WordList.Action)
         case showStudyView(Bool)
     }
@@ -40,30 +40,15 @@ struct KanjiList: ReducerProtocol {
             case .onAppear:
                 return .task { .fetchKanjis }
             case .fetchKanjis:
-                let last = state.kanjis.last?.kanji
+                let last = state.kanjis.last
                 let fetched = try! cd.fetchAllKanjis(after: last)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
-                let moreArray = state.kanjis.map { $0.kanji } + fetched
-                state.kanjis = IdentifiedArrayOf(
-                    uniqueElements: moreArray.map {
-                        StudyKanji.State(kanji: $0)
-                    })
+                state.kanjis.append(contentsOf: fetched)
                 return .none
-            case let .studyKanji(id, action):
-                switch action {
-                case let .onKanjiEdited(kanji):
-                    guard let index = state.kanjis.index(id: id) else { return .none }
-                    state.kanjis.update(StudyKanji.State(kanji: kanji), at: index)
-                    return .none
-                case .wordButtonTapped:
-                    guard let index = state.kanjis.index(id: id) else { return .none }
-                    let kanji = state.kanjis[index].kanji
-                    let words = try! cd.fetchSampleUnit(ofKanji: kanji)
-                    state.wordList = WordList.State(kanji: kanji, units: words)
-                    return .none
-                default:
-                    return .none
-                }
+            case .kanjiCellTapped(let kanji):
+                let words = try! cd.fetchSampleUnit(ofKanji: kanji)
+                state.wordList = WordList.State(kanji: kanji, units: words)
+                return .none
             case .showStudyView(let isPresent):
                 if !isPresent {
                     state.wordList = nil
@@ -75,9 +60,6 @@ struct KanjiList: ReducerProtocol {
         }
         .ifLet(\.wordList, action: /Action.wordList(action:)) {
             WordList()
-        }
-        .forEach(\.kanjis, action: /Action.studyKanji(id:action:)) {
-            StudyKanji()
         }
     }
 
@@ -102,11 +84,15 @@ struct KanjiListView: View {
                 { EmptyView() }
                 ScrollView {
                     LazyVStack {
-                        ForEachStore(
-                          self.store.scope(state: \.kanjis, action: KanjiList.Action.studyKanji(id:action:))
-                        ) {
-                            KanjiCell(store: $0)
+                        ForEach(vs.kanjis, id: \.id) { kanji in
+                            Button {
+                                vs.send(.kanjiCellTapped(kanji))
+                            } label: {
+                                KanjiCell(kanji: kanji)
+                            }
+                            .foregroundColor(.black)
                         }
+                        .padding(.horizontal, 20)
                         if !vs.isLastPage {
                             ProgressView()
                                 .foregroundColor(.gray)
