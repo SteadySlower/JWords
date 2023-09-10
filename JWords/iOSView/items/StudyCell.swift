@@ -55,6 +55,16 @@ struct StudyWord: ReducerProtocol {
                 return HuriganaConverter.shared.extractKanjis(from: unit.kanjiText).count == 0 ? false : true
             }()
         }
+        
+        // initializer for kanji sample
+        init(sample: StudyUnit) {
+            self.id = sample.id
+            self.unit = sample
+            self.isLocked = true
+            self.frontType = .kanji
+            self.showKanjiButton = true
+            self.isFront = false
+        }
 
     }
     
