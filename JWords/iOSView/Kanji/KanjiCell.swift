@@ -16,19 +16,29 @@ struct KanjiCell: View {
     
     var body: some View {
         HStack {
-            Text(kanji.kanjiText)
-                .font(.system(size: 150))
-            VStack(spacing: 10) {
+            VStack {
+                Text(kanji.kanjiText)
+                    .font(.system(size: 100))
+                Spacer()
+            }
+            VStack(alignment: .leading) {
                 Text(kanji.meaningText)
-                    .font(.system(size: 20))
-                Text("음독: \(kanji.ondoku)")
-                Text("훈독: \(kanji.kundoku)")
+                    .font(.system(size: 30))
+                VStack(alignment: .leading) {
+                    Text("음독")
+                        .font(.system(size: 15))
+                    Text(kanji.ondoku)
+                }
+                VStack(alignment: .leading) {
+                    Text("훈독")
+                        .font(.system(size: 15))
+                    Text(kanji.kundoku)
+                }
             }
         }
+        .padding(.horizontal, 10)
         .padding(.vertical, 10)
         .defaultRectangleBackground()
-        .padding(.horizontal, 10)
+        .minimumScaleFactor(0.5)
     }
-
-    
 }
