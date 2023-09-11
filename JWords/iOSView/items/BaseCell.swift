@@ -48,8 +48,13 @@ struct BaseCell: View {
 
     var body: some View {
         ZStack {
-            cellColor(unit.studyState)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+            if dragAmount == .zero {
+                cellColor(unit.studyState)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            } else {
+                cellColor(dragAmount)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
             cellFace
         }
         .defaultRectangleBackground()
@@ -67,6 +72,16 @@ extension BaseCell {
             return Color(red: 207/256, green: 240/256, blue: 204/256)
         case .fail:
             return Color(red: 253/256, green: 253/256, blue: 150/256)
+        }
+    }
+    
+    private func cellColor(_ dragAmount: CGSize) -> Color {
+        let opacity = (abs(dragAmount.width) * abs(dragAmount.width)) / (150 * 150)
+        
+        if dragAmount.width > 0 {
+            return Color(red: 207/256, green: 240/256, blue: 204/256).opacity(opacity)
+        } else {
+            return Color(red: 253/256, green: 253/256, blue: 150/256).opacity(opacity)
         }
     }
     
