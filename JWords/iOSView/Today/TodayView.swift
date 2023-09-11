@@ -72,7 +72,10 @@ struct TodayList: ReducerProtocol {
                 state.todayStatus = nil
                 return .none
             case .setSelectionModal(let isPresent):
-                if !isPresent { state.todaySelection = nil }
+                if !isPresent {
+                    state.todaySelection = nil
+                    return .task { .onAppear }
+                }
                 return .none
             case .todayStatusTapped:
                 if state.todayStatus == .empty {
@@ -85,6 +88,7 @@ struct TodayList: ReducerProtocol {
                 state.wordList = WordList.State(set: wordBook)
                 return .none
             case .listButtonTapped:
+                state.todayStatus = nil
                 state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
                                                             reviewBooks: state.reviewWordBooks, reviewedBooks: state.reviewedWordBooks)
                 return .none
@@ -96,14 +100,10 @@ struct TodayList: ReducerProtocol {
                 fetchSchedule(&state)
                 state.isLoading = false
                 return .none
-            case let .todaySelection(action):
+            case .todaySelection(let action):
                 switch action {
-                case .okButtonTapped:
-                    state.todaySelection = nil
+                case .okButtonTapped, .cancelButtonTapped:
                     return .task { .onAppear }
-                case .cancelButtonTapped:
-                    state.todaySelection = nil
-                    return .none
                 default:
                     return .none
                 }
