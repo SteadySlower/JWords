@@ -189,6 +189,7 @@ struct StudyCell: View {
                 if vs.showKanjis {
                     kanjiList(vs)
                         .opacity(vs.isFront ? 0 : 1)
+                        .padding(.top, 5)
                 }
             }
             .gesture(dragGesture
@@ -243,10 +244,12 @@ struct StudyCell: View {
                     .font(.system(size: 20))
             }
         }
+        .padding(2)
+        .defaultRectangleBackground()
     }
     
     private func kanjiList(_ vs: VS) -> some View {
-        FlexBox(horizontalSpacing: 5, verticalSpacing: 0, alignment: .center) {
+        FlexBox(horizontalSpacing: 5, verticalSpacing: 5, alignment: .center) {
             ForEach(vs.kanjis, id: \.id) { kanji in
                 kanjiCell(kanji, vs)
             }
