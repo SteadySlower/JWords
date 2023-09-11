@@ -141,7 +141,6 @@ struct AddingUnit: ReducerProtocol {
         
         // 겹치는 단어 관련
         case checkIfExist(String)
-//        case meaningButtonTapped
         
         // 이미지 버튼 관련
         case kanjiImageButtonTapped
@@ -344,7 +343,6 @@ struct StudyUnitAddView: View {
                             .border(.black)
                             .frame(height: 100)
                             .focused($focusedField, equals: .meaning)
-    //                    Button("검색") { vs.send(.meaningButtonTapped) }
                     }
                     #if os(macOS)
                     if let meaningImage = vs.meaningImage {
