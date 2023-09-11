@@ -129,7 +129,6 @@ struct AddingUnit: ReducerProtocol {
     
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case setUnitType(UnitType)
         // field 이동 관련
         case focusFieldChanged(Field?)
         case onTab(Field)
@@ -176,17 +175,6 @@ struct AddingUnit: ReducerProtocol {
                     let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
                     state.huriText = EditHuriganaText.State(hurigana: hurigana)
                     state.isEditingKanji = false
-                }
-                return .none
-            case .setUnitType(let type):
-                switch state.mode {
-                case .editKanji(_):
-                    break
-                default:
-                    state.unitType = type
-                    if type == .kanji {
-                        state.isEditingKanji = true
-                    }
                 }
                 return .none
             case .updateKanjiText(let text):
