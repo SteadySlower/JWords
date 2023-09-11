@@ -123,6 +123,11 @@ struct StudyWord: ReducerProtocol {
             case .alertDismissed:
                 state.alert = nil
                 return .none
+            case .setKanjiEditModal(let isPresent):
+                if !isPresent {
+                    state.toEditKanji = nil
+                }
+                return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {
                     state.kanjis = try! cd.fetchKanjis(usedIn: state.unit)
@@ -238,7 +243,6 @@ struct StudyCell: View {
                 }
             }
         }
-        .font(.system(size: 24))
     }
     
 }
