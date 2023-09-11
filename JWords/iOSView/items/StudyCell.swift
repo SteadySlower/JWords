@@ -123,6 +123,11 @@ struct StudyWord: ReducerProtocol {
             case .alertDismissed:
                 state.alert = nil
                 return .none
+            case .setKanjiEditModal(let isPresent):
+                if !isPresent {
+                    state.toEditKanji = nil
+                }
+                return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {
                     state.kanjis = try! cd.fetchKanjis(usedIn: state.unit)
@@ -178,9 +183,13 @@ struct StudyCell: View {
                          frontType: vs.frontType,
                          isFront: vs.isFront,
                          dragAmount: dragAmount)
+                .overlay(
+                    showKanjisButton(vs)
+                )
                 if vs.showKanjis {
                     kanjiList(vs)
                         .opacity(vs.isFront ? 0 : 1)
+                        .padding(.top, 5)
                 }
             }
             .gesture(dragGesture
@@ -201,9 +210,6 @@ struct StudyCell: View {
                     StudyUnitAddView(store: $0)
                 }
             }
-            .overlay(
-                showKanjisButton(vs)
-            )
         }
     }
     
@@ -218,9 +224,7 @@ struct StudyCell: View {
                     Text("漢 ") + Text(vs.showKanjis ? "🔼" : "🔽")
                 }
                 .font(.system(size: 24))
-                .padding(.bottom, vs.showKanjis ? 0 : 8)
-                .padding(.trailing, vs.showKanjis ? 0 : 8)
-
+                .padding([.bottom, .trailing], 8)
             }
         }
         .hide(dragAmount != .zero)
@@ -228,17 +232,28 @@ struct StudyCell: View {
         .hide(!vs.showKanjiButton)
     }
     
-    private func kanjiList(_ vs: VS) -> some View {
-        VStack {
-            ForEach(vs.kanjis, id: \.id) { kanji in
-                if !kanji.meaningText.isEmpty {
-                    Text("\(kanji.kanjiText): \(kanji.meaningText)")
-                } else {
-                    Button("\(kanji.kanjiText): (뜻 추가하기)") { vs.send(.addKanjiMeaningTapped(kanji)) }
-                }
+    private func kanjiCell(_ kanji: Kanji, _ vs: VS) -> some View {
+        VStack(spacing: 2) {
+            Text(kanji.kanjiText)
+                .font(.system(size: 70))
+            if !kanji.meaningText.isEmpty {
+                Text(kanji.meaningText)
+                    .font(.system(size: 20))
+            } else {
+                Button("???") { vs.send(.addKanjiMeaningTapped(kanji)) }
+                    .font(.system(size: 20))
             }
         }
-        .font(.system(size: 24))
+        .padding(2)
+        .defaultRectangleBackground()
+    }
+    
+    private func kanjiList(_ vs: VS) -> some View {
+        FlexBox(horizontalSpacing: 5, verticalSpacing: 5, alignment: .center) {
+            ForEach(vs.kanjis, id: \.id) { kanji in
+                kanjiCell(kanji, vs)
+            }
+        }
     }
     
 }

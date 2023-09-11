@@ -303,7 +303,14 @@ class CoreDataClient {
             return []
         }
         
-        return kanjis.compactMap { $0 as? StudyKanjiMO }.map { Kanji(from: $0) }
+        let kanjiList = unit.kanjiText.filter { $0.isKanji }.map { String($0) }
+        
+        return kanjis
+            .compactMap { $0 as? StudyKanjiMO }
+            .map { Kanji(from: $0) }
+            .sorted(by: {
+                kanjiList.firstIndex(of: $0.kanjiText) ?? 0 < kanjiList.firstIndex(of: $1.kanjiText) ?? 0
+            })
     }
     
     func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {

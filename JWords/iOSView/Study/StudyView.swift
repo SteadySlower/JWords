@@ -398,6 +398,7 @@ struct WordList: ReducerProtocol {
 struct StudyView: View {
     
     let store: StoreOf<WordList>
+    private let CELL_HORIZONTAL_PADDING: CGFloat = 15
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -418,6 +419,7 @@ struct StudyView: View {
                             }
                         }
                     }
+                    .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                 } else if vs.setting.studyViewMode == .edit {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
@@ -426,6 +428,7 @@ struct StudyView: View {
                             EditCell(store: $0)
                         }
                     }
+                    .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                 } else if vs.setting.studyViewMode == .selection {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
@@ -434,6 +437,7 @@ struct StudyView: View {
                             SelectionCell(store: $0)
                         }
                     }
+                    .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                 } else if vs.setting.studyViewMode == .delete {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
@@ -442,6 +446,7 @@ struct StudyView: View {
                             DeleteCell(store: $0)
                         }
                     }
+                    .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                 }
             }
             .loadingView(vs.isLoading)
@@ -503,7 +508,7 @@ struct StudyView: View {
                 .hide(vs.isKanjiView)
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                Button(vs.setting.studyViewMode == .selection ? "이동" : "✅") {
                     vs.send(.setMoveModal(isPresented: true))
                 }
                 .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)

@@ -150,7 +150,16 @@ struct iOSAppView: View {
                 #endif
                 .tag(Tab.ocr)
             }
-            .onAppear { vs.send(.onAppear) }
+            .onAppear {
+                vs.send(.onAppear)
+                // navigation 들어갔다가 나올 때 탭바 투명 방지
+                let tabBarAppearance = UITabBarAppearance()
+                tabBarAppearance.configureWithOpaqueBackground()
+                UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+                let navigationBarAppearance = UINavigationBarAppearance()
+                navigationBarAppearance.configureWithOpaqueBackground()
+                UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+            }
         }
     }
 }

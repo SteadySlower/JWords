@@ -14,7 +14,6 @@ struct BaseCell: View {
     private let frontType: FrontType
     private let isFront: Bool
     private let dragAmount: CGSize
-    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
     var kanjiText: String { unit.kanjiText }
     var meaningText: String { unit.meaningText }
@@ -49,36 +48,41 @@ struct BaseCell: View {
 
     var body: some View {
         ZStack {
-            swipeGuide
-            ZStack {
-                Color.cellColor(unit.studyState)
-                cellFace
+            if dragAmount == .zero {
+                cellColor(unit.studyState)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            } else {
+                cellColor(dragAmount)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            .offset(dragAmount)
+            cellFace
         }
-        .frame(width: deviceWidth * 0.9)
-        #if os(iOS)
-        .onAppear { deviceOrientationChanged() }
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
-        #endif
+        .defaultRectangleBackground()
+        .offset(dragAmount)
     }
 }
 
 extension BaseCell {
-
-    private var swipeGuide: some View {
-        HStack {
-            Image(systemName: "circle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.blue)
-            Spacer()
-            Image(systemName: "x.circle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.red)
+    
+    private func cellColor(_ studyState: StudyState) -> Color {
+        switch studyState {
+        case .undefined:
+            return Color.white
+        case .success:
+            return Color(red: 207/256, green: 240/256, blue: 204/256)
+        case .fail:
+            return Color(red: 253/256, green: 253/256, blue: 150/256)
         }
-        .background { Color.white }
+    }
+    
+    private func cellColor(_ dragAmount: CGSize) -> Color {
+        let opacity = (abs(dragAmount.width) * abs(dragAmount.width)) / (150 * 150)
+        
+        if dragAmount.width > 0 {
+            return Color(red: 207/256, green: 240/256, blue: 204/256).opacity(opacity)
+        } else {
+            return Color(red: 253/256, green: 253/256, blue: 150/256).opacity(opacity)
+        }
     }
     
     private var cellFace: some View {
@@ -114,12 +118,6 @@ extension BaseCell {
             return 35
         } else {
             return 20
-        }
-    }
-    
-    private func deviceOrientationChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.deviceWidth = Constants.Size.deviceWidth
         }
     }
     
