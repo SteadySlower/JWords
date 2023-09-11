@@ -306,15 +306,6 @@ struct StudyUnitAddView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                Picker("", selection: vs.binding(
-                    get: \.unitType,
-                    send: AddingUnit.Action.setUnitType)
-                ) {
-                    ForEach(UnitType.allCases, id: \.self) {
-                        Text($0.description)
-                    }
-                }
-                .pickerStyle(.segmented)
                 VStack {
                     if vs.isEditingKanji {
                         TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
