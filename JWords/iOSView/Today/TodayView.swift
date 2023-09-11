@@ -166,6 +166,8 @@ struct TodayView: View {
                                 vs.send(.todayStatusTapped)
                             }
                             .frame(height: 120)
+                        } else {
+                            statusLoadingView
                         }
                         VStack(spacing: 8) {
                             ForEach(vs.studyWordBooks, id: \.id) { todayBook in
@@ -234,6 +236,16 @@ struct TodayView: View {
                 }
             }}
         }
+    }
+    
+    private var statusLoadingView: some View {
+        ZStack {
+            Color.white.opacity(0)
+            ProgressView()
+                .scaleEffect(2)
+        }
+        .frame(height: 120)
+        .defaultRectangleBackground()
     }
 }
 
