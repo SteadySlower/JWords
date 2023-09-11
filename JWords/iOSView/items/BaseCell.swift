@@ -52,8 +52,10 @@ struct BaseCell: View {
             swipeGuide
             ZStack {
                 Color.cellColor(unit.studyState)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 cellFace
             }
+            .defaultRectangleBackground()
             .offset(dragAmount)
         }
         .frame(width: deviceWidth * 0.9)
