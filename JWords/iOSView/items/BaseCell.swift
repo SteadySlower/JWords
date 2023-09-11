@@ -48,7 +48,7 @@ struct BaseCell: View {
 
     var body: some View {
         ZStack {
-            Color.cellColor(unit.studyState)
+            cellColor(unit.studyState)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             cellFace
         }
@@ -58,6 +58,17 @@ struct BaseCell: View {
 }
 
 extension BaseCell {
+    
+    private func cellColor(_ studyState: StudyState) -> Color {
+        switch studyState {
+        case .undefined:
+            return Color.white
+        case .success:
+            return Color(red: 207/256, green: 240/256, blue: 204/256)
+        case .fail:
+            return Color(red: 253/256, green: 253/256, blue: 150/256)
+        }
+    }
     
     private var cellFace: some View {
         let frontFontSize: CGFloat = fontSize(of: kanjiText)
