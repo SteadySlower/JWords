@@ -14,7 +14,6 @@ struct BaseCell: View {
     private let frontType: FrontType
     private let isFront: Bool
     private let dragAmount: CGSize
-    @State private var deviceWidth: CGFloat = Constants.Size.deviceWidth
     
     var kanjiText: String { unit.kanjiText }
     var meaningText: String { unit.meaningText }
@@ -58,11 +57,6 @@ struct BaseCell: View {
             .defaultRectangleBackground()
             .offset(dragAmount)
         }
-        .frame(width: deviceWidth * 0.9)
-        #if os(iOS)
-        .onAppear { deviceOrientationChanged() }
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in deviceOrientationChanged() }
-        #endif
     }
 }
 
@@ -116,12 +110,6 @@ extension BaseCell {
             return 35
         } else {
             return 20
-        }
-    }
-    
-    private func deviceOrientationChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.deviceWidth = Constants.Size.deviceWidth
         }
     }
     
