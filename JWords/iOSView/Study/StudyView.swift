@@ -508,7 +508,7 @@ struct StudyView: View {
                 .hide(vs.isKanjiView)
             } }
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                Button(vs.setting.studyViewMode == .selection ? "이동" : "마감") {
+                Button(vs.setting.studyViewMode == .selection ? "이동" : "✅") {
                     vs.send(.setMoveModal(isPresented: true))
                 }
                 .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
