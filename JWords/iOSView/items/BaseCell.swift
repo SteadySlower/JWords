@@ -48,34 +48,16 @@ struct BaseCell: View {
 
     var body: some View {
         ZStack {
-            swipeGuide
-            ZStack {
-                Color.cellColor(unit.studyState)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                cellFace
-            }
-            .defaultRectangleBackground()
-            .offset(dragAmount)
+            Color.cellColor(unit.studyState)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            cellFace
         }
+        .defaultRectangleBackground()
+        .offset(dragAmount)
     }
 }
 
 extension BaseCell {
-
-    private var swipeGuide: some View {
-        HStack {
-            Image(systemName: "circle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.blue)
-            Spacer()
-            Image(systemName: "x.circle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.red)
-        }
-        .background { Color.white }
-    }
     
     private var cellFace: some View {
         let frontFontSize: CGFloat = fontSize(of: kanjiText)
