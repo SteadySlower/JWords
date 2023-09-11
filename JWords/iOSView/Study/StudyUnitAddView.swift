@@ -136,6 +136,7 @@ struct AddingUnit: ReducerProtocol {
         case updateKanjiText(String)
         case updateMeaningText(String)
         case editHuriText(action: EditHuriganaText.Action)
+        case convertToHuriganaButtonTapped
         case editKanjiTextButtonTapped
         
         // 겹치는 단어 관련
@@ -202,6 +203,12 @@ struct AddingUnit: ReducerProtocol {
                 case .meaning:
                     break
                 }
+                return .none
+            case .convertToHuriganaButtonTapped:
+                if state.kanjiText.isEmpty { return .none }
+                let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
+                state.huriText = EditHuriganaText.State(hurigana: hurigana)
+                state.isEditingKanji = false
                 return .none
             case .editKanjiTextButtonTapped:
                 state.isEditingKanji = true
@@ -290,26 +297,34 @@ struct StudyUnitAddView: View {
     let store: StoreOf<AddingUnit>
     @FocusState var focusedField: AddingUnit.Field?
     
+    private let FONT_SIZE: CGFloat = 30
+    
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
                 VStack {
                     if vs.isEditingKanji {
-                        TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
-                            .font(.system(size: 30))
-                            .border(.black)
-                            .focused($focusedField, equals: .kanji)
+                        VStack {
+                            title("단어 (앞면)")
+                            textEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
+                            button("후리가나 변환") { vs.send(.convertToHuriganaButtonTapped) }
+                                .trailingAlignment()
+                        }
                     } else {
-                        HStack {
-                            VStack {
+                        VStack {
+                            title("후리가나 (앞면)")
+                            ScrollView {
                                 EditableHuriganaText(store: store.scope(
                                     state: \.huriText,
-                                    action: AddingUnit.Action.editHuriText(action:))
+                                    action: AddingUnit.Action.editHuriText(action:)),
+                                    fontsize: FONT_SIZE
                                 )
-                                Spacer()
+                                .padding(.horizontal, 5)
                             }
-                            Button("수정") { vs.send(.editKanjiTextButtonTapped) }
-                                .disabled(vs.unitType == .kanji)
+                            .frame(height: 100)
+                            .defaultRectangleBackground()
+                            button("단어 수정") { vs.send(.editKanjiTextButtonTapped) }
+                            .trailingAlignment()
                         }
                     }
                     #if os(macOS)
@@ -323,15 +338,10 @@ struct StudyUnitAddView: View {
                     #endif
                 }
                 .frame(height: vs.kanjiImage == nil ? 100 : 250)
-                .padding(.bottom, 20)
+                .padding(.bottom, 40)
                 VStack {
-                    HStack {
-                        TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
-                            .font(.system(size: 30))
-                            .border(.black)
-                            .frame(height: 100)
-                            .focused($focusedField, equals: .meaning)
-                    }
+                    title("뜻 (뒷면)")
+                    textEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
                     #if os(macOS)
                     if let meaningImage = vs.meaningImage {
                         Image(nsImage: meaningImage).resizable()
@@ -346,13 +356,13 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 20)
                 #if os(iOS)
                 HStack(spacing: 100) {
-                    Button("취소") { vs.send(.cancelButtonTapped) }
-                    Button(vs.okButtonText) { vs.send(.addButtonTapped) }
+                    button("취소") { vs.send(.cancelButtonTapped) }
+                    button(vs.okButtonText) { vs.send(.addButtonTapped)  }
                         .disabled(!vs.ableToAdd)
                 }
                 #elseif os(macOS)
                 if !vs.isLoading {
-                    Button(vs.okButtonText) { vs.send(.addButtonTapped) }
+                    button(vs.okButtonText) { vs.send(.addButtonTapped)  }
                         .disabled(!vs.ableToAdd)
                         .keyboardShortcut(.return, modifiers: [.control])
                 } else {
@@ -372,6 +382,36 @@ struct StudyUnitAddView: View {
             .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
     }
+    
+    private func title(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: FONT_SIZE - 10))
+            .bold()
+            .leadingAlignment()
+    }
+    
+    private func textEditor(text: Binding<String>) -> some View {
+        TextEditor(text: text)
+            .font(.system(size: FONT_SIZE))
+            .frame(height: 100)
+            .focused($focusedField, equals: .kanji)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .defaultRectangleBackground()
+    }
+    
+    private func button(_ text: String, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: FONT_SIZE - 15))
+                .foregroundColor(.black)
+                .padding(5)
+                .defaultRectangleBackground()
+        }
+    }
+    
+    
 }
 
 //struct StudyUnitAddView_Previews: PreviewProvider {
