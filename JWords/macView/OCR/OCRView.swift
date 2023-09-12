@@ -37,25 +37,34 @@ struct OCRView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            GeometryReader { geometry in
-                ZStack(alignment: .topTrailing) {
+            VStack {
+                HStack {
+                    Spacer()
+                    Text("↘️ 한국어 스캔")
+                    Spacer()
+                    Text("↖️ 일본어 스캔")
+                    Spacer()
+                }
+                GeometryReader { proxy in
                     imageView(vs.image)
                         .overlay(
                             copyButtons(lang: .korean,
                                         results: vs.koreanOcrResult,
-                                        in: geometry.frame(in: .local)) {
+                                        in: proxy.frame(in: .local)) {
                                             vs.send(.ocrMarkTapped($0, $1))
                                         }
                         )
                         .overlay(
                             copyButtons(lang: .japanese,
                                         results: vs.japaneseOcrResult,
-                                        in: geometry.frame(in: .local)) {
+                                        in: proxy.frame(in: .local)) {
                                             vs.send(.ocrMarkTapped($0, $1))
                                         }
                         )
-                    xButton { vs.send(.removeImageButtonTapped) }
                 }
+                .frame(width: vs.image.size.width, height: vs.image.size.height)
+                xButton { vs.send(.removeImageButtonTapped) }
+                    .padding(.horizontal, 20)
             }
         }
     }
@@ -92,30 +101,20 @@ extension OCRView {
     }
     
     private func copyButton(lang: OCRLang, _ onTapped: @escaping () -> Void) -> some View {
-        let size: CGFloat = 10
-        let color = lang == .korean ? Color.blue.opacity(0.5) : Color.red.opacity(0.5)
-
         return Button {
             onTapped()
         } label: {
-            ZStack {
-                Circle()
-                    .fill(color)
-                Text(lang == .korean ? "韓" : "日")
-                    .font(.system(size: size))
-            }
-            .frame(width: size, height: size)
+            Text(lang == .korean ? "↘️" : "↖️")
+                .font(.system(size: 10))
         }
     }
     
     private func xButton(_ onTapped: @escaping () -> Void) -> some View {
-        Button {
-            onTapped()
-        } label: {
-            Image(systemName: "x.circle.fill")
-                .foregroundColor(.red)
-                .frame(width: 20, height: 20)
-        }
+        RectangleButton(
+            image: Image(systemName: "photo.on.rectangle.angled"),
+            title: "다른 이미지 스캔하기",
+            isVertical: false,
+            onTapped: onTapped)
     }
     
 }

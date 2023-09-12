@@ -15,22 +15,12 @@ struct AddUnitWithOCR: ReducerProtocol {
         var showCameraScanner: Bool = false
         var getImageButtons = GetImageForOCR.State()
         
-        var input = OCRInput.State()
+        var selectSet = SelectStudySet.State(pickerName: "")
+        
+        var addUnit: AddingUnit.State?
         var alert: AlertState<Action>?
         
         var showOCR: Bool { ocr != nil }
-        
-        fileprivate mutating func setAlert(_ type: OCRInput.AlertType) {
-            alert = AlertState<Action> {
-                TextState(type.title)
-            } actions: {
-                ButtonState(role: .none) {
-                    TextState("확인")
-                }
-            } message: {
-                TextState(type.message)
-            }
-        }
     }
     
     enum Action: Equatable {
@@ -39,7 +29,8 @@ struct AddUnitWithOCR: ReducerProtocol {
         case cameraImageSelected(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
-        case input(OCRInput.Action)
+        case selectSet(SelectStudySet.Action)
+        case addUnit(AddingUnit.Action)
         case showCameraScanner(Bool)
         case imageFetched(InputImageType)
         case dismissAlert
@@ -77,26 +68,32 @@ struct AddUnitWithOCR: ReducerProtocol {
             case .japaneseOcrResponse(.success(let results)):
                 state.ocr?.japaneseOcrResult = results
                 return .none
+            case .selectSet(let action):
+                switch action {
+                case .idUpdated:
+                    if let set = state.selectSet.selectedSet {
+                        state.addUnit = AddingUnit.State(mode: .insert(set: set), cancelButtonHidden: true)
+                    } else {
+                        state.addUnit = nil
+                    }
+                default:
+                    break
+                }
+                return .none
             case .ocr(let action):
                 switch action {
                 case .ocrMarkTapped(let lang, let text):
                     switch lang {
                     case .korean:
-                        state.input.meaningString = text
+                        state.addUnit?.meaningText = text
+                        return .none
                     case .japanese:
-                        state.input.kanjiString = text
+                        state.addUnit?.isEditingKanji = true
+                        state.addUnit?.kanjiText = text
+                        return .none
                     }
-                    return .none
                 case .removeImageButtonTapped:
                     state.ocr = nil
-                    return .none
-                }
-            case .input(let action):
-                switch action {
-                case .showAlert(let type):
-                    state.setAlert(type)
-                    return .none
-                default:
                     return .none
                 }
             case .cameraImageSelected(let image):
@@ -114,11 +111,14 @@ struct AddUnitWithOCR: ReducerProtocol {
         .ifLet(\.ocr, action: /Action.ocr) {
             OCR()
         }
+        .ifLet(\.addUnit, action: /Action.addUnit) {
+            AddingUnit()
+        }
         Scope(state: \.getImageButtons, action: /Action.getImageButtons) {
             GetImageForOCR()
         }
-        Scope(state: \.input, action: /Action.input) {
-            OCRInput()
+        Scope(state: \.selectSet, action: /Action.selectSet) {
+            SelectStudySet()
         }
     }
 }
@@ -164,40 +164,55 @@ struct OCRAddUnitView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
-                VStack {
-                    if vs.showOCR {
-                        IfLetStore(self.store.scope(state: \.ocr,
-                                                    action: AddUnitWithOCR.Action.ocr)
-                        ) {
-                            OCRView(store: $0)
+            ScrollView(showsIndicators: false) {
+                ZStack {
+                    Color.white
+                        .onTapGesture { dismissKeyBoard() }
+                    VStack(spacing: 35) {
+                        ZStack {}.frame(height: 10)
+                        if vs.showOCR {
+                            VStack(spacing: 20) {
+                                Text("스캔 결과")
+                                    .font(.system(size: 20))
+                                    .bold()
+                                    .leadingAlignment()
+                                    .padding(.leading, 10)
+                                IfLetStore(self.store.scope(state: \.ocr,
+                                                            action: AddUnitWithOCR.Action.ocr)
+                                ) {
+                                    OCRView(store: $0)
+                                }
+                            }
+                        } else {
+                            VStack {
+                                Text("이미지 스캔하기")
+                                    .font(.system(size: 20))
+                                    .bold()
+                                    .leadingAlignment()
+                                    .padding(.leading, 10)
+                                ImageGetterButtons(store: store.scope(
+                                    state: \.getImageButtons,
+                                    action: AddUnitWithOCR.Action.getImageButtons)
+                                )
+                            }
                         }
-                        .frame(width: vs.ocr?.image.size.width, height: vs.ocr?.image.size.height)
-                    } else {
-                        ImageGetterButtons(store: store.scope(
-                            state: \.getImageButtons,
-                            action: AddUnitWithOCR.Action.getImageButtons)
+                        StudySetPicker(store: store.scope(
+                            state: \.selectSet,
+                            action: AddUnitWithOCR.Action.selectSet)
                         )
-                        .padding(.vertical, 20)
+                        .padding(.bottom, 35)
+                        IfLetStore(store.scope(
+                            state: \.addUnit,
+                            action: AddUnitWithOCR.Action.addUnit))
+                       {
+                           StudyUnitAddView(store: $0)
+                       }
+                        ZStack {}.frame(height: 10)
                     }
-                    OCRInputView(store: store.scope(
-                        state: \.input,
-                        action: AddUnitWithOCR.Action.input)
-                    )
                 }
             }
-            .padding(.bottom, 50)
             .padding(.horizontal, 10)
-            .navigationTitle("단어 스캔으로 입력하기")
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        dismissKeyBoard()
-                    } label: {
-                        Image(systemName: "keyboard.chevron.compact.down")
-                    }
-                }
-            }
+            .navigationTitle("단어 스캐너")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: vs.binding(

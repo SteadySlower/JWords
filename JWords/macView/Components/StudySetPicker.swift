@@ -74,25 +74,32 @@ struct StudySetPicker: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            HStack {
-                Picker(vs.pickerName, selection:
-                        vs.binding(
-                             get: \.selectedID,
-                             send: SelectStudySet.Action.updateID)
-                ) {
-                    Text(vs.pickerDefaultText)
-                        .tag(nil as String?)
-                    ForEach(vs.sets, id: \.id) { studySet in
-                        Text(studySet.title)
-                            .tag(studySet.id as String?)
+            VStack {
+                Text("단어장 선택")
+                    .font(.system(size: 20))
+                    .bold()
+                    .leadingAlignment()
+                    .padding(.leading, 10)
+                HStack {
+                    Picker(vs.pickerName, selection:
+                            vs.binding(
+                                 get: \.selectedID,
+                                 send: SelectStudySet.Action.updateID)
+                    ) {
+                        Text(vs.pickerDefaultText)
+                            .tag(nil as String?)
+                        ForEach(vs.sets, id: \.id) { studySet in
+                            Text(studySet.title)
+                                .tag(studySet.id as String?)
+                        }
                     }
+                    .tint(.black)
+                    Spacer()
+                    Text("단어 수: \(vs.unitCount ?? 0)개")
+                    .opacity(vs.selectedID == nil ? 0 : 1)
                 }
-                Text("단어 수: \(vs.unitCount ?? 0)개")
-                .frame(height: 50)
-                .opacity(vs.selectedID == nil ? 0 : 1)
+                .onAppear { vs.send(.onAppear) }
             }
-            .padding()
-            .onAppear { vs.send(.onAppear) }
         }
     }
 }
