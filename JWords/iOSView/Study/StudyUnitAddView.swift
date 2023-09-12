@@ -17,15 +17,9 @@ struct AddingUnit: ReducerProtocol {
         case addExist(set: StudySet, existing: StudyUnit)
     }
     
-    enum Field: Hashable {
-        case kanji, meaning
-    }
-    
     private let cd = CoreDataClient.shared
     
     struct State: Equatable {
-        @BindingState var focusedField: Field?
-        
         var mode: Mode
         var unitType: UnitType
         var meaningText: String
@@ -108,7 +102,6 @@ struct AddingUnit: ReducerProtocol {
             kanjiText = ""
             huriText = EditHuriganaText.State(hurigana: "")
             isEditingKanji = true
-            focusedField = .kanji
         }
         
         mutating func setExistAlert() {
@@ -127,11 +120,7 @@ struct AddingUnit: ReducerProtocol {
     
     }
     
-    enum Action: BindableAction, Equatable {
-        case binding(BindingAction<State>)
-        // field 이동 관련
-        case focusFieldChanged(Field?)
-        case onTab(Field)
+    enum Action: Equatable {
         // 한자, 뜻, 후리가나 업데이트 관련
         case updateKanjiText(String)
         case updateMeaningText(String)
@@ -164,20 +153,8 @@ struct AddingUnit: ReducerProtocol {
     @Dependency(\.pasteBoardClient) var pasteBoardClient
     
     var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
         Reduce { state, action in
             switch action {
-            case .focusFieldChanged(let field):
-                if let field = field,
-                   field == .meaning,
-                   state.unitType != .kanji,
-                   !state.kanjiText.isEmpty,
-                   state.isEditingKanji == true {
-                    let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
-                    state.huriText = EditHuriganaText.State(hurigana: hurigana)
-                    state.isEditingKanji = false
-                }
-                return .none
             case .updateKanjiText(let text):
                 switch state.mode {
                 case .addExist(let set, _):
@@ -185,24 +162,10 @@ struct AddingUnit: ReducerProtocol {
                 default:
                     break
                 }
-                if text.hasTab {
-                    return .task { .onTab(.kanji) }
-                }
                 state.kanjiText = text
                 return .none
             case .updateMeaningText(let text):
-                if text.hasTab {
-                    return .task { .onTab(.meaning) }
-                }
                 state.meaningText = text
-                return .none
-            case .onTab(let field):
-                switch field {
-                case .kanji:
-                    state.focusedField = .meaning
-                case .meaning:
-                    break
-                }
                 return .none
             case .convertToHuriganaButtonTapped:
                 if state.kanjiText.isEmpty { return .none }
@@ -295,7 +258,6 @@ struct AddingUnit: ReducerProtocol {
 struct StudyUnitAddView: View {
     
     let store: StoreOf<AddingUnit>
-    @FocusState var focusedField: AddingUnit.Field?
     
     private let FONT_SIZE: CGFloat = 30
     
@@ -375,13 +337,11 @@ struct StudyUnitAddView: View {
             }
             .padding(.horizontal, 10)
             .presentationDetents([.medium])
-            .onChange(of: focusedField, perform: { vs.send(.focusFieldChanged($0)) })
             .onChange(of: vs.checkExistQuery, perform: { vs.send(.checkIfExist($0))})
             .alert(
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
-            .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
     }
     
@@ -396,7 +356,6 @@ struct StudyUnitAddView: View {
         TextEditor(text: text)
             .font(.system(size: FONT_SIZE))
             .frame(height: 100)
-            .focused($focusedField, equals: .kanji)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .defaultRectangleBackground()
     }
