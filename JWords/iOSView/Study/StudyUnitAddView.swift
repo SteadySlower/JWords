@@ -42,8 +42,11 @@ struct AddingUnit: ReducerProtocol {
         
         var isLoading: Bool = false
         
-        init(mode: Mode) {
+        let cancelButtonHidden: Bool
+        
+        init(mode: Mode, cancelButtonHidden: Bool = false) {
             self.mode = mode
+            self.cancelButtonHidden = cancelButtonHidden
             switch mode {
             case .insert(_):
                 self.unitType = .word
@@ -319,6 +322,7 @@ struct StudyUnitAddView: View {
                 #if os(iOS)
                 HStack(spacing: 100) {
                     inputButton("취소", foregroundColor: .black) { vs.send(.cancelButtonTapped) }
+                        .hide(vs.cancelButtonHidden)
                     inputButton(vs.okButtonText,
                                 foregroundColor: !vs.ableToAdd ? .gray : .black)
                         { vs.send(.addButtonTapped)  }
