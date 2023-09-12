@@ -169,12 +169,13 @@ struct WordBookAddModal: View {
                     Spacer()
                 }
             }
+            .padding(.horizontal, 10)
+            .presentationDetents([.medium])
             .alert(
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
             .loadingView(vs.isLoading)
-            .padding()
         }
     }
     
