@@ -73,6 +73,8 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
+                    guard let newSchedule = state.todaySelection?.newSchedule else { return .none }
+                    kv.updateSchedule(todaySchedule: newSchedule)
                     state.todaySelection = nil
                     return .task { .onAppear }
                 }
@@ -100,13 +102,6 @@ struct TodayList: ReducerProtocol {
                 fetchSchedule(&state)
                 state.isLoading = false
                 return .none
-            case .todaySelection(let action):
-                switch action {
-                case .okButtonTapped, .cancelButtonTapped:
-                    return .task { .onAppear }
-                default:
-                    return .none
-                }
             case .wordList(let action):
                 switch action  {
                 case .onWordsMoved(let reviewed):

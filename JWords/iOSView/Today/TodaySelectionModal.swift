@@ -48,6 +48,19 @@ struct TodaySelection: ReducerProtocol {
             }
         }
         
+        var newSchedule: TodaySchedule {
+            getTodaySchedule(schedules, reviewedBooks.map { $0.id })
+        }
+        
+        fileprivate func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
+            let studyIDs = schedule.keys.filter { schedule[$0] == .study }
+            let reviewIDs = schedule.keys.filter { schedule[$0] == .review }
+            let reviewedIDs = reviewedIDs.filter { schedule[$0, default: .none] == .none }
+            return TodaySchedule(studyIDs: studyIDs,
+                                  reviewIDs: reviewIDs,
+                                  reviewedIDs: reviewedIDs,
+                                  createdAt: Date())
+        }
     }
     
     let kv = KVStorageClient.shared
@@ -57,8 +70,6 @@ struct TodaySelection: ReducerProtocol {
         case onAppear
         case studyButtonTapped(StudySet)
         case reviewButtonTapped(StudySet)
-        case okButtonTapped
-        case cancelButtonTapped
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -74,14 +85,6 @@ struct TodaySelection: ReducerProtocol {
             case let .reviewButtonTapped(book):
                 state.toggleReview(book.id)
                 return .none
-            case .okButtonTapped:
-                state.isLoading = true
-                let newSchedule = getTodaySchedule(state.schedules, state.reviewedBooks.map { $0.id })
-                kv.updateSchedule(todaySchedule: newSchedule)
-                state.isLoading = false
-                return .none
-            default:
-                return .none
             }
         }
     }
@@ -95,16 +98,6 @@ struct TodaySelection: ReducerProtocol {
                 return false
             }
         })
-    }
-    
-    private func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
-        let studyIDs = schedule.keys.filter { schedule[$0] == .study }
-        let reviewIDs = schedule.keys.filter { schedule[$0] == .review }
-        let reviewedIDs = reviewedIDs.filter { schedule[$0, default: .none] == .none }
-        return TodaySchedule(studyIDs: studyIDs,
-                              reviewIDs: reviewIDs,
-                              reviewedIDs: reviewedIDs,
-                              createdAt: Date())
     }
 
 }
@@ -131,28 +124,10 @@ struct TodaySelectionModal: View {
                     }
                     
                 }
-                HStack {
-                    button("취소") { vs.send(.cancelButtonTapped) }
-                    Spacer()
-                    button("확인") { vs.send(.okButtonTapped) }
-                }
-                .padding(.bottom, 20)
             }
             .padding(.horizontal, 10)
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
-        }
-    }
-    
-    private func button(_ text: String, onTapped: @escaping () -> Void) -> some View {
-        Button {
-            onTapped()
-        } label: {
-            Text(text)
-                .font(.system(size: 20))
-                .foregroundColor(.black)
-                .padding(5)
-                .defaultRectangleBackground()
         }
     }
 }
