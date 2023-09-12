@@ -191,6 +191,7 @@ struct TodayView: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 10)
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
