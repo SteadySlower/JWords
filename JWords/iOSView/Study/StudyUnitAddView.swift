@@ -17,15 +17,9 @@ struct AddingUnit: ReducerProtocol {
         case addExist(set: StudySet, existing: StudyUnit)
     }
     
-    enum Field: Hashable {
-        case kanji, meaning
-    }
-    
     private let cd = CoreDataClient.shared
     
     struct State: Equatable {
-        @BindingState var focusedField: Field?
-        
         var mode: Mode
         var unitType: UnitType
         var meaningText: String
@@ -90,7 +84,7 @@ struct AddingUnit: ReducerProtocol {
         }
         
         var ableToAdd: Bool {
-            !kanjiText.isEmpty && !meaningText.isEmpty
+            !kanjiText.isEmpty && !meaningText.isEmpty && !isEditingKanji && !hurigana.isEmpty
         }
         
         var okButtonText: String {
@@ -108,7 +102,6 @@ struct AddingUnit: ReducerProtocol {
             kanjiText = ""
             huriText = EditHuriganaText.State(hurigana: "")
             isEditingKanji = true
-            focusedField = .kanji
         }
         
         mutating func setExistAlert() {
@@ -127,21 +120,16 @@ struct AddingUnit: ReducerProtocol {
     
     }
     
-    enum Action: BindableAction, Equatable {
-        case binding(BindingAction<State>)
-        case setUnitType(UnitType)
-        // field 이동 관련
-        case focusFieldChanged(Field?)
-        case onTab(Field)
+    enum Action: Equatable {
         // 한자, 뜻, 후리가나 업데이트 관련
         case updateKanjiText(String)
         case updateMeaningText(String)
         case editHuriText(action: EditHuriganaText.Action)
+        case convertToHuriganaButtonTapped
         case editKanjiTextButtonTapped
         
         // 겹치는 단어 관련
         case checkIfExist(String)
-//        case meaningButtonTapped
         
         // 이미지 버튼 관련
         case kanjiImageButtonTapped
@@ -165,31 +153,8 @@ struct AddingUnit: ReducerProtocol {
     @Dependency(\.pasteBoardClient) var pasteBoardClient
     
     var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
         Reduce { state, action in
             switch action {
-            case .focusFieldChanged(let field):
-                if let field = field,
-                   field == .meaning,
-                   state.unitType != .kanji,
-                   !state.kanjiText.isEmpty,
-                   state.isEditingKanji == true {
-                    let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
-                    state.huriText = EditHuriganaText.State(hurigana: hurigana)
-                    state.isEditingKanji = false
-                }
-                return .none
-            case .setUnitType(let type):
-                switch state.mode {
-                case .editKanji(_):
-                    break
-                default:
-                    state.unitType = type
-                    if type == .kanji {
-                        state.isEditingKanji = true
-                    }
-                }
-                return .none
             case .updateKanjiText(let text):
                 switch state.mode {
                 case .addExist(let set, _):
@@ -197,24 +162,16 @@ struct AddingUnit: ReducerProtocol {
                 default:
                     break
                 }
-                if text.hasTab {
-                    return .task { .onTab(.kanji) }
-                }
                 state.kanjiText = text
                 return .none
             case .updateMeaningText(let text):
-                if text.hasTab {
-                    return .task { .onTab(.meaning) }
-                }
                 state.meaningText = text
                 return .none
-            case .onTab(let field):
-                switch field {
-                case .kanji:
-                    state.focusedField = .meaning
-                case .meaning:
-                    break
-                }
+            case .convertToHuriganaButtonTapped:
+                if state.kanjiText.isEmpty { return .none }
+                let hurigana = HuriganaConverter.shared.convert(state.kanjiText)
+                state.huriText = EditHuriganaText.State(hurigana: hurigana)
+                state.isEditingKanji = false
                 return .none
             case .editKanjiTextButtonTapped:
                 state.isEditingKanji = true
@@ -301,37 +258,35 @@ struct AddingUnit: ReducerProtocol {
 struct StudyUnitAddView: View {
     
     let store: StoreOf<AddingUnit>
-    @FocusState var focusedField: AddingUnit.Field?
+    
+    private let FONT_SIZE: CGFloat = 30
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                Picker("", selection: vs.binding(
-                    get: \.unitType,
-                    send: AddingUnit.Action.setUnitType)
-                ) {
-                    ForEach(UnitType.allCases, id: \.self) {
-                        Text($0.description)
-                    }
-                }
-                .pickerStyle(.segmented)
                 VStack {
                     if vs.isEditingKanji {
-                        TextEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
-                            .font(.system(size: 30))
-                            .border(.black)
-                            .focused($focusedField, equals: .kanji)
+                        VStack {
+                            title("단어 (앞면)")
+                            textEditor(text: vs.binding(get: \.kanjiText, send: AddingUnit.Action.updateKanjiText))
+                            button("후리가나 변환") { vs.send(.convertToHuriganaButtonTapped) }
+                                .trailingAlignment()
+                        }
                     } else {
-                        HStack {
-                            VStack {
+                        VStack {
+                            title("후리가나 (앞면)")
+                            ScrollView {
                                 EditableHuriganaText(store: store.scope(
                                     state: \.huriText,
-                                    action: AddingUnit.Action.editHuriText(action:))
+                                    action: AddingUnit.Action.editHuriText(action:)),
+                                    fontsize: FONT_SIZE
                                 )
-                                Spacer()
+                                .padding(.horizontal, 5)
                             }
-                            Button("수정") { vs.send(.editKanjiTextButtonTapped) }
-                                .disabled(vs.unitType == .kanji)
+                            .frame(height: 100)
+                            .defaultRectangleBackground()
+                            button("단어 수정") { vs.send(.editKanjiTextButtonTapped) }
+                            .trailingAlignment()
                         }
                     }
                     #if os(macOS)
@@ -345,16 +300,10 @@ struct StudyUnitAddView: View {
                     #endif
                 }
                 .frame(height: vs.kanjiImage == nil ? 100 : 250)
-                .padding(.bottom, 20)
+                .padding(.bottom, 40)
                 VStack {
-                    HStack {
-                        TextEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
-                            .font(.system(size: 30))
-                            .border(.black)
-                            .frame(height: 100)
-                            .focused($focusedField, equals: .meaning)
-    //                    Button("검색") { vs.send(.meaningButtonTapped) }
-                    }
+                    title("뜻 (뒷면)")
+                    textEditor(text: vs.binding(get: \.meaningText, send: AddingUnit.Action.updateMeaningText))
                     #if os(macOS)
                     if let meaningImage = vs.meaningImage {
                         Image(nsImage: meaningImage).resizable()
@@ -366,16 +315,18 @@ struct StudyUnitAddView: View {
                     #endif
                 }
                 .frame(height: vs.meaningImage == nil ? 100 : 200)
-                .padding(.bottom, 20)
+                .padding(.bottom, 40)
                 #if os(iOS)
                 HStack(spacing: 100) {
-                    Button("취소") { vs.send(.cancelButtonTapped) }
-                    Button(vs.okButtonText) { vs.send(.addButtonTapped) }
+                    inputButton("취소", foregroundColor: .black) { vs.send(.cancelButtonTapped) }
+                    inputButton(vs.okButtonText,
+                                foregroundColor: !vs.ableToAdd ? .gray : .black)
+                        { vs.send(.addButtonTapped)  }
                         .disabled(!vs.ableToAdd)
                 }
                 #elseif os(macOS)
                 if !vs.isLoading {
-                    Button(vs.okButtonText) { vs.send(.addButtonTapped) }
+                    button(vs.okButtonText) { vs.send(.addButtonTapped)  }
                         .disabled(!vs.ableToAdd)
                         .keyboardShortcut(.return, modifiers: [.control])
                 } else {
@@ -386,15 +337,55 @@ struct StudyUnitAddView: View {
             }
             .padding(.horizontal, 10)
             .presentationDetents([.medium])
-            .onChange(of: focusedField, perform: { vs.send(.focusFieldChanged($0)) })
             .onChange(of: vs.checkExistQuery, perform: { vs.send(.checkIfExist($0))})
             .alert(
               self.store.scope(state: \.alert),
               dismiss: .alertDismissed
             )
-            .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
     }
+    
+    private func title(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: FONT_SIZE - 10))
+            .bold()
+            .leadingAlignment()
+    }
+    
+    private func textEditor(text: Binding<String>) -> some View {
+        TextEditor(text: text)
+            .font(.system(size: FONT_SIZE))
+            .frame(height: 100)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .defaultRectangleBackground()
+    }
+    
+    private func button(_ text: String, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: FONT_SIZE - 15))
+                .foregroundColor(.black)
+                .padding(5)
+                .defaultRectangleBackground()
+        }
+    }
+    
+    private func inputButton(_ text: String, foregroundColor: Color, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: FONT_SIZE - 15))
+                .foregroundColor(foregroundColor)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                .defaultRectangleBackground()
+        }
+    }
+    
+    
 }
 
 //struct StudyUnitAddView_Previews: PreviewProvider {
