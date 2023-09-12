@@ -353,11 +353,11 @@ struct StudyUnitAddView: View {
                     #endif
                 }
                 .frame(height: vs.meaningImage == nil ? 100 : 200)
-                .padding(.bottom, 20)
+                .padding(.bottom, 40)
                 #if os(iOS)
                 HStack(spacing: 100) {
-                    button("취소") { vs.send(.cancelButtonTapped) }
-                    button(vs.okButtonText) { vs.send(.addButtonTapped)  }
+                    inputButton("취소") { vs.send(.cancelButtonTapped) }
+                    inputButton(vs.okButtonText) { vs.send(.addButtonTapped)  }
                         .disabled(!vs.ableToAdd)
                 }
                 #elseif os(macOS)
@@ -407,6 +407,19 @@ struct StudyUnitAddView: View {
                 .font(.system(size: FONT_SIZE - 15))
                 .foregroundColor(.black)
                 .padding(5)
+                .defaultRectangleBackground()
+        }
+    }
+    
+    private func inputButton(_ text: String, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: FONT_SIZE - 15))
+                .foregroundColor(.black)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
                 .defaultRectangleBackground()
         }
     }
