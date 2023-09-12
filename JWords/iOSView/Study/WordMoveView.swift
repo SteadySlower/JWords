@@ -92,41 +92,69 @@ struct WordMoveView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                Text("\(vs.toMoveWords.count)개의 단어들을 이동할 단어장을 골라주세요.")
-                Picker("이동할 단어장 고르기", selection: vs.binding(
-                    get: \.selectedID,
-                    send: MoveWords.Action.updateSelection)
-                ) {
-                    Text(vs.wordBooks.isEmpty ? "로딩중" : "이동 안함")
-                        .tag(nil as String?)
-                    ForEach(vs.wordBooks, id: \.id) {
-                        Text($0.title)
-                            .tag($0.id as String?)
+            VStack(spacing: 20) {
+                Text("\(vs.toMoveWords.count)개의 단어 이동하기")
+                    .font(.system(size: 35))
+                    .bold()
+                VStack {
+                    Text("단어장 선택")
+                        .font(.system(size: 20))
+                        .bold()
+                        .leadingAlignment()
+                        .padding(.leading, 10)
+                    Picker("이동할 단어장 고르기", selection: vs.binding(
+                        get: \.selectedID,
+                        send: MoveWords.Action.updateSelection)
+                    ) {
+                        Text(vs.wordBooks.isEmpty ? "로딩중" : "이동 안함")
+                            .tag(nil as String?)
+                        ForEach(vs.wordBooks, id: \.id) {
+                            Text($0.title)
+                                .tag($0.id as String?)
+                        }
                     }
+                    #if os(iOS)
+                    .pickerStyle(.wheel)
+                    #endif
                 }
-                #if os(iOS)
-                .pickerStyle(.wheel)
-                #endif
-                Toggle("단어장 마감하기", isOn: vs.binding(
-                    get: \.willCloseBook,
-                    send: MoveWords.Action.updateWillCloseBook(willClose:))
-                )
-                .padding(.horizontal, 20)
+                VStack {
+                    Toggle("현재 단어장 마감",
+                        isOn: vs.binding(
+                            get: \.willCloseBook,
+                            send: MoveWords.Action.updateWillCloseBook(willClose:))
+                    )
+                    .tint(.black)
+                }
                 HStack {
-                    Button("취소") {
+                    button("취소", foregroundColor: .black) {
                         vs.send(.cancelButtonTapped)
                     }
-                    Button(vs.selectedID != nil ? "이동" : "닫기") {
+                    button("확인", foregroundColor: vs.isLoading ? .gray : .black) {
                         vs.send(.closeButtonTapped)
                     }
                     .disabled(vs.isLoading)
                 }
             }
+            .padding(.horizontal, 10)
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
     }
+    
+    private func button(_ text: String, foregroundColor: Color, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: 20))
+                .foregroundColor(foregroundColor)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                .defaultRectangleBackground()
+        }
+    }
+
+    
     
 }
 
