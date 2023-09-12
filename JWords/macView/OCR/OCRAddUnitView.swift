@@ -171,19 +171,18 @@ struct OCRAddUnitView: View {
                     VStack(spacing: 35) {
                         ZStack {}.frame(height: 10)
                         if vs.showOCR {
-                            VStack {
+                            VStack(spacing: 20) {
                                 Text("스캔 결과")
                                     .font(.system(size: 20))
                                     .bold()
                                     .leadingAlignment()
                                     .padding(.leading, 10)
+                                IfLetStore(self.store.scope(state: \.ocr,
+                                                            action: AddUnitWithOCR.Action.ocr)
+                                ) {
+                                    OCRView(store: $0)
+                                }
                             }
-                            IfLetStore(self.store.scope(state: \.ocr,
-                                                        action: AddUnitWithOCR.Action.ocr)
-                            ) {
-                                OCRView(store: $0)
-                            }
-                            .frame(width: vs.ocr?.image.size.width, height: vs.ocr?.image.size.height)
                         } else {
                             VStack {
                                 Text("이미지 스캔하기")
