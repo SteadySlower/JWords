@@ -511,8 +511,7 @@ struct StudyView: View {
                 Button(vs.setting.studyViewMode == .selection ? "이동" : "✅") {
                     vs.send(.setMoveModal(isPresented: true))
                 }
-                .disabled(vs.set == nil || vs.setting.studyViewMode == .edit)
-                .hide(vs.isKanjiView)
+                .hide(vs.set == nil || vs.setting.studyViewMode == .edit || vs.isKanjiView)
             } }
             .toolbar(.hidden, for: .tabBar)
             #endif
