@@ -117,7 +117,10 @@ struct TodaySelectionModal: View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
                 Text("학습 혹은 복습할 단어장을 골라주세요.")
-                ScrollView {
+                    .font(.system(size: 20))
+                    .bold()
+                    .padding(.vertical, 10)
+                ScrollView(showsIndicators: false) {
                     VStack(spacing: 8) {
                         ForEach(vs.wordBooks, id: \.id) { wordBook in
                             bookCell(wordBook,
@@ -126,17 +129,30 @@ struct TodaySelectionModal: View {
                                      { vs.send(.reviewButtonTapped(wordBook)) })
                         }
                     }
+                    
                 }
                 HStack {
-                    Button("취소") { vs.send(.cancelButtonTapped) }
+                    button("취소") { vs.send(.cancelButtonTapped) }
                     Spacer()
-                    Button("확인") { vs.send(.okButtonTapped) }
+                    button("확인") { vs.send(.okButtonTapped) }
                 }
-                .padding()
+                .padding(.bottom, 20)
             }
-            .padding(10)
+            .padding(.horizontal, 10)
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
+        }
+    }
+    
+    private func button(_ text: String, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: 20))
+                .foregroundColor(.black)
+                .padding(5)
+                .defaultRectangleBackground()
         }
     }
 }
@@ -188,8 +204,8 @@ extension TodaySelectionModal {
             }
             .frame(height: 80)
             .padding(8)
-            .border(.gray, width: 1)
             .font(.system(size: 24))
+            .defaultRectangleBackground()
         }
         
         return body
