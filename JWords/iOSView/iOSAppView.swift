@@ -99,7 +99,7 @@ struct iOSAppView: View {
                         TodayView(store: $0)
                     }
                 }
-                .tabItem { Image(systemName: "calendar") }
+                .tabItem { Label("오늘 단어장", systemImage: "calendar") }
                 .tag(Tab.today)
                 #if os(iOS)
                 .navigationViewStyle(.stack)
@@ -112,7 +112,7 @@ struct iOSAppView: View {
                         HomeView(store: $0)
                     }
                 }
-                .tabItem { Image(systemName: "house") }
+                .tabItem { Label("모든 단어장", systemImage: "books.vertical") }
                 .tag(Tab.home)
                 #if os(iOS)
                 .navigationViewStyle(.stack)
@@ -127,9 +127,13 @@ struct iOSAppView: View {
                 }
                 .tabItem {
                 #if os(iOS)
+                Label {
+                    Text("한자 리스트")
+                } icon: {
                     Image(uiImage:
                             ImageRenderer(content: Text("漢").font(.title)).uiImage ?? UIImage()
                     )
+                }
                 #endif
                 }
                 .tag(Tab.kanji)
@@ -144,12 +148,13 @@ struct iOSAppView: View {
                         OCRAddUnitView(store: $0)
                     }
                 }
-                .tabItem { Image(systemName: "scanner") }
+                .tabItem { Label("단어 스캐너", systemImage: "scanner") }
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
                 .tag(Tab.ocr)
             }
+            .tint(.black)
             .onAppear {
                 vs.send(.onAppear)
                 // navigation 들어갔다가 나올 때 탭바 투명 방지
