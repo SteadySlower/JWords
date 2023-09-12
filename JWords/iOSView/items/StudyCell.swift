@@ -244,7 +244,7 @@ struct StudyCell: View {
                     .font(.system(size: 20))
             }
         }
-        .padding(2)
+        .padding([.horizontal, .bottom], 2)
         .defaultRectangleBackground()
     }
     

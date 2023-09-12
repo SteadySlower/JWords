@@ -48,6 +48,19 @@ struct TodaySelection: ReducerProtocol {
             }
         }
         
+        var newSchedule: TodaySchedule {
+            getTodaySchedule(schedules, reviewedBooks.map { $0.id })
+        }
+        
+        fileprivate func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
+            let studyIDs = schedule.keys.filter { schedule[$0] == .study }
+            let reviewIDs = schedule.keys.filter { schedule[$0] == .review }
+            let reviewedIDs = reviewedIDs.filter { schedule[$0, default: .none] == .none }
+            return TodaySchedule(studyIDs: studyIDs,
+                                  reviewIDs: reviewIDs,
+                                  reviewedIDs: reviewedIDs,
+                                  createdAt: Date())
+        }
     }
     
     let kv = KVStorageClient.shared
@@ -57,8 +70,6 @@ struct TodaySelection: ReducerProtocol {
         case onAppear
         case studyButtonTapped(StudySet)
         case reviewButtonTapped(StudySet)
-        case okButtonTapped
-        case cancelButtonTapped
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -74,14 +85,6 @@ struct TodaySelection: ReducerProtocol {
             case let .reviewButtonTapped(book):
                 state.toggleReview(book.id)
                 return .none
-            case .okButtonTapped:
-                state.isLoading = true
-                let newSchedule = getTodaySchedule(state.schedules, state.reviewedBooks.map { $0.id })
-                kv.updateSchedule(todaySchedule: newSchedule)
-                state.isLoading = false
-                return .none
-            default:
-                return .none
             }
         }
     }
@@ -96,16 +99,6 @@ struct TodaySelection: ReducerProtocol {
             }
         })
     }
-    
-    private func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
-        let studyIDs = schedule.keys.filter { schedule[$0] == .study }
-        let reviewIDs = schedule.keys.filter { schedule[$0] == .review }
-        let reviewedIDs = reviewedIDs.filter { schedule[$0, default: .none] == .none }
-        return TodaySchedule(studyIDs: studyIDs,
-                              reviewIDs: reviewIDs,
-                              reviewedIDs: reviewedIDs,
-                              createdAt: Date())
-    }
 
 }
 
@@ -117,7 +110,10 @@ struct TodaySelectionModal: View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
                 Text("학습 혹은 복습할 단어장을 골라주세요.")
-                ScrollView {
+                    .font(.system(size: 20))
+                    .bold()
+                    .padding(.vertical, 10)
+                ScrollView(showsIndicators: false) {
                     VStack(spacing: 8) {
                         ForEach(vs.wordBooks, id: \.id) { wordBook in
                             bookCell(wordBook,
@@ -126,15 +122,10 @@ struct TodaySelectionModal: View {
                                      { vs.send(.reviewButtonTapped(wordBook)) })
                         }
                     }
+                    
                 }
-                HStack {
-                    Button("취소") { vs.send(.cancelButtonTapped) }
-                    Spacer()
-                    Button("확인") { vs.send(.okButtonTapped) }
-                }
-                .padding()
             }
-            .padding(10)
+            .padding(.horizontal, 10)
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
@@ -188,8 +179,8 @@ extension TodaySelectionModal {
             }
             .frame(height: 80)
             .padding(8)
-            .border(.gray, width: 1)
             .font(.system(size: 24))
+            .defaultRectangleBackground()
         }
         
         return body

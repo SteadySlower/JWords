@@ -54,7 +54,7 @@ struct TodayList: ReducerProtocol {
         case todaySelection(action: TodaySelection.Action)
         case setSelectionModal(isPresent: Bool)
         case listButtonTapped
-        case autoAddButtonTapped
+        case clearScheduleButtonTapped
         case showStudyView(Bool)
         case todayStatusTapped
         case homeCellTapped(StudySet)
@@ -73,13 +73,21 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
+                    guard let newSchedule = state.todaySelection?.newSchedule else { return .none }
+                    kv.updateSchedule(todaySchedule: newSchedule)
                     state.todaySelection = nil
                     return .task { .onAppear }
                 }
                 return .none
             case .todayStatusTapped:
                 if state.todayStatus == .empty {
-                    return .task { .autoAddButtonTapped }
+                    state.clear()
+                    state.isLoading = true
+                    let sets = try! cd.fetchSets()
+                    kv.autoSetSchedule(sets: sets)
+                    fetchSchedule(&state)
+                    state.isLoading = false
+                    return .none
                 } else {
                     state.wordList = WordList.State(units: state.onlyFailWords)
                     return .none
@@ -92,21 +100,13 @@ struct TodayList: ReducerProtocol {
                 state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
                                                             reviewBooks: state.reviewWordBooks, reviewedBooks: state.reviewedWordBooks)
                 return .none
-            case .autoAddButtonTapped:
+            case .clearScheduleButtonTapped:
                 state.clear()
                 state.isLoading = true
-                let sets = try! cd.fetchSets()
-                kv.autoSetSchedule(sets: sets)
+                kv.updateSchedule(todaySchedule: .empty)
                 fetchSchedule(&state)
                 state.isLoading = false
-                return .none
-            case .todaySelection(let action):
-                switch action {
-                case .okButtonTapped, .cancelButtonTapped:
-                    return .task { .onAppear }
-                default:
-                    return .none
-                }
+                return .task  { .onAppear }
             case .wordList(let action):
                 switch action  {
                 case .onWordsMoved(let reviewed):
@@ -191,6 +191,7 @@ struct TodayView: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 10)
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
@@ -227,9 +228,9 @@ struct TodayView: View {
                             .foregroundColor(.black)
                     }
                     Button {
-                        vs.send(.autoAddButtonTapped)
+                        vs.send(.clearScheduleButtonTapped)
                     } label: {
-                        Image(systemName: "calendar.badge.plus")
+                        Image(systemName: "eraser")
                             .resizable()
                             .foregroundColor(.black)
                     }

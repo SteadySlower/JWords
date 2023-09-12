@@ -169,7 +169,6 @@ struct OCRAddUnitView: View {
                     Color.white
                         .onTapGesture { dismissKeyBoard() }
                     VStack(spacing: 35) {
-                        ZStack {}.frame(height: 10)
                         if vs.showOCR {
                             VStack(spacing: 20) {
                                 Text("스캔 결과")
@@ -207,8 +206,8 @@ struct OCRAddUnitView: View {
                        {
                            StudyUnitAddView(store: $0)
                        }
-                        ZStack {}.frame(height: 10)
                     }
+                    .padding(.vertical, 10)
                 }
             }
             .padding(.horizontal, 10)

@@ -103,6 +103,7 @@ struct KanjiListView: View {
                                 }
                         }
                     }
+                    .padding(.top, 10)
                 }
             }
             .onAppear { vs.send(.onAppear) }
