@@ -20,8 +20,8 @@ enum FrontType: Int, Equatable, Hashable, CaseIterable {
     
     var preferredTypeText: String {
         switch self {
-        case .meaning: return "한 -> 日"
-        case .kanji: return "日 -> 한"
+        case .meaning: return "뜻 앞면"
+        case .kanji: return "일본어 앞면"
         }
     }
 }
