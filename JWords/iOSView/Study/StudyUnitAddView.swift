@@ -90,7 +90,7 @@ struct AddingUnit: ReducerProtocol {
         }
         
         var ableToAdd: Bool {
-            !kanjiText.isEmpty && !meaningText.isEmpty
+            !kanjiText.isEmpty && !meaningText.isEmpty && !isEditingKanji && !hurigana.isEmpty
         }
         
         var okButtonText: String {
@@ -356,8 +356,10 @@ struct StudyUnitAddView: View {
                 .padding(.bottom, 40)
                 #if os(iOS)
                 HStack(spacing: 100) {
-                    inputButton("취소") { vs.send(.cancelButtonTapped) }
-                    inputButton(vs.okButtonText) { vs.send(.addButtonTapped)  }
+                    inputButton("취소", foregroundColor: .black) { vs.send(.cancelButtonTapped) }
+                    inputButton(vs.okButtonText,
+                                foregroundColor: !vs.ableToAdd ? .gray : .black)
+                        { vs.send(.addButtonTapped)  }
                         .disabled(!vs.ableToAdd)
                 }
                 #elseif os(macOS)
@@ -411,13 +413,13 @@ struct StudyUnitAddView: View {
         }
     }
     
-    private func inputButton(_ text: String, onTapped: @escaping () -> Void) -> some View {
+    private func inputButton(_ text: String, foregroundColor: Color, onTapped: @escaping () -> Void) -> some View {
         Button {
             onTapped()
         } label: {
             Text(text)
                 .font(.system(size: FONT_SIZE - 15))
-                .foregroundColor(.black)
+                .foregroundColor(foregroundColor)
                 .padding(.vertical, 10)
                 .padding(.horizontal, 20)
                 .defaultRectangleBackground()
