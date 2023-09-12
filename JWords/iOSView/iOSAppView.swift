@@ -153,12 +153,14 @@ struct iOSAppView: View {
             .onAppear {
                 vs.send(.onAppear)
                 // navigation 들어갔다가 나올 때 탭바 투명 방지
+                #if os(iOS)
                 let tabBarAppearance = UITabBarAppearance()
                 tabBarAppearance.configureWithOpaqueBackground()
                 UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
                 let navigationBarAppearance = UINavigationBarAppearance()
                 navigationBarAppearance.configureWithOpaqueBackground()
                 UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+                #endif
             }
         }
     }
