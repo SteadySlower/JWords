@@ -497,21 +497,32 @@ struct StudyView: View {
             #if os(iOS)
             .toolbar { ToolbarItem {
                 HStack {
-                    Button("♻️") {
+                    Button {
+                        vs.send(.setMoveModal(isPresented: true))
+                    } label: {
+                        Image(systemName: "book.closed")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
+                    .hide(vs.set == nil || vs.setting.studyViewMode == .edit || vs.isKanjiView)
+                    Button {
                         vs.send(.randomButtonTapped)
+                    } label: {
+                        Image(systemName: "shuffle")
+                            .resizable()
+                            .foregroundColor(vs.setting.studyViewMode == .normal ? .black : .gray)
                     }
                     .disabled(vs.setting.studyViewMode != .normal)
-                    Button("⚙️") {
+                    .hide(vs.isKanjiView)
+                    Button {
                         vs.send(.setSideBar(isPresented: !vs.showSideBar))
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .resizable()
+                            .foregroundColor(.black)
                     }
+                    .hide(vs.isKanjiView)
                 }
-                .hide(vs.isKanjiView)
-            } }
-            .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                Button(vs.setting.studyViewMode == .selection ? "이동" : "✅") {
-                    vs.send(.setMoveModal(isPresented: true))
-                }
-                .hide(vs.set == nil || vs.setting.studyViewMode == .edit || vs.isKanjiView)
             } }
             .toolbar(.hidden, for: .tabBar)
             #endif
