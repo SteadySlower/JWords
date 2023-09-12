@@ -420,6 +420,7 @@ struct StudyView: View {
                         }
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
+                    .padding(.vertical, 10)
                 } else if vs.setting.studyViewMode == .edit {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
@@ -429,6 +430,7 @@ struct StudyView: View {
                         }
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
+                    .padding(.vertical, 10)
                 } else if vs.setting.studyViewMode == .selection {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
@@ -438,6 +440,7 @@ struct StudyView: View {
                         }
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
+                    .padding(.vertical, 10)
                 } else if vs.setting.studyViewMode == .delete {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
@@ -447,6 +450,7 @@ struct StudyView: View {
                         }
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
+                    .padding(.vertical, 10)
                 }
             }
             .loadingView(vs.isLoading)
