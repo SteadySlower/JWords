@@ -64,6 +64,7 @@ struct OCRView: View {
                 }
                 .frame(width: vs.image.size.width, height: vs.image.size.height)
                 xButton { vs.send(.removeImageButtonTapped) }
+                    .padding(.horizontal, 20)
             }
         }
     }
