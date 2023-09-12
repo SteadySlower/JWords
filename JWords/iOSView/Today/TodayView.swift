@@ -54,7 +54,7 @@ struct TodayList: ReducerProtocol {
         case todaySelection(action: TodaySelection.Action)
         case setSelectionModal(isPresent: Bool)
         case listButtonTapped
-        case autoAddButtonTapped
+        case clearScheduleButtonTapped
         case showStudyView(Bool)
         case todayStatusTapped
         case homeCellTapped(StudySet)
@@ -81,7 +81,13 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .todayStatusTapped:
                 if state.todayStatus == .empty {
-                    return .task { .autoAddButtonTapped }
+                    state.clear()
+                    state.isLoading = true
+                    let sets = try! cd.fetchSets()
+                    kv.autoSetSchedule(sets: sets)
+                    fetchSchedule(&state)
+                    state.isLoading = false
+                    return .none
                 } else {
                     state.wordList = WordList.State(units: state.onlyFailWords)
                     return .none
@@ -94,14 +100,13 @@ struct TodayList: ReducerProtocol {
                 state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
                                                             reviewBooks: state.reviewWordBooks, reviewedBooks: state.reviewedWordBooks)
                 return .none
-            case .autoAddButtonTapped:
+            case .clearScheduleButtonTapped:
                 state.clear()
                 state.isLoading = true
-                let sets = try! cd.fetchSets()
-                kv.autoSetSchedule(sets: sets)
+                kv.updateSchedule(todaySchedule: .empty)
                 fetchSchedule(&state)
                 state.isLoading = false
-                return .none
+                return .task  { .onAppear }
             case .wordList(let action):
                 switch action  {
                 case .onWordsMoved(let reviewed):
@@ -223,9 +228,9 @@ struct TodayView: View {
                             .foregroundColor(.black)
                     }
                     Button {
-                        vs.send(.autoAddButtonTapped)
+                        vs.send(.clearScheduleButtonTapped)
                     } label: {
-                        Image(systemName: "calendar.badge.plus")
+                        Image(systemName: "eraser")
                             .resizable()
                             .foregroundColor(.black)
                     }
