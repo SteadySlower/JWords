@@ -24,6 +24,14 @@ struct InputBook: ReducerProtocol {
             self.preferredFrontType = set?.preferredFrontType ?? .kanji
         }
         
+        var okButtonText: String {
+            return set == nil ? "추가" : "수정"
+        }
+        
+        var ableToAdd: Bool {
+            !title.isEmpty
+        }
+        
         mutating func clear() {
             title = ""
             preferredFrontType = .kanji
@@ -127,25 +135,38 @@ struct MacSetAddView: View {
 struct WordBookAddModal: View {
     let store: StoreOf<InputBook>
     
+    private let FONT_SIZE: CGFloat = 20
+    
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                TextField("단어장 이름", text: vs.binding(get: \.title, send: InputBook.Action.updateTitle))
-                    .padding()
-                Picker("", selection: vs.binding(get: \.preferredFrontType, send: InputBook.Action.updatePreferredFrontType)) {
-                    ForEach(FrontType.allCases, id: \.self) {
-                        Text($0.preferredTypeText)
-                    }
+            VStack(spacing: 30) {
+                VStack {
+                    title("단어장 이름")
+                    textField(vs.binding(
+                        get: \.title,
+                        send: InputBook.Action.updateTitle))
                 }
-                .pickerStyle(.segmented)
-                .padding()
+                VStack {
+                    title("앞면 유형")
+                    Picker("", selection: vs.binding(
+                        get: \.preferredFrontType,
+                        send: InputBook.Action.updatePreferredFrontType)
+                    ) {
+                        ForEach(FrontType.allCases, id: \.self) {
+                            Text($0.preferredTypeText)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
                 HStack {
-                    Button("추가"){
-                        vs.send(.addButtonTapped)
-                    }
-                    Button("취소", role: .cancel) {
-                        vs.send(.cancelButtonTapped)
-                    }
+                    Spacer()
+                    inputButton("취소", foregroundColor: .black) { vs.send(.cancelButtonTapped) }
+                    Spacer()
+                    inputButton(vs.okButtonText,
+                                foregroundColor: !vs.ableToAdd ? .gray : .black)
+                        { vs.send(.addButtonTapped) }
+                        .disabled(!vs.ableToAdd)
+                    Spacer()
                 }
             }
             .alert(
@@ -154,6 +175,34 @@ struct WordBookAddModal: View {
             )
             .loadingView(vs.isLoading)
             .padding()
+        }
+    }
+    
+    private func title(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: FONT_SIZE))
+            .bold()
+            .leadingAlignment()
+    }
+    
+    private func textField(_ text: Binding<String>) -> some View {
+        TextField("단어장 이름", text: text)
+            .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
+            .font(.system(size: FONT_SIZE))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .defaultRectangleBackground()
+    }
+    
+    private func inputButton(_ text: String, foregroundColor: Color, onTapped: @escaping () -> Void) -> some View {
+        Button {
+            onTapped()
+        } label: {
+            Text(text)
+                .font(.system(size: FONT_SIZE))
+                .foregroundColor(foregroundColor)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                .defaultRectangleBackground()
         }
     }
 }
