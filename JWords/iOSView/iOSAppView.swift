@@ -144,7 +144,7 @@ struct iOSAppView: View {
                         OCRAddUnitView(store: $0)
                     }
                 }
-                .tabItem { Image(systemName: "pencil") }
+                .tabItem { Image(systemName: "scanner") }
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
