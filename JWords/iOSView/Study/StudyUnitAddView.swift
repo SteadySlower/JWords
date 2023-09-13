@@ -245,6 +245,7 @@ struct AddingUnit: ReducerProtocol {
                     let addedExist = try! cd.addExistingUnit(unit: unit,
                                                              meaningText: state.meaningText,
                                                              in: set)
+                    state.clearInputs()
                     return .task { .unitAdded(addedExist) }
                 }
             default:
