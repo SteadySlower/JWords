@@ -80,6 +80,14 @@ struct AddUnitWithOCR: ReducerProtocol {
                     break
                 }
                 return .none
+            case .addUnit(let action):
+                switch action {
+                case .unitAdded:
+                    state.selectSet.onUnitAdded()
+                    return .none
+                default:
+                    return .none
+                }
             case .ocr(let action):
                 switch action {
                 case .ocrMarkTapped(let lang, let text):
