@@ -120,6 +120,19 @@ struct AddingUnit: ReducerProtocol {
                 TextState("\(kanjiText)와 동일한 \(type.description)이(가) 존재합니다")
             }
         }
+        
+        mutating func setUneditableAlert() {
+            let kanjiText = self.kanjiText
+            alert = AlertState<Action> {
+                TextState("표제어 중복")
+            } actions: {
+                ButtonState(action: .cancelButtonTapped) {
+                    TextState("취소")
+                }
+            } message: {
+                TextState("\(kanjiText)가 이미 존재합니다. 똑같은 표제어로 수정할 수 없습니다.")
+            }
+        }
     
     }
     
@@ -190,8 +203,13 @@ struct AddingUnit: ReducerProtocol {
                     } else {
                         state.mode = .insert(set: set)
                     }
-                case .editUnit(_), .editKanji(_):
-                    break
+                case .editUnit(let toEdit):
+                    let unit = try! cd.checkIfExist(query)
+                    if let unit = unit,
+                       unit.kanjiText != toEdit.kanjiText {
+                        state.setUneditableAlert()
+                    }
+                default: break
                 }
                 return .none
             case .kanjiImageButtonTapped:
