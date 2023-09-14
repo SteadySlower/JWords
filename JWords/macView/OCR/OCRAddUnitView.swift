@@ -192,16 +192,23 @@ struct OCRAddUnitView: View {
                             }
                         } else {
                             VStack {
-                                Text("이미지 스캔하기")
-                                    .font(.system(size: 20))
-                                    .bold()
-                                    .leadingAlignment()
-                                    .padding(.leading, 10)
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text("이미지 스캔하기")
+                                        .font(.system(size: 20))
+                                        .bold()
+                                    Text("정면에서 찍을 수록 인식률이 높습니다.\n글자 크기가 클 수록 인식률이 높습니다.\n요미가나가 없이 한자만 있는 텍스트의 인식률이 높습니다.\n단어 사이에 간격이 넓을 수록 인식률이 높습니다.")
+                                        .font(.system(size: 12))
+                                        .multilineTextAlignment(.leading)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                .padding([.leading, .bottom], 10)
+                                .leadingAlignment()
                                 ImageGetterButtons(store: store.scope(
                                     state: \.getImageButtons,
                                     action: AddUnitWithOCR.Action.getImageButtons)
                                 )
                             }
+                            .padding(.vertical, 10)
                         }
                         StudySetPicker(store: store.scope(
                             state: \.selectSet,
@@ -215,8 +222,8 @@ struct OCRAddUnitView: View {
                            StudyUnitAddView(store: $0)
                        }
                     }
-                    .padding(.vertical, 10)
                 }
+                .padding(.vertical, 10)
             }
             .padding(.horizontal, 10)
             .navigationTitle("단어 스캐너")
