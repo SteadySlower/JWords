@@ -51,10 +51,12 @@ struct ImageGetterButtons: View {
         WithViewStore(store, observe: { $0 }) { vs in
             HStack {
                 Spacer()
+                #if os(macOS)
                 button(for: .clipboard) {
                     vs.send(.clipBoardButtonTapped)
                 }
                 Spacer()
+                #endif
                 button(for: .camera) {
                     vs.send(.cameraButtonTapped)
                 }
