@@ -2,6 +2,7 @@
 StudyData/
 xcuserdata/
 GoogleService-Info.plist
+Info.plist
 .DS_Store
 # Created by 
 https://www.toptal.com/developers/gitignore/api/xcode,swiftpm,swift,firebase
