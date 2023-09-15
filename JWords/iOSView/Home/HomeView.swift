@@ -133,7 +133,7 @@ struct HomeView: View {
                                 send: HomeList.Action.showStudyView))
                 { EmptyView() }
             }
-            .navigationTitle("단어장 목록")
+            .navigationTitle("모든 단어장")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif

@@ -107,7 +107,7 @@ struct KanjiListView: View {
                 }
             }
             .onAppear { vs.send(.onAppear) }
-            .navigationTitle("한자 모아보기")
+            .navigationTitle("한자 리스트")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
