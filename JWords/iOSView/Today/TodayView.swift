@@ -236,6 +236,7 @@ struct TodayView: View {
                     }
                 }
             }}
+            #if os(iOS)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -249,6 +250,7 @@ struct TodayView: View {
                     }
                 }
             }
+            #endif
         }
     }
     
