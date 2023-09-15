@@ -236,6 +236,19 @@ struct TodayView: View {
                     }
                 }
             }}
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        if let url = URL(string: "https://steadyslower.notion.site/b3de7d738dc149d789e48eba256e7632?pvs=4") {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
+                }
+            }
         }
     }
     
