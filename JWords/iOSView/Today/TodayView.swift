@@ -214,7 +214,7 @@ struct TodayView: View {
                     TodaySelectionModal(store: $0)
                 }
             }
-            .navigationTitle("今日単完")
+            .navigationTitle("오늘 단어장")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
