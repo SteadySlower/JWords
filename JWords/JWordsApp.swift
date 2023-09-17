@@ -6,14 +6,16 @@
 //
 
 import SwiftUI
-import FirebaseCore
 import ComposableArchitecture
+import FirebaseCore
+import GoogleMobileAds
 
 #if os(iOS)
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
+      FirebaseApp.configure()
+      GADMobileAds.sharedInstance().start(completionHandler: nil)
     return true
   }
 }
@@ -39,6 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         FirebaseApp.configure()
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
     }
 }
 
