@@ -58,7 +58,7 @@
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
 		06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC609929AEF04600AA67E6 /* MacAddWordView.swift */; };
 		06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */; };
-		06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 06CEAC512AB6B71B007783F6 /* GoogleMobileAds */; };
+		06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 06CEAC512AB6B71B007783F6 /* GoogleMobileAds */; };
 		06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEAC542AB6BB96007783F6 /* BannerAdView.swift */; };
 		06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2462866F1C800A620CC /* JWordsApp.swift */; };
 		06CEF24B2866F1CB00A620CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06CEF24A2866F1CB00A620CC /* Assets.xcassets */; };

@@ -8,7 +8,9 @@
 import SwiftUI
 import ComposableArchitecture
 import FirebaseCore
+#if os(iOS)
 import GoogleMobileAds
+#endif
 
 #if os(iOS)
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -41,7 +43,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         FirebaseApp.configure()
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
     }
 }
 

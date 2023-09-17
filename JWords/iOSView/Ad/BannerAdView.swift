@@ -1,11 +1,18 @@
-import GoogleMobileAds
+
 import SwiftUI
 
 extension View {
     func withBannerAD() -> some View {
+        #if os(iOS)
         ModifiedContent(content: self, modifier: AddBannerViewModifier())
+        #elseif os(macOS)
+        self
+        #endif
     }
 }
+
+#if os(iOS)
+import GoogleMobileAds
 
 private struct AddBannerViewModifier: ViewModifier {
     
@@ -80,3 +87,4 @@ private struct BannerView: UIViewControllerRepresentable {
         }
     }
 }
+#endif
