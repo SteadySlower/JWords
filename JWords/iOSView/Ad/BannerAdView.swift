@@ -29,7 +29,7 @@ private struct AddBannerViewModifier: ViewModifier {
 private struct BannerView: UIViewControllerRepresentable {
     private let adWidth: CGFloat
     private let bannerView = GADBannerView()
-    private let adUnitID = "/6499/example/banner"
+    private let adUnitID = (Bundle.main.infoDictionary?["BannerAdUnitID"] as? String) ?? "/6499/example/banner"
     
     init(adWidth: CGFloat) {
         self.adWidth = adWidth
