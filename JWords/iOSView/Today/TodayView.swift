@@ -203,6 +203,7 @@ struct TodayView: View {
                                 send: TodayList.Action.showStudyView))
                 { EmptyView() }
             }
+            .withBannerAD()
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .onDisappear { vs.send(.onDisappear) }
