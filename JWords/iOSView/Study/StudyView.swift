@@ -453,6 +453,7 @@ struct StudyView: View {
                     .padding(.vertical, 10)
                 }
             }
+            .withBannerAD()
             .loadingView(vs.isLoading)
             .navigationTitle(vs.navigationTitle)
             .onAppear { vs.send(.onAppear) }

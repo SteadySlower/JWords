@@ -225,6 +225,7 @@ struct OCRAddUnitView: View {
                 }
                 .padding(.vertical, 10)
             }
+            .withBannerAD()
             .padding(.horizontal, 10)
             .navigationTitle("단어 스캐너")
             #if os(iOS)

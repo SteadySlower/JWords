@@ -106,6 +106,7 @@ struct KanjiListView: View {
                     .padding(.top, 10)
                 }
             }
+            .withBannerAD()
             .onAppear { vs.send(.onAppear) }
             .navigationTitle("한자 리스트")
             #if os(iOS)
