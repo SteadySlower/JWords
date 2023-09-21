@@ -1,5 +1,5 @@
 //
-//  TutorialModal.swift
+//  TutorialList.swift
 //  JWords
 //
 //  Created by Jong Won Moon on 2023/09/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TutorialModal: View {
+struct TutorialList: View {
     var body: some View {
         ScrollView {
             VStack {
@@ -40,8 +40,8 @@ struct TutorialModal: View {
     }
 }
 
-struct TutorialModal_Previews: PreviewProvider {
+struct TutorialList_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialModal()
+        TutorialList()
     }
 }
