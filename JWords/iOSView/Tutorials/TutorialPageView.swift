@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TutorialPageView: View {
     
-    @State var index: Int = 1
+    @State var index: Int = 0
     private let tutorial: Tutorial
     
     init(_ tutorial: Tutorial) {
@@ -44,6 +44,6 @@ struct TutorialPageView: View {
 
 struct TutorialPageView_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialPageView(.addBook)
+        TutorialPageView(.addWord)
     }
 }

@@ -46,7 +46,7 @@ enum Tutorial: CaseIterable {
         case .addBook:
             return "Add Book"
         case .addWord:
-            return "단어 추가하기"
+            return "Add Word"
         case .schedule:
             return "복습 스케줄 만들기"
         case .studyView:
@@ -69,7 +69,7 @@ enum Tutorial: CaseIterable {
         case .addBook:
             return 4
         case .addWord:
-            return 0
+            return 8
         case .schedule:
             return 0
         case .studyView:
