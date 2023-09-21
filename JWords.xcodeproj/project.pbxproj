@@ -135,6 +135,7 @@
 		5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */; };
 		5ABE510D2AA7164B0052A551 /* KanjiWikiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */; };
 		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
+		5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
 		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
@@ -307,6 +308,7 @@
 		5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiWikiClient.swift; sourceTree = "<group>"; };
 		5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiWikiView.swift; path = JWords/macView/KanjiWikiView.swift; sourceTree = SOURCE_ROOT; };
 		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
+		5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
 		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -783,6 +785,7 @@
 				0624735C29C6D8580076DBE4 /* InputType.swift */,
 				5A8843C22A11BBDF0027B408 /* Kanji.swift */,
 				062CBDB92A1A0B1100F5B9FE /* ConversionInput.swift */,
+				5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1026,6 +1029,7 @@
 				5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
+				5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */,
 				06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
