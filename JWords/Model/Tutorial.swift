@@ -71,7 +71,7 @@ enum Tutorial: CaseIterable {
         case .addWord:
             return 8
         case .schedule:
-            return 0
+            return 8
         case .studyView:
             return 0
         case .editWord:
