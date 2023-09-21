@@ -11,21 +11,20 @@ struct TutorialList: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("튜토리얼 보기")
-                    .font(.title)
-                    .leadingAlignment()
-                    .padding(.bottom, 10)
                 ForEach(Tutorial.allCases, id: \.self.title) { tutorial in
                     tutorialCell(tutorial)
                 }
             }
+            .padding(.top, 10)
             .padding(.horizontal, 10)
         }
+        .navigationTitle("튜토리얼 보기")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private func tutorialCell(_ tutorial: Tutorial) -> some View {
-        Button {
-            print("디버그: \(tutorial.title) Tapped")
+        NavigationLink {
+            TutorialPageView(tutorial)
         } label: {
             HStack {
                 Text(tutorial.title)
