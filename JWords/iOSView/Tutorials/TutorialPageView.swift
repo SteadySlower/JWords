@@ -10,16 +10,18 @@ import SwiftUI
 struct TutorialPageView: View {
     
     @State var index: Int = 1
+    private let tutorial: Tutorial
     
-    init() {
+    init(_ tutorial: Tutorial) {
+        self.tutorial = tutorial
         setIndicator()
     }
     
     var body: some View {
         VStack {
             TabView(selection: $index) {
-                ForEach(1..<5) { i in
-                    Image("Add Book \(i)")
+                ForEach(0..<tutorial.imageCount, id: \.self) { i in
+                    Image("\(tutorial.imageName) \(i + 1)")
                         .resizable()
                         .padding(.vertical, 30)
                         .scaledToFit()
@@ -42,6 +44,6 @@ struct TutorialPageView: View {
 
 struct TutorialPageView_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialPageView()
+        TutorialPageView(.addBook)
     }
 }
