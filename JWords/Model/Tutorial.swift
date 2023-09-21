@@ -50,7 +50,7 @@ enum Tutorial: CaseIterable {
         case .schedule:
             return "Schedule"
         case .studyView:
-            return "단어 공부하기"
+            return "Study View"
         case .editWord:
             return "단어 수정하기"
         case .moveWord:
@@ -73,7 +73,7 @@ enum Tutorial: CaseIterable {
         case .schedule:
             return 8
         case .studyView:
-            return 0
+            return 7
         case .editWord:
             return 0
         case .moveWord:
