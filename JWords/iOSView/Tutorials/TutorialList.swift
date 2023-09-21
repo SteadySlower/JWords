@@ -20,6 +20,7 @@ struct TutorialList: View {
         }
         .navigationTitle("튜토리얼 보기")
         .navigationBarTitleDisplayMode(.inline)
+        .withBannerAD()
     }
     
     private func tutorialCell(_ tutorial: Tutorial) -> some View {
