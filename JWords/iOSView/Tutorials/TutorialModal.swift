@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Tutorials: CaseIterable {
+enum Tutorial: CaseIterable {
     
     case addBook
     case addWord
@@ -46,7 +46,34 @@ enum Tutorials: CaseIterable {
 
 struct TutorialModal: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            VStack {
+                Text("튜토리얼 보기")
+                    .font(.title)
+                    .leadingAlignment()
+                    .padding(.bottom, 10)
+                ForEach(Tutorial.allCases, id: \.self.title) { tutorial in
+                    tutorialCell(tutorial)
+                }
+            }
+            .padding(.horizontal, 10)
+        }
+    }
+    
+    private func tutorialCell(_ tutorial: Tutorial) -> some View {
+        Button {
+            print("디버그: \(tutorial.title) Tapped")
+        } label: {
+            HStack {
+                Text(tutorial.title)
+                    .font(.title3)
+                    .foregroundColor(.black)
+                Spacer()
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 20)
+            .defaultRectangleBackground()
+        }
     }
 }
 
