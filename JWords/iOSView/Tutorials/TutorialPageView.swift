@@ -32,7 +32,10 @@ struct TutorialPageView: View {
             .tabViewStyle(.page)
         }
         .padding(.horizontal, 20)
+        .padding(.top, 10)
         .padding(.bottom, 20)
+        .navigationTitle(tutorial.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private func setIndicator() {
