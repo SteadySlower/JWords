@@ -36,6 +36,7 @@ struct TodayList: ReducerProtocol {
             todayStatus = nil
             wordList = nil
             todaySelection = nil
+            showTutorial = false
         }
         
         fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
