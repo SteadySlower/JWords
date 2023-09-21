@@ -48,7 +48,7 @@ enum Tutorial: CaseIterable {
         case .addWord:
             return "Add Word"
         case .schedule:
-            return "복습 스케줄 만들기"
+            return "Schedule"
         case .studyView:
             return "단어 공부하기"
         case .editWord:
