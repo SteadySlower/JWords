@@ -27,6 +27,8 @@ struct TodayList: ReducerProtocol {
             todaySelection != nil
         }
         
+        var showTutorial: Bool = false
+        
         fileprivate mutating func clear() {
             studyWordBooks = []
             reviewWordBooks = []
@@ -34,6 +36,7 @@ struct TodayList: ReducerProtocol {
             todayStatus = nil
             wordList = nil
             todaySelection = nil
+            showTutorial = false
         }
         
         fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
@@ -56,6 +59,7 @@ struct TodayList: ReducerProtocol {
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudyView(Bool)
+        case showTutorial(Bool)
         case todayStatusTapped
         case homeCellTapped(StudySet)
         case scheduleResponse(TaskResult<TodayBooks>)
@@ -107,6 +111,9 @@ struct TodayList: ReducerProtocol {
                 fetchSchedule(&state)
                 state.isLoading = false
                 return .task  { .onAppear }
+            case .showTutorial(let show):
+                state.showTutorial = show
+                return .none
             case .wordList(let action):
                 switch action  {
                 case .onWordsMoved(let reviewed):
@@ -202,6 +209,12 @@ struct TodayView: View {
                                 get: \.showStudyView,
                                 send: TodayList.Action.showStudyView))
                 { EmptyView() }
+                NavigationLink(
+                    destination: TutorialList(),
+                    isActive: vs.binding(
+                                get: \.showTutorial,
+                                send: TodayList.Action.showStudyView))
+                { EmptyView() }
             }
             .withBannerAD()
             .loadingView(vs.isLoading)
@@ -241,9 +254,7 @@ struct TodayView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        if let url = URL(string: "https://steadyslower.notion.site/b3de7d738dc149d789e48eba256e7632?pvs=4") {
-                            UIApplication.shared.open(url)
-                        }
+                        vs.send(.showTutorial(true))
                     } label: {
                         Image(systemName: "questionmark.circle")
                             .resizable()

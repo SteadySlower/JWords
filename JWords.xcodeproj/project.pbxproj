@@ -130,9 +130,12 @@
 		5AAF1E042AA9965300709CAE /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E032AA9965300709CAE /* OCRView.swift */; };
 		5AAF1E062AAABEA700709CAE /* RectangleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E052AAABEA700709CAE /* RectangleButton.swift */; };
 		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
+		5AB308382ABBDEE0002EAC3E /* TutorialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB308372ABBDEE0002EAC3E /* TutorialList.swift */; };
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5ABE510B2AA714DF0052A551 /* KanjiWikiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */; };
 		5ABE510D2AA7164B0052A551 /* KanjiWikiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */; };
+		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
+		5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */; };
 		5ACE0A712869986F00A57660 /* WordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A702869986F00A57660 /* WordService.swift */; };
 		5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7528699BAD00A57660 /* WordBook.swift */; };
 		5ACE0A7828699BB400A57660 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACE0A7728699BB400A57660 /* Word.swift */; };
@@ -300,9 +303,12 @@
 		5AAF1E032AA9965300709CAE /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/macView/Components/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
+		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5ABE510A2AA714DE0052A551 /* KanjiWikiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiWikiClient.swift; sourceTree = "<group>"; };
 		5ABE510C2AA7164B0052A551 /* KanjiWikiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KanjiWikiView.swift; path = JWords/macView/KanjiWikiView.swift; sourceTree = SOURCE_ROOT; };
+		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
+		5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		5ACE0A702869986F00A57660 /* WordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordService.swift; sourceTree = "<group>"; };
 		5ACE0A7528699BAD00A57660 /* WordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBook.swift; sourceTree = "<group>"; };
 		5ACE0A7728699BB400A57660 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -607,6 +613,7 @@
 		5A67DC1D286942E800AC156C /* iOSView */ = {
 			isa = PBXGroup;
 			children = (
+				5AB308352ABBDEC6002EAC3E /* Tutorials */,
 				06CEAC532AB6BB78007783F6 /* Ad */,
 				5A8843BF2A11BBA10027B408 /* Kanji */,
 				06E917582A073F0E002289B4 /* Test */,
@@ -731,6 +738,15 @@
 			path = OCR;
 			sourceTree = "<group>";
 		};
+		5AB308352ABBDEC6002EAC3E /* Tutorials */ = {
+			isa = PBXGroup;
+			children = (
+				5AB308372ABBDEE0002EAC3E /* TutorialList.swift */,
+				5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */,
+			);
+			path = Tutorials;
+			sourceTree = "<group>";
+		};
 		5ABE51072AA7124F0052A551 /* StudyData */ = {
 			isa = PBXGroup;
 			children = (
@@ -769,6 +785,7 @@
 				0624735C29C6D8580076DBE4 /* InputType.swift */,
 				5A8843C22A11BBDF0027B408 /* Kanji.swift */,
 				062CBDB92A1A0B1100F5B9FE /* ConversionInput.swift */,
+				5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -971,6 +988,7 @@
 				5AA9097B2A83237B0075AFB9 /* KVStorageClient.swift in Sources */,
 				061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */,
 				06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */,
+				5AB308382ABBDEE0002EAC3E /* TutorialList.swift in Sources */,
 				5A735AFD28D80C3000CADF9B /* TodaySerivce.swift in Sources */,
 				062CBDBA2A1A0B1100F5B9FE /* ConversionInput.swift in Sources */,
 				067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */,
@@ -996,6 +1014,7 @@
 				5A67DC312869529700AC156C /* MacAppView.swift in Sources */,
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
+				5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
 				5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */,
@@ -1010,6 +1029,7 @@
 				5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
+				5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */,
 				06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
