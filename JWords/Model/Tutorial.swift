@@ -60,7 +60,7 @@ enum Tutorial: CaseIterable {
         case .kanjiList:
             return "Kanji List"
         case .scanWord:
-            return "단어 스캔하기"
+            return "Scan Word"
         }
     }
     
@@ -83,7 +83,7 @@ enum Tutorial: CaseIterable {
         case .kanjiList:
             return 2
         case .scanWord:
-            return 0
+            return 3
         }
     }
 }
