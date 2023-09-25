@@ -58,7 +58,7 @@ enum Tutorial: CaseIterable {
         case .deleteWord:
             return "Delete Word"
         case .kanjiList:
-            return "한자 모아보기"
+            return "Kanji List"
         case .scanWord:
             return "단어 스캔하기"
         }
@@ -81,7 +81,7 @@ enum Tutorial: CaseIterable {
         case .deleteWord:
             return 2
         case .kanjiList:
-            return 0
+            return 2
         case .scanWord:
             return 0
         }
