@@ -72,3 +72,11 @@ struct UnitAddView: View {
     }
     
 }
+
+#Preview {
+     UnitAddView(
+        store: Store(
+            initialState: AddUnit.State(),
+            reducer: AddUnit())
+     )
+}
