@@ -59,7 +59,6 @@ struct KanjiInput: ReducerProtocol {
 struct KanjiInputField: View {
     
     let store: StoreOf<KanjiInput>
-    let fontSize: CGFloat
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
