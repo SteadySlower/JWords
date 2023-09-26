@@ -18,11 +18,23 @@ struct AddUnit: ReducerProtocol {
     enum Action: Equatable {
         case kanjiInput(KanjiInput.Action)
         case meaningInput(MeaningInput.Action)
+        case alreadyExist(StudyUnit)
     }
+    
+    private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .kanjiInput(let action):
+                switch action {
+                case .huriganaUpdated(let hurigana):
+                    if let unit = try! cd.checkIfExist(hurigana) {
+                        return .task { .alreadyExist(unit) }
+                    }
+                    return .none
+                default: return .none
+                }
             default: return .none
             }
         }
