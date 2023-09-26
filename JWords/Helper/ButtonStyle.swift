@@ -19,7 +19,11 @@ struct InputFieldButtonStyle: ButtonStyle {
 
 struct InputButtonStyle: ButtonStyle {
     
-    let isAble: Bool
+    private let isAble: Bool
+    
+    init(isAble: Bool = true) {
+        self.isAble = isAble
+    }
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
