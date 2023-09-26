@@ -19,7 +19,10 @@ struct KanjiInput: ReducerProtocol {
         case updateText(String)
         case convertToHurigana
         case editText
+        case existFound(StudyUnit)
     }
+    
+    private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -30,12 +33,17 @@ struct KanjiInput: ReducerProtocol {
             case .convertToHurigana:
                 if state.text.isEmpty { return .none }
                 let hurigana = HuriganaConverter.shared.convert(state.text)
+                if let exist = try! cd.checkIfExist(hurigana) {
+                    return .task { .existFound(exist) }
+                }
                 state.hurigana = EditHuriganaText.State(hurigana: hurigana)
                 state.isEditing = false
                 return .none
             case .editText:
                 state.isEditing = true
                 state.hurigana = nil
+                return .none
+            default:
                 return .none
             }
         }
