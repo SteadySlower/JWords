@@ -44,6 +44,9 @@ struct AddUnit: ReducerProtocol {
                         return .task { .alreadyExist(unit) }
                     }
                     return .none
+                case .onTab:
+                    state.focusedField = .meaning
+                    return .none
                 default: return .none
                 }
             default: return .none

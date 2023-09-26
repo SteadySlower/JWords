@@ -18,6 +18,7 @@ struct KanjiInput: ReducerProtocol {
     
     enum Action: Equatable {
         case updateText(String)
+        case onTab
         case convertToHurigana
         case editText
         case huriganaUpdated(String)
@@ -30,6 +31,7 @@ struct KanjiInput: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .updateText(let text):
+                if text.hasTab { return .task { .onTab } }
                 state.text = text
                 return .none
             case .convertToHurigana:
