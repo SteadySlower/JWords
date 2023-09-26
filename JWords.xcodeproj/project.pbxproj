@@ -36,7 +36,6 @@
 		064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4492AC2CE1C00288749 /* UnitInputField.swift */; };
 		064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44C2AC2D00200288749 /* InputFieldTitle.swift */; };
 		064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */; };
-		064BA4512AC2D1A000288749 /* InputFieldButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4502AC2D1A000288749 /* InputFieldButton.swift */; };
 		064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4532AC39BA600288749 /* ButtonStyle.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
@@ -221,7 +220,6 @@
 		064BA4492AC2CE1C00288749 /* UnitInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitInputField.swift; sourceTree = "<group>"; };
 		064BA44C2AC2D00200288749 /* InputFieldTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTitle.swift; sourceTree = "<group>"; };
 		064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTextEditor.swift; sourceTree = "<group>"; };
-		064BA4502AC2D1A000288749 /* InputFieldButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldButton.swift; sourceTree = "<group>"; };
 		064BA4532AC39BA600288749 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
@@ -429,7 +427,6 @@
 			children = (
 				064BA44C2AC2D00200288749 /* InputFieldTitle.swift */,
 				064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */,
-				064BA4502AC2D1A000288749 /* InputFieldButton.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -1126,7 +1123,6 @@
 				0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */,
 				06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */,
 				067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */,
-				064BA4512AC2D1A000288749 /* InputFieldButton.swift in Sources */,
 				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
 				5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,

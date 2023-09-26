@@ -75,9 +75,10 @@ struct KanjiInputField: View {
                 VStack {
                     InputFieldTitle(title: "단어 (앞면)")
                     InputFieldTextEditor(text: vs.binding(get: \.text, send: KanjiInput.Action.updateText))
-                    InputFieldButton(label: "후리가나 변환") {
+                    Button("후리가나 변환") {
                         vs.send(.convertToHurigana)
                     }
+                    .buttonStyle(InputFieldButtonStyle())
                     .trailingAlignment()
                 }
             } else {
@@ -93,9 +94,10 @@ struct KanjiInputField: View {
                     }
                     .frame(height: 100)
                     .defaultRectangleBackground()
-                    InputFieldButton(label: "단어 수정") {
+                    Button("단어 수정") {
                         vs.send(.editText)
                     }
+                    .buttonStyle(InputFieldButtonStyle())
                     .trailingAlignment()
                 }
             }
