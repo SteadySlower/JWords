@@ -10,7 +10,7 @@ import ComposableArchitecture
 struct KanjiInput: ReducerProtocol {
 
     struct State: Equatable {
-        var text: String
+        var text: String = ""
         var hurigana: EditHuriganaText.State?
         var isEditing: Bool = true
     }

@@ -10,7 +10,7 @@ import ComposableArchitecture
 struct MeaningInput: ReducerProtocol {
 
     struct State: Equatable {
-        var text: String
+        var text: String = ""
     }
     
     enum Action: Equatable {
