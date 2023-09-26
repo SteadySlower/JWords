@@ -32,6 +32,7 @@
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* AddUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* AddUnit.swift */; };
 		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
+		064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4472AC2CC0B00288749 /* MeaningInput.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -211,6 +212,7 @@
 		06496B0A2AA311140061DCA9 /* OCRClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRClient.swift; sourceTree = "<group>"; };
 		064BA4422AC2558700288749 /* AddUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUnit.swift; sourceTree = "<group>"; };
 		064BA4452AC256E400288749 /* KanjiInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiInput.swift; sourceTree = "<group>"; };
+		064BA4472AC2CC0B00288749 /* MeaningInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeaningInput.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 			isa = PBXGroup;
 			children = (
 				064BA4452AC256E400288749 /* KanjiInput.swift */,
+				064BA4472AC2CC0B00288749 /* MeaningInput.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -1043,6 +1046,7 @@
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
+				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
