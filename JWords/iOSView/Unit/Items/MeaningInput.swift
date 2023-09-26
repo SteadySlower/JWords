@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import SwiftUI
 
 struct MeaningInput: ReducerProtocol {
 
@@ -30,4 +31,23 @@ struct MeaningInput: ReducerProtocol {
     }
     
 }
+
+struct MeaningInputField: View {
+    
+    let store: StoreOf<MeaningInput>
+    
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            VStack {
+                InputFieldTitle(title: "뜻 (뒷면)")
+                InputFieldTextEditor(text: vs.binding(
+                    get: \.text,
+                    send: MeaningInput.Action.updateText)
+                )
+            }
+        }
+    }
+    
+}
+    
 
