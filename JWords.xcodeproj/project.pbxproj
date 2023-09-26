@@ -37,6 +37,7 @@
 		064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44C2AC2D00200288749 /* InputFieldTitle.swift */; };
 		064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */; };
 		064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4532AC39BA600288749 /* ButtonStyle.swift */; };
+		064BA4562AC3A50D00288749 /* AddUnitInSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4552AC3A50D00288749 /* AddUnitInSet.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -221,6 +222,7 @@
 		064BA44C2AC2D00200288749 /* InputFieldTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTitle.swift; sourceTree = "<group>"; };
 		064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTextEditor.swift; sourceTree = "<group>"; };
 		064BA4532AC39BA600288749 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		064BA4552AC3A50D00288749 /* AddUnitInSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUnitInSet.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 		064BA4402AC2556200288749 /* Unit */ = {
 			isa = PBXGroup;
 			children = (
+				064BA4552AC3A50D00288749 /* AddUnitInSet.swift */,
 				064BA4422AC2558700288749 /* AddUnit.swift */,
 				064BA4442AC256CD00288749 /* Items */,
 				064BA44B2AC2CFE400288749 /* SubViews */,
@@ -1038,6 +1041,7 @@
 				062CBDBA2A1A0B1100F5B9FE /* ConversionInput.swift in Sources */,
 				067840F429C591570019ABA8 /* BaseViewModel.swift in Sources */,
 				5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */,
+				064BA4562AC3A50D00288749 /* AddUnitInSet.swift in Sources */,
 				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
 				0697715328CCA71700569280 /* WordInput.swift in Sources */,
 				5A91357C2A08C7FA00FCA8A5 /* CDWordClient.swift in Sources */,
