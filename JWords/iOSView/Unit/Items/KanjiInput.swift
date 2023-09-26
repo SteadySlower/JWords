@@ -20,7 +20,7 @@ struct KanjiInput: ReducerProtocol {
         case updateText(String)
         case convertToHurigana
         case editText
-        case existFound(StudyUnit)
+        case huriganaUpdated(String)
         case editHuriText(EditHuriganaText.Action)
     }
     
@@ -35,16 +35,25 @@ struct KanjiInput: ReducerProtocol {
             case .convertToHurigana:
                 if state.text.isEmpty { return .none }
                 let hurigana = HuriganaConverter.shared.convert(state.text)
-                if let exist = try! cd.checkIfExist(hurigana) {
-                    return .task { .existFound(exist) }
-                }
                 state.hurigana = EditHuriganaText.State(hurigana: hurigana)
                 state.isEditing = false
-                return .none
+                return .task { [hurigana = state.hurigana.hurigana] in
+                        .huriganaUpdated(hurigana)
+                }
             case .editText:
                 state.isEditing = true
                 state.hurigana = EditHuriganaText.State(hurigana: "")
-                return .none
+                return .task { [hurigana = state.hurigana.hurigana] in
+                        .huriganaUpdated(hurigana)
+                }
+            case .editHuriText(let action):
+                switch action {
+                case .onHuriUpdated:
+                    return .task { [hurigana = state.hurigana.hurigana] in
+                            .huriganaUpdated(hurigana)
+                    }
+                default: return .none
+                }
             default:
                 return .none
             }
