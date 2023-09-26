@@ -400,7 +400,6 @@
 		064BA4402AC2556200288749 /* Unit */ = {
 			isa = PBXGroup;
 			children = (
-				064BA4492AC2CE1C00288749 /* UnitInputField.swift */,
 				064BA4422AC2558700288749 /* AddUnit.swift */,
 				064BA4442AC256CD00288749 /* Items */,
 			);
@@ -814,6 +813,7 @@
 				5A8843C22A11BBDF0027B408 /* Kanji.swift */,
 				062CBDB92A1A0B1100F5B9FE /* ConversionInput.swift */,
 				5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */,
+				064BA4492AC2CE1C00288749 /* UnitInputField.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
