@@ -37,6 +37,7 @@
 		064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44C2AC2D00200288749 /* InputFieldTitle.swift */; };
 		064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */; };
 		064BA4512AC2D1A000288749 /* InputFieldButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4502AC2D1A000288749 /* InputFieldButton.swift */; };
+		064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4532AC39BA600288749 /* ButtonStyle.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -221,6 +222,7 @@
 		064BA44C2AC2D00200288749 /* InputFieldTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTitle.swift; sourceTree = "<group>"; };
 		064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTextEditor.swift; sourceTree = "<group>"; };
 		064BA4502AC2D1A000288749 /* InputFieldButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldButton.swift; sourceTree = "<group>"; };
+		064BA4532AC39BA600288749 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 				0688A1D329B3345E0057B2DB /* String+Extension.swift */,
 				0622727929FCFC2600EEAD50 /* Character+Extension.swift */,
 				069941862A9A066B00B5D769 /* Array+Extension.swift */,
+				064BA4532AC39BA600288749 /* ButtonStyle.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1070,6 +1073,7 @@
 				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
+				064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */,
 				064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
 				06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */,
