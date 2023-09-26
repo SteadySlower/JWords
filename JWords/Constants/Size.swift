@@ -30,5 +30,6 @@ enum Constants {
             NSApplication.shared.windows.first?.frame.height ?? 300
             #endif
         }
+        static let UNIT_INPUT_FONT: CGFloat = 30
     }
 }
