@@ -11,6 +11,7 @@ import SwiftUI
 struct AddUnit: ReducerProtocol {
 
     struct State: Equatable {
+        @BindingState var focusedField: UnitInputField?
         var kanjiInput = KanjiInput.State()
         var meaningInput = MeaningInput.State()
         
@@ -21,7 +22,8 @@ struct AddUnit: ReducerProtocol {
         }
     }
     
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
         case kanjiInput(KanjiInput.Action)
         case meaningInput(MeaningInput.Action)
         case alreadyExist(StudyUnit)
@@ -32,6 +34,7 @@ struct AddUnit: ReducerProtocol {
     private let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .kanjiInput(let action):
@@ -63,6 +66,7 @@ struct AddUnit: ReducerProtocol {
 struct UnitAddView: View {
     
     let store: StoreOf<AddUnit>
+    @FocusState var focusedField: UnitInputField?
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -71,10 +75,12 @@ struct UnitAddView: View {
                     state: \.kanjiInput,
                     action: AddUnit.Action.kanjiInput)
                 )
+                .focused($focusedField, equals: .kanji)
                 MeaningInputField(store: store.scope(
                     state: \.meaningInput,
                     action: AddUnit.Action.meaningInput)
                 )
+                .focused($focusedField, equals: .meaning)
                 HStack(spacing: 100) {
                     Button("취소") {
                         vs.send(.cancel)
@@ -87,6 +93,7 @@ struct UnitAddView: View {
                     .disabled(!vs.ableToAdd)
                 }
             }
+            .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
     }
     
