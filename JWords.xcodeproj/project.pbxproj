@@ -31,6 +31,7 @@
 		06496B092AA30CF10061DCA9 /* OCRAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* AddUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* AddUnit.swift */; };
+		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -209,6 +210,7 @@
 		06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRAddUnitView.swift; path = JWords/MacView/OCR/OCRAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		06496B0A2AA311140061DCA9 /* OCRClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRClient.swift; sourceTree = "<group>"; };
 		064BA4422AC2558700288749 /* AddUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUnit.swift; sourceTree = "<group>"; };
+		064BA4452AC256E400288749 /* KanjiInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiInput.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -395,8 +397,17 @@
 			isa = PBXGroup;
 			children = (
 				064BA4422AC2558700288749 /* AddUnit.swift */,
+				064BA4442AC256CD00288749 /* Items */,
 			);
 			path = Unit;
+			sourceTree = "<group>";
+		};
+		064BA4442AC256CD00288749 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				064BA4452AC256E400288749 /* KanjiInput.swift */,
+			);
+			path = Items;
 			sourceTree = "<group>";
 		};
 		067840F229C5914D0019ABA8 /* Base */ = {
@@ -1069,6 +1080,7 @@
 				06308A5E29FE14D900BDEE2D /* iOSHuriganaTestView.swift in Sources */,
 				5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */,
 				5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */,
+				064BA4462AC256E400288749 /* KanjiInput.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
 				5A8614D82A1C627300000653 /* CKImageUploader.swift in Sources */,
