@@ -34,6 +34,9 @@
 		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
 		064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4472AC2CC0B00288749 /* MeaningInput.swift */; };
 		064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4492AC2CE1C00288749 /* UnitInputField.swift */; };
+		064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44C2AC2D00200288749 /* InputFieldTitle.swift */; };
+		064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */; };
+		064BA4512AC2D1A000288749 /* InputFieldButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4502AC2D1A000288749 /* InputFieldButton.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -215,6 +218,9 @@
 		064BA4452AC256E400288749 /* KanjiInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiInput.swift; sourceTree = "<group>"; };
 		064BA4472AC2CC0B00288749 /* MeaningInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeaningInput.swift; sourceTree = "<group>"; };
 		064BA4492AC2CE1C00288749 /* UnitInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitInputField.swift; sourceTree = "<group>"; };
+		064BA44C2AC2D00200288749 /* InputFieldTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTitle.swift; sourceTree = "<group>"; };
+		064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTextEditor.swift; sourceTree = "<group>"; };
+		064BA4502AC2D1A000288749 /* InputFieldButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldButton.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -402,6 +408,7 @@
 			children = (
 				064BA4422AC2558700288749 /* AddUnit.swift */,
 				064BA4442AC256CD00288749 /* Items */,
+				064BA44B2AC2CFE400288749 /* SubViews */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -413,6 +420,16 @@
 				064BA4472AC2CC0B00288749 /* MeaningInput.swift */,
 			);
 			path = Items;
+			sourceTree = "<group>";
+		};
+		064BA44B2AC2CFE400288749 /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				064BA44C2AC2D00200288749 /* InputFieldTitle.swift */,
+				064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */,
+				064BA4502AC2D1A000288749 /* InputFieldButton.swift */,
+			);
+			path = SubViews;
 			sourceTree = "<group>";
 		};
 		067840F229C5914D0019ABA8 /* Base */ = {
@@ -1053,12 +1070,14 @@
 				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
+				064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
 				06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */,
 				5AAF1E022AA96F8B00709CAE /* OCRInputView.swift in Sources */,
 				5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
+				064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */,
 				5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */,
 				06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
@@ -1103,6 +1122,7 @@
 				0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */,
 				06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */,
 				067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */,
+				064BA4512AC2D1A000288749 /* InputFieldButton.swift in Sources */,
 				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
 				5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
