@@ -25,7 +25,7 @@ struct WordList: ReducerProtocol {
         // state for side bar and modals
         var setting: StudySetting.State
         var editSet: InputBook.State?
-        var toEditWord: AddingUnit.State?
+        var toEditWord: EditUnit.State?
         var moveWords: MoveWords.State?
         var addUnit: AddUnit.State?
         
@@ -95,7 +95,7 @@ struct WordList: ReducerProtocol {
         
         fileprivate mutating func editCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
-            toEditWord = AddingUnit.State(mode: .editUnit(unit: word))
+            toEditWord = EditUnit.State(unit: word)
         }
         
         fileprivate mutating func deleteCellTapped(id: String) {
@@ -206,7 +206,7 @@ struct WordList: ReducerProtocol {
         case deleteUnit(unit: StudyUnit)
         case onUnitDeleted(id: String)
         case editSet(action: InputBook.Action)
-        case editWord(action: AddingUnit.Action)
+        case editWord(EditUnit.Action)
         case moveWords(action: MoveWords.Action)
         case addUnit(AddUnit.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
@@ -305,13 +305,13 @@ struct WordList: ReducerProtocol {
                 }
             case .editWord(let action):
                 switch action {
-                case .unitEdited(let unit):
+                case .edited(let unit):
                     guard let index = state._words.index(id: unit.id) else { return .none }
                     let newState = StudyWord.State(unit: unit, frontType: state.setting.frontType)
                     state._words.update(newState, at: index)
                     state.setting.studyViewMode = .normal
                     return .task { .setEditModal(isPresented: false) }
-                case .cancelButtonTapped:
+                case .cancel:
                     return .task { .setEditModal(isPresented: false) }
                 default:
                     return .none
@@ -379,8 +379,8 @@ struct WordList: ReducerProtocol {
         .forEach(\.deleteWords, action: /Action.deleteWords(id:action:)) {
             DeleteWord()
         }
-        .ifLet(\.toEditWord, action: /Action.editWord(action:)) {
-            AddingUnit()
+        .ifLet(\.toEditWord, action: /Action.editWord) {
+            EditUnit()
         }
         .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
             MoveWords()
@@ -475,8 +475,13 @@ struct StudyView: View {
                 get: \.showEditModal,
                 send: WordList.Action.setEditModal(isPresented:))
             ) {
-                IfLetStore(self.store.scope(state: \.toEditWord, action: WordList.Action.editWord(action:))) {
-                    StudyUnitAddView(store: $0)
+                IfLetStore(self.store.scope(
+                    state: \.toEditWord,
+                    action: WordList.Action.editWord)
+                ) {
+                    EditUnitView(store: $0)
+                        .padding(.horizontal, 10)
+                        .presentationDetents([.medium])
                 }
             }
             .sheet(isPresented: vs.binding(
