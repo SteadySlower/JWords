@@ -20,6 +20,7 @@ struct AddUnitInSet: ReducerProtocol {
         case inputUnit(InputUnit.Action)
         case add
         case cancel
+        case added(StudyUnit)
     }
     
     private let cd = CoreDataClient.shared
@@ -33,6 +34,21 @@ struct AddUnitInSet: ReducerProtocol {
                     state.alreadyExist = unit
                     return .none
                 default: return .none
+                }
+            case .add:
+                if let alreadyExist = state.alreadyExist {
+                    let unit = try! cd.addExistingUnit(
+                        unit: alreadyExist,
+                        meaningText: state.inputUnit.meaningInput.text,
+                        in: state.set)
+                    return .task { .added(unit) }
+                } else {
+                    let unit = try! cd.insertUnit(
+                        in: state.set,
+                        type: .word,
+                        kanjiText: state.inputUnit.kanjiInput.hurigana.hurigana,
+                        meaningText: state.inputUnit.meaningInput.text)
+                    return .task { .added(unit) }
                 }
             default: return .none
             }
