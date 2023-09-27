@@ -38,6 +38,7 @@
 		064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */; };
 		064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4532AC39BA600288749 /* ButtonStyle.swift */; };
 		064BA4562AC3A50D00288749 /* AddUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4552AC3A50D00288749 /* AddUnit.swift */; };
+		064BA4582AC3B93C00288749 /* EditUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4572AC3B93C00288749 /* EditUnit.swift */; };
 		0663B9D52A33F4B0004333C1 /* MacAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */; };
 		067840EB29C55E350019ABA8 /* AddWordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840EA29C55E350019ABA8 /* AddWordRepository.swift */; };
 		067840EE29C55EB40019ABA8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840ED29C55EB40019ABA8 /* Repository.swift */; };
@@ -223,6 +224,7 @@
 		064BA44E2AC2D14200288749 /* InputFieldTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldTextEditor.swift; sourceTree = "<group>"; };
 		064BA4532AC39BA600288749 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		064BA4552AC3A50D00288749 /* AddUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUnit.swift; sourceTree = "<group>"; };
+		064BA4572AC3B93C00288749 /* EditUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnit.swift; sourceTree = "<group>"; };
 		0663B9D42A33F4B0004333C1 /* MacAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacAddUnitView.swift; path = JWords/macView/MacAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		067840EA29C55E350019ABA8 /* AddWordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordRepository.swift; sourceTree = "<group>"; };
 		067840ED29C55EB40019ABA8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				064BA4552AC3A50D00288749 /* AddUnit.swift */,
+				064BA4572AC3B93C00288749 /* EditUnit.swift */,
 				064BA4442AC256CD00288749 /* Items */,
 				064BA44B2AC2CFE400288749 /* SubViews */,
 			);
@@ -1138,6 +1141,7 @@
 				5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */,
 				5A80ACF129FA535500E3F31A /* KanjiField.swift in Sources */,
 				06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */,
+				064BA4582AC3B93C00288749 /* EditUnit.swift in Sources */,
 				5A8B698829F227BA00B5A02E /* WordBookClient.swift in Sources */,
 				5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */,
 				5A6BD9B928C7186D00FF9259 /* ServiceManager.swift in Sources */,
