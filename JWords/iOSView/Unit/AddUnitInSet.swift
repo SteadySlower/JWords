@@ -11,7 +11,7 @@ import SwiftUI
 struct AddUnitInSet: ReducerProtocol {
     
     struct State: Equatable {
-        let set: StudySet
+        var set: StudySet?
         var alreadyExist: StudyUnit?
         var inputUnit: InputUnit.State
     }
@@ -36,15 +36,19 @@ struct AddUnitInSet: ReducerProtocol {
                 default: return .none
                 }
             case .add:
+                guard let set = state.set else {
+                    // TODO: add alert
+                    return .none
+                }
                 if let alreadyExist = state.alreadyExist {
                     let unit = try! cd.addExistingUnit(
                         unit: alreadyExist,
                         meaningText: state.inputUnit.meaningInput.text,
-                        in: state.set)
+                        in: set)
                     return .task { .added(unit) }
                 } else {
                     let unit = try! cd.insertUnit(
-                        in: state.set,
+                        in: set,
                         type: .word,
                         kanjiText: state.inputUnit.kanjiInput.hurigana.hurigana,
                         meaningText: state.inputUnit.meaningInput.text)
