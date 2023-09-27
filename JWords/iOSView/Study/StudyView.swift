@@ -27,7 +27,7 @@ struct WordList: ReducerProtocol {
         var editSet: InputBook.State?
         var toEditWord: AddingUnit.State?
         var moveWords: MoveWords.State?
-        var addUnit: AddingUnit.State?
+        var addUnit: AddUnit.State?
         
         // alert
         var alert: AlertState<Action>?
@@ -100,7 +100,7 @@ struct WordList: ReducerProtocol {
         
         fileprivate mutating func deleteCellTapped(id: String) {
             guard let word = _words.filter({ $0.id == id }).first?.unit else { return }
-            let wordDisplayText = HuriganaConverter.shared.huriToKanjiText(from: word.kanjiText ?? "")
+            let wordDisplayText = HuriganaConverter.shared.huriToKanjiText(from: word.kanjiText)
             
             alert = AlertState<Action> {
                 TextState("\(wordDisplayText)를 현재 단어장에서 삭제합니까?")
@@ -208,7 +208,7 @@ struct WordList: ReducerProtocol {
         case editSet(action: InputBook.Action)
         case editWord(action: AddingUnit.Action)
         case moveWords(action: MoveWords.Action)
-        case addUnit(action: AddingUnit.Action)
+        case addUnit(AddUnit.Action)
         case selectionWords(id: SelectionWord.State.ID, action: SelectionWord.Action)
         case sideBar(action: StudySetting.Action)
         case onWordsMoved(from: StudySet)
@@ -287,7 +287,7 @@ struct WordList: ReducerProtocol {
             case .setAddModal(let isPresent):
                 guard let set = state.set else { return .none }
                 if isPresent {
-                    state.addUnit = AddingUnit.State(mode: .insert(set: set))
+                    state.addUnit = AddUnit.State(set: set)
                 } else {
                     state.addUnit = nil
                 }
@@ -318,7 +318,7 @@ struct WordList: ReducerProtocol {
                 }
             case .addUnit(let action):
                 switch action {
-                case let .unitAdded(unit):
+                case let .added(unit):
                     var words = state._words.map { $0.unit }
                     if !words.contains(unit) {
                         words.append(unit)
@@ -327,7 +327,7 @@ struct WordList: ReducerProtocol {
                         uniqueElements: words
                             .map { StudyWord.State(unit: $0, isLocked: false) })
                     return .task { .setAddModal(isPresented: false) }
-                case .cancelButtonTapped:
+                case .cancel:
                     return .task { .setAddModal(isPresented: false) }
                 default:
                     return .none
@@ -385,8 +385,8 @@ struct WordList: ReducerProtocol {
         .ifLet(\.moveWords, action: /Action.moveWords(action:)) {
             MoveWords()
         }
-        .ifLet(\.addUnit, action: /Action.addUnit(action:)) {
-            AddingUnit()
+        .ifLet(\.addUnit, action: /Action.addUnit) {
+            AddUnit()
         }
         .ifLet(\.editSet, action: /Action.editSet(action:)) {
             InputBook()
@@ -483,8 +483,13 @@ struct StudyView: View {
                 get: \.showAddModal,
                 send: WordList.Action.setAddModal(isPresented:))
             ) {
-                IfLetStore(self.store.scope(state: \.addUnit, action: WordList.Action.addUnit(action:))) {
-                    StudyUnitAddView(store: $0)
+                IfLetStore(self.store.scope(
+                    state: \.addUnit,
+                    action: WordList.Action.addUnit)
+                ) {
+                    AddUnitView(store: $0)
+                        .padding(.horizontal, 10)
+                        .presentationDetents([.medium])
                 }
             }
             .sheet(isPresented: vs.binding(

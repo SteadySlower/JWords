@@ -31,7 +31,6 @@ struct AddUnit: ReducerProtocol {
         
         fileprivate mutating func setExistAlert() {
             let kanjiText = inputUnit.kanjiInput.text
-            print("디버그: \(alreadyExist)")
             alert = AlertState<Action> {
                 TextState("표제어 중복")
             } actions: {
