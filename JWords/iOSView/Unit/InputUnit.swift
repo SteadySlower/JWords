@@ -64,7 +64,7 @@ struct InputUnit: ReducerProtocol {
     
 }
 
-struct UnitAddView: View {
+struct UnitInputView: View {
     
     let store: StoreOf<InputUnit>
     @FocusState var focusedField: UnitInputField?
@@ -101,7 +101,7 @@ struct UnitAddView: View {
 }
 
 #Preview {
-     UnitAddView(
+    UnitInputView(
         store: Store(
             initialState: InputUnit.State(),
             reducer: InputUnit())
