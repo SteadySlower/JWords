@@ -1,5 +1,5 @@
 //
-//  AddUnitInSet.swift
+//  AddUnit.swift
 //  JWords
 //
 //  Created by JW Moon on 2023/09/27.
@@ -8,12 +8,12 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct AddUnitInSet: ReducerProtocol {
+struct AddUnit: ReducerProtocol {
     
     struct State: Equatable {
         var set: StudySet?
         var alreadyExist: StudyUnit?
-        var inputUnit: InputUnit.State
+        var inputUnit = InputUnit.State()
     }
     
     enum Action: Equatable {
@@ -64,16 +64,16 @@ struct AddUnitInSet: ReducerProtocol {
     
 }
 
-struct AddUnitModal: View {
+struct AddUnitView: View {
     
-    let store: StoreOf<AddUnitInSet>
+    let store: StoreOf<AddUnit>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack(spacing: 40) {
                 UnitInputView(store: store.scope(
                     state: \.inputUnit,
-                    action: AddUnitInSet.Action.inputUnit)
+                    action: AddUnit.Action.inputUnit)
                 )
                 HStack(spacing: 100) {
                     Button("취소") {
