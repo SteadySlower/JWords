@@ -27,8 +27,6 @@ struct InputUnit: ReducerProtocol {
         case kanjiInput(KanjiInput.Action)
         case meaningInput(MeaningInput.Action)
         case alreadyExist(StudyUnit?)
-        case add
-        case cancel
     }
     
     private let cd = CoreDataClient.shared
@@ -82,17 +80,7 @@ struct UnitInputView: View {
                     action: InputUnit.Action.meaningInput)
                 )
                 .focused($focusedField, equals: .meaning)
-                HStack(spacing: 100) {
-                    Button("취소") {
-                        vs.send(.cancel)
-                    }
-                    .buttonStyle(InputButtonStyle(isAble: true))
-                    Button("추가") {
-                        vs.send(.add)
-                    }
-                    .buttonStyle(InputButtonStyle(isAble: vs.ableToAdd))
-                    .disabled(!vs.ableToAdd)
-                }
+
             }
             .synchronize(vs.binding(\.$focusedField), self.$focusedField)
         }
