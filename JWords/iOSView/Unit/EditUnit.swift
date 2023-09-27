@@ -53,7 +53,8 @@ struct EditUnit: ReducerProtocol {
             case .inputUnit(let action):
                 switch action {
                 case .alreadyExist(let unit):
-                    if unit != nil {
+                    if let unit = unit,
+                       unit.kanjiText != state.unit.kanjiText {
                         state.setUneditableAlert()
                     }
                     return .none
