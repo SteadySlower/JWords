@@ -16,6 +16,12 @@ struct AddUnit: ReducerProtocol {
         var inputUnit = InputUnit.State()
         var alert: AlertState<Action>?
         
+        mutating func clearInput() {
+            inputUnit.kanjiInput.text = ""
+            inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+            inputUnit.meaningInput.text = ""
+        }
+        
         fileprivate mutating func setNoSetAlert() {
             let kanjiText = inputUnit.kanjiInput.text
             alert = AlertState<Action> {
