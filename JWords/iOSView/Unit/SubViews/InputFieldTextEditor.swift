@@ -15,6 +15,7 @@ struct InputFieldTextEditor: View {
         TextEditor(text: text)
             .font(.system(size: Constants.Size.UNIT_INPUT_FONT))
             .frame(height: 100)
+            .padding(.horizontal, 5)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .defaultRectangleBackground()
     }
