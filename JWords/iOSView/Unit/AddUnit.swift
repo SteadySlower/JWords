@@ -14,6 +14,34 @@ struct AddUnit: ReducerProtocol {
         var set: StudySet?
         var alreadyExist: StudyUnit?
         var inputUnit = InputUnit.State()
+        var alert: AlertState<Action>?
+        
+        fileprivate mutating func setNoSetAlert() {
+            let kanjiText = inputUnit.kanjiInput.text
+            alert = AlertState<Action> {
+                TextState("선택된 단어장 없음")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("단어장을 선택 해주세요.")
+            }
+        }
+        
+        fileprivate mutating func setExistAlert() {
+            let kanjiText = inputUnit.kanjiInput.text
+            print("디버그: \(alreadyExist)")
+            alert = AlertState<Action> {
+                TextState("표제어 중복")
+            } actions: {
+                ButtonState(role: .none) {
+                    TextState("확인")
+                }
+            } message: {
+                TextState("\(kanjiText)와 동일한 단어가 존재합니다")
+            }
+        }
     }
     
     enum Action: Equatable {
@@ -21,6 +49,7 @@ struct AddUnit: ReducerProtocol {
         case add
         case cancel
         case added(StudyUnit)
+        case alertDismissed
     }
     
     private let cd = CoreDataClient.shared
@@ -32,12 +61,15 @@ struct AddUnit: ReducerProtocol {
                 switch action {
                 case .alreadyExist(let unit):
                     state.alreadyExist = unit
+                    if unit != nil {
+                        state.setExistAlert()
+                    }
                     return .none
                 default: return .none
                 }
             case .add:
                 guard let set = state.set else {
-                    // TODO: add alert
+                    state.setNoSetAlert()
                     return .none
                 }
                 if let alreadyExist = state.alreadyExist {
@@ -54,6 +86,9 @@ struct AddUnit: ReducerProtocol {
                         meaningText: state.inputUnit.meaningInput.text)
                     return .task { .added(unit) }
                 }
+            case .alertDismissed:
+                state.alert = nil
+                return .none
             default: return .none
             }
         }
@@ -87,6 +122,10 @@ struct AddUnitView: View {
                     .disabled(!vs.inputUnit.ableToAdd)
                 }
             }
+            .alert(
+              store.scope(state: \.alert),
+              dismiss: .alertDismissed
+            )
         }
     }
 }
