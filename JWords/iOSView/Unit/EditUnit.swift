@@ -15,6 +15,15 @@ struct EditUnit: ReducerProtocol {
         var inputUnit = InputUnit.State()
         var alert: AlertState<Action>?
         
+        init(unit: StudyUnit) {
+            self.unit = unit
+            self.inputUnit = InputUnit.State()
+            inputUnit.kanjiInput.text = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText)
+            inputUnit.kanjiInput.hurigana = EditHuriganaText.State(hurigana: unit.kanjiText)
+            inputUnit.kanjiInput.isEditing = false
+            inputUnit.meaningInput.text = unit.meaningText
+        }
+        
         var kanjitext: String {
             inputUnit.kanjiInput.hurigana.hurigana
         }
