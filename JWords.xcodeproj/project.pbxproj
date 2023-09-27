@@ -409,7 +409,6 @@
 			isa = PBXGroup;
 			children = (
 				064BA4552AC3A50D00288749 /* AddUnit.swift */,
-				064BA4422AC2558700288749 /* InputUnit.swift */,
 				064BA4442AC256CD00288749 /* Items */,
 				064BA44B2AC2CFE400288749 /* SubViews */,
 			);
@@ -419,6 +418,7 @@
 		064BA4442AC256CD00288749 /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				064BA4422AC2558700288749 /* InputUnit.swift */,
 				064BA4452AC256E400288749 /* KanjiInput.swift */,
 				064BA4472AC2CC0B00288749 /* MeaningInput.swift */,
 			);
