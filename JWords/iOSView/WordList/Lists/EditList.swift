@@ -33,3 +33,30 @@ struct EditWords: ReducerProtocol {
         }
     }
 }
+
+struct EditList: View {
+    
+    let store: StoreOf<EditWords>
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEachStore(
+                  self.store.scope(state: \.words, action: EditWords.Action.word(id:action:))
+                ) {
+                    EditCell(store: $0)
+                }
+            }
+            .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
+            .padding(.vertical, 10)
+        }
+    }
+    
+}
+
+#Preview {
+    EditList(store: Store(
+        initialState: EditWords.State(words: .mock, frontType: .kanji),
+        reducer: EditWords())
+    )
+}
