@@ -316,7 +316,7 @@
 		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/MacView/OCR/Items/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageGetterButtons.swift; path = JWords/MacView/OCR/Items/ImageGetterButtons.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRInputView.swift; path = JWords/macView/OCR/OCRInputView.swift; sourceTree = SOURCE_ROOT; };
-		5AAF1E032AA9965300709CAE /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/macView/OCR/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1E032AA9965300709CAE /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/MacView/OCR/Items/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/macView/Components/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
@@ -386,6 +386,7 @@
 				5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */,
 				06004E222AC5192400947F5D /* ScanGuide.swift */,
 				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
+				5AAF1E032AA9965300709CAE /* OCRResultView.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -780,7 +781,6 @@
 				06004E212AC5191300947F5D /* Items */,
 				06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */,
 				5AAF1E012AA96F8B00709CAE /* OCRInputView.swift */,
-				5AAF1E032AA9965300709CAE /* OCRResultView.swift */,
 			);
 			path = OCR;
 			sourceTree = "<group>";
