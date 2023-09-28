@@ -33,3 +33,30 @@ struct DeleteWords: ReducerProtocol {
         }
     }
 }
+
+struct DeleteList: View {
+    
+    let store: StoreOf<DeleteWords>
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEachStore(
+                  self.store.scope(state: \.words, action: DeleteWords.Action.word(id:action:))
+                ) {
+                    DeleteCell(store: $0)
+                }
+            }
+            .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
+            .padding(.vertical, 10)
+        }
+    }
+    
+}
+
+#Preview {
+    DeleteList(store: Store(
+        initialState: DeleteWords.State(words: .mock, frontType: .kanji),
+        reducer: DeleteWords())
+    )
+}
