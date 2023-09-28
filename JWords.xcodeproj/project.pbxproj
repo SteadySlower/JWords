@@ -10,9 +10,8 @@
 		06004E232AC5192400947F5D /* ScanGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E222AC5192400947F5D /* ScanGuide.swift */; };
 		06004E252AC51DBE00947F5D /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E242AC51DBE00947F5D /* OCRView.swift */; };
 		06004E2B2AC538B500947F5D /* KeyBoardDismissingBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E2A2AC538B500947F5D /* KeyBoardDismissingBackground.swift */; };
-		06004E302AC5485800947F5D /* BookStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E2F2AC5485800947F5D /* BookStudyList.swift */; };
+		06004E302AC5485800947F5D /* WordsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E2F2AC5485800947F5D /* WordsList.swift */; };
 		06004E332AC5487000947F5D /* KanjiStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E322AC5487000947F5D /* KanjiStudyList.swift */; };
-		06004E352AC5488000947F5D /* WordStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E342AC5488000947F5D /* WordStudyList.swift */; };
 		06004E372AC5488600947F5D /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E362AC5488600947F5D /* EditList.swift */; };
 		06004E392AC5488D00947F5D /* DeleteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E382AC5488D00947F5D /* DeleteList.swift */; };
 		06004E3B2AC5489700947F5D /* MoveList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* MoveList.swift */; };
@@ -202,9 +201,8 @@
 		06004E222AC5192400947F5D /* ScanGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanGuide.swift; path = JWords/macView/OCR/Items/ScanGuide.swift; sourceTree = SOURCE_ROOT; };
 		06004E242AC51DBE00947F5D /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
 		06004E2A2AC538B500947F5D /* KeyBoardDismissingBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardDismissingBackground.swift; sourceTree = "<group>"; };
-		06004E2F2AC5485800947F5D /* BookStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStudyList.swift; sourceTree = "<group>"; };
+		06004E2F2AC5485800947F5D /* WordsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsList.swift; sourceTree = "<group>"; };
 		06004E322AC5487000947F5D /* KanjiStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiStudyList.swift; sourceTree = "<group>"; };
-		06004E342AC5488000947F5D /* WordStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordStudyList.swift; sourceTree = "<group>"; };
 		06004E362AC5488600947F5D /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
 		06004E382AC5488D00947F5D /* DeleteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteList.swift; sourceTree = "<group>"; };
 		06004E3A2AC5489700947F5D /* MoveList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveList.swift; sourceTree = "<group>"; };
@@ -406,9 +404,8 @@
 		06004E2E2AC5484B00947F5D /* Lists */ = {
 			isa = PBXGroup;
 			children = (
-				06004E2F2AC5485800947F5D /* BookStudyList.swift */,
+				06004E2F2AC5485800947F5D /* WordsList.swift */,
 				06004E322AC5487000947F5D /* KanjiStudyList.swift */,
-				06004E342AC5488000947F5D /* WordStudyList.swift */,
 				06004E362AC5488600947F5D /* EditList.swift */,
 				06004E382AC5488D00947F5D /* DeleteList.swift */,
 				06004E3A2AC5489700947F5D /* MoveList.swift */,
@@ -1083,7 +1080,6 @@
 				5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */,
 				064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */,
 				06004E3B2AC5489700947F5D /* MoveList.swift in Sources */,
-				06004E352AC5488000947F5D /* WordStudyList.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
 				5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */,
@@ -1108,7 +1104,7 @@
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
 				06004E332AC5487000947F5D /* KanjiStudyList.swift in Sources */,
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
-				06004E302AC5485800947F5D /* BookStudyList.swift in Sources */,
+				06004E302AC5485800947F5D /* WordsList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
 				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
 				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,

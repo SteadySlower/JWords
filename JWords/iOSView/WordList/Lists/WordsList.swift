@@ -1,5 +1,5 @@
 //
-//  StudyList.swift
+//  StudyWords.swift
 //  JWords
 //
 //  Created by JW Moon on 2023/09/28.
@@ -8,14 +8,12 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyBook: ReducerProtocol {
+struct StudyWords: ReducerProtocol {
     struct State: Equatable {
-        let book: StudySet
         let _words: [StudyUnit]
         var words: IdentifiedArrayOf<StudyWord.State>
         
-        init(book: StudySet, words: [StudyUnit]) {
-            self.book = book
+        init(words: [StudyUnit]) {
             self._words = words
             self.words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(sample: $0) })
         }
