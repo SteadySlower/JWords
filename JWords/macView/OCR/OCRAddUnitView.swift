@@ -82,15 +82,6 @@ struct AddUnitWithOCR: ReducerProtocol {
     }
 }
 
-
-// TODO: move somewhere proper
-
-fileprivate func dismissKeyBoard() {
-    #if os(iOS)
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    #endif
-}
-
 struct OCRAddUnitView: View {
     
     let store: StoreOf<AddUnitWithOCR>
@@ -98,25 +89,22 @@ struct OCRAddUnitView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView(showsIndicators: false) {
-                ZStack {
-                    Color.white
-                        .onTapGesture { dismissKeyBoard() }
-                    VStack(spacing: 35) {
-                        OCRView(store: store.scope(
-                            state: \.ocr,
-                            action: AddUnitWithOCR.Action.ocr)
-                        )
-                        StudySetPicker(store: store.scope(
-                            state: \.selectSet,
-                            action: AddUnitWithOCR.Action.selectSet)
-                        )
-                        AddUnitView(store: store.scope(
-                            state: \.addUnit,
-                            action: AddUnitWithOCR.Action.addUnit)
-                        )
-                    }
+                VStack(spacing: 35) {
+                    OCRView(store: store.scope(
+                        state: \.ocr,
+                        action: AddUnitWithOCR.Action.ocr)
+                    )
+                    StudySetPicker(store: store.scope(
+                        state: \.selectSet,
+                        action: AddUnitWithOCR.Action.selectSet)
+                    )
+                    AddUnitView(store: store.scope(
+                        state: \.addUnit,
+                        action: AddUnitWithOCR.Action.addUnit)
+                    )
                 }
                 .padding(.vertical, 10)
+                .dismissKeyboardWhenBackgroundTapped()
             }
             .withBannerAD()
             .padding(.horizontal, 10)
