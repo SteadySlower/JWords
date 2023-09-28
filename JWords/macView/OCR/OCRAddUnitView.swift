@@ -48,21 +48,18 @@ struct AddUnitWithOCR: ReducerProtocol {
                     } else {
                         state.addUnit.set = nil
                     }
-                default:
-                    break
+                    return .none
+                default: return .none
                 }
-                return .none
             case .addUnit(let action):
                 switch action {
                 case .added:
                     state.addUnit.clearInput()
                     state.selectSet.onUnitAdded()
                     return .none
-                default:
-                    return .none
+                default: return .none
                 }
-            default:
-                return .none
+            default: return .none
             }
         }
         Scope(state: \.ocr, action: /Action.ocr) {
