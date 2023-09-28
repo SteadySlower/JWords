@@ -14,7 +14,7 @@
 		06004E332AC5487000947F5D /* KanjiStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E322AC5487000947F5D /* KanjiStudyList.swift */; };
 		06004E372AC5488600947F5D /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E362AC5488600947F5D /* EditList.swift */; };
 		06004E392AC5488D00947F5D /* DeleteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E382AC5488D00947F5D /* DeleteList.swift */; };
-		06004E3B2AC5489700947F5D /* MoveList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* MoveList.swift */; };
+		06004E3B2AC5489700947F5D /* SelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* SelectList.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7E2A19862F00E099B5 /* ConversionView.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
@@ -205,7 +205,7 @@
 		06004E322AC5487000947F5D /* KanjiStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiStudyList.swift; sourceTree = "<group>"; };
 		06004E362AC5488600947F5D /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
 		06004E382AC5488D00947F5D /* DeleteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteList.swift; sourceTree = "<group>"; };
-		06004E3A2AC5489700947F5D /* MoveList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveList.swift; sourceTree = "<group>"; };
+		06004E3A2AC5489700947F5D /* SelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectList.swift; sourceTree = "<group>"; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -408,7 +408,7 @@
 				06004E322AC5487000947F5D /* KanjiStudyList.swift */,
 				06004E362AC5488600947F5D /* EditList.swift */,
 				06004E382AC5488D00947F5D /* DeleteList.swift */,
-				06004E3A2AC5489700947F5D /* MoveList.swift */,
+				06004E3A2AC5489700947F5D /* SelectList.swift */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
@@ -1079,7 +1079,7 @@
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
 				5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */,
 				064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */,
-				06004E3B2AC5489700947F5D /* MoveList.swift in Sources */,
+				06004E3B2AC5489700947F5D /* SelectList.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
 				5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */,
