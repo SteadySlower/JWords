@@ -16,8 +16,7 @@ struct AddUnitWithOCR: ReducerProtocol {
         var getImageButtons = GetImageForOCR.State()
         
         var selectSet = SelectStudySet.State(pickerName: "")
-        
-        var addUnit: AddingUnit.State?
+        var addUnit = AddUnit.State()
         var alert: AlertState<Action>?
         
         var showOCR: Bool { ocr != nil }
@@ -30,7 +29,7 @@ struct AddUnitWithOCR: ReducerProtocol {
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case selectSet(SelectStudySet.Action)
-        case addUnit(AddingUnit.Action)
+        case addUnit(AddUnit.Action)
         case showCameraScanner(Bool)
         case imageFetched(InputImageType)
         case dismissAlert
@@ -72,9 +71,9 @@ struct AddUnitWithOCR: ReducerProtocol {
                 switch action {
                 case .idUpdated:
                     if let set = state.selectSet.selectedSet {
-                        state.addUnit = AddingUnit.State(mode: .insert(set: set), cancelButtonHidden: true)
+                        state.addUnit.set = set
                     } else {
-                        state.addUnit = nil
+                        state.addUnit.set = nil
                     }
                 default:
                     break
@@ -82,7 +81,8 @@ struct AddUnitWithOCR: ReducerProtocol {
                 return .none
             case .addUnit(let action):
                 switch action {
-                case .unitAdded:
+                case .added:
+                    state.addUnit.clearInput()
                     state.selectSet.onUnitAdded()
                     return .none
                 default:
@@ -93,11 +93,12 @@ struct AddUnitWithOCR: ReducerProtocol {
                 case .ocrMarkTapped(let lang, let text):
                     switch lang {
                     case .korean:
-                        state.addUnit?.meaningText = text
+                        state.addUnit.inputUnit.meaningInput.text = text
                         return .none
                     case .japanese:
-                        state.addUnit?.isEditingKanji = true
-                        state.addUnit?.kanjiText = text
+                        state.addUnit.inputUnit.kanjiInput.isEditing = true
+                        state.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+                        state.addUnit.inputUnit.kanjiInput.text = text
                         return .none
                     }
                 case .removeImageButtonTapped:
@@ -119,8 +120,8 @@ struct AddUnitWithOCR: ReducerProtocol {
         .ifLet(\.ocr, action: /Action.ocr) {
             OCR()
         }
-        .ifLet(\.addUnit, action: /Action.addUnit) {
-            AddingUnit()
+        Scope(state: \.addUnit, action: /Action.addUnit) {
+            AddUnit()
         }
         Scope(state: \.getImageButtons, action: /Action.getImageButtons) {
             GetImageForOCR()
@@ -214,13 +215,10 @@ struct OCRAddUnitView: View {
                             state: \.selectSet,
                             action: AddUnitWithOCR.Action.selectSet)
                         )
-                        .padding(.bottom, 35)
-                        IfLetStore(store.scope(
+                        AddUnitView(store: store.scope(
                             state: \.addUnit,
-                            action: AddUnitWithOCR.Action.addUnit))
-                       {
-                           StudyUnitAddView(store: $0)
-                       }
+                            action: AddUnitWithOCR.Action.addUnit)
+                        )
                     }
                 }
                 .padding(.vertical, 10)
