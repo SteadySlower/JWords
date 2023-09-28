@@ -40,3 +40,30 @@ struct StudyWords: ReducerProtocol {
     }
     
 }
+
+struct StudyList: View {
+    
+    let store: StoreOf<StudyWords>
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                ForEachStore(
+                  self.store.scope(state: \.words, action: StudyWords.Action.word(id:action:))
+                ) {
+                    StudyCell(store: $0)
+                }
+            }
+            .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
+            .padding(.vertical, 10)
+        }
+    }
+    
+}
+
+#Preview {
+    StudyList(store: Store(
+        initialState: StudyWords.State(words: .mock),
+        reducer: StudyWords())
+    )
+}
