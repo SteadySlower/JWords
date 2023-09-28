@@ -13,10 +13,6 @@ struct GetWordsFromOCR: ReducerProtocol {
         var image: InputImageType
         var koreanOcrResult: [OCRResult] = []
         var japaneseOcrResult: [OCRResult] = []
-        
-        init(_ image: InputImageType) {
-            self.image = image
-        }
     }
     
     enum Action: Equatable {
@@ -38,13 +34,8 @@ struct OCRResultView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                HStack {
-                    Spacer()
-                    Text("↘️ 한국어 스캔")
-                    Spacer()
-                    Text("↖️ 일본어 스캔")
-                    Spacer()
-                }
+                title
+                buttonGuide
                 GeometryReader { proxy in
                     imageView(vs.image)
                         .overlay(
@@ -73,6 +64,24 @@ struct OCRResultView: View {
 // MARK: SubView
 
 extension OCRResultView {
+    
+    private var title: some View {
+        Text("스캔 결과")
+            .font(.system(size: 20))
+            .bold()
+            .leadingAlignment()
+            .padding(.leading, 10)
+    }
+    
+    private var buttonGuide: some View {
+        HStack {
+            Spacer()
+            Text("↘️ 한국어 스캔")
+            Spacer()
+            Text("↖️ 일본어 스캔")
+            Spacer()
+        }
+    }
     
     private func imageView(_ image: InputImageType) -> Image {
         #if os(iOS)

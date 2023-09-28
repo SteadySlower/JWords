@@ -10,22 +10,16 @@ import ComposableArchitecture
 
 struct AddUnitWithOCR: ReducerProtocol {
     struct State: Equatable {
-
-        var ocr: GetWordsFromOCR.State?
-        var showCameraScanner: Bool = false
-        var getImageButtons = GetImageForOCR.State()
-        
+        var ocr = OCR.State()
         var selectSet = SelectStudySet.State(pickerName: "")
         var addUnit = AddUnit.State()
         var alert: AlertState<Action>?
-        
-        var showOCR: Bool { ocr != nil }
     }
     
     enum Action: Equatable {
+        case ocr(OCR.Action)
         case selectSet(SelectStudySet.Action)
         case addUnit(AddUnit.Action)
-        case showCameraScanner(Bool)
         case dismissAlert
     }
     
@@ -53,6 +47,8 @@ struct AddUnitWithOCR: ReducerProtocol {
 //            case .japaneseOcrResponse(.success(let results)):
 //                state.ocr?.japaneseOcrResult = results
 //                return .none
+            case .ocr(let action):
+                return .none
             case .selectSet(let action):
                 switch action {
                 case .idUpdated:
@@ -98,11 +94,14 @@ struct AddUnitWithOCR: ReducerProtocol {
                 return .none
             }
         }
-        Scope(state: \.addUnit, action: /Action.addUnit) {
-            AddUnit()
+        Scope(state: \.ocr, action: /Action.ocr) {
+            OCR()
         }
         Scope(state: \.selectSet, action: /Action.selectSet) {
             SelectStudySet()
+        }
+        Scope(state: \.addUnit, action: /Action.addUnit) {
+            AddUnit()
         }
     }
 }
@@ -127,21 +126,10 @@ struct OCRAddUnitView: View {
                     Color.white
                         .onTapGesture { dismissKeyBoard() }
                     VStack(spacing: 35) {
-//                        if vs.showOCR {
-//                            VStack(spacing: 20) {
-//                                Text("스캔 결과")
-//                                    .font(.system(size: 20))
-//                                    .bold()
-//                                    .leadingAlignment()
-//                                    .padding(.leading, 10)
-//                            }
-//                        } else {
-//                            GetImageForOCRView(store: store.scope(
-//                                state: \.getImageButtons,
-//                                action: AddUnitWithOCR.Action.getImageButtons)
-//                            )
-//                            .padding(.vertical, 10)
-//                        }
+                        OCRView(store: store.scope(
+                            state: \.ocr,
+                            action: AddUnitWithOCR.Action.ocr)
+                        )
                         StudySetPicker(store: store.scope(
                             state: \.selectSet,
                             action: AddUnitWithOCR.Action.selectSet)
