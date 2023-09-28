@@ -174,9 +174,9 @@ class CoreDataClient {
     func editUnit(of unit: StudyUnit,
                     type: UnitType,
                     kanjiText: String,
-                    kanjiImageID: String?,
+                    kanjiImageID: String? = nil,
                     meaningText: String,
-                  meaningImageID: String?) throws -> StudyUnit {
+                  meaningImageID: String? = nil) throws -> StudyUnit {
         
         guard let mo = try context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")

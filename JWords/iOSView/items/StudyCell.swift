@@ -38,13 +38,6 @@ struct StudyWord: ReducerProtocol {
             }
         }
         
-        var alert: AlertState<Action>?
-        var toEditKanji: AddingUnit.State?
-        
-        var showEditModal: Bool {
-            toEditKanji != nil
-        }
-        
         init(unit: StudyUnit, frontType: FrontType = .kanji, isLocked: Bool = false) {
             self.id = unit.id
             self.unit = unit
@@ -76,12 +69,7 @@ struct StudyWord: ReducerProtocol {
         case cellTapped
         case cellDoubleTapped
         case cellDrag(direction: SwipeDirection)
-        case addKanjiMeaningTapped(Kanji)
-        case showErrorAlert
-        case alertDismissed
         case kanjiButtonTapped
-        case editKanji(action: AddingUnit.Action)
-        case setKanjiEditModal(isPresented: Bool)
     }
     
     private let cd = CoreDataClient.shared
@@ -96,37 +84,14 @@ struct StudyWord: ReducerProtocol {
                 return .none
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
-                let beforeState = state.studyState
                 state.studyState = .undefined
-                do {
-                    _ = try wordClient.studyState(state.unit, .undefined)
-                } catch {
-                    state.studyState = beforeState
-                    return .task { .showErrorAlert }
-                }
+                _ = try! wordClient.studyState(state.unit, .undefined)
                 return .none
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
-                let beforeState = state.studyState
                 let newState: StudyState = direction == .left ? .success : .fail
                 state.studyState = newState
-                do {
-                    _ = try wordClient.studyState(state.unit, newState)
-                } catch {
-                    state.studyState = beforeState
-                    return .task { .showErrorAlert }
-                }
-                return .none
-            case .showErrorAlert:
-                state.alert = AppError.unknown.simpleAlert(action: Action.self)
-                return .none
-            case .alertDismissed:
-                state.alert = nil
-                return .none
-            case .setKanjiEditModal(let isPresent):
-                if !isPresent {
-                    state.toEditKanji = nil
-                }
+                _ = try! wordClient.studyState(state.unit, newState)
                 return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {
@@ -135,28 +100,7 @@ struct StudyWord: ReducerProtocol {
                     state.kanjis = []
                 }
                 return .none
-            case .addKanjiMeaningTapped(let kanji):
-                state.toEditKanji = AddingUnit.State(mode: .editKanji(kanji: kanji))
-                return .none
-            case .editKanji(let action):
-                switch action {
-                case .kanjiEdited(let kanji):
-                    guard let index = state.kanjis.firstIndex(where: { $0.id == kanji.id }) else { return .none }
-                    state.kanjis[index] = kanji
-                    state.toEditKanji = nil
-                    return .none
-                case .cancelButtonTapped:
-                    state.toEditKanji = nil
-                    return .none
-                default:
-                    return .none
-                }
-            default:
-                return .none
             }
-        }
-        .ifLet(\.toEditKanji, action: /Action.editKanji(action:)) {
-            AddingUnit()
         }
     }
 
@@ -198,18 +142,6 @@ struct StudyCell: View {
             )
             .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
             .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
-            .alert(
-              self.store.scope(state: \.alert),
-              dismiss: .alertDismissed
-            )
-            .sheet(isPresented: vs.binding(
-                get: \.showEditModal,
-                send: StudyWord.Action.setKanjiEditModal(isPresented:))
-            ) {
-                IfLetStore(self.store.scope(state: \.toEditKanji, action: StudyWord.Action.editKanji(action:))) {
-                    StudyUnitAddView(store: $0)
-                }
-            }
         }
     }
     
@@ -240,7 +172,7 @@ struct StudyCell: View {
                 Text(kanji.meaningText)
                     .font(.system(size: 20))
             } else {
-                Button("???") { vs.send(.addKanjiMeaningTapped(kanji)) }
+                Text("???")
                     .font(.system(size: 20))
             }
         }
