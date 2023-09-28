@@ -13,14 +13,12 @@ struct AddUnitWithOCR: ReducerProtocol {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State(pickerName: "")
         var addUnit = AddUnit.State()
-        var alert: AlertState<Action>?
     }
     
     enum Action: Equatable {
         case ocr(OCR.Action)
         case selectSet(SelectStudySet.Action)
         case addUnit(AddUnit.Action)
-        case dismissAlert
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -63,9 +61,6 @@ struct AddUnitWithOCR: ReducerProtocol {
                 default:
                     return .none
                 }
-            case .dismissAlert:
-                state.alert = nil
-                return .none
             default:
                 return .none
             }
@@ -112,10 +107,6 @@ struct OCRAddUnitView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
-            .alert(
-              self.store.scope(state: \.alert),
-              dismiss: .dismissAlert
-            )
         }
     }
 }
