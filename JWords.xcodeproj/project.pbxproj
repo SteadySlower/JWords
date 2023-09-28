@@ -15,6 +15,7 @@
 		06004E372AC5488600947F5D /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E362AC5488600947F5D /* EditList.swift */; };
 		06004E392AC5488D00947F5D /* DeleteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E382AC5488D00947F5D /* DeleteList.swift */; };
 		06004E3B2AC5489700947F5D /* SelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* SelectList.swift */; };
+		06004E3F2AC555C800947F5D /* StudyBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3E2AC555C800947F5D /* StudyBookView.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7E2A19862F00E099B5 /* ConversionView.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
@@ -206,6 +207,7 @@
 		06004E362AC5488600947F5D /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
 		06004E382AC5488D00947F5D /* DeleteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteList.swift; sourceTree = "<group>"; };
 		06004E3A2AC5489700947F5D /* SelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectList.swift; sourceTree = "<group>"; };
+		06004E3E2AC555C800947F5D /* StudyBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyBookView.swift; sourceTree = "<group>"; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -423,6 +425,14 @@
 				5A7B920029F10C0500ED3CAA /* SelectionCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		06004E3D2AC5559800947F5D /* StudyView */ = {
+			isa = PBXGroup;
+			children = (
+				06004E3E2AC555C800947F5D /* StudyBookView.swift */,
+			);
+			path = StudyView;
 			sourceTree = "<group>";
 		};
 		061C9E822A19D5DA00E099B5 /* Conversion */ = {
@@ -732,6 +742,7 @@
 		5A67DC28286946DF00AC156C /* WordList */ = {
 			isa = PBXGroup;
 			children = (
+				06004E3D2AC5559800947F5D /* StudyView */,
 				06004E2E2AC5484B00947F5D /* Lists */,
 				06004E3C2AC548BE00947F5D /* Cells */,
 				5A67DC29286946F800AC156C /* StudyView.swift */,
@@ -1156,6 +1167,7 @@
 				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5AAF1E042AA9965300709CAE /* OCRResultView.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
+				06004E3F2AC555C800947F5D /* StudyBookView.swift in Sources */,
 				06004E252AC51DBE00947F5D /* OCRView.swift in Sources */,
 				5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */,
 				06308A732A04902A00BDEE2D /* StudySet.swift in Sources */,
