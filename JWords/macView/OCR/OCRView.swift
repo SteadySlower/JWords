@@ -2,33 +2,81 @@
 //  OCRView.swift
 //  JWords
 //
-//  Created by Jong Won Moon on 2023/09/07.
+//  Created by JW Moon on 2023/09/28.
 //
 
-import SwiftUI
 import ComposableArchitecture
+import SwiftUI
 
 struct OCR: ReducerProtocol {
+    
     struct State: Equatable {
-        var image: InputImageType
-        var koreanOcrResult: [OCRResult] = []
-        var japaneseOcrResult: [OCRResult] = []
-        
-        init(_ image: InputImageType) {
-            self.image = image
-        }
+        var getImage = GetImageForOCR.State()
+        var ocr: GetWordsFromOCR.State?
     }
     
     enum Action: Equatable {
-        case ocrMarkTapped(OCRLang, String)
-        case removeImageButtonTapped
+        case getImage(GetImageForOCR.Action)
+        case ocr(GetWordsFromOCR.Action)
+        case koreanOcrResponse(TaskResult<[OCRResult]>)
+        case japaneseOcrResponse(TaskResult<[OCRResult]>)
+        case koreanOCR(String)
+        case japaneseOCR(String)
     }
+    
+    private let ocrClient: OCRClient = .shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .getImage(let action):
+                switch action {
+                case .imageFetched(let image):
+                    state.ocr = GetWordsFromOCR.State(image: image)
+                    return .merge(
+                        .task {
+                            await .koreanOcrResponse(TaskResult {
+                                try await OCRClient.shared.ocr(from: image, lang: .korean)
+                            })
+                        },
+                        .task {
+                            await .japaneseOcrResponse(TaskResult {
+                                try await OCRClient.shared.ocr(from: image, lang: .japanese)
+                            })
+                        }
+                    )
+                default:
+                    return .none
+                }
+            case .ocr(let action):
+                switch action {
+                case .ocrMarkTapped(let lang, let text):
+                    if lang == .korean {
+                        return .task { .koreanOCR(text) }
+                    } else {
+                        return .task { .japaneseOCR(text) }
+                    }
+                case .removeImageButtonTapped:
+                    state.ocr = nil
+                    return .none
+                }
+            case .japaneseOcrResponse(.success(let result)):
+                state.ocr?.japaneseOcrResult = result
+                return .none
+            case .koreanOcrResponse(.success(let result)):
+                state.ocr?.koreanOcrResult = result
+                return .none
+            default: return .none
+            }
+        }
+        .ifLet(\.ocr, action: /Action.ocr) {
+            GetWordsFromOCR()
+        }
+        Scope(state: \.getImage, action: /Action.getImage) {
+            GetImageForOCR()
         }
     }
+    
 }
 
 struct OCRView: View {
@@ -37,108 +85,19 @@ struct OCRView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                HStack {
-                    Spacer()
-                    Text("↘️ 한국어 스캔")
-                    Spacer()
-                    Text("↖️ 일본어 스캔")
-                    Spacer()
+            if vs.ocr == nil {
+                GetImageForOCRView(store: store.scope(
+                    state: \.getImage,
+                    action: OCR.Action.getImage)
+                )
+            } else {
+                IfLetStore(store.scope(
+                    state: \.ocr,
+                    action: OCR.Action.ocr)
+                ) {
+                    OCRResultView(store: $0)
                 }
-                GeometryReader { proxy in
-                    imageView(vs.image)
-                        .overlay(
-                            copyButtons(lang: .korean,
-                                        results: vs.koreanOcrResult,
-                                        in: proxy.frame(in: .local)) {
-                                            vs.send(.ocrMarkTapped($0, $1))
-                                        }
-                        )
-                        .overlay(
-                            copyButtons(lang: .japanese,
-                                        results: vs.japaneseOcrResult,
-                                        in: proxy.frame(in: .local)) {
-                                            vs.send(.ocrMarkTapped($0, $1))
-                                        }
-                        )
-                }
-                .frame(width: vs.image.size.width, height: vs.image.size.height)
-                xButton { vs.send(.removeImageButtonTapped) }
-                    .padding(.horizontal, 20)
             }
         }
-    }
-}
-
-// MARK: SubView
-
-extension OCRView {
-    
-    private func imageView(_ image: InputImageType) -> Image {
-        #if os(iOS)
-        Image(uiImage: image)
-        #elseif os(macOS)
-        Image(nsImage: image)
-        #endif
-    }
-    
-    private func copyButtons(lang: OCRLang,
-                        results: [OCRResult],
-                        in bounds: CGRect,
-                        onTapped: @escaping (OCRLang, String) -> Void
-    ) -> some View {
-        ForEach(results, id: \.id) { result in
-            let pixelRect = convert(boundingBox: result.position, to: bounds)
-            let buttonPosition = CGPoint(
-                x: lang == .korean ? pixelRect.minX : pixelRect.maxX,
-                y: lang == .korean ? pixelRect.minY : pixelRect.maxY
-            )
-            copyButton(lang: lang) {
-                onTapped(lang, result.string)
-            }
-            .position(buttonPosition)
-        }
-    }
-    
-    private func copyButton(lang: OCRLang, _ onTapped: @escaping () -> Void) -> some View {
-        return Button {
-            onTapped()
-        } label: {
-            Text(lang == .korean ? "↘️" : "↖️")
-                .font(.system(size: 10))
-        }
-    }
-    
-    private func xButton(_ onTapped: @escaping () -> Void) -> some View {
-        RectangleButton(
-            image: Image(systemName: "photo.on.rectangle.angled"),
-            title: "다른 이미지 스캔하기",
-            isVertical: false,
-            onTapped: onTapped)
-    }
-    
-}
-
-// MARK: Helper functions
-
-extension OCRView {
-    fileprivate func convert(boundingBox: CGRect, to bounds: CGRect) -> CGRect {
-
-        let imageWidth = bounds.width
-        let imageHeight = bounds.height
-
-        // Begin with input rect.
-        var rect = boundingBox
-
-        // Reposition origin.
-        rect.origin.x *= imageWidth
-        rect.origin.x += bounds.minX
-        rect.origin.y = (1 - rect.maxY) * imageHeight + bounds.minY
-
-        // Rescale normalized coordinates.
-        rect.size.width *= imageWidth
-        rect.size.height *= imageHeight
-
-        return rect
     }
 }
