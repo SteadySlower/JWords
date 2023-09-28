@@ -202,7 +202,7 @@ struct OCRAddUnitView: View {
                         } else {
                             VStack {
                                 ScanGuide()
-                                ImageGetterButtons(store: store.scope(
+                                GetImageForOCRView(store: store.scope(
                                     state: \.getImageButtons,
                                     action: AddUnitWithOCR.Action.getImageButtons)
                                 )

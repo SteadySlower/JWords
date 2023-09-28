@@ -134,7 +134,7 @@
 		5AA9097B2A83237B0075AFB9 /* KVStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */; };
-		5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */; };
+		5AAF1E002AA96AF900709CAE /* GetImageForOCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */; };
 		5AAF1E042AA9965300709CAE /* OCRResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E032AA9965300709CAE /* OCRResultView.swift */; };
 		5AAF1E062AAABEA700709CAE /* RectangleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E052AAABEA700709CAE /* RectangleButton.swift */; };
 		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
@@ -315,7 +315,7 @@
 		5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVStorageClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/MacView/OCR/Items/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
-		5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageGetterButtons.swift; path = JWords/MacView/OCR/Items/ImageGetterButtons.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetImageForOCRView.swift; path = JWords/MacView/OCR/Items/GetImageForOCRView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E032AA9965300709CAE /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/MacView/OCR/Items/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/macView/Components/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
@@ -383,7 +383,7 @@
 		06004E212AC5191300947F5D /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */,
+				5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */,
 				06004E222AC5192400947F5D /* ScanGuide.swift */,
 				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
 				5AAF1E032AA9965300709CAE /* OCRResultView.swift */,
@@ -1066,7 +1066,7 @@
 				5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
-				5AAF1E002AA96AF900709CAE /* ImageGetterButtons.swift in Sources */,
+				5AAF1E002AA96AF900709CAE /* GetImageForOCRView.swift in Sources */,
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,

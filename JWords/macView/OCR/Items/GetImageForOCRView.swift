@@ -43,7 +43,7 @@ struct GetImageForOCR: ReducerProtocol {
 }
 
 
-struct ImageGetterButtons: View {
+struct GetImageForOCRView: View {
     
     let store: StoreOf<GetImageForOCR>
     
@@ -68,7 +68,7 @@ struct ImageGetterButtons: View {
 
 // MARK: SubViews
 
-extension ImageGetterButtons {
+extension GetImageForOCRView {
     
     private func button(for imageSource: ImageSource, _ onTapped: @escaping () -> Void) -> some View {
         RectangleButton(
