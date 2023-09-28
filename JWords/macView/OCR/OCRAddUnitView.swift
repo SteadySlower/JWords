@@ -147,7 +147,6 @@ struct OCRAddUnitView: View {
             .navigationTitle("단어 스캐너")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
-
             #endif
             .alert(
               self.store.scope(state: \.alert),
