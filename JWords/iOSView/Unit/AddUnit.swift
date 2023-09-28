@@ -19,6 +19,7 @@ struct AddUnit: ReducerProtocol {
         mutating func clearInput() {
             inputUnit.kanjiInput.text = ""
             inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+            inputUnit.kanjiInput.isEditing = true
             inputUnit.meaningInput.text = ""
         }
         
