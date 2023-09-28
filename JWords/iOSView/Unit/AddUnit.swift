@@ -24,7 +24,6 @@ struct AddUnit: ReducerProtocol {
         }
         
         fileprivate mutating func setNoSetAlert() {
-            let kanjiText = inputUnit.kanjiInput.text
             alert = AlertState<Action> {
                 TextState("선택된 단어장 없음")
             } actions: {
