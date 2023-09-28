@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06004E232AC5192400947F5D /* ScanGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E222AC5192400947F5D /* ScanGuide.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7E2A19862F00E099B5 /* ConversionView.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
@@ -192,6 +193,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06004E222AC5192400947F5D /* ScanGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanGuide.swift; path = JWords/macView/OCR/Items/ScanGuide.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -378,6 +380,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06004E212AC5191300947F5D /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				06004E222AC5192400947F5D /* ScanGuide.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
 		061C9E822A19D5DA00E099B5 /* Conversion */ = {
 			isa = PBXGroup;
 			children = (
@@ -765,6 +775,7 @@
 		5AAF1DFC2AA9661E00709CAE /* OCR */ = {
 			isa = PBXGroup;
 			children = (
+				06004E212AC5191300947F5D /* Items */,
 				06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */,
 				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
 				5AAF1DFF2AA96AF900709CAE /* ImageGetterButtons.swift */,
@@ -1082,6 +1093,7 @@
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
+				06004E232AC5192400947F5D /* ScanGuide.swift in Sources */,
 				5AE1DB1C28C5D640006DB89C /* WordBookService.swift in Sources */,
 				06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */,
