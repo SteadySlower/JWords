@@ -44,11 +44,6 @@ struct MoveWords: ReducerProtocol {
         case onMoved(from: StudySet)
     }
     
-    @Dependency(\.wordBookClient) var wordBookClient
-    @Dependency(\.todayClient) var todayClient
-    private enum FetchWordBooksID {}
-    private enum MoveWordsID {}
-    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
