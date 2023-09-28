@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06004E232AC5192400947F5D /* ScanGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E222AC5192400947F5D /* ScanGuide.swift */; };
+		06004E252AC51DBE00947F5D /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E242AC51DBE00947F5D /* OCRView.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7E2A19862F00E099B5 /* ConversionView.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
@@ -193,6 +194,7 @@
 
 /* Begin PBXFileReference section */
 		06004E222AC5192400947F5D /* ScanGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanGuide.swift; path = JWords/macView/OCR/Items/ScanGuide.swift; sourceTree = SOURCE_ROOT; };
+		06004E242AC51DBE00947F5D /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -778,6 +780,7 @@
 			children = (
 				06004E212AC5191300947F5D /* Items */,
 				06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */,
+				06004E242AC51DBE00947F5D /* OCRView.swift */,
 			);
 			path = OCR;
 			sourceTree = "<group>";
@@ -1116,6 +1119,7 @@
 				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5AAF1E042AA9965300709CAE /* OCRResultView.swift in Sources */,
 				5A67DC332869565A00AC156C /* MacAddBookView.swift in Sources */,
+				06004E252AC51DBE00947F5D /* OCRView.swift in Sources */,
 				5A7C6FDB29FBA3CC00DD84A4 /* SampleClient.swift in Sources */,
 				06308A732A04902A00BDEE2D /* StudySet.swift in Sources */,
 				5A616D9F28C05A0E0013B5AE /* Database.swift in Sources */,

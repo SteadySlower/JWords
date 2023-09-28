@@ -11,7 +11,7 @@ import ComposableArchitecture
 struct AddUnitWithOCR: ReducerProtocol {
     struct State: Equatable {
 
-        var ocr: OCR.State?
+        var ocr: GetWordsFromOCR.State?
         var showCameraScanner: Bool = false
         var getImageButtons = GetImageForOCR.State()
         
@@ -23,7 +23,7 @@ struct AddUnitWithOCR: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case ocr(OCR.Action)
+        case getWordsFromOCR(GetWordsFromOCR.Action)
         case getImageButtons(GetImageForOCR.Action)
         case cameraImageSelected(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
@@ -88,7 +88,7 @@ struct AddUnitWithOCR: ReducerProtocol {
                 default:
                     return .none
                 }
-            case .ocr(let action):
+            case .getWordsFromOCR(let action):
                 switch action {
                 case .ocrMarkTapped(let lang, let text):
                     switch lang {
@@ -117,8 +117,8 @@ struct AddUnitWithOCR: ReducerProtocol {
                 return .none
             }
         }
-        .ifLet(\.ocr, action: /Action.ocr) {
-            OCR()
+        .ifLet(\.ocr, action: /Action.getWordsFromOCR) {
+            GetWordsFromOCR()
         }
         Scope(state: \.addUnit, action: /Action.addUnit) {
             AddUnit()
@@ -194,7 +194,7 @@ struct OCRAddUnitView: View {
                                     .leadingAlignment()
                                     .padding(.leading, 10)
                                 IfLetStore(self.store.scope(state: \.ocr,
-                                                            action: AddUnitWithOCR.Action.ocr)
+                                                            action: AddUnitWithOCR.Action.getWordsFromOCR)
                                 ) {
                                     OCRResultView(store: $0)
                                 }

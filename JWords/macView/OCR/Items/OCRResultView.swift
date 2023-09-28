@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct OCR: ReducerProtocol {
+struct GetWordsFromOCR: ReducerProtocol {
     struct State: Equatable {
         var image: InputImageType
         var koreanOcrResult: [OCRResult] = []
@@ -33,7 +33,7 @@ struct OCR: ReducerProtocol {
 
 struct OCRResultView: View {
     
-    let store: StoreOf<OCR>
+    let store: StoreOf<GetWordsFromOCR>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
