@@ -29,25 +29,18 @@ struct AddUnitWithOCR: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-//            case .getImageButtons(let action):
-//            case .imageFetched(let image):
-//                guard let resizedImage = resizeImage(image) else { return .none }
-//                state.ocr = .init(resizedImage)
-//                return .merge(
-//                    .task {
-//                        await .japaneseOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .japanese) })
-//                    },
-//                    .task {
-//                        await .koreanOcrResponse(TaskResult { try await OCRClient.shared.ocr(from: resizedImage, lang: .korean) })
-//                    }
-//                )
-//            case .koreanOcrResponse(.success(let results)):
-//                state.ocr?.koreanOcrResult = results
-//                return .none
-//            case .japaneseOcrResponse(.success(let results)):
-//                state.ocr?.japaneseOcrResult = results
-//                return .none
             case .ocr(let action):
+                switch action {
+                case .koreanOCR(let meaning):
+                    state.addUnit.inputUnit.meaningInput.text = meaning
+                    return .none
+                case .japaneseOCR(let kanji):
+                    state.addUnit.inputUnit.kanjiInput.isEditing = true
+                    state.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+                    state.addUnit.inputUnit.kanjiInput.text = kanji
+                    return .none
+                default: return .none
+                }
                 return .none
             case .selectSet(let action):
                 switch action {
@@ -70,23 +63,6 @@ struct AddUnitWithOCR: ReducerProtocol {
                 default:
                     return .none
                 }
-//            case .getWordsFromOCR(let action):
-//                switch action {
-//                case .ocrMarkTapped(let lang, let text):
-//                    switch lang {
-//                    case .korean:
-//                        state.addUnit.inputUnit.meaningInput.text = text
-//                        return .none
-//                    case .japanese:
-//                        state.addUnit.inputUnit.kanjiInput.isEditing = true
-//                        state.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
-//                        state.addUnit.inputUnit.kanjiInput.text = text
-//                        return .none
-//                    }
-//                case .removeImageButtonTapped:
-//                    state.ocr = nil
-//                    return .none
-//                }
             case .dismissAlert:
                 state.alert = nil
                 return .none
