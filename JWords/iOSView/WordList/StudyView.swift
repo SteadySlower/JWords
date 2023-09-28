@@ -501,7 +501,10 @@ struct StudyView: View {
                 get: \.showEditSetModal,
                 send: WordList.Action.setEditSetModal(isPresented:))
             ) {
-                IfLetStore(self.store.scope(state: \.editSet, action: WordList.Action.editSet(action:))) {
+                IfLetStore(self.store.scope(
+                    state: \.editSet,
+                    action: WordList.Action.editSet(action:))
+                ) {
                     WordBookAddModal(store: $0)
                 }
             }
