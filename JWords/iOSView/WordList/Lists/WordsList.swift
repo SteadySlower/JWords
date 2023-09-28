@@ -13,9 +13,13 @@ struct StudyWords: ReducerProtocol {
         let _words: [StudyUnit]
         var words: IdentifiedArrayOf<StudyWord.State>
         
-        init(words: [StudyUnit]) {
+        init(words: [StudyUnit], frontType: FrontType, isLocked: Bool) {
             self._words = words
-            self.words = IdentifiedArray(uniqueElements: words.map { StudyWord.State(sample: $0) })
+            self.words = IdentifiedArray(
+                uniqueElements: words.map {
+                    StudyWord.State(unit: $0, frontType: frontType, isLocked: isLocked)
+                }
+            )
         }
         
         mutating func shuffleWords() {
