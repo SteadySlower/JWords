@@ -200,13 +200,10 @@ struct OCRAddUnitView: View {
                                 }
                             }
                         } else {
-                            VStack {
-                                ScanGuide()
-                                GetImageForOCRView(store: store.scope(
-                                    state: \.getImageButtons,
-                                    action: AddUnitWithOCR.Action.getImageButtons)
-                                )
-                            }
+                            GetImageForOCRView(store: store.scope(
+                                state: \.getImageButtons,
+                                action: AddUnitWithOCR.Action.getImageButtons)
+                            )
                             .padding(.vertical, 10)
                         }
                         StudySetPicker(store: store.scope(

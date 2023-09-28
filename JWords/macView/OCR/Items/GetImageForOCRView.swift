@@ -49,18 +49,21 @@ struct GetImageForOCRView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            HStack {
-                Spacer()
-                #if os(macOS)
-                button(for: .clipboard) {
-                    vs.send(.clipBoardButtonTapped)
+            VStack {
+                ScanGuide()
+                HStack {
+                    Spacer()
+                    #if os(macOS)
+                    button(for: .clipboard) {
+                        vs.send(.clipBoardButtonTapped)
+                    }
+                    Spacer()
+                    #endif
+                    button(for: .camera) {
+                        vs.send(.cameraButtonTapped)
+                    }
+                    Spacer()
                 }
-                Spacer()
-                #endif
-                button(for: .camera) {
-                    vs.send(.cameraButtonTapped)
-                }
-                Spacer()
             }
         }
     }
