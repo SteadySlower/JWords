@@ -56,7 +56,9 @@ struct OCR: ReducerProtocol {
                     } else {
                         return .task { .japaneseOCR(text) }
                     }
-                default: return .none
+                case .removeImageButtonTapped:
+                    state.ocr = nil
+                    return .none
                 }
             case .japaneseOcrResponse(.success(let result)):
                 state.ocr?.japaneseOcrResult = result
