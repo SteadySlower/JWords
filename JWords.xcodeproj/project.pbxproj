@@ -60,7 +60,6 @@
 		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
 		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
 		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
-		06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A564D5289E9C5100DBC2E0 /* WordInputView.swift */; };
 		06B2DA3C29EA33F8009C67EF /* WordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3B29EA33F8009C67EF /* WordClient.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
@@ -243,7 +242,6 @@
 		069941842A99EFFC00B5D769 /* DeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCell.swift; sourceTree = "<group>"; };
 		069941862A9A066B00B5D769 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		06A564D5289E9C5100DBC2E0 /* WordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordInputView.swift; sourceTree = "<group>"; };
 		06B2DA3B29EA33F8009C67EF /* WordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordClient.swift; sourceTree = "<group>"; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
@@ -701,7 +699,6 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC29286946F800AC156C /* StudyView.swift */,
-				06A564D5289E9C5100DBC2E0 /* WordInputView.swift */,
 				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
 			);
@@ -1133,7 +1130,6 @@
 				067840EE29C55EB40019ABA8 /* Repository.swift in Sources */,
 				5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
-				06A564D6289E9C5100DBC2E0 /* WordInputView.swift in Sources */,
 				0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */,
 				0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */,
 				5A67DC2A286946F800AC156C /* StudyView.swift in Sources */,
