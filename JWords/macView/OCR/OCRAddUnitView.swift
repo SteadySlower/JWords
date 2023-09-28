@@ -188,7 +188,7 @@ struct OCRAddUnitView: View {
                                 IfLetStore(self.store.scope(state: \.ocr,
                                                             action: AddUnitWithOCR.Action.ocr)
                                 ) {
-                                    OCRView(store: $0)
+                                    OCRResultView(store: $0)
                                 }
                             }
                         } else {

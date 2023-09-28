@@ -31,7 +31,7 @@ struct OCR: ReducerProtocol {
     }
 }
 
-struct OCRView: View {
+struct OCRResultView: View {
     
     let store: StoreOf<OCR>
     
@@ -72,7 +72,7 @@ struct OCRView: View {
 
 // MARK: SubView
 
-extension OCRView {
+extension OCRResultView {
     
     private func imageView(_ image: InputImageType) -> Image {
         #if os(iOS)
@@ -121,7 +121,7 @@ extension OCRView {
 
 // MARK: Helper functions
 
-extension OCRView {
+extension OCRResultView {
     fileprivate func convert(boundingBox: CGRect, to bounds: CGRect) -> CGRect {
 
         let imageWidth = bounds.width
