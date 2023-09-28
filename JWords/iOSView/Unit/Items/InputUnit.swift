@@ -69,7 +69,7 @@ struct UnitInputView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 40) {
+            VStack(spacing: 10) {
                 KanjiInputField(store: store.scope(
                     state: \.kanjiInput,
                     action: InputUnit.Action.kanjiInput)
