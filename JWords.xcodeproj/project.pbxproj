@@ -80,7 +80,6 @@
 		06E4066229C5578D0055B104 /* RepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E4066129C5578D0055B104 /* RepositoryManager.swift */; };
 		06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* CoreDataClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
-		06E9175A2A073F26002289B4 /* CoreDataTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917592A073F26002289B4 /* CoreDataTestView.swift */; };
 		5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A002C2428E2CB260037D139 /* MockTodayService.swift */; };
 		5A1FADFB28A1FC87000ACBD2 /* DataResettingScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */; };
 		5A5328C3286C126C0080D500 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5A5328C2286C126C0080D500 /* Kingfisher */; };
@@ -266,7 +265,6 @@
 		06E4066129C5578D0055B104 /* RepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryManager.swift; sourceTree = "<group>"; };
 		06E917532A07168F002289B4 /* CoreDataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
-		06E917592A073F26002289B4 /* CoreDataTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestView.swift; sourceTree = "<group>"; };
 		5A002C2428E2CB260037D139 /* MockTodayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTodayService.swift; sourceTree = "<group>"; };
 		5A1FADFA28A1FC87000ACBD2 /* DataResettingScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResettingScript.swift; sourceTree = "<group>"; };
 		5A5740A728BDA8900080A2E2 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
@@ -603,14 +601,6 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
-		06E917582A073F0E002289B4 /* Test */ = {
-			isa = PBXGroup;
-			children = (
-				06E917592A073F26002289B4 /* CoreDataTestView.swift */,
-			);
-			path = Test;
-			sourceTree = "<group>";
-		};
 		5A5FF630286AD746000150A7 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -666,7 +656,6 @@
 				5AB308352ABBDEC6002EAC3E /* Tutorials */,
 				06CEAC532AB6BB78007783F6 /* Ad */,
 				5A8843BF2A11BBA10027B408 /* Kanji */,
-				06E917582A073F0E002289B4 /* Test */,
 				5A735AF928D809B500CADF9B /* Today */,
 				5A67DC2E2869491E00AC156C /* items */,
 				5A67DC28286946DF00AC156C /* Study */,
@@ -1054,7 +1043,6 @@
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
 				5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */,
-				06E9175A2A073F26002289B4 /* CoreDataTestView.swift in Sources */,
 				06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */,
 				061C9E842A19D62D00E099B5 /* FirebaseWordCell.swift in Sources */,
 				06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */,
