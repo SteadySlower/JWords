@@ -67,7 +67,11 @@ struct StudyList: View {
 
 #Preview {
     StudyList(store: Store(
-        initialState: StudyWords.State(words: .mock),
+        initialState: StudyWords.State(
+            words: .mock,
+            frontType: .kanji,
+            isLocked: false
+        ),
         reducer: StudyWords())
     )
 }

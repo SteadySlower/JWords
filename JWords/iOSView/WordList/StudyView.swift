@@ -55,14 +55,14 @@ struct WordList: ReducerProtocol {
         init(set: StudySet) {
             self.set = set
             self.navigationTitle = set.title
-            self.setting = .init(frontMode: set.preferredFrontType)
+            self.setting = .init(set: set, frontType: set.preferredFrontType)
         }
         
         init(units: [StudyUnit]) {
             self.set = nil
             self.navigationTitle = "틀린 단어 모아보기"
             self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(unit: $0) })
-            self.setting = .init(showEditButtons: false)
+            self.setting = .init()
         }
         
         init(kanji: Kanji, units: [StudyUnit]) {
@@ -70,7 +70,7 @@ struct WordList: ReducerProtocol {
             self.kanji = kanji
             self.navigationTitle = "\(kanji.kanjiText)가 쓰이는 단어"
             self._words = IdentifiedArray(uniqueElements: units.map { StudyWord.State(sample: $0) })
-            self.setting = .init(showEditButtons: false)
+            self.setting = .init()
         }
         
         var words: IdentifiedArrayOf<StudyWord.State> {

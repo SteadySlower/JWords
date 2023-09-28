@@ -30,14 +30,23 @@ enum StudyViewMode: Hashable, Equatable {
 
 struct StudySetting: ReducerProtocol {
     struct State: Equatable {
+        let set: StudySet?
+        let selectableViewModes: [StudyViewMode]
         var studyMode: StudyMode = .all
         var frontType: FrontType
         var studyViewMode: StudyViewMode = .normal
-        let showEditButtons: Bool
         
-        init(frontMode: FrontType = .kanji, showEditButtons: Bool = true) {
-            self.frontType = frontMode
-            self.showEditButtons = showEditButtons
+        init(
+            set: StudySet? = nil,
+            frontType: FrontType = .kanji
+        ) {
+            self.set = set
+            self.frontType = frontType
+            if set != nil {
+                selectableViewModes = [.normal, .selection, .edit, .delete]
+            } else {
+                selectableViewModes = [.normal, .edit]
+            }
         }
     }
     
@@ -77,7 +86,7 @@ struct SettingSideBar: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack(spacing: 10) {
-                if vs.showEditButtons {
+                if vs.set != nil {
                     VStack(spacing: 10) {
                         RectangleButton(
                             image: Image(systemName: "rectangle.and.pencil.and.ellipsis"),
@@ -145,16 +154,3 @@ struct SettingSideBar: View {
         }
     }
 }
-
-struct SettingSideBar_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        SettingSideBar(
-            store: Store(
-                initialState: StudySetting.State(frontMode: .kanji),
-                reducer: StudySetting()._printChanges()
-            )
-        )
-    }
-}
-
