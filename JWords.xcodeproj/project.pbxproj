@@ -670,7 +670,7 @@
 				5A8843BF2A11BBA10027B408 /* Kanji */,
 				5A735AF928D809B500CADF9B /* Today */,
 				5A67DC2E2869491E00AC156C /* items */,
-				5A67DC28286946DF00AC156C /* Study */,
+				5A67DC28286946DF00AC156C /* List */,
 				5A67DC212869439D00AC156C /* Home */,
 				5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */,
 				06308A5D29FE14D900BDEE2D /* iOSHuriganaTestView.swift */,
@@ -695,14 +695,14 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		5A67DC28286946DF00AC156C /* Study */ = {
+		5A67DC28286946DF00AC156C /* List */ = {
 			isa = PBXGroup;
 			children = (
 				5A67DC29286946F800AC156C /* StudyView.swift */,
 				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
 			);
-			path = Study;
+			path = List;
 			sourceTree = "<group>";
 		};
 		5A67DC2E2869491E00AC156C /* items */ = {
