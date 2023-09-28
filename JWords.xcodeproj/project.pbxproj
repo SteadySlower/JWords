@@ -13,9 +13,9 @@
 		06004E302AC5485800947F5D /* BookStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E2F2AC5485800947F5D /* BookStudyList.swift */; };
 		06004E332AC5487000947F5D /* KanjiStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E322AC5487000947F5D /* KanjiStudyList.swift */; };
 		06004E352AC5488000947F5D /* WordStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E342AC5488000947F5D /* WordStudyList.swift */; };
-		06004E372AC5488600947F5D /* EditStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E362AC5488600947F5D /* EditStudyList.swift */; };
-		06004E392AC5488D00947F5D /* DeleteStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E382AC5488D00947F5D /* DeleteStudyList.swift */; };
-		06004E3B2AC5489700947F5D /* MoveStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* MoveStudyList.swift */; };
+		06004E372AC5488600947F5D /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E362AC5488600947F5D /* EditList.swift */; };
+		06004E392AC5488D00947F5D /* DeleteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E382AC5488D00947F5D /* DeleteList.swift */; };
+		06004E3B2AC5489700947F5D /* MoveList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* MoveList.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7E2A19862F00E099B5 /* ConversionView.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
@@ -205,9 +205,9 @@
 		06004E2F2AC5485800947F5D /* BookStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStudyList.swift; sourceTree = "<group>"; };
 		06004E322AC5487000947F5D /* KanjiStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiStudyList.swift; sourceTree = "<group>"; };
 		06004E342AC5488000947F5D /* WordStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordStudyList.swift; sourceTree = "<group>"; };
-		06004E362AC5488600947F5D /* EditStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStudyList.swift; sourceTree = "<group>"; };
-		06004E382AC5488D00947F5D /* DeleteStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteStudyList.swift; sourceTree = "<group>"; };
-		06004E3A2AC5489700947F5D /* MoveStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveStudyList.swift; sourceTree = "<group>"; };
+		06004E362AC5488600947F5D /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
+		06004E382AC5488D00947F5D /* DeleteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteList.swift; sourceTree = "<group>"; };
+		06004E3A2AC5489700947F5D /* MoveList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveList.swift; sourceTree = "<group>"; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -409,9 +409,9 @@
 				06004E2F2AC5485800947F5D /* BookStudyList.swift */,
 				06004E322AC5487000947F5D /* KanjiStudyList.swift */,
 				06004E342AC5488000947F5D /* WordStudyList.swift */,
-				06004E362AC5488600947F5D /* EditStudyList.swift */,
-				06004E382AC5488D00947F5D /* DeleteStudyList.swift */,
-				06004E3A2AC5489700947F5D /* MoveStudyList.swift */,
+				06004E362AC5488600947F5D /* EditList.swift */,
+				06004E382AC5488D00947F5D /* DeleteList.swift */,
+				06004E3A2AC5489700947F5D /* MoveList.swift */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
@@ -1082,7 +1082,7 @@
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
 				5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */,
 				064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */,
-				06004E3B2AC5489700947F5D /* MoveStudyList.swift in Sources */,
+				06004E3B2AC5489700947F5D /* MoveList.swift in Sources */,
 				06004E352AC5488000947F5D /* WordStudyList.swift in Sources */,
 				5ACE0A7828699BB400A57660 /* Word.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
@@ -1100,7 +1100,7 @@
 				5A67DC312869529700AC156C /* MacAppView.swift in Sources */,
 				5AD8070B28A0EDE300ADB6F7 /* Events.swift in Sources */,
 				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
-				06004E372AC5488600947F5D /* EditStudyList.swift in Sources */,
+				06004E372AC5488600947F5D /* EditList.swift in Sources */,
 				5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */,
 				5ACE0A7628699BAD00A57660 /* WordBook.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
@@ -1115,7 +1115,7 @@
 				0622726929F3B69100EEAD50 /* ImageClient.swift in Sources */,
 				064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */,
 				064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */,
-				06004E392AC5488D00947F5D /* DeleteStudyList.swift in Sources */,
+				06004E392AC5488D00947F5D /* DeleteList.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
 				06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */,
 				5A8614DA2A1C9ABA00000653 /* CoreDataWordCell.swift in Sources */,
