@@ -16,10 +16,12 @@ struct StudyBook: ReducerProtocol {
         var selectionList: SelectWords.State?
         var deleteList: DeleteWords.State?
         var setting: StudySetting.State
+        var modals = ShowModalsInList.State()
     }
     
     enum Action: Equatable {
         case studyList(StudyWords.Action)
+        case modals(ShowModalsInList.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -32,6 +34,11 @@ struct StudyBook: ReducerProtocol {
             state: \.studyList,
             action: /Action.studyList,
             child: { StudyWords() }
+        )
+        Scope(
+            state: \.modals,
+            action: /Action.modals,
+            child: { }
         )
     }
 }
