@@ -75,7 +75,7 @@ struct WordList: ReducerProtocol {
         
         var words: IdentifiedArrayOf<StudyWord.State> {
             guard !isLoading else { return [] }
-            switch setting.studyMode {
+            switch setting.filter {
             case .all:
                 return _words
             case .excludeSuccess:
@@ -86,7 +86,7 @@ struct WordList: ReducerProtocol {
         }
         
         var toMoveWords: [StudyUnit] {
-            if setting.studyViewMode == .selection {
+            if setting.listType == .select {
                 return selectionWords.filter { $0.isSelected }.map { $0.unit }
             } else {
                 return _words.filter { $0.studyState != .success }.map { $0.unit }
@@ -132,13 +132,13 @@ struct WordList: ReducerProtocol {
             guard (_words.filter({ $0.id == id }).first?.unit) != nil else { return }
             _words.remove(id: id)
             deleteWords = []
-            setting.studyViewMode = .normal
+            setting.listType = .study
         }
         
         fileprivate mutating func clearMove() {
             moveWords = nil
             selectionWords = []
-            setting.studyViewMode = .normal
+            setting.listType = .study
         }
         
         fileprivate mutating func editWord(word: StudyUnit) throws {
@@ -146,7 +146,7 @@ struct WordList: ReducerProtocol {
                 throw AppError.noMatchingWord(id: word.id)
             }
             _words[index] = StudyWord.State(unit: word, frontType: setting.frontType)
-            setting.studyViewMode = .normal
+            setting.listType = .study
         }
         
         fileprivate mutating func onFrontTypeChanged() {
@@ -154,20 +154,20 @@ struct WordList: ReducerProtocol {
         }
         
         fileprivate mutating func onStudyViewModeChanged() {
-            let mode = setting.studyViewMode
+            let mode = setting.listType
             switch mode {
-            case .normal:
+            case .study:
                 editWords = []
                 selectionWords = []
                 deleteWords = []
             case .edit:
                 editWords = IdentifiedArrayOf(uniqueElements: words.map { EditWord.State(unit: $0.unit, frontType: setting.frontType) })
-            case .selection:
+            case .select:
                 selectionWords = IdentifiedArrayOf(uniqueElements: words.map { SelectionWord.State(unit: $0.unit, frontType: setting.frontType) })
             case .delete:
                 guard set != nil else {
                     showDeleteUnableAlert()
-                    setting.studyViewMode = .normal
+                    setting.listType = .study
                     return
                 }
                 deleteWords = IdentifiedArrayOf(uniqueElements: words.map { DeleteWord.State(unit: $0.unit, frontType: setting.frontType) })
@@ -175,7 +175,7 @@ struct WordList: ReducerProtocol {
         }
         
         fileprivate mutating func onStudyModeChanged() {
-            let mode = setting.studyMode
+            let mode = setting.filter
             switch mode {
             case .all, .excludeSuccess:
                 _words = IdentifiedArray(
@@ -309,7 +309,7 @@ struct WordList: ReducerProtocol {
                     guard let index = state._words.index(id: unit.id) else { return .none }
                     let newState = StudyWord.State(unit: unit, frontType: state.setting.frontType)
                     state._words.update(newState, at: index)
-                    state.setting.studyViewMode = .normal
+                    state.setting.listType = .study
                     return .task { .setEditModal(isPresented: false) }
                 case .cancel:
                     return .task { .setEditModal(isPresented: false) }
@@ -345,9 +345,9 @@ struct WordList: ReducerProtocol {
                 switch action {
                 case .setFrontType(_):
                     state.onFrontTypeChanged()
-                case .setStudyViewMode(_):
+                case .setListType(_):
                     state.onStudyViewModeChanged()
-                case .setStudyMode(_):
+                case .setFilter(_):
                     state.onStudyModeChanged()
                 case .wordBookEditButtonTapped:
                     state.showSideBar = false
@@ -403,7 +403,7 @@ struct StudyView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ScrollView {
-                if vs.setting.studyViewMode == .normal {
+                if vs.setting.listType == .study {
                     LazyVStack(spacing: 32) {
                         if !vs.isKanjiView {
                             ForEachStore(
@@ -421,7 +421,7 @@ struct StudyView: View {
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                     .padding(.vertical, 10)
-                } else if vs.setting.studyViewMode == .edit {
+                } else if vs.setting.listType == .edit {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
                             self.store.scope(state: \.editWords, action: WordList.Action.editWords(id:action:))
@@ -431,7 +431,7 @@ struct StudyView: View {
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                     .padding(.vertical, 10)
-                } else if vs.setting.studyViewMode == .selection {
+                } else if vs.setting.listType == .select {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
                             self.store.scope(state: \.selectionWords, action: WordList.Action.selectionWords(id:action:))
@@ -441,7 +441,7 @@ struct StudyView: View {
                     }
                     .padding(.horizontal, CELL_HORIZONTAL_PADDING)
                     .padding(.vertical, 10)
-                } else if vs.setting.studyViewMode == .delete {
+                } else if vs.setting.listType == .delete {
                     LazyVStack(spacing: 32) {
                         ForEachStore(
                             self.store.scope(state: \.deleteWords, action: WordList.Action.deleteWords(id:action:))
@@ -522,15 +522,15 @@ struct StudyView: View {
                             .resizable()
                             .foregroundColor(.black)
                     }
-                    .hide(vs.set == nil || vs.setting.studyViewMode == .edit || vs.isKanjiView)
+                    .hide(vs.set == nil || vs.setting.listType == .edit || vs.isKanjiView)
                     Button {
                         vs.send(.randomButtonTapped)
                     } label: {
                         Image(systemName: "shuffle")
                             .resizable()
-                            .foregroundColor(vs.setting.studyViewMode == .normal ? .black : .gray)
+                            .foregroundColor(vs.setting.listType == .study ? .black : .gray)
                     }
-                    .disabled(vs.setting.studyViewMode != .normal)
+                    .disabled(vs.setting.listType != .study)
                     .hide(vs.isKanjiView)
                     Button {
                         vs.send(.setSideBar(isPresented: !vs.showSideBar))
