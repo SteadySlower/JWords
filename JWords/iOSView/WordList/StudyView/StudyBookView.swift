@@ -20,8 +20,16 @@ struct StudyBook: ReducerProtocol {
         
         init(set: StudySet, units: [StudyUnit]) {
             self.set = set
-            self.lists = SwitchBetweenList.State(units: units, frontType: set.preferredFrontType, isLocked: false)
-            self.setting = .init(set: set, frontType: set.preferredFrontType)
+            self.lists = SwitchBetweenList.State(
+                units: units,
+                frontType: set.preferredFrontType,
+                isLocked: false
+            )
+            self.setting = .init(
+                showSetEditButtons: true,
+                frontType: set.preferredFrontType,
+                selectableListType: [.study, .edit, .select, .delete]
+            )
         }
     }
     

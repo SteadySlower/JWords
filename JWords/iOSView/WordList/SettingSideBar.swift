@@ -23,23 +23,20 @@ enum UnitFilter: Hashable, CaseIterable, Equatable {
 
 struct StudySetting: ReducerProtocol {
     struct State: Equatable {
-        let set: StudySet?
+        let showSetEditButtons: Bool
         let selectableListType: [ListType]
         var filter: UnitFilter = .all
         var frontType: FrontType
         var listType: ListType = .study
         
         init(
-            set: StudySet? = nil,
-            frontType: FrontType = .kanji
+            showSetEditButtons: Bool,
+            frontType: FrontType,
+            selectableListType: [ListType]
         ) {
-            self.set = set
+            self.showSetEditButtons = showSetEditButtons
             self.frontType = frontType
-            if set != nil {
-                selectableListType = [.study, .select, .edit, .delete]
-            } else {
-                selectableListType = [.study, .edit]
-            }
+            self.selectableListType = selectableListType
         }
     }
     
@@ -79,7 +76,7 @@ struct SettingSideBar: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack(spacing: 10) {
-                if vs.set != nil {
+                if vs.showSetEditButtons {
                     VStack(spacing: 10) {
                         RectangleButton(
                             image: Image(systemName: "rectangle.and.pencil.and.ellipsis"),
