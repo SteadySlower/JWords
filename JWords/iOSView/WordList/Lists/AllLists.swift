@@ -90,6 +90,13 @@ struct SwitchBetweenList: ReducerProtocol {
             }
             study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
         }
+        
+        mutating func updateUnit(_ unit: StudyUnit) {
+            clear()
+            guard let index = study._units.index(id: unit.id) else { return }
+            let newState = StudyWord.State(unit: unit, frontType: frontType)
+            study._units.update(newState, at: index)
+        }
     }
     
     enum Action: Equatable {
@@ -97,11 +104,19 @@ struct SwitchBetweenList: ReducerProtocol {
         case edit(EditWords.Action)
         case select(SelectWords.Action)
         case delete(DeleteWords.Action)
+        
+        case toEditUnitSelected(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .edit(let action):
+                switch action {
+                case .toEditUnitSelected(let unit):
+                    return .task { .toEditUnitSelected(unit) }
+                default: return .none
+                }
             default: return .none
             }
         }

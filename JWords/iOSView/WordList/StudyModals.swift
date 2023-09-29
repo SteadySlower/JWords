@@ -54,6 +54,11 @@ struct ShowModalsInList: ReducerProtocol {
             clear()
             addUnit = AddUnit.State(set: set)
         }
+        
+        mutating func setEditUnitModal(_ unit: StudyUnit) {
+            clear()
+            editUnit = EditUnit.State(unit: unit)
+        }
     }
     
     enum Action: Equatable {
@@ -69,6 +74,7 @@ struct ShowModalsInList: ReducerProtocol {
         
         case setEdited(StudySet)
         case unitAdded(StudyUnit)
+        case unitEdited(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -103,6 +109,16 @@ struct ShowModalsInList: ReducerProtocol {
                     return .task { .unitAdded(unit) }
                 case .cancel:
                     state.addUnit = nil
+                    return .none
+                default: return .none
+                }
+            case .editUnit(let action):
+                switch action {
+                case .edited(let unit):
+                    state.editUnit = nil
+                    return .task { .unitEdited(unit) }
+                case .cancel:
+                    state.editUnit = nil
                     return .none
                 default: return .none
                 }

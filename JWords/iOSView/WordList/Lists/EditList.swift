@@ -20,11 +20,17 @@ struct EditWords: ReducerProtocol {
     
     enum Action: Equatable {
         case word(id: EditWord.State.ID, action: EditWord.Action)
+        case toEditUnitSelected(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .word(_, let action):
+                switch action {
+                case .cellTapped(let unit):
+                    return .task { .toEditUnitSelected(unit) }
+                }
             default: return .none
             }
         }

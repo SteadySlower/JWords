@@ -44,6 +44,13 @@ struct StudyBook: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .lists(let action):
+                switch action {
+                case .toEditUnitSelected(let unit):
+                    state.modals.setEditUnitModal(unit)
+                    return .none
+                default: return .none
+                }
             case .showSideBar(let show):
                 state.showSideBar = show
                 return .none
@@ -66,6 +73,10 @@ struct StudyBook: ReducerProtocol {
                 case .unitAdded(let unit):
                     state.lists.addNewUnit(unit)
                     return .none
+                case .unitEdited(let unit):
+                    state.lists.updateUnit(unit)
+                    state.setting.listType = .study
+                    return .none
                 default: return .none
                 }
             case .setting(let action):
@@ -82,7 +93,6 @@ struct StudyBook: ReducerProtocol {
                     state.lists.setListType(listType)
                 }
                 return .task { .showSideBar(false) }
-            default: return .none
             }
         }
         Scope(
