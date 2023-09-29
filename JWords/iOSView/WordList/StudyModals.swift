@@ -37,6 +37,10 @@ struct ShowModalsInList: ReducerProtocol {
         var showMoveUnitsModal: Bool {
             moveUnits != nil
         }
+        
+        mutating func setEditSetModal(_ set: StudySet) {
+            editSet = InputBook.State(set: set)
+        }
     }
     
     enum Action: Equatable {
@@ -49,6 +53,8 @@ struct ShowModalsInList: ReducerProtocol {
         case addUnit(AddUnit.Action)
         case editUnit(EditUnit.Action)
         case moveUnits(MoveWords.Action)
+        
+        case setEdited(StudySet)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -66,6 +72,16 @@ struct ShowModalsInList: ReducerProtocol {
             case .showMoveUnitsModal(let show):
                 if !show { state.moveUnits = nil }
                 return .none
+            case .editSet(let action):
+                switch action {
+                case .setEdited(let set):
+                    state.editSet = nil
+                    return .task { .setEdited(set) }
+                case .cancelButtonTapped:
+                    state.editSet = nil
+                    return .none
+                default: return .none
+                }
             default: return .none
             }
         }

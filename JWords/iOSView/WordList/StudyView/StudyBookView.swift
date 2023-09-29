@@ -60,6 +60,8 @@ struct StudyBook: ReducerProtocol {
                 }
             case .setting(let action):
                 switch action {
+                case .wordBookEditButtonTapped:
+                    state.modals.setEditSetModal(state.set)
                 case .setFilter(let filter):
                     state.lists.setFilter(filter)
                 case .setFrontType(let frontType):
