@@ -50,6 +50,17 @@ struct StudyBook: ReducerProtocol {
                     state.showSideBar.toggle()
                     return .none
                 }
+            case .setting(let action):
+                switch action {
+                case .setFilter(let filter):
+                    state.lists.setFilter(filter)
+                case .setFrontType(let frontType):
+                    state.lists.setFrontType(frontType)
+                case .setListType(let listType):
+                    state.lists.setListType(listType)
+                default: return .none
+                }
+                return .task { .showSideBar(false) }
             default: return .none
             }
         }
@@ -57,6 +68,11 @@ struct StudyBook: ReducerProtocol {
             state: \.lists,
             action: /Action.lists,
             child: { SwitchBetweenList() }
+        )
+        Scope(
+            state: \.setting,
+            action: /Action.setting,
+            child: { StudySetting() }
         )
         Scope(
             state: \.modals,
@@ -115,7 +131,7 @@ struct StudyBookView: View {
             initialState: StudyBook.State(
                 set: .init(index: 0),
                 units: .mock),
-            reducer: StudyBook())
+            reducer: StudyBook()._printChanges())
         )
     }
 }

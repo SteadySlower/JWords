@@ -10,21 +10,41 @@ import SwiftUI
 
 struct StudyWords: ReducerProtocol {
     struct State: Equatable {
-        var words: IdentifiedArrayOf<StudyWord.State>
+        var _units: IdentifiedArrayOf<StudyWord.State>
+        var units: IdentifiedArrayOf<StudyWord.State> {
+            switch filter {
+            case .all:
+                return _units
+            case .excludeSuccess:
+                return _units.filter { $0.studyState != .success }
+            case .onlyFail:
+                return _units.filter { $0.studyState == .fail }
+            }
+        }
+        var filter: UnitFilter = .all
         
-        init(words: [StudyUnit], frontType: FrontType, isLocked: Bool) {
-            self.words = IdentifiedArray(
-                uniqueElements: words.map {
+        init(units: [StudyUnit], frontType: FrontType, isLocked: Bool) {
+            self._units = IdentifiedArray(
+                uniqueElements: units.map {
                     StudyWord.State(unit: $0,
                                     frontType: frontType,
                                     isLocked: isLocked)
                 }
             )
         }
+        
+        mutating func shuffle() {
+            _units.shuffle()
+        }
+        
+        mutating func setFilter(_ filter: UnitFilter) {
+            self.filter = filter
+        }
     }
     
     enum Action: Equatable {
         case word(id: StudyWord.State.ID, action: StudyWord.Action)
+        case unitUpdated(unit: StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -33,7 +53,7 @@ struct StudyWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\.words, action: /Action.word(id:action:)) {
+        .forEach(\._units, action: /Action.word(id:action:)) {
             StudyWord()
         }
     }
@@ -47,8 +67,9 @@ struct StudyList: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEachStore(
-                  self.store.scope(state: \.words, action: StudyWords.Action.word(id:action:))
+                ForEachStore(store.scope(
+                    state: \.units,
+                    action: StudyWords.Action.word(id:action:))
                 ) {
                     StudyCell(store: $0)
                 }
@@ -63,7 +84,7 @@ struct StudyList: View {
 #Preview {
     StudyList(store: Store(
         initialState: StudyWords.State(
-            words: .mock,
+            units: .mock,
             frontType: .kanji,
             isLocked: false
         ),
