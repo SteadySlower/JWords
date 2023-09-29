@@ -38,8 +38,21 @@ struct ShowModalsInList: ReducerProtocol {
             moveUnits != nil
         }
         
+        private mutating func clear() {
+            editSet = nil
+            addUnit = nil
+            editUnit = nil
+            moveUnits = nil
+        }
+        
         mutating func setEditSetModal(_ set: StudySet) {
+            clear()
             editSet = InputBook.State(set: set)
+        }
+        
+        mutating func setAddUnitModal(_ set: StudySet) {
+            clear()
+            addUnit = AddUnit.State(set: set)
         }
     }
     
@@ -55,6 +68,7 @@ struct ShowModalsInList: ReducerProtocol {
         case moveUnits(MoveWords.Action)
         
         case setEdited(StudySet)
+        case unitAdded(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -79,6 +93,16 @@ struct ShowModalsInList: ReducerProtocol {
                     return .task { .setEdited(set) }
                 case .cancelButtonTapped:
                     state.editSet = nil
+                    return .none
+                default: return .none
+                }
+            case .addUnit(let action):
+                switch action {
+                case .added(let unit):
+                    state.addUnit = nil
+                    return .task { .unitAdded(unit) }
+                case .cancel:
+                    state.addUnit = nil
                     return .none
                 default: return .none
                 }

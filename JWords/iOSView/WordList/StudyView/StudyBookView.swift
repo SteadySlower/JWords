@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StudyBook: ReducerProtocol {
     struct State: Equatable {
-        let set: StudySet
+        var set: StudySet
         var lists: SwitchBetweenList.State
         var setting: StudySetting.State
         var modals = ShowModalsInList.State()
@@ -58,17 +58,28 @@ struct StudyBook: ReducerProtocol {
                     state.showSideBar.toggle()
                     return .none
                 }
+            case .modals(let action):
+                switch action {
+                case .setEdited(let set):
+                    state.set = set
+                    return .none
+                case .unitAdded(let unit):
+                    state.lists.addNewUnit(unit)
+                    return .none
+                default: return .none
+                }
             case .setting(let action):
                 switch action {
                 case .wordBookEditButtonTapped:
                     state.modals.setEditSetModal(state.set)
+                case .wordAddButtonTapped:
+                    state.modals.setAddUnitModal(state.set)
                 case .setFilter(let filter):
                     state.lists.setFilter(filter)
                 case .setFrontType(let frontType):
                     state.lists.setFrontType(frontType)
                 case .setListType(let listType):
                     state.lists.setListType(listType)
-                default: return .none
                 }
                 return .task { .showSideBar(false) }
             default: return .none

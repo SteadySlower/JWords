@@ -81,6 +81,15 @@ struct SwitchBetweenList: ReducerProtocol {
                 delete = DeleteWords.State(words: units, frontType: frontType)
             }
         }
+        
+        mutating func addNewUnit(_ unit: StudyUnit) {
+            clear()
+            var units = study._units.map { $0.unit }
+            if !units.contains(unit) {
+                units.append(unit)
+            }
+            study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
+        }
     }
     
     enum Action: Equatable {
