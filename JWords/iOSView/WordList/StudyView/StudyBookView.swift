@@ -11,10 +11,7 @@ import SwiftUI
 struct StudyBook: ReducerProtocol {
     struct State: Equatable {
         let set: StudySet
-        var studyList: StudyWords.State
-        var editList: EditWords.State?
-        var selectionList: SelectWords.State?
-        var deleteList: DeleteWords.State?
+        var lists: SwitchBetweenList.State
         var setting: StudySetting.State
         var modals = ShowModalsInList.State()
         var tools = StudyTools.State(activeButtons: [.book, .shuffle, .setting])
@@ -23,16 +20,13 @@ struct StudyBook: ReducerProtocol {
         
         init(set: StudySet, units: [StudyUnit]) {
             self.set = set
-            self.studyList = StudyWords.State(words: units, frontType: set.preferredFrontType, isLocked: false)
+            self.lists = SwitchBetweenList.State(units: units, frontType: set.preferredFrontType, isLocked: false)
             self.setting = .init(set: set, frontType: set.preferredFrontType)
         }
     }
     
     enum Action: Equatable {
-        case studyList(StudyWords.Action)
-        case editList(EditWords.Action)
-        case selectionList(SelectWords.Action)
-        case deleteList(DeleteWords.Action)
+        case lists(SwitchBetweenList.Action)
         case modals(ShowModalsInList.Action)
         case showSideBar(Bool)
         case setting(StudySetting.Action)
@@ -50,6 +44,7 @@ struct StudyBook: ReducerProtocol {
                 case .book:
                     return .none
                 case .shuffle:
+                    state.lists.shuffle()
                     return .none
                 case .setting:
                     state.showSideBar.toggle()
@@ -59,9 +54,9 @@ struct StudyBook: ReducerProtocol {
             }
         }
         Scope(
-            state: \.studyList,
-            action: /Action.studyList,
-            child: { StudyWords() }
+            state: \.lists,
+            action: /Action.lists,
+            child: { SwitchBetweenList() }
         )
         Scope(
             state: \.modals,
@@ -83,12 +78,10 @@ struct StudyBookView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            Group {
-                StudyList(store: store.scope(
-                    state: \.studyList,
-                    action: StudyBook.Action.studyList)
-                )
-            }
+            AllLists(store: store.scope(
+                state: \.lists,
+                action: StudyBook.Action.lists)
+            )
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
                 send: StudyBook.Action.showSideBar)
