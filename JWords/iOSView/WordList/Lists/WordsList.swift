@@ -65,17 +65,13 @@ struct StudyList: View {
     let store: StoreOf<StudyWords>
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEachStore(store.scope(
-                    state: \.units,
-                    action: StudyWords.Action.word(id:action:))
-                ) {
-                    StudyCell(store: $0)
-                }
+        LazyVStack(spacing: 32) {
+            ForEachStore(store.scope(
+                state: \.units,
+                action: StudyWords.Action.word(id:action:))
+            ) {
+                StudyCell(store: $0)
             }
-            .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
-            .padding(.vertical, 10)
         }
     }
     

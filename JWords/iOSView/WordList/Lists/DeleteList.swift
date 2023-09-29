@@ -39,16 +39,12 @@ struct DeleteList: View {
     let store: StoreOf<DeleteWords>
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEachStore(
-                  self.store.scope(state: \.words, action: DeleteWords.Action.word(id:action:))
-                ) {
-                    DeleteCell(store: $0)
-                }
+        LazyVStack(spacing: 32) {
+            ForEachStore(
+              self.store.scope(state: \.words, action: DeleteWords.Action.word(id:action:))
+            ) {
+                DeleteCell(store: $0)
             }
-            .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
-            .padding(.vertical, 10)
         }
     }
     

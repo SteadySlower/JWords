@@ -39,16 +39,12 @@ struct SelectList: View {
     let store: StoreOf<SelectWords>
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
-                ForEachStore(
-                  self.store.scope(state: \.words, action: SelectWords.Action.word(id:action:))
-                ) {
-                    SelectionCell(store: $0)
-                }
+        LazyVStack(spacing: 32) {
+            ForEachStore(
+              self.store.scope(state: \.words, action: SelectWords.Action.word(id:action:))
+            ) {
+                SelectionCell(store: $0)
             }
-            .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
-            .padding(.vertical, 10)
         }
     }
     

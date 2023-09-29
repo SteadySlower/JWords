@@ -117,33 +117,39 @@ struct AllLists: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            switch vs.type {
-            case .study:
-                StudyList(store: store.scope(
-                    state: \.study,
-                    action: SwitchBetweenList.Action.study)
-                )
-            case .edit:
-                IfLetStore(store.scope(
-                    state: \.edit,
-                    action: SwitchBetweenList.Action.edit)
-                ) {
-                    EditList(store: $0)
+            ScrollView {
+                Group {
+                    switch vs.type {
+                    case .study:
+                        StudyList(store: store.scope(
+                            state: \.study,
+                            action: SwitchBetweenList.Action.study)
+                        )
+                    case .edit:
+                        IfLetStore(store.scope(
+                            state: \.edit,
+                            action: SwitchBetweenList.Action.edit)
+                        ) {
+                            EditList(store: $0)
+                        }
+                    case .select:
+                        IfLetStore(store.scope(
+                            state: \.select,
+                            action: SwitchBetweenList.Action.select)
+                        ) {
+                            SelectList(store: $0)
+                        }
+                    case .delete:
+                        IfLetStore(store.scope(
+                            state: \.delete,
+                            action: SwitchBetweenList.Action.delete)
+                        ) {
+                            DeleteList(store: $0)
+                        }
+                    }
                 }
-            case .select:
-                IfLetStore(store.scope(
-                    state: \.select,
-                    action: SwitchBetweenList.Action.select)
-                ) {
-                    SelectList(store: $0)
-                }
-            case .delete:
-                IfLetStore(store.scope(
-                    state: \.delete,
-                    action: SwitchBetweenList.Action.delete)
-                ) {
-                    DeleteList(store: $0)
-                }
+                .padding(.horizontal, Constants.Size.CELL_HORIZONTAL_PADDING)
+                .padding(.vertical, 10)
             }
         }
     }
