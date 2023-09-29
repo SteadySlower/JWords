@@ -25,7 +25,7 @@ struct EditWord: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case cellTapped
+        case cellTapped(StudyUnit)
     }
     
     
@@ -57,7 +57,7 @@ struct EditCell: View {
                         .scaledToFit()
                         .padding()
                 )
-                .onTapGesture { vs.send(.cellTapped) }
+                .onTapGesture { vs.send(.cellTapped(vs.unit)) }
         }
     }
     
