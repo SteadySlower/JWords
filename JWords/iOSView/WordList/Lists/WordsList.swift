@@ -10,21 +10,34 @@ import SwiftUI
 
 struct StudyWords: ReducerProtocol {
     struct State: Equatable {
-        let _words: [StudyUnit]
+        private let _words: [StudyUnit]
+        private let frontType: FrontType
+        private let isLocked: Bool
         var words: IdentifiedArrayOf<StudyWord.State>
         
         init(words: [StudyUnit], frontType: FrontType, isLocked: Bool) {
             self._words = words
+            self.frontType = frontType
+            self.isLocked = isLocked
             self.words = IdentifiedArray(
                 uniqueElements: words.map {
-                    StudyWord.State(unit: $0, frontType: frontType, isLocked: isLocked)
+                    StudyWord.State(unit: $0,
+                                    frontType: frontType,
+                                    isLocked: isLocked)
                 }
             )
         }
         
         mutating func shuffleWords() {
             let shuffled = _words.shuffled()
-            words = IdentifiedArray(uniqueElements: shuffled.map { StudyWord.State(sample: $0) })
+            words = IdentifiedArray(
+                uniqueElements: shuffled.map {
+                    StudyWord.State(unit: $0,
+                                    frontType: frontType,
+                                    isLocked: isLocked
+                    )
+                }
+            )
         }
     }
     
