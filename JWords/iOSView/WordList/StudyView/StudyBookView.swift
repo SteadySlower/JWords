@@ -50,7 +50,6 @@ struct StudyBook: ReducerProtocol {
                 case .book:
                     return .none
                 case .shuffle:
-                    state.studyList.shuffleWords()
                     return .none
                 case .setting:
                     state.showSideBar.toggle()

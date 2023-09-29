@@ -16,7 +16,7 @@ struct SwitchBetweenList: ReducerProtocol {
     struct State: Equatable {
         
         private var units: [StudyUnit]
-        private var type: ListType
+        var type: ListType
         private let frontType: FrontType
         private let isLocked: Bool
         
@@ -66,4 +66,45 @@ struct SwitchBetweenList: ReducerProtocol {
             DeleteWords()
         }
     }
+}
+
+struct AllLists: View {
+    
+    let store: StoreOf<SwitchBetweenList>
+    
+    var body: some View {
+        WithViewStore(store, observe: { $0 }) { vs in
+            switch vs.type {
+            case .study:
+                IfLetStore(store.scope(
+                    state: \.study,
+                    action: SwitchBetweenList.Action.study)
+                ) {
+                    StudyList(store: $0)
+                }
+            case .edit:
+                IfLetStore(store.scope(
+                    state: \.edit,
+                    action: SwitchBetweenList.Action.edit)
+                ) {
+                    EditList(store: $0)
+                }
+            case .select:
+                IfLetStore(store.scope(
+                    state: \.select,
+                    action: SwitchBetweenList.Action.select)
+                ) {
+                    SelectList(store: $0)
+                }
+            case .delete:
+                IfLetStore(store.scope(
+                    state: \.delete,
+                    action: SwitchBetweenList.Action.delete)
+                ) {
+                    DeleteList(store: $0)
+                }
+            }
+        }
+    }
+    
 }
