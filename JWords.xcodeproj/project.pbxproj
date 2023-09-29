@@ -17,6 +17,7 @@
 		06004E3B2AC5489700947F5D /* SelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* SelectList.swift */; };
 		06004E3F2AC555C800947F5D /* StudyBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3E2AC555C800947F5D /* StudyBookView.swift */; };
 		06004E412AC55C5700947F5D /* StudyModals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E402AC55C5700947F5D /* StudyModals.swift */; };
+		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E7F2A19862F00E099B5 /* ConversionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7E2A19862F00E099B5 /* ConversionView.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
@@ -210,6 +211,7 @@
 		06004E3A2AC5489700947F5D /* SelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectList.swift; sourceTree = "<group>"; };
 		06004E3E2AC555C800947F5D /* StudyBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyBookView.swift; sourceTree = "<group>"; };
 		06004E402AC55C5700947F5D /* StudyModals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModals.swift; sourceTree = "<group>"; };
+		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E7E2A19862F00E099B5 /* ConversionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversionView.swift; path = JWords/MacView/Conversion/ConversionView.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
@@ -435,6 +437,14 @@
 				06004E3E2AC555C800947F5D /* StudyBookView.swift */,
 			);
 			path = StudyView;
+			sourceTree = "<group>";
+		};
+		06004E422AC5A60D00947F5D /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				06004E432AC5A62400947F5D /* ToolbarItems.swift */,
+			);
+			path = Items;
 			sourceTree = "<group>";
 		};
 		061C9E822A19D5DA00E099B5 /* Conversion */ = {
@@ -747,6 +757,7 @@
 				06004E3D2AC5559800947F5D /* StudyView */,
 				06004E2E2AC5484B00947F5D /* Lists */,
 				06004E3C2AC548BE00947F5D /* Cells */,
+				06004E422AC5A60D00947F5D /* Items */,
 				5A67DC29286946F800AC156C /* StudyView.swift */,
 				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
@@ -1135,6 +1146,7 @@
 				064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */,
 				5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */,
 				06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */,
+				06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */,
 				0622727329FC9C3400EEAD50 /* WordBookPicker.swift in Sources */,
 				06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */,
 				5A8B698A29F234B000B5A02E /* TodayClient.swift in Sources */,
