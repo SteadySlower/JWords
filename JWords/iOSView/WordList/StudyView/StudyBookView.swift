@@ -30,6 +30,9 @@ struct StudyBook: ReducerProtocol {
     
     enum Action: Equatable {
         case studyList(StudyWords.Action)
+        case editList(EditWords.Action)
+        case selectionList(SelectWords.Action)
+        case deleteList(DeleteWords.Action)
         case modals(ShowModalsInList.Action)
         case showSideBar(Bool)
         case setting(StudySetting.Action)
@@ -50,7 +53,7 @@ struct StudyBook: ReducerProtocol {
                     state.studyList.shuffleWords()
                     return .none
                 case .setting:
-                    state.showSideBar = true
+                    state.showSideBar.toggle()
                     return .none
                 }
             default: return .none
@@ -81,10 +84,12 @@ struct StudyBookView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            StudyList(store: store.scope(
-                state: \.studyList,
-                action: StudyBook.Action.studyList)
-            )
+            Group {
+                StudyList(store: store.scope(
+                    state: \.studyList,
+                    action: StudyBook.Action.studyList)
+                )
+            }
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
                 send: StudyBook.Action.showSideBar)

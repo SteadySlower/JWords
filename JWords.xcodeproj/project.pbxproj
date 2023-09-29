@@ -11,7 +11,6 @@
 		06004E252AC51DBE00947F5D /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E242AC51DBE00947F5D /* OCRView.swift */; };
 		06004E2B2AC538B500947F5D /* KeyBoardDismissingBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E2A2AC538B500947F5D /* KeyBoardDismissingBackground.swift */; };
 		06004E302AC5485800947F5D /* WordsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E2F2AC5485800947F5D /* WordsList.swift */; };
-		06004E332AC5487000947F5D /* KanjiStudyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E322AC5487000947F5D /* KanjiStudyList.swift */; };
 		06004E372AC5488600947F5D /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E362AC5488600947F5D /* EditList.swift */; };
 		06004E392AC5488D00947F5D /* DeleteList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E382AC5488D00947F5D /* DeleteList.swift */; };
 		06004E3B2AC5489700947F5D /* SelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3A2AC5489700947F5D /* SelectList.swift */; };
@@ -75,6 +74,7 @@
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
 		06BC609A29AEF04600AA67E6 /* MacAddWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC609929AEF04600AA67E6 /* MacAddWordView.swift */; };
+		06C992E72AC675F10062F9FB /* AllLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C992E62AC675F10062F9FB /* AllLists.swift */; };
 		06CB256F28EC58EE00A7FC76 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */; };
 		06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 06CEAC512AB6B71B007783F6 /* GoogleMobileAds */; };
 		06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEAC542AB6BB96007783F6 /* BannerAdView.swift */; };
@@ -205,7 +205,6 @@
 		06004E242AC51DBE00947F5D /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
 		06004E2A2AC538B500947F5D /* KeyBoardDismissingBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardDismissingBackground.swift; sourceTree = "<group>"; };
 		06004E2F2AC5485800947F5D /* WordsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsList.swift; sourceTree = "<group>"; };
-		06004E322AC5487000947F5D /* KanjiStudyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiStudyList.swift; sourceTree = "<group>"; };
 		06004E362AC5488600947F5D /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
 		06004E382AC5488D00947F5D /* DeleteList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteList.swift; sourceTree = "<group>"; };
 		06004E3A2AC5489700947F5D /* SelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectList.swift; sourceTree = "<group>"; };
@@ -265,6 +264,7 @@
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		06BC608B29A09FC000AA67E6 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
 		06BC609929AEF04600AA67E6 /* MacAddWordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacAddWordView.swift; sourceTree = "<group>"; };
+		06C992E62AC675F10062F9FB /* AllLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLists.swift; sourceTree = "<group>"; };
 		06CB256E28EC58EE00A7FC76 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		06CEAC542AB6BB96007783F6 /* BannerAdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdView.swift; sourceTree = "<group>"; };
 		06CEF2432866F1C800A620CC /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -411,10 +411,10 @@
 			isa = PBXGroup;
 			children = (
 				06004E2F2AC5485800947F5D /* WordsList.swift */,
-				06004E322AC5487000947F5D /* KanjiStudyList.swift */,
 				06004E362AC5488600947F5D /* EditList.swift */,
 				06004E382AC5488D00947F5D /* DeleteList.swift */,
 				06004E3A2AC5489700947F5D /* SelectList.swift */,
+				06C992E62AC675F10062F9FB /* AllLists.swift */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
@@ -1102,6 +1102,7 @@
 				0697715328CCA71700569280 /* WordInput.swift in Sources */,
 				5A91357C2A08C7FA00FCA8A5 /* CDWordClient.swift in Sources */,
 				5ACE0A712869986F00A57660 /* WordService.swift in Sources */,
+				06C992E72AC675F10062F9FB /* AllLists.swift in Sources */,
 				5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */,
 				064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */,
 				06004E3B2AC5489700947F5D /* SelectList.swift in Sources */,
@@ -1127,7 +1128,6 @@
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,
 				5AAF1E002AA96AF900709CAE /* GetImageForOCRView.swift in Sources */,
 				0624735D29C6D8580076DBE4 /* InputType.swift in Sources */,
-				06004E332AC5487000947F5D /* KanjiStudyList.swift in Sources */,
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				06004E302AC5485800947F5D /* WordsList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
