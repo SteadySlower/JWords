@@ -61,6 +61,13 @@ struct HomeList: ReducerProtocol {
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .task { .onAppear }
+            case .studyBook(let action):
+                switch action {
+                case .dismiss:
+                    state.studyBook = nil
+                    return .none
+                default: return .none
+                }
             case .inputBook(let action):
                 switch action {
                 case .setAdded:

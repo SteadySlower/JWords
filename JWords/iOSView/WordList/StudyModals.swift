@@ -59,6 +59,11 @@ struct ShowModalsInList: ReducerProtocol {
             clear()
             editUnit = EditUnit.State(unit: unit)
         }
+        
+        mutating func setMoveUnitModal(from set: StudySet, isReview: Bool, toMove units: [StudyUnit]) {
+            clear()
+            moveUnits = MoveWords.State(fromBook: set, isReviewBook: isReview, toMoveWords: units)
+        }
     }
     
     enum Action: Equatable {
@@ -75,7 +80,10 @@ struct ShowModalsInList: ReducerProtocol {
         case setEdited(StudySet)
         case unitAdded(StudyUnit)
         case unitEdited(StudyUnit)
+        case unitsMoved
     }
+    
+    private let kv: KVStorageClient = .shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -119,6 +127,16 @@ struct ShowModalsInList: ReducerProtocol {
                     return .task { .unitEdited(unit) }
                 case .cancel:
                     state.editUnit = nil
+                    return .none
+                default: return .none
+                }
+            case .moveUnits(let action):
+                switch action {
+                case .onMoved:
+                    state.moveUnits = nil
+                    return .task { .unitsMoved }
+                case .cancelButtonTapped:
+                    state.moveUnits = nil
                     return .none
                 default: return .none
                 }

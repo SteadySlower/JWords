@@ -228,7 +228,6 @@ struct WordList: ReducerProtocol {
         case dismiss
     }
     
-    let ud = UserDefaultClient.shared
     let cd = CoreDataClient.shared
     
     var body: some ReducerProtocol<State, Action> {
@@ -291,7 +290,7 @@ struct WordList: ReducerProtocol {
             case .setMoveModal(let isPresent):
                 if isPresent {
                     guard let fromBook = state.set else { return .none }
-                    state.moveWords = MoveWords.State(fromBook: fromBook, toMoveWords: state.toMoveWords)
+                    state.moveWords = MoveWords.State(fromBook: fromBook, isReviewBook: false, toMoveWords: state.toMoveWords)
                 } else {
                     state.clearMove()
                 }
@@ -346,8 +345,8 @@ struct WordList: ReducerProtocol {
                 }
             case .moveWords(let action):
                 switch action {
-                case .onMoved(let set):
-                    return .task { .onWordsMoved(from: set) }
+                case .onMoved:
+                    return .task { .dismiss }
                 case .cancelButtonTapped:
                     return .task { .setMoveModal(isPresented: false) }
                 default:

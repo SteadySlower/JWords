@@ -24,6 +24,14 @@ struct SwitchBetweenList: ReducerProtocol {
         var select: SelectWords.State?
         var delete: DeleteWords.State?
         
+        var selectedUnits: [StudyUnit]? {
+            select?.words.filter({ $0.isSelected }).map { $0.unit }
+        }
+        
+        var notSucceededUnits: [StudyUnit] {
+            study._units.filter({ $0.studyState != .success }).map { $0.unit }
+        }
+        
         init(units: [StudyUnit], frontType: FrontType, isLocked: Bool) {
             self.type = .study
             self.frontType = frontType

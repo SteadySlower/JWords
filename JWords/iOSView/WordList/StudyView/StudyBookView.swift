@@ -39,7 +39,10 @@ struct StudyBook: ReducerProtocol {
         case showSideBar(Bool)
         case setting(StudySetting.Action)
         case tools(StudyTools.Action)
+        case dismiss
     }
+    
+    private let kv: KVStorageClient = .shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -57,6 +60,12 @@ struct StudyBook: ReducerProtocol {
             case .tools(let action):
                 switch action {
                 case .book:
+                    if let selected = state.lists.selectedUnits {
+                        state.modals.setMoveUnitModal(from: state.set, isReview: false, toMove: selected)
+                    } else {
+                        let isReviewBook = kv.fetchSchedule().reviewIDs.contains(where: { $0 == state.set.id })
+                        state.modals.setMoveUnitModal(from: state.set, isReview: isReviewBook, toMove: state.lists.notSucceededUnits)
+                    }
                     return .none
                 case .shuffle:
                     state.lists.shuffle()
@@ -77,6 +86,8 @@ struct StudyBook: ReducerProtocol {
                     state.lists.updateUnit(unit)
                     state.setting.listType = .study
                     return .none
+                case .unitsMoved:
+                    return .task { .dismiss }
                 default: return .none
                 }
             case .setting(let action):
@@ -93,6 +104,7 @@ struct StudyBook: ReducerProtocol {
                     state.lists.setListType(listType)
                 }
                 return .task { .showSideBar(false) }
+            default: return .none
             }
         }
         Scope(

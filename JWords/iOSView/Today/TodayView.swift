@@ -15,12 +15,17 @@ struct TodayList: ReducerProtocol {
         var reviewedWordBooks: [StudySet] = []
         var onlyFailWords: [StudyUnit] = []
         var todayStatus: TodayStatus?
+        var studyBook: StudyBook.State?
         var wordList: WordList.State?
         var todaySelection: TodaySelection.State?
         var isLoading: Bool = false
         
         var showStudyView: Bool {
             wordList != nil
+        }
+        
+        var showStudyBookView: Bool {
+            studyBook != nil
         }
         
         var showModal: Bool {
@@ -53,12 +58,14 @@ struct TodayList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case onDisappear
+        case studyBook(StudyBook.Action)
         case wordList(action: WordList.Action)
         case todaySelection(action: TodaySelection.Action)
         case setSelectionModal(isPresent: Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudyView(Bool)
+        case showStudyBookView(Bool)
         case showTutorial(Bool)
         case todayStatusTapped
         case homeCellTapped(StudySet)
@@ -96,8 +103,9 @@ struct TodayList: ReducerProtocol {
                     state.wordList = WordList.State(units: state.onlyFailWords)
                     return .none
                 }
-            case let .homeCellTapped(wordBook):
-                state.wordList = WordList.State(set: wordBook)
+            case .homeCellTapped(let set):
+                let units = try! cd.fetchUnits(of: set)
+                state.studyBook = StudyBook.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
                 state.todayStatus = nil
@@ -116,17 +124,25 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .wordList(let action):
                 switch action  {
-                case .onWordsMoved(let reviewed):
-                    kv.addReviewedSet(reviewed: reviewed)
                 case .dismiss:
                     state.wordList = nil
                 default:
                     break
                 }
                 return .none
+            case .studyBook(let action):
+                switch action {
+                case .dismiss:
+                    state.studyBook = nil
+                    return .none
+                default: return .none
+                }
             default:
                 return .none
             }
+        }
+        .ifLet(\.studyBook, action: /Action.studyBook) {
+            StudyBook()
         }
         .ifLet(\.wordList, action: /Action.wordList(action:)) {
             WordList()
@@ -208,6 +224,16 @@ struct TodayView: View {
                     isActive: vs.binding(
                                 get: \.showStudyView,
                                 send: TodayList.Action.showStudyView))
+                { EmptyView() }
+                NavigationLink(
+                    destination: IfLetStore(
+                            store.scope(
+                                state: \.studyBook,
+                                action: TodayList.Action.studyBook)
+                            ) { StudyBookView(store: $0) },
+                    isActive: vs.binding(
+                                get: \.showStudyBookView,
+                                send: TodayList.Action.showStudyBookView))
                 { EmptyView() }
                 NavigationLink(
                     destination: TutorialList(),
