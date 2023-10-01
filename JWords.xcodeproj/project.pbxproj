@@ -563,6 +563,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		06C992EA2AC922C20062F9FB /* Modals */ = {
+			isa = PBXGroup;
+			children = (
+				06004E402AC55C5700947F5D /* StudyModals.swift */,
+				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
+			);
+			path = Modals;
+			sourceTree = "<group>";
+		};
 		06CEAC532AB6BB78007783F6 /* Ad */ = {
 			isa = PBXGroup;
 			children = (
@@ -757,11 +766,10 @@
 				06004E3D2AC5559800947F5D /* StudyView */,
 				06004E2E2AC5484B00947F5D /* Lists */,
 				06004E3C2AC548BE00947F5D /* Cells */,
+				06C992EA2AC922C20062F9FB /* Modals */,
 				06004E422AC5A60D00947F5D /* Items */,
 				5A67DC29286946F800AC156C /* StudyView.swift */,
-				068D4CFB28B2189300F44F6E /* WordMoveView.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
-				06004E402AC55C5700947F5D /* StudyModals.swift */,
 			);
 			path = WordList;
 			sourceTree = "<group>";
