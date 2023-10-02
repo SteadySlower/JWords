@@ -154,6 +154,7 @@ struct StudyBookView: View {
                 state: \.modals,
                 action: StudyBook.Action.modals)
             )
+            .navigationTitle(vs.set.title)
             #if os(iOS)
             .toolbar {
                 ToolbarItem {

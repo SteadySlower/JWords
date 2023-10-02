@@ -134,6 +134,7 @@ struct StudyUnitsView: View {
                 state: \.modals,
                 action: StudyUnits.Action.modals)
             )
+            .navigationTitle("틀린 단어 모아보기")
             #if os(iOS)
             .toolbar {
                 ToolbarItem {

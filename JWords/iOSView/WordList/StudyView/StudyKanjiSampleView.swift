@@ -51,6 +51,7 @@ struct StudyKanjiSampleView: View {
                 state: \.lists,
                 action: StudyKanjiSamples.Action.lists)
             )
+            .navigationTitle("\(vs.kanji.kanjiText)가 쓰이는 단어")
         }
     }
 }
