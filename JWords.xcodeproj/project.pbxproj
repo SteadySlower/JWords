@@ -460,6 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC302869529700AC156C /* MacAppView.swift */,
+				5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -641,7 +642,6 @@
 				5A67DC2E2869491E00AC156C /* items */,
 				5A67DC28286946DF00AC156C /* WordList */,
 				5A67DC212869439D00AC156C /* Home */,
-				5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */,
 			);
 			path = iOSView;
 			sourceTree = "<group>";
