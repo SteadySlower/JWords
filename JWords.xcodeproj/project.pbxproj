@@ -50,10 +50,6 @@
 		0697715F28CF030D00569280 /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715E28CF030C00569280 /* Random.swift */; };
 		069941852A99EFFC00B5D769 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941842A99EFFC00B5D769 /* DeleteCell.swift */; };
 		069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941862A9A066B00B5D769 /* Array+Extension.swift */; };
-		06A1F4E228670DA8003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E128670DA8003440B0 /* Quick */; };
-		06A1F4E428670DAE003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E328670DAE003440B0 /* Nimble */; };
-		06A1F4E828670DBC003440B0 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E728670DBC003440B0 /* Quick */; };
-		06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 06A1F4E928670DC4003440B0 /* Nimble */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC606C297E9A7500AA67E6 /* FrontType.swift */; };
@@ -79,8 +75,6 @@
 		5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A002C2428E2CB260037D139 /* MockTodayService.swift */; };
 		5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5C468728D98894000E212B /* Calendar+Extension.swift */; };
 		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
-		5A6082EC28D299A70031E983 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6082EB28D299A70031E983 /* Quick */; settings = {ATTRIBUTES = (Required, ); }; };
-		5A6082EE28D299AC0031E983 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6082ED28D299AC0031E983 /* Nimble */; };
 		5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A653FEA2907C1C800E3466E /* TodaySchedule.swift */; };
 		5A67DC20286942FE00AC156C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC1F286942FE00AC156C /* HomeView.swift */; };
 		5A67DC23286943A900AC156C /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC22286943A800AC156C /* HomeCell.swift */; };
@@ -90,8 +84,6 @@
 		5A6BA59C28E53BAE004B04FC /* MockSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BA59B28E53BAE004B04FC /* MockSample.swift */; };
 		5A6BBF7A28E68A15003D9A4D /* StudyViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7928E68A15003D9A4D /* StudyViewModelTest.swift */; };
 		5A6BBF7C28E68E10003D9A4D /* MockWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6BBF7B28E68E10003D9A4D /* MockWord.swift */; };
-		5A6D29E128D416E200A63D92 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6D29E028D416E200A63D92 /* FirebaseFirestore */; };
-		5A6D29E328D416E800A63D92 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6D29E228D416E800A63D92 /* FirebaseStorage */; };
 		5A72BD0D28D1B15F00058043 /* MacAddWordViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD0C28D1B15F00058043 /* MacAddWordViewModelTest.swift */; };
 		5A72BD0F28D1B19E00058043 /* MockWordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD0E28D1B19E00058043 /* MockWordService.swift */; };
 		5A72BD1328D1B25100058043 /* MockSampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A72BD1228D1B25100058043 /* MockSampleService.swift */; };
@@ -294,10 +286,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A6082EC28D299A70031E983 /* Quick in Frameworks */,
-				5A6D29E328D416E800A63D92 /* FirebaseStorage in Frameworks */,
-				5A6082EE28D299AC0031E983 /* Nimble in Frameworks */,
-				5A6D29E128D416E200A63D92 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,8 +293,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06A1F4E828670DBC003440B0 /* Quick in Frameworks */,
-				06A1F4EA28670DC4003440B0 /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,8 +300,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06A1F4E228670DA8003440B0 /* Quick in Frameworks */,
-				06A1F4E428670DAE003440B0 /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,10 +794,6 @@
 			);
 			name = JWordsUnitTests;
 			packageProductDependencies = (
-				5A6082EB28D299A70031E983 /* Quick */,
-				5A6082ED28D299AC0031E983 /* Nimble */,
-				5A6D29E028D416E200A63D92 /* FirebaseFirestore */,
-				5A6D29E228D416E800A63D92 /* FirebaseStorage */,
 			);
 			productName = JWordsTests;
 			productReference = 06CEF2542866F1CB00A620CC /* JWordsUnitTests.xctest */;
@@ -834,8 +814,6 @@
 			);
 			name = JWordsUITests;
 			packageProductDependencies = (
-				06A1F4E728670DBC003440B0 /* Quick */,
-				06A1F4E928670DC4003440B0 /* Nimble */,
 			);
 			productName = JWordsUITests;
 			productReference = 06CEF25E2866F1CB00A620CC /* JWordsUITests.xctest */;
@@ -856,8 +834,6 @@
 			);
 			name = JWordsAcceptanceTests;
 			packageProductDependencies = (
-				06A1F4E128670DA8003440B0 /* Quick */,
-				06A1F4E328670DAE003440B0 /* Nimble */,
 			);
 			productName = JWordsAcceptanceTests;
 			productReference = 06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */;
@@ -1549,50 +1525,10 @@
 			package = 0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
-		06A1F4E128670DA8003440B0 /* Quick */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
-			productName = Quick;
-		};
-		06A1F4E328670DAE003440B0 /* Nimble */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */;
-			productName = Nimble;
-		};
-		06A1F4E728670DBC003440B0 /* Quick */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
-			productName = Quick;
-		};
-		06A1F4E928670DC4003440B0 /* Nimble */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */;
-			productName = Nimble;
-		};
 		06CEAC512AB6B71B007783F6 /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
 			productName = GoogleMobileAds;
-		};
-		5A6082EB28D299A70031E983 /* Quick */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4D928670D58003440B0 /* XCRemoteSwiftPackageReference "Quick" */;
-			productName = Quick;
-		};
-		5A6082ED28D299AC0031E983 /* Nimble */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06A1F4DC28670D7F003440B0 /* XCRemoteSwiftPackageReference "Nimble" */;
-			productName = Nimble;
-		};
-		5A6D29E028D416E200A63D92 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		5A6D29E228D416E800A63D92 /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06CEF2862866F86700A620CC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 
