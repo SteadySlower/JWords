@@ -126,14 +126,10 @@ struct SettingSideBar: View {
                         get: \.listType,
                         send: StudySetting.Action.setListType)
                     ) {
-                        Text("학습")
-                            .tag(ListType.study)
-                        Text("이동")
-                            .tag(ListType.select)
-                        Text("수정")
-                            .tag(ListType.edit)
-                        Text("삭제")
-                            .tag(ListType.delete)
+                        ForEach(vs.selectableListType, id: \.self) { type in
+                            Text(type.pickerText)
+                                .tag(type)
+                        }
                     }
                     .pickerStyle(.segmented)
                 }

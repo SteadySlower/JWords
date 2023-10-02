@@ -16,16 +16,16 @@ struct TodayList: ReducerProtocol {
         var onlyFailWords: [StudyUnit] = []
         var todayStatus: TodayStatus?
         var studyBook: StudyBook.State?
-        var wordList: WordList.State?
+        var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
         var isLoading: Bool = false
         
-        var showStudyView: Bool {
-            wordList != nil
-        }
-        
         var showStudyBookView: Bool {
             studyBook != nil
+        }
+        
+        var showStudyUnitsView: Bool {
+            studyUnits != nil
         }
         
         var showModal: Bool {
@@ -39,7 +39,8 @@ struct TodayList: ReducerProtocol {
             reviewWordBooks = []
             onlyFailWords = []
             todayStatus = nil
-            wordList = nil
+            studyBook = nil
+            studyUnits = nil
             todaySelection = nil
             showTutorial = false
         }
@@ -59,13 +60,13 @@ struct TodayList: ReducerProtocol {
         case onAppear
         case onDisappear
         case studyBook(StudyBook.Action)
-        case wordList(action: WordList.Action)
+        case studyUnits(StudyUnits.Action)
         case todaySelection(action: TodaySelection.Action)
         case setSelectionModal(isPresent: Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
-        case showStudyView(Bool)
         case showStudyBookView(Bool)
+        case showStudyUnitsView(Bool)
         case showTutorial(Bool)
         case todayStatusTapped
         case homeCellTapped(StudySet)
@@ -100,7 +101,7 @@ struct TodayList: ReducerProtocol {
                     state.isLoading = false
                     return .none
                 } else {
-                    state.wordList = WordList.State(units: state.onlyFailWords)
+                    state.studyUnits = StudyUnits.State(units: state.onlyFailWords)
                     return .none
                 }
             case .homeCellTapped(let set):
@@ -122,14 +123,6 @@ struct TodayList: ReducerProtocol {
             case .showTutorial(let show):
                 state.showTutorial = show
                 return .none
-            case .wordList(let action):
-                switch action  {
-                case .dismiss:
-                    state.wordList = nil
-                default:
-                    break
-                }
-                return .none
             case .studyBook(let action):
                 switch action {
                 case .dismiss:
@@ -144,8 +137,8 @@ struct TodayList: ReducerProtocol {
         .ifLet(\.studyBook, action: /Action.studyBook) {
             StudyBook()
         }
-        .ifLet(\.wordList, action: /Action.wordList(action:)) {
-            WordList()
+        .ifLet(\.studyUnits, action: /Action.studyUnits) {
+            StudyUnits()
         }
         .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
             TodaySelection()
@@ -218,16 +211,6 @@ struct TodayView: View {
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
-                                state: \.wordList,
-                                action: TodayList.Action.wordList(action:))
-                            ) { StudyView(store: $0) },
-                    isActive: vs.binding(
-                                get: \.showStudyView,
-                                send: TodayList.Action.showStudyView))
-                { EmptyView() }
-                NavigationLink(
-                    destination: IfLetStore(
-                            store.scope(
                                 state: \.studyBook,
                                 action: TodayList.Action.studyBook)
                             ) { StudyBookView(store: $0) },
@@ -236,10 +219,20 @@ struct TodayView: View {
                                 send: TodayList.Action.showStudyBookView))
                 { EmptyView() }
                 NavigationLink(
+                    destination: IfLetStore(
+                            store.scope(
+                                state: \.studyUnits,
+                                action: TodayList.Action.studyUnits)
+                            ) { StudyUnitsView(store: $0) },
+                    isActive: vs.binding(
+                                get: \.showStudyUnitsView,
+                                send: TodayList.Action.showStudyUnitsView))
+                { EmptyView() }
+                NavigationLink(
                     destination: TutorialList(),
                     isActive: vs.binding(
                                 get: \.showTutorial,
-                                send: TodayList.Action.showStudyView))
+                                send: TodayList.Action.showTutorial))
                 { EmptyView() }
             }
             .withBannerAD()

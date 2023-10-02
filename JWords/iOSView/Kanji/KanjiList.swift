@@ -16,11 +16,11 @@ struct KanjiList: ReducerProtocol {
     
     struct State: Equatable {
         var kanjis: [Kanji] = []
-        var wordList: WordList.State?
+        var studyKanjiSamples: StudyKanjiSamples.State?
         var isLastPage = false
         
         var showStudyView: Bool {
-            wordList != nil
+            studyKanjiSamples != nil
         }
     }
     
@@ -28,7 +28,7 @@ struct KanjiList: ReducerProtocol {
         case onAppear
         case fetchKanjis
         case kanjiCellTapped(Kanji)
-        case wordList(action: WordList.Action)
+        case studyKanjiSamples(StudyKanjiSamples.Action)
         case showStudyView(Bool)
     }
     
@@ -46,20 +46,20 @@ struct KanjiList: ReducerProtocol {
                 state.kanjis.append(contentsOf: fetched)
                 return .none
             case .kanjiCellTapped(let kanji):
-                let words = try! cd.fetchSampleUnit(ofKanji: kanji)
-                state.wordList = WordList.State(kanji: kanji, units: words)
+                let units = try! cd.fetchSampleUnit(ofKanji: kanji)
+                state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
                 return .none
             case .showStudyView(let isPresent):
                 if !isPresent {
-                    state.wordList = nil
+                    state.studyKanjiSamples = nil
                 }
                 return .none
             default:
                 return .none
             }
         }
-        .ifLet(\.wordList, action: /Action.wordList(action:)) {
-            WordList()
+        .ifLet(\.studyKanjiSamples, action: /Action.studyKanjiSamples) {
+            StudyKanjiSamples()
         }
     }
 
@@ -75,9 +75,9 @@ struct KanjiListView: View {
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
-                                state: \.wordList,
-                                action: KanjiList.Action.wordList(action:))
-                            ) { StudyView(store: $0) },
+                                state: \.studyKanjiSamples,
+                                action: KanjiList.Action.studyKanjiSamples)
+                            ) { StudyKanjiSampleView(store: $0) },
                     isActive: vs.binding(
                                 get: \.showStudyView,
                                 send: KanjiList.Action.showStudyView))

@@ -10,6 +10,19 @@ import SwiftUI
 
 enum ListType {
     case study, edit, select, delete
+    
+    var pickerText: String {
+        switch self {
+        case .study:
+            return "학습"
+        case .edit:
+            return "수정"
+        case .select:
+            return "이동"
+        case .delete:
+            return "삭제"
+        }
+    }
 }
 
 struct SwitchBetweenList: ReducerProtocol {
