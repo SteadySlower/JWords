@@ -11,15 +11,11 @@ import ComposableArchitecture
 struct MacApp: ReducerProtocol {
     
     struct State: Equatable {
-        var addSet = InputBook.State()
-        var addUnit = SelectSetAddUnit.State()
         var kanjiList = KanjiList.State()
         var ocr = AddUnitWithOCR.State()
     }
     
     enum Action: Equatable {
-        case addSet(action: InputBook.Action)
-        case addUnit(action: SelectSetAddUnit.Action)
         case kanjiList(action: KanjiList.Action)
         case ocr(action: AddUnitWithOCR.Action)
     }
@@ -30,12 +26,6 @@ struct MacApp: ReducerProtocol {
             default:
                 return .none
             }
-        }
-        Scope(state: \.addSet, action: /Action.addSet(action:)) {
-            InputBook()
-        }
-        Scope(state: \.addUnit, action: /Action.addUnit(action:)) {
-            SelectSetAddUnit()
         }
         Scope(state: \.kanjiList, action: /Action.kanjiList(action:)) {
             KanjiList()
@@ -53,16 +43,6 @@ struct MacAppView: View {
     
     var body: some View {
         TabView {
-            MacSetAddView(store: store.scope(
-                state: \.addSet,
-                action: MacApp.Action.addSet(action:))
-            )
-            .tabItem { Text("단어장 추가 (신)") }
-            MacAddUnitView(store: store.scope(
-                state: \.addUnit,
-                action: MacApp.Action.addUnit(action:))
-            )
-            .tabItem { Text("단어 추가 (신)") }
             KanjiListView(store: store.scope(
                 state: \.kanjiList,
                 action: MacApp.Action.kanjiList(action:))
