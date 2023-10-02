@@ -125,12 +125,14 @@ struct GetImageForOCRView: View {
                     Spacer()
                 }
             }
+            #if os(iOS)
             .sheet(isPresented: vs.binding(
                 get: \.showCameraScanner,
                 send: GetImageForOCR.Action.showCameraScanner)
             ) {
                 CameraScanner { vs.send(.cameraImageSelected($0)) }
             }
+            #endif
         }
     }
 }

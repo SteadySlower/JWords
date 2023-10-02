@@ -37,17 +37,8 @@ struct JWordsApp: App {
 }
 
 #elseif os(macOS)
-class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        FirebaseApp.configure()
-    }
-}
-
 @main
-struct JWordsApp: App {
-    @NSApplicationDelegateAdaptor private var delegate: AppDelegate
-    
+struct JWordsApp: App {    
     var body: some Scene {
         WindowGroup {
             MacAppView(
