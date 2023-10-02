@@ -70,8 +70,6 @@ struct TodayList: ReducerProtocol {
         case showTutorial(Bool)
         case todayStatusTapped
         case homeCellTapped(StudySet)
-        case scheduleResponse(TaskResult<TodayBooks>)
-        case onlyFailResponse(TaskResult<[Word]>)
     }
     
     var body: some ReducerProtocol<State, Action> {

@@ -19,8 +19,10 @@ struct TutorialList: View {
             .padding(.horizontal, 10)
         }
         .navigationTitle("튜토리얼 보기")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .withBannerAD()
+        #endif
     }
     
     private func tutorialCell(_ tutorial: Tutorial) -> some View {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 import Combine
 import ComposableArchitecture
 
@@ -73,8 +72,6 @@ struct StudyWord: ReducerProtocol {
     }
     
     private let cd = CoreDataClient.shared
-    @Dependency(\.cdWordClient) var wordClient
-    private enum UpdateStudyStateID {}
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -85,13 +82,13 @@ struct StudyWord: ReducerProtocol {
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
                 state.studyState = .undefined
-                _ = try! wordClient.studyState(state.unit, .undefined)
+                _ = try! cd.updateStudyState(unit: state.unit, newState: .undefined)
                 return .none
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
                 let newState: StudyState = direction == .left ? .success : .fail
                 state.studyState = newState
-                _ = try! wordClient.studyState(state.unit, newState)
+                _ = try! cd.updateStudyState(unit: state.unit, newState: newState)
                 return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {

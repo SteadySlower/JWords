@@ -29,18 +29,24 @@ struct TutorialPageView: View {
                         .defaultRectangleBackground()
                 }
             }
+            #if os(iOS)
             .tabViewStyle(.page)
+            #endif
         }
         .padding(.horizontal, 20)
         .padding(.top, 10)
         .padding(.bottom, 20)
         .navigationTitle(tutorial.title)
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
     
     private func setIndicator() {
+        #if os(iOS)
         UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.blue)
         UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color.blue.opacity(0.5))
+        #endif
     }
 
 }
