@@ -164,8 +164,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		06004E222AC5192400947F5D /* ScanGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanGuide.swift; path = JWords/macView/OCR/Items/ScanGuide.swift; sourceTree = SOURCE_ROOT; };
-		06004E242AC51DBE00947F5D /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/macView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
+		06004E222AC5192400947F5D /* ScanGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScanGuide.swift; path = JWords/iOSView/OCR/SubViews/ScanGuide.swift; sourceTree = SOURCE_ROOT; };
+		06004E242AC51DBE00947F5D /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRView.swift; path = JWords/iOSView/OCR/OCRView.swift; sourceTree = SOURCE_ROOT; };
 		06004E2A2AC538B500947F5D /* KeyBoardDismissingBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardDismissingBackground.swift; sourceTree = "<group>"; };
 		06004E2F2AC5485800947F5D /* WordsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsList.swift; sourceTree = "<group>"; };
 		06004E362AC5488600947F5D /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 		06004E3E2AC555C800947F5D /* StudyBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyBookView.swift; sourceTree = "<group>"; };
 		06004E402AC55C5700947F5D /* StudyModals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModals.swift; sourceTree = "<group>"; };
 		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
-		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/macView/Components/FlexBox.swift; sourceTree = SOURCE_ROOT; };
+		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/iOSView/Util/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
 		0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuriganaConverter.swift; sourceTree = "<group>"; };
 		0622727929FCFC2600EEAD50 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		06308A702A048EFD00BDEE2D /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		06308A722A04902A00BDEE2D /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRAddUnitView.swift; path = JWords/MacView/OCR/OCRAddUnitView.swift; sourceTree = SOURCE_ROOT; };
+		06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRAddUnitView.swift; path = JWords/iOSView/OCR/OCRAddUnitView.swift; sourceTree = SOURCE_ROOT; };
 		06496B0A2AA311140061DCA9 /* OCRClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRClient.swift; sourceTree = "<group>"; };
 		064BA4422AC2558700288749 /* InputUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUnit.swift; sourceTree = "<group>"; };
 		064BA4452AC256E400288749 /* KanjiInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiInput.swift; sourceTree = "<group>"; };
@@ -266,10 +266,10 @@
 		5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultClient.swift; sourceTree = "<group>"; };
 		5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVStorageClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
-		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/MacView/OCR/Items/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
-		5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetImageForOCRView.swift; path = JWords/MacView/OCR/Items/GetImageForOCRView.swift; sourceTree = SOURCE_ROOT; };
-		5AAF1E032AA9965300709CAE /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/MacView/OCR/Items/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
-		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/macView/Components/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/iOSView/OCR/SubViews/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetImageForOCRView.swift; path = JWords/iOSView/OCR/SubViews/GetImageForOCRView.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1E032AA9965300709CAE /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/iOSView/OCR/SubViews/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
+		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/iOSView/Util/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
 		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
@@ -322,17 +322,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		06004E212AC5191300947F5D /* Items */ = {
-			isa = PBXGroup;
-			children = (
-				5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */,
-				06004E222AC5192400947F5D /* ScanGuide.swift */,
-				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
-				5AAF1E032AA9965300709CAE /* OCRResultView.swift */,
-			);
-			path = Items;
-			sourceTree = "<group>";
-		};
 		06004E2E2AC5484B00947F5D /* Lists */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,17 +362,6 @@
 				06004E432AC5A62400947F5D /* ToolbarItems.swift */,
 			);
 			path = Items;
-			sourceTree = "<group>";
-		};
-		0624735929C6D1360076DBE4 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
-				061C9E7C2A19819800E099B5 /* FlexBox.swift */,
-				061C9E802A19CF8200E099B5 /* StudySetPicker.swift */,
-				5AAF1E052AAABEA700709CAE /* RectangleButton.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		064BA4402AC2556200288749 /* Unit */ = {
@@ -478,6 +456,44 @@
 			path = Modals;
 			sourceTree = "<group>";
 		};
+		06C992FB2ACAC8AE0062F9FB /* App */ = {
+			isa = PBXGroup;
+			children = (
+				5A67DC302869529700AC156C /* MacAppView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		06C992FC2ACAC92F0062F9FB /* OCR */ = {
+			isa = PBXGroup;
+			children = (
+				06C992FD2ACAC9440062F9FB /* SubViews */,
+				06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */,
+				06004E242AC51DBE00947F5D /* OCRView.swift */,
+			);
+			path = OCR;
+			sourceTree = "<group>";
+		};
+		06C992FD2ACAC9440062F9FB /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				5AAF1E032AA9965300709CAE /* OCRResultView.swift */,
+				5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */,
+				06004E222AC5192400947F5D /* ScanGuide.swift */,
+				5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
+		06C992FE2ACAC9620062F9FB /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				061C9E7C2A19819800E099B5 /* FlexBox.swift */,
+				5AAF1E052AAABEA700709CAE /* RectangleButton.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		06CEAC532AB6BB78007783F6 /* Ad */ = {
 			isa = PBXGroup;
 			children = (
@@ -521,7 +537,6 @@
 				5A5FF630286AD746000150A7 /* Utilities */,
 				5ACE0A7428699B9600A57660 /* Model */,
 				5ACE0A6F2869985F00A57660 /* Service */,
-				5A67DC2F2869527A00AC156C /* MacView */,
 				5A67DC24286944EF00AC156C /* Constants */,
 				5A67DC1D286942E800AC156C /* iOSView */,
 				06CEF24A2866F1CB00A620CC /* Assets.xcassets */,
@@ -615,6 +630,9 @@
 		5A67DC1D286942E800AC156C /* iOSView */ = {
 			isa = PBXGroup;
 			children = (
+				06C992FE2ACAC9620062F9FB /* Util */,
+				06C992FC2ACAC92F0062F9FB /* OCR */,
+				06C992FB2ACAC8AE0062F9FB /* App */,
 				064BA4402AC2556200288749 /* Unit */,
 				5AB308352ABBDEC6002EAC3E /* Tutorials */,
 				06CEAC532AB6BB78007783F6 /* Ad */,
@@ -661,22 +679,14 @@
 		5A67DC2E2869491E00AC156C /* items */ = {
 			isa = PBXGroup;
 			children = (
+				061C9E802A19CF8200E099B5 /* StudySetPicker.swift */,
+				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
 				5A67DC22286943A800AC156C /* HomeCell.swift */,
 				06BC6069297B939500AA67E6 /* LazyView.swift */,
 				06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */,
 				06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */,
 			);
 			path = items;
-			sourceTree = "<group>";
-		};
-		5A67DC2F2869527A00AC156C /* MacView */ = {
-			isa = PBXGroup;
-			children = (
-				5AAF1DFC2AA9661E00709CAE /* OCR */,
-				0624735929C6D1360076DBE4 /* Components */,
-				5A67DC302869529700AC156C /* MacAppView.swift */,
-			);
-			path = MacView;
 			sourceTree = "<group>";
 		};
 		5A72BD1428D1B3BF00058043 /* Helper */ = {
@@ -715,16 +725,6 @@
 				5A6BBF7B28E68E10003D9A4D /* MockWord.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		5AAF1DFC2AA9661E00709CAE /* OCR */ = {
-			isa = PBXGroup;
-			children = (
-				06004E212AC5191300947F5D /* Items */,
-				06496B082AA30CF10061DCA9 /* OCRAddUnitView.swift */,
-				06004E242AC51DBE00947F5D /* OCRView.swift */,
-			);
-			path = OCR;
 			sourceTree = "<group>";
 		};
 		5AB308352ABBDEC6002EAC3E /* Tutorials */ = {
