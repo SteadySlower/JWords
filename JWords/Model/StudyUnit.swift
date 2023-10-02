@@ -65,3 +65,13 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
     }
     
 }
+
+extension Array where Element == StudyUnit {
+    static var mock: [StudyUnit] {
+        var result = [StudyUnit]()
+        for i in 0..<10 {
+            result.append(StudyUnit(index: i))
+        }
+        return result
+    }
+}
