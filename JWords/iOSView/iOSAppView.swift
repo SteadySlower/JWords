@@ -41,7 +41,6 @@ struct iOSApp: ReducerProtocol {
     }
     
     let cd = CoreDataClient.shared
-    @Dependency(\.wordBookClient) var wordBookClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

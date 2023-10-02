@@ -7,13 +7,6 @@
 
 import Foundation
 
-//protocol TodayBooks {
-//    var studyIDs: [String] { get }
-//    var reviewIDs: [String] { get }
-//    var reviewedIDs: [String] { get }
-//    var createdAt: Date { get }
-//}
-
 struct TodaySchedule: Equatable {
     let studyIDs: [String]
     let reviewIDs: [String]
@@ -27,21 +20,8 @@ struct TodaySchedule: Equatable {
         self.createdAt = createdAt
     }
     
-    init(dict: [String: Any]) throws {
-        
-        if let studyIDs = dict["studyIDs"] as? [String],
-           let reviewIDs = dict["reviewIDs"] as? [String],
-           let reviewedIDs = dict["reviewedIDs"] as? [String],
-           let createdAt = dict["createdAt"] as? Date
-        {
-            self.studyIDs = studyIDs
-            self.reviewIDs = reviewIDs
-            self.reviewedIDs = reviewedIDs
-            self.createdAt = createdAt
-        } else {
-            throw AppError.Initializer.todayBookImpl
-        }
-    }
+    static let empty: Self = .init(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: .now)
+
 }
 
 struct TodayBooks: Equatable {

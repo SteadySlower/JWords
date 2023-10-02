@@ -29,7 +29,9 @@ struct TutorialPageView: View {
                         .defaultRectangleBackground()
                 }
             }
+            #if os(iOS)
             .tabViewStyle(.page)
+            #endif
         }
         .padding(.horizontal, 20)
         .padding(.top, 10)
