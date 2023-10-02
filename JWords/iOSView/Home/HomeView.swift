@@ -12,13 +12,13 @@ import ComposableArchitecture
 struct HomeList: ReducerProtocol {
     struct State: Equatable {
         var wordBooks:[StudySet] = []
-        var wordList: WordList.State?
+        var studyBook: StudyBook.State?
         var inputBook: InputBook.State?
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
         var showStudyView: Bool {
-            wordList != nil
+            studyBook != nil
         }
         
         var showBookInputModal: Bool {
@@ -27,7 +27,7 @@ struct HomeList: ReducerProtocol {
         
         mutating func clear() {
             wordBooks = []
-            wordList = nil
+            studyBook = nil
             inputBook = nil
         }
     }
@@ -38,8 +38,8 @@ struct HomeList: ReducerProtocol {
         case setInputBookModal(isPresent: Bool)
         case showStudyView(Bool)
         case updateIncludeClosed(Bool)
-        case wordList(action: WordList.Action)
-        case inputBook(action: InputBook.Action)
+        case studyBook(StudyBook.Action)
+        case inputBook(InputBook.Action)
     }
     
     let cd = CoreDataClient.shared
@@ -55,16 +55,19 @@ struct HomeList: ReducerProtocol {
                 state.inputBook = isPresent ? InputBook.State() : nil
                 return .none
             case let .homeCellTapped(wordBook):
-                state.wordList = WordList.State(set: wordBook)
+                let units = try! cd.fetchUnits(of: wordBook)
+                state.studyBook = StudyBook.State(set: wordBook, units: units)
                 return .none
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .task { .onAppear }
-            case .wordList(let action):
-                if action == WordList.Action.dismiss {
-                    state.wordList = nil
+            case .studyBook(let action):
+                switch action {
+                case .dismiss:
+                    state.studyBook = nil
+                    return .none
+                default: return .none
                 }
-                return .none
             case .inputBook(let action):
                 switch action {
                 case .setAdded:
@@ -81,10 +84,10 @@ struct HomeList: ReducerProtocol {
                 return .none
             }
         }
-        .ifLet(\.wordList, action: /Action.wordList(action:)) {
-            WordList()
+        .ifLet(\.studyBook, action: /Action.studyBook) {
+            StudyBook()
         }
-        .ifLet(\.inputBook, action: /Action.inputBook(action:)) {
+        .ifLet(\.inputBook, action: /Action.inputBook) {
             InputBook()
         }
     }
@@ -125,9 +128,9 @@ struct HomeView: View {
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
-                                state: \.wordList,
-                                action: HomeList.Action.wordList(action:))
-                            ) { StudyView(store: $0) },
+                                state: \.studyBook,
+                                action: HomeList.Action.studyBook)
+                            ) { StudyBookView(store: $0) },
                     isActive: vs.binding(
                                 get: \.showStudyView,
                                 send: HomeList.Action.showStudyView))
@@ -144,8 +147,8 @@ struct HomeView: View {
                 get: \.showBookInputModal,
                 send: HomeList.Action.setInputBookModal(isPresent:))
             ) {
-                IfLetStore(self.store.scope(state: \.inputBook,
-                                            action: HomeList.Action.inputBook(action:))
+                IfLetStore(store.scope(state: \.inputBook,
+                                            action: HomeList.Action.inputBook)
                 ) {
                     WordBookAddModal(store: $0)
                 }

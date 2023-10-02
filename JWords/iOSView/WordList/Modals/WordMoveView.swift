@@ -11,14 +11,16 @@ import ComposableArchitecture
 struct MoveWords: ReducerProtocol {
     struct State: Equatable {
         let fromBook: StudySet
+        let isReviewBook: Bool
         let toMoveWords: [StudyUnit]
         var wordBooks = [StudySet]()
         var selectedID: String? = nil
         var isLoading: Bool = false
         var willCloseBook: Bool
         
-        init(fromBook: StudySet, toMoveWords: [StudyUnit]) {
+        init(fromBook: StudySet, isReviewBook: Bool, toMoveWords: [StudyUnit]) {
             self.fromBook = fromBook
+            self.isReviewBook = isReviewBook
             self.toMoveWords = toMoveWords
             self.willCloseBook = fromBook.dayFromToday >= 28 ? true : false
         }
@@ -32,7 +34,7 @@ struct MoveWords: ReducerProtocol {
         }
     }
     
-    let ud = UserDefaultClient.shared
+    let kv = KVStorageClient.shared
     let cd = CoreDataClient.shared
     
     enum Action: Equatable {
@@ -41,13 +43,8 @@ struct MoveWords: ReducerProtocol {
         case updateWillCloseBook(willClose: Bool)
         case closeButtonTapped
         case cancelButtonTapped
-        case onMoved(from: StudySet)
+        case onMoved
     }
-    
-    @Dependency(\.wordBookClient) var wordBookClient
-    @Dependency(\.todayClient) var todayClient
-    private enum FetchWordBooksID {}
-    private enum MoveWordsID {}
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -78,8 +75,11 @@ struct MoveWords: ReducerProtocol {
                                           preferredFrontType: toClose.preferredFrontType,
                                           closed: true)
                 }
+                if state.isReviewBook {
+                    kv.addReviewedSet(reviewed: state.fromBook)
+                }
                 state.isLoading = false
-                return .task { [from = state.fromBook] in .onMoved(from: from) }
+                return .task { .onMoved }
             default:
                 return .none
             }
@@ -125,6 +125,9 @@ struct WordMoveView: View {
                     )
                     .tint(.black)
                 }
+                if vs.isReviewBook {
+                    Text("현재 단어장은 복습 리스트에 있습니다.\n단어를 이동하면 복습 리스트에서 제외됩니다.")
+                }
                 HStack {
                     button("취소", foregroundColor: .black) {
                         vs.send(.cancelButtonTapped)
@@ -163,6 +166,7 @@ struct WordMoveView_Previews: PreviewProvider {
         WordMoveView(
             store: Store(
                 initialState: MoveWords.State(fromBook: StudySet(index: 0),
+                                              isReviewBook: true,
                                               toMoveWords: .mock),
                 reducer: MoveWords()._printChanges()
             )

@@ -30,4 +30,15 @@ struct Kanji: Equatable {
         self.usedIn = mo.words?.count ?? 0
     }
     
+    init(index: Int) {
+        self.id = UUID().uuidString
+        self.objectID = NSManagedObjectID()
+        self.kanjiText = "漢"
+        self.meaningText = "한자\(index)"
+        self.ondoku = "かん"
+        self.kundoku = "かん"
+        self.createdAt = Date()
+        self.usedIn = index
+    }
+    
 }

@@ -9,7 +9,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-enum StudyMode: Hashable, CaseIterable, Equatable {
+enum UnitFilter: Hashable, CaseIterable, Equatable {
     case all, excludeSuccess, onlyFail
     
     var pickerText: String {
@@ -21,30 +21,29 @@ enum StudyMode: Hashable, CaseIterable, Equatable {
     }
 }
 
-enum StudyViewMode: Hashable, Equatable {
-    case normal
-    case selection
-    case edit
-    case delete
-}
-
 struct StudySetting: ReducerProtocol {
     struct State: Equatable {
-        var studyMode: StudyMode = .all
+        let showSetEditButtons: Bool
+        let selectableListType: [ListType]
+        var filter: UnitFilter = .all
         var frontType: FrontType
-        var studyViewMode: StudyViewMode = .normal
-        let showEditButtons: Bool
+        var listType: ListType = .study
         
-        init(frontMode: FrontType = .kanji, showEditButtons: Bool = true) {
-            self.frontType = frontMode
-            self.showEditButtons = showEditButtons
+        init(
+            showSetEditButtons: Bool,
+            frontType: FrontType,
+            selectableListType: [ListType]
+        ) {
+            self.showSetEditButtons = showSetEditButtons
+            self.frontType = frontType
+            self.selectableListType = selectableListType
         }
     }
     
     enum Action: Equatable {
-        case setStudyMode(StudyMode)
+        case setFilter(UnitFilter)
         case setFrontType(FrontType)
-        case setStudyViewMode(StudyViewMode)
+        case setListType(ListType)
         case wordBookEditButtonTapped
         case wordAddButtonTapped
     }
@@ -55,11 +54,11 @@ struct StudySetting: ReducerProtocol {
             case .setFrontType(let type):
                 state.frontType = type
                 return .none
-            case .setStudyMode(let mode):
-                state.studyMode = mode
+            case .setFilter(let filter):
+                state.filter = filter
                 return .none
-            case .setStudyViewMode(let mode):
-                state.studyViewMode = mode
+            case .setListType(let type):
+                state.listType = type
                 return .none
             case .wordBookEditButtonTapped:
                 return .none
@@ -77,7 +76,7 @@ struct SettingSideBar: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack(spacing: 10) {
-                if vs.showEditButtons {
+                if vs.showSetEditButtons {
                     VStack(spacing: 10) {
                         RectangleButton(
                             image: Image(systemName: "rectangle.and.pencil.and.ellipsis"),
@@ -96,10 +95,10 @@ struct SettingSideBar: View {
                     Text("단어 필터")
                         .leadingAlignment()
                     Picker("", selection: vs.binding(
-                        get: \.studyMode,
-                        send: StudySetting.Action.setStudyMode)
+                        get: \.filter,
+                        send: StudySetting.Action.setFilter)
                     ) {
-                        ForEach(StudyMode.allCases, id: \.self) {
+                        ForEach(UnitFilter.allCases, id: \.self) {
                             Text($0.pickerText)
                         }
                     }
@@ -124,17 +123,13 @@ struct SettingSideBar: View {
                     Text("단어 리스트 모드")
                         .leadingAlignment()
                     Picker("", selection: vs.binding(
-                        get: \.studyViewMode,
-                        send: StudySetting.Action.setStudyViewMode)
+                        get: \.listType,
+                        send: StudySetting.Action.setListType)
                     ) {
-                        Text("학습")
-                            .tag(StudyViewMode.normal)
-                        Text("이동")
-                            .tag(StudyViewMode.selection)
-                        Text("수정")
-                            .tag(StudyViewMode.edit)
-                        Text("삭제")
-                            .tag(StudyViewMode.delete)
+                        ForEach(vs.selectableListType, id: \.self) { type in
+                            Text(type.pickerText)
+                                .tag(type)
+                        }
                     }
                     .pickerStyle(.segmented)
                 }
@@ -145,16 +140,3 @@ struct SettingSideBar: View {
         }
     }
 }
-
-struct SettingSideBar_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        SettingSideBar(
-            store: Store(
-                initialState: StudySetting.State(frontMode: .kanji),
-                reducer: StudySetting()._printChanges()
-            )
-        )
-    }
-}
-
