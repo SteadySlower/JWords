@@ -500,22 +500,3 @@ extension CoreDataClient {
     }
     
 }
-
-// MARK: Interim function to convert kanjis from StudyUnit to StudyKanji
-
-extension CoreDataClient {
-    
-    private func checkIfExist(kanji: String) throws -> Bool {
-        
-        let fetchRequest = StudyKanjiMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji)
-        
-        do {
-            return (try context.fetch(fetchRequest).first != nil)
-        } catch {
-            NSLog("CoreData Error: %s", error.localizedDescription)
-            throw AppError.coreData
-        }
-    }
-    
-}
