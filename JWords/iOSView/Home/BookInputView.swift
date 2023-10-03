@@ -49,7 +49,7 @@ struct InputBook: ReducerProtocol {
         case setEdited(StudySet)
     }
     
-    @Dependency(\.studySetClient) var ssc
+    @Dependency(\.studySetClient) var setClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -76,12 +76,12 @@ struct InputBook: ReducerProtocol {
                     isAutoSchedule: true,
                     preferredFrontType: state.preferredFrontType)
                 if let set = state.set {
-                    let edited = try! ssc.update(set, input)
+                    let edited = try! setClient.update(set, input)
                     state.isLoading = false
                     return .task { .setEdited(edited) }
                 } else {
                     state.isLoading = false
-                    try! ssc.insert(input)
+                    try! setClient.insert(input)
                     return .task { .setAdded }
                 }
             case .setAdded:
