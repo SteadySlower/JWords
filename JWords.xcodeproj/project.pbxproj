@@ -55,7 +55,6 @@
 		069941852A99EFFC00B5D769 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941842A99EFFC00B5D769 /* DeleteCell.swift */; };
 		069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941862A9A066B00B5D769 /* Array+Extension.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
-		06BC606A297B939500AA67E6 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC6069297B939500AA67E6 /* LazyView.swift */; };
 		06BC606D297E9A7500AA67E6 /* FrontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC606C297E9A7500AA67E6 /* FrontType.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
@@ -208,7 +207,6 @@
 		069941862A9A066B00B5D769 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
-		06BC6069297B939500AA67E6 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		06BC606C297E9A7500AA67E6 /* FrontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontType.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		06BC608B29A09FC000AA67E6 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
@@ -675,7 +673,6 @@
 				061C9E802A19CF8200E099B5 /* StudySetPicker.swift */,
 				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
 				5A67DC22286943A800AC156C /* HomeCell.swift */,
-				06BC6069297B939500AA67E6 /* LazyView.swift */,
 				06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */,
 				06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */,
 			);
@@ -983,7 +980,6 @@
 				06004E412AC55C5700947F5D /* StudyModals.swift in Sources */,
 				06C992F02ACABF000062F9FB /* StudyState.swift in Sources */,
 				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
-				06BC606A297B939500AA67E6 /* LazyView.swift in Sources */,
 				064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */,
 				064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */,
 				06004E392AC5488D00947F5D /* DeleteList.swift in Sources */,
