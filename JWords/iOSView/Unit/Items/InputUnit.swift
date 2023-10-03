@@ -29,7 +29,7 @@ struct InputUnit: ReducerProtocol {
         case alreadyExist(StudyUnit?)
     }
     
-    private let cd = CoreDataService.shared
+    @Dependency(\.studyUnitClient) var unitClient
     
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
@@ -38,7 +38,7 @@ struct InputUnit: ReducerProtocol {
             case .kanjiInput(let action):
                 switch action {
                 case .huriganaUpdated(let hurigana):
-                    let unit = try! cd.checkIfExist(hurigana)
+                    let unit = try! unitClient.checkIfExist(hurigana)
                     return .task { .alreadyExist(unit) }
                 case .onTab:
                     state.focusedField = .meaning
