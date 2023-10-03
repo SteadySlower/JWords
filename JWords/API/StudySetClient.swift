@@ -9,9 +9,11 @@ import ComposableArchitecture
 
 struct StudySetClient {
     private static let cd = CoreDataService.shared
-    var insertSet: (StudySetInput) throws -> Void
-    var updateSet: (StudySet, StudySetInput) throws -> StudySet
-    var closeSet: (StudySet) throws -> Void
+    var insert: (StudySetInput) throws -> Void
+    var update: (StudySet, StudySetInput) throws -> StudySet
+    var close: (StudySet) throws -> Void
+    var fetch: (Bool) throws -> [StudySet]
+    var countUnits: (StudySet) throws -> Int
 }
 
 extension DependencyValues {
@@ -23,34 +25,44 @@ extension DependencyValues {
 
 extension StudySetClient: DependencyKey {
   static let liveValue = StudySetClient(
-    insertSet: { input in
+    insert: { input in
         try cd.insertSet(title: input.title,
                          isAutoSchedule: input.isAutoSchedule,
                          preferredFrontType: input.preferredFrontType)
     },
-    updateSet: { set, input in
+    update: { set, input in
         return try cd.updateSet(set,
                          title: input.title,
                          isAutoSchedule: input.isAutoSchedule,
                          preferredFrontType: input.preferredFrontType)
     },
-    closeSet: { set in
+    close: { set in
         try cd.closeSet(set)
+    },
+    fetch: { includeClosed in
+        return try cd.fetchSets(includeClosed: includeClosed)
+    },
+    countUnits: { set in
+        return try cd.countUnits(in: set)
     }
   )
 }
 
 extension StudySetClient: TestDependencyKey {
   static let previewValue = Self(
-    insertSet: { _ in },
-    updateSet: { _, _ in return .init(index: 0) },
-    closeSet: { _ in }
+    insert: { _ in },
+    update: { _, _ in return .init(index: 0) },
+    close: { _ in },
+    fetch: { _ in .mock },
+    countUnits: { _ in Int.random(in: 0...100) }
   )
 
   static let testValue = Self(
-    insertSet: unimplemented("\(Self.self).inserSet"),
-    updateSet: unimplemented("\(Self.self).updateSet"),
-    closeSet: unimplemented("\(Self.self).closeSet")
+    insert: unimplemented("\(Self.self).inserSet"),
+    update: unimplemented("\(Self.self).updateSet"),
+    close: unimplemented("\(Self.self).closeSet"),
+    fetch: unimplemented("\(Self.self).fetchSets"),
+    countUnits: unimplemented("\(Self.self).countUnits")
   )
 }
 

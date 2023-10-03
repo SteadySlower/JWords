@@ -138,32 +138,6 @@ class CoreDataService {
         }
     }
     
-    func convert(unit: StudyUnit, newMeaning: String, in set: StudySet) throws -> StudyUnit {
-        
-        guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
-            print("디버그: objectID로 unit 찾을 수 없음")
-            throw AppError.coreData
-        }
-        
-        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
-            print("디버그: objectID로 set 찾을 수 없음")
-            throw AppError.coreData
-        }
-        
-        mo.meaningText = newMeaning
-        mo.addToSet(set)
-        
-        do {
-            try context.save()
-            return StudyUnit(from: mo)
-        } catch {
-            context.rollback()
-            NSLog("CoreData Error: %s", error.localizedDescription)
-            throw AppError.coreData
-        }
-        
-    }
-    
     func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
         guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
@@ -278,18 +252,6 @@ class CoreDataService {
         }
     }
     
-    func fetchAllKanjis() throws -> [Kanji] {
-        let fetchRequest = StudyKanjiMO.fetchRequest()
-        
-        do {
-            return try context.fetch(fetchRequest).map { Kanji(from: $0) }
-        } catch {
-            NSLog("CoreData Error: %s", error.localizedDescription)
-            throw AppError.coreData
-        }
-        
-    }
-    
     // API for pagination
     func fetchAllKanjis(after: Kanji?) throws -> [Kanji] {
         let fetchRequest = StudyKanjiMO.fetchRequest()
@@ -390,7 +352,7 @@ class CoreDataService {
         }
     }
     
-    func moveUnits(_ units: [StudyUnit], from: StudySet, to: StudySet) throws {
+    func moveUnits(units: [StudyUnit], from: StudySet, to: StudySet) throws {
         guard let fromSetMO = try? context.existingObject(with: from.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData

@@ -76,12 +76,12 @@ struct InputBook: ReducerProtocol {
                     isAutoSchedule: true,
                     preferredFrontType: state.preferredFrontType)
                 if let set = state.set {
-                    let edited = try! ssc.updateSet(set, input)
+                    let edited = try! ssc.update(set, input)
                     state.isLoading = false
                     return .task { .setEdited(edited) }
                 } else {
                     state.isLoading = false
-                    try! ssc.insertSet(input)
+                    try! ssc.insert(input)
                     return .task { .setAdded }
                 }
             case .setAdded:

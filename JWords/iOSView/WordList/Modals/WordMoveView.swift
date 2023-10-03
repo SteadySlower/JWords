@@ -63,7 +63,7 @@ struct MoveWords: ReducerProtocol {
             case .closeButtonTapped:
                 state.isLoading = true
                 if let toBook = state.selectedWordBook {
-                    try! cd.moveUnits(state.toMoveWords,
+                    try! cd.moveUnits(units: state.toMoveWords,
                                       from: state.fromBook,
                                       to: toBook)
                 }

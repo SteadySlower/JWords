@@ -57,3 +57,13 @@ struct StudySet: Equatable, Identifiable {
     }
     
 }
+
+extension Array where Element == StudySet {
+    static var mock: [StudySet] {
+        var result = [StudySet]()
+        for i in 0..<10 {
+            result.append(StudySet(index: i))
+        }
+        return result
+    }
+}
