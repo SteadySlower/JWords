@@ -25,9 +25,7 @@ extension String {
         while let last = s.last,
               charactors.contains(last) {
             s = String(s.dropLast())
-            print("rstrip")
         }
-        print(s)
         return s
         
     }
@@ -38,9 +36,7 @@ extension String {
         while let first = s.first,
               charactors.contains(first) {
             s = String(s.dropFirst())
-            print("lstrip")
         }
-        print(s)
         return s
     }
     
