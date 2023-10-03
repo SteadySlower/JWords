@@ -57,7 +57,7 @@ struct AddUnit: ReducerProtocol {
         case alertDismissed
     }
     
-    private let cd = CoreDataService.shared
+    @Dependency(\.studyUnitClient) var unitClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -78,17 +78,19 @@ struct AddUnit: ReducerProtocol {
                     return .none
                 }
                 if let alreadyExist = state.alreadyExist {
-                    let unit = try! cd.addExistingUnit(
-                        unit: alreadyExist,
-                        meaningText: state.inputUnit.meaningInput.text,
-                        in: set)
+                    let input = StudyUnitInput(
+                        type: alreadyExist.type,
+                        kanjiText: alreadyExist.kanjiText,
+                        meaningText: state.inputUnit.meaningInput.text)
+                    let edited = try! unitClient.edit(alreadyExist, input)
+                    let unit = try! unitClient.insertExisting(set, edited)
                     return .task { .added(unit) }
                 } else {
-                    let unit = try! cd.insertUnit(
-                        in: set,
+                    let input = StudyUnitInput(
                         type: .word,
                         kanjiText: state.inputUnit.kanjiInput.hurigana.hurigana,
                         meaningText: state.inputUnit.meaningInput.text)
+                    let unit = try! unitClient.insert(set, input)
                     return .task { .added(unit) }
                 }
             case .alertDismissed:

@@ -228,7 +228,7 @@ class CoreDataService {
         }
     }
     
-    func addExistingUnit(unit: StudyUnit, meaningText: String, in set: StudySet) throws -> StudyUnit {
+    func addExistingUnit(set: StudySet, unit: StudyUnit) throws -> StudyUnit {
         guard let mo = try context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -238,8 +238,7 @@ class CoreDataService {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
         }
-        
-        if !meaningText.isEmpty { mo.meaningText = meaningText }
+
         mo.addToSet(set)
         
         do {

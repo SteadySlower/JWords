@@ -11,6 +11,7 @@ struct StudyUnitClient {
     private static let cd = CoreDataService.shared
     var checkIfExist: (String) throws -> StudyUnit?
     var insert: (StudySet, StudyUnitInput) throws -> StudyUnit
+    var insertExisting: (StudySet, StudyUnit) throws -> StudyUnit
     var edit: (StudyUnit, StudyUnitInput) throws -> StudyUnit
     var delete: (StudyUnit, StudySet) throws -> Void
     var studyState: (StudyUnit, StudyState) throws -> Void
@@ -37,6 +38,12 @@ extension StudyUnitClient: DependencyKey {
             type: input.type,
             kanjiText: input.kanjiText,
             meaningText: input.meaningText
+        )
+    },
+    insertExisting: { set, unit in
+        return try cd.addExistingUnit(
+            set: set,
+            unit: unit
         )
     },
     edit: { unit, input in
@@ -76,6 +83,7 @@ extension StudyUnitClient: TestDependencyKey {
   static let previewValue = Self(
     checkIfExist: { _ in nil },
     insert: { _, _ in .init(index: 0) },
+    insertExisting: { _, _ in .init(index: 0) },
     edit: { _, _ in .init(index: 0) },
     delete: { _, _ in },
     studyState: { _, _ in },
@@ -86,6 +94,7 @@ extension StudyUnitClient: TestDependencyKey {
   static let testValue = Self(
     checkIfExist: unimplemented("\(Self.self).checkIfExist"),
     insert: unimplemented("\(Self.self).insert"),
+    insertExisting: unimplemented("\(Self.self).insertExisting"),
     edit: unimplemented("\(Self.self).edit"),
     delete: unimplemented("\(Self.self).delete"),
     studyState: unimplemented("\(Self.self).studyState"),
