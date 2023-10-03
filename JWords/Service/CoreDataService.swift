@@ -13,6 +13,7 @@ class CoreDataService {
     static let shared = CoreDataService()
     private let context: NSManagedObjectContext
     private let iu = CKImageUploader.shared
+    private let kw = KanjiWikiService.shared
     
     init() {
         let container = NSPersistentCloudKitContainer(name: "jwords")
@@ -414,7 +415,7 @@ class CoreDataService {
                     print("디버그: StudyKanjiMO 객체를 만들 수 없음")
                     throw AppError.coreData
                 }
-                let wikiKanji = KanjiWikiClient.shared.getWikiKanji(kanji)
+                let wikiKanji = kw.getWikiKanji(kanji)
                 mo.id = "kanji_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
                 mo.kanji = kanji
                 mo.meaning = wikiKanji?.meaning ?? ""

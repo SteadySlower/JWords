@@ -1,8 +1,8 @@
 //
-//  KanjiWikiClient.swift
+//  KanjiWikiService.swift
 //  JWords
 //
-//  Created by Jong Won Moon on 2023/09/05.
+//  Created by JW Moon on 2023/10/03.
 //
 
 import Foundation
@@ -14,9 +14,9 @@ struct WikiKanji {
     let kundoku: String
 }
 
-class KanjiWikiClient {
+class KanjiWikiService {
     
-    static let shared = KanjiWikiClient()
+    static let shared = KanjiWikiService()
     
     private let db: [String : WikiKanji]
     
@@ -60,3 +60,4 @@ fileprivate func getJSON() throws -> [String: [String:String]] {
     }
     return json
 }
+
