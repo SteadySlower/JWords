@@ -104,7 +104,6 @@
 		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
 		5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C42A11CA630027B408 /* KanjiCell.swift */; };
 		5A8DCD7828E3E80E0078E197 /* MockWordBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */; };
-		5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */; };
 		5AA9097B2A83237B0075AFB9 /* KVStorageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */; };
@@ -263,7 +262,6 @@
 		5A8843C42A11CA630027B408 /* KanjiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCell.swift; sourceTree = "<group>"; };
 		5A8DCD7728E3E80E0078E197 /* MockWordBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWordBook.swift; sourceTree = "<group>"; };
 		5A8FF2E528DAF33E00B5E934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultClient.swift; sourceTree = "<group>"; };
 		5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KVStorageClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5AAF1DFD2AA9664B00709CAE /* CameraScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraScanner.swift; path = JWords/iOSView/OCR/SubViews/CameraScanner.swift; sourceTree = SOURCE_ROOT; };
@@ -613,7 +611,6 @@
 				06E917532A07168F002289B4 /* StudySetClient.swift */,
 				06581A9E2ACBF7E2007914A3 /* StudyUnitClient.swift */,
 				06581AA02ACC0069007914A3 /* KanjiClient.swift */,
-				5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */,
 				5A8614D72A1C627300000653 /* CKImageUploader.swift */,
 				5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */,
 				06496B0A2AA311140061DCA9 /* OCRClient.swift */,
@@ -959,7 +956,6 @@
 				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
 				06581AA12ACC0069007914A3 /* KanjiClient.swift in Sources */,
 				06C992E72AC675F10062F9FB /* AllLists.swift in Sources */,
-				5A9135812A08DAD400FCA8A5 /* UserDefaultClient.swift in Sources */,
 				064BA44A2AC2CE1C00288749 /* UnitInputField.swift in Sources */,
 				06004E3B2AC5489700947F5D /* SelectList.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
