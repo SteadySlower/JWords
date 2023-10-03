@@ -39,7 +39,7 @@ struct SelectStudySet: ReducerProtocol {
         }
     }
     
-    private let cd = CoreDataService.shared
+    @Dependency(\.studySetClient) var setClient
     
     enum Action: Equatable {
         case onAppear
@@ -51,7 +51,7 @@ struct SelectStudySet: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                state.sets = try! cd.fetchSets()
+                state.sets = try! setClient.fetch(false)
                 return .none
             case .updateID(let id):
                 state.selectedID = id
@@ -59,7 +59,7 @@ struct SelectStudySet: ReducerProtocol {
                 guard let set = state.selectedSet else {
                     return .task { .idUpdated }
                 }
-                state.unitCount = try! cd.countUnits(in: set)
+                state.unitCount = try! setClient.countUnits(set)
                 return .task { .idUpdated }
             default:
                 return .none
