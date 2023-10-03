@@ -19,7 +19,7 @@ struct EditWords: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case word(id: EditWord.State.ID, action: EditWord.Action)
+        case word(EditWord.State.ID, EditWord.Action)
         case toEditUnitSelected(StudyUnit)
     }
     
@@ -34,7 +34,7 @@ struct EditWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\.words, action: /Action.word(id:action:)) {
+        .forEach(\.words, action: /Action.word) {
             EditWord()
         }
     }
@@ -47,7 +47,7 @@ struct EditList: View {
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(
-              self.store.scope(state: \.words, action: EditWords.Action.word(id:action:))
+              self.store.scope(state: \.words, action: EditWords.Action.word)
             ) {
                 EditCell(store: $0)
             }
