@@ -108,7 +108,6 @@
 		5AAF1E002AA96AF900709CAE /* GetImageForOCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */; };
 		5AAF1E042AA9965300709CAE /* OCRResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E032AA9965300709CAE /* OCRResultView.swift */; };
 		5AAF1E062AAABEA700709CAE /* RectangleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAF1E052AAABEA700709CAE /* RectangleButton.swift */; };
-		5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB28AA328F6B94200FF80CE /* KanaConverter.swift */; };
 		5AB308382ABBDEE0002EAC3E /* TutorialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB308372ABBDEE0002EAC3E /* TutorialList.swift */; };
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
@@ -263,7 +262,6 @@
 		5AAF1DFF2AA96AF900709CAE /* GetImageForOCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GetImageForOCRView.swift; path = JWords/iOSView/OCR/SubViews/GetImageForOCRView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E032AA9965300709CAE /* OCRResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRResultView.swift; path = JWords/iOSView/OCR/SubViews/OCRResultView.swift; sourceTree = SOURCE_ROOT; };
 		5AAF1E052AAABEA700709CAE /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RectangleButton.swift; path = JWords/iOSView/Util/RectangleButton.swift; sourceTree = SOURCE_ROOT; };
-		5AB28AA328F6B94200FF80CE /* KanaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaConverter.swift; sourceTree = "<group>"; };
 		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
@@ -575,7 +573,6 @@
 			isa = PBXGroup;
 			children = (
 				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
-				5AB28AA328F6B94200FF80CE /* KanaConverter.swift */,
 				0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */,
 			);
 			path = Utilities;
@@ -1006,7 +1003,6 @@
 				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
 				5A8614D82A1C627300000653 /* CKImageService.swift in Sources */,
 				06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */,
-				5AB28AA428F6B94200FF80CE /* KanaConverter.swift in Sources */,
 				5AAF1E042AA9965300709CAE /* OCRResultView.swift in Sources */,
 				06004E3F2AC555C800947F5D /* StudyBookView.swift in Sources */,
 				06C992F22ACABF4C0062F9FB /* InputImageType.swift in Sources */,
