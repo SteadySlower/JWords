@@ -43,8 +43,7 @@ struct StudyWords: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case word(id: StudyWord.State.ID, action: StudyWord.Action)
-        case unitUpdated(unit: StudyUnit)
+        case word(StudyWord.State.ID, StudyWord.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -53,7 +52,7 @@ struct StudyWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\._units, action: /Action.word(id:action:)) {
+        .forEach(\._units, action: /Action.word) {
             StudyWord()
         }
     }
@@ -68,7 +67,7 @@ struct StudyList: View {
         LazyVStack(spacing: 32) {
             ForEachStore(store.scope(
                 state: \.units,
-                action: StudyWords.Action.word(id:action:))
+                action: StudyWords.Action.word)
             ) {
                 StudyCell(store: $0)
             }
