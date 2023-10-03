@@ -12,3 +12,9 @@ struct StudySetInput {
     let isAutoSchedule: Bool
     let preferredFrontType: FrontType
 }
+
+struct StudyUnitInput {
+    let type: UnitType
+    let kanjiText: String
+    let meaningText: String
+}
