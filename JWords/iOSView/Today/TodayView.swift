@@ -61,8 +61,8 @@ struct TodayList: ReducerProtocol {
         case onDisappear
         case studyBook(StudyBook.Action)
         case studyUnits(StudyUnits.Action)
-        case todaySelection(action: TodaySelection.Action)
-        case setSelectionModal(isPresent: Bool)
+        case todaySelection(TodaySelection.Action)
+        case setSelectionModal(Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudyBookView(Bool)
@@ -138,7 +138,7 @@ struct TodayList: ReducerProtocol {
         .ifLet(\.studyUnits, action: /Action.studyUnits) {
             StudyUnits()
         }
-        .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
+        .ifLet(\.todaySelection, action: /Action.todaySelection) {
             TodaySelection()
         }
     }
@@ -239,9 +239,12 @@ struct TodayView: View {
             .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,
-                send: TodayList.Action.setSelectionModal(isPresent:))
+                send: TodayList.Action.setSelectionModal)
             ) {
-                IfLetStore(self.store.scope(state: \.todaySelection, action: TodayList.Action.todaySelection(action:))) {
+                IfLetStore(store.scope(
+                    state: \.todaySelection,
+                    action: TodayList.Action.todaySelection)
+                ) {
                     TodaySelectionModal(store: $0)
                 }
             }
