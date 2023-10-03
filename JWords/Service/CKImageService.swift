@@ -7,9 +7,9 @@
 
 import CloudKit
 
-class CKImageUploader {
+final class CKImageService {
     
-    static let shared = CKImageUploader()
+    static let shared = CKImageService()
     
     let db = CKContainer(identifier: "iCloud.JWords").privateCloudDatabase
     

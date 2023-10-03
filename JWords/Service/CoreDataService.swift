@@ -12,7 +12,6 @@ class CoreDataService {
     
     static let shared = CoreDataService()
     private let context: NSManagedObjectContext
-    private let iu = CKImageUploader.shared
     private let kw = KanjiWikiService.shared
     
     init() {
