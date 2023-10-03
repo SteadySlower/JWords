@@ -69,11 +69,7 @@ struct MoveWords: ReducerProtocol {
                 }
                 if state.willCloseBook {
                     let toClose = state.fromBook
-                    _ = try! cd.updateSet(toClose,
-                                          title: toClose.title,
-                                          isAutoSchedule: toClose.isAutoSchedule,
-                                          preferredFrontType: toClose.preferredFrontType,
-                                          closed: true)
+                    try! cd.closeSet(toClose)
                 }
                 if state.isReviewBook {
                     kv.addReviewedSet(reviewed: state.fromBook)

@@ -40,6 +40,7 @@
 		064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4532AC39BA600288749 /* ButtonStyle.swift */; };
 		064BA4562AC3A50D00288749 /* AddUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4552AC3A50D00288749 /* AddUnit.swift */; };
 		064BA4582AC3B93C00288749 /* EditUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4572AC3B93C00288749 /* EditUnit.swift */; };
+		06581A9D2ACBF351007914A3 /* Inputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06581A9C2ACBF351007914A3 /* Inputs.swift */; };
 		067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840F529C595EF0019ABA8 /* PasteBoardService.swift */; };
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068D4CFC28B2189300F44F6E /* WordMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* WordMoveView.swift */; };
@@ -71,7 +72,7 @@
 		06CEF2652866F1CB00A620CC /* JWordsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2642866F1CB00A620CC /* JWordsUITestsLaunchTests.swift */; };
 		06CEF2782866F32700A620CC /* JWordsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */; };
 		06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */; };
-		06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* CoreDataClient.swift */; };
+		06E917542A07168F002289B4 /* StudySetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* StudySetClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
 		5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A002C2428E2CB260037D139 /* MockTodayService.swift */; };
 		5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5C468728D98894000E212B /* Calendar+Extension.swift */; };
@@ -189,6 +190,7 @@
 		064BA4532AC39BA600288749 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		064BA4552AC3A50D00288749 /* AddUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUnit.swift; sourceTree = "<group>"; };
 		064BA4572AC3B93C00288749 /* EditUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnit.swift; sourceTree = "<group>"; };
+		06581A9C2ACBF351007914A3 /* Inputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inputs.swift; sourceTree = "<group>"; };
 		067840F529C595EF0019ABA8 /* PasteBoardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardService.swift; sourceTree = "<group>"; };
 		0688A1D329B3345E0057B2DB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* WordMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMoveView.swift; sourceTree = "<group>"; };
@@ -226,7 +228,7 @@
 		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
 		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
-		06E917532A07168F002289B4 /* CoreDataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataClient.swift; sourceTree = "<group>"; };
+		06E917532A07168F002289B4 /* StudySetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
 		5A002C2428E2CB260037D139 /* MockTodayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTodayService.swift; sourceTree = "<group>"; };
 		5A5C468728D98894000E212B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
@@ -604,7 +606,7 @@
 			isa = PBXGroup;
 			children = (
 				5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */,
-				06E917532A07168F002289B4 /* CoreDataClient.swift */,
+				06E917532A07168F002289B4 /* StudySetClient.swift */,
 				5A9135802A08DAD400FCA8A5 /* UserDefaultClient.swift */,
 				5A8614D72A1C627300000653 /* CKImageUploader.swift */,
 				5AA9097A2A83237A0075AFB9 /* KVStorageClient.swift */,
@@ -753,6 +755,7 @@
 				06C992EF2ACABF000062F9FB /* StudyState.swift */,
 				06C992F12ACABF4C0062F9FB /* InputImageType.swift */,
 				06C992F32ACAC0570062F9FB /* WordBookSchedule.swift */,
+				06581A9C2ACBF351007914A3 /* Inputs.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -978,10 +981,11 @@
 				064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */,
 				06004E392AC5488D00947F5D /* DeleteList.swift in Sources */,
 				06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */,
-				06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */,
+				06E917542A07168F002289B4 /* StudySetClient.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
 				064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */,
+				06581A9D2ACBF351007914A3 /* Inputs.swift in Sources */,
 				5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */,
 				06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */,
 				06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */,

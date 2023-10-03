@@ -68,8 +68,7 @@ class CoreDataService {
     func updateSet(_ set: StudySet,
                    title: String,
                    isAutoSchedule: Bool,
-                   preferredFrontType: FrontType,
-                   closed: Bool) throws -> StudySet {
+                   preferredFrontType: FrontType) throws -> StudySet {
         guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
@@ -78,7 +77,6 @@ class CoreDataService {
         mo.title = title
         mo.isAutoSchedule = isAutoSchedule
         mo.preferredFrontType = Int16(preferredFrontType.rawValue)
-        mo.closed = closed
         
         do {
             try context.save()
