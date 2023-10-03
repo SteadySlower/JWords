@@ -29,7 +29,7 @@ struct InputUnit: ReducerProtocol {
         case alreadyExist(StudyUnit?)
     }
     
-    private let cd = CoreDataClient.shared
+    private let cd = CoreDataService.shared
     
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()

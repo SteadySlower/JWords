@@ -10,7 +10,7 @@ import CoreData
 
 class CoreDataService {
     
-    static let shared = CoreDataClient()
+    static let shared = CoreDataService()
     private let context: NSManagedObjectContext
     private let iu = CKImageUploader.shared
     

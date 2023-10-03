@@ -39,7 +39,7 @@ struct SelectStudySet: ReducerProtocol {
         }
     }
     
-    private let cd = CoreDataClient.shared
+    private let cd = CoreDataService.shared
     
     enum Action: Equatable {
         case onAppear

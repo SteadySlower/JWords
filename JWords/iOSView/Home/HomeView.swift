@@ -42,7 +42,7 @@ struct HomeList: ReducerProtocol {
         case inputBook(InputBook.Action)
     }
     
-    let cd = CoreDataClient.shared
+    let cd = CoreDataService.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

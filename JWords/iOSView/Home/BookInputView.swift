@@ -49,7 +49,7 @@ struct InputBook: ReducerProtocol {
         case setEdited(StudySet)
     }
     
-    private let cd = CoreDataClient.shared
+    private let cd = CoreDataService.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

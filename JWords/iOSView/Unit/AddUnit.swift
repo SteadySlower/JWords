@@ -57,7 +57,7 @@ struct AddUnit: ReducerProtocol {
         case alertDismissed
     }
     
-    private let cd = CoreDataClient.shared
+    private let cd = CoreDataService.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

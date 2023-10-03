@@ -35,7 +35,7 @@ struct MoveWords: ReducerProtocol {
     }
     
     let kv = KVStorageClient.shared
-    let cd = CoreDataClient.shared
+    let cd = CoreDataService.shared
     
     enum Action: Equatable {
         case onAppear
