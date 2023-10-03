@@ -54,7 +54,8 @@ struct TodayList: ReducerProtocol {
     }
     
     @Dependency(\.scheduleClient) var scheduleClient
-    let cd = CoreDataService.shared
+    @Dependency(\.studySetClient) var setClient
+    @Dependency(\.studyUnitClient) var unitClient
     
     enum Action: Equatable {
         case onAppear
@@ -93,7 +94,7 @@ struct TodayList: ReducerProtocol {
                 if state.todayStatus == .empty {
                     state.clear()
                     state.isLoading = true
-                    let sets = try! cd.fetchSets()
+                    let sets = try! setClient.fetch(false)
                     scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
                     state.isLoading = false
@@ -103,7 +104,7 @@ struct TodayList: ReducerProtocol {
                     return .none
                 }
             case .homeCellTapped(let set):
-                let units = try! cd.fetchUnits(of: set)
+                let units = try! unitClient.fetch(set)
                 state.studyBook = StudyBook.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
@@ -146,10 +147,10 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: scheduleClient.fetch())
+        let todayBooks = TodayBooks(books: try! setClient.fetch(false), schedule: scheduleClient.fetch())
         state.addTodayBooks(todayBooks: todayBooks)
         let todayWords = todayBooks.study
-            .map { try! cd.fetchUnits(of: $0) }
+            .map { try! unitClient.fetch($0) }
             .reduce([], +)
         state.onlyFailWords = todayWords
                     .filter { $0.studyState != .success }
