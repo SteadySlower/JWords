@@ -40,8 +40,6 @@ struct iOSApp: ReducerProtocol {
         case onAppear
     }
     
-    let cd = CoreDataService.shared
-    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
