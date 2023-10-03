@@ -19,7 +19,7 @@ struct DeleteWords: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case word(id: DeleteWord.State.ID, action: DeleteWord.Action)
+        case word(DeleteWord.State.ID, DeleteWord.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -28,7 +28,7 @@ struct DeleteWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\.words, action: /Action.word(id:action:)) {
+        .forEach(\.words, action: /Action.word) {
             DeleteWord()
         }
     }
@@ -41,7 +41,9 @@ struct DeleteList: View {
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(
-              self.store.scope(state: \.words, action: DeleteWords.Action.word(id:action:))
+              store.scope(
+                state: \.words,
+                action: DeleteWords.Action.word)
             ) {
                 DeleteCell(store: $0)
             }
