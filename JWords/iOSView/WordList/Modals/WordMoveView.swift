@@ -41,7 +41,7 @@ struct MoveWords: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case updateSelection(String?)
-        case updateWillCloseBook(willClose: Bool)
+        case updateWillCloseBook(Bool)
         case closeButtonTapped
         case cancelButtonTapped
         case onMoved
@@ -115,7 +115,7 @@ struct WordMoveView: View {
                     Toggle("현재 단어장 마감",
                         isOn: vs.binding(
                             get: \.willCloseBook,
-                            send: MoveWords.Action.updateWillCloseBook(willClose:))
+                            send: MoveWords.Action.updateWillCloseBook)
                     )
                     .tint(.black)
                 }
