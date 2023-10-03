@@ -35,28 +35,29 @@ struct HomeList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case homeCellTapped(StudySet)
-        case setInputBookModal(isPresent: Bool)
+        case setInputBookModal(Bool)
         case showStudyView(Bool)
         case updateIncludeClosed(Bool)
         case studyBook(StudyBook.Action)
         case inputBook(InputBook.Action)
     }
     
-    let cd = CoreDataService.shared
+    @Dependency(\.studySetClient) var setClient
+    @Dependency(\.studyUnitClient) var unitClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
                 state.clear()
-                state.wordBooks = try! cd.fetchSets(includeClosed: state.includeClosed)
+                state.wordBooks = try! setClient.fetch(state.includeClosed)
                 return .none
             case .setInputBookModal(let isPresent):
                 state.inputBook = isPresent ? InputBook.State() : nil
                 return .none
-            case let .homeCellTapped(wordBook):
-                let units = try! cd.fetchUnits(of: wordBook)
-                state.studyBook = StudyBook.State(set: wordBook, units: units)
+            case let .homeCellTapped(set):
+                let units = try! unitClient.fetch(set)
+                state.studyBook = StudyBook.State(set: set, units: units)
                 return .none
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
@@ -71,7 +72,7 @@ struct HomeList: ReducerProtocol {
             case .inputBook(let action):
                 switch action {
                 case .setAdded:
-                    state.wordBooks = try! cd.fetchSets()
+                    state.wordBooks = try! setClient.fetch(state.includeClosed)
                     state.inputBook = nil
                     return .none
                 case .cancelButtonTapped:
@@ -145,7 +146,7 @@ struct HomeView: View {
             .onAppear { vs.send(.onAppear) }
             .sheet(isPresented: vs.binding(
                 get: \.showBookInputModal,
-                send: HomeList.Action.setInputBookModal(isPresent:))
+                send: HomeList.Action.setInputBookModal)
             ) {
                 IfLetStore(store.scope(state: \.inputBook,
                                             action: HomeList.Action.inputBook)
@@ -156,7 +157,7 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
-                        vs.send(.setInputBookModal(isPresent: true))
+                        vs.send(.setInputBookModal(true))
                     } label: {
                         Image(systemName: "folder.badge.plus")
                             .resizable()
