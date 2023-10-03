@@ -8,6 +8,10 @@
 import ComposableArchitecture
 import SwiftUI
 
+enum UnitInputField {
+    case kanji, meaning
+}
+
 struct InputUnit: ReducerProtocol {
 
     struct State: Equatable {

@@ -8,6 +8,10 @@
 import Foundation
 import CoreData
 
+enum StudyState: Int {
+    case undefined = 0, success, fail
+}
+
 enum UnitType: Int, CaseIterable {
     case word, kanji, sentence
     
