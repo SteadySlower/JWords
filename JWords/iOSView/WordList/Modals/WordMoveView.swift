@@ -34,7 +34,7 @@ struct MoveWords: ReducerProtocol {
         }
     }
     
-    let kv = KVStorageClient.shared
+    @Dependency(\.scheduleClient) var scheduleClient
     @Dependency(\.studySetClient) var setClient
     @Dependency(\.studyUnitClient) var unitClient
     
@@ -70,7 +70,7 @@ struct MoveWords: ReducerProtocol {
                     try! setClient.close(state.fromBook)
                 }
                 if state.isReviewBook {
-                    kv.addReviewedSet(reviewed: state.fromBook)
+                    scheduleClient.reviewed(state.fromBook)
                 }
                 state.isLoading = false
                 return .task { .onMoved }

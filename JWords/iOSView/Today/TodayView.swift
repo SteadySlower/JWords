@@ -53,7 +53,7 @@ struct TodayList: ReducerProtocol {
         
     }
     
-    let kv = KVStorageClient.shared
+    @Dependency(\.scheduleClient) var scheduleClient
     let cd = CoreDataService.shared
     
     enum Action: Equatable {
@@ -84,7 +84,7 @@ struct TodayList: ReducerProtocol {
             case .setSelectionModal(let isPresent):
                 if !isPresent {
                     guard let newSchedule = state.todaySelection?.newSchedule else { return .none }
-                    kv.updateSchedule(todaySchedule: newSchedule)
+                    scheduleClient.update(newSchedule)
                     state.todaySelection = nil
                     return .task { .onAppear }
                 }
@@ -94,7 +94,7 @@ struct TodayList: ReducerProtocol {
                     state.clear()
                     state.isLoading = true
                     let sets = try! cd.fetchSets()
-                    kv.autoSetSchedule(sets: sets)
+                    scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
                     state.isLoading = false
                     return .none
@@ -114,7 +114,7 @@ struct TodayList: ReducerProtocol {
             case .clearScheduleButtonTapped:
                 state.clear()
                 state.isLoading = true
-                kv.updateSchedule(todaySchedule: .empty)
+                scheduleClient.update(.empty)
                 fetchSchedule(&state)
                 state.isLoading = false
                 return .task  { .onAppear }
@@ -146,7 +146,7 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: kv.fetchSchedule())
+        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: scheduleClient.fetch())
         state.addTodayBooks(todayBooks: todayBooks)
         let todayWords = todayBooks.study
             .map { try! cd.fetchUnits(of: $0) }

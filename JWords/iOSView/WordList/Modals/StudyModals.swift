@@ -83,8 +83,6 @@ struct ShowModalsInList: ReducerProtocol {
         case unitsMoved
     }
     
-    private let kv: KVStorageClient = .shared
-    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {

@@ -63,7 +63,6 @@ struct TodaySelection: ReducerProtocol {
         }
     }
     
-    let kv = KVStorageClient.shared
     let cd = CoreDataService.shared
     
     enum Action: Equatable {        
