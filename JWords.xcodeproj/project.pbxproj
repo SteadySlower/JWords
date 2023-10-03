@@ -70,6 +70,7 @@
 		06CEF2632866F1CB00A620CC /* JWordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2622866F1CB00A620CC /* JWordsUITests.swift */; };
 		06CEF2652866F1CB00A620CC /* JWordsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2642866F1CB00A620CC /* JWordsUITestsLaunchTests.swift */; };
 		06CEF2782866F32700A620CC /* JWordsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */; };
+		06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */; };
 		06E917542A07168F002289B4 /* CoreDataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* CoreDataClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
 		5A002C2528E2CB260037D139 /* MockTodayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A002C2428E2CB260037D139 /* MockTodayService.swift */; };
@@ -224,6 +225,7 @@
 		06CEF2752866F32700A620CC /* JWordsAcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWordsAcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
 		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		06E917532A07168F002289B4 /* CoreDataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
 		5A002C2428E2CB260037D139 /* MockTodayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTodayService.swift; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 			isa = PBXGroup;
 			children = (
 				067840F529C595EF0019ABA8 /* PasteBoardService.swift */,
+				06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -986,6 +989,7 @@
 				06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */,
 				5AAF1E062AAABEA700709CAE /* RectangleButton.swift in Sources */,
 				06C992F42ACAC0570062F9FB /* WordBookSchedule.swift in Sources */,
+				06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */,
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
