@@ -35,7 +35,8 @@ struct MoveWords: ReducerProtocol {
     }
     
     let kv = KVStorageClient.shared
-    let cd = CoreDataService.shared
+    @Dependency(\.studySetClient) var setClient
+    @Dependency(\.studyUnitClient) var unitClient
     
     enum Action: Equatable {
         case onAppear
@@ -51,7 +52,7 @@ struct MoveWords: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.isLoading = true
-                state.wordBooks = try! cd.fetchSets().filter { $0.id != state.fromBook.id }
+                state.wordBooks = try! setClient.fetch(false).filter { $0.id != state.fromBook.id }
                 state.isLoading = false
                 return .none
             case .updateSelection(let id):
@@ -63,13 +64,10 @@ struct MoveWords: ReducerProtocol {
             case .closeButtonTapped:
                 state.isLoading = true
                 if let toBook = state.selectedWordBook {
-                    try! cd.moveUnits(units: state.toMoveWords,
-                                      from: state.fromBook,
-                                      to: toBook)
+                    try! unitClient.move(state.toMoveWords, state.fromBook, toBook)
                 }
                 if state.willCloseBook {
-                    let toClose = state.fromBook
-                    try! cd.closeSet(toClose)
+                    try! setClient.close(state.fromBook)
                 }
                 if state.isReviewBook {
                     kv.addReviewedSet(reviewed: state.fromBook)
