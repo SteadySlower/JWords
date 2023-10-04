@@ -1,5 +1,5 @@
 //
-//  TodayBooks.swift
+//  TodaySchedule.swift
 //  JWords
 //
 //  Created by Jong Won Moon on 2022/10/25.
