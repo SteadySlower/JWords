@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct InputSetTitle: View {
+    
+    let title: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(title)
+            .font(.system(size: Constants.Size.SET_INPUT_FONT))
+            .bold()
+            .leadingAlignment()
     }
 }
 
 #Preview {
-    InputSetTitle()
+    InputSetTitle(title: "단어장 이름")
 }
