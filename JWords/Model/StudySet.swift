@@ -29,7 +29,7 @@ enum FrontType: Int, Equatable, Hashable, CaseIterable {
     }
 }
 
-enum WordBookSchedule: Equatable, CaseIterable {
+enum SetSchedule: Equatable, CaseIterable {
     case none, study, review
 }
 
@@ -68,7 +68,7 @@ struct StudySet: Equatable, Identifiable {
         return Calendar.current.getDateGap(from: self.createdAt, to: Date())
     }
     
-    var schedule: WordBookSchedule {
+    var schedule: SetSchedule {
         let dayFromToday = self.dayFromToday
         let reviewInterval = [3, 7, 14, 28]
         
