@@ -13,7 +13,7 @@ struct HomeList: ReducerProtocol {
     struct State: Equatable {
         var wordBooks:[StudySet] = []
         var studyBook: StudyBook.State?
-        var inputBook: InputBook.State?
+        var addSet: AddSet.State?
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
@@ -22,13 +22,13 @@ struct HomeList: ReducerProtocol {
         }
         
         var showBookInputModal: Bool {
-            inputBook != nil
+            addSet != nil
         }
         
         mutating func clear() {
             wordBooks = []
             studyBook = nil
-            inputBook = nil
+            addSet = nil
         }
     }
     
@@ -39,7 +39,7 @@ struct HomeList: ReducerProtocol {
         case showStudyView(Bool)
         case updateIncludeClosed(Bool)
         case studyBook(StudyBook.Action)
-        case inputBook(InputBook.Action)
+        case addSet(AddSet.Action)
     }
     
     @Dependency(\.studySetClient) var setClient
@@ -53,7 +53,7 @@ struct HomeList: ReducerProtocol {
                 state.wordBooks = try! setClient.fetch(state.includeClosed)
                 return .none
             case .setInputBookModal(let isPresent):
-                state.inputBook = isPresent ? InputBook.State() : nil
+                state.addSet = isPresent ? AddSet.State() : nil
                 return .none
             case let .homeCellTapped(set):
                 let units = try! unitClient.fetch(set)
@@ -69,14 +69,14 @@ struct HomeList: ReducerProtocol {
                     return .none
                 default: return .none
                 }
-            case .inputBook(let action):
+            case .addSet(let action):
                 switch action {
-                case .setAdded:
+                case .added:
                     state.wordBooks = try! setClient.fetch(state.includeClosed)
-                    state.inputBook = nil
+                    state.addSet = nil
                     return .none
-                case .cancelButtonTapped:
-                    state.inputBook = nil
+                case .cancel:
+                    state.addSet = nil
                     return .none
                 default:
                     return .none
@@ -88,8 +88,8 @@ struct HomeList: ReducerProtocol {
         .ifLet(\.studyBook, action: /Action.studyBook) {
             StudyBook()
         }
-        .ifLet(\.inputBook, action: /Action.inputBook) {
-            InputBook()
+        .ifLet(\.addSet, action: /Action.addSet) {
+            AddSet()
         }
     }
 
@@ -148,10 +148,10 @@ struct HomeView: View {
                 get: \.showBookInputModal,
                 send: HomeList.Action.setInputBookModal)
             ) {
-                IfLetStore(store.scope(state: \.inputBook,
-                                            action: HomeList.Action.inputBook)
+                IfLetStore(store.scope(state: \.addSet,
+                                            action: HomeList.Action.addSet)
                 ) {
-                    WordBookAddModal(store: $0)
+                    AddSetView(store: $0)
                 }
             }
             .toolbar {

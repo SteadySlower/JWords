@@ -17,7 +17,7 @@ extension View {
 struct ShowModalsInList: ReducerProtocol {
     
     struct State: Equatable {
-        var editSet: InputBook.State?
+        var editSet: EditSet.State?
         var addUnit: AddUnit.State?
         var editUnit: EditUnit.State?
         var moveUnits: MoveWords.State?
@@ -47,7 +47,7 @@ struct ShowModalsInList: ReducerProtocol {
         
         mutating func setEditSetModal(_ set: StudySet) {
             clear()
-            editSet = InputBook.State(set: set)
+            editSet = EditSet.State(set)
         }
         
         mutating func setAddUnitModal(_ set: StudySet) {
@@ -72,7 +72,7 @@ struct ShowModalsInList: ReducerProtocol {
         case showEditUnitModal(Bool)
         case showMoveUnitsModal(Bool)
         
-        case editSet(InputBook.Action)
+        case editSet(EditSet.Action)
         case addUnit(AddUnit.Action)
         case editUnit(EditUnit.Action)
         case moveUnits(MoveWords.Action)
@@ -100,10 +100,10 @@ struct ShowModalsInList: ReducerProtocol {
                 return .none
             case .editSet(let action):
                 switch action {
-                case .setEdited(let set):
+                case .edited(let set):
                     state.editSet = nil
                     return .task { .setEdited(set) }
-                case .cancelButtonTapped:
+                case .cancel:
                     state.editSet = nil
                     return .none
                 default: return .none
@@ -145,7 +145,7 @@ struct ShowModalsInList: ReducerProtocol {
             \.editSet,
              action: /Action.editSet
         ) {
-            InputBook()
+            EditSet()
         }
         .ifLet(
             \.addUnit,
@@ -184,7 +184,7 @@ struct ListModals: ViewModifier {
                         state: \.editSet,
                         action: ShowModalsInList.Action.editSet)
                     ) {
-                        WordBookAddModal(store: $0)
+                        EditSetView(store: $0)
                     }
                 }
                 .sheet(isPresented: vs.binding(
