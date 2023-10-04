@@ -91,7 +91,6 @@
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
 		5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */; };
-		5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7D079E29F8CC090022D0D7 /* BookInputView.swift */; };
 		5A8614D82A1C627300000653 /* CKImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8614D72A1C627300000653 /* CKImageService.swift */; };
 		5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C02A11BBB40027B408 /* KanjiList.swift */; };
 		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
@@ -238,7 +237,6 @@
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
 		5A7C6FD829FB6D1700DD84A4 /* PasteBoardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardClient.swift; sourceTree = "<group>"; };
-		5A7D079E29F8CC090022D0D7 /* BookInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInputView.swift; sourceTree = "<group>"; };
 		5A8614D72A1C627300000653 /* CKImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKImageService.swift; sourceTree = "<group>"; };
 		5A8843C02A11BBB40027B408 /* KanjiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiList.swift; sourceTree = "<group>"; };
 		5A8843C22A11BBDF0027B408 /* Kanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanji.swift; sourceTree = "<group>"; };
@@ -606,7 +604,6 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC1F286942FE00AC156C /* HomeView.swift */,
-				5A7D079E29F8CC090022D0D7 /* BookInputView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -958,7 +955,6 @@
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */,
 				5AAF1DFE2AA9664B00709CAE /* CameraScanner.swift in Sources */,
-				5A7D079F29F8CC090022D0D7 /* BookInputView.swift in Sources */,
 				064BA4462AC256E400288749 /* KanjiInput.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
