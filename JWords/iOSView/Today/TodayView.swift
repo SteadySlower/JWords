@@ -53,16 +53,17 @@ struct TodayList: ReducerProtocol {
         
     }
     
-    let kv = KVStorageClient.shared
-    let cd = CoreDataClient.shared
+    @Dependency(\.scheduleClient) var scheduleClient
+    @Dependency(\.studySetClient) var setClient
+    @Dependency(\.studyUnitClient) var unitClient
     
     enum Action: Equatable {
         case onAppear
         case onDisappear
         case studyBook(StudyBook.Action)
         case studyUnits(StudyUnits.Action)
-        case todaySelection(action: TodaySelection.Action)
-        case setSelectionModal(isPresent: Bool)
+        case todaySelection(TodaySelection.Action)
+        case setSelectionModal(Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudyBookView(Bool)
@@ -84,7 +85,7 @@ struct TodayList: ReducerProtocol {
             case .setSelectionModal(let isPresent):
                 if !isPresent {
                     guard let newSchedule = state.todaySelection?.newSchedule else { return .none }
-                    kv.updateSchedule(todaySchedule: newSchedule)
+                    scheduleClient.update(newSchedule)
                     state.todaySelection = nil
                     return .task { .onAppear }
                 }
@@ -93,8 +94,8 @@ struct TodayList: ReducerProtocol {
                 if state.todayStatus == .empty {
                     state.clear()
                     state.isLoading = true
-                    let sets = try! cd.fetchSets()
-                    kv.autoSetSchedule(sets: sets)
+                    let sets = try! setClient.fetch(false)
+                    scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
                     state.isLoading = false
                     return .none
@@ -103,7 +104,7 @@ struct TodayList: ReducerProtocol {
                     return .none
                 }
             case .homeCellTapped(let set):
-                let units = try! cd.fetchUnits(of: set)
+                let units = try! unitClient.fetch(set)
                 state.studyBook = StudyBook.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
@@ -114,7 +115,7 @@ struct TodayList: ReducerProtocol {
             case .clearScheduleButtonTapped:
                 state.clear()
                 state.isLoading = true
-                kv.updateSchedule(todaySchedule: .empty)
+                scheduleClient.update(.empty)
                 fetchSchedule(&state)
                 state.isLoading = false
                 return .task  { .onAppear }
@@ -138,7 +139,7 @@ struct TodayList: ReducerProtocol {
         .ifLet(\.studyUnits, action: /Action.studyUnits) {
             StudyUnits()
         }
-        .ifLet(\.todaySelection, action: /Action.todaySelection(action:)) {
+        .ifLet(\.todaySelection, action: /Action.todaySelection) {
             TodaySelection()
         }
     }
@@ -146,10 +147,10 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodayBooks(books: try! cd.fetchSets(), schedule: kv.fetchSchedule())
+        let todayBooks = TodayBooks(books: try! setClient.fetch(false), schedule: scheduleClient.fetch())
         state.addTodayBooks(todayBooks: todayBooks)
         let todayWords = todayBooks.study
-            .map { try! cd.fetchUnits(of: $0) }
+            .map { try! unitClient.fetch($0) }
             .reduce([], +)
         state.onlyFailWords = todayWords
                     .filter { $0.studyState != .success }
@@ -239,9 +240,12 @@ struct TodayView: View {
             .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,
-                send: TodayList.Action.setSelectionModal(isPresent:))
+                send: TodayList.Action.setSelectionModal)
             ) {
-                IfLetStore(self.store.scope(state: \.todaySelection, action: TodayList.Action.todaySelection(action:))) {
+                IfLetStore(store.scope(
+                    state: \.todaySelection,
+                    action: TodayList.Action.todaySelection)
+                ) {
                     TodaySelectionModal(store: $0)
                 }
             }

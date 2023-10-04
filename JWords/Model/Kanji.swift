@@ -42,3 +42,13 @@ struct Kanji: Equatable {
     }
     
 }
+
+extension Array where Element == Kanji {
+    static var mock: [Kanji] {
+        var result = [Kanji]()
+        for i in 0..<10 {
+            result.append(Kanji(index: i))
+        }
+        return result
+    }
+}

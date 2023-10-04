@@ -34,13 +34,14 @@ struct MoveWords: ReducerProtocol {
         }
     }
     
-    let kv = KVStorageClient.shared
-    let cd = CoreDataClient.shared
+    @Dependency(\.scheduleClient) var scheduleClient
+    @Dependency(\.studySetClient) var setClient
+    @Dependency(\.studyUnitClient) var unitClient
     
     enum Action: Equatable {
         case onAppear
         case updateSelection(String?)
-        case updateWillCloseBook(willClose: Bool)
+        case updateWillCloseBook(Bool)
         case closeButtonTapped
         case cancelButtonTapped
         case onMoved
@@ -51,7 +52,7 @@ struct MoveWords: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.isLoading = true
-                state.wordBooks = try! cd.fetchSets().filter { $0.id != state.fromBook.id }
+                state.wordBooks = try! setClient.fetch(false).filter { $0.id != state.fromBook.id }
                 state.isLoading = false
                 return .none
             case .updateSelection(let id):
@@ -63,20 +64,13 @@ struct MoveWords: ReducerProtocol {
             case .closeButtonTapped:
                 state.isLoading = true
                 if let toBook = state.selectedWordBook {
-                    try! cd.moveUnits(state.toMoveWords,
-                                      from: state.fromBook,
-                                      to: toBook)
+                    try! unitClient.move(state.toMoveWords, state.fromBook, toBook)
                 }
                 if state.willCloseBook {
-                    let toClose = state.fromBook
-                    _ = try! cd.updateSet(toClose,
-                                          title: toClose.title,
-                                          isAutoSchedule: toClose.isAutoSchedule,
-                                          preferredFrontType: toClose.preferredFrontType,
-                                          closed: true)
+                    try! setClient.close(state.fromBook)
                 }
                 if state.isReviewBook {
-                    kv.addReviewedSet(reviewed: state.fromBook)
+                    scheduleClient.reviewed(state.fromBook)
                 }
                 state.isLoading = false
                 return .task { .onMoved }
@@ -121,7 +115,7 @@ struct WordMoveView: View {
                     Toggle("현재 단어장 마감",
                         isOn: vs.binding(
                             get: \.willCloseBook,
-                            send: MoveWords.Action.updateWillCloseBook(willClose:))
+                            send: MoveWords.Action.updateWillCloseBook)
                     )
                     .tint(.black)
                 }

@@ -40,8 +40,6 @@ struct StudyUnits: ReducerProtocol {
         case dismiss
     }
     
-    private let kv: KVStorageClient = .shared
-    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {

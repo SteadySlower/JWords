@@ -21,9 +21,6 @@ struct AddUnitWithOCR: ReducerProtocol {
         case addUnit(AddUnit.Action)
     }
     
-    @Dependency(\.pasteBoardClient) var pasteBoardClient
-    
-    
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
@@ -39,7 +36,6 @@ struct AddUnitWithOCR: ReducerProtocol {
                     return .none
                 default: return .none
                 }
-                return .none
             case .selectSet(let action):
                 switch action {
                 case .idUpdated:
@@ -59,7 +55,6 @@ struct AddUnitWithOCR: ReducerProtocol {
                     return .none
                 default: return .none
                 }
-            default: return .none
             }
         }
         Scope(state: \.ocr, action: /Action.ocr) {

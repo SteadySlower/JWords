@@ -25,7 +25,7 @@ struct KanjiInput: ReducerProtocol {
         case editHuriText(EditHuriganaText.Action)
     }
     
-    private let cd = CoreDataClient.shared
+    private let cd = CoreDataService.shared
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

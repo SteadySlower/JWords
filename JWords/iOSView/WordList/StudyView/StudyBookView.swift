@@ -42,7 +42,7 @@ struct StudyBook: ReducerProtocol {
         case dismiss
     }
     
-    private let kv: KVStorageClient = .shared
+    @Dependency(\.scheduleClient) var scheduleClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -63,7 +63,7 @@ struct StudyBook: ReducerProtocol {
                     if let selected = state.lists.selectedUnits {
                         state.modals.setMoveUnitModal(from: state.set, isReview: false, toMove: selected)
                     } else {
-                        let isReviewBook = kv.fetchSchedule().reviewIDs.contains(where: { $0 == state.set.id })
+                        let isReviewBook = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
                         state.modals.setMoveUnitModal(from: state.set, isReview: isReviewBook, toMove: state.lists.notSucceededUnits)
                     }
                     return .none

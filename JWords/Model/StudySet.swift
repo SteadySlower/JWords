@@ -8,6 +8,31 @@
 import Foundation
 import CoreData
 
+enum FrontType: Int, Equatable, Hashable, CaseIterable {
+    case kanji
+    case meaning
+    
+    var pickerText: String {
+        switch self {
+        case .meaning:
+            return "한"
+        case .kanji:
+            return "漢"
+        }
+    }
+    
+    var preferredTypeText: String {
+        switch self {
+        case .meaning: return "뜻 앞면"
+        case .kanji: return "일본어 앞면"
+        }
+    }
+}
+
+enum WordBookSchedule: Equatable, CaseIterable {
+    case none, study, review
+}
+
 struct StudySet: Equatable, Identifiable {
     
     let id: String
@@ -56,4 +81,14 @@ struct StudySet: Equatable, Identifiable {
         }
     }
     
+}
+
+extension Array where Element == StudySet {
+    static var mock: [StudySet] {
+        var result = [StudySet]()
+        for i in 0..<10 {
+            result.append(StudySet(index: i))
+        }
+        return result
+    }
 }

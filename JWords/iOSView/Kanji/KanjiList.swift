@@ -32,7 +32,7 @@ struct KanjiList: ReducerProtocol {
         case showStudyView(Bool)
     }
     
-    let cd = CoreDataClient.shared
+    @Dependency(\.kanjiClient) var kanjiClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -41,12 +41,12 @@ struct KanjiList: ReducerProtocol {
                 return .task { .fetchKanjis }
             case .fetchKanjis:
                 let last = state.kanjis.last
-                let fetched = try! cd.fetchAllKanjis(after: last)
+                let fetched = try! kanjiClient.fetch(last)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
                 state.kanjis.append(contentsOf: fetched)
                 return .none
             case .kanjiCellTapped(let kanji):
-                let units = try! cd.fetchSampleUnit(ofKanji: kanji)
+                let units = try! kanjiClient.kanjiUnits(kanji)
                 state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
                 return .none
             case .showStudyView(let isPresent):

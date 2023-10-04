@@ -24,7 +24,7 @@ struct OCR: ReducerProtocol {
         case japaneseOCR(String)
     }
     
-    private let ocrClient: OCRClient = .shared
+    @Dependency(\.ocrClient) var ocrClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -36,12 +36,12 @@ struct OCR: ReducerProtocol {
                     return .merge(
                         .task {
                             await .koreanOcrResponse(TaskResult {
-                                try await OCRClient.shared.ocr(from: image, lang: .korean)
+                                try await ocrClient.ocr(image, .korean)
                             })
                         },
                         .task {
                             await .japaneseOcrResponse(TaskResult {
-                                try await OCRClient.shared.ocr(from: image, lang: .japanese)
+                                try await ocrClient.ocr(image, .japanese)
                             })
                         }
                     )

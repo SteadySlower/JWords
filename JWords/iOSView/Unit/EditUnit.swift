@@ -24,7 +24,7 @@ struct EditUnit: ReducerProtocol {
             inputUnit.meaningInput.text = unit.meaningText
         }
         
-        var kanjitext: String {
+        var kanjiText: String {
             inputUnit.kanjiInput.hurigana.hurigana
         }
         
@@ -54,7 +54,7 @@ struct EditUnit: ReducerProtocol {
         case alertDismissed
     }
     
-    private let cd = CoreDataClient.shared
+    @Dependency(\.studyUnitClient) var unitClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -70,11 +70,11 @@ struct EditUnit: ReducerProtocol {
                 default: return .none
                 }
             case .edit:
-                let unit = try! cd.editUnit(
-                    of: state.unit,
+                let input = StudyUnitInput(
                     type: .word,
-                    kanjiText: state.kanjitext,
+                    kanjiText: state.kanjiText,
                     meaningText: state.meaningText)
+                let unit = try! unitClient.edit(state.unit, input)
                 return .task { .edited(unit) }
             case .alertDismissed:
                 state.alert = nil

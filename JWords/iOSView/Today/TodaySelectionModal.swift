@@ -63,8 +63,7 @@ struct TodaySelection: ReducerProtocol {
         }
     }
     
-    let kv = KVStorageClient.shared
-    let cd = CoreDataClient.shared
+    @Dependency(\.studySetClient) var setClient
     
     enum Action: Equatable {        
         case onAppear
@@ -76,7 +75,7 @@ struct TodaySelection: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                let books = try! cd.fetchSets()
+                let books = try! setClient.fetch(false)
                 state.wordBooks = sortWordBooksBySchedule(books, schedule: state.schedules)
                 return .none
             case let .studyButtonTapped(book):

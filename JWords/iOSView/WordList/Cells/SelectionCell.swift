@@ -49,7 +49,6 @@ struct SelectionCell: View {
     private let selectedColor: Color = Color.blue.opacity(0.2)
     private let unselectedColor: Color = Color.gray.opacity(0.2)
     
-    // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             BaseCell(unit: vs.unit,

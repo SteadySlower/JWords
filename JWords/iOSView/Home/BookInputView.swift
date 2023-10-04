@@ -49,7 +49,7 @@ struct InputBook: ReducerProtocol {
         case setEdited(StudySet)
     }
     
-    private let cd = CoreDataClient.shared
+    @Dependency(\.studySetClient) var setClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -71,19 +71,17 @@ struct InputBook: ReducerProtocol {
                     return .task { .showErrorAlert(.emptyTitle) }
                 }
                 state.isLoading = true
+                let input = StudySetInput(
+                    title: state.title,
+                    isAutoSchedule: true,
+                    preferredFrontType: state.preferredFrontType)
                 if let set = state.set {
-                    let edited = try! cd.updateSet(set,
-                                                   title: state.title,
-                                                   isAutoSchedule: true,
-                                                   preferredFrontType: state.preferredFrontType,
-                                                   closed: set.closed)
+                    let edited = try! setClient.update(set, input)
                     state.isLoading = false
                     return .task { .setEdited(edited) }
                 } else {
-                    try! cd.insertSet(title: state.title,
-                                      isAutoSchedule: true,
-                                      preferredFrontType: state.preferredFrontType)
                     state.isLoading = false
+                    try! setClient.insert(input)
                     return .task { .setAdded }
                 }
             case .setAdded:
