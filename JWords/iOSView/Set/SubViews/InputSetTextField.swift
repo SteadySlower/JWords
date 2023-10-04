@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct InputSetTextField: View {
+    
+    let placeHolder: String
+    let text: Binding<String>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TextField(placeHolder, text: text)
+            .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
+            .font(.system(size: Constants.Size.SET_INPUT_FONT))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .defaultRectangleBackground()
     }
 }
 
 #Preview {
-    InputSetTextField()
+    @State var text: String = ""
+    return InputSetTextField(
+        placeHolder: "단어장 이름",
+        text: $text
+    )
 }
