@@ -1,5 +1,5 @@
 //
-//  StudyWords.swift
+//  UnitsList.swift
 //  JWords
 //
 //  Created by JW Moon on 2023/09/28.
@@ -8,10 +8,10 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyWords: ReducerProtocol {
+struct UnitsList: ReducerProtocol {
     struct State: Equatable {
-        var _units: IdentifiedArrayOf<StudyWord.State>
-        var units: IdentifiedArrayOf<StudyWord.State> {
+        var _units: IdentifiedArrayOf<StudyOneUnit.State>
+        var units: IdentifiedArrayOf<StudyOneUnit.State> {
             switch filter {
             case .all:
                 return _units
@@ -26,7 +26,7 @@ struct StudyWords: ReducerProtocol {
         init(units: [StudyUnit], frontType: FrontType, isLocked: Bool) {
             self._units = IdentifiedArray(
                 uniqueElements: units.map {
-                    StudyWord.State(unit: $0,
+                    StudyOneUnit.State(unit: $0,
                                     frontType: frontType,
                                     isLocked: isLocked)
                 }
@@ -43,7 +43,7 @@ struct StudyWords: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case word(StudyWord.State.ID, StudyWord.Action)
+        case unit(StudyOneUnit.State.ID, StudyOneUnit.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -52,8 +52,8 @@ struct StudyWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\._units, action: /Action.word) {
-            StudyWord()
+        .forEach(\._units, action: /Action.unit) {
+            StudyOneUnit()
         }
     }
     
@@ -61,13 +61,13 @@ struct StudyWords: ReducerProtocol {
 
 struct StudyList: View {
     
-    let store: StoreOf<StudyWords>
+    let store: StoreOf<UnitsList>
     
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(store.scope(
                 state: \.units,
-                action: StudyWords.Action.word)
+                action: UnitsList.Action.unit)
             ) {
                 StudyCell(store: $0)
             }
@@ -78,11 +78,11 @@ struct StudyList: View {
 
 #Preview {
     StudyList(store: Store(
-        initialState: StudyWords.State(
+        initialState: UnitsList.State(
             units: .mock,
             frontType: .kanji,
             isLocked: false
         ),
-        reducer: StudyWords())
+        reducer: UnitsList())
     )
 }

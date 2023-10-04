@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct EditWord: ReducerProtocol {
+struct ToEditUnit: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -41,9 +41,8 @@ struct EditWord: ReducerProtocol {
 
 struct EditCell: View {
     
-    let store: StoreOf<EditWord>
+    let store: StoreOf<ToEditUnit>
     
-    // MARK: Body
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             BaseCell(unit: vs.unit,

@@ -1,5 +1,5 @@
 //
-//  TodayBooks.swift
+//  TodaySchedule.swift
 //  JWords
 //
 //  Created by Jong Won Moon on 2022/10/25.
@@ -24,18 +24,18 @@ struct TodaySchedule: Equatable {
 
 }
 
-struct TodayBooks: Equatable {
+struct TodaySets: Equatable {
     
     let study: [StudySet]
     let review: [StudySet]
     let reviewed: [StudySet]
     
-    init(books: [StudySet], schedule: TodaySchedule) {
-        self.study = books.filter { schedule.studyIDs.contains($0.id) }
-        self.review = books.filter {
+    init(sets: [StudySet], schedule: TodaySchedule) {
+        self.study = sets.filter { schedule.studyIDs.contains($0.id) }
+        self.review = sets.filter {
             schedule.reviewIDs.contains($0.id) && !schedule.reviewedIDs.contains($0.id)
         }
-        self.reviewed = books.filter {
+        self.reviewed = sets.filter {
             schedule.reviewIDs.contains($0.id) && schedule.reviewedIDs.contains($0.id)
         }
     }

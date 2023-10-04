@@ -32,13 +32,13 @@ struct SwitchBetweenList: ReducerProtocol {
         private var frontType: FrontType
         private var isLocked: Bool
         
-        var study: StudyWords.State
-        var edit: EditWords.State?
-        var select: SelectWords.State?
-        var delete: DeleteWords.State?
+        var study: UnitsList.State
+        var edit: EditUnits.State?
+        var select: SelectUnits.State?
+        var delete: DeleteUnits.State?
         
         var selectedUnits: [StudyUnit]? {
-            select?.words.filter({ $0.isSelected }).map { $0.unit }
+            select?.units.filter({ $0.isSelected }).map { $0.unit }
         }
         
         var notSucceededUnits: [StudyUnit] {
@@ -49,7 +49,7 @@ struct SwitchBetweenList: ReducerProtocol {
             self.type = .study
             self.frontType = frontType
             self.isLocked = isLocked
-            self.study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
+            self.study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
         }
         
         private mutating func clear() {
@@ -62,7 +62,7 @@ struct SwitchBetweenList: ReducerProtocol {
         private mutating func setIsLocked(_ isLocked: Bool) {
             self.isLocked = isLocked
             let units = study._units.map { $0.unit }
-            study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
+            study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
         }
         
         mutating func shuffle() {
@@ -74,7 +74,7 @@ struct SwitchBetweenList: ReducerProtocol {
             clear()
             self.frontType = frontType
             let units = study._units.map { $0.unit }
-            study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
+            study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
         }
         
         mutating func setFilter(_ filter: UnitFilter) {
@@ -93,13 +93,13 @@ struct SwitchBetweenList: ReducerProtocol {
             let units = study.units.map { $0.unit }
             switch type {
             case .study:
-                study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
+                study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
             case .edit:
-                edit = EditWords.State(words: units, frontType: frontType)
+                edit = EditUnits.State(units: units, frontType: frontType)
             case .select:
-                select = SelectWords.State(words: units, frontType: frontType)
+                select = SelectUnits.State(units: units, frontType: frontType)
             case .delete:
-                delete = DeleteWords.State(words: units, frontType: frontType)
+                delete = DeleteUnits.State(units: units, frontType: frontType)
             }
         }
         
@@ -109,22 +109,22 @@ struct SwitchBetweenList: ReducerProtocol {
             if !units.contains(unit) {
                 units.append(unit)
             }
-            study = StudyWords.State(units: units, frontType: frontType, isLocked: isLocked)
+            study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
         }
         
         mutating func updateUnit(_ unit: StudyUnit) {
             clear()
             guard let index = study._units.index(id: unit.id) else { return }
-            let newState = StudyWord.State(unit: unit, frontType: frontType)
+            let newState = StudyOneUnit.State(unit: unit, frontType: frontType)
             study._units.update(newState, at: index)
         }
     }
     
     enum Action: Equatable {
-        case study(StudyWords.Action)
-        case edit(EditWords.Action)
-        case select(SelectWords.Action)
-        case delete(DeleteWords.Action)
+        case study(UnitsList.Action)
+        case edit(EditUnits.Action)
+        case select(SelectUnits.Action)
+        case delete(DeleteUnits.Action)
         
         case toEditUnitSelected(StudyUnit)
     }
@@ -142,16 +142,16 @@ struct SwitchBetweenList: ReducerProtocol {
             }
         }
         .ifLet(\.edit, action: /Action.edit) {
-            EditWords()
+            EditUnits()
         }
         .ifLet(\.select, action: /Action.select) {
-            SelectWords()
+            SelectUnits()
         }
         .ifLet(\.delete, action: /Action.delete) {
-            DeleteWords()
+            DeleteUnits()
         }
         Scope(state: \.study, action: /Action.study) {
-            StudyWords()
+            UnitsList()
         }
     }
 }

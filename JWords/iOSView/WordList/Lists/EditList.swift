@@ -8,25 +8,25 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct EditWords: ReducerProtocol {
+struct EditUnits: ReducerProtocol {
     struct State: Equatable {
-        var words: IdentifiedArrayOf<EditWord.State>
+        var units: IdentifiedArrayOf<ToEditUnit.State>
         
-        init(words: [StudyUnit], frontType: FrontType) {
-            self.words = IdentifiedArray(uniqueElements: words.map { EditWord.State(unit: $0, frontType: frontType) })
+        init(units: [StudyUnit], frontType: FrontType) {
+            self.units = IdentifiedArray(uniqueElements: units.map { ToEditUnit.State(unit: $0, frontType: frontType) })
         }
         
     }
     
     enum Action: Equatable {
-        case word(EditWord.State.ID, EditWord.Action)
+        case unit(ToEditUnit.State.ID, ToEditUnit.Action)
         case toEditUnitSelected(StudyUnit)
     }
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .word(_, let action):
+            case .unit(_, let action):
                 switch action {
                 case .cellTapped(let unit):
                     return .task { .toEditUnitSelected(unit) }
@@ -34,20 +34,20 @@ struct EditWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\.words, action: /Action.word) {
-            EditWord()
+        .forEach(\.units, action: /Action.unit) {
+            ToEditUnit()
         }
     }
 }
 
 struct EditList: View {
     
-    let store: StoreOf<EditWords>
+    let store: StoreOf<EditUnits>
     
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(
-              self.store.scope(state: \.words, action: EditWords.Action.word)
+              store.scope(state: \.units, action: EditUnits.Action.unit)
             ) {
                 EditCell(store: $0)
             }
@@ -58,7 +58,10 @@ struct EditList: View {
 
 #Preview {
     EditList(store: Store(
-        initialState: EditWords.State(words: .mock, frontType: .kanji),
-        reducer: EditWords())
+        initialState: EditUnits.State(
+            units: .mock,
+            frontType: .kanji
+        ),
+        reducer: EditUnits()._printChanges())
     )
 }

@@ -20,7 +20,7 @@ struct ShowModalsInList: ReducerProtocol {
         var editSet: EditSet.State?
         var addUnit: AddUnit.State?
         var editUnit: EditUnit.State?
-        var moveUnits: MoveWords.State?
+        var moveUnits: MoveUnits.State?
         
         var showEditSetModal: Bool {
             editSet != nil
@@ -62,7 +62,7 @@ struct ShowModalsInList: ReducerProtocol {
         
         mutating func setMoveUnitModal(from set: StudySet, isReview: Bool, toMove units: [StudyUnit]) {
             clear()
-            moveUnits = MoveWords.State(fromBook: set, isReviewBook: isReview, toMoveWords: units)
+            moveUnits = MoveUnits.State(fromSet: set, isReviewSet: isReview, toMoveUnits: units)
         }
     }
     
@@ -75,7 +75,7 @@ struct ShowModalsInList: ReducerProtocol {
         case editSet(EditSet.Action)
         case addUnit(AddUnit.Action)
         case editUnit(EditUnit.Action)
-        case moveUnits(MoveWords.Action)
+        case moveUnits(MoveUnits.Action)
         
         case setEdited(StudySet)
         case unitAdded(StudyUnit)
@@ -163,7 +163,7 @@ struct ShowModalsInList: ReducerProtocol {
             \.moveUnits,
              action: /Action.moveUnits
         ) {
-            MoveWords()
+            MoveUnits()
         }
     }
 
@@ -221,7 +221,7 @@ struct ListModals: ViewModifier {
                         state: \.moveUnits,
                         action: ShowModalsInList.Action.moveUnits)
                     ) {
-                        WordMoveView(store: $0)
+                        UnitMoveView(store: $0)
                     }
                 }
         }

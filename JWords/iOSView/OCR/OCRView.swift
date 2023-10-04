@@ -12,12 +12,12 @@ struct OCR: ReducerProtocol {
     
     struct State: Equatable {
         var getImage = GetImageForOCR.State()
-        var ocr: GetWordsFromOCR.State?
+        var ocr: GetTextsFromOCR.State?
     }
     
     enum Action: Equatable {
         case getImage(GetImageForOCR.Action)
-        case ocr(GetWordsFromOCR.Action)
+        case ocr(GetTextsFromOCR.Action)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case koreanOCR(String)
@@ -32,7 +32,7 @@ struct OCR: ReducerProtocol {
             case .getImage(let action):
                 switch action {
                 case .imageFetched(let image):
-                    state.ocr = GetWordsFromOCR.State(image: image)
+                    state.ocr = GetTextsFromOCR.State(image: image)
                     return .merge(
                         .task {
                             await .koreanOcrResponse(TaskResult {
@@ -70,7 +70,7 @@ struct OCR: ReducerProtocol {
             }
         }
         .ifLet(\.ocr, action: /Action.ocr) {
-            GetWordsFromOCR()
+            GetTextsFromOCR()
         }
         Scope(state: \.getImage, action: /Action.getImage) {
             GetImageForOCR()

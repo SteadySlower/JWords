@@ -1,5 +1,5 @@
 //
-//  StudyBookView.swift
+//  StudySetView.swift
 //  JWords
 //
 //  Created by JW Moon on 2023/09/28.
@@ -8,13 +8,13 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyBook: ReducerProtocol {
+struct StudyUnitsInSet: ReducerProtocol {
     struct State: Equatable {
         var set: StudySet
         var lists: SwitchBetweenList.State
         var setting: StudySetting.State
         var modals = ShowModalsInList.State()
-        var tools = StudyTools.State(activeButtons: [.book, .shuffle, .setting])
+        var tools = StudyTools.State(activeButtons: [.set, .shuffle, .setting])
         
         var showSideBar = false
         
@@ -59,12 +59,12 @@ struct StudyBook: ReducerProtocol {
                 return .none
             case .tools(let action):
                 switch action {
-                case .book:
+                case .set:
                     if let selected = state.lists.selectedUnits {
                         state.modals.setMoveUnitModal(from: state.set, isReview: false, toMove: selected)
                     } else {
-                        let isReviewBook = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
-                        state.modals.setMoveUnitModal(from: state.set, isReview: isReviewBook, toMove: state.lists.notSucceededUnits)
+                        let isReviewSet = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
+                        state.modals.setMoveUnitModal(from: state.set, isReview: isReviewSet, toMove: state.lists.notSucceededUnits)
                     }
                     return .none
                 case .shuffle:
@@ -92,9 +92,9 @@ struct StudyBook: ReducerProtocol {
                 }
             case .setting(let action):
                 switch action {
-                case .wordBookEditButtonTapped:
+                case .setEditButtonTapped:
                     state.modals.setEditSetModal(state.set)
-                case .wordAddButtonTapped:
+                case .unitAddButtonTapped:
                     state.modals.setAddUnitModal(state.set)
                 case .setFilter(let filter):
                     state.lists.setFilter(filter)
@@ -131,28 +131,28 @@ struct StudyBook: ReducerProtocol {
     }
 }
 
-struct StudyBookView: View {
+struct StudySetView: View {
     
-    let store: StoreOf<StudyBook>
+    let store: StoreOf<StudyUnitsInSet>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyBook.Action.lists)
+                action: StudyUnitsInSet.Action.lists)
             )
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
-                send: StudyBook.Action.showSideBar)
+                send: StudyUnitsInSet.Action.showSideBar)
             ) {
                 SettingSideBar(store: store.scope(
                     state: \.setting,
-                    action: StudyBook.Action.setting)
+                    action: StudyUnitsInSet.Action.setting)
                 )
             }
             .withListModals(store: store.scope(
                 state: \.modals,
-                action: StudyBook.Action.modals)
+                action: StudyUnitsInSet.Action.modals)
             )
             .navigationTitle(vs.set.title)
             #if os(iOS)
@@ -160,7 +160,7 @@ struct StudyBookView: View {
                 ToolbarItem {
                     StudyToolBarButtons(store: store.scope(
                         state: \.tools,
-                        action: StudyBook.Action.tools)
+                        action: StudyUnitsInSet.Action.tools)
                     )
                 }
             }
@@ -171,11 +171,11 @@ struct StudyBookView: View {
 
 #Preview {
     NavigationView {
-        StudyBookView(store: Store(
-            initialState: StudyBook.State(
+        StudySetView(store: Store(
+            initialState: StudyUnitsInSet.State(
                 set: .init(index: 0),
                 units: .mock),
-            reducer: StudyBook()._printChanges())
+            reducer: StudyUnitsInSet()._printChanges())
         )
     }
 }

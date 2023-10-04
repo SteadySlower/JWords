@@ -11,11 +11,11 @@ import SwiftUI
 struct StudyTools: ReducerProtocol {
     
     enum ToolButton: Hashable {
-        case book, shuffle, setting
+        case set, shuffle, setting
         
         var imageName: String {
             switch self {
-            case .book:
+            case .set:
                 return "book.closed"
             case .shuffle:
                 return "shuffle"
@@ -26,8 +26,8 @@ struct StudyTools: ReducerProtocol {
         
         var action: StudyTools.Action {
             switch self {
-            case .book:
-                return .book
+            case .set:
+                return .set
             case .shuffle:
                 return .shuffle
             case .setting:
@@ -41,7 +41,7 @@ struct StudyTools: ReducerProtocol {
     }
     
     enum Action: Equatable {
-        case book
+        case set
         case shuffle
         case setting
     }

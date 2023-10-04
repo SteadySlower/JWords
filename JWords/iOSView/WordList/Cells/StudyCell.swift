@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct StudyWord: ReducerProtocol {
+struct StudyOneUnit: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
         var unit: StudyUnit
@@ -46,16 +46,6 @@ struct StudyWord: ReducerProtocol {
                 guard unit.type != .kanji else { return false }
                 return HuriganaConverter.shared.extractKanjis(from: unit.kanjiText).count == 0 ? false : true
             }()
-        }
-        
-        // initializer for kanji sample
-        init(sample: StudyUnit) {
-            self.id = sample.id
-            self.unit = sample
-            self.isLocked = true
-            self.frontType = .kanji
-            self.showKanjiButton = true
-            self.isFront = false
         }
 
     }
@@ -105,9 +95,9 @@ struct StudyWord: ReducerProtocol {
 
 struct StudyCell: View {
     
-    typealias VS = ViewStore<StudyWord.State, StudyWord.Action>
+    typealias VS = ViewStore<StudyOneUnit.State, StudyOneUnit.Action>
     
-    let store: StoreOf<StudyWord>
+    let store: StoreOf<StudyOneUnit>
     
     @GestureState private var dragAmount = CGSize.zero
     
@@ -204,14 +194,14 @@ struct StudyCell_Previews: PreviewProvider {
     static var previews: some View {
         StudyCell(
             store: Store(
-                initialState: StudyWord.State(unit: .init(index: 0), frontType: .meaning),
-                reducer: StudyWord()._printChanges()
+                initialState: StudyOneUnit.State(unit: .init(index: 0), frontType: .meaning),
+                reducer: StudyOneUnit()._printChanges()
             )
         )
         StudyCell(
             store: Store(
-                initialState: StudyWord.State(unit: .init(index: 0), frontType: .kanji, isLocked: true),
-                reducer: StudyWord()._printChanges()
+                initialState: StudyOneUnit.State(unit: .init(index: 0), frontType: .kanji, isLocked: true),
+                reducer: StudyOneUnit()._printChanges()
             )
         )
         .previewDisplayName("Locked")

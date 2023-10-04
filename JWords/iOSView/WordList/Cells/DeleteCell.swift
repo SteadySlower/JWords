@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct DeleteWord: ReducerProtocol {
+struct DeleteUnit: ReducerProtocol {
     
     struct State: Equatable, Identifiable {
         let id: String
@@ -34,7 +34,7 @@ struct DeleteWord: ReducerProtocol {
 
 struct DeleteCell: View {
     
-    let store: StoreOf<DeleteWord>
+    let store: StoreOf<DeleteUnit>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in

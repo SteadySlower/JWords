@@ -31,13 +31,10 @@ struct iOSApp: ReducerProtocol {
     
     enum Action: Equatable {
         case tabChanged(Tab)
-        case todayList(action: TodayList.Action)
-        case homeList(action: HomeList.Action)
-        case kanjiList(action: KanjiList.Action)
-        case ocr(action: AddUnitWithOCR.Action)
-        
-        // method to reset DB when updated
-        case onAppear
+        case todayList(TodayList.Action)
+        case homeList(HomeList.Action)
+        case kanjiList(KanjiList.Action)
+        case ocr(AddUnitWithOCR.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -57,22 +54,20 @@ struct iOSApp: ReducerProtocol {
                     state.ocr = AddUnitWithOCR.State()
                 }
                 return .none
-            case .onAppear:
-                return .none
             default:
                 return .none
             }
         }
-        .ifLet(\.todayList, action: /Action.todayList(action:)) {
+        .ifLet(\.todayList, action: /Action.todayList) {
             TodayList()
         }
-        .ifLet(\.homeList, action: /Action.homeList(action:)) {
+        .ifLet(\.homeList, action: /Action.homeList) {
             HomeList()
         }
-        .ifLet(\.kanjiList, action: /Action.kanjiList(action:)) {
+        .ifLet(\.kanjiList, action: /Action.kanjiList) {
             KanjiList()
         }
-        .ifLet(\.ocr, action: /Action.ocr(action:)) {
+        .ifLet(\.ocr, action: /Action.ocr) {
             AddUnitWithOCR()
         }
     }
@@ -89,9 +84,9 @@ struct iOSAppView: View {
                 vs.binding(get: \.selectedTab, send: iOSApp.Action.tabChanged)
             ) {
                 NavigationView {
-                    IfLetStore(self.store.scope(
+                    IfLetStore(store.scope(
                         state: \.todayList,
-                        action: iOSApp.Action.todayList(action:))
+                        action: iOSApp.Action.todayList)
                     ) {
                         TodayView(store: $0)
                     }
@@ -102,9 +97,9 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    IfLetStore(self.store.scope(
+                    IfLetStore(store.scope(
                         state: \.homeList,
-                        action: iOSApp.Action.homeList(action:))
+                        action: iOSApp.Action.homeList)
                     ) {
                         HomeView(store: $0)
                     }
@@ -115,9 +110,9 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    IfLetStore(self.store.scope(
+                    IfLetStore(store.scope(
                         state: \.kanjiList,
-                        action: iOSApp.Action.kanjiList(action:))
+                        action: iOSApp.Action.kanjiList)
                     ) {
                         KanjiListView(store: $0)
                     }
@@ -138,9 +133,9 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    IfLetStore(self.store.scope(
+                    IfLetStore(store.scope(
                         state: \.ocr,
-                        action: iOSApp.Action.ocr(action:))
+                        action: iOSApp.Action.ocr)
                     ) {
                         OCRAddUnitView(store: $0)
                     }
@@ -152,19 +147,20 @@ struct iOSAppView: View {
                 .tag(Tab.ocr)
             }
             .tint(.black)
-            .onAppear {
-                vs.send(.onAppear)
-                // navigation 들어갔다가 나올 때 탭바 투명 방지
-                #if os(iOS)
-                let tabBarAppearance = UITabBarAppearance()
-                tabBarAppearance.configureWithOpaqueBackground()
-                UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-                let navigationBarAppearance = UINavigationBarAppearance()
-                navigationBarAppearance.configureWithOpaqueBackground()
-                UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
-                #endif
-            }
+            .onAppear { setTabBar() }
         }
+    }
+    
+    private func setTabBar() {
+        // navigation 들어갔다가 나올 때 탭바 투명 방지
+        #if os(iOS)
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.configureWithOpaqueBackground()
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+        #endif
     }
 }
 

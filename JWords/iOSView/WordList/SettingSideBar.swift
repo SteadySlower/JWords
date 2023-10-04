@@ -44,8 +44,8 @@ struct StudySetting: ReducerProtocol {
         case setFilter(UnitFilter)
         case setFrontType(FrontType)
         case setListType(ListType)
-        case wordBookEditButtonTapped
-        case wordAddButtonTapped
+        case setEditButtonTapped
+        case unitAddButtonTapped
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -60,9 +60,9 @@ struct StudySetting: ReducerProtocol {
             case .setListType(let type):
                 state.listType = type
                 return .none
-            case .wordBookEditButtonTapped:
+            case .setEditButtonTapped:
                 return .none
-            case .wordAddButtonTapped:
+            case .unitAddButtonTapped:
                 return .none
             }
         }
@@ -82,12 +82,12 @@ struct SettingSideBar: View {
                             image: Image(systemName: "rectangle.and.pencil.and.ellipsis"),
                             title: "단어장 수정",
                             isVertical: false
-                        ) { vs.send(.wordBookEditButtonTapped) }
+                        ) { vs.send(.setEditButtonTapped) }
                         RectangleButton(
                             image: Image(systemName: "plus"),
                             title: "단어추가",
                             isVertical: false
-                        ) { vs.send(.wordAddButtonTapped) }
+                        ) { vs.send(.unitAddButtonTapped) }
                     }
                     .padding()
                 }

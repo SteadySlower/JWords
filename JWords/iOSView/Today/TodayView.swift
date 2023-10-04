@@ -10,18 +10,18 @@ import ComposableArchitecture
 
 struct TodayList: ReducerProtocol {
     struct State: Equatable {
-        var studyWordBooks: [StudySet] = []
-        var reviewWordBooks: [StudySet] = []
-        var reviewedWordBooks: [StudySet] = []
-        var onlyFailWords: [StudyUnit] = []
+        var studySets: [StudySet] = []
+        var reviewSets: [StudySet] = []
+        var reviewedSets: [StudySet] = []
+        var onlyFailUnits: [StudyUnit] = []
         var todayStatus: TodayStatus?
-        var studyBook: StudyBook.State?
+        var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
         var isLoading: Bool = false
         
-        var showStudyBookView: Bool {
-            studyBook != nil
+        var showStudySetView: Bool {
+            studyUnitsInSet != nil
         }
         
         var showStudyUnitsView: Bool {
@@ -35,20 +35,20 @@ struct TodayList: ReducerProtocol {
         var showTutorial: Bool = false
         
         fileprivate mutating func clear() {
-            studyWordBooks = []
-            reviewWordBooks = []
-            onlyFailWords = []
+            studySets = []
+            reviewSets = []
+            onlyFailUnits = []
             todayStatus = nil
-            studyBook = nil
+            studyUnitsInSet = nil
             studyUnits = nil
             todaySelection = nil
             showTutorial = false
         }
         
-        fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
-            studyWordBooks = todayBooks.study
-            reviewWordBooks = todayBooks.review.filter { !reviewedWordBooks.contains($0) }
-            reviewedWordBooks = todayBooks.reviewed
+        fileprivate mutating func addTodaySets(todaySets: TodaySets) {
+            studySets = todaySets.study
+            reviewedSets = todaySets.reviewed
+            reviewSets = todaySets.review.filter { !reviewedSets.contains($0) }
         }
         
     }
@@ -60,13 +60,13 @@ struct TodayList: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case onDisappear
-        case studyBook(StudyBook.Action)
+        case studyUnitsInSet(StudyUnitsInSet.Action)
         case studyUnits(StudyUnits.Action)
         case todaySelection(TodaySelection.Action)
         case setSelectionModal(Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
-        case showStudyBookView(Bool)
+        case showStudySetView(Bool)
         case showStudyUnitsView(Bool)
         case showTutorial(Bool)
         case todayStatusTapped
@@ -100,17 +100,18 @@ struct TodayList: ReducerProtocol {
                     state.isLoading = false
                     return .none
                 } else {
-                    state.studyUnits = StudyUnits.State(units: state.onlyFailWords)
+                    state.studyUnits = StudyUnits.State(units: state.onlyFailUnits)
                     return .none
                 }
             case .homeCellTapped(let set):
                 let units = try! unitClient.fetch(set)
-                state.studyBook = StudyBook.State(set: set, units: units)
+                state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
                 state.todayStatus = nil
-                state.todaySelection = TodaySelection.State(todayBooks: state.studyWordBooks,
-                                                            reviewBooks: state.reviewWordBooks, reviewedBooks: state.reviewedWordBooks)
+                state.todaySelection = TodaySelection.State(todaySets: state.studySets,
+                                                            reviewSets: state.reviewSets,
+                                                            reviewedSets: state.reviewedSets)
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
@@ -122,10 +123,10 @@ struct TodayList: ReducerProtocol {
             case .showTutorial(let show):
                 state.showTutorial = show
                 return .none
-            case .studyBook(let action):
+            case .studyUnitsInSet(let action):
                 switch action {
                 case .dismiss:
-                    state.studyBook = nil
+                    state.studyUnitsInSet = nil
                     return .none
                 default: return .none
                 }
@@ -133,8 +134,8 @@ struct TodayList: ReducerProtocol {
                 return .none
             }
         }
-        .ifLet(\.studyBook, action: /Action.studyBook) {
-            StudyBook()
+        .ifLet(\.studyUnitsInSet, action: /Action.studyUnitsInSet) {
+            StudyUnitsInSet()
         }
         .ifLet(\.studyUnits, action: /Action.studyUnits) {
             StudyUnits()
@@ -147,19 +148,19 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodayBooks(books: try! setClient.fetch(false), schedule: scheduleClient.fetch())
-        state.addTodayBooks(todayBooks: todayBooks)
-        let todayWords = todayBooks.study
+        let todaySets = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
+        state.addTodaySets(todaySets: todaySets)
+        let todayWords = todaySets.study
             .map { try! unitClient.fetch($0) }
             .reduce([], +)
-        state.onlyFailWords = todayWords
+        state.onlyFailUnits = todayWords
                     .filter { $0.studyState != .success }
                     .removeOverlapping()
                     .sorted(by: { $0.createdAt < $1.createdAt })
         state.todayStatus = .init(
-            books: todayBooks.study.count,
+            sets: todaySets.study.count,
             total: todayWords.count,
-            wrong: state.onlyFailWords.count)
+            wrong: state.onlyFailUnits.count)
         state.isLoading = false
     }
 
@@ -185,9 +186,9 @@ struct TodayView: View {
                             statusLoadingView
                         }
                         VStack(spacing: 8) {
-                            ForEach(vs.studyWordBooks, id: \.id) { todayBook in
-                                HomeCell(studySet: todayBook) {
-                                    vs.send(.homeCellTapped(todayBook))
+                            ForEach(vs.studySets, id: \.id) { set in
+                                HomeCell(studySet: set) {
+                                    vs.send(.homeCellTapped(set))
                                 }
                             }
                         }
@@ -197,9 +198,9 @@ struct TodayView: View {
                             .font(.title)
                             .trailingAlignment()
                         VStack(spacing: 8) {
-                            ForEach(vs.reviewWordBooks, id: \.id) { reviewBook in
-                                HomeCell(studySet: reviewBook) {
-                                    vs.send(.homeCellTapped(reviewBook))
+                            ForEach(vs.reviewSets, id: \.id) { reviewSet in
+                                HomeCell(studySet: reviewSet) {
+                                    vs.send(.homeCellTapped(reviewSet))
                                 }
                             }
                         }
@@ -210,12 +211,12 @@ struct TodayView: View {
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
-                                state: \.studyBook,
-                                action: TodayList.Action.studyBook)
-                            ) { StudyBookView(store: $0) },
+                                state: \.studyUnitsInSet,
+                                action: TodayList.Action.studyUnitsInSet)
+                            ) { StudySetView(store: $0) },
                     isActive: vs.binding(
-                                get: \.showStudyBookView,
-                                send: TodayList.Action.showStudyBookView))
+                                get: \.showStudySetView,
+                                send: TodayList.Action.showStudySetView))
                 { EmptyView() }
                 NavigationLink(
                     destination: IfLetStore(
