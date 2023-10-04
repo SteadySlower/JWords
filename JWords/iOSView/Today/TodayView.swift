@@ -45,7 +45,7 @@ struct TodayList: ReducerProtocol {
             showTutorial = false
         }
         
-        fileprivate mutating func addTodayBooks(todayBooks: TodayBooks) {
+        fileprivate mutating func addTodayBooks(todayBooks: TodaySets) {
             studyWordBooks = todayBooks.study
             reviewWordBooks = todayBooks.review.filter { !reviewedWordBooks.contains($0) }
             reviewedWordBooks = todayBooks.reviewed
@@ -147,7 +147,7 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodayBooks(books: try! setClient.fetch(false), schedule: scheduleClient.fetch())
+        let todayBooks = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
         state.addTodayBooks(todayBooks: todayBooks)
         let todayWords = todayBooks.study
             .map { try! unitClient.fetch($0) }
