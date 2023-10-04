@@ -63,9 +63,9 @@ extension ScheduleClient: TestDependencyKey {
   )
 
   static let testValue = Self(
-    fetch: unimplemented("\(Self.self).fetch"),
-    autoSet: unimplemented("\(Self.self).autoSet"),
-    update: unimplemented("\(Self.self).update"),
-    reviewed: unimplemented("\(Self.self).reviewed")
+    fetch: { .empty },
+    autoSet: { _ in },
+    update: { _ in },
+    reviewed: { _ in }
   )
 }
