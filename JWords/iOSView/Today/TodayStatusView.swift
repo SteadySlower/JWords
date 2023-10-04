@@ -8,22 +8,22 @@
 import SwiftUI
 
 struct TodayStatus: Equatable {
-    let books: Int
+    let sets: Int
     let total: Int
     let wrong: Int
     
-    static let empty: Self = .init(books: 0, total: 0, wrong: 0)
+    static let empty: Self = .init(sets: 0, total: 0, wrong: 0)
 }
 
 struct TodayStatusView: View {
     
-    private let books: Int
+    private let sets: Int
     private let total: Int
     private let wrong: Int
     private let onTapped: () -> Void
     
     init(status: TodayStatus, onTapped: @escaping () -> Void) {
-        self.books = status.books
+        self.sets = status.sets
         self.total = status.total
         self.wrong = status.wrong
         self.onTapped = onTapped
@@ -33,7 +33,7 @@ struct TodayStatusView: View {
         Button {
             onTapped()
         } label: {
-            if books <= 0 {
+            if sets <= 0 {
                 emptyView
             } else {
                 statusView
@@ -65,7 +65,7 @@ struct TodayStatusView: View {
             PercentageChart(percentage: Float(wrong) / Float(total))
             Spacer()
             VStack(alignment: .trailing) {
-                Text("단어장 \(books)권의\n모든 단어 \(total)개 중에")
+                Text("단어장 \(sets)권의\n모든 단어 \(total)개 중에")
                     .font(.system(size: 15))
                     .multilineTextAlignment(.trailing)
                 Text("틀린 단어 \(wrong)개")
@@ -84,7 +84,7 @@ struct TodayStatusView_Previews: PreviewProvider {
     static var previews: some View {
         TodayStatusView(
             status: TodayStatus(
-                books: 3,
+                sets: 3,
                 total: 100,
                 wrong: 22)) { print("디버그: 모아보기 Tapped") }
         .frame(height: 100)
@@ -93,6 +93,6 @@ struct TodayStatusView_Previews: PreviewProvider {
             status: .empty) { print("자동 추가 Tapped") }
         .frame(height: 100)
         .padding(.horizontal, 20)
-        .previewDisplayName("No books")
+        .previewDisplayName("No sets")
     }
 }

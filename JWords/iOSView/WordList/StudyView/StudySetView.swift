@@ -14,7 +14,7 @@ struct StudyUnitsInSet: ReducerProtocol {
         var lists: SwitchBetweenList.State
         var setting: StudySetting.State
         var modals = ShowModalsInList.State()
-        var tools = StudyTools.State(activeButtons: [.book, .shuffle, .setting])
+        var tools = StudyTools.State(activeButtons: [.set, .shuffle, .setting])
         
         var showSideBar = false
         
@@ -59,12 +59,12 @@ struct StudyUnitsInSet: ReducerProtocol {
                 return .none
             case .tools(let action):
                 switch action {
-                case .book:
+                case .set:
                     if let selected = state.lists.selectedUnits {
                         state.modals.setMoveUnitModal(from: state.set, isReview: false, toMove: selected)
                     } else {
-                        let isReviewBook = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
-                        state.modals.setMoveUnitModal(from: state.set, isReview: isReviewBook, toMove: state.lists.notSucceededUnits)
+                        let isReviewSet = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
+                        state.modals.setMoveUnitModal(from: state.set, isReview: isReviewSet, toMove: state.lists.notSucceededUnits)
                     }
                     return .none
                 case .shuffle:
@@ -92,9 +92,9 @@ struct StudyUnitsInSet: ReducerProtocol {
                 }
             case .setting(let action):
                 switch action {
-                case .wordBookEditButtonTapped:
+                case .setEditButtonTapped:
                     state.modals.setEditSetModal(state.set)
-                case .wordAddButtonTapped:
+                case .unitAddButtonTapped:
                     state.modals.setAddUnitModal(state.set)
                 case .setFilter(let filter):
                     state.lists.setFilter(filter)

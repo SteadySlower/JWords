@@ -13,7 +13,7 @@ struct TodayList: ReducerProtocol {
         var studySets: [StudySet] = []
         var reviewSets: [StudySet] = []
         var reviewedSets: [StudySet] = []
-        var onlyFailWords: [StudyUnit] = []
+        var onlyFailUnits: [StudyUnit] = []
         var todayStatus: TodayStatus?
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
@@ -37,7 +37,7 @@ struct TodayList: ReducerProtocol {
         fileprivate mutating func clear() {
             studySets = []
             reviewSets = []
-            onlyFailWords = []
+            onlyFailUnits = []
             todayStatus = nil
             studyUnitsInSet = nil
             studyUnits = nil
@@ -45,10 +45,10 @@ struct TodayList: ReducerProtocol {
             showTutorial = false
         }
         
-        fileprivate mutating func addTodayBooks(todayBooks: TodaySets) {
-            studySets = todayBooks.study
-            reviewedSets = todayBooks.reviewed
-            reviewSets = todayBooks.review.filter { !reviewedSets.contains($0) }
+        fileprivate mutating func addTodaySets(todaySets: TodaySets) {
+            studySets = todaySets.study
+            reviewedSets = todaySets.reviewed
+            reviewSets = todaySets.review.filter { !reviewedSets.contains($0) }
         }
         
     }
@@ -100,7 +100,7 @@ struct TodayList: ReducerProtocol {
                     state.isLoading = false
                     return .none
                 } else {
-                    state.studyUnits = StudyUnits.State(units: state.onlyFailWords)
+                    state.studyUnits = StudyUnits.State(units: state.onlyFailUnits)
                     return .none
                 }
             case .homeCellTapped(let set):
@@ -148,19 +148,19 @@ struct TodayList: ReducerProtocol {
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.isLoading = true
         state.clear()
-        let todayBooks = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
-        state.addTodayBooks(todayBooks: todayBooks)
-        let todayWords = todayBooks.study
+        let todaySets = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
+        state.addTodaySets(todaySets: todaySets)
+        let todayWords = todaySets.study
             .map { try! unitClient.fetch($0) }
             .reduce([], +)
-        state.onlyFailWords = todayWords
+        state.onlyFailUnits = todayWords
                     .filter { $0.studyState != .success }
                     .removeOverlapping()
                     .sorted(by: { $0.createdAt < $1.createdAt })
         state.todayStatus = .init(
-            books: todayBooks.study.count,
+            sets: todaySets.study.count,
             total: todayWords.count,
-            wrong: state.onlyFailWords.count)
+            wrong: state.onlyFailUnits.count)
         state.isLoading = false
     }
 

@@ -22,11 +22,11 @@ struct TodaySelection: ReducerProtocol {
         
         init(todaySets: [StudySet], reviewSets: [StudySet], reviewedSets: [StudySet]) {
             var schedules = [String:Schedule]()
-            for book in todaySets {
-                schedules[book.id] = .study
+            for set in todaySets {
+                schedules[set.id] = .study
             }
-            for book in reviewSets {
-                schedules[book.id] = .review
+            for set in reviewSets {
+                schedules[set.id] = .review
             }
             self.schedules = schedules
             self.reviewedSets = reviewedSets
@@ -76,7 +76,7 @@ struct TodaySelection: ReducerProtocol {
             switch action {
             case .onAppear:
                 let sets = try! setClient.fetch(false)
-                state.sets = sortWordBooksBySchedule(sets, schedule: state.schedules)
+                state.sets = sortSetsBySchedule(sets, schedule: state.schedules)
                 return .none
             case let .studyButtonTapped(set):
                 state.toggleStudy(set.id)
@@ -88,10 +88,10 @@ struct TodaySelection: ReducerProtocol {
         }
     }
     
-    private func sortWordBooksBySchedule(_ wordBooks: [StudySet], schedule: [String:Schedule]) -> [StudySet] {
-        return wordBooks.sorted(by: { book1, book2 in
-            if schedule[book1.id, default: .none] != .none
-                && schedule[book2.id, default: .none] == .none {
+    private func sortSetsBySchedule(_ sets: [StudySet], schedule: [String:Schedule]) -> [StudySet] {
+        return sets.sorted(by: { set1, set2 in
+            if schedule[set1.id, default: .none] != .none
+                && schedule[set2.id, default: .none] == .none {
                 return true
             } else {
                 return false
@@ -115,7 +115,7 @@ struct TodaySelectionModal: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 8) {
                         ForEach(vs.sets, id: \.id) { set in
-                            bookCell(set,
+                            setCell(set,
                                      vs.schedules[set.id] ?? .none,
                                      { vs.send(.studyButtonTapped(set)) },
                                      { vs.send(.reviewButtonTapped(set)) })
@@ -135,7 +135,7 @@ struct TodaySelectionModal: View {
 
 extension TodaySelectionModal {
     
-    private func bookCell(_ set: StudySet,
+    private func setCell(_ set: StudySet,
                           _ schedule: Schedule,
                           _ studyButtonTapped: @escaping () -> Void,
                           _ reviewButtonTapped: @escaping () -> Void) -> some View {

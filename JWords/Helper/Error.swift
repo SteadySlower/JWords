@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 enum AppError: Error, Equatable {
     case generic(massage: String)
-    case noMatchingWord(id: String)
+    case noMatchingUnit(id: String)
     case coreData
     case cloudKit
     case ocr
