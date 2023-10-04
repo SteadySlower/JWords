@@ -31,6 +31,7 @@ enum Constants {
             #endif
         }
         static let UNIT_INPUT_FONT: CGFloat = 30
+        static let SET_INPUT_FONT: CGFloat = 20
         static let CELL_HORIZONTAL_PADDING: CGFloat = 15
     }
 }
