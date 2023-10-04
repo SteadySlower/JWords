@@ -92,14 +92,14 @@ extension StudyUnitClient: TestDependencyKey {
   )
 
   static let testValue = Self(
-    checkIfExist: unimplemented("\(Self.self).checkIfExist"),
-    insert: unimplemented("\(Self.self).insert"),
-    insertExisting: unimplemented("\(Self.self).insertExisting"),
-    edit: unimplemented("\(Self.self).edit"),
-    delete: unimplemented("\(Self.self).delete"),
-    studyState: unimplemented("\(Self.self).studyState"),
-    move: unimplemented("\(Self.self).move"),
-    fetch: unimplemented("\(Self.self).fetch")
+    checkIfExist: { _ in nil },
+    insert: { _, _ in .init(index: 0) },
+    insertExisting: { _, _ in .init(index: 0) },
+    edit: { _, _ in .init(index: 0) },
+    delete: { _, _ in },
+    studyState: { _, _ in },
+    move: { _, _, _ in  },
+    fetch: { _ in .mock }
   )
 }
 

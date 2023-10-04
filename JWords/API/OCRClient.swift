@@ -33,6 +33,6 @@ extension OCRClient: TestDependencyKey {
   )
 
   static let testValue = Self(
-    ocr: unimplemented("\(Self.self).ocr")
+    ocr: { _, _ in [] }
   )
 }
