@@ -53,6 +53,6 @@ struct TutorialPageView: View {
 
 struct TutorialPageView_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialPageView(.addWord)
+        TutorialPageView(.addSet)
     }
 }

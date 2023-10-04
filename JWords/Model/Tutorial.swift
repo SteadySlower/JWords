@@ -8,81 +8,81 @@
 import Foundation
 
 enum Tutorial: CaseIterable {
-    case addBook
-    case addWord
+    case addSet
+    case addUnit
     case schedule
     case studyView
-    case editWord
-    case moveWord
-    case deleteWord
+    case editUnit
+    case moveUnit
+    case deleteUnit
     case kanjiList
-    case scanWord
+    case scanUnit
     
     var title: String {
         switch self {
-        case .addBook:
+        case .addSet:
             return "단어장 추가하기"
-        case .addWord:
+        case .addUnit:
             return "단어 추가하기"
         case .schedule:
             return "복습 스케줄 만들기"
         case .studyView:
             return "단어 공부하기"
-        case .editWord:
+        case .editUnit:
             return "단어 수정하기"
-        case .moveWord:
+        case .moveUnit:
             return "단어 이동하기"
-        case .deleteWord:
+        case .deleteUnit:
             return "단어 삭제하기"
         case .kanjiList:
             return "한자 모아보기"
-        case .scanWord:
+        case .scanUnit:
             return "단어 스캔하기"
         }
     }
     
     var imageName: String {
         switch self {
-        case .addBook:
-            return "Add Book"
-        case .addWord:
-            return "Add Word"
+        case .addSet:
+            return "Add Set"
+        case .addUnit:
+            return "Add Unit"
         case .schedule:
             return "Schedule"
         case .studyView:
             return "Study View"
-        case .editWord:
-            return "Edit Word"
-        case .moveWord:
-            return "Move Word"
-        case .deleteWord:
-            return "Delete Word"
+        case .editUnit:
+            return "Edit Unit"
+        case .moveUnit:
+            return "Move Unit"
+        case .deleteUnit:
+            return "Delete Unit"
         case .kanjiList:
             return "Kanji List"
-        case .scanWord:
-            return "Scan Word"
+        case .scanUnit:
+            return "Scan Unit"
         }
     }
     
     var imageCount: Int {
         switch self {
-        case .addBook:
+        case .addSet:
             return 4
-        case .addWord:
+        case .addUnit:
             return 8
         case .schedule:
             return 8
         case .studyView:
             return 7
-        case .editWord:
+        case .editUnit:
             return 3
-        case .moveWord:
+        case .moveUnit:
             return 5
-        case .deleteWord:
+        case .deleteUnit:
             return 2
         case .kanjiList:
             return 2
-        case .scanWord:
+        case .scanUnit:
             return 3
         }
     }
