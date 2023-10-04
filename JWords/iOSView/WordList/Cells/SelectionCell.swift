@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct SelectionWord: ReducerProtocol {
+struct SelectUnit: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -44,7 +44,7 @@ struct SelectionWord: ReducerProtocol {
 
 struct SelectionCell: View {
     
-    let store: StoreOf<SelectionWord>
+    let store: StoreOf<SelectUnit>
     @State private var dashPhase: CGFloat = 0
     private let selectedColor: Color = Color.blue.opacity(0.2)
     private let unselectedColor: Color = Color.gray.opacity(0.2)
@@ -94,8 +94,8 @@ struct SelectionCell_Previews: PreviewProvider {
     static var previews: some View {
         SelectionCell(
             store: Store(
-                initialState: SelectionWord.State(unit: StudyUnit(index: 0)),
-                reducer: SelectionWord()._printChanges()
+                initialState: SelectUnit.State(unit: StudyUnit(index: 0)),
+                reducer: SelectUnit()._printChanges()
             )
         )
     }

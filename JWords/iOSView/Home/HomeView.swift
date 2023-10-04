@@ -11,34 +11,35 @@ import ComposableArchitecture
 
 struct HomeList: ReducerProtocol {
     struct State: Equatable {
-        var wordBooks:[StudySet] = []
-        var studyBook: StudyBook.State?
+        var sets: [StudySet] = []
+        var studyUnitsInSet: StudyUnitsInSet.State?
         var addSet: AddSet.State?
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-        var showStudyView: Bool {
-            studyBook != nil
+        var showStudySetView: Bool {
+            studyUnitsInSet != nil
         }
         
-        var showBookInputModal: Bool {
+        var showAddSetModal: Bool {
             addSet != nil
         }
         
         mutating func clear() {
-            wordBooks = []
-            studyBook = nil
+            sets = []
+            studyUnitsInSet = nil
             addSet = nil
+            includeClosed = false
         }
     }
     
     enum Action: Equatable {
         case onAppear
         case homeCellTapped(StudySet)
-        case setInputBookModal(Bool)
-        case showStudyView(Bool)
+        case setAddSetModal(Bool)
+        case showStudySetView(Bool)
         case updateIncludeClosed(Bool)
-        case studyBook(StudyBook.Action)
+        case studyUnitsInSet(StudyUnitsInSet.Action)
         case addSet(AddSet.Action)
     }
     
@@ -50,29 +51,29 @@ struct HomeList: ReducerProtocol {
             switch action {
             case .onAppear:
                 state.clear()
-                state.wordBooks = try! setClient.fetch(state.includeClosed)
+                state.sets = try! setClient.fetch(state.includeClosed)
                 return .none
-            case .setInputBookModal(let isPresent):
+            case .setAddSetModal(let isPresent):
                 state.addSet = isPresent ? AddSet.State() : nil
                 return .none
             case let .homeCellTapped(set):
                 let units = try! unitClient.fetch(set)
-                state.studyBook = StudyBook.State(set: set, units: units)
+                state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
                 return .none
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .task { .onAppear }
-            case .studyBook(let action):
+            case .studyUnitsInSet(let action):
                 switch action {
                 case .dismiss:
-                    state.studyBook = nil
+                    state.studyUnitsInSet = nil
                     return .none
                 default: return .none
                 }
             case .addSet(let action):
                 switch action {
                 case .added:
-                    state.wordBooks = try! setClient.fetch(state.includeClosed)
+                    state.sets = try! setClient.fetch(state.includeClosed)
                     state.addSet = nil
                     return .none
                 case .cancel:
@@ -85,8 +86,8 @@ struct HomeList: ReducerProtocol {
                 return .none
             }
         }
-        .ifLet(\.studyBook, action: /Action.studyBook) {
-            StudyBook()
+        .ifLet(\.studyUnitsInSet, action: /Action.studyUnitsInSet) {
+            StudyUnitsInSet()
         }
         .ifLet(\.addSet, action: /Action.addSet) {
             AddSet()
@@ -120,8 +121,8 @@ struct HomeView: View {
                             
                         }
                         .frame(height: 20)
-                        ForEach(vs.wordBooks, id: \.id) { wordBook in
-                            HomeCell(studySet: wordBook) { vs.send(.homeCellTapped(wordBook)) }
+                        ForEach(vs.sets, id: \.id) { set in
+                            HomeCell(studySet: set) { vs.send(.homeCellTapped(set)) }
                         }
                     }
                     .padding(.horizontal, 20)
@@ -129,12 +130,12 @@ struct HomeView: View {
                 NavigationLink(
                     destination: IfLetStore(
                             store.scope(
-                                state: \.studyBook,
-                                action: HomeList.Action.studyBook)
-                            ) { StudyBookView(store: $0) },
+                                state: \.studyUnitsInSet,
+                                action: HomeList.Action.studyUnitsInSet)
+                            ) { StudySetView(store: $0) },
                     isActive: vs.binding(
-                                get: \.showStudyView,
-                                send: HomeList.Action.showStudyView))
+                                get: \.showStudySetView,
+                                send: HomeList.Action.showStudySetView))
                 { EmptyView() }
             }
             .withBannerAD()
@@ -145,8 +146,8 @@ struct HomeView: View {
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .sheet(isPresented: vs.binding(
-                get: \.showBookInputModal,
-                send: HomeList.Action.setInputBookModal)
+                get: \.showAddSetModal,
+                send: HomeList.Action.setAddSetModal)
             ) {
                 IfLetStore(store.scope(state: \.addSet,
                                             action: HomeList.Action.addSet)
@@ -157,7 +158,7 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
-                        vs.send(.setInputBookModal(true))
+                        vs.send(.setAddSetModal(true))
                     } label: {
                         Image(systemName: "folder.badge.plus")
                             .resizable()

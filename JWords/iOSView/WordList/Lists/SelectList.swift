@@ -8,18 +8,18 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct SelectWords: ReducerProtocol {
+struct SelectUnits: ReducerProtocol {
     struct State: Equatable {
-        var words: IdentifiedArrayOf<SelectionWord.State>
+        var units: IdentifiedArrayOf<SelectUnit.State>
         
-        init(words: [StudyUnit], frontType: FrontType) {
-            self.words = IdentifiedArray(uniqueElements: words.map { SelectionWord.State(unit: $0, frontType: frontType) })
+        init(units: [StudyUnit], frontType: FrontType) {
+            self.units = IdentifiedArray(uniqueElements: units.map { SelectUnit.State(unit: $0, frontType: frontType) })
         }
         
     }
     
     enum Action: Equatable {
-        case word(SelectionWord.State.ID, SelectionWord.Action)
+        case unit(SelectUnit.State.ID, SelectUnit.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -28,22 +28,22 @@ struct SelectWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\.words, action: /Action.word) {
-            SelectionWord()
+        .forEach(\.units, action: /Action.unit) {
+            SelectUnit()
         }
     }
 }
 
 struct SelectList: View {
     
-    let store: StoreOf<SelectWords>
+    let store: StoreOf<SelectUnits>
     
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(
               store.scope(
-                state: \.words,
-                action: SelectWords.Action.word)
+                state: \.units,
+                action: SelectUnits.Action.unit)
             ) {
                 SelectionCell(store: $0)
             }
@@ -54,8 +54,11 @@ struct SelectList: View {
 
 #Preview {
     SelectList(store: Store(
-        initialState: SelectWords.State(words: .mock, frontType: .kanji),
-        reducer: SelectWords())
+        initialState: SelectUnits.State(
+            units: .mock,
+            frontType: .kanji
+        ),
+        reducer: SelectUnits())
     )
 }
 

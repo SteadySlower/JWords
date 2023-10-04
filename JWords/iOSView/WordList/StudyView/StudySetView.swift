@@ -1,5 +1,5 @@
 //
-//  StudyBookView.swift
+//  StudySetView.swift
 //  JWords
 //
 //  Created by JW Moon on 2023/09/28.
@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyBook: ReducerProtocol {
+struct StudyUnitsInSet: ReducerProtocol {
     struct State: Equatable {
         var set: StudySet
         var lists: SwitchBetweenList.State
@@ -131,28 +131,28 @@ struct StudyBook: ReducerProtocol {
     }
 }
 
-struct StudyBookView: View {
+struct StudySetView: View {
     
-    let store: StoreOf<StudyBook>
+    let store: StoreOf<StudyUnitsInSet>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyBook.Action.lists)
+                action: StudyUnitsInSet.Action.lists)
             )
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
-                send: StudyBook.Action.showSideBar)
+                send: StudyUnitsInSet.Action.showSideBar)
             ) {
                 SettingSideBar(store: store.scope(
                     state: \.setting,
-                    action: StudyBook.Action.setting)
+                    action: StudyUnitsInSet.Action.setting)
                 )
             }
             .withListModals(store: store.scope(
                 state: \.modals,
-                action: StudyBook.Action.modals)
+                action: StudyUnitsInSet.Action.modals)
             )
             .navigationTitle(vs.set.title)
             #if os(iOS)
@@ -160,7 +160,7 @@ struct StudyBookView: View {
                 ToolbarItem {
                     StudyToolBarButtons(store: store.scope(
                         state: \.tools,
-                        action: StudyBook.Action.tools)
+                        action: StudyUnitsInSet.Action.tools)
                     )
                 }
             }
@@ -171,11 +171,11 @@ struct StudyBookView: View {
 
 #Preview {
     NavigationView {
-        StudyBookView(store: Store(
-            initialState: StudyBook.State(
+        StudySetView(store: Store(
+            initialState: StudyUnitsInSet.State(
                 set: .init(index: 0),
                 units: .mock),
-            reducer: StudyBook()._printChanges())
+            reducer: StudyUnitsInSet()._printChanges())
         )
     }
 }

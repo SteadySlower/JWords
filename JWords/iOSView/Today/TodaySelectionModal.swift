@@ -15,21 +15,21 @@ enum Schedule: Equatable {
 
 struct TodaySelection: ReducerProtocol {
     struct State: Equatable {
-        var wordBooks: [StudySet] = []
-        var reviewedBooks: [StudySet]
+        var sets: [StudySet] = []
+        var reviewedSets: [StudySet]
         var schedules: [String:Schedule]
         var isLoading: Bool = false
         
-        init(todayBooks: [StudySet], reviewBooks: [StudySet], reviewedBooks :[StudySet]) {
+        init(todaySets: [StudySet], reviewSets: [StudySet], reviewedSets: [StudySet]) {
             var schedules = [String:Schedule]()
-            for book in todayBooks {
+            for book in todaySets {
                 schedules[book.id] = .study
             }
-            for book in reviewBooks {
+            for book in reviewSets {
                 schedules[book.id] = .review
             }
             self.schedules = schedules
-            self.reviewedBooks = reviewedBooks
+            self.reviewedSets = reviewedSets
         }
         
         mutating func toggleStudy(_ id: String) {
@@ -49,7 +49,7 @@ struct TodaySelection: ReducerProtocol {
         }
         
         var newSchedule: TodaySchedule {
-            getTodaySchedule(schedules, reviewedBooks.map { $0.id })
+            getTodaySchedule(schedules, reviewedSets.map { $0.id })
         }
         
         fileprivate func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
@@ -75,14 +75,14 @@ struct TodaySelection: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                let books = try! setClient.fetch(false)
-                state.wordBooks = sortWordBooksBySchedule(books, schedule: state.schedules)
+                let sets = try! setClient.fetch(false)
+                state.sets = sortWordBooksBySchedule(sets, schedule: state.schedules)
                 return .none
-            case let .studyButtonTapped(book):
-                state.toggleStudy(book.id)
+            case let .studyButtonTapped(set):
+                state.toggleStudy(set.id)
                 return .none
-            case let .reviewButtonTapped(book):
-                state.toggleReview(book.id)
+            case let .reviewButtonTapped(set):
+                state.toggleReview(set.id)
                 return .none
             }
         }
@@ -114,11 +114,11 @@ struct TodaySelectionModal: View {
                     .padding(.vertical, 10)
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 8) {
-                        ForEach(vs.wordBooks, id: \.id) { wordBook in
-                            bookCell(wordBook,
-                                     vs.schedules[wordBook.id] ?? .none,
-                                     { vs.send(.studyButtonTapped(wordBook)) },
-                                     { vs.send(.reviewButtonTapped(wordBook)) })
+                        ForEach(vs.sets, id: \.id) { set in
+                            bookCell(set,
+                                     vs.schedules[set.id] ?? .none,
+                                     { vs.send(.studyButtonTapped(set)) },
+                                     { vs.send(.reviewButtonTapped(set)) })
                         }
                     }
                     
@@ -135,7 +135,7 @@ struct TodaySelectionModal: View {
 
 extension TodaySelectionModal {
     
-    private func bookCell(_ wordBook: StudySet,
+    private func bookCell(_ set: StudySet,
                           _ schedule: Schedule,
                           _ studyButtonTapped: @escaping () -> Void,
                           _ reviewButtonTapped: @escaping () -> Void) -> some View {
@@ -149,13 +149,13 @@ extension TodaySelectionModal {
         }
         
         var dateText: String {
-            let dayGap = wordBook.dayFromToday
+            let dayGap = set.dayFromToday
             return dayGap == 0 ? "今日" : "\(dayGap)日前"
         }
         
-        var bookInfo: some View {
+        var setInfo: some View {
             VStack(alignment: .leading) {
-                Text(wordBook.title)
+                Text(set.title)
                 Text(dateText)
                     .foregroundColor(dateTextColor)
             }
@@ -172,7 +172,7 @@ extension TodaySelectionModal {
         
         var body: some View {
             HStack {
-                bookInfo
+                setInfo
                 Spacer()
                 buttons
             }
@@ -193,9 +193,9 @@ struct TodaySelectionModal_Previews: PreviewProvider {
             TodaySelectionModal(
                 store: Store(
                     initialState: TodaySelection.State(
-                        todayBooks: [StudySet(index: 0), StudySet(index: 1), StudySet(index: 2)],
-                        reviewBooks: [StudySet(index: 3), StudySet(index: 4), StudySet(index: 5)],
-                        reviewedBooks: []),
+                        todaySets: [StudySet(index: 0), StudySet(index: 1), StudySet(index: 2)],
+                        reviewSets: [StudySet(index: 3), StudySet(index: 4), StudySet(index: 5)],
+                        reviewedSets: []),
                     reducer: TodaySelection()._printChanges()
                 )
             )

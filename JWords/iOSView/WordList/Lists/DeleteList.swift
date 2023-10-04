@@ -8,18 +8,18 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct DeleteWords: ReducerProtocol {
+struct DeleteUnits: ReducerProtocol {
     struct State: Equatable {
-        var words: IdentifiedArrayOf<DeleteWord.State>
+        var units: IdentifiedArrayOf<DeleteUnit.State>
         
-        init(words: [StudyUnit], frontType: FrontType) {
-            self.words = IdentifiedArray(uniqueElements: words.map { DeleteWord.State(unit: $0, frontType: frontType) })
+        init(units: [StudyUnit], frontType: FrontType) {
+            self.units = IdentifiedArray(uniqueElements: units.map { DeleteUnit.State(unit: $0, frontType: frontType) })
         }
         
     }
     
     enum Action: Equatable {
-        case word(DeleteWord.State.ID, DeleteWord.Action)
+        case unit(DeleteUnit.State.ID, DeleteUnit.Action)
     }
     
     var body: some ReducerProtocol<State, Action> {
@@ -28,22 +28,22 @@ struct DeleteWords: ReducerProtocol {
             default: return .none
             }
         }
-        .forEach(\.words, action: /Action.word) {
-            DeleteWord()
+        .forEach(\.units, action: /Action.unit) {
+            DeleteUnit()
         }
     }
 }
 
 struct DeleteList: View {
     
-    let store: StoreOf<DeleteWords>
+    let store: StoreOf<DeleteUnits>
     
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(
               store.scope(
-                state: \.words,
-                action: DeleteWords.Action.word)
+                state: \.units,
+                action: DeleteUnits.Action.unit)
             ) {
                 DeleteCell(store: $0)
             }
@@ -54,7 +54,10 @@ struct DeleteList: View {
 
 #Preview {
     DeleteList(store: Store(
-        initialState: DeleteWords.State(words: .mock, frontType: .kanji),
-        reducer: DeleteWords())
+        initialState: DeleteUnits.State(
+            units: .mock,
+            frontType: .kanji
+        ),
+        reducer: DeleteUnits())
     )
 }
