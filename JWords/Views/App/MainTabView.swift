@@ -1,5 +1,5 @@
 //
-//  iOSAppView.swift
+//  MainTabView.swift
 //  JWords
 //
 //  Created by Jong Won Moon on 2022/09/19.
@@ -12,21 +12,14 @@ enum Tab {
     case today, home, kanji, ocr
 }
 
-struct iOSApp: ReducerProtocol {
+struct MainTab: ReducerProtocol {
     
     struct State: Equatable {
         var selectedTab: Tab = .today
-        var todayList: TodayList.State? = TodayList.State()
-        var homeList: HomeList.State?
-        var kanjiList: KanjiList.State?
-        var ocr: AddUnitWithOCR.State?
-        
-        mutating func clearList() {
-            todayList = nil
-            homeList = nil
-            kanjiList = nil
-            ocr = nil
-        }
+        var todayList: TodayList.State = .init()
+        var homeList: HomeList.State = .init()
+        var kanjiList: KanjiList.State = .init()
+        var ocr: AddUnitWithOCR.State = .init()
     }
     
     enum Action: Equatable {
@@ -41,55 +34,50 @@ struct iOSApp: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .tabChanged(let tab):
-                state.clearList()
                 state.selectedTab = tab
-                switch tab {
-                case .today:
-                    state.todayList = TodayList.State()
-                case .home:
-                    state.homeList = HomeList.State()
-                case .kanji:
-                    state.kanjiList = KanjiList.State()
-                case .ocr:
-                    state.ocr = AddUnitWithOCR.State()
-                }
                 return .none
             default:
                 return .none
             }
         }
-        .ifLet(\.todayList, action: /Action.todayList) {
-            TodayList()
-        }
-        .ifLet(\.homeList, action: /Action.homeList) {
-            HomeList()
-        }
-        .ifLet(\.kanjiList, action: /Action.kanjiList) {
-            KanjiList()
-        }
-        .ifLet(\.ocr, action: /Action.ocr) {
-            AddUnitWithOCR()
-        }
+        Scope(
+            state: \.todayList,
+            action: /Action.todayList,
+            child: { TodayList() }
+        )
+        Scope(
+            state: \.homeList,
+            action: /Action.homeList,
+            child: { HomeList() }
+        )
+        Scope(
+            state: \.kanjiList,
+            action: /Action.kanjiList,
+            child: { KanjiList() }
+        )
+        Scope(
+            state: \.ocr,
+            action: /Action.ocr,
+            child: { AddUnitWithOCR() }
+        )
     }
     
 }
 
-struct iOSAppView: View {
+struct MainTabView: View {
     
-    let store: StoreOf<iOSApp>
+    let store: StoreOf<MainTab>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             TabView(selection:
-                vs.binding(get: \.selectedTab, send: iOSApp.Action.tabChanged)
+                vs.binding(get: \.selectedTab, send: MainTab.Action.tabChanged)
             ) {
                 NavigationView {
-                    IfLetStore(store.scope(
+                    TodayView(store: store.scope(
                         state: \.todayList,
-                        action: iOSApp.Action.todayList)
-                    ) {
-                        TodayView(store: $0)
-                    }
+                        action: MainTab.Action.todayList)
+                    )
                 }
                 .tabItem { Label("오늘 단어장", systemImage: "calendar") }
                 .tag(Tab.today)
@@ -97,12 +85,10 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    IfLetStore(store.scope(
+                    HomeView(store: store.scope(
                         state: \.homeList,
-                        action: iOSApp.Action.homeList)
-                    ) {
-                        HomeView(store: $0)
-                    }
+                        action: MainTab.Action.homeList)
+                    )
                 }
                 .tabItem { Label("모든 단어장", systemImage: "books.vertical") }
                 .tag(Tab.home)
@@ -110,12 +96,10 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    IfLetStore(store.scope(
+                    KanjiListView(store: store.scope(
                         state: \.kanjiList,
-                        action: iOSApp.Action.kanjiList)
-                    ) {
-                        KanjiListView(store: $0)
-                    }
+                        action: MainTab.Action.kanjiList)
+                    )
                 }
                 .tabItem {
                 #if os(iOS)
@@ -133,12 +117,10 @@ struct iOSAppView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 NavigationView {
-                    IfLetStore(store.scope(
+                    OCRAddUnitView(store: store.scope(
                         state: \.ocr,
-                        action: iOSApp.Action.ocr)
-                    ) {
-                        OCRAddUnitView(store: $0)
-                    }
+                        action: MainTab.Action.ocr)
+                    )
                 }
                 .tabItem { Label("단어 스캐너", systemImage: "scanner") }
                 #if os(iOS)
@@ -166,10 +148,10 @@ struct iOSAppView: View {
 
 struct iOSAppView_Previews: PreviewProvider {
     static var previews: some View {
-        iOSAppView(
+        MainTabView(
             store: Store(
-                initialState: iOSApp.State(),
-                reducer: iOSApp()._printChanges()
+                initialState: MainTab.State(),
+                reducer: MainTab()._printChanges()
             )
         )
     }

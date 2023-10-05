@@ -1,32 +1,34 @@
 //
-//  StudyWordsView.swift
+//  StudySetView.swift
 //  JWords
 //
-//  Created by JW Moon on 2023/10/01.
+//  Created by JW Moon on 2023/09/28.
 //
 
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyUnits: ReducerProtocol {
+struct StudyUnitsInSet: ReducerProtocol {
     struct State: Equatable {
+        var set: StudySet
         var lists: SwitchBetweenList.State
         var setting: StudySetting.State
         var modals = ShowModalsInList.State()
-        var tools = StudyTools.State(activeButtons: [.shuffle, .setting])
+        var tools = StudyTools.State(activeButtons: [.set, .shuffle, .setting])
         
         var showSideBar = false
         
-        init(units: [StudyUnit]) {
+        init(set: StudySet, units: [StudyUnit]) {
+            self.set = set
             self.lists = SwitchBetweenList.State(
                 units: units,
-                frontType: .kanji,
+                frontType: set.preferredFrontType,
                 isLocked: false
             )
             self.setting = .init(
-                showSetEditButtons: false,
-                frontType: .kanji,
-                selectableListType: [.study, .edit]
+                showSetEditButtons: true,
+                frontType: set.preferredFrontType,
+                selectableListType: [.study, .edit, .select, .delete]
             )
         }
     }
@@ -39,6 +41,8 @@ struct StudyUnits: ReducerProtocol {
         case tools(StudyTools.Action)
         case dismiss
     }
+    
+    @Dependency(\.scheduleClient) var scheduleClient
     
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -55,31 +59,49 @@ struct StudyUnits: ReducerProtocol {
                 return .none
             case .tools(let action):
                 switch action {
+                case .set:
+                    if let selected = state.lists.selectedUnits {
+                        state.modals.setMoveUnitModal(from: state.set, isReview: false, toMove: selected)
+                    } else {
+                        let isReviewSet = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
+                        state.modals.setMoveUnitModal(from: state.set, isReview: isReviewSet, toMove: state.lists.notSucceededUnits)
+                    }
+                    return .none
                 case .shuffle:
                     state.lists.shuffle()
                     return .none
                 case .setting:
                     state.showSideBar.toggle()
                     return .none
-                default: return .none
                 }
             case .modals(let action):
                 switch action {
+                case .setEdited(let set):
+                    state.set = set
+                    return .none
+                case .unitAdded(let unit):
+                    state.lists.addNewUnit(unit)
+                    return .none
                 case .unitEdited(let unit):
                     state.lists.updateUnit(unit)
                     state.setting.listType = .study
                     return .none
+                case .unitsMoved:
+                    return .task { .dismiss }
                 default: return .none
                 }
             case .setting(let action):
                 switch action {
+                case .setEditButtonTapped:
+                    state.modals.setEditSetModal(state.set)
+                case .unitAddButtonTapped:
+                    state.modals.setAddUnitModal(state.set)
                 case .setFilter(let filter):
                     state.lists.setFilter(filter)
                 case .setFrontType(let frontType):
                     state.lists.setFrontType(frontType)
                 case .setListType(let listType):
                     state.lists.setListType(listType)
-                default: return .none
                 }
                 return .task { .showSideBar(false) }
             default: return .none
@@ -109,39 +131,40 @@ struct StudyUnits: ReducerProtocol {
     }
 }
 
-struct StudyUnitsView: View {
+struct StudySetView: View {
     
-    let store: StoreOf<StudyUnits>
+    let store: StoreOf<StudyUnitsInSet>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyUnits.Action.lists)
+                action: StudyUnitsInSet.Action.lists)
             )
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
-                send: StudyUnits.Action.showSideBar)
+                send: StudyUnitsInSet.Action.showSideBar)
             ) {
                 SettingSideBar(store: store.scope(
                     state: \.setting,
-                    action: StudyUnits.Action.setting)
+                    action: StudyUnitsInSet.Action.setting)
                 )
             }
             .withListModals(store: store.scope(
                 state: \.modals,
-                action: StudyUnits.Action.modals)
+                action: StudyUnitsInSet.Action.modals)
             )
-            .navigationTitle("틀린 단어 모아보기")
+            .navigationTitle(vs.set.title)
             #if os(iOS)
             .toolbar {
                 ToolbarItem {
                     StudyToolBarButtons(store: store.scope(
                         state: \.tools,
-                        action: StudyUnits.Action.tools)
+                        action: StudyUnitsInSet.Action.tools)
                     )
                 }
             }
+            .toolbar(.hidden, for: .tabBar)
             #endif
         }
     }
@@ -149,9 +172,11 @@ struct StudyUnitsView: View {
 
 #Preview {
     NavigationView {
-        StudyUnitsView(store: Store(
-            initialState: StudyUnits.State(units: .mock),
-            reducer: StudyUnits())
+        StudySetView(store: Store(
+            initialState: StudyUnitsInSet.State(
+                set: .init(index: 0),
+                units: .mock),
+            reducer: StudyUnitsInSet()._printChanges())
         )
     }
 }
