@@ -18,7 +18,6 @@ struct TodayList: ReducerProtocol {
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
-        var isLoading: Bool = false
         
         var showStudySetView: Bool {
             studyUnitsInSet != nil
@@ -93,11 +92,9 @@ struct TodayList: ReducerProtocol {
             case .todayStatusTapped:
                 if state.todayStatus == .empty {
                     state.clear()
-                    state.isLoading = true
                     let sets = try! setClient.fetch(false)
                     scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
-                    state.isLoading = false
                     return .none
                 } else {
                     state.studyUnits = StudyUnits.State(units: state.onlyFailUnits)
@@ -115,10 +112,8 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
-                state.isLoading = true
                 scheduleClient.update(.empty)
                 fetchSchedule(&state)
-                state.isLoading = false
                 return .task  { .onAppear }
             case .showTutorial(let show):
                 state.showTutorial = show
@@ -146,7 +141,6 @@ struct TodayList: ReducerProtocol {
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
-        state.isLoading = true
         state.clear()
         let todaySets = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
         state.addTodaySets(todaySets: todaySets)
@@ -161,7 +155,6 @@ struct TodayList: ReducerProtocol {
             sets: todaySets.study.count,
             total: todayWords.count,
             wrong: state.onlyFailUnits.count)
-        state.isLoading = false
     }
 
 }
@@ -236,7 +229,6 @@ struct TodayView: View {
                 { EmptyView() }
             }
             .withBannerAD()
-            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
