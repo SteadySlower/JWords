@@ -19,6 +19,7 @@
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		061C9E7D2A19819800E099B5 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E7C2A19819800E099B5 /* FlexBox.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
+		061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99382ACD64EF00C08E17 /* HomeListTest.swift */; };
 		0622727629FCEE1500EEAD50 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0622727529FCEE1500EEAD50 /* ComposableArchitecture */; };
 		0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */; };
 		0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727929FCFC2600EEAD50 /* Character+Extension.swift */; };
@@ -160,6 +161,7 @@
 		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		061C9E7C2A19819800E099B5 /* FlexBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlexBox.swift; path = JWords/iOSView/Util/FlexBox.swift; sourceTree = SOURCE_ROOT; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
+		061D99382ACD64EF00C08E17 /* HomeListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListTest.swift; sourceTree = "<group>"; };
 		0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuriganaConverter.swift; sourceTree = "<group>"; };
 		0622727929FCFC2600EEAD50 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
 		06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HuriganaText.swift; path = JWords/macView/Components/HuriganaText.swift; sourceTree = SOURCE_ROOT; };
@@ -521,6 +523,7 @@
 			children = (
 				0697715D28CF02E300569280 /* Util */,
 				06581AA82ACCEEBD007914A3 /* iOSAppTest.swift */,
+				061D99382ACD64EF00C08E17 /* HomeListTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -986,6 +989,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
+				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* iOSAppTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

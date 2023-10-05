@@ -22,7 +22,7 @@ struct AddSet: ReducerProtocol {
         case inputSet(InputSet.Action)
         case add
         case cancel
-        case added
+        case added(StudySet)
     }
     
     @Dependency(\.studySetClient) var setClient
@@ -36,8 +36,8 @@ struct AddSet: ReducerProtocol {
                     isAutoSchedule: true,
                     preferredFrontType: state.inputSet.frontType
                 )
-                try! setClient.insert(input)
-                return .task { .added }
+                let set = try! setClient.insert(input)
+                return .task { .added(set) }
             default: return .none
             }
         }

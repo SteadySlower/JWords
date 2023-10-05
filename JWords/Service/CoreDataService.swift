@@ -27,7 +27,7 @@ class CoreDataService {
         self.context = container.viewContext
     }
     
-    func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws {
+    func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws -> StudySet {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
             print("디버그: StudySetMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -42,6 +42,7 @@ class CoreDataService {
         
         do {
             try context.save()
+            return StudySet(from: mo)
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)

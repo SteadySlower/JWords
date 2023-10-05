@@ -53,13 +53,23 @@ struct StudySet: Equatable, Identifiable {
         self.isAutoSchedule = mo.isAutoSchedule
     }
     
+    init(title: String) {
+        self.id = title
+        self.objectID = NSManagedObjectID()
+        self.title = title
+        self.createdAt = Date()
+        self.closed = false
+        self.preferredFrontType = .kanji
+        self.isAutoSchedule = true
+    }
+    
     // intializer for mocking
-    init(index: Int) {
+    init(index: Int, closed: Bool = false) {
         self.id = "\(index)"
         self.objectID = NSManagedObjectID()
         self.title = "\(index)번 단어장"
         self.createdAt = Date()
-        self.closed = false
+        self.closed = closed
         self.preferredFrontType = .kanji
         self.isAutoSchedule = true
     }
@@ -84,11 +94,22 @@ struct StudySet: Equatable, Identifiable {
 }
 
 extension Array where Element == StudySet {
-    static var mock: [StudySet] {
+    static let mock: [StudySet] = {
         var result = [StudySet]()
         for i in 0..<10 {
             result.append(StudySet(index: i))
         }
         return result
-    }
+    }()
+    
+    static let mockIncludingClosed: [StudySet] = {
+        var result = [StudySet]()
+        for i in 0..<10 {
+            result.append(StudySet(index: i))
+        }
+        for i in 11..<20 {
+            result.append(StudySet(index: i, closed: true))
+        }
+        return result
+    }()
 }
