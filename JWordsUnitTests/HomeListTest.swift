@@ -15,7 +15,8 @@ typealias TestStoreOfHomeList = TestStore<
     HomeList.Action,
     HomeList.State,
     HomeList.Action,
-    ()>
+    ()
+>
 
 @MainActor
 final class HomeListTest: XCTestCase {
@@ -88,7 +89,7 @@ final class HomeListTest: XCTestCase {
         }
     }
     
-    func testStudyUnitsInSet() async {
+    func testStudyUnitsInSetDismiss() async {
         let store = await setStore()
         
         XCTAssertEqual(store.state.studyUnitsInSet, nil)
@@ -101,6 +102,41 @@ final class HomeListTest: XCTestCase {
 
         await store.send(.studyUnitsInSet(.dismiss)) {
             $0.studyUnitsInSet = nil
+        }
+    }
+    
+    func testAddSetAdded() async {
+        let store = await setStore()
+        
+        XCTAssertEqual(store.state.addSet, nil)
+        
+        await store.send(.setAddSetModal(true)) {
+            $0.addSet = AddSet.State()
+        }
+        
+        let addedSet = StudySet(title: "addedSet")
+        
+        await store.send(.addSet(.added(addedSet))) {
+            $0.sets.insert(addedSet, at: 0)
+            $0.addSet = nil
+        }
+        
+        await store.send(.setAddSetModal(true)) {
+            $0.addSet = AddSet.State()
+        }
+    }
+    
+    func testAddSetCancel() async {
+        let store = await setStore()
+        
+        XCTAssertEqual(store.state.addSet, nil)
+        
+        await store.send(.setAddSetModal(true)) {
+            $0.addSet = AddSet.State()
+        }
+        
+        await store.send(.addSet(.cancel)) {
+            $0.addSet = nil
         }
     }
 }

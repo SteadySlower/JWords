@@ -9,7 +9,7 @@ import ComposableArchitecture
 
 struct StudySetClient {
     private static let cd = CoreDataService.shared
-    var insert: (StudySetInput) throws -> Void
+    var insert: (StudySetInput) throws -> StudySet
     var update: (StudySet, StudySetInput) throws -> StudySet
     var close: (StudySet) throws -> Void
     var fetch: (Bool) throws -> [StudySet]
@@ -26,7 +26,7 @@ extension DependencyValues {
 extension StudySetClient: DependencyKey {
   static let liveValue = StudySetClient(
     insert: { input in
-        try cd.insertSet(title: input.title,
+        return try cd.insertSet(title: input.title,
                          isAutoSchedule: input.isAutoSchedule,
                          preferredFrontType: input.preferredFrontType)
     },
@@ -50,7 +50,7 @@ extension StudySetClient: DependencyKey {
 
 extension StudySetClient: TestDependencyKey {
   static let previewValue = Self(
-    insert: { _ in },
+    insert: { input in .init(title: input.title) },
     update: { _, _ in return .init(index: 0) },
     close: { _ in },
     fetch: { _ in .mock },
@@ -58,7 +58,7 @@ extension StudySetClient: TestDependencyKey {
   )
 
   static let testValue = Self(
-    insert: { _ in },
+    insert: { input in .init(title: input.title) },
     update: { _, _ in return .init(index: 0) },
     close: { _ in },
     fetch: { includeClosed in includeClosed ? .mockIncludingClosed : .mock },

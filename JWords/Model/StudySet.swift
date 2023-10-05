@@ -53,6 +53,16 @@ struct StudySet: Equatable, Identifiable {
         self.isAutoSchedule = mo.isAutoSchedule
     }
     
+    init(title: String) {
+        self.id = title
+        self.objectID = NSManagedObjectID()
+        self.title = title
+        self.createdAt = Date()
+        self.closed = false
+        self.preferredFrontType = .kanji
+        self.isAutoSchedule = true
+    }
+    
     // intializer for mocking
     init(index: Int, closed: Bool = false) {
         self.id = "\(index)"

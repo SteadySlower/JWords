@@ -71,8 +71,8 @@ struct HomeList: ReducerProtocol {
                 }
             case .addSet(let action):
                 switch action {
-                case .added:
-                    state.sets = try! setClient.fetch(state.includeClosed)
+                case .added(let set):
+                    state.sets.insert(set, at: 0)
                     state.addSet = nil
                     return .none
                 case .cancel:
