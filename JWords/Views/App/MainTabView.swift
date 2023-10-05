@@ -35,16 +35,6 @@ struct MainTab: ReducerProtocol {
             switch action {
             case .tabChanged(let tab):
                 state.selectedTab = tab
-//                switch tab {
-//                case .today:
-//                    state.todayList = TodayList.State()
-//                case .home:
-//                    state.homeList = HomeList.State()
-//                case .kanji:
-//                    state.kanjiList = KanjiList.State()
-//                case .ocr:
-//                    state.ocr = AddUnitWithOCR.State()
-//                }
                 return .none
             default:
                 return .none
