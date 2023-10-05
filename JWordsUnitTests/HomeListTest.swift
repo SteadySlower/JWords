@@ -87,6 +87,22 @@ final class HomeListTest: XCTestCase {
             $0.sets = .mock
         }
     }
+    
+    func testStudyUnitsInSet() async {
+        let store = await setStore()
+        
+        XCTAssertEqual(store.state.studyUnitsInSet, nil)
+        
+        let tappedSet = [StudySet].mock[0]
+        
+        await store.send(.homeCellTapped(tappedSet)) {
+            $0.studyUnitsInSet = StudyUnitsInSet.State(set: tappedSet, units: .mock)
+        }
+
+        await store.send(.studyUnitsInSet(.dismiss)) {
+            $0.studyUnitsInSet = nil
+        }
+    }
 }
 
 
