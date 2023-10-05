@@ -26,10 +26,10 @@ struct JWordsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            iOSAppView(
+            MainTabView(
                 store: Store(
-                    initialState: iOSApp.State(),
-                    reducer: iOSApp()._printChanges()
+                    initialState: MainTab.State(),
+                    reducer: MainTab()._printChanges()
                 )
             )
         }

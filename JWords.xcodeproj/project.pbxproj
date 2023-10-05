@@ -91,7 +91,7 @@
 		5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC2C2869470C00AC156C /* StudyCell.swift */; };
 		5A67DC312869529700AC156C /* MacAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC302869529700AC156C /* MacAppView.swift */; };
 		5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AF528D8071D00CADF9B /* TodayView.swift */; };
-		5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */; };
+		5A735AFF28D80EAE00CADF9B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* MainTabView.swift */; };
 		5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */; };
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
@@ -238,7 +238,7 @@
 		5A67DC2C2869470C00AC156C /* StudyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyCell.swift; sourceTree = "<group>"; };
 		5A67DC302869529700AC156C /* MacAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppView.swift; sourceTree = "<group>"; };
 		5A735AF528D8071D00CADF9B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
-		5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppView.swift; sourceTree = "<group>"; };
+		5A735AFE28D80EAE00CADF9B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCell.swift; sourceTree = "<group>"; };
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				5A67DC302869529700AC156C /* MacAppView.swift */,
-				5A735AFE28D80EAE00CADF9B /* iOSAppView.swift */,
+				5A735AFE28D80EAE00CADF9B /* MainTabView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -914,7 +914,7 @@
 				5A67DC20286942FE00AC156C /* HomeView.swift in Sources */,
 				069941852A99EFFC00B5D769 /* DeleteCell.swift in Sources */,
 				5A67DC312869529700AC156C /* MacAppView.swift in Sources */,
-				5A735AFF28D80EAE00CADF9B /* iOSAppView.swift in Sources */,
+				5A735AFF28D80EAE00CADF9B /* MainTabView.swift in Sources */,
 				06004E372AC5488600947F5D /* EditList.swift in Sources */,
 				5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */,
 				5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */,

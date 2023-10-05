@@ -1,5 +1,5 @@
 //
-//  iOSAppView.swift
+//  MainTabView.swift
 //  JWords
 //
 //  Created by Jong Won Moon on 2022/09/19.
@@ -12,7 +12,7 @@ enum Tab {
     case today, home, kanji, ocr
 }
 
-struct iOSApp: ReducerProtocol {
+struct MainTab: ReducerProtocol {
     
     struct State: Equatable {
         var selectedTab: Tab = .today
@@ -74,19 +74,19 @@ struct iOSApp: ReducerProtocol {
     
 }
 
-struct iOSAppView: View {
+struct MainTabView: View {
     
-    let store: StoreOf<iOSApp>
+    let store: StoreOf<MainTab>
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             TabView(selection:
-                vs.binding(get: \.selectedTab, send: iOSApp.Action.tabChanged)
+                vs.binding(get: \.selectedTab, send: MainTab.Action.tabChanged)
             ) {
                 NavigationView {
                     IfLetStore(store.scope(
                         state: \.todayList,
-                        action: iOSApp.Action.todayList)
+                        action: MainTab.Action.todayList)
                     ) {
                         TodayView(store: $0)
                     }
@@ -99,7 +99,7 @@ struct iOSAppView: View {
                 NavigationView {
                     IfLetStore(store.scope(
                         state: \.homeList,
-                        action: iOSApp.Action.homeList)
+                        action: MainTab.Action.homeList)
                     ) {
                         HomeView(store: $0)
                     }
@@ -112,7 +112,7 @@ struct iOSAppView: View {
                 NavigationView {
                     IfLetStore(store.scope(
                         state: \.kanjiList,
-                        action: iOSApp.Action.kanjiList)
+                        action: MainTab.Action.kanjiList)
                     ) {
                         KanjiListView(store: $0)
                     }
@@ -135,7 +135,7 @@ struct iOSAppView: View {
                 NavigationView {
                     IfLetStore(store.scope(
                         state: \.ocr,
-                        action: iOSApp.Action.ocr)
+                        action: MainTab.Action.ocr)
                     ) {
                         OCRAddUnitView(store: $0)
                     }
@@ -166,10 +166,10 @@ struct iOSAppView: View {
 
 struct iOSAppView_Previews: PreviewProvider {
     static var previews: some View {
-        iOSAppView(
+        MainTabView(
             store: Store(
-                initialState: iOSApp.State(),
-                reducer: iOSApp()._printChanges()
+                initialState: MainTab.State(),
+                reducer: MainTab()._printChanges()
             )
         )
     }
