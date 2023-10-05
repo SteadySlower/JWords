@@ -52,6 +52,9 @@ struct StudyKanjiSampleView: View {
                 action: StudyKanjiSamples.Action.lists)
             )
             .navigationTitle("\(vs.kanji.kanjiText)가 쓰이는 단어")
+            #if os(iOS)
+            .toolbar(.hidden, for: .tabBar)
+            #endif
         }
     }
 }

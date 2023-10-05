@@ -142,6 +142,7 @@ struct StudyUnitsView: View {
                     )
                 }
             }
+            .toolbar(.hidden, for: .tabBar)
             #endif
         }
     }

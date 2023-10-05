@@ -164,6 +164,7 @@ struct StudySetView: View {
                     )
                 }
             }
+            .toolbar(.hidden, for: .tabBar)
             #endif
         }
     }
