@@ -11,7 +11,7 @@ import XCTest
 @testable import JWords
 
 @MainActor
-final class TodosTests: XCTestCase {
+final class iOSAppTest: XCTestCase {
     func testChangeTab() async {
         let store = TestStore(
             initialState: iOSApp.State(),

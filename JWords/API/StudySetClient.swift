@@ -61,7 +61,7 @@ extension StudySetClient: TestDependencyKey {
     insert: { _ in },
     update: { _, _ in return .init(index: 0) },
     close: { _ in },
-    fetch: { _ in .mock },
+    fetch: { includeClosed in includeClosed ? .mockIncludingClosed : .mock },
     countUnits: { _ in Int.random(in: 0...100) }
   )
 }

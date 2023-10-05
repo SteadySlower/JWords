@@ -29,7 +29,6 @@ struct HomeList: ReducerProtocol {
             sets = []
             studyUnitsInSet = nil
             addSet = nil
-            includeClosed = false
         }
     }
     
