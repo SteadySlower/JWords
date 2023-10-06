@@ -33,7 +33,7 @@ enum SetSchedule: Equatable, CaseIterable {
     case none, study, review
 }
 
-struct StudySet: Equatable, Identifiable {
+struct StudySet: Equatable, Identifiable, Hashable {
     
     let id: String
     let objectID: NSManagedObjectID
@@ -64,14 +64,31 @@ struct StudySet: Equatable, Identifiable {
     }
     
     // intializer for mocking
-    init(index: Int, closed: Bool = false) {
-        self.id = "\(index)"
+    init(
+        index: Int,
+        closed: Bool = false,
+        setSchedule: SetSchedule = .study
+    ) {
+        self.id = UUID().uuidString
         self.objectID = NSManagedObjectID()
         self.title = "\(index)번 단어장"
-        self.createdAt = Date()
+        self.createdAt = {
+            switch setSchedule {
+            case .none:
+                return .dateFromToday(99)
+            case .study:
+                return .dateFromToday(0)
+            case .review:
+                return .dateFromToday(3)
+            }
+        }()
         self.closed = closed
         self.preferredFrontType = .kanji
         self.isAutoSchedule = true
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     var dayFromToday: Int {

@@ -17,7 +17,7 @@ struct StudyUnitClient {
     var studyState: (StudyUnit, StudyState) throws -> Void
     var move: ([StudyUnit], StudySet, StudySet) throws -> Void
     var fetch: (StudySet) throws -> [StudyUnit]
-    
+    var fetchAll: ([StudySet]) throws -> [StudyUnit]
 }
 
 extension DependencyValues {
@@ -75,6 +75,11 @@ extension StudyUnitClient: DependencyKey {
     },
     fetch: { set in
         try cd.fetchUnits(of: set)
+    },
+    fetchAll: { sets in
+        try sets
+            .map { try cd.fetchUnits(of: $0) }
+            .reduce([], +)
     }
   )
 }
@@ -88,7 +93,8 @@ extension StudyUnitClient: TestDependencyKey {
     delete: { _, _ in },
     studyState: { _, _ in },
     move: { _, _, _ in  },
-    fetch: { _ in .mock }
+    fetch: { _ in .mock },
+    fetchAll: { _ in .mock }
   )
 
   static let testValue = Self(
@@ -99,7 +105,8 @@ extension StudyUnitClient: TestDependencyKey {
     delete: { _, _ in },
     studyState: { _, _ in },
     move: { _, _, _ in  },
-    fetch: { _ in .mock }
+    fetch: { _ in .mock },
+    fetchAll: { _ in .mock }
   )
 }
 

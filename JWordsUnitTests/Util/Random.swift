@@ -35,4 +35,6 @@ class Random {
     static func int(from: Int, to: Int) -> Int {
         (from...to).randomElement() ?? from
     }
+    
+    
 }

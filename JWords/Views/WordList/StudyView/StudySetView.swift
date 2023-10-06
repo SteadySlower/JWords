@@ -63,7 +63,7 @@ struct StudyUnitsInSet: ReducerProtocol {
                     if let selected = state.lists.selectedUnits {
                         state.modals.setMoveUnitModal(from: state.set, isReview: false, toMove: selected)
                     } else {
-                        let isReviewSet = scheduleClient.fetch().reviewIDs.contains(where: { $0 == state.set.id })
+                        let isReviewSet = scheduleClient.isReview(state.set)
                         state.modals.setMoveUnitModal(from: state.set, isReview: isReviewSet, toMove: state.lists.notSucceededUnits)
                     }
                     return .none

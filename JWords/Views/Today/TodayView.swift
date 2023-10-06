@@ -12,7 +12,6 @@ struct TodayList: ReducerProtocol {
     struct State: Equatable {
         var studySets: [StudySet] = []
         var reviewSets: [StudySet] = []
-        var reviewedSets: [StudySet] = []
         var onlyFailUnits: [StudyUnit] = []
         var todayStatus: TodayStatus?
         var studyUnitsInSet: StudyUnitsInSet.State?
@@ -44,17 +43,12 @@ struct TodayList: ReducerProtocol {
             showTutorial = false
         }
         
-        fileprivate mutating func addTodaySets(todaySets: TodaySets) {
-            studySets = todaySets.study
-            reviewedSets = todaySets.reviewed
-            reviewSets = todaySets.review.filter { !reviewedSets.contains($0) }
-        }
-        
     }
     
     @Dependency(\.scheduleClient) var scheduleClient
     @Dependency(\.studySetClient) var setClient
     @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(\.utilClient) var utilClient
     
     enum Action: Equatable {
         case onAppear
@@ -83,8 +77,12 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
-                    guard let newSchedule = state.todaySelection?.newSchedule else { return .none }
-                    scheduleClient.update(newSchedule)
+                    if let newStudy = state.todaySelection?.studySets {
+                        scheduleClient.updateStudy(newStudy)
+                    }
+                    if let newReview = state.todaySelection?.reviewSets {
+                        scheduleClient.updateReview(newReview)
+                    }
                     state.todaySelection = nil
                     return .task { .onAppear }
                 }
@@ -107,12 +105,11 @@ struct TodayList: ReducerProtocol {
             case .listButtonTapped:
                 state.todayStatus = nil
                 state.todaySelection = TodaySelection.State(todaySets: state.studySets,
-                                                            reviewSets: state.reviewSets,
-                                                            reviewedSets: state.reviewedSets)
+                                                            reviewSets: state.reviewSets)
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
-                scheduleClient.update(.empty)
+                scheduleClient.clear()
                 fetchSchedule(&state)
                 return .task  { .onAppear }
             case .showTutorial(let show):
@@ -141,20 +138,7 @@ struct TodayList: ReducerProtocol {
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
-        state.clear()
-        let todaySets = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
-        state.addTodaySets(todaySets: todaySets)
-        let todayWords = todaySets.study
-            .map { try! unitClient.fetch($0) }
-            .reduce([], +)
-        state.onlyFailUnits = todayWords
-                    .filter { $0.studyState != .success }
-                    .removeOverlapping()
-                    .sorted(by: { $0.createdAt < $1.createdAt })
-        state.todayStatus = .init(
-            sets: todaySets.study.count,
-            total: todayWords.count,
-            wrong: state.onlyFailUnits.count)
+
     }
 
 }
