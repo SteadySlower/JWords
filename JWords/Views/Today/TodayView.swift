@@ -138,7 +138,17 @@ struct TodayList: ReducerProtocol {
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
-
+        state.clear()
+        let allSets = try! setClient.fetch(false)
+        state.studySets = scheduleClient.study(allSets)
+        state.reviewSets = scheduleClient.review(allSets)
+        let todayWords = try! unitClient.fetchAll(state.studySets)
+        state.onlyFailUnits = utilClient.filterOnlyFailUnits(todayWords)
+        state.todayStatus = .init(
+            sets: state.studySets.count,
+            total: todayWords.count,
+            wrong: state.onlyFailUnits.count
+        )
     }
 
 }
