@@ -79,13 +79,13 @@ extension ScheduleClient: TestDependencyKey {
   )
 
   static let testValue = Self(
-    study: { _ in .mock },
-    review: { _ in .mock },
-    updateStudy: { _ in },
-    updateReview: { _ in },
-    clear: { },
-    autoSet: { _ in },
-    reviewed: { _ in },
-    isReview: { _ in false }
+    study: unimplemented("\(Self.self).study"),
+    review: unimplemented("\(Self.self).review"),
+    updateStudy: unimplemented("\(Self.self).updateStudy"),
+    updateReview: unimplemented("\(Self.self).updateReview"),
+    clear: unimplemented("\(Self.self).clear"),
+    autoSet: unimplemented("\(Self.self).autoSet"),
+    reviewed: unimplemented("\(Self.self).reviewed"),
+    isReview: unimplemented("\(Self.self).isReview")
   )
 }

@@ -48,10 +48,10 @@ extension KanjiClient: TestDependencyKey {
   )
 
   static let testValue = Self(
-    fetch: { _ in .mock },
-    unitKanjis: { _ in .mock },
-    kanjiUnits: { _ in .mock },
-    edit: { _, _ in .init(index: 0) }
+    fetch: unimplemented("\(Self.self).fetch"),
+    unitKanjis: unimplemented("\(Self.self).unitKanjis"),
+    kanjiUnits: unimplemented("\(Self.self).kanjiUnits"),
+    edit: unimplemented("\(Self.self).edit")
   )
 }
 
