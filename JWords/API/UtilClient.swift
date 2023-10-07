@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import XCTestDynamicOverlay
 
 struct UtilClient {
     var filterOnlyFailUnits: ([StudyUnit]) -> [StudyUnit]

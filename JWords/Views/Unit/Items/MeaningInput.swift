@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct MeaningInput: ReducerProtocol {
+struct MeaningInput: Reducer {
 
     struct State: Equatable {
         var text: String = ""
@@ -20,7 +20,7 @@ struct MeaningInput: ReducerProtocol {
     
     private let cd = CoreDataService.shared
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .updateText(let text):

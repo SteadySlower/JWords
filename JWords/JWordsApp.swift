@@ -29,7 +29,7 @@ struct JWordsApp: App {
             MainTabView(
                 store: Store(
                     initialState: MainTab.State(),
-                    reducer: MainTab()._printChanges()
+                    reducer: { MainTab()._printChanges() }
                 )
             )
         }

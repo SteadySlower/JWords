@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyTools: ReducerProtocol {
+struct StudyTools: Reducer {
     
     enum ToolButton: Hashable {
         case set, shuffle, setting
@@ -46,7 +46,7 @@ struct StudyTools: ReducerProtocol {
         case setting
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             default: return .none

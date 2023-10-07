@@ -15,8 +15,9 @@ final class MainTabTest: XCTestCase {
     func testChangeTab() async {
         let store = TestStore(
             initialState: MainTab.State(),
-            reducer: MainTab()
+            reducer: { MainTab() }
         )
+
         
         XCTAssertEqual(store.state.selectedTab, .today)
         

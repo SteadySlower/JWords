@@ -26,7 +26,7 @@ private enum ImageSource {
     }
 }
 
-struct GetImageForOCR: ReducerProtocol {
+struct GetImageForOCR: Reducer {
     struct State: Equatable {
         var showCameraScanner: Bool = false
     }
@@ -41,7 +41,7 @@ struct GetImageForOCR: ReducerProtocol {
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .clipBoardButtonTapped:
@@ -49,7 +49,7 @@ struct GetImageForOCR: ReducerProtocol {
                     let fetchedImage = pasteBoardClient.fetchImage(),
                     let resized = resizeImage(fetchedImage)
                 else { return .none }
-                return .task { .imageFetched(resized) }
+                return .send(.imageFetched(resized))
             case .cameraButtonTapped:
                 state.showCameraScanner = true
                 return .none
@@ -58,7 +58,7 @@ struct GetImageForOCR: ReducerProtocol {
                 return .none
             case .cameraImageSelected(let image):
                 guard let resized = resizeImage(image) else { return .none }
-                return .task { .imageFetched(resized) }
+                return .send(.imageFetched(resized))
             default: return .none
             }
         }

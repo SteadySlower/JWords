@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct SelectUnit: ReducerProtocol {
+struct SelectUnit: Reducer {
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -30,7 +30,7 @@ struct SelectUnit: ReducerProtocol {
     }
     
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .cellTapped:
@@ -95,7 +95,7 @@ struct SelectionCell_Previews: PreviewProvider {
         SelectionCell(
             store: Store(
                 initialState: SelectUnit.State(unit: StudyUnit(index: 0)),
-                reducer: SelectUnit()._printChanges()
+                reducer: { SelectUnit()._printChanges() }
             )
         )
     }

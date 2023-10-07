@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 
 
-struct KanjiList: ReducerProtocol {
+struct KanjiList: Reducer {
     // FIXME: move it to proper place
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     
@@ -34,11 +34,11 @@ struct KanjiList: ReducerProtocol {
     
     @Dependency(\.kanjiClient) var kanjiClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .task { .fetchKanjis }
+                return .send(.fetchKanjis)
             case .fetchKanjis:
                 let last = state.kanjis.last
                 let fetched = try! kanjiClient.fetch(last)

@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import XCTestDynamicOverlay
 
 struct StudySetClient {
     private static let cd = CoreDataService.shared
@@ -62,6 +63,7 @@ extension StudySetClient: TestDependencyKey {
     update: unimplemented("\(Self.self).update"),
     close: unimplemented("\(Self.self).close"),
     fetch: unimplemented("\(Self.self).fetch"),
+//    fetch: { _ in return .mock },
     countUnits: unimplemented("\(Self.self).countUnits")
   )
 }

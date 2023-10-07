@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MoveUnits: ReducerProtocol {
+struct MoveUnits: Reducer {
     struct State: Equatable {
         let fromSet: StudySet
         let isReviewSet: Bool
@@ -47,7 +47,7 @@ struct MoveUnits: ReducerProtocol {
         case onMoved
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -73,7 +73,7 @@ struct MoveUnits: ReducerProtocol {
                     scheduleClient.reviewed(state.fromSet)
                 }
                 state.isLoading = false
-                return .task { .onMoved }
+                return .send(.onMoved)
             default:
                 return .none
             }
@@ -158,7 +158,7 @@ struct UnitMoveView: View {
             initialState: MoveUnits.State(fromSet: StudySet(index: 0),
                                           isReviewSet: true,
                                           toMoveUnits: .mock),
-            reducer: MoveUnits()._printChanges()
+            reducer: { MoveUnits()._printChanges() }
         )
     )
 }

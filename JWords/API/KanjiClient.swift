@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import XCTestDynamicOverlay
 
 struct KanjiClient {
     private static let cd = CoreDataService.shared

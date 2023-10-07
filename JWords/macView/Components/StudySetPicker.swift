@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct SelectStudySet: ReducerProtocol {
+struct SelectStudySet: Reducer {
     
     struct State: Equatable {
         var sets = [StudySet]()
@@ -47,7 +47,7 @@ struct SelectStudySet: ReducerProtocol {
         case idUpdated
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -57,10 +57,10 @@ struct SelectStudySet: ReducerProtocol {
                 state.selectedID = id
                 state.unitCount = nil
                 guard let set = state.selectedSet else {
-                    return .task { .idUpdated }
+                    return .send(.idUpdated)
                 }
                 state.unitCount = try! setClient.countUnits(set)
-                return .task { .idUpdated }
+                return .send(.idUpdated)
             default:
                 return .none
             }

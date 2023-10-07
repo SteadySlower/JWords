@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MacApp: ReducerProtocol {
+struct MacApp: Reducer {
     
     struct State: Equatable {
         var kanjiList = KanjiList.State()
@@ -20,7 +20,7 @@ struct MacApp: ReducerProtocol {
         case ocr(action: AddUnitWithOCR.Action)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             default:

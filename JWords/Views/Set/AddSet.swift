@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct AddSet: ReducerProtocol {
+struct AddSet: Reducer {
     
     struct State: Equatable {
         var inputSet: InputSet.State = .init()
@@ -27,7 +27,7 @@ struct AddSet: ReducerProtocol {
     
     @Dependency(\.studySetClient) var setClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .add:
@@ -37,7 +37,7 @@ struct AddSet: ReducerProtocol {
                     preferredFrontType: state.inputSet.frontType
                 )
                 let set = try! setClient.insert(input)
-                return .task { .added(set) }
+                return .send(.added(set))
             default: return .none
             }
         }
@@ -85,7 +85,7 @@ struct AddSetView: View {
 #Preview {
     AddSetView(store: Store(
         initialState: AddSet.State(),
-        reducer: AddSet())
+        reducer: { AddSet() })
     )
 }
 

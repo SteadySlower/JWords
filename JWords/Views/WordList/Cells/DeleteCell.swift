@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct DeleteUnit: ReducerProtocol {
+struct DeleteUnit: Reducer {
     
     struct State: Equatable, Identifiable {
         let id: String
@@ -26,7 +26,7 @@ struct DeleteUnit: ReducerProtocol {
         case cellTapped
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { _, _ in .none }
     }
     

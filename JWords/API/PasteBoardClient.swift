@@ -11,6 +11,7 @@ import UIKit
 #elseif os(macOS)
 import AppKit
 #endif
+import XCTestDynamicOverlay
 
 struct PasteBoardClient {
     private static let pb = PasteBoard.general

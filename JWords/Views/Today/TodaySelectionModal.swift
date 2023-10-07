@@ -13,7 +13,7 @@ enum Schedule: Equatable {
     case none, study, review
 }
 
-struct TodaySelection: ReducerProtocol {
+struct TodaySelection: Reducer {
     struct State: Equatable {
         var sets = [StudySet]()
         var schedules: [StudySet:Schedule]
@@ -63,7 +63,7 @@ struct TodaySelection: ReducerProtocol {
         case reviewButtonTapped(StudySet)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -186,7 +186,7 @@ struct TodaySelectionModal_Previews: PreviewProvider {
                     initialState: TodaySelection.State(
                         todaySets: [StudySet(index: 0), StudySet(index: 1), StudySet(index: 2)],
                         reviewSets: [StudySet(index: 3), StudySet(index: 4), StudySet(index: 5)]),
-                    reducer: TodaySelection()._printChanges()
+                    reducer: { TodaySelection()._printChanges() }
                 )
             )
         }

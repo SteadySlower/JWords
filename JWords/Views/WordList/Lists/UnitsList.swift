@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct UnitsList: ReducerProtocol {
+struct UnitsList: Reducer {
     struct State: Equatable {
         var _units: IdentifiedArrayOf<StudyOneUnit.State>
         var units: IdentifiedArrayOf<StudyOneUnit.State> {
@@ -46,7 +46,7 @@ struct UnitsList: ReducerProtocol {
         case unit(StudyOneUnit.State.ID, StudyOneUnit.Action)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             default: return .none
@@ -83,6 +83,6 @@ struct StudyList: View {
             frontType: .kanji,
             isLocked: false
         ),
-        reducer: UnitsList())
+        reducer: { UnitsList() })
     )
 }

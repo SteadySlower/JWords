@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct KanjiInput: ReducerProtocol {
+struct KanjiInput: Reducer {
 
     struct State: Equatable {
         var text: String = ""
@@ -27,11 +27,11 @@ struct KanjiInput: ReducerProtocol {
     
     private let cd = CoreDataService.shared
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .updateText(let text):
-                if text.hasTab { return .task { .onTab } }
+                if text.hasTab { return .send(.onTab) }
                 state.text = text
                 return .none
             case .convertToHurigana:
@@ -39,21 +39,15 @@ struct KanjiInput: ReducerProtocol {
                 let hurigana = HuriganaConverter.shared.convert(state.text)
                 state.hurigana = EditHuriganaText.State(hurigana: hurigana)
                 state.isEditing = false
-                return .task { [hurigana = state.hurigana.hurigana] in
-                        .huriganaUpdated(hurigana)
-                }
+                return .send(.huriganaUpdated(state.hurigana.hurigana))
             case .editText:
                 state.isEditing = true
                 state.hurigana = EditHuriganaText.State(hurigana: "")
-                return .task { [hurigana = state.hurigana.hurigana] in
-                        .huriganaUpdated(hurigana)
-                }
+                return .send(.huriganaUpdated(state.hurigana.hurigana))
             case .editHuriText(let action):
                 switch action {
                 case .onHuriUpdated:
-                    return .task { [hurigana = state.hurigana.hurigana] in
-                            .huriganaUpdated(hurigana)
-                    }
+                    return .send(.huriganaUpdated(state.hurigana.hurigana))
                 default: return .none
                 }
             default:

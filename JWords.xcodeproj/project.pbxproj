@@ -16,6 +16,7 @@
 		06004E412AC55C5700947F5D /* StudyModals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E402AC55C5700947F5D /* StudyModals.swift */; };
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
+		060703F22AD0E7CA0078489C /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 060703F12AD0E7CA0078489C /* ComposableArchitecture */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
 		061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99382ACD64EF00C08E17 /* HomeListTest.swift */; };
 		061D993C2ACE599D00C08E17 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D993B2ACE599600C08E17 /* FlexBox.swift */; };
@@ -26,7 +27,6 @@
 		061D99462ACE59D400C08E17 /* GetImageForOCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99452ACE59D400C08E17 /* GetImageForOCRView.swift */; };
 		061D99482ACE59DD00C08E17 /* OCRAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99472ACE59DD00C08E17 /* OCRAddUnitView.swift */; };
 		061D994A2ACE59E900C08E17 /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99492ACE59E900C08E17 /* OCRView.swift */; };
-		0622727629FCEE1500EEAD50 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0622727529FCEE1500EEAD50 /* ComposableArchitecture */; };
 		0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */; };
 		0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727929FCFC2600EEAD50 /* Character+Extension.swift */; };
 		06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */; };
@@ -269,8 +269,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				060703F22AD0E7CA0078489C /* ComposableArchitecture in Frameworks */,
 				06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */,
-				0622727629FCEE1500EEAD50 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,8 +736,8 @@
 			);
 			name = JWords;
 			packageProductDependencies = (
-				0622727529FCEE1500EEAD50 /* ComposableArchitecture */,
 				06CEAC512AB6B71B007783F6 /* GoogleMobileAds */,
+				060703F12AD0E7CA0078489C /* ComposableArchitecture */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -843,8 +843,8 @@
 			mainGroup = 06CEF23A2866F1C800A620CC;
 			packageReferences = (
 				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				060703F02AD0E7CA0078489C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
 			projectDirPath = "";
@@ -1428,12 +1428,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		060703F02AD0E7CA0078489C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.52.0;
+				minimumVersion = 1.2.0;
 			};
 		};
 		06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
@@ -1455,9 +1455,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0622727529FCEE1500EEAD50 /* ComposableArchitecture */ = {
+		060703F12AD0E7CA0078489C /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0622727429FCEE1500EEAD50 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			package = 060703F02AD0E7CA0078489C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
 		06CEAC512AB6B71B007783F6 /* GoogleMobileAds */ = {

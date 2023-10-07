@@ -12,10 +12,7 @@ import XCTest
 
 typealias TestStoreOfHomeList = TestStore<
     HomeList.State,
-    HomeList.Action,
-    HomeList.State,
-    HomeList.Action,
-    ()
+    HomeList.Action
 >
 
 @MainActor
@@ -24,7 +21,7 @@ final class HomeListTest: XCTestCase {
     private func setStore() async -> TestStoreOfHomeList {
         let store = TestStore(
             initialState: HomeList.State(),
-            reducer: HomeList())
+            reducer: { HomeList() })
         {
             $0.studySetClient.fetch = { bool in bool ? .mockIncludingClosed : .mock }
             $0.studyUnitClient.fetch = { _ in .mock }

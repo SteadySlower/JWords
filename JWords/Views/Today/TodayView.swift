@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct TodayList: ReducerProtocol {
+struct TodayList: Reducer {
     struct State: Equatable {
         var studySets: [StudySet] = []
         var reviewSets: [StudySet] = []
@@ -66,7 +66,7 @@ struct TodayList: ReducerProtocol {
         case homeCellTapped(StudySet)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -84,7 +84,7 @@ struct TodayList: ReducerProtocol {
                         scheduleClient.updateReview(newReview)
                     }
                     state.todaySelection = nil
-                    return .task { .onAppear }
+                    return .send(.onAppear)
                 }
                 return .none
             case .todayStatusTapped:
@@ -111,7 +111,7 @@ struct TodayList: ReducerProtocol {
                 state.clear()
                 scheduleClient.clear()
                 fetchSchedule(&state)
-                return .task  { .onAppear }
+                return .send(.onAppear)
             case .showTutorial(let show):
                 state.showTutorial = show
                 return .none
@@ -291,7 +291,7 @@ struct TodayView_Previews: PreviewProvider {
             TodayView(
                 store: Store(
                     initialState: TodayList.State(),
-                    reducer: TodayList()._printChanges()
+                    reducer: { TodayList()._printChanges() }
                 )
             )
         }

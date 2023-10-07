@@ -14,7 +14,7 @@ extension View {
     }
 }
 
-struct ShowModalsInList: ReducerProtocol {
+struct ShowModalsInList: Reducer {
     
     struct State: Equatable {
         var editSet: EditSet.State?
@@ -83,7 +83,7 @@ struct ShowModalsInList: ReducerProtocol {
         case unitsMoved
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .showEditSetModal(let show):
@@ -102,7 +102,7 @@ struct ShowModalsInList: ReducerProtocol {
                 switch action {
                 case .edited(let set):
                     state.editSet = nil
-                    return .task { .setEdited(set) }
+                    return .send(.setEdited(set))
                 case .cancel:
                     state.editSet = nil
                     return .none
@@ -112,7 +112,7 @@ struct ShowModalsInList: ReducerProtocol {
                 switch action {
                 case .added(let unit):
                     state.addUnit = nil
-                    return .task { .unitAdded(unit) }
+                    return .send(.unitAdded(unit))
                 case .cancel:
                     state.addUnit = nil
                     return .none
@@ -122,7 +122,7 @@ struct ShowModalsInList: ReducerProtocol {
                 switch action {
                 case .edited(let unit):
                     state.editUnit = nil
-                    return .task { .unitEdited(unit) }
+                    return .send(.unitEdited(unit))
                 case .cancel:
                     state.editUnit = nil
                     return .none
@@ -132,7 +132,7 @@ struct ShowModalsInList: ReducerProtocol {
                 switch action {
                 case .onMoved:
                     state.moveUnits = nil
-                    return .task { .unitsMoved }
+                    return .send(.unitsMoved)
                 case .cancelButtonTapped:
                     state.moveUnits = nil
                     return .none

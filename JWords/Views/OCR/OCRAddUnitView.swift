@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct AddUnitWithOCR: ReducerProtocol {
+struct AddUnitWithOCR: Reducer {
     struct State: Equatable {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State(pickerName: "")
@@ -21,7 +21,7 @@ struct AddUnitWithOCR: ReducerProtocol {
         case addUnit(AddUnit.Action)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .ocr(let action):

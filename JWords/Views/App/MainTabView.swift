@@ -12,7 +12,7 @@ enum Tab {
     case today, home, kanji, ocr
 }
 
-struct MainTab: ReducerProtocol {
+struct MainTab: Reducer {
     
     struct State: Equatable {
         var selectedTab: Tab = .today
@@ -30,7 +30,7 @@ struct MainTab: ReducerProtocol {
         case ocr(AddUnitWithOCR.Action)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .tabChanged(let tab):
@@ -151,7 +151,7 @@ struct iOSAppView_Previews: PreviewProvider {
         MainTabView(
             store: Store(
                 initialState: MainTab.State(),
-                reducer: MainTab()._printChanges()
+                reducer: { MainTab()._printChanges() }
             )
         )
     }

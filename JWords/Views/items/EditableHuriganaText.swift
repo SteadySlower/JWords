@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct EditHuriganaText: ReducerProtocol {
+struct EditHuriganaText: Reducer {
     struct State: Equatable {
         var huris: [Huri]
         
@@ -35,12 +35,12 @@ struct EditHuriganaText: ReducerProtocol {
         case onHuriUpdated
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onGanaUpdated(let huri):
                 state.updateHuri(huri)
-                return .task { .onHuriUpdated }
+                return .send(.onHuriUpdated)
             default:
                 return .none
             }
@@ -70,15 +70,12 @@ struct EditableHuriganaText: View {
     }
 }
 
-
-struct EditableHuriganaText_Previews: PreviewProvider {
+#Preview {
+    let sampleHurigana = "弟⌜おとうと⌟``さん`全然⌜ぜんぜん⌟``大丈夫⌜だいじょうぶ⌟``です`よ`色々⌜いろいろ⌟``な`こと`が`ある`の`み`間違⌜まちが⌟`い`ない`よ`君⌜きみ⌟``なん`と`か`なる`よ`緊張⌜きんちょう⌟``し`ない`で`進⌜すす⌟`む`よ`なん`だけ`？`"
     
-    static let sampleHurigana = "弟⌜おとうと⌟``さん`全然⌜ぜんぜん⌟``大丈夫⌜だいじょうぶ⌟``です`よ`色々⌜いろいろ⌟``な`こと`が`ある`の`み`間違⌜まちが⌟`い`ない`よ`君⌜きみ⌟``なん`と`か`なる`よ`緊張⌜きんちょう⌟``し`ない`で`進⌜すす⌟`む`よ`なん`だけ`？`"
-    
-    static var previews: some View {
-        EditableHuriganaText(
-            store: Store(initialState: EditHuriganaText.State(hurigana: sampleHurigana),
-                                          reducer: EditHuriganaText())
-        )
-    }
+    return EditableHuriganaText(
+        store: Store(
+            initialState: EditHuriganaText.State(hurigana: sampleHurigana),
+            reducer: { EditHuriganaText() })
+    )
 }

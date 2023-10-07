@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyKanjiSamples: ReducerProtocol {
+struct StudyKanjiSamples: Reducer {
     struct State: Equatable {
         let kanji: Kanji
         var lists: SwitchBetweenList.State
@@ -27,7 +27,7 @@ struct StudyKanjiSamples: ReducerProtocol {
         case lists(SwitchBetweenList.Action)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             default: return .none
@@ -63,7 +63,7 @@ struct StudyKanjiSampleView: View {
     NavigationView {
         StudyKanjiSampleView(store: Store(
             initialState: StudyKanjiSamples.State(kanji: .init(index: 0), units: .mock),
-            reducer: StudyKanjiSamples())
+            reducer: { StudyKanjiSamples() })
         )
     }
 }

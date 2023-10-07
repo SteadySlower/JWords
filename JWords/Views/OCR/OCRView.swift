@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct OCR: ReducerProtocol {
+struct OCR: Reducer {
     
     struct State: Equatable {
         var getImage = GetImageForOCR.State()
@@ -26,7 +26,7 @@ struct OCR: ReducerProtocol {
     
     @Dependency(\.ocrClient) var ocrClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .getImage(let action):
@@ -34,15 +34,15 @@ struct OCR: ReducerProtocol {
                 case .imageFetched(let image):
                     state.ocr = GetTextsFromOCR.State(image: image)
                     return .merge(
-                        .task {
-                            await .koreanOcrResponse(TaskResult {
+                        .run{ send in
+                            await send(.koreanOcrResponse(TaskResult {
                                 try await ocrClient.ocr(image, .korean)
-                            })
+                            }))
                         },
-                        .task {
-                            await .japaneseOcrResponse(TaskResult {
+                        .run{ send in
+                            await send(.japaneseOcrResponse(TaskResult {
                                 try await ocrClient.ocr(image, .japanese)
-                            })
+                            }))
                         }
                     )
                 default:
@@ -52,9 +52,9 @@ struct OCR: ReducerProtocol {
                 switch action {
                 case .ocrMarkTapped(let lang, let text):
                     if lang == .korean {
-                        return .task { .koreanOCR(text) }
+                        return .send(.koreanOCR(text))
                     } else {
-                        return .task { .japaneseOCR(text) }
+                        return .send(.japaneseOCR(text))
                     }
                 case .removeImageButtonTapped:
                     state.ocr = nil
