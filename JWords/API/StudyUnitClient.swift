@@ -97,18 +97,6 @@ extension StudyUnitClient: TestDependencyKey {
     fetch: { _ in .mock },
     fetchAll: { _ in .mock }
   )
-
-  static let testValue = Self(
-    checkIfExist: unimplemented("\(Self.self).checkIfExist"),
-    insert: unimplemented("\(Self.self).insert"),
-    insertExisting: unimplemented("\(Self.self).insertExisting"),
-    edit: unimplemented("\(Self.self).edit"),
-    delete: unimplemented("\(Self.self).delete"),
-    studyState: unimplemented("\(Self.self).studyState"),
-    move: unimplemented("\(Self.self).move"),
-    fetch: unimplemented("\(Self.self).fetch"),
-    fetchAll: unimplemented("\(Self.self).fetchAll")
-  )
 }
 
 

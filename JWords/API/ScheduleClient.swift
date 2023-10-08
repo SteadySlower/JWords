@@ -78,15 +78,4 @@ extension ScheduleClient: TestDependencyKey {
     reviewed: { _ in },
     isReview: { _ in false }
   )
-
-  static let testValue = Self(
-    study: unimplemented("\(Self.self).study"),
-    review: unimplemented("\(Self.self).review"),
-    updateStudy: unimplemented("\(Self.self).updateStudy"),
-    updateReview: unimplemented("\(Self.self).updateReview"),
-    clear: unimplemented("\(Self.self).clear"),
-    autoSet: unimplemented("\(Self.self).autoSet"),
-    reviewed: unimplemented("\(Self.self).reviewed"),
-    isReview: unimplemented("\(Self.self).isReview")
-  )
 }

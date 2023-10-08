@@ -57,15 +57,6 @@ extension StudySetClient: TestDependencyKey {
     fetch: { _ in .mock },
     countUnits: { _ in Int.random(in: 0...100) }
   )
-
-  static let testValue = Self(
-    insert: unimplemented("\(Self.self).insert"),
-    update: unimplemented("\(Self.self).update"),
-    close: unimplemented("\(Self.self).close"),
-    fetch: unimplemented("\(Self.self).fetch"),
-//    fetch: { _ in return .mock },
-    countUnits: unimplemented("\(Self.self).countUnits")
-  )
 }
 
 

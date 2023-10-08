@@ -39,10 +39,5 @@ extension UtilClient: TestDependencyKey {
     filterOnlyFailUnits: { _ in .mock },
     shuffleUnits: { _ in .mock }
   )
-
-  static let testValue = Self(
-    filterOnlyFailUnits: unimplemented("\(Self.self).filterOnlyFailUnits"),
-    shuffleUnits: unimplemented("\(Self.self).shuffleUnits")
-  )
 }
 

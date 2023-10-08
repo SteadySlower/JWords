@@ -32,8 +32,4 @@ extension OCRClient: TestDependencyKey {
   static let previewValue = Self(
     ocr: { _, _ in [] }
   )
-
-  static let testValue = Self(
-    ocr: { _, _ in [] }
-  )
 }

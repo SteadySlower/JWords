@@ -47,13 +47,6 @@ extension KanjiClient: TestDependencyKey {
     kanjiUnits: { _ in .mock },
     edit: { _, _ in .init(index: 0) }
   )
-
-  static let testValue = Self(
-    fetch: unimplemented("\(Self.self).fetch"),
-    unitKanjis: unimplemented("\(Self.self).unitKanjis"),
-    kanjiUnits: unimplemented("\(Self.self).kanjiUnits"),
-    edit: unimplemented("\(Self.self).edit")
-  )
 }
 
 

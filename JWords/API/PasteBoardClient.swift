@@ -59,10 +59,5 @@ extension PasteBoardClient: TestDependencyKey {
     },
     copyString: { _ in }
   )
-
-  static let testValue = Self(
-    fetchImage: unimplemented("\(Self.self).fetchImage"),
-    copyString: unimplemented("\(Self.self).copyString")
-  )
 }
 
