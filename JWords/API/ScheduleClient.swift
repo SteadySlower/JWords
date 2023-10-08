@@ -7,13 +7,18 @@
 
 import ComposableArchitecture
 import Foundation
+import XCTestDynamicOverlay
 
 struct ScheduleClient {
     private static let kv = KeyValueStoreService.shared
-    var fetch: () -> TodaySchedule
+    var study: ([StudySet]) -> [StudySet]
+    var review: ([StudySet]) -> [StudySet]
+    var updateStudy: ([StudySet]) -> Void
+    var updateReview: ([StudySet]) -> Void
+    var clear: () -> Void
     var autoSet: ([StudySet]) -> Void
-    var update: (TodaySchedule) -> Void
     var reviewed: (StudySet) -> Void
+    var isReview: (StudySet) -> Bool
 }
 
 extension DependencyValues {
@@ -25,47 +30,52 @@ extension DependencyValues {
 
 extension ScheduleClient: DependencyKey {
   static let liveValue = ScheduleClient(
-    fetch: {
-        TodaySchedule(studyIDs: kv.arrayOfString(for: .studySets),
-                      reviewIDs: kv.arrayOfString(for: .reviewSets),
-                      reviewedIDs: kv.arrayOfString(for: .reviewedSets),
-                      createdAt: kv.date(for: .createdAt))
+    study: { sets in
+        let studyIDs = kv.arrayOfString(for: .studySets)
+        return sets.filter { studyIDs.contains($0.id) }
+    },
+    review: { sets in
+        let reviewIDs = kv.arrayOfString(for: .reviewSets)
+        return sets.filter { reviewIDs.contains($0.id) }
+    },
+    updateStudy: { sets in
+        kv.setArrayOfString(key: .studySets, value: sets.map { $0.id })
+    },
+    updateReview: { sets in
+        kv.setArrayOfString(key: .reviewSets, value: sets.map { $0.id })
+    },
+    clear: {
+        kv.setArrayOfString(key: .studySets, value: [])
+        kv.setArrayOfString(key: .reviewSets, value: [])
+        kv.setDate(key: .createdAt, value: Date())
     },
     autoSet: { sets in
         let studySets = sets.filter { $0.schedule == .study }.map { $0.id }
         let reviewSets = sets.filter { $0.schedule == .review }.map { $0.id }
         kv.setArrayOfString(key: .studySets, value: studySets)
         kv.setArrayOfString(key: .reviewSets, value: reviewSets)
-        kv.setArrayOfString(key: .reviewedSets, value: [])
-        kv.setDate(key: .createdAt, value: Date())
-    },
-    update: { schedule in
-        kv.setArrayOfString(key: .studySets, value: schedule.studyIDs)
-        kv.setArrayOfString(key: .reviewSets, value: schedule.reviewIDs)
-        kv.setArrayOfString(key: .reviewedSets, value: schedule.reviewedIDs)
         kv.setDate(key: .createdAt, value: Date())
     },
     reviewed: { set in
-        var reviewedIDs = kv.arrayOfString(for: .reviewedSets)
-        reviewedIDs.append(set.id)
-        kv.setArrayOfString(key: .reviewedSets, value: reviewedIDs)
-        kv.setDate(key: .createdAt, value: Date())
+        var newReviewIDs = kv.arrayOfString(for: .reviewSets).filter { $0 != set.id }
+        kv.setArrayOfString(key: .reviewSets, value: newReviewIDs)
+    },
+    isReview: { set in
+        let reviewIDs = kv.arrayOfString(for: .reviewSets)
+        return reviewIDs.contains(set.id)
     }
   )
 }
 
 extension ScheduleClient: TestDependencyKey {
   static let previewValue = Self(
-    fetch: { .empty },
+    study: { _ in .mock },
+    review: { _ in .mock },
+    updateStudy: { _ in },
+    updateReview: { _ in },
+    clear: { },
     autoSet: { _ in },
-    update: { _ in },
-    reviewed: { _ in }
-  )
-
-  static let testValue = Self(
-    fetch: { .empty },
-    autoSet: { _ in },
-    update: { _ in },
-    reviewed: { _ in }
+    reviewed: { _ in },
+    isReview: { _ in false }
   )
 }

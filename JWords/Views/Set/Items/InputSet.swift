@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct InputSet: ReducerProtocol {
+struct InputSet: Reducer {
     
     struct State: Equatable {
         var title: String
@@ -28,7 +28,7 @@ struct InputSet: ReducerProtocol {
         case updateFrontType(FrontType)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .updateTitle(let title):
@@ -80,6 +80,6 @@ struct InputSetView: View {
 #Preview {
     InputSetView(store: Store(
         initialState: InputSet.State(),
-        reducer: InputSet())
+        reducer: { InputSet() })
     )
 }

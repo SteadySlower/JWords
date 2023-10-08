@@ -8,13 +8,13 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct AddUnit: ReducerProtocol {
+struct AddUnit: Reducer {
     
     struct State: Equatable {
         var set: StudySet?
         var alreadyExist: StudyUnit?
         var inputUnit = InputUnit.State()
-        var alert: AlertState<Action>?
+        @PresentationState var alert: AlertState<AlertAction>?
         
         mutating func clearInput() {
             inputUnit.kanjiInput.text = ""
@@ -24,7 +24,7 @@ struct AddUnit: ReducerProtocol {
         }
         
         fileprivate mutating func setNoSetAlert() {
-            alert = AlertState<Action> {
+            alert = AlertState<AlertAction> {
                 TextState("선택된 단어장 없음")
             } actions: {
                 ButtonState(role: .none) {
@@ -37,7 +37,7 @@ struct AddUnit: ReducerProtocol {
         
         fileprivate mutating func setExistAlert() {
             let kanjiText = inputUnit.kanjiInput.text
-            alert = AlertState<Action> {
+            alert = AlertState<AlertAction> {
                 TextState("표제어 중복")
             } actions: {
                 ButtonState(role: .none) {
@@ -54,12 +54,14 @@ struct AddUnit: ReducerProtocol {
         case add
         case cancel
         case added(StudyUnit)
-        case alertDismissed
+        case alert(PresentationAction<AlertAction>)
     }
+    
+    enum AlertAction: Equatable {}
     
     @Dependency(\.studyUnitClient) var unitClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .inputUnit(let action):
@@ -84,21 +86,19 @@ struct AddUnit: ReducerProtocol {
                         meaningText: state.inputUnit.meaningInput.text)
                     let edited = try! unitClient.edit(alreadyExist, input)
                     let unit = try! unitClient.insertExisting(set, edited)
-                    return .task { .added(unit) }
+                    return .send(.added(unit))
                 } else {
                     let input = StudyUnitInput(
                         type: .word,
                         kanjiText: state.inputUnit.kanjiInput.hurigana.hurigana,
                         meaningText: state.inputUnit.meaningInput.text)
                     let unit = try! unitClient.insert(set, input)
-                    return .task { .added(unit) }
+                    return .send(.added(unit))
                 }
-            case .alertDismissed:
-                state.alert = nil
-                return .none
             default: return .none
             }
         }
+        .ifLet(\.$alert, action: /Action.alert)
         Scope(state: \.inputUnit, action: /Action.inputUnit) {
             InputUnit()
         }
@@ -130,8 +130,9 @@ struct AddUnitView: View {
                 }
             }
             .alert(
-              store.scope(state: \.alert),
-              dismiss: .alertDismissed
+                store: store.scope(
+                    state: \.$alert,
+                    action: { .alert($0) })
             )
         }
     }

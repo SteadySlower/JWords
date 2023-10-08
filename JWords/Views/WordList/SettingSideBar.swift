@@ -21,7 +21,7 @@ enum UnitFilter: Hashable, CaseIterable, Equatable {
     }
 }
 
-struct StudySetting: ReducerProtocol {
+struct StudySetting: Reducer {
     struct State: Equatable {
         let showSetEditButtons: Bool
         let selectableListType: [ListType]
@@ -48,7 +48,7 @@ struct StudySetting: ReducerProtocol {
         case unitAddButtonTapped
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .setFrontType(let type):

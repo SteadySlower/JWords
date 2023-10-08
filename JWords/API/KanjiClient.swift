@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import XCTestDynamicOverlay
 
 struct KanjiClient {
     private static let cd = CoreDataService.shared
@@ -41,13 +42,6 @@ extension KanjiClient: DependencyKey {
 
 extension KanjiClient: TestDependencyKey {
   static let previewValue = Self(
-    fetch: { _ in .mock },
-    unitKanjis: { _ in .mock },
-    kanjiUnits: { _ in .mock },
-    edit: { _, _ in .init(index: 0) }
-  )
-
-  static let testValue = Self(
     fetch: { _ in .mock },
     unitKanjis: { _ in .mock },
     kanjiUnits: { _ in .mock },

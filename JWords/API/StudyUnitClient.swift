@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import XCTestDynamicOverlay
 
 struct StudyUnitClient {
     private static let cd = CoreDataService.shared
@@ -17,7 +18,7 @@ struct StudyUnitClient {
     var studyState: (StudyUnit, StudyState) throws -> Void
     var move: ([StudyUnit], StudySet, StudySet) throws -> Void
     var fetch: (StudySet) throws -> [StudyUnit]
-    
+    var fetchAll: ([StudySet]) throws -> [StudyUnit]
 }
 
 extension DependencyValues {
@@ -75,6 +76,11 @@ extension StudyUnitClient: DependencyKey {
     },
     fetch: { set in
         try cd.fetchUnits(of: set)
+    },
+    fetchAll: { sets in
+        try sets
+            .map { try cd.fetchUnits(of: $0) }
+            .reduce([], +)
     }
   )
 }
@@ -88,18 +94,8 @@ extension StudyUnitClient: TestDependencyKey {
     delete: { _, _ in },
     studyState: { _, _ in },
     move: { _, _, _ in  },
-    fetch: { _ in .mock }
-  )
-
-  static let testValue = Self(
-    checkIfExist: { _ in nil },
-    insert: { _, _ in .init(index: 0) },
-    insertExisting: { _, _ in .init(index: 0) },
-    edit: { _, _ in .init(index: 0) },
-    delete: { _, _ in },
-    studyState: { _, _ in },
-    move: { _, _, _ in  },
-    fetch: { _ in .mock }
+    fetch: { _ in .mock },
+    fetchAll: { _ in .mock }
   )
 }
 

@@ -12,10 +12,7 @@ import XCTest
 
 typealias TestStoreOfHomeList = TestStore<
     HomeList.State,
-    HomeList.Action,
-    HomeList.State,
-    HomeList.Action,
-    ()
+    HomeList.Action
 >
 
 @MainActor
@@ -24,7 +21,11 @@ final class HomeListTest: XCTestCase {
     private func setStore() async -> TestStoreOfHomeList {
         let store = TestStore(
             initialState: HomeList.State(),
-            reducer: HomeList())
+            reducer: { HomeList() })
+        {
+            $0.studySetClient.fetch = { bool in bool ? .mockIncludingClosed : .mock }
+            $0.studyUnitClient.fetch = { _ in .mock }
+        }
         
         await store.send(.onAppear) {
             $0.sets = .mock
@@ -34,19 +35,13 @@ final class HomeListTest: XCTestCase {
     }
     
     func testOnAppear() async {
-        let store = TestStore(
-            initialState: HomeList.State(),
-            reducer: HomeList())
-
-        await store.send(.onAppear) {
-            $0.sets = .mock
-        }
+        _ = await setStore()
     }
     
     func testHomeCellTapped() async {
         let store = await setStore()
         
-        let tappedSet = [StudySet].mock[0]
+        let tappedSet = store.state.sets[0]
         
         await store.send(.homeCellTapped(tappedSet)) {
             $0.studyUnitsInSet = StudyUnitsInSet.State(set: tappedSet, units: .mock)

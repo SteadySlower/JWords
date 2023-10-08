@@ -25,7 +25,7 @@ enum ListType {
     }
 }
 
-struct SwitchBetweenList: ReducerProtocol {
+struct SwitchBetweenList: Reducer {
     struct State: Equatable {
         
         var type: ListType
@@ -129,13 +129,13 @@ struct SwitchBetweenList: ReducerProtocol {
         case toEditUnitSelected(StudyUnit)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .edit(let action):
                 switch action {
                 case .toEditUnitSelected(let unit):
-                    return .task { .toEditUnitSelected(unit) }
+                    return .send(.toEditUnitSelected(unit))
                 default: return .none
                 }
             default: return .none

@@ -13,54 +13,46 @@ enum Schedule: Equatable {
     case none, study, review
 }
 
-struct TodaySelection: ReducerProtocol {
+struct TodaySelection: Reducer {
     struct State: Equatable {
-        var sets: [StudySet] = []
-        var reviewedSets: [StudySet]
-        var schedules: [String:Schedule]
-        var isLoading: Bool = false
+        var sets = [StudySet]()
+        var schedules: [StudySet:Schedule]
         
-        init(todaySets: [StudySet], reviewSets: [StudySet], reviewedSets: [StudySet]) {
-            var schedules = [String:Schedule]()
+        init(todaySets: [StudySet], reviewSets: [StudySet]) {
+            var schedules = [StudySet:Schedule]()
             for set in todaySets {
-                schedules[set.id] = .study
+                schedules[set] = .study
             }
             for set in reviewSets {
-                schedules[set.id] = .review
+                schedules[set] = .review
             }
             self.schedules = schedules
-            self.reviewedSets = reviewedSets
         }
         
-        mutating func toggleStudy(_ id: String) {
-            if schedules[id, default: .none] == .study {
-                schedules[id, default: .none] = .none
+        mutating func toggleStudy(_ set: StudySet) {
+            if schedules[set, default: .none] == .study {
+                schedules[set, default: .none] = .none
             } else {
-                schedules[id, default: .none] = .study
+                schedules[set, default: .none] = .study
             }
         }
         
-        mutating func toggleReview(_ id: String) {
-            if schedules[id, default: .none] == .review {
-                schedules[id, default: .none] = .none
+        mutating func toggleReview(_ set: StudySet) {
+            if schedules[set, default: .none] == .review {
+                schedules[set, default: .none] = .none
             } else {
-                schedules[id, default: .none] = .review
+                schedules[set, default: .none] = .review
             }
         }
         
-        var newSchedule: TodaySchedule {
-            getTodaySchedule(schedules, reviewedSets.map { $0.id })
+        var studySets: [StudySet] {
+            schedules.keys.filter { schedules[$0, default: .none] == .study }
         }
         
-        fileprivate func getTodaySchedule(_ schedule: [String:Schedule], _ reviewedIDs: [String]) -> TodaySchedule {
-            let studyIDs = schedule.keys.filter { schedule[$0] == .study }
-            let reviewIDs = schedule.keys.filter { schedule[$0] == .review }
-            let reviewedIDs = reviewedIDs.filter { schedule[$0, default: .none] == .none }
-            return TodaySchedule(studyIDs: studyIDs,
-                                  reviewIDs: reviewIDs,
-                                  reviewedIDs: reviewedIDs,
-                                  createdAt: Date())
+        var reviewSets: [StudySet] {
+            schedules.keys.filter { schedules[$0, default: .none] == .review }
         }
+        
     }
     
     @Dependency(\.studySetClient) var setClient
@@ -71,7 +63,7 @@ struct TodaySelection: ReducerProtocol {
         case reviewButtonTapped(StudySet)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -79,19 +71,19 @@ struct TodaySelection: ReducerProtocol {
                 state.sets = sortSetsBySchedule(sets, schedule: state.schedules)
                 return .none
             case let .studyButtonTapped(set):
-                state.toggleStudy(set.id)
+                state.toggleStudy(set)
                 return .none
             case let .reviewButtonTapped(set):
-                state.toggleReview(set.id)
+                state.toggleReview(set)
                 return .none
             }
         }
     }
     
-    private func sortSetsBySchedule(_ sets: [StudySet], schedule: [String:Schedule]) -> [StudySet] {
+    private func sortSetsBySchedule(_ sets: [StudySet], schedule: [StudySet:Schedule]) -> [StudySet] {
         return sets.sorted(by: { set1, set2 in
-            if schedule[set1.id, default: .none] != .none
-                && schedule[set2.id, default: .none] == .none {
+            if schedule[set1, default: .none] != .none
+                && schedule[set2, default: .none] == .none {
                 return true
             } else {
                 return false
@@ -116,7 +108,7 @@ struct TodaySelectionModal: View {
                     VStack(spacing: 8) {
                         ForEach(vs.sets, id: \.id) { set in
                             setCell(set,
-                                     vs.schedules[set.id] ?? .none,
+                                     vs.schedules[set] ?? .none,
                                      { vs.send(.studyButtonTapped(set)) },
                                      { vs.send(.reviewButtonTapped(set)) })
                         }
@@ -125,7 +117,6 @@ struct TodaySelectionModal: View {
                 }
             }
             .padding(.horizontal, 10)
-            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
     }
@@ -194,9 +185,8 @@ struct TodaySelectionModal_Previews: PreviewProvider {
                 store: Store(
                     initialState: TodaySelection.State(
                         todaySets: [StudySet(index: 0), StudySet(index: 1), StudySet(index: 2)],
-                        reviewSets: [StudySet(index: 3), StudySet(index: 4), StudySet(index: 5)],
-                        reviewedSets: []),
-                    reducer: TodaySelection()._printChanges()
+                        reviewSets: [StudySet(index: 3), StudySet(index: 4), StudySet(index: 5)]),
+                    reducer: { TodaySelection()._printChanges() }
                 )
             )
         }

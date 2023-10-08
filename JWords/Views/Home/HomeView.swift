@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct HomeList: ReducerProtocol {
+struct HomeList: Reducer {
     struct State: Equatable {
         var sets: [StudySet] = []
         var studyUnitsInSet: StudyUnitsInSet.State?
@@ -45,7 +45,7 @@ struct HomeList: ReducerProtocol {
     @Dependency(\.studySetClient) var setClient
     @Dependency(\.studyUnitClient) var unitClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -61,7 +61,7 @@ struct HomeList: ReducerProtocol {
                 return .none
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
-                return .task { .onAppear }
+                return .send(.onAppear)
             case .studyUnitsInSet(let action):
                 switch action {
                 case .dismiss:
@@ -175,7 +175,7 @@ struct HomeView_Previews: PreviewProvider {
             HomeView(
                 store: Store(
                     initialState: HomeList.State(),
-                    reducer: HomeList()._printChanges()
+                    reducer: { HomeList()._printChanges() }
                 )
             )
         }

@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct GetTextsFromOCR: ReducerProtocol {
+struct GetTextsFromOCR: Reducer {
     struct State: Equatable {
         var image: InputImageType
         var koreanOcrResult: [OCRResult] = []
@@ -20,7 +20,7 @@ struct GetTextsFromOCR: ReducerProtocol {
         case removeImageButtonTapped
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             return .none
         }

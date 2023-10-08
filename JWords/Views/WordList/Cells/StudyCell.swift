@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct StudyOneUnit: ReducerProtocol {
+struct StudyOneUnit: Reducer {
     struct State: Equatable, Identifiable {
         let id: String
         var unit: StudyUnit
@@ -63,7 +63,7 @@ struct StudyOneUnit: ReducerProtocol {
     
     private let cd = CoreDataService.shared
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .cellTapped:
@@ -195,13 +195,13 @@ struct StudyCell_Previews: PreviewProvider {
         StudyCell(
             store: Store(
                 initialState: StudyOneUnit.State(unit: .init(index: 0), frontType: .meaning),
-                reducer: StudyOneUnit()._printChanges()
+                reducer: { StudyOneUnit()._printChanges() }
             )
         )
         StudyCell(
             store: Store(
                 initialState: StudyOneUnit.State(unit: .init(index: 0), frontType: .kanji, isLocked: true),
-                reducer: StudyOneUnit()._printChanges()
+                reducer: { StudyOneUnit()._printChanges() }
             )
         )
         .previewDisplayName("Locked")

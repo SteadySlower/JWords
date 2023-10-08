@@ -8,7 +8,7 @@
 import Foundation
 
 enum KVStorageKey: String {
-    case studySets, reviewSets, reviewedSets, createdAt
+    case studySets, reviewSets, createdAt
 }
 
 final class KeyValueStoreService {

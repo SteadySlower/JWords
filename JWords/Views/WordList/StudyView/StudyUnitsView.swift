@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyUnits: ReducerProtocol {
+struct StudyUnits: Reducer {
     struct State: Equatable {
         var lists: SwitchBetweenList.State
         var setting: StudySetting.State
@@ -40,7 +40,7 @@ struct StudyUnits: ReducerProtocol {
         case dismiss
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .lists(let action):
@@ -81,7 +81,7 @@ struct StudyUnits: ReducerProtocol {
                     state.lists.setListType(listType)
                 default: return .none
                 }
-                return .task { .showSideBar(false) }
+                return .send(.showSideBar(false))
             default: return .none
             }
         }
@@ -152,7 +152,7 @@ struct StudyUnitsView: View {
     NavigationView {
         StudyUnitsView(store: Store(
             initialState: StudyUnits.State(units: .mock),
-            reducer: StudyUnits())
+            reducer: { StudyUnits() })
         )
     }
 }

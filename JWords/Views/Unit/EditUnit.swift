@@ -8,12 +8,12 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct EditUnit: ReducerProtocol {
+struct EditUnit: Reducer {
     
     struct State: Equatable {
         let unit: StudyUnit
         var inputUnit = InputUnit.State()
-        var alert: AlertState<Action>?
+        @PresentationState var alert: AlertState<AlertAction>?
         
         init(unit: StudyUnit) {
             self.unit = unit
@@ -34,7 +34,7 @@ struct EditUnit: ReducerProtocol {
         
         fileprivate mutating func setUneditableAlert() {
             let kanjiText = inputUnit.kanjiInput.text
-            alert = AlertState<Action> {
+            alert = AlertState<AlertAction> {
                 TextState("표제어 중복")
             } actions: {
                 ButtonState(action: .cancel) {
@@ -49,14 +49,18 @@ struct EditUnit: ReducerProtocol {
     enum Action: Equatable {
         case inputUnit(InputUnit.Action)
         case edit
-        case cancel
         case edited(StudyUnit)
-        case alertDismissed
+        case cancel
+        case alert(PresentationAction<AlertAction>)
+    }
+    
+    enum AlertAction: Equatable {
+        case cancel
     }
     
     @Dependency(\.studyUnitClient) var unitClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .inputUnit(let action):
@@ -75,13 +79,16 @@ struct EditUnit: ReducerProtocol {
                     kanjiText: state.kanjiText,
                     meaningText: state.meaningText)
                 let unit = try! unitClient.edit(state.unit, input)
-                return .task { .edited(unit) }
-            case .alertDismissed:
-                state.alert = nil
+                return .send(.edited(unit))
+            case .alert(let action):
+                if action == .presented(.cancel) {
+                    return .send(.cancel)
+                }
                 return .none
             default: return .none
             }
         }
+        .ifLet(\.$alert, action: /Action.alert)
         Scope(state: \.inputUnit, action: /Action.inputUnit) {
             InputUnit()
         }
@@ -112,10 +119,7 @@ struct EditUnitView: View {
                     .disabled(!vs.inputUnit.ableToAdd)
                 }
             }
-            .alert(
-              store.scope(state: \.alert),
-              dismiss: .alertDismissed
-            )
+            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
         }
     }
 }

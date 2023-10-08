@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct EditUnits: ReducerProtocol {
+struct EditUnits: Reducer {
     struct State: Equatable {
         var units: IdentifiedArrayOf<ToEditUnit.State>
         
@@ -23,13 +23,13 @@ struct EditUnits: ReducerProtocol {
         case toEditUnitSelected(StudyUnit)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .unit(_, let action):
                 switch action {
                 case .cellTapped(let unit):
-                    return .task { .toEditUnitSelected(unit) }
+                    return .send(.toEditUnitSelected(unit))
                 }
             default: return .none
             }
@@ -62,6 +62,6 @@ struct EditList: View {
             units: .mock,
             frontType: .kanji
         ),
-        reducer: EditUnits()._printChanges())
+        reducer: { EditUnits()._printChanges() })
     )
 }

@@ -11,6 +11,7 @@ import UIKit
 #elseif os(macOS)
 import AppKit
 #endif
+import XCTestDynamicOverlay
 
 struct PasteBoardClient {
     private static let pb = PasteBoard.general
@@ -57,11 +58,6 @@ extension PasteBoardClient: TestDependencyKey {
         #endif
     },
     copyString: { _ in }
-  )
-
-  static let testValue = Self(
-    fetchImage: unimplemented("\(Self.self).fetchImage"),
-    copyString: unimplemented("\(Self.self).copyString")
   )
 }
 

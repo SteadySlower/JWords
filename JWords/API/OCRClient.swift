@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import XCTestDynamicOverlay
 
 struct OCRClient {
     private static let ocr = OCRService.shared
@@ -29,10 +30,6 @@ extension OCRClient: DependencyKey {
 
 extension OCRClient: TestDependencyKey {
   static let previewValue = Self(
-    ocr: { _, _ in [] }
-  )
-
-  static let testValue = Self(
     ocr: { _, _ in [] }
   )
 }

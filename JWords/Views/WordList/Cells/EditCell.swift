@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct ToEditUnit: ReducerProtocol {
+struct ToEditUnit: Reducer {
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -28,7 +28,7 @@ struct ToEditUnit: ReducerProtocol {
     }
     
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .cellTapped:

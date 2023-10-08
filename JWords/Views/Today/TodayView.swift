@@ -8,17 +8,15 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct TodayList: ReducerProtocol {
+struct TodayList: Reducer {
     struct State: Equatable {
         var studySets: [StudySet] = []
         var reviewSets: [StudySet] = []
-        var reviewedSets: [StudySet] = []
         var onlyFailUnits: [StudyUnit] = []
         var todayStatus: TodayStatus?
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
-        var isLoading: Bool = false
         
         var showStudySetView: Bool {
             studyUnitsInSet != nil
@@ -45,17 +43,12 @@ struct TodayList: ReducerProtocol {
             showTutorial = false
         }
         
-        fileprivate mutating func addTodaySets(todaySets: TodaySets) {
-            studySets = todaySets.study
-            reviewedSets = todaySets.reviewed
-            reviewSets = todaySets.review.filter { !reviewedSets.contains($0) }
-        }
-        
     }
     
     @Dependency(\.scheduleClient) var scheduleClient
     @Dependency(\.studySetClient) var setClient
     @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(\.utilClient) var utilClient
     
     enum Action: Equatable {
         case onAppear
@@ -73,7 +66,7 @@ struct TodayList: ReducerProtocol {
         case homeCellTapped(StudySet)
     }
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -84,20 +77,22 @@ struct TodayList: ReducerProtocol {
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
-                    guard let newSchedule = state.todaySelection?.newSchedule else { return .none }
-                    scheduleClient.update(newSchedule)
+                    if let newStudy = state.todaySelection?.studySets {
+                        scheduleClient.updateStudy(newStudy)
+                    }
+                    if let newReview = state.todaySelection?.reviewSets {
+                        scheduleClient.updateReview(newReview)
+                    }
                     state.todaySelection = nil
-                    return .task { .onAppear }
+                    return .send(.onAppear)
                 }
                 return .none
             case .todayStatusTapped:
                 if state.todayStatus == .empty {
                     state.clear()
-                    state.isLoading = true
                     let sets = try! setClient.fetch(false)
                     scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
-                    state.isLoading = false
                     return .none
                 } else {
                     state.studyUnits = StudyUnits.State(units: state.onlyFailUnits)
@@ -110,16 +105,13 @@ struct TodayList: ReducerProtocol {
             case .listButtonTapped:
                 state.todayStatus = nil
                 state.todaySelection = TodaySelection.State(todaySets: state.studySets,
-                                                            reviewSets: state.reviewSets,
-                                                            reviewedSets: state.reviewedSets)
+                                                            reviewSets: state.reviewSets)
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
-                state.isLoading = true
-                scheduleClient.update(.empty)
+                scheduleClient.clear()
                 fetchSchedule(&state)
-                state.isLoading = false
-                return .task  { .onAppear }
+                return .send(.onAppear)
             case .showTutorial(let show):
                 state.showTutorial = show
                 return .none
@@ -146,22 +138,17 @@ struct TodayList: ReducerProtocol {
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
-        state.isLoading = true
         state.clear()
-        let todaySets = TodaySets(sets: try! setClient.fetch(false), schedule: scheduleClient.fetch())
-        state.addTodaySets(todaySets: todaySets)
-        let todayWords = todaySets.study
-            .map { try! unitClient.fetch($0) }
-            .reduce([], +)
-        state.onlyFailUnits = todayWords
-                    .filter { $0.studyState != .success }
-                    .removeOverlapping()
-                    .sorted(by: { $0.createdAt < $1.createdAt })
+        let allSets = try! setClient.fetch(false)
+        state.studySets = scheduleClient.study(allSets)
+        state.reviewSets = scheduleClient.review(allSets)
+        let todayWords = try! unitClient.fetchAll(state.studySets)
+        state.onlyFailUnits = utilClient.filterOnlyFailUnits(todayWords)
         state.todayStatus = .init(
-            sets: todaySets.study.count,
+            sets: state.studySets.count,
             total: todayWords.count,
-            wrong: state.onlyFailUnits.count)
-        state.isLoading = false
+            wrong: state.onlyFailUnits.count
+        )
     }
 
 }
@@ -236,7 +223,6 @@ struct TodayView: View {
                 { EmptyView() }
             }
             .withBannerAD()
-            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
             .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
@@ -305,7 +291,7 @@ struct TodayView_Previews: PreviewProvider {
             TodayView(
                 store: Store(
                     initialState: TodayList.State(),
-                    reducer: TodayList()._printChanges()
+                    reducer: { TodayList()._printChanges() }
                 )
             )
         }

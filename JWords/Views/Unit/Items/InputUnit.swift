@@ -12,7 +12,7 @@ enum UnitInputField {
     case kanji, meaning
 }
 
-struct InputUnit: ReducerProtocol {
+struct InputUnit: Reducer {
 
     struct State: Equatable {
         @BindingState var focusedField: UnitInputField?
@@ -35,7 +35,7 @@ struct InputUnit: ReducerProtocol {
     
     @Dependency(\.studyUnitClient) var unitClient
     
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {
@@ -43,7 +43,7 @@ struct InputUnit: ReducerProtocol {
                 switch action {
                 case .huriganaUpdated(let hurigana):
                     let unit = try! unitClient.checkIfExist(hurigana)
-                    return .task { .alreadyExist(unit) }
+                    return .send(.alreadyExist(unit))
                 case .onTab:
                     state.focusedField = .meaning
                     return .none
@@ -86,7 +86,7 @@ struct UnitInputView: View {
                 .focused($focusedField, equals: .meaning)
 
             }
-            .synchronize(vs.binding(\.$focusedField), self.$focusedField)
+            .synchronize(vs.$focusedField, $focusedField)
         }
     }
     
@@ -96,6 +96,6 @@ struct UnitInputView: View {
     UnitInputView(
         store: Store(
             initialState: InputUnit.State(),
-            reducer: InputUnit())
+            reducer: { InputUnit() })
      )
 }
