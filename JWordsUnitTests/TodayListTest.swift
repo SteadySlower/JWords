@@ -25,6 +25,8 @@ final class TodayListTest: XCTestCase {
             $0.utilClient.filterOnlyFailUnits = { _ in .mock }
             $0.scheduleClient.study = { _ in .mock }
             $0.scheduleClient.review = { _ in .mock }
+            $0.scheduleClient.updateStudy = { _ in }
+            $0.scheduleClient.updateReview = { _ in }
         }
 
         
@@ -56,7 +58,6 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.review = { _ in .mock }
         }
 
-        
         await store.send(.onAppear) {
             $0.studySets = .mock
             $0.reviewSets = .mock
@@ -76,4 +77,17 @@ final class TodayListTest: XCTestCase {
             $0.todayStatus = nil
         }
     }
+    
+    func testListButtonTapped() async {
+        let store = await setTestStore()
+        
+        await store.send(.listButtonTapped) {
+            $0.todayStatus = nil
+            $0.todaySelection = TodaySelection.State(
+                todaySets: $0.studySets,
+                reviewSets: $0.reviewSets
+            )
+        }
+    }
+    
 }
