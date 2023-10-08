@@ -90,4 +90,31 @@ final class TodayListTest: XCTestCase {
         }
     }
     
+    func testSetSelectionModalFalse() async {
+        let store = await setTestStore()
+        
+        await store.send(.listButtonTapped) {
+            $0.todayStatus = nil
+            $0.todaySelection = TodaySelection.State(
+                todaySets: $0.studySets,
+                reviewSets: $0.reviewSets
+            )
+        }
+        
+        await store.send(.setSelectionModal(false)) {
+            $0.todaySelection = nil
+        }
+        
+        await store.receive(.onAppear) {
+            $0.studySets = .mock
+            $0.reviewSets = .mock
+            $0.onlyFailUnits = .mock
+            $0.todayStatus = .init(
+                sets: $0.studySets.count,
+                total: [StudyUnit].mock.count,
+                wrong: $0.onlyFailUnits.count
+            )
+        }
+    }
+    
 }
