@@ -111,7 +111,7 @@ struct TodayList: Reducer {
                 state.clear()
                 scheduleClient.clear()
                 fetchSchedule(&state)
-                return .send(.onAppear)
+                return .none
             case .showTutorial(let show):
                 state.showTutorial = show
                 return .none
