@@ -27,6 +27,7 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.review = { _ in .mock }
             $0.scheduleClient.updateStudy = { _ in }
             $0.scheduleClient.updateReview = { _ in }
+            $0.scheduleClient.clear = { return .empty }
         }
 
         
@@ -114,6 +115,15 @@ final class TodayListTest: XCTestCase {
                 total: [StudyUnit].mock.count,
                 wrong: $0.onlyFailUnits.count
             )
+        }
+    }
+    
+    func testClearScheduleButtonTapped() async {
+        let store = await setTestStore()
+        
+        await store.send(.clearScheduleButtonTapped) {
+            $0.clear()
+            $0.todayStatus = .empty
         }
     }
     

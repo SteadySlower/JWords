@@ -12,8 +12,9 @@ struct TodayList: Reducer {
     struct State: Equatable {
         var studySets: [StudySet] = []
         var reviewSets: [StudySet] = []
-        var onlyFailUnits: [StudyUnit] = []
-        var todayStatus: TodayStatus?
+        var allStudyUnits: [StudyUnit] = []
+        var toStudyUnits: [StudyUnit] = []
+        var todayStatus: TodayStatus.State = .init(setCount: 0, allUnitCount: 0, toStudyUnitCount: 0)
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
@@ -32,15 +33,15 @@ struct TodayList: Reducer {
         
         var showTutorial: Bool = false
         
-        fileprivate mutating func clear() {
+        mutating func clear() {
             studySets = []
             reviewSets = []
-            onlyFailUnits = []
-            todayStatus = nil
+            toStudyUnits = []
             studyUnitsInSet = nil
             studyUnits = nil
             todaySelection = nil
             showTutorial = false
+            todayStatus.clear()
         }
         
     }
@@ -56,13 +57,13 @@ struct TodayList: Reducer {
         case studyUnitsInSet(StudyUnitsInSet.Action)
         case studyUnits(StudyUnits.Action)
         case todaySelection(TodaySelection.Action)
+        case todayStatus(TodayStatus.Action)
         case setSelectionModal(Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudySetView(Bool)
         case showStudyUnitsView(Bool)
         case showTutorial(Bool)
-        case todayStatusTapped
         case homeCellTapped(StudySet)
     }
     
@@ -73,7 +74,6 @@ struct TodayList: Reducer {
                 fetchSchedule(&state)
                 return .none
             case .onDisappear:
-                state.todayStatus = nil
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
@@ -87,30 +87,32 @@ struct TodayList: Reducer {
                     return .send(.onAppear)
                 }
                 return .none
-            case .todayStatusTapped:
-                if state.todayStatus == .empty {
-                    state.clear()
-                    let sets = try! setClient.fetch(false)
-                    scheduleClient.autoSet(sets)
-                    fetchSchedule(&state)
-                    return .none
-                } else {
-                    state.studyUnits = StudyUnits.State(units: state.onlyFailUnits)
-                    return .none
+            case .todayStatus(let action):
+                switch action {
+                case .onTapped:
+                    if state.todayStatus.isEmpty {
+                        state.clear()
+                        let sets = try! setClient.fetch(false)
+                        scheduleClient.autoSet(sets)
+                        fetchSchedule(&state)
+                        return .none
+                    } else {
+                        state.studyUnits = StudyUnits.State(units: state.toStudyUnits)
+                        return .none
+                    }
+                default: return .none
                 }
             case .homeCellTapped(let set):
                 let units = try! unitClient.fetch(set)
                 state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
-                state.todayStatus = nil
                 state.todaySelection = TodaySelection.State(todaySets: state.studySets,
                                                             reviewSets: state.reviewSets)
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
                 scheduleClient.clear()
-                fetchSchedule(&state)
                 return .none
             case .showTutorial(let show):
                 state.showTutorial = show
@@ -135,6 +137,11 @@ struct TodayList: Reducer {
         .ifLet(\.todaySelection, action: /Action.todaySelection) {
             TodaySelection()
         }
+        Scope(
+            state: \.todayStatus,
+            action: /Action.todayStatus,
+            child: { TodayStatus() }
+        )
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
@@ -142,14 +149,13 @@ struct TodayList: Reducer {
         let allSets = try! setClient.fetch(false)
         state.studySets = scheduleClient.study(allSets)
         state.reviewSets = scheduleClient.review(allSets)
-        let todayWords = try! unitClient.fetchAll(state.studySets)
-        state.onlyFailUnits = utilClient.filterOnlyFailUnits(todayWords)
-        state.todayStatus = .init(
-            sets: state.studySets.count,
-            total: todayWords.count,
-            wrong: state.onlyFailUnits.count
-        )
-    }
+        state.allStudyUnits =  try! unitClient.fetchAll(state.studySets)
+        state.toStudyUnits = utilClient.filterOnlyFailUnits(state.allStudyUnits)
+        state.todayStatus.update(
+            setCount: state.studySets.count,
+            allUnitCount: state.allStudyUnits.count,
+            toStudyUnitCount: state.toStudyUnits.count
+        )    }
 
 }
 
@@ -164,14 +170,11 @@ struct TodayView: View {
                         Text("공부 단어장")
                             .font(.title)
                             .trailingAlignment()
-                        if let todayStatus = vs.todayStatus {
-                            TodayStatusView(status: todayStatus) {
-                                vs.send(.todayStatusTapped)
-                            }
-                            .frame(height: 120)
-                        } else {
-                            statusLoadingView
-                        }
+                        TodayStatusView(store: store.scope(
+                            state: \.todayStatus,
+                            action: TodayList.Action.todayStatus)
+                        )
+                        .frame(height: 120)
                         VStack(spacing: 8) {
                             ForEach(vs.studySets, id: \.id) { set in
                                 HomeCell(studySet: set) {
