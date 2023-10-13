@@ -10,11 +10,8 @@ import ComposableArchitecture
 
 struct TodayList: Reducer {
     struct State: Equatable {
-        var studySets: [StudySet] = []
+        var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []
-        var allStudyUnits: [StudyUnit] = []
-        var toStudyUnits: [StudyUnit] = []
-        var todayStatus: TodayStatus.State = .init(setCount: 0, allUnitCount: 0, toStudyUnitCount: 0)
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
@@ -34,9 +31,7 @@ struct TodayList: Reducer {
         var showTutorial: Bool = false
         
         mutating func clear() {
-            studySets = []
             reviewSets = []
-            toStudyUnits = []
             studyUnitsInSet = nil
             studyUnits = nil
             todaySelection = nil
@@ -53,7 +48,6 @@ struct TodayList: Reducer {
     
     enum Action: Equatable {
         case onAppear
-        case onDisappear
         case studyUnitsInSet(StudyUnitsInSet.Action)
         case studyUnits(StudyUnits.Action)
         case todaySelection(TodaySelection.Action)
@@ -72,8 +66,6 @@ struct TodayList: Reducer {
             switch action {
             case .onAppear:
                 fetchSchedule(&state)
-                return .none
-            case .onDisappear:
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
@@ -97,7 +89,7 @@ struct TodayList: Reducer {
                         fetchSchedule(&state)
                         return .none
                     } else {
-                        state.studyUnits = StudyUnits.State(units: state.toStudyUnits)
+                        state.studyUnits = StudyUnits.State(units: state.todayStatus.toStudyUnits)
                         return .none
                     }
                 default: return .none
@@ -107,7 +99,7 @@ struct TodayList: Reducer {
                 state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
-                state.todaySelection = TodaySelection.State(todaySets: state.studySets,
+                state.todaySelection = TodaySelection.State(todaySets: state.todayStatus.studySets,
                                                             reviewSets: state.reviewSets)
                 return .none
             case .clearScheduleButtonTapped:
@@ -146,16 +138,20 @@ struct TodayList: Reducer {
     
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.clear()
+        
         let allSets = try! setClient.fetch(false)
-        state.studySets = scheduleClient.study(allSets)
-        state.reviewSets = scheduleClient.review(allSets)
-        state.allStudyUnits =  try! unitClient.fetchAll(state.studySets)
-        state.toStudyUnits = utilClient.filterOnlyFailUnits(state.allStudyUnits)
+        let studySets = scheduleClient.study(allSets)
+        let allUnits = try! unitClient.fetchAll(allSets)
+        let studyUnits = utilClient.filterOnlyFailUnits(allUnits)
+        
         state.todayStatus.update(
-            setCount: state.studySets.count,
-            allUnitCount: state.allStudyUnits.count,
-            toStudyUnitCount: state.toStudyUnits.count
-        )    }
+            studySets: studySets,
+            allUnits: allUnits,
+            toStudyUnits: studyUnits
+        )
+        
+        state.reviewSets = scheduleClient.review(allSets)
+    }
 
 }
 
@@ -176,7 +172,7 @@ struct TodayView: View {
                         )
                         .frame(height: 120)
                         VStack(spacing: 8) {
-                            ForEach(vs.studySets, id: \.id) { set in
+                            ForEach(vs.todayStatus.studySets, id: \.id) { set in
                                 HomeCell(studySet: set) {
                                     vs.send(.homeCellTapped(set))
                                 }
@@ -227,7 +223,6 @@ struct TodayView: View {
             }
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
-            .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,
                 send: TodayList.Action.setSelectionModal)

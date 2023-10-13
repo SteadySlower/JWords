@@ -10,26 +10,26 @@ import SwiftUI
 
 struct TodayStatus: Reducer {
     struct State: Equatable {
-        private(set) var setCount: Int
-        private(set) var allUnitCount: Int
-        private(set) var toStudyUnitCount: Int
+        private(set) var studySets = [StudySet]()
+        private(set) var allUnits = [StudyUnit]()
+        private(set) var toStudyUnits = [StudyUnit]()
         var pieChart = PieChartReducer.State()
         
         var isEmpty: Bool {
-            return setCount == 0
+            return studySets.count == 0
         }
         
         mutating func clear() {
-            setCount = 0
-            allUnitCount = 0
-            toStudyUnitCount = 0
+            studySets = []
+            allUnits = []
+            toStudyUnits = []
         }
         
-        mutating func update(setCount: Int, allUnitCount: Int, toStudyUnitCount: Int) {
-            self.setCount = setCount
-            self.allUnitCount = allUnitCount
-            self.toStudyUnitCount = toStudyUnitCount
-            let percentage = allUnitCount != 0 ? Float(toStudyUnitCount) / Float(allUnitCount) : 0.0
+        mutating func update(studySets: [StudySet], allUnits: [StudyUnit], toStudyUnits: [StudyUnit]) {
+            self.studySets = studySets
+            self.allUnits = allUnits
+            self.toStudyUnits = toStudyUnits
+            let percentage = allUnits.count != 0 ? Float(toStudyUnits.count) / Float(allUnits.count) : 0.0
             pieChart.updatePercentage(percentage)
         }
     }
@@ -62,7 +62,7 @@ struct TodayStatusView: View {
             Button {
                 vs.send(.onTapped)
             } label: {
-                if vs.setCount <= 0 {
+                if vs.isEmpty {
                     VStack(spacing: 10) {
                         Text("오늘 학습할 단어장이 아직 없습니다📚")
                             .font(.system(size: 30))
@@ -87,10 +87,10 @@ struct TodayStatusView: View {
                         )
                         Spacer()
                         VStack(alignment: .trailing) {
-                            Text("단어장 \(vs.setCount)권의\n모든 단어 \(vs.allUnitCount)개 중에")
+                            Text("단어장 \(vs.studySets.count)권의\n모든 단어 \(vs.allUnits.count)개 중에")
                                 .font(.system(size: 15))
                                 .multilineTextAlignment(.trailing)
-                            Text("틀린 단어 \(vs.toStudyUnitCount)개")
+                            Text("틀린 단어 \(vs.toStudyUnits.count)개")
                                 .font(.system(size: 30))
                                 .multilineTextAlignment(.trailing)
                         }
