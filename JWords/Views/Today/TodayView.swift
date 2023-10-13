@@ -129,7 +129,7 @@ struct TodayList: Reducer {
             }
         }
         .ifLet(\.studyUnitsInSet, action: /Action.studyUnitsInSet) {
-            StudyUnitsInSet()
+            StudyUnitsInSet() 
         }
         .ifLet(\.studyUnits, action: /Action.studyUnits) {
             StudyUnits()

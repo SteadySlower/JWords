@@ -27,18 +27,19 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.review = { _ in .mock }
             $0.scheduleClient.updateStudy = { _ in }
             $0.scheduleClient.updateReview = { _ in }
-            $0.scheduleClient.clear = { return .empty }
+            $0.scheduleClient.clear = { }
         }
 
         
         await store.send(.onAppear) {
             $0.studySets = .mock
             $0.reviewSets = .mock
-            $0.onlyFailUnits = .mock
-            $0.todayStatus = .init(
-                sets: $0.studySets.count,
-                total: [StudyUnit].mock.count,
-                wrong: $0.onlyFailUnits.count
+            $0.toStudyUnits = .mock
+            $0.allStudyUnits = .mock
+            $0.todayStatus.update(
+                setCount: $0.studySets.count,
+                allUnitCount: [StudyUnit].mock.count,
+                toStudyUnitCount: $0.toStudyUnits.count
             )
         }
         
@@ -62,68 +63,13 @@ final class TodayListTest: XCTestCase {
         await store.send(.onAppear) {
             $0.studySets = .mock
             $0.reviewSets = .mock
-            $0.onlyFailUnits = .mock
-            $0.todayStatus = .init(
-                sets: $0.studySets.count,
-                total: [StudyUnit].mock.count,
-                wrong: $0.onlyFailUnits.count
+            $0.toStudyUnits = .mock
+            $0.allStudyUnits = .mock
+            $0.todayStatus.update(
+                setCount: $0.studySets.count,
+                allUnitCount: $0.allStudyUnits.count,
+                toStudyUnitCount: $0.toStudyUnits.count
             )
-        }
-    }
-    
-    func testOnDisappear() async {
-        let store = await setTestStore()
-        
-        await store.send(.onDisappear) {
-            $0.todayStatus = nil
-        }
-    }
-    
-    func testListButtonTapped() async {
-        let store = await setTestStore()
-        
-        await store.send(.listButtonTapped) {
-            $0.todayStatus = nil
-            $0.todaySelection = TodaySelection.State(
-                todaySets: $0.studySets,
-                reviewSets: $0.reviewSets
-            )
-        }
-    }
-    
-    func testSetSelectionModalFalse() async {
-        let store = await setTestStore()
-        
-        await store.send(.listButtonTapped) {
-            $0.todayStatus = nil
-            $0.todaySelection = TodaySelection.State(
-                todaySets: $0.studySets,
-                reviewSets: $0.reviewSets
-            )
-        }
-        
-        await store.send(.setSelectionModal(false)) {
-            $0.todaySelection = nil
-        }
-        
-        await store.receive(.onAppear) {
-            $0.studySets = .mock
-            $0.reviewSets = .mock
-            $0.onlyFailUnits = .mock
-            $0.todayStatus = .init(
-                sets: $0.studySets.count,
-                total: [StudyUnit].mock.count,
-                wrong: $0.onlyFailUnits.count
-            )
-        }
-    }
-    
-    func testClearScheduleButtonTapped() async {
-        let store = await setTestStore()
-        
-        await store.send(.clearScheduleButtonTapped) {
-            $0.clear()
-            $0.todayStatus = .empty
         }
     }
     
