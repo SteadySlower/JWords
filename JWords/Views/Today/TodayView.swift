@@ -10,10 +10,8 @@ import ComposableArchitecture
 
 struct TodayList: Reducer {
     struct State: Equatable {
-        var studySets: [StudySet] = []
+        var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []
-        var onlyFailUnits: [StudyUnit] = []
-        var todayStatus: TodayStatus?
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
         var todaySelection: TodaySelection.State?
@@ -32,15 +30,13 @@ struct TodayList: Reducer {
         
         var showTutorial: Bool = false
         
-        fileprivate mutating func clear() {
-            studySets = []
+        mutating func clear() {
             reviewSets = []
-            onlyFailUnits = []
-            todayStatus = nil
             studyUnitsInSet = nil
             studyUnits = nil
             todaySelection = nil
             showTutorial = false
+            todayStatus.clear()
         }
         
     }
@@ -52,17 +48,16 @@ struct TodayList: Reducer {
     
     enum Action: Equatable {
         case onAppear
-        case onDisappear
         case studyUnitsInSet(StudyUnitsInSet.Action)
         case studyUnits(StudyUnits.Action)
         case todaySelection(TodaySelection.Action)
+        case todayStatus(TodayStatus.Action)
         case setSelectionModal(Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudySetView(Bool)
         case showStudyUnitsView(Bool)
         case showTutorial(Bool)
-        case todayStatusTapped
         case homeCellTapped(StudySet)
     }
     
@@ -72,46 +67,52 @@ struct TodayList: Reducer {
             case .onAppear:
                 fetchSchedule(&state)
                 return .none
-            case .onDisappear:
-                state.todayStatus = nil
-                return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
-                    if let newStudy = state.todaySelection?.studySets {
-                        scheduleClient.updateStudy(newStudy)
-                    }
-                    if let newReview = state.todaySelection?.reviewSets {
-                        scheduleClient.updateReview(newReview)
+                    if let newStudy = state.todaySelection?.studySets,
+                       let newReview = state.todaySelection?.reviewSets 
+                    {
+                        let newStudySets = scheduleClient.updateStudy(newStudy)
+                        let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
+                        let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
+                        state.todayStatus.update(
+                            studySets: newStudySets,
+                            allUnits: newAllStudyUnits,
+                            toStudyUnits: newToStudyUnits)
+                        state.reviewSets = scheduleClient.updateReview(newReview)
                     }
                     state.todaySelection = nil
-                    return .send(.onAppear)
                 }
                 return .none
-            case .todayStatusTapped:
-                if state.todayStatus == .empty {
-                    state.clear()
-                    let sets = try! setClient.fetch(false)
-                    scheduleClient.autoSet(sets)
-                    fetchSchedule(&state)
-                    return .none
-                } else {
-                    state.studyUnits = StudyUnits.State(units: state.onlyFailUnits)
-                    return .none
+            case .todayStatus(let action):
+                switch action {
+                case .onTapped:
+                    if state.todayStatus.isEmpty {
+                        state.clear()
+                        let sets = try! setClient.fetch(false)
+                        scheduleClient.autoSet(sets)
+                        fetchSchedule(&state)
+                        return .none
+                    } else {
+                        state.studyUnits = StudyUnits.State(units: state.todayStatus.toStudyUnits)
+                        return .none
+                    }
+                default: return .none
                 }
             case .homeCellTapped(let set):
                 let units = try! unitClient.fetch(set)
                 state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
                 return .none
             case .listButtonTapped:
-                state.todayStatus = nil
-                state.todaySelection = TodaySelection.State(todaySets: state.studySets,
+                state.todaySelection = TodaySelection.State(todaySets: state.todayStatus.studySets,
                                                             reviewSets: state.reviewSets)
+                state.todayStatus.clear()
+                state.reviewSets = []
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
                 scheduleClient.clear()
-                fetchSchedule(&state)
-                return .send(.onAppear)
+                return .none
             case .showTutorial(let show):
                 state.showTutorial = show
                 return .none
@@ -127,7 +128,7 @@ struct TodayList: Reducer {
             }
         }
         .ifLet(\.studyUnitsInSet, action: /Action.studyUnitsInSet) {
-            StudyUnitsInSet()
+            StudyUnitsInSet() 
         }
         .ifLet(\.studyUnits, action: /Action.studyUnits) {
             StudyUnits()
@@ -135,20 +136,28 @@ struct TodayList: Reducer {
         .ifLet(\.todaySelection, action: /Action.todaySelection) {
             TodaySelection()
         }
+        Scope(
+            state: \.todayStatus,
+            action: /Action.todayStatus,
+            child: { TodayStatus() }
+        )
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
         state.clear()
+        
         let allSets = try! setClient.fetch(false)
-        state.studySets = scheduleClient.study(allSets)
-        state.reviewSets = scheduleClient.review(allSets)
-        let todayWords = try! unitClient.fetchAll(state.studySets)
-        state.onlyFailUnits = utilClient.filterOnlyFailUnits(todayWords)
-        state.todayStatus = .init(
-            sets: state.studySets.count,
-            total: todayWords.count,
-            wrong: state.onlyFailUnits.count
+        let studySets = scheduleClient.study(allSets)
+        let allUnits = try! unitClient.fetchAll(studySets)
+        let studyUnits = utilClient.filterOnlyFailUnits(allUnits)
+        
+        state.todayStatus.update(
+            studySets: studySets,
+            allUnits: allUnits,
+            toStudyUnits: studyUnits
         )
+        
+        state.reviewSets = scheduleClient.review(allSets)
     }
 
 }
@@ -164,16 +173,13 @@ struct TodayView: View {
                         Text("공부 단어장")
                             .font(.title)
                             .trailingAlignment()
-                        if let todayStatus = vs.todayStatus {
-                            TodayStatusView(status: todayStatus) {
-                                vs.send(.todayStatusTapped)
-                            }
-                            .frame(height: 120)
-                        } else {
-                            statusLoadingView
-                        }
+                        TodayStatusView(store: store.scope(
+                            state: \.todayStatus,
+                            action: TodayList.Action.todayStatus)
+                        )
+                        .frame(height: 120)
                         VStack(spacing: 8) {
-                            ForEach(vs.studySets, id: \.id) { set in
+                            ForEach(vs.todayStatus.studySets, id: \.id) { set in
                                 HomeCell(studySet: set) {
                                     vs.send(.homeCellTapped(set))
                                 }
@@ -224,7 +230,6 @@ struct TodayView: View {
             }
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
-            .onDisappear { vs.send(.onDisappear) }
             .sheet(isPresented: vs.binding(
                 get: \.showModal,
                 send: TodayList.Action.setSelectionModal)

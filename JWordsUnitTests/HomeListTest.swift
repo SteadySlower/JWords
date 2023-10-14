@@ -10,25 +10,24 @@ import XCTest
 
 @testable import JWords
 
-typealias TestStoreOfHomeList = TestStore<
-    HomeList.State,
-    HomeList.Action
->
+private let fetchSets: [StudySet] = .testMock
+private let fetchSetsNotClosed: [StudySet] = .notClosedTestMock
+private let fetchUnits: [StudyUnit] = .testMock
 
 @MainActor
 final class HomeListTest: XCTestCase {
     
-    private func setStore() async -> TestStoreOfHomeList {
+    private func setStore() async -> TestStore<HomeList.State, HomeList.Action> {
         let store = TestStore(
             initialState: HomeList.State(),
             reducer: { HomeList() })
         {
-            $0.studySetClient.fetch = { bool in bool ? .mockIncludingClosed : .mock }
-            $0.studyUnitClient.fetch = { _ in .mock }
+            $0.studySetClient.fetch = { bool in bool ? fetchSets : fetchSetsNotClosed }
+            $0.studyUnitClient.fetch = { _ in fetchUnits }
         }
         
         await store.send(.onAppear) {
-            $0.sets = .mock
+            $0.sets = fetchSetsNotClosed
         }
         
         return store
@@ -41,10 +40,10 @@ final class HomeListTest: XCTestCase {
     func testHomeCellTapped() async {
         let store = await setStore()
         
-        let tappedSet = store.state.sets[0]
+        let tappedSet = store.state.sets.randomElement()!
         
         await store.send(.homeCellTapped(tappedSet)) {
-            $0.studyUnitsInSet = StudyUnitsInSet.State(set: tappedSet, units: .mock)
+            $0.studyUnitsInSet = StudyUnitsInSet.State(set: tappedSet, units: fetchUnits)
         }
     }
     
@@ -72,7 +71,7 @@ final class HomeListTest: XCTestCase {
         }
         
         await store.receive(.onAppear) {
-            $0.sets = .mockIncludingClosed
+            $0.sets = fetchSets
         }
         
         await store.send(.updateIncludeClosed(false)) {
@@ -80,7 +79,7 @@ final class HomeListTest: XCTestCase {
         }
         
         await store.receive(.onAppear) {
-            $0.sets = .mock
+            $0.sets = fetchSetsNotClosed
         }
     }
     
@@ -89,10 +88,10 @@ final class HomeListTest: XCTestCase {
         
         XCTAssertEqual(store.state.studyUnitsInSet, nil)
         
-        let tappedSet = [StudySet].mock[0]
+        let tappedSet = store.state.sets.randomElement()!
         
         await store.send(.homeCellTapped(tappedSet)) {
-            $0.studyUnitsInSet = StudyUnitsInSet.State(set: tappedSet, units: .mock)
+            $0.studyUnitsInSet = StudyUnitsInSet.State(set: tappedSet, units: fetchUnits)
         }
 
         await store.send(.studyUnitsInSet(.dismiss)) {
@@ -109,16 +108,13 @@ final class HomeListTest: XCTestCase {
             $0.addSet = AddSet.State()
         }
         
-        let addedSet = StudySet(title: "addedSet")
+        let addedSet = StudySet(title: Random.string)
         
         await store.send(.addSet(.added(addedSet))) {
             $0.sets.insert(addedSet, at: 0)
             $0.addSet = nil
         }
         
-        await store.send(.setAddSetModal(true)) {
-            $0.addSet = AddSet.State()
-        }
     }
     
     func testAddSetCancel() async {

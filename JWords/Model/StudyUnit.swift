@@ -64,6 +64,20 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
         self.createdAt = Date()
     }
     
+    // initialzer for test mocking
+    init(kanjiText: String, meaningText: String, studyState: StudyState, studySets: [StudySet]) {
+        self.id = UUID().uuidString
+        self.objectID = NSManagedObjectID()
+        self.type = UnitType.allCases.randomElement()!
+        self.kanjiText = kanjiText
+        self.kanjiImageID = nil
+        self.meaningText = meaningText
+        self.meaningImageID = nil
+        self.studyState = studyState
+        self.studySets = studySets
+        self.createdAt = Date()
+    }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

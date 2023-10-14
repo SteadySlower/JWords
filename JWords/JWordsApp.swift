@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import XCTestDynamicOverlay
 #if os(iOS)
 import GoogleMobileAds
 #endif
@@ -26,12 +27,15 @@ struct JWordsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(
-                store: Store(
-                    initialState: MainTab.State(),
-                    reducer: { MainTab()._printChanges() }
+            if !_XCTIsTesting {
+                MainTabView(
+                    store: Store(
+                        initialState: MainTab.State(),
+                        reducer: { MainTab()._printChanges() }
+                    )
                 )
-            )
+            }
+
         }
     }
 }
