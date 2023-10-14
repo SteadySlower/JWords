@@ -87,6 +87,17 @@ struct StudySet: Equatable, Identifiable, Hashable {
         self.isAutoSchedule = true
     }
     
+    // initializer for test mocking
+    init(title: String, createdAt: Date, closed: Bool) {
+        self.id = UUID().uuidString
+        self.objectID = NSManagedObjectID()
+        self.title = title
+        self.createdAt = createdAt
+        self.closed = closed
+        self.preferredFrontType = [.kanji, .meaning].randomElement()!
+        self.isAutoSchedule = true
+    }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

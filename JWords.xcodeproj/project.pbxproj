@@ -18,6 +18,7 @@
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
 		060703F22AD0E7CA0078489C /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 060703F12AD0E7CA0078489C /* ComposableArchitecture */; };
 		060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F62ADA8CA40078489C /* StudyUnit.swift */; };
+		060703F92ADA8CE70078489C /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F82ADA8CE70078489C /* StudySet.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
 		061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99382ACD64EF00C08E17 /* HomeListTest.swift */; };
 		061D993C2ACE599D00C08E17 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D993B2ACE599600C08E17 /* FlexBox.swift */; };
@@ -162,6 +163,7 @@
 		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		060703EE2ACFFB510078489C /* UtilClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilClient.swift; sourceTree = "<group>"; };
 		060703F62ADA8CA40078489C /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
+		060703F82ADA8CE70078489C /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
 		061D99382ACD64EF00C08E17 /* HomeListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListTest.swift; sourceTree = "<group>"; };
 		061D993B2ACE599600C08E17 /* FlexBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexBox.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				060703F62ADA8CA40078489C /* StudyUnit.swift */,
+				060703F82ADA8CE70078489C /* StudySet.swift */,
 			);
 			path = TestMock;
 			sourceTree = "<group>";
@@ -1005,6 +1008,7 @@
 			files = (
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
+				060703F92ADA8CE70078489C /* StudySet.swift in Sources */,
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				065FD2672ACE9FDE00A2ABCE /* TodayListTest.swift in Sources */,
