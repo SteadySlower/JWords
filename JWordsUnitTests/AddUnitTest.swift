@@ -38,5 +38,25 @@ final class AddUnitTest: XCTestCase {
         }
     }
     
+    func testAddAlreadyExist() async {
+        let inserted: StudyUnit = .testMock
+        
+        let store = TestStore(
+            initialState: AddUnit.State(
+                set: .testMock,
+                alreadyExist: .testMock
+            )
+        ) {
+            AddUnit()
+        } withDependencies: {
+            $0.studyUnitClient.edit = { _, _ in .testMock }
+            $0.studyUnitClient.insertExisting = { _, _ in inserted }
+        }
+
+        await store.send(.add)
+        
+        await store.receive(.added(inserted))
+    }
+    
 }
 
