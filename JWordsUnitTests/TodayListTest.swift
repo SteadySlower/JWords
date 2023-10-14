@@ -15,6 +15,8 @@ private let fetchAllUnits: [StudyUnit] = .testMock
 private let scheduleStudySets: [StudySet] = .notClosedTestMock
 private let scheduleReviewSets: [StudySet] = .notClosedTestMock
 private let filterOnlyFailUnits: [StudyUnit] = .testMock
+private let updateStudySets: [StudySet] = .testMock
+private let updateReviewSets: [StudySet] = .testMock
 
 @MainActor
 final class TodayListTest: XCTestCase {
@@ -28,8 +30,8 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.study = { _ in scheduleStudySets }
             $0.scheduleClient.review = { _ in scheduleReviewSets }
             $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
-            $0.scheduleClient.updateStudy = { _ in }
-            $0.scheduleClient.updateReview = { _ in }
+            $0.scheduleClient.updateStudy = { _ in updateStudySets }
+            $0.scheduleClient.updateReview = { _ in updateReviewSets }
             $0.scheduleClient.clear = { }
         }
 
@@ -47,27 +49,19 @@ final class TodayListTest: XCTestCase {
     }
     
     func testOnAppear() async {
-        let store = TestStore(initialState: TodayList.State()) {
-            TodayList()
-        } withDependencies: {
-            $0.studySetClient.fetch = { _ in fetchSets }
-            $0.studyUnitClient.fetchAll = { _ in fetchAllUnits }
-            $0.scheduleClient.study = { _ in scheduleStudySets }
-            $0.scheduleClient.review = { _ in scheduleReviewSets }
-            $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
-            $0.scheduleClient.updateStudy = { _ in }
-            $0.scheduleClient.updateReview = { _ in }
-            $0.scheduleClient.clear = { }
-        }
-
+        _ = await setTestStore()
+    }
+    
+    func testListButtonTapped() async {
+        let store = await setTestStore()
         
-        await store.send(.onAppear) {
-            $0.todayStatus.update(
-                studySets: scheduleStudySets,
-                allUnits: fetchAllUnits,
-                toStudyUnits: filterOnlyFailUnits
+        await store.send(.listButtonTapped) {
+            $0.todaySelection = TodaySelection.State(
+                todaySets: $0.todayStatus.studySets,
+                reviewSets: $0.reviewSets
             )
-            $0.reviewSets = scheduleReviewSets
+            $0.todayStatus.clear()
+            $0.reviewSets = []
         }
     }
     
