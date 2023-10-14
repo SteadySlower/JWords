@@ -17,6 +17,7 @@
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
 		060703F22AD0E7CA0078489C /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 060703F12AD0E7CA0078489C /* ComposableArchitecture */; };
+		060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F62ADA8CA40078489C /* StudyUnit.swift */; };
 		061C9E812A19CF8200E099B5 /* StudySetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061C9E802A19CF8200E099B5 /* StudySetPicker.swift */; };
 		061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99382ACD64EF00C08E17 /* HomeListTest.swift */; };
 		061D993C2ACE599D00C08E17 /* FlexBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D993B2ACE599600C08E17 /* FlexBox.swift */; };
@@ -58,7 +59,6 @@
 		06581AB42ACCFDAD007914A3 /* InputSetTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06581AB32ACCFDAD007914A3 /* InputSetTitle.swift */; };
 		06581AB62ACCFDB6007914A3 /* InputSetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06581AB52ACCFDB6007914A3 /* InputSetTextField.swift */; };
 		065FD2672ACE9FDE00A2ABCE /* TodayListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065FD2662ACE9FDE00A2ABCE /* TodayListTest.swift */; };
-		065FD2692ACEA4DD00A2ABCE /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065FD2682ACEA4DD00A2ABCE /* Mock.swift */; };
 		067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840F529C595EF0019ABA8 /* PasteBoardService.swift */; };
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* UnitMoveView.swift */; };
@@ -161,6 +161,7 @@
 		06004E402AC55C5700947F5D /* StudyModals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModals.swift; sourceTree = "<group>"; };
 		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		060703EE2ACFFB510078489C /* UtilClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilClient.swift; sourceTree = "<group>"; };
+		060703F62ADA8CA40078489C /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		061C9E802A19CF8200E099B5 /* StudySetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySetPicker.swift; path = JWords/macView/Components/StudySetPicker.swift; sourceTree = SOURCE_ROOT; };
 		061D99382ACD64EF00C08E17 /* HomeListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListTest.swift; sourceTree = "<group>"; };
 		061D993B2ACE599600C08E17 /* FlexBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexBox.swift; sourceTree = "<group>"; };
@@ -202,7 +203,6 @@
 		06581AB32ACCFDAD007914A3 /* InputSetTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSetTitle.swift; sourceTree = "<group>"; };
 		06581AB52ACCFDB6007914A3 /* InputSetTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSetTextField.swift; sourceTree = "<group>"; };
 		065FD2662ACE9FDE00A2ABCE /* TodayListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListTest.swift; sourceTree = "<group>"; };
-		065FD2682ACEA4DD00A2ABCE /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		067840F529C595EF0019ABA8 /* PasteBoardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardService.swift; sourceTree = "<group>"; };
 		0688A1D329B3345E0057B2DB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* UnitMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitMoveView.swift; sourceTree = "<group>"; };
@@ -340,6 +340,14 @@
 			path = Items;
 			sourceTree = "<group>";
 		};
+		060703F52ADA8C9D0078489C /* TestMock */ = {
+			isa = PBXGroup;
+			children = (
+				060703F62ADA8CA40078489C /* StudyUnit.swift */,
+			);
+			path = TestMock;
+			sourceTree = "<group>";
+		};
 		064BA4402AC2556200288749 /* Unit */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,7 +410,6 @@
 			isa = PBXGroup;
 			children = (
 				0697715E28CF030C00569280 /* Random.swift */,
-				065FD2682ACEA4DD00A2ABCE /* Mock.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -528,6 +535,7 @@
 		06CEF2572866F1CB00A620CC /* JWordsUnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				060703F52ADA8C9D0078489C /* TestMock */,
 				0697715D28CF02E300569280 /* Util */,
 				06581AA82ACCEEBD007914A3 /* MainTabTest.swift */,
 				061D99382ACD64EF00C08E17 /* HomeListTest.swift */,
@@ -996,8 +1004,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
-				065FD2692ACEA4DD00A2ABCE /* Mock.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
+				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				065FD2672ACE9FDE00A2ABCE /* TodayListTest.swift in Sources */,
 			);
