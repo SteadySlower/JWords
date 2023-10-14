@@ -27,5 +27,16 @@ final class AddUnitTest: XCTestCase {
         }
     }
     
+    func testAddNoSet() async {
+        let store = TestStore(
+            initialState: AddUnit.State(),
+            reducer: { AddUnit() }
+        )
+        
+        await store.send(.add) {
+            $0.setNoSetAlert()
+        }
+    }
+    
 }
 

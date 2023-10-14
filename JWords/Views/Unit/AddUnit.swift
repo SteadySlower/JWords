@@ -23,7 +23,7 @@ struct AddUnit: Reducer {
             inputUnit.meaningInput.text = ""
         }
         
-        fileprivate mutating func setNoSetAlert() {
+        mutating func setNoSetAlert() {
             alert = AlertState<AlertAction> {
                 TextState("선택된 단어장 없음")
             } actions: {
