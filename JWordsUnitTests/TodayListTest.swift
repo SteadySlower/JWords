@@ -10,6 +10,12 @@ import XCTest
 
 @testable import JWords
 
+private let fetchSets: [StudySet] = .testMock
+private let fetchAllUnits: [StudyUnit] = .testMock
+private let scheduleStudySets: [StudySet] = .notClosedTestMock
+private let scheduleReviewSets: [StudySet] = .notClosedTestMock
+private let filterOnlyFailUnits: [StudyUnit] = .testMock
+
 @MainActor
 final class TodayListTest: XCTestCase {
     
@@ -17,14 +23,11 @@ final class TodayListTest: XCTestCase {
         let store = TestStore(initialState: TodayList.State()) {
             TodayList()
         } withDependencies: {
-            $0.studySetClient.fetch = { _ in .mock }
-            $0.studyUnitClient.fetchAll = { _ in .mock }
-            $0.scheduleClient.study = { _ in .mock }
-            $0.scheduleClient.review = { _ in .mock }
-            $0.studyUnitClient.fetchAll = { _ in .mock }
-            $0.utilClient.filterOnlyFailUnits = { _ in .mock }
-            $0.scheduleClient.study = { _ in .mock }
-            $0.scheduleClient.review = { _ in .mock }
+            $0.studySetClient.fetch = { _ in fetchSets }
+            $0.studyUnitClient.fetchAll = { _ in fetchAllUnits }
+            $0.scheduleClient.study = { _ in scheduleStudySets }
+            $0.scheduleClient.review = { _ in scheduleReviewSets }
+            $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
             $0.scheduleClient.updateStudy = { _ in }
             $0.scheduleClient.updateReview = { _ in }
             $0.scheduleClient.clear = { }
@@ -32,15 +35,12 @@ final class TodayListTest: XCTestCase {
 
         
         await store.send(.onAppear) {
-            $0.studySets = .mock
-            $0.reviewSets = .mock
-            $0.toStudyUnits = .mock
-            $0.allStudyUnits = .mock
             $0.todayStatus.update(
-                setCount: $0.studySets.count,
-                allUnitCount: [StudyUnit].mock.count,
-                toStudyUnitCount: $0.toStudyUnits.count
+                studySets: scheduleStudySets,
+                allUnits: fetchAllUnits,
+                toStudyUnits: filterOnlyFailUnits
             )
+            $0.reviewSets = scheduleReviewSets
         }
         
         return store
@@ -50,26 +50,24 @@ final class TodayListTest: XCTestCase {
         let store = TestStore(initialState: TodayList.State()) {
             TodayList()
         } withDependencies: {
-            $0.studySetClient.fetch = { _ in .mock }
-            $0.studyUnitClient.fetchAll = { _ in .mock }
-            $0.scheduleClient.study = { _ in .mock }
-            $0.scheduleClient.review = { _ in .mock }
-            $0.studyUnitClient.fetchAll = { _ in .mock }
-            $0.utilClient.filterOnlyFailUnits = { _ in .mock }
-            $0.scheduleClient.study = { _ in .mock }
-            $0.scheduleClient.review = { _ in .mock }
+            $0.studySetClient.fetch = { _ in fetchSets }
+            $0.studyUnitClient.fetchAll = { _ in fetchAllUnits }
+            $0.scheduleClient.study = { _ in scheduleStudySets }
+            $0.scheduleClient.review = { _ in scheduleReviewSets }
+            $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
+            $0.scheduleClient.updateStudy = { _ in }
+            $0.scheduleClient.updateReview = { _ in }
+            $0.scheduleClient.clear = { }
         }
 
+        
         await store.send(.onAppear) {
-            $0.studySets = .mock
-            $0.reviewSets = .mock
-            $0.toStudyUnits = .mock
-            $0.allStudyUnits = .mock
             $0.todayStatus.update(
-                setCount: $0.studySets.count,
-                allUnitCount: $0.allStudyUnits.count,
-                toStudyUnitCount: $0.toStudyUnits.count
+                studySets: scheduleStudySets,
+                allUnits: fetchAllUnits,
+                toStudyUnits: filterOnlyFailUnits
             )
+            $0.reviewSets = scheduleReviewSets
         }
     }
     
