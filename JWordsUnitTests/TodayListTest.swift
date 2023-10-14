@@ -137,4 +137,13 @@ final class TodayListTest: XCTestCase {
         }
     }
     
+    func testShowTutorial() async {
+        let store = await setTestStore()
+        
+        XCTAssert(store.state.showTutorial == false)
+        
+        await store.send(.showTutorial(true)) {
+            $0.showTutorial = true
+        }
+    }
 }
