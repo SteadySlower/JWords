@@ -10,18 +10,16 @@ import XCTest
 
 @testable import JWords
 
-private let fetchSets: [StudySet] = .testMock
-private let fetchAllUnits: [StudyUnit] = .testMock
-private let scheduleStudySets: [StudySet] = .notClosedTestMock
-private let scheduleReviewSets: [StudySet] = .notClosedTestMock
-private let filterOnlyFailUnits: [StudyUnit] = .testMock
-private let updateStudySets: [StudySet] = .testMock
-private let updateReviewSets: [StudySet] = .testMock
-
 @MainActor
 final class TodayListTest: XCTestCase {
     
     private func setTestStore() async -> TestStore<TodayList.State, TodayList.Action> {
+        let fetchSets: [StudySet] = .testMock
+        let fetchAllUnits: [StudyUnit] = .testMock
+        let scheduleStudySets: [StudySet] = .notClosedTestMock
+        let scheduleReviewSets: [StudySet] = .notClosedTestMock
+        let filterOnlyFailUnits: [StudyUnit] = .testMock
+        
         let store = TestStore(initialState: TodayList.State()) {
             TodayList()
         } withDependencies: {
@@ -30,8 +28,6 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.study = { _ in scheduleStudySets }
             $0.scheduleClient.review = { _ in scheduleReviewSets }
             $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
-            $0.scheduleClient.updateStudy = { _ in updateStudySets }
-            $0.scheduleClient.updateReview = { _ in updateReviewSets }
             $0.scheduleClient.clear = { }
         }
 
@@ -77,9 +73,13 @@ final class TodayListTest: XCTestCase {
             $0.reviewSets = []
         }
         
+        let updateStudySets: [StudySet] = .testMock
+        let updateReviewSets: [StudySet] = .testMock
         let newFetchAllUnits: [StudyUnit] = .testMock
         let newFilterOnlyFailUnits: [StudyUnit] = .testMock
         
+        store.dependencies.scheduleClient.updateStudy = { _ in updateStudySets }
+        store.dependencies.scheduleClient.updateReview = { _ in updateReviewSets }
         store.dependencies.studyUnitClient.fetchAll = { _ in newFetchAllUnits }
         store.dependencies.utilClient.filterOnlyFailUnits = { _ in newFilterOnlyFailUnits }
         
