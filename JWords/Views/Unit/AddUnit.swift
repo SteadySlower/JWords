@@ -35,7 +35,7 @@ struct AddUnit: Reducer {
             }
         }
         
-        fileprivate mutating func setExistAlert() {
+        mutating func setExistAlert() {
             let kanjiText = inputUnit.kanjiInput.text
             alert = AlertState<AlertAction> {
                 TextState("표제어 중복")
