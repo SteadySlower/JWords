@@ -109,4 +109,23 @@ final class TodayListTest: XCTestCase {
         }
     }
     
+    func testStudyUnitsInSetDismiss() async {
+        let store = await setTestStore()
+        
+        let fetchedUnits: [StudyUnit] = .testMock
+        store.dependencies.studyUnitClient.fetch = { _ in fetchedUnits }
+        
+        let studySets = store.state.todayStatus.studySets
+        let reviewSets = store.state.reviewSets
+        let tappedSet = (studySets + reviewSets).randomElement()!
+        
+        await store.send(.homeCellTapped(tappedSet)) {
+            $0.studyUnitsInSet = .init(set: tappedSet, units: fetchedUnits)
+        }
+        
+        await store.send(.studyUnitsInSet(.dismiss)) {
+            $0.studyUnitsInSet = nil
+        }
+    }
+    
 }
