@@ -13,8 +13,8 @@ struct ScheduleClient {
     private static let kv = KeyValueStoreService.shared
     var study: ([StudySet]) -> [StudySet]
     var review: ([StudySet]) -> [StudySet]
-    var updateStudy: ([StudySet]) -> Void
-    var updateReview: ([StudySet]) -> Void
+    var updateStudy: ([StudySet]) -> [StudySet]
+    var updateReview: ([StudySet]) -> [StudySet]
     var clear: () -> Void
     var autoSet: ([StudySet]) -> Void
     var reviewed: (StudySet) -> Void
@@ -40,9 +40,11 @@ extension ScheduleClient: DependencyKey {
     },
     updateStudy: { sets in
         kv.setArrayOfString(key: .studySets, value: sets.map { $0.id })
+        return sets.sorted(by: { $0.createdAt > $1.createdAt })
     },
     updateReview: { sets in
         kv.setArrayOfString(key: .reviewSets, value: sets.map { $0.id })
+        return sets.sorted(by: { $0.createdAt > $1.createdAt })
     },
     clear: {
         kv.setArrayOfString(key: .studySets, value: [])
@@ -71,8 +73,8 @@ extension ScheduleClient: TestDependencyKey {
   static let previewValue = Self(
     study: { _ in .mock },
     review: { _ in .mock },
-    updateStudy: { _ in },
-    updateReview: { _ in },
+    updateStudy: { _ in .mock },
+    updateReview: { _ in .mock },
     clear: { },
     autoSet: { _ in },
     reviewed: { _ in },

@@ -69,14 +69,19 @@ struct TodayList: Reducer {
                 return .none
             case .setSelectionModal(let isPresent):
                 if !isPresent {
-                    if let newStudy = state.todaySelection?.studySets {
-                        scheduleClient.updateStudy(newStudy)
-                    }
-                    if let newReview = state.todaySelection?.reviewSets {
-                        scheduleClient.updateReview(newReview)
+                    if let newStudy = state.todaySelection?.studySets,
+                       let newReview = state.todaySelection?.reviewSets 
+                    {
+                        let newStudySets = scheduleClient.updateStudy(newStudy)
+                        let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
+                        let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
+                        state.todayStatus.update(
+                            studySets: newStudySets,
+                            allUnits: newAllStudyUnits,
+                            toStudyUnits: newToStudyUnits)
+                        state.reviewSets = scheduleClient.updateReview(newReview)
                     }
                     state.todaySelection = nil
-                    return .send(.onAppear)
                 }
                 return .none
             case .todayStatus(let action):
@@ -101,6 +106,8 @@ struct TodayList: Reducer {
             case .listButtonTapped:
                 state.todaySelection = TodaySelection.State(todaySets: state.todayStatus.studySets,
                                                             reviewSets: state.reviewSets)
+                state.todayStatus.clear()
+                state.reviewSets = []
                 return .none
             case .clearScheduleButtonTapped:
                 state.clear()
@@ -141,7 +148,7 @@ struct TodayList: Reducer {
         
         let allSets = try! setClient.fetch(false)
         let studySets = scheduleClient.study(allSets)
-        let allUnits = try! unitClient.fetchAll(allSets)
+        let allUnits = try! unitClient.fetchAll(studySets)
         let studyUnits = utilClient.filterOnlyFailUnits(allUnits)
         
         state.todayStatus.update(
