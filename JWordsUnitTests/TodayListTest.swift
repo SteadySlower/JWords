@@ -28,7 +28,6 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.study = { _ in scheduleStudySets }
             $0.scheduleClient.review = { _ in scheduleReviewSets }
             $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
-            $0.scheduleClient.clear = { }
         }
 
         
@@ -125,6 +124,16 @@ final class TodayListTest: XCTestCase {
         
         await store.send(.studyUnitsInSet(.dismiss)) {
             $0.studyUnitsInSet = nil
+        }
+    }
+    
+    func testClearScheduleButtonTapped() async {
+        let store = await setTestStore()
+        
+        store.dependencies.scheduleClient.clear = {}
+        
+        await store.send(.clearScheduleButtonTapped) {
+            $0.clear()
         }
     }
     
