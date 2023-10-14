@@ -58,5 +58,23 @@ final class AddUnitTest: XCTestCase {
         await store.receive(.added(inserted))
     }
     
+    func testAdd() async {
+        let inserted: StudyUnit = .testMock
+        
+        let store = TestStore(
+            initialState: AddUnit.State(
+                set: .testMock
+            )
+        ) {
+            AddUnit()
+        } withDependencies: {
+            $0.studyUnitClient.insert = { _, _ in inserted }
+        }
+
+        await store.send(.add)
+        
+        await store.receive(.added(inserted))
+    }
+    
 }
 
