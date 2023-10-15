@@ -13,4 +13,17 @@ import XCTest
 @MainActor
 final class InputSetTest: XCTestCase {
     
+    func test_updateTitle() async {
+        let store = TestStore(
+            initialState: InputSet.State(),
+            reducer: { InputSet() }
+        )
+        
+        let text = Random.string
+        
+        await store.send(.updateTitle(text)) {
+            $0.title = text
+        }
+    }
+    
 }
