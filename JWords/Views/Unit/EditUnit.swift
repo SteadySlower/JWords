@@ -32,7 +32,7 @@ struct EditUnit: Reducer {
             inputUnit.meaningInput.text
         }
         
-        fileprivate mutating func setUneditableAlert() {
+        mutating func setUneditableAlert() {
             let kanjiText = inputUnit.kanjiInput.text
             alert = AlertState<AlertAction> {
                 TextState("표제어 중복")

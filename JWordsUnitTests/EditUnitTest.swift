@@ -15,7 +15,6 @@ final class EditUnitTest: XCTestCase {
     
     func testInit() async {
         let unit: StudyUnit = .testMock
-        
         let store = TestStore(
             initialState: EditUnit.State(unit: unit),
             reducer: { EditUnit() }
@@ -26,6 +25,49 @@ final class EditUnitTest: XCTestCase {
         XCTAssert(store.state.inputUnit.kanjiInput.hurigana.hurigana == EditHuriganaText.State(hurigana: unit.kanjiText).hurigana)
         XCTAssert(store.state.inputUnit.kanjiInput.isEditing == false)
         XCTAssert(store.state.inputUnit.meaningInput.text == unit.meaningText)
+    }
+    
+    func testInputUnitAlreadyExistNil() async {
+        let store = TestStore(
+            initialState: EditUnit.State(unit: .testMock),
+            reducer: { EditUnit() }
+        )
+        
+        await store.send(.inputUnit(.alreadyExist(nil)))
+    }
+    
+    func testInputUnitAlreadyExistSameKanjiText() async {
+        let kanjiText = Random.string
+        let unit: StudyUnit = .init(
+            kanjiText: kanjiText,
+            meaningText: Random.string,
+            studyState: [.undefined, .success, .fail].randomElement()!,
+            studySets: .testMock)
+        let alreadyExist: StudyUnit = .init(
+            kanjiText: kanjiText,
+            meaningText: Random.string,
+            studyState: [.undefined, .success, .fail].randomElement()!,
+            studySets: .testMock)
+        let store = TestStore(
+            initialState: EditUnit.State(unit: unit),
+            reducer: { EditUnit() }
+        )
+        
+        await store.send(.inputUnit(.alreadyExist(alreadyExist)))
+    }
+    
+    func testInputUnitAlreadyExistDifferentKanjiText() async {
+        let unit: StudyUnit = .testMock
+        let alreadyExist: StudyUnit = .testMock
+        
+        let store = TestStore(
+            initialState: EditUnit.State(unit: unit),
+            reducer: { EditUnit() }
+        )
+        
+        await store.send(.inputUnit(.alreadyExist(alreadyExist))) {
+            $0.setUneditableAlert()
+        }
     }
     
 }
