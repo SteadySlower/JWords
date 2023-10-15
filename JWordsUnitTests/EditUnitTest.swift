@@ -70,4 +70,22 @@ final class EditUnitTest: XCTestCase {
         }
     }
     
+    func testEdit() async {
+        let unit: StudyUnit = .testMock
+        let edited: StudyUnit = .testMock
+        
+        let store = TestStore(
+            initialState: EditUnit.State(
+                unit: unit)
+        ) {
+            EditUnit()
+        } withDependencies: {
+            $0.studyUnitClient.edit = { _, _ in edited }
+        }
+
+        await store.send(.edit)
+        
+        await store.receive(.edited(edited))
+    }
+    
 }
