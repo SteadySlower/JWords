@@ -88,4 +88,23 @@ final class EditUnitTest: XCTestCase {
         await store.receive(.edited(edited))
     }
     
+    func testAlertPresentedCancel() async {
+        let unit: StudyUnit = .testMock
+        let alreadyExist: StudyUnit = .testMock
+        
+        let store = TestStore(
+            initialState: EditUnit.State(unit: unit),
+            reducer: { EditUnit() }
+        )
+        
+        await store.send(.inputUnit(.alreadyExist(alreadyExist))) {
+            $0.setUneditableAlert()
+        }
+        
+        await store.send(.alert(.presented(.cancel))) {
+            $0.alert = nil
+        }
+        
+        await store.receive(.cancel)
+    }
 }
