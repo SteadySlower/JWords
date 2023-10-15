@@ -44,6 +44,9 @@
 		0641C1C02ADBB61700C6EA05 /* MeaningInputTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1BF2ADBB61700C6EA05 /* MeaningInputTest.swift */; };
 		0641C1C22ADBB89A00C6EA05 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C12ADBB89A00C6EA05 /* Kanji.swift */; };
 		0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C32ADBB97800C6EA05 /* KanjiListTest.swift */; };
+		0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C52ADBC04C00C6EA05 /* AddSetTest.swift */; };
+		0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C72ADBC10B00C6EA05 /* EditSetTest.swift */; };
+		0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* InputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* InputUnit.swift */; };
@@ -196,6 +199,9 @@
 		0641C1BF2ADBB61700C6EA05 /* MeaningInputTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeaningInputTest.swift; sourceTree = "<group>"; };
 		0641C1C12ADBB89A00C6EA05 /* Kanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanji.swift; sourceTree = "<group>"; };
 		0641C1C32ADBB97800C6EA05 /* KanjiListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiListTest.swift; sourceTree = "<group>"; };
+		0641C1C52ADBC04C00C6EA05 /* AddSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSetTest.swift; sourceTree = "<group>"; };
+		0641C1C72ADBC10B00C6EA05 /* EditSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSetTest.swift; sourceTree = "<group>"; };
+		0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSetTest.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		06496B0A2AA311140061DCA9 /* OCRClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRClient.swift; sourceTree = "<group>"; };
 		064BA4422AC2558700288749 /* InputUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUnit.swift; sourceTree = "<group>"; };
@@ -564,6 +570,9 @@
 				0641C1BD2ADB9BEB00C6EA05 /* KanjiInputTest.swift */,
 				0641C1BF2ADBB61700C6EA05 /* MeaningInputTest.swift */,
 				0641C1C32ADBB97800C6EA05 /* KanjiListTest.swift */,
+				0641C1C52ADBC04C00C6EA05 /* AddSetTest.swift */,
+				0641C1C72ADBC10B00C6EA05 /* EditSetTest.swift */,
+				0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1029,11 +1038,14 @@
 			files = (
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
+				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
+				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
 				0641C1BA2ADB875800C6EA05 /* EditUnitTest.swift in Sources */,
 				060703F92ADA8CE70078489C /* StudySet.swift in Sources */,
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
+				0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				0641C1C02ADBB61700C6EA05 /* MeaningInputTest.swift in Sources */,
 				065FD2672ACE9FDE00A2ABCE /* TodayListTest.swift in Sources */,
