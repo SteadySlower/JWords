@@ -84,4 +84,26 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_showStudyView_false() async {
+        let kanji: Kanji = .testMock
+        let units: [StudyUnit] = .testMock
+        
+        let store = TestStore(
+            initialState: KanjiList.State(
+                studyKanjiSamples: StudyKanjiSamples.State(
+                    kanji: kanji,
+                    units: units
+                )
+            ),
+            reducer: { KanjiList() },
+            withDependencies: {
+                $0.kanjiClient.kanjiUnits = { _ in units }
+            }
+        )
+        
+        await store.send(.showStudyView(false)) {
+            $0.studyKanjiSamples = nil
+        }
+    }
+    
 }
