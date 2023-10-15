@@ -64,4 +64,32 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
+    func test_selectSet_idUpdate_notNil() async {
+        let store = TestStore(
+            initialState: AddUnitWithOCR.State(),
+            reducer: { AddUnitWithOCR() }
+        )
+        
+        let set: StudySet = .testMock
+        
+        await store.send(.selectSet(.idUpdated(set))) {
+            $0.addUnit.set = set
+        }
+    }
+    
+    func test_selectSet_idUpdate_nil() async {
+        let store = TestStore(
+            initialState: AddUnitWithOCR.State(
+                addUnit: .init(
+                    set: .testMock
+                )
+            ),
+            reducer: { AddUnitWithOCR() }
+        )
+        
+        await store.send(.selectSet(.idUpdated(nil))) {
+            $0.addUnit.set = nil
+        }
+    }
+    
 }
