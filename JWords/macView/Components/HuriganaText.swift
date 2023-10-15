@@ -14,7 +14,12 @@ struct HuriganaText: View {
     private let alignment: FlexBox.Alignment
     
     init(hurigana: String, fontSize: CGFloat = 20, hideYomi: Bool = false, alignment: FlexBox.Alignment = .center) {
-        self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
+        self.huris = hurigana
+            .split(separator: "`")
+            .enumerated()
+            .map { (index, huriString) in
+                Huri(id: "\(index)\(huriString)", huriString: String(huriString))
+            }
         self.fontSize = fontSize
         self.hideYomi = hideYomi
         self.alignment = alignment

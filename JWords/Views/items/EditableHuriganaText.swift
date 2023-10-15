@@ -13,7 +13,12 @@ struct EditHuriganaText: Reducer {
         var huris: [Huri]
         
         init(hurigana: String) {
-            self.huris = hurigana.split(separator: "`").map { Huri(String($0)) }
+            self.huris = hurigana
+                .split(separator: "`")
+                .enumerated()
+                .map { (index, huriString) in
+                    Huri(id: "\(index)\(huriString)", huriString: String(huriString))
+                }
         }
         
         var hurigana: String {

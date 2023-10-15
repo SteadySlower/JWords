@@ -108,7 +108,12 @@ class HuriganaConverter {
     
     func extractKanjis(from hurigana: String) -> [String] {
         var result = [String]()
-        let huris = hurigana.split(separator: "`").map { Huri(String($0)) }
+        let huris = hurigana
+            .split(separator: "`")
+            .enumerated()
+            .map { (index, huriString) in
+                Huri(id: "\(index)\(huriString)", huriString: String(huriString))
+            }
         
         for huri in huris {
             for kanji in huri.kanji {
@@ -123,7 +128,10 @@ class HuriganaConverter {
     func huriToKanjiText(from hurigana: String) -> String {
         hurigana
             .split(separator: "`")
-            .map { Huri(String($0)) }
+            .enumerated()
+            .map { (index, huriString) in
+                Huri(id: "\(index)\(huriString)", huriString: String(huriString))
+            }
             .map { $0.kanji.isEmpty ? $0.gana : $0.kanji }
             .reduce("", +)
     }
