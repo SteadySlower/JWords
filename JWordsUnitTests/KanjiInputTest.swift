@@ -59,13 +59,11 @@ final class KanjiInputTest: XCTestCase {
         let hurigana = HuriganaConverter.shared.convert(text)
         
         let store = TestStore(
-            initialState: KanjiInput.State(),
+            initialState: KanjiInput.State(
+                text: text
+            ),
             reducer: { KanjiInput() }
         )
-        
-        await store.send(.updateText(text)) {
-            $0.text = text
-        }
         
         await store.send(.convertToHurigana) {
             $0.hurigana = EditHuriganaText.State(hurigana: hurigana)
@@ -80,20 +78,12 @@ final class KanjiInputTest: XCTestCase {
         let hurigana = HuriganaConverter.shared.convert(text)
         
         let store = TestStore(
-            initialState: KanjiInput.State(),
+            initialState: KanjiInput.State(
+                hurigana: .init(hurigana: hurigana),
+                isEditing: false
+            ),
             reducer: { KanjiInput() }
         )
-        
-        await store.send(.updateText(text)) {
-            $0.text = text
-        }
-        
-        await store.send(.convertToHurigana) {
-            $0.hurigana = EditHuriganaText.State(hurigana: hurigana)
-            $0.isEditing = false
-        }
-        
-        await store.receive(.huriganaUpdated(hurigana))
         
         await store.send(.editText) {
             $0.isEditing = true
@@ -101,6 +91,20 @@ final class KanjiInputTest: XCTestCase {
         }
         
         await store.receive(.huriganaUpdated(store.state.hurigana.hurigana))
+    }
+    
+    func test_editText_onHuriUpdated() async {
+        let hurigana = HuriganaConverter.shared.convert(Random.string)
+        
+        let store = TestStore(
+            initialState: KanjiInput.State(
+                hurigana: .init(hurigana: hurigana)
+            ),
+            reducer: { KanjiInput() }
+        )
+        
+        await store.send(.editHuriText(.onHuriUpdated))
+        await store.receive(.huriganaUpdated(hurigana))
     }
     
 }
