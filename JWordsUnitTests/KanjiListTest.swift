@@ -67,4 +67,21 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_kanjiCellTapped() async {
+        let kanji: Kanji = .testMock
+        let units: [StudyUnit] = .testMock
+        
+        let store = TestStore(
+            initialState: KanjiList.State(),
+            reducer: { KanjiList() },
+            withDependencies: {
+                $0.kanjiClient.kanjiUnits = { _ in units }
+            }
+        )
+        
+        await store.send(.kanjiCellTapped(kanji)) {
+            $0.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
+        }
+    }
+    
 }
