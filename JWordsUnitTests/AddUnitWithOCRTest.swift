@@ -92,4 +92,30 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
+    func test_addUnit_added() async {
+        let store = TestStore(
+            initialState: AddUnitWithOCR.State(
+                addUnit: .init(
+                    set: .testMock,
+                    inputUnit: .init(
+                        kanjiInput: .init(
+                            text: Random.string,
+                            hurigana: .init(hurigana: Random.string),
+                            isEditing: false
+                        ),
+                        meaningInput: .init(
+                            text: Random.string
+                        )
+                    )
+                )
+            ),
+            reducer: { AddUnitWithOCR() }
+        )
+        
+        await store.send(.addUnit(.added(.testMock))) {
+            $0.addUnit.clearInput()
+            $0.selectSet.onUnitAdded()
+        }
+    }
+    
 }
