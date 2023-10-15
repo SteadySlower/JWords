@@ -59,11 +59,13 @@ final class KanjiInputTest: XCTestCase {
         let hurigana = HuriganaConverter.shared.convert(text)
         
         let store = TestStore(
-            initialState: KanjiInput.State(
-                text: text
-            ),
+            initialState: KanjiInput.State(),
             reducer: { KanjiInput() }
         )
+        
+        await store.send(.updateText(text)) {
+            $0.text = text
+        }
         
         await store.send(.convertToHurigana) {
             $0.hurigana = EditHuriganaText.State(hurigana: hurigana)
@@ -78,11 +80,13 @@ final class KanjiInputTest: XCTestCase {
         let hurigana = HuriganaConverter.shared.convert(text)
         
         let store = TestStore(
-            initialState: KanjiInput.State(
-                text: text
-            ),
+            initialState: KanjiInput.State(),
             reducer: { KanjiInput() }
         )
+        
+        await store.send(.updateText(text)) {
+            $0.text = text
+        }
         
         await store.send(.convertToHurigana) {
             $0.hurigana = EditHuriganaText.State(hurigana: hurigana)
