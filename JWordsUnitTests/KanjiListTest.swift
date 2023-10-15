@@ -32,4 +32,39 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_fetchKanji() async {
+        let fetchKanjiCount = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
+        let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
+        
+        let store = TestStore(
+            initialState: KanjiList.State(),
+            reducer: { KanjiList() },
+            withDependencies: {
+                $0.kanjiClient.fetch = { _ in fetched }
+            }
+        )
+        
+        await store.send(.fetchKanjis) {
+            $0.kanjis.append(contentsOf: fetched)
+        }
+    }
+    
+    func test_fetchKanji_lastPage() async {
+        let fetchKanjiCount = Random.int(from: 0, to: KanjiList.NUMBER_OF_KANJI_IN_A_PAGE - 1)
+        let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
+        
+        let store = TestStore(
+            initialState: KanjiList.State(),
+            reducer: { KanjiList() },
+            withDependencies: {
+                $0.kanjiClient.fetch = { _ in fetched }
+            }
+        )
+        
+        await store.send(.fetchKanjis) {
+            $0.kanjis.append(contentsOf: fetched)
+            $0.isLastPage = true
+        }
+    }
+    
 }
