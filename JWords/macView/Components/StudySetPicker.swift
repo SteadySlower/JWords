@@ -20,7 +20,7 @@ struct SelectStudySet: Reducer {
             self.pickerName = pickerName
         }
         
-        var selectedSet: StudySet? {
+        fileprivate var selectedSet: StudySet? {
             sets.first(where: { $0.id == selectedID })
         }
         
@@ -44,7 +44,7 @@ struct SelectStudySet: Reducer {
     enum Action: Equatable {
         case onAppear
         case updateID(String?)
-        case idUpdated
+        case idUpdated(StudySet?)
     }
     
     var body: some Reducer<State, Action> {
@@ -56,11 +56,12 @@ struct SelectStudySet: Reducer {
             case .updateID(let id):
                 state.selectedID = id
                 state.unitCount = nil
-                guard let set = state.selectedSet else {
-                    return .send(.idUpdated)
+                defer {
+                    if let set = state.selectedSet {
+                        state.unitCount = try! setClient.countUnits(set)
+                    }
                 }
-                state.unitCount = try! setClient.countUnits(set)
-                return .send(.idUpdated)
+                return .send(.idUpdated(state.selectedSet))
             default:
                 return .none
             }
