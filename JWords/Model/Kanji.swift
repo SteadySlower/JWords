@@ -41,6 +41,18 @@ struct Kanji: Equatable {
         self.usedIn = index
     }
     
+    // initializer for test mocking
+    init(kanjiText: String, meaningText: String, ondoku: String, kundoku: String, createdAt: Date, usedIn: Int) {
+        self.id = UUID().uuidString
+        self.objectID = NSManagedObjectID()
+        self.kanjiText = kanjiText
+        self.meaningText = meaningText
+        self.ondoku = ondoku
+        self.kundoku = kundoku
+        self.createdAt = createdAt
+        self.usedIn = usedIn
+    }
+    
 }
 
 extension Array where Element == Kanji {
