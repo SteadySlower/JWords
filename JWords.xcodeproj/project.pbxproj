@@ -122,6 +122,7 @@
 		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
 		5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */; };
 		5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE2DB42ADCB64900449A79 /* OCRTest.swift */; };
+		5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE2DB62ADCB76900449A79 /* OCRResult.swift */; };
 		5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1DB1E28C5E46B006DB89C /* Error.swift */; };
 		5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
@@ -286,6 +287,7 @@
 		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
 		5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		5ADE2DB42ADCB64900449A79 /* OCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRTest.swift; sourceTree = "<group>"; };
+		5ADE2DB62ADCB76900449A79 /* OCRResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRResult.swift; sourceTree = "<group>"; };
 		5AE1DB1E28C5E46B006DB89C /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -372,6 +374,7 @@
 				060703F62ADA8CA40078489C /* StudyUnit.swift */,
 				060703F82ADA8CE70078489C /* StudySet.swift */,
 				0641C1C12ADBB89A00C6EA05 /* Kanji.swift */,
+				5ADE2DB62ADCB76900449A79 /* OCRResult.swift */,
 			);
 			path = TestMock;
 			sourceTree = "<group>";
@@ -1043,6 +1046,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */,
+				5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */,
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
 				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
