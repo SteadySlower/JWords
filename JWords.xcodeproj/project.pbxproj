@@ -121,6 +121,7 @@
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
 		5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */; };
+		5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE2DB42ADCB64900449A79 /* OCRTest.swift */; };
 		5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1DB1E28C5E46B006DB89C /* Error.swift */; };
 		5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
@@ -284,6 +285,7 @@
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
 		5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		5ADE2DB42ADCB64900449A79 /* OCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRTest.swift; sourceTree = "<group>"; };
 		5AE1DB1E28C5E46B006DB89C /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -576,6 +578,7 @@
 				0641C1C72ADBC10B00C6EA05 /* EditSetTest.swift */,
 				0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */,
 				0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */,
+				5ADE2DB42ADCB64900449A79 /* OCRTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1053,6 +1056,7 @@
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				0641C1C02ADBB61700C6EA05 /* MeaningInputTest.swift in Sources */,
 				065FD2672ACE9FDE00A2ABCE /* TodayListTest.swift in Sources */,
+				5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */,
 				0641C1BE2ADB9BEB00C6EA05 /* KanjiInputTest.swift in Sources */,
 				0641C1BC2ADB97FB00C6EA05 /* InputUnitTest.swift in Sources */,
 				0641C1C22ADBB89A00C6EA05 /* Kanji.swift in Sources */,
