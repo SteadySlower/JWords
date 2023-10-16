@@ -25,7 +25,7 @@ extension OCRResult {
 extension Array where Element == OCRResult {
     static var testMock: Self {
         var result = [OCRResult]()
-        for _ in 0..<Random.int(from: 0, to: 100) {
+        for _ in 0..<Random.int(from: 1, to: 100) {
             result.append(.testMock)
         }
         return result
