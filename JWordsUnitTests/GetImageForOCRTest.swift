@@ -59,4 +59,18 @@ final class GetImageForOCRTest: XCTestCase {
         }
     }
     
+    func test_cameraImageSelected() async {
+        let image = UIImage(named: "Sample Image")!
+        let store = TestStore(
+            initialState: GetImageForOCR.State(),
+            reducer: { GetImageForOCR() },
+            withDependencies: {
+                $0.utilClient.resizeImage = { _ in image }
+            }
+        )
+        
+        await store.send(.cameraImageSelected(UIImage()))
+        await store.receive(.imageFetched(image))
+    }
+    
 }
