@@ -84,4 +84,19 @@ final class OCRTest: XCTestCase {
         }
     }
     
+    func test_japaneseOcrResponse() async {
+        let store = TestStore(
+            initialState: OCR.State(
+                ocr: GetTextsFromOCR.State(image: UIImage())
+            ),
+            reducer: { OCR() }
+        )
+        
+        let ocrResult: [OCRResult] = .testMock
+        
+        await store.send(.japaneseOcrResponse(.success(ocrResult))) {
+            $0.ocr?.japaneseOcrResult = ocrResult
+        }
+    }
+    
 }
