@@ -71,4 +71,17 @@ final class OCRTest: XCTestCase {
         }
     }
     
+    func test_ocr_removeImageButtonTapped() async {
+        let store = TestStore(
+            initialState: OCR.State(
+                ocr: GetTextsFromOCR.State(image: UIImage())
+            ),
+            reducer: { OCR() }
+        )
+        
+        await store.send(.ocr(.removeImageButtonTapped)) {
+            $0.ocr = nil
+        }
+    }
+    
 }
