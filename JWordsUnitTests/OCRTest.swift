@@ -29,7 +29,7 @@ final class OCRTest: XCTestCase {
         
         store.exhaustivity = .off
         
-        let image = UIImage()
+        let image = UIImage(named: "Sample Image")!
         
         await store.send(.getImage(.imageFetched(image))) {
             $0.ocr = .init(image: image)

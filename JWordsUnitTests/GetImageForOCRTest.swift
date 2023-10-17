@@ -14,7 +14,7 @@ import XCTest
 final class GetImageForOCRTest: XCTestCase {
     
     func test_clipBoardButtonTapped() async {
-        let image = UIImage()
+        let image = UIImage(named: "Sample Image")!
         let store = TestStore(
             initialState: GetImageForOCR.State(),
             reducer: { GetImageForOCR() },
