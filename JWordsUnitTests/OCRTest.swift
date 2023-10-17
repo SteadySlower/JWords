@@ -51,4 +51,24 @@ final class OCRTest: XCTestCase {
         }
     }
     
+    func test_ocr_ocrMarkTapped() async {
+        let store = TestStore(
+            initialState: OCR.State(
+                ocr: GetTextsFromOCR.State(image: UIImage())
+            ),
+            reducer: { OCR() }
+        )
+        
+        let lang: OCRLang = [.korean, .japanese].randomElement()!
+        let text = Random.string
+        
+        await store.send(.ocr(.ocrMarkTapped(lang, text)))
+        
+        if lang == .korean {
+            await store.receive(.koreanOCR(text))
+        } else {
+            await store.receive(.japaneseOCR(text))
+        }
+    }
+    
 }
