@@ -28,4 +28,15 @@ final class GetImageForOCRTest: XCTestCase {
         await store.receive(.imageFetched(image))
     }
     
+    func test_cameraButtonTapped() async {
+        let store = TestStore(
+            initialState: GetImageForOCR.State(),
+            reducer: { GetImageForOCR() }
+        )
+        
+        await store.send(.cameraButtonTapped) {
+            $0.showCameraScanner = true
+        }
+    }
+    
 }
