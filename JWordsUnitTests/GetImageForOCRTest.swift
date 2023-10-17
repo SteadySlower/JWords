@@ -39,4 +39,24 @@ final class GetImageForOCRTest: XCTestCase {
         }
     }
     
+    func test_showCameraScanner() async {
+        var bool = Bool.random()
+        
+        let store = TestStore(
+            initialState: GetImageForOCR.State(
+                showCameraScanner: bool
+            ),
+            reducer: { GetImageForOCR() }
+        )
+        
+        store.exhaustivity = .off
+        
+        bool.toggle()
+        await store.send(.showCameraScanner(bool))
+        
+        store.assert {
+            $0.showCameraScanner = bool
+        }
+    }
+    
 }
