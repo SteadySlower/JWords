@@ -98,6 +98,7 @@
 		06E917542A07168F002289B4 /* StudySetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* StudySetClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
 		5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */; };
+		5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */; };
 		5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5C468728D98894000E212B /* Calendar+Extension.swift */; };
 		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
 		5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A653FEA2907C1C800E3466E /* TodaySchedule.swift */; };
@@ -263,6 +264,7 @@
 		06E917532A07168F002289B4 /* StudySetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
 		5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetImageForOCRTest.swift; sourceTree = "<group>"; };
+		5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettingTest.swift; sourceTree = "<group>"; };
 		5A5C468728D98894000E212B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		5A5FF631286AD79E000150A7 /* ImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressor.swift; sourceTree = "<group>"; };
 		5A653FEA2907C1C800E3466E /* TodaySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySchedule.swift; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 				0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */,
 				5ADE2DB42ADCB64900449A79 /* OCRTest.swift */,
 				5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */,
+				5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1051,6 +1054,7 @@
 				0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */,
 				5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */,
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
+				5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */,
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
 				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
 				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
