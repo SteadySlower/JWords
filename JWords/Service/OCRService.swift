@@ -26,11 +26,12 @@ enum OCRLang {
 }
 
 struct OCRResult: Identifiable, Equatable {
-    let id: UUID = .init()
+    let id: String
     let string: String
     let position: CGRect
     
     init(string: String, position: CGRect) {
+        self.id = "\(string)\(position.minX)\(position.minY)\(position.width)\(position.height)"
         self.string = string
         self.position = position
     }

@@ -38,12 +38,8 @@ struct AddUnitWithOCR: Reducer {
                 }
             case .selectSet(let action):
                 switch action {
-                case .idUpdated:
-                    if let set = state.selectSet.selectedSet {
-                        state.addUnit.set = set
-                    } else {
-                        state.addUnit.set = nil
-                    }
+                case .idUpdated(let set):
+                    state.addUnit.set = set
                     return .none
                 default: return .none
                 }

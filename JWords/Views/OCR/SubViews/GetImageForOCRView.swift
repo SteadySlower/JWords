@@ -40,6 +40,7 @@ struct GetImageForOCR: Reducer {
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
+    @Dependency(\.utilClient) var utilClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -47,7 +48,7 @@ struct GetImageForOCR: Reducer {
             case .clipBoardButtonTapped:
                 guard
                     let fetchedImage = pasteBoardClient.fetchImage(),
-                    let resized = resizeImage(fetchedImage)
+                    let resized = utilClient.resizeImage(fetchedImage)
                 else { return .none }
                 return .send(.imageFetched(resized))
             case .cameraButtonTapped:
@@ -57,53 +58,13 @@ struct GetImageForOCR: Reducer {
                 state.showCameraScanner = show
                 return .none
             case .cameraImageSelected(let image):
-                guard let resized = resizeImage(image) else { return .none }
+                guard let resized = utilClient.resizeImage(image) else { return .none }
                 return .send(.imageFetched(resized))
             default: return .none
             }
         }
     }
-    
 }
-
-// TODO: move this somewhere proper
-
-fileprivate func resizeImage(_ image: InputImageType) -> InputImageType? {
-    // Calculate Size
-    let newWidth = Constants.Size.deviceWidth - 10
-    let newHeight = newWidth * (image.size.height / image.size.width)
-    let newSize = CGSize(width: newWidth, height: newHeight)
-    
-    // If image is small enough, return original one
-    if image.size.width < newWidth {
-        return image
-    }
-    
-    #if os(iOS)
-    UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
-    image.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
-    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    return resizedImage
-    #elseif os(macOS)
-     let newImage = NSImage(size: newSize)
-
-     newImage.lockFocus()
-
-     NSGraphicsContext.current?.imageInterpolation = .high
-
-     image.draw(in: NSRect(x: 0, y: 0, width: newWidth, height: newHeight),
-                from: NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height),
-                operation: .sourceOver,
-                fraction: 1.0)
-
-     newImage.unlockFocus()
-
-     return newImage
-     #endif
-}
-
-
 
 struct GetImageForOCRView: View {
     
