@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-enum ListType {
+enum ListType: CaseIterable {
     case study, edit, select, delete
     
     var pickerText: String {

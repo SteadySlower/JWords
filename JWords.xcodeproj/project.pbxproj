@@ -99,6 +99,7 @@
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
 		5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */; };
 		5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */; };
+		5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7D12ADFCE7200669DB9 /* ListType.swift */; };
 		5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5C468728D98894000E212B /* Calendar+Extension.swift */; };
 		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
 		5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A653FEA2907C1C800E3466E /* TodaySchedule.swift */; };
@@ -265,6 +266,7 @@
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
 		5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetImageForOCRTest.swift; sourceTree = "<group>"; };
 		5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettingTest.swift; sourceTree = "<group>"; };
+		5A0ED7D12ADFCE7200669DB9 /* ListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListType.swift; sourceTree = "<group>"; };
 		5A5C468728D98894000E212B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		5A5FF631286AD79E000150A7 /* ImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressor.swift; sourceTree = "<group>"; };
 		5A653FEA2907C1C800E3466E /* TodaySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySchedule.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				060703F82ADA8CE70078489C /* StudySet.swift */,
 				0641C1C12ADBB89A00C6EA05 /* Kanji.swift */,
 				5ADE2DB62ADCB76900449A79 /* OCRResult.swift */,
+				5A0ED7D12ADFCE7200669DB9 /* ListType.swift */,
 			);
 			path = TestMock;
 			sourceTree = "<group>";
@@ -1060,6 +1063,7 @@
 				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
+				5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */,
 				0641C1BA2ADB875800C6EA05 /* EditUnitTest.swift in Sources */,
 				060703F92ADA8CE70078489C /* StudySet.swift in Sources */,
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
