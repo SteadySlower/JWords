@@ -31,4 +31,21 @@ final class StudySettingTest: XCTestCase {
         }
     }
     
+    func test_setFilter() async {
+        let store = TestStore(
+            initialState: StudySetting.State(
+                showSetEditButtons: Bool.random(),
+                frontType: FrontType.allCases.randomElement()!,
+                selectableListType: .testMock
+            ),
+            reducer: { StudySetting() }
+        )
+        
+        let newFilter = UnitFilter.allCases.filter { $0 != store.state.filter }.randomElement()!
+        
+        await store.send(.setFilter(newFilter)) {
+            $0.filter = newFilter
+        }
+    }
+    
 }
