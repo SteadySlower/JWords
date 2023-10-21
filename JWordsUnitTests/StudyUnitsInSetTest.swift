@@ -78,4 +78,29 @@ final class StudyUnitsInSetTest: XCTestCase {
         }
     }
     
+    func test_tools_set_selectedNil() async {
+        let isReviewSet: Bool = .random()
+        let set: StudySet = .testMock
+        let units: [StudyUnit] = .testMock
+        
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: set,
+                units: units
+            ),
+            reducer: { StudyUnitsInSet() },
+            withDependencies: {
+                $0.scheduleClient.isReview = { _ in isReviewSet }
+            }
+        )
+        
+        await store.send(.tools(.set)) {
+            $0.modals.setMoveUnitModal(
+                from: set,
+                isReview: isReviewSet,
+                toMove: units.filter { $0.studyState != .success }
+            )
+        }
+    }
+    
 }
