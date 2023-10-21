@@ -136,4 +136,21 @@ final class ShowModalsInListTest: XCTestCase {
         }
     }
     
+    func test_addUnit_added() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                addUnit: .init()
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        let unit: StudyUnit = .testMock
+        
+        await store.send(.addUnit(.added(unit))) {
+            $0.addUnit = nil
+        }
+        
+        await store.receive(.unitAdded(unit))
+    }
+    
 }
