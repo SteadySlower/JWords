@@ -216,4 +216,22 @@ final class ShowModalsInListTest: XCTestCase {
         await store.receive(.unitsMoved)
     }
     
+    func test_moveUnits_cancelButtonTapped() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                moveUnits: .init(
+                    fromSet: .testMock,
+                    isReviewSet: Bool.random(),
+                    toMoveUnits: .testMock,
+                    willCloseSet: Bool.random()
+                )
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.moveUnits(.cancelButtonTapped)) {
+            $0.moveUnits = nil
+        }
+    }
+    
 }
