@@ -79,4 +79,31 @@ final class ShowModalsInListTest: XCTestCase {
         }
     }
     
+    func test_showMoveUnitsModal_true() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.showMoveUnitsModal(true))
+    }
+    
+    func test_showMoveUnitsModal_false() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                moveUnits: .init(
+                    fromSet: .testMock,
+                    isReviewSet: Bool.random(),
+                    toMoveUnits: .testMock,
+                    willCloseSet: Bool.random()
+                )
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.showMoveUnitsModal(false)) {
+            $0.moveUnits = nil
+        }
+    }
+    
 }
