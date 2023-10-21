@@ -11,10 +11,11 @@ import Foundation
 extension Array where Element == ListType {
     static var testMock: Self {
         let count = Random.int(from: 2, to: ListType.allCases.count)
-        var result = ListType.allCases.shuffled()
-        while result.count > count {
+        var result = ListType.allCases.filter { $0 != .study }.shuffled()
+        while result.count > count - 1 {
             result.removeLast()
         }
-        return result
+        // it should always include .study
+        return [.study] + result
     }
 }
