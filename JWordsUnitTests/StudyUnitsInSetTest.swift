@@ -47,4 +47,35 @@ final class StudyUnitsInSetTest: XCTestCase {
         }
     }
     
+    func test_tools_set_selectedNotNil() async {
+        var selectUnits = IdentifiedArray(uniqueElements: [StudyUnit].testMock.map { SelectUnit.State(unit: $0, isSelected: true)  })
+        let unselected = IdentifiedArray(uniqueElements: [StudyUnit].testMock.map { SelectUnit.State(unit: $0, isSelected: false)  })
+        selectUnits.append(contentsOf: unselected)
+        
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: .testMock,
+                lists: .init(
+                    study: .init(
+                        units: .testMock,
+                        frontType: .allCases.randomElement()!,
+                        isLocked: .random()
+                    ),
+                    select: .init(
+                        idArray: selectUnits
+                    )
+                )
+            ),
+            reducer: { StudyUnitsInSet() }
+        )
+        
+        await store.send(.tools(.set)) {
+            $0.modals.setMoveUnitModal(
+                from: $0.set,
+                isReview: false,
+                toMove: $0.lists.selectedUnits!
+            )
+        }
+    }
+    
 }
