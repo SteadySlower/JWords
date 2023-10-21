@@ -103,4 +103,27 @@ final class StudyUnitsInSetTest: XCTestCase {
         }
     }
     
+    func test_tools_shuffle() async {
+        let shuffled: [StudyUnit] = .testMock
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: .testMock,
+                units: .testMock
+            ),
+            reducer: { StudyUnitsInSet() },
+            withDependencies: {
+                $0.utilClient.shuffleUnits =  { _ in shuffled }
+            }
+        )
+        
+        await store.send(.tools(.shuffle)) {
+            $0.lists.study = .init(
+                units: shuffled,
+                frontType: $0.setting.frontType,
+                isLocked: false
+            )
+            $0.lists.clear()
+        }
+    }
+    
 }
