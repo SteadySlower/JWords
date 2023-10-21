@@ -94,4 +94,39 @@ final class StudyOneUnitTest: XCTestCase {
         await store.send(.cellDrag(direction: .left))
     }
     
+    func test_cellDrag_right() async {
+        let testMock: StudyUnit = [.undefinedTestMock, .successTestMock].randomElement()!
+        
+        let store = TestStore(
+            initialState: StudyOneUnit.State(
+                unit: testMock
+            ),
+            reducer: { StudyOneUnit() },
+            withDependencies: {
+                $0.studyUnitClient.studyState = { _, state in state }
+            }
+        )
+        
+        await store.send(.cellDrag(direction: .right)) {
+            $0.studyState = .fail
+        }
+    }
+    
+    func test_cellDrag_right_locked() async {
+        let testMock: StudyUnit = [.undefinedTestMock, .successTestMock].randomElement()!
+        
+        let store = TestStore(
+            initialState: StudyOneUnit.State(
+                unit: testMock,
+                isLocked: true
+            ),
+            reducer: { StudyOneUnit() },
+            withDependencies: {
+                $0.studyUnitClient.studyState = { _, state in state }
+            }
+        )
+        
+        await store.send(.cellDrag(direction: .right))
+    }
+    
 }
