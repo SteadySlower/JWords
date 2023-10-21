@@ -129,4 +129,30 @@ final class StudyOneUnitTest: XCTestCase {
         await store.send(.cellDrag(direction: .right))
     }
     
+    func test_kanjiButtonTapped() async {
+        let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        
+        let store = TestStore(
+            initialState: StudyOneUnit.State(
+                unit: .testMock
+            ),
+            reducer: { StudyOneUnit() },
+            withDependencies: {
+                $0.kanjiClient.unitKanjis = { _ in kanjis }
+            }
+        )
+        
+        store.assert {
+            $0.kanjis = []
+        }
+        
+        await store.send(.kanjiButtonTapped) {
+            $0.kanjis = kanjis
+        }
+        
+        await store.send(.kanjiButtonTapped) {
+            $0.kanjis = []
+        }
+    }
+    
 }
