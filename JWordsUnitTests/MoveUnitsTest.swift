@@ -34,4 +34,25 @@ final class MoveUnitsTest: XCTestCase {
         }
     }
     
+    func test_updateSelection() async {
+        let store = TestStore(
+            initialState: MoveUnits.State(
+                fromSet: .testMock,
+                isReviewSet: Bool.random(),
+                toMoveUnits: .testMock
+            ),
+            reducer: { MoveUnits() }
+        )
+        
+        store.assert {
+            $0.selectedID = nil
+        }
+        
+        let id = Random.string
+        
+        await store.send(.updateSelection(id)) {
+            $0.selectedID = id
+        }
+    }
+    
 }
