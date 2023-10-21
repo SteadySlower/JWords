@@ -42,4 +42,21 @@ final class StudyOneUnitTest: XCTestCase {
         }
     }
     
+    func test_cellDoubleTapped_locked() async {
+        let testMock: StudyUnit = [.successTestMock, .failTestMock].randomElement()!
+        
+        let store = TestStore(
+            initialState: StudyOneUnit.State(
+                unit: testMock,
+                isLocked: true
+            ),
+            reducer: { StudyOneUnit() },
+            withDependencies: {
+                $0.studyUnitClient.studyState = { _, state in state }
+            }
+        )
+        
+        await store.send(.cellDoubleTapped)
+    }
+    
 }
