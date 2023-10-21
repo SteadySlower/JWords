@@ -26,4 +26,20 @@ final class StudyOneUnitTest: XCTestCase {
         }
     }
     
+    func test_cellDoubleTapped() async {
+        let testMock: StudyUnit = [.successTestMock, .failTestMock].randomElement()!
+        
+        let store = TestStore(
+            initialState: StudyOneUnit.State(unit: testMock),
+            reducer: { StudyOneUnit() },
+            withDependencies: {
+                $0.studyUnitClient.studyState = { _, state in state }
+            }
+        )
+        
+        await store.send(.cellDoubleTapped) {
+            $0.studyState = .undefined
+        }
+    }
+    
 }
