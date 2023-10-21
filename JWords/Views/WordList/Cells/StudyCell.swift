@@ -54,6 +54,9 @@ struct StudyOneUnit: Reducer {
         case left, right
     }
     
+    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(\.kanjiClient) var kanjiClient
+    
     enum Action: Equatable {
         case cellTapped
         case cellDoubleTapped
@@ -71,18 +74,16 @@ struct StudyOneUnit: Reducer {
                 return .none
             case .cellDoubleTapped:
                 if state.isLocked { return .none }
-                state.studyState = .undefined
-                _ = try! cd.updateStudyState(unit: state.unit, newState: .undefined)
+                state.studyState = try! unitClient.studyState(state.unit, .undefined)
                 return .none
             case .cellDrag(let direction):
                 if state.isLocked { return .none }
                 let newState: StudyState = direction == .left ? .success : .fail
-                state.studyState = newState
-                _ = try! cd.updateStudyState(unit: state.unit, newState: newState)
+                state.studyState = try! unitClient.studyState(state.unit, newState)
                 return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {
-                    state.kanjis = try! cd.fetchKanjis(usedIn: state.unit)
+                    state.kanjis = try! kanjiClient.unitKanjis(state.unit)
                 } else {
                     state.kanjis = []
                 }
