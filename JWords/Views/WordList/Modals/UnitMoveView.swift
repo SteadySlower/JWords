@@ -19,11 +19,13 @@ struct MoveUnits: Reducer {
         
         init(
             fromSet: StudySet,
+            selectedID: String? = nil,
             isReviewSet: Bool,
             toMoveUnits: [StudyUnit],
             willCloseSet: Bool
         ) {
             self.fromSet = fromSet
+            self.selectedID = selectedID
             self.isReviewSet = isReviewSet
             self.toMoveUnits = toMoveUnits
             self.willCloseSet = willCloseSet
