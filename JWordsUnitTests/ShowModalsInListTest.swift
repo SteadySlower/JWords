@@ -106,4 +106,21 @@ final class ShowModalsInListTest: XCTestCase {
         }
     }
     
+    func test_editSet_edited() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                editSet: .init(.testMock)
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        let set: StudySet = .testMock
+        
+        await store.send(.editSet(.edited(set))) {
+            $0.editSet = nil
+        }
+        
+        await store.receive(.setEdited(set))
+    }
+    
 }
