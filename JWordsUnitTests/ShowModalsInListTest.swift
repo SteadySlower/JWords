@@ -123,4 +123,17 @@ final class ShowModalsInListTest: XCTestCase {
         await store.receive(.setEdited(set))
     }
     
+    func test_editSet_cancel() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                editSet: .init(.testMock)
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.editSet(.cancel)) {
+            $0.editSet = nil
+        }
+    }
+    
 }
