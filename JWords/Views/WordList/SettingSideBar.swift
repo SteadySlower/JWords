@@ -60,10 +60,7 @@ struct StudySetting: Reducer {
             case .setListType(let type):
                 state.listType = type
                 return .none
-            case .setEditButtonTapped:
-                return .none
-            case .unitAddButtonTapped:
-                return .none
+            default: return .none
             }
         }
     }
