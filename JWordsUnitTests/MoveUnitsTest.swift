@@ -21,7 +21,8 @@ final class MoveUnitsTest: XCTestCase {
             initialState: MoveUnits.State(
                 fromSet: .testMock,
                 isReviewSet: Bool.random(),
-                toMoveUnits: .testMock
+                toMoveUnits: .testMock,
+                willCloseSet: Bool.random()
             ),
             reducer: { MoveUnits() },
             withDependencies: {
@@ -39,7 +40,8 @@ final class MoveUnitsTest: XCTestCase {
             initialState: MoveUnits.State(
                 fromSet: .testMock,
                 isReviewSet: Bool.random(),
-                toMoveUnits: .testMock
+                toMoveUnits: .testMock,
+                willCloseSet: Bool.random()
             ),
             reducer: { MoveUnits() }
         )
@@ -54,5 +56,9 @@ final class MoveUnitsTest: XCTestCase {
             $0.selectedID = id
         }
     }
+    
+//    func test_updateWillClose() async {
+//        
+//    }
     
 }

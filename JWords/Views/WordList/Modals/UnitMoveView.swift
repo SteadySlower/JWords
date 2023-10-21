@@ -17,11 +17,16 @@ struct MoveUnits: Reducer {
         var selectedID: String? = nil
         var willCloseSet: Bool
         
-        init(fromSet: StudySet, isReviewSet: Bool, toMoveUnits: [StudyUnit]) {
+        init(
+            fromSet: StudySet,
+            isReviewSet: Bool,
+            toMoveUnits: [StudyUnit],
+            willCloseSet: Bool
+        ) {
             self.fromSet = fromSet
             self.isReviewSet = isReviewSet
             self.toMoveUnits = toMoveUnits
-            self.willCloseSet = fromSet.dayFromToday >= 28 ? true : false
+            self.willCloseSet = willCloseSet
         }
         
         var selectedSet: StudySet? {
@@ -148,9 +153,12 @@ struct UnitMoveView: View {
 #Preview {
     UnitMoveView(
         store: Store(
-            initialState: MoveUnits.State(fromSet: StudySet(index: 0),
-                                          isReviewSet: true,
-                                          toMoveUnits: .mock),
+            initialState: MoveUnits.State(
+                fromSet: StudySet(index: 0),
+                isReviewSet: true,
+                toMoveUnits: .mock,
+                willCloseSet: false
+            ),
             reducer: { MoveUnits()._printChanges() }
         )
     )
