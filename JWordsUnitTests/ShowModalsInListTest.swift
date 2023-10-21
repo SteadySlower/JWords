@@ -57,4 +57,26 @@ final class ShowModalsInListTest: XCTestCase {
         }
     }
     
+    func test_showEditUnitModal_true() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.showEditUnitModal(true))
+    }
+    
+    func test_showEditUnitModal_false() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                editUnit: .init(unit: .testMock)
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.showEditUnitModal(false)) {
+            $0.editUnit = nil
+        }
+    }
+    
 }
