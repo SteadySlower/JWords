@@ -70,7 +70,7 @@ struct SwitchBetweenList: Reducer {
             self.isLocked = isLocked
         }
         
-        private mutating func clear() {
+        mutating func clear() {
             edit = nil
             select = nil
             delete = nil
@@ -81,11 +81,6 @@ struct SwitchBetweenList: Reducer {
             self.isLocked = isLocked
             let units = study._units.map { $0.unit }
             study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
-        }
-        
-        mutating func shuffle() {
-            clear()
-            study.shuffle()
         }
         
         mutating func setFrontType(_ frontType: FrontType) {

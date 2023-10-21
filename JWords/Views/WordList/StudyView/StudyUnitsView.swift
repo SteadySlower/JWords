@@ -40,6 +40,8 @@ struct StudyUnits: Reducer {
         case dismiss
     }
     
+    @Dependency(\.utilClient) var utilClient
+    
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
@@ -56,7 +58,10 @@ struct StudyUnits: Reducer {
             case .tools(let action):
                 switch action {
                 case .shuffle:
-                    state.lists.shuffle()
+                    let units = state.lists.study._units.map { $0.unit }
+                    let shuffled = utilClient.shuffleUnits(units)
+                    state.lists.study = .init(units: shuffled, frontType: state.setting.frontType, isLocked: false)
+                    state.lists.clear()
                     return .none
                 case .setting:
                     state.showSideBar.toggle()

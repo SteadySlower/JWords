@@ -32,11 +32,7 @@ struct UnitsList: Reducer {
                 }
             )
         }
-        
-        mutating func shuffle() {
-            _units.shuffle()
-        }
-        
+
         mutating func setFilter(_ filter: UnitFilter) {
             self.filter = filter
         }
