@@ -57,8 +57,24 @@ final class MoveUnitsTest: XCTestCase {
         }
     }
     
-//    func test_updateWillClose() async {
-//        
-//    }
+    func test_updateWillClose() async {
+        var willClose = Bool.random()
+        
+        let store = TestStore(
+            initialState: MoveUnits.State(
+                fromSet: .testMock,
+                isReviewSet: Bool.random(),
+                toMoveUnits: .testMock,
+                willCloseSet: willClose
+            ),
+            reducer: { MoveUnits() }
+        )
+        
+        willClose.toggle()
+        
+        await store.send(.updateWillClose(willClose)) {
+            $0.willCloseSet = willClose
+        }
+    }
     
 }
