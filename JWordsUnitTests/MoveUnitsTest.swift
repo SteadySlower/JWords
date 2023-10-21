@@ -77,4 +77,27 @@ final class MoveUnitsTest: XCTestCase {
         }
     }
     
+    func test_closeButtonTapped() async {
+        let selectedID = [nil, Random.string].randomElement()!
+        
+        let store = TestStore(
+            initialState: MoveUnits.State(
+                fromSet: .testMock,
+                selectedID: selectedID,
+                isReviewSet: Bool.random(),
+                toMoveUnits: .testMock,
+                willCloseSet: Bool.random()
+            ),
+            reducer: { MoveUnits() },
+            withDependencies: {
+                $0.studyUnitClient.move = { _, _, _ in  }
+                $0.studySetClient.close = { _ in  }
+                $0.scheduleClient.reviewed = { _ in  }
+            }
+        )
+        
+        await store.send(.closeButtonTapped)
+        await store.receive(.onMoved)
+    }
+    
 }
