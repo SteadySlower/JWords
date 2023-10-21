@@ -48,4 +48,27 @@ final class StudySettingTest: XCTestCase {
         }
     }
     
+    func test_setListType() async {
+        let selectableListType: [ListType] = .testMock
+        
+        let store = TestStore(
+            initialState: StudySetting.State(
+                showSetEditButtons: Bool.random(),
+                frontType: FrontType.allCases.randomElement()!,
+                selectableListType: selectableListType
+            ),
+            reducer: { StudySetting() }
+        )
+        
+        store.assert {
+            $0.listType = .study
+        }
+        
+        let newType = selectableListType.filter { $0 != .study }.randomElement()!
+        
+        await store.send(.setListType(newType)) {
+            $0.listType = newType
+        }
+    }
+    
 }
