@@ -81,6 +81,7 @@
 		069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941862A9A066B00B5D769 /* Array+Extension.swift */; };
 		069FA4FA2AE367B300ED398C /* MoveUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4F92AE367B300ED398C /* MoveUnitsTest.swift */; };
 		069FA4FC2AE36F6C00ED398C /* ShowModalsInListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */; };
+		069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
@@ -244,6 +245,7 @@
 		069941862A9A066B00B5D769 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		069FA4F92AE367B300ED398C /* MoveUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveUnitsTest.swift; sourceTree = "<group>"; };
 		069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowModalsInListTest.swift; sourceTree = "<group>"; };
+		069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyOneUnitTest.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -597,6 +599,7 @@
 				5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */,
 				069FA4F92AE367B300ED398C /* MoveUnitsTest.swift */,
 				069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */,
+				069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1074,6 +1077,7 @@
 				0641C1BA2ADB875800C6EA05 /* EditUnitTest.swift in Sources */,
 				060703F92ADA8CE70078489C /* StudySet.swift in Sources */,
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
+				069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */,
 				0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */,
