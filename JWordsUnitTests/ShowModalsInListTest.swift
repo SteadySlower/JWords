@@ -153,4 +153,17 @@ final class ShowModalsInListTest: XCTestCase {
         await store.receive(.unitAdded(unit))
     }
     
+    func test_addUnit_cancel() async {
+        let store = TestStore(
+            initialState: ShowModalsInList.State(
+                addUnit: .init()
+            ),
+            reducer: { ShowModalsInList() }
+        )
+        
+        await store.send(.addUnit(.cancel)) {
+            $0.addUnit = nil
+        }
+    }
+    
 }
