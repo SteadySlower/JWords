@@ -83,6 +83,7 @@
 		069FA4FC2AE36F6C00ED398C /* ShowModalsInListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */; };
 		069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */; };
 		069FA5002AE38AD000ED398C /* SwitchBetweenListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FF2AE38AD000ED398C /* SwitchBetweenListTest.swift */; };
+		069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5012AE3914100ED398C /* EditUnitsTest.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
@@ -248,6 +249,7 @@
 		069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowModalsInListTest.swift; sourceTree = "<group>"; };
 		069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyOneUnitTest.swift; sourceTree = "<group>"; };
 		069FA4FF2AE38AD000ED398C /* SwitchBetweenListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchBetweenListTest.swift; sourceTree = "<group>"; };
+		069FA5012AE3914100ED398C /* EditUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnitsTest.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -603,6 +605,7 @@
 				069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */,
 				069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */,
 				069FA4FF2AE38AD000ED398C /* SwitchBetweenListTest.swift */,
+				069FA5012AE3914100ED398C /* EditUnitsTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1066,6 +1069,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */,
 				0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */,
 				5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */,
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
