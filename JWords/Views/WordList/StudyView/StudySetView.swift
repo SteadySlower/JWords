@@ -31,6 +31,19 @@ struct StudyUnitsInSet: Reducer {
                 selectableListType: [.study, .edit, .select, .delete]
             )
         }
+        
+        init(
+            set: StudySet,
+            lists: SwitchBetweenList.State
+        ) {
+            self.set = set
+            self.lists = lists
+            self.setting = .init(
+                showSetEditButtons: true,
+                frontType: set.preferredFrontType,
+                selectableListType: [.study, .edit, .select, .delete]
+            )
+        }
     }
     
     enum Action: Equatable {

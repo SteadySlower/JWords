@@ -16,11 +16,15 @@ struct SelectUnit: Reducer {
         let frontType: FrontType
         var isSelected: Bool
         
-        init(unit: StudyUnit, frontType: FrontType = .kanji) {
+        init(
+            unit: StudyUnit,
+            frontType: FrontType = .kanji,
+            isSelected: Bool = false
+        ) {
             self.id = unit.id
             self.unit = unit
             self.frontType = frontType
-            self.isSelected = false
+            self.isSelected = isSelected
         }
         
     }

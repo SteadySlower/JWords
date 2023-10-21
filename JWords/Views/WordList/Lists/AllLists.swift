@@ -52,6 +52,24 @@ struct SwitchBetweenList: Reducer {
             self.study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
         }
         
+        init(
+            study: UnitsList.State,
+            edit: EditUnits.State? = nil,
+            select: SelectUnits.State? = nil,
+            delete: DeleteUnits.State? = nil,
+            type: ListType = .study,
+            frontType: FrontType = .kanji,
+            isLocked: Bool = true
+        ) {
+            self.study = study
+            self.edit = edit
+            self.select = select
+            self.delete = delete
+            self.type = type
+            self.frontType = frontType
+            self.isLocked = isLocked
+        }
+        
         private mutating func clear() {
             edit = nil
             select = nil
