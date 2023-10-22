@@ -222,4 +222,19 @@ final class StudyUnitsInSetTest: XCTestCase {
         await store.receive(.showSideBar(false))
     }
     
+    func test_setting_unitAddButtonTapped() async {
+        let set: StudySet = .testMock
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: set,
+                units: .testMock
+            ),
+            reducer: { StudyUnitsInSet() }
+        )
+        await store.send(.setting(.unitAddButtonTapped)) {
+            $0.modals.setAddUnitModal(set)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
 }
