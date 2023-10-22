@@ -65,17 +65,27 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
     }
     
     // initialzer for test mocking
-    init(kanjiText: String, meaningText: String, studyState: StudyState, studySets: [StudySet]) {
-        self.id = UUID().uuidString
+    init(
+        id: String = UUID().uuidString,
+        type: UnitType = .allCases.randomElement()!,
+        kanjiText: String,
+        kanjiImageID: String? = nil,
+        meaningText: String,
+        maeaningImageID: String? = nil,
+        studyState: StudyState,
+        studySets: [StudySet],
+        createdAt: Date = Date()
+    ) {
+        self.id = id
         self.objectID = NSManagedObjectID()
-        self.type = UnitType.allCases.randomElement()!
+        self.type = type
         self.kanjiText = kanjiText
         self.kanjiImageID = nil
         self.meaningText = meaningText
         self.meaningImageID = nil
         self.studyState = studyState
         self.studySets = studySets
-        self.createdAt = Date()
+        self.createdAt = createdAt
     }
     
     func hash(into hasher: inout Hasher) {
