@@ -256,4 +256,22 @@ final class StudyUnitsInSetTest: XCTestCase {
         await store.receive(.showSideBar(false))
     }
     
+    func test_setting_setFrontType() async {
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: .testMock,
+                units: .testMock
+            ),
+            reducer: { StudyUnitsInSet() }
+        )
+        let frontType: FrontType = .allCases
+            .filter { store.state.setting.frontType != $0 }
+            .randomElement()!
+        await store.send(.setting(.setFrontType(frontType))) {
+            $0.setting.frontType = frontType
+            $0.lists.setFrontType(frontType)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
 }
