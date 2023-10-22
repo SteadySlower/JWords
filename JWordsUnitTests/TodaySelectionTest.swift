@@ -44,4 +44,54 @@ final class TodaySelectionTest: XCTestCase {
         }
     }
     
+    func test_studyButtonTapped_noneToStudy() async {
+        let store = TestStore(
+            initialState: TodaySelection.State(
+                todaySets: .testMock,
+                reviewSets: .testMock
+            ),
+            reducer: { TodaySelection() }
+        )
+        
+        let noneSet: StudySet = .testMock
+        
+        await store.send(.studyButtonTapped(noneSet)) {
+            $0.schedules[noneSet] = .study
+        }
+    }
+    
+    func test_studyButtonTapped_studyToNone() async {
+        let studySets: [StudySet] = .testMock
+        let store = TestStore(
+            initialState: TodaySelection.State(
+                todaySets: studySets,
+                reviewSets: .testMock
+            ),
+            reducer: { TodaySelection() }
+        )
+        
+        let studySet = studySets.randomElement()!
+        
+        await store.send(.studyButtonTapped(studySet)) {
+            $0.schedules[studySet] = Schedule.none
+        }
+    }
+    
+    func test_studyButtonTapped_reviewToStudy() async {
+        let reviewSets: [StudySet] = .testMock
+        let store = TestStore(
+            initialState: TodaySelection.State(
+                todaySets: .testMock,
+                reviewSets: reviewSets
+            ),
+            reducer: { TodaySelection() }
+        )
+        
+        let reviewSet = reviewSets.randomElement()!
+        
+        await store.send(.studyButtonTapped(reviewSet)) {
+            $0.schedules[reviewSet] = .study
+        }
+    }
+    
 }
