@@ -29,7 +29,7 @@ extension StudySet {
 extension Array where Element == StudySet {
     static var testMock: Self {
         var result = [StudySet]()
-        for _ in 0..<Random.int(from: 0, to: 100) {
+        for _ in 0..<Random.int(from: 1, to: 100) {
             result.append(.testMock)
         }
         return result
@@ -37,7 +37,7 @@ extension Array where Element == StudySet {
     
     static var notClosedTestMock: Self {
         var result = [StudySet]()
-        for _ in 0..<Random.int(from: 0, to: 100) {
+        for _ in 0..<Random.int(from: 1, to: 100) {
             result.append(.notClosedTestMock)
         }
         return result
