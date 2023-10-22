@@ -86,6 +86,7 @@
 		069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5012AE3914100ED398C /* EditUnitsTest.swift */; };
 		069FA5042AE3930100ED398C /* StudyUnitsInSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */; };
 		069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */; };
+		069FA5082AE4D2B400ED398C /* TodaySelectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
@@ -254,6 +255,7 @@
 		069FA5012AE3914100ED398C /* EditUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnitsTest.swift; sourceTree = "<group>"; };
 		069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitsInSetTest.swift; sourceTree = "<group>"; };
 		069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitsTest.swift; sourceTree = "<group>"; };
+		069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionTest.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -612,6 +614,7 @@
 				069FA5012AE3914100ED398C /* EditUnitsTest.swift */,
 				069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */,
 				069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */,
+				069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
 				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
 				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
+				069FA5082AE4D2B400ED398C /* TodaySelectionTest.swift in Sources */,
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 				069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
