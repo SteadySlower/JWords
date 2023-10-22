@@ -103,4 +103,56 @@ final class StudyUnitsTest: XCTestCase {
         }
     }
     
+    func test_setting_setFilter() async {
+        let store = TestStore(
+            initialState: StudyUnits.State(
+                units: .testMock
+            ),
+            reducer: { StudyUnits() }
+        )
+        let filter = UnitFilter
+            .allCases
+            .filter { store.state.lists.study.filter != $0 }
+            .randomElement()!
+        await store.send(.setting(.setFilter(filter))) {
+            $0.setting.filter = filter
+            $0.lists.setFilter(filter)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
+    func test_setting_setFrontType() async {
+        let store = TestStore(
+            initialState: StudyUnits.State(
+                units: .testMock
+            ),
+            reducer: { StudyUnits() }
+        )
+        let frontType: FrontType = .allCases
+            .filter { store.state.setting.frontType != $0 }
+            .randomElement()!
+        await store.send(.setting(.setFrontType(frontType))) {
+            $0.setting.frontType = frontType
+            $0.lists.setFrontType(frontType)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
+    func test_setting_setListType() async {
+        let store = TestStore(
+            initialState: StudyUnits.State(
+                units: .testMock
+            ),
+            reducer: { StudyUnits() }
+        )
+        let listType: ListType = store.state.setting.selectableListType
+            .filter { store.state.setting.listType != $0 }
+            .randomElement()!
+        await store.send(.setting(.setListType(listType))) {
+            $0.setting.listType = listType
+            $0.lists.setListType(listType)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
 }
