@@ -81,4 +81,26 @@ final class StudyUnitsTest: XCTestCase {
         }
     }
     
+    func test_modals_unitEdited() async {
+        let units: [StudyUnit] = .testMock
+        let store = TestStore(
+            initialState: StudyUnits.State(
+                units: units
+            ),
+            reducer: { StudyUnits() }
+        )
+        let toEdit = units.randomElement()!
+        let edited = StudyUnit(
+            id: toEdit.id,
+            kanjiText: Random.string,
+            meaningText: Random.string,
+            studyState: toEdit.studyState,
+            studySets: toEdit.studySets
+        )
+        await store.send(.modals(.unitEdited(edited))) {
+            $0.lists.updateUnit(edited)
+            $0.setting.listType = .study
+        }
+    }
+    
 }
