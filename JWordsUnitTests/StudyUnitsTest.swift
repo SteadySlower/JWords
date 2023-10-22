@@ -66,4 +66,19 @@ final class StudyUnitsTest: XCTestCase {
         }
     }
     
+    func test_tools_setting() async {
+        let store = TestStore(
+            initialState: StudyUnits.State(
+                units: .testMock
+            ),
+            reducer: { StudyUnits() }
+        )
+        
+        for _ in 0..<Random.int(from: 1, to: 10) {
+            await store.send(.tools(.setting)) {
+                $0.showSideBar.toggle()
+            }
+        }
+    }
+    
 }
