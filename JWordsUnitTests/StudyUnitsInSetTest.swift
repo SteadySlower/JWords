@@ -237,4 +237,23 @@ final class StudyUnitsInSetTest: XCTestCase {
         await store.receive(.showSideBar(false))
     }
     
+    func test_setting_setFilter() async {
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: .testMock,
+                units: .testMock
+            ),
+            reducer: { StudyUnitsInSet() }
+        )
+        let filter = UnitFilter
+            .allCases
+            .filter { store.state.lists.study.filter != $0 }
+            .randomElement()!
+        await store.send(.setting(.setFilter(filter))) {
+            $0.setting.filter = filter
+            $0.lists.setFilter(filter)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
 }
