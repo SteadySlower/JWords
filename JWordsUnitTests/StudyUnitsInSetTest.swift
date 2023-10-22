@@ -157,4 +157,19 @@ final class StudyUnitsInSetTest: XCTestCase {
         }
     }
     
+    func test_modals_unitAdded() async {
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: .testMock,
+                units: .testMock
+            ),
+            reducer: { StudyUnitsInSet() }
+        )
+        
+        let unit: StudyUnit = .testMock
+        await store.send(.modals(.unitAdded(unit))) {
+            $0.lists.addNewUnit(unit)
+        }
+    }
+    
 }
