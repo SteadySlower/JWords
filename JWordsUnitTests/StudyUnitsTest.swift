@@ -27,4 +27,22 @@ final class StudyUnitsTest: XCTestCase {
         }
     }
     
+    func test_showSideBar() async {
+        let store = TestStore(
+            initialState: StudyUnits.State(
+                units: .testMock
+            ),
+            reducer: { StudyUnits() }
+        )
+        
+        var showSideBar = store.state.showSideBar
+        
+        for _ in 0..<Random.int(from: 1, to: 100) {
+            showSideBar.toggle()
+            await store.send(.showSideBar(showSideBar)) {
+                $0.showSideBar = showSideBar
+            }
+        }
+    }
+    
 }
