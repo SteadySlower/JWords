@@ -79,6 +79,13 @@
 		0697715F28CF030D00569280 /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697715E28CF030C00569280 /* Random.swift */; };
 		069941852A99EFFC00B5D769 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941842A99EFFC00B5D769 /* DeleteCell.swift */; };
 		069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069941862A9A066B00B5D769 /* Array+Extension.swift */; };
+		069FA4FA2AE367B300ED398C /* MoveUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4F92AE367B300ED398C /* MoveUnitsTest.swift */; };
+		069FA4FC2AE36F6C00ED398C /* ShowModalsInListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */; };
+		069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */; };
+		069FA5002AE38AD000ED398C /* SwitchBetweenListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA4FF2AE38AD000ED398C /* SwitchBetweenListTest.swift */; };
+		069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5012AE3914100ED398C /* EditUnitsTest.swift */; };
+		069FA5042AE3930100ED398C /* StudyUnitsInSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */; };
+		069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
@@ -98,6 +105,8 @@
 		06E917542A07168F002289B4 /* StudySetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* StudySetClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
 		5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */; };
+		5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */; };
+		5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7D12ADFCE7200669DB9 /* ListType.swift */; };
 		5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5C468728D98894000E212B /* Calendar+Extension.swift */; };
 		5A5FF632286AD79E000150A7 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5FF631286AD79E000150A7 /* ImageCompressor.swift */; };
 		5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A653FEA2907C1C800E3466E /* TodaySchedule.swift */; };
@@ -238,6 +247,13 @@
 		0697715E28CF030C00569280 /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		069941842A99EFFC00B5D769 /* DeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCell.swift; sourceTree = "<group>"; };
 		069941862A9A066B00B5D769 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		069FA4F92AE367B300ED398C /* MoveUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveUnitsTest.swift; sourceTree = "<group>"; };
+		069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowModalsInListTest.swift; sourceTree = "<group>"; };
+		069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyOneUnitTest.swift; sourceTree = "<group>"; };
+		069FA4FF2AE38AD000ED398C /* SwitchBetweenListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchBetweenListTest.swift; sourceTree = "<group>"; };
+		069FA5012AE3914100ED398C /* EditUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnitsTest.swift; sourceTree = "<group>"; };
+		069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitsInSetTest.swift; sourceTree = "<group>"; };
+		069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitsTest.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -263,6 +279,8 @@
 		06E917532A07168F002289B4 /* StudySetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
 		5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetImageForOCRTest.swift; sourceTree = "<group>"; };
+		5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettingTest.swift; sourceTree = "<group>"; };
+		5A0ED7D12ADFCE7200669DB9 /* ListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListType.swift; sourceTree = "<group>"; };
 		5A5C468728D98894000E212B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		5A5FF631286AD79E000150A7 /* ImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressor.swift; sourceTree = "<group>"; };
 		5A653FEA2907C1C800E3466E /* TodaySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySchedule.swift; sourceTree = "<group>"; };
@@ -377,6 +395,7 @@
 				060703F82ADA8CE70078489C /* StudySet.swift */,
 				0641C1C12ADBB89A00C6EA05 /* Kanji.swift */,
 				5ADE2DB62ADCB76900449A79 /* OCRResult.swift */,
+				5A0ED7D12ADFCE7200669DB9 /* ListType.swift */,
 			);
 			path = TestMock;
 			sourceTree = "<group>";
@@ -585,6 +604,14 @@
 				0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */,
 				5ADE2DB42ADCB64900449A79 /* OCRTest.swift */,
 				5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */,
+				5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */,
+				069FA4F92AE367B300ED398C /* MoveUnitsTest.swift */,
+				069FA4FB2AE36F6C00ED398C /* ShowModalsInListTest.swift */,
+				069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */,
+				069FA4FF2AE38AD000ED398C /* SwitchBetweenListTest.swift */,
+				069FA5012AE3914100ED398C /* EditUnitsTest.swift */,
+				069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */,
+				069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1048,21 +1075,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */,
 				0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */,
 				5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */,
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
+				5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */,
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
 				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
 				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
+				069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
+				069FA4FC2AE36F6C00ED398C /* ShowModalsInListTest.swift in Sources */,
+				069FA5042AE3930100ED398C /* StudyUnitsInSetTest.swift in Sources */,
+				5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */,
 				0641C1BA2ADB875800C6EA05 /* EditUnitTest.swift in Sources */,
 				060703F92ADA8CE70078489C /* StudySet.swift in Sources */,
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
+				069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */,
 				0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */,
+				069FA4FA2AE367B300ED398C /* MoveUnitsTest.swift in Sources */,
 				0641C1C02ADBB61700C6EA05 /* MeaningInputTest.swift in Sources */,
+				069FA5002AE38AD000ED398C /* SwitchBetweenListTest.swift in Sources */,
 				065FD2672ACE9FDE00A2ABCE /* TodayListTest.swift in Sources */,
 				5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */,
 				0641C1BE2ADB9BEB00C6EA05 /* KanjiInputTest.swift in Sources */,

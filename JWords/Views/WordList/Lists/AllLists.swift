@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-enum ListType {
+enum ListType: CaseIterable {
     case study, edit, select, delete
     
     var pickerText: String {
@@ -52,7 +52,25 @@ struct SwitchBetweenList: Reducer {
             self.study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
         }
         
-        private mutating func clear() {
+        init(
+            study: UnitsList.State,
+            edit: EditUnits.State? = nil,
+            select: SelectUnits.State? = nil,
+            delete: DeleteUnits.State? = nil,
+            type: ListType = .study,
+            frontType: FrontType = .kanji,
+            isLocked: Bool = true
+        ) {
+            self.study = study
+            self.edit = edit
+            self.select = select
+            self.delete = delete
+            self.type = type
+            self.frontType = frontType
+            self.isLocked = isLocked
+        }
+        
+        mutating func clear() {
             edit = nil
             select = nil
             delete = nil
@@ -63,11 +81,6 @@ struct SwitchBetweenList: Reducer {
             self.isLocked = isLocked
             let units = study._units.map { $0.unit }
             study = UnitsList.State(units: units, frontType: frontType, isLocked: isLocked)
-        }
-        
-        mutating func shuffle() {
-            clear()
-            study.shuffle()
         }
         
         mutating func setFrontType(_ frontType: FrontType) {

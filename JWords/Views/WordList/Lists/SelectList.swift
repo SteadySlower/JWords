@@ -16,6 +16,10 @@ struct SelectUnits: Reducer {
             self.units = IdentifiedArray(uniqueElements: units.map { SelectUnit.State(unit: $0, frontType: frontType) })
         }
         
+        init(idArray: IdentifiedArrayOf<SelectUnit.State>) {
+            self.units = idArray
+        }
+        
     }
     
     enum Action: Equatable {

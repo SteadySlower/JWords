@@ -15,14 +15,20 @@ struct MoveUnits: Reducer {
         let toMoveUnits: [StudyUnit]
         var sets = [StudySet]()
         var selectedID: String? = nil
-        var isLoading: Bool = false
         var willCloseSet: Bool
         
-        init(fromSet: StudySet, isReviewSet: Bool, toMoveUnits: [StudyUnit]) {
+        init(
+            fromSet: StudySet,
+            selectedID: String? = nil,
+            isReviewSet: Bool,
+            toMoveUnits: [StudyUnit],
+            willCloseSet: Bool
+        ) {
             self.fromSet = fromSet
+            self.selectedID = selectedID
             self.isReviewSet = isReviewSet
             self.toMoveUnits = toMoveUnits
-            self.willCloseSet = fromSet.dayFromToday >= 28 ? true : false
+            self.willCloseSet = willCloseSet
         }
         
         var selectedSet: StudySet? {
@@ -51,9 +57,7 @@ struct MoveUnits: Reducer {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                state.isLoading = true
                 state.sets = try! setClient.fetch(false).filter { $0.id != state.fromSet.id }
-                state.isLoading = false
                 return .none
             case .updateSelection(let id):
                 state.selectedID = id
@@ -62,7 +66,6 @@ struct MoveUnits: Reducer {
                 state.willCloseSet = willClose
                 return .none
             case .closeButtonTapped:
-                state.isLoading = true
                 if let toSet = state.selectedSet {
                     try! unitClient.move(state.toMoveUnits, state.fromSet, toSet)
                 }
@@ -72,7 +75,6 @@ struct MoveUnits: Reducer {
                 if state.isReviewSet {
                     scheduleClient.reviewed(state.fromSet)
                 }
-                state.isLoading = false
                 return .send(.onMoved)
             default:
                 return .none
@@ -126,14 +128,12 @@ struct UnitMoveView: View {
                     button("취소", foregroundColor: .black) {
                         vs.send(.cancelButtonTapped)
                     }
-                    button("확인", foregroundColor: vs.isLoading ? .gray : .black) {
+                    button("확인", foregroundColor: .black) {
                         vs.send(.closeButtonTapped)
                     }
-                    .disabled(vs.isLoading)
                 }
             }
             .padding(.horizontal, 10)
-            .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
         }
     }
@@ -155,9 +155,12 @@ struct UnitMoveView: View {
 #Preview {
     UnitMoveView(
         store: Store(
-            initialState: MoveUnits.State(fromSet: StudySet(index: 0),
-                                          isReviewSet: true,
-                                          toMoveUnits: .mock),
+            initialState: MoveUnits.State(
+                fromSet: StudySet(index: 0),
+                isReviewSet: true,
+                toMoveUnits: .mock,
+                willCloseSet: false
+            ),
             reducer: { MoveUnits()._printChanges() }
         )
     )

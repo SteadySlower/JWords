@@ -62,7 +62,12 @@ struct ShowModalsInList: Reducer {
         
         mutating func setMoveUnitModal(from set: StudySet, isReview: Bool, toMove units: [StudyUnit]) {
             clear()
-            moveUnits = MoveUnits.State(fromSet: set, isReviewSet: isReview, toMoveUnits: units)
+            moveUnits = MoveUnits.State(
+                fromSet: set,
+                isReviewSet: isReview,
+                toMoveUnits: units,
+                willCloseSet: set.dayFromToday >= 28 ? true : false
+            )
         }
     }
     

@@ -15,7 +15,7 @@ struct StudyUnitClient {
     var insertExisting: (StudySet, StudyUnit) throws -> StudyUnit
     var edit: (StudyUnit, StudyUnitInput) throws -> StudyUnit
     var delete: (StudyUnit, StudySet) throws -> Void
-    var studyState: (StudyUnit, StudyState) throws -> Void
+    var studyState: (StudyUnit, StudyState) throws -> StudyState
     var move: ([StudyUnit], StudySet, StudySet) throws -> Void
     var fetch: (StudySet) throws -> [StudyUnit]
     var fetchAll: ([StudySet]) throws -> [StudyUnit]
@@ -66,6 +66,7 @@ extension StudyUnitClient: DependencyKey {
             unit: unit,
             newState: state
         )
+        return state
     },
     move: { units, from, to in
         try cd.moveUnits(
@@ -92,7 +93,7 @@ extension StudyUnitClient: TestDependencyKey {
     insertExisting: { _, _ in .init(index: 0) },
     edit: { _, _ in .init(index: 0) },
     delete: { _, _ in },
-    studyState: { _, _ in },
+    studyState: { _, state in state },
     move: { _, _, _ in  },
     fetch: { _ in .mock },
     fetchAll: { _ in .mock }

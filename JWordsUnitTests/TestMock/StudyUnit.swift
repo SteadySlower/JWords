@@ -17,6 +17,22 @@ extension StudyUnit {
         )
     }
     
+    static var undefinedTestMock: Self {
+        .init(kanjiText: Random.string,
+              meaningText: Random.string,
+              studyState: .undefined,
+              studySets: []
+        )
+    }
+    
+    static var successTestMock: Self {
+        .init(kanjiText: Random.string,
+              meaningText: Random.string,
+              studyState: .success,
+              studySets: []
+        )
+    }
+    
     static var failTestMock: Self {
         .init(kanjiText: Random.string,
               meaningText: Random.string,
