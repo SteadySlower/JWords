@@ -274,4 +274,22 @@ final class StudyUnitsInSetTest: XCTestCase {
         await store.receive(.showSideBar(false))
     }
     
+    func test_setting_setListType() async {
+        let store = TestStore(
+            initialState: StudyUnitsInSet.State(
+                set: .testMock,
+                units: .testMock
+            ),
+            reducer: { StudyUnitsInSet() }
+        )
+        let listType: ListType = store.state.setting.selectableListType
+            .filter { store.state.setting.listType != $0 }
+            .randomElement()!
+        await store.send(.setting(.setListType(listType))) {
+            $0.setting.listType = listType
+            $0.lists.setListType(listType)
+        }
+        await store.receive(.showSideBar(false))
+    }
+    
 }
