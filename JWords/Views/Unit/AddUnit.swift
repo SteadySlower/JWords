@@ -68,8 +68,9 @@ struct AddUnit: Reducer {
                 switch action {
                 case .alreadyExist(let unit):
                     state.alreadyExist = unit
-                    if unit != nil {
+                    if let unit = unit {
                         state.setExistAlert()
+                        state.inputUnit.meaningInput.text = unit.meaningText
                     }
                     return .none
                 default: return .none
