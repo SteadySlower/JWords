@@ -48,7 +48,7 @@ struct JWordsApp: App {
             MacAppView(
                 store: Store(
                     initialState: MacApp.State(),
-                    reducer: MacApp()._printChanges()
+                    reducer: { MacApp()._printChanges() }
                 )
             )
         }
