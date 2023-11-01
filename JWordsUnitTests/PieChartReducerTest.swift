@@ -42,4 +42,24 @@ final class PieChartReducerTest: XCTestCase {
         await clock.run()
     }
     
+    func test_addToDisplayPercentage() async {
+        let percentage = Float.random(in: 0..<1.0)
+        let addPercentage = percentage - Float.random(in: 0..<percentage)
+        
+        let store = TestStore(
+            initialState: PieChartReducer.State(
+                _percentage: percentage
+            ),
+            reducer: { PieChartReducer() }
+        )
+        
+        await store.send(.addToDisplayPercentage(addPercentage)) {
+            $0.displayPercentage += addPercentage
+        }
+    }
+    
+    func test_addToDisplayPercentage_biggerThanPercentage() async {
+        
+    }
+    
 }
