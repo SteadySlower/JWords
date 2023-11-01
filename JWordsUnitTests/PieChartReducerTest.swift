@@ -59,7 +59,19 @@ final class PieChartReducerTest: XCTestCase {
     }
     
     func test_addToDisplayPercentage_biggerThanPercentage() async {
+        let percentage = Float.random(in: 0..<1.0)
+        let addPercentage = Float.random(in: (percentage + .ulpOfOne)..<1.0)
         
+        let store = TestStore(
+            initialState: PieChartReducer.State(
+                _percentage: percentage
+            ),
+            reducer: { PieChartReducer() }
+        )
+        
+        await store.send(.addToDisplayPercentage(addPercentage)) {
+            $0.displayPercentage = percentage
+        }
     }
     
 }
