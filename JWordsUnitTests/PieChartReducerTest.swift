@@ -74,4 +74,18 @@ final class PieChartReducerTest: XCTestCase {
         }
     }
     
+    func test_clearState() async {
+        let store = TestStore(
+            initialState: PieChartReducer.State(
+                _percentage: Float.random(in: 0..<1.0),
+                displayPercentage: Float.random(in: 0..<1.0)
+            ),
+            reducer: { PieChartReducer() }
+        )
+        
+        await store.send(.clearState) {
+            $0.clear()
+        }
+    }
+    
 }
