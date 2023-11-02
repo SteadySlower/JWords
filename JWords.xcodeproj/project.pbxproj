@@ -106,6 +106,7 @@
 		06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */; };
 		06E917542A07168F002289B4 /* StudySetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* StudySetClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
+		5A07D3F42AF38D330095DD87 /* SelectionStudySetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */; };
 		5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */; };
 		5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */; };
 		5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7D12ADFCE7200669DB9 /* ListType.swift */; };
@@ -282,6 +283,7 @@
 		06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		06E917532A07168F002289B4 /* StudySetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
+		5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionStudySetTest.swift; sourceTree = "<group>"; };
 		5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetImageForOCRTest.swift; sourceTree = "<group>"; };
 		5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettingTest.swift; sourceTree = "<group>"; };
 		5A0ED7D12ADFCE7200669DB9 /* ListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListType.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */,
 				069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */,
 				069FA5092AECA91400ED398C /* PieChartReducerTest.swift */,
+				5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1082,6 +1085,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */,
+				5A07D3F42AF38D330095DD87 /* SelectionStudySetTest.swift in Sources */,
 				0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */,
 				5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */,
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
