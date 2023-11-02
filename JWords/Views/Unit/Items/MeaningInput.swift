@@ -16,6 +16,7 @@ struct MeaningInput: Reducer {
     
     enum Action: Equatable {
         case updateText(String)
+        case onTab
     }
     
     private let cd = CoreDataService.shared
@@ -24,8 +25,10 @@ struct MeaningInput: Reducer {
         Reduce { state, action in
             switch action {
             case .updateText(let text):
+                if text.hasTab { return .send(.onTab) }
                 state.text = text
                 return .none
+            default: return .none
             }
         }
     }

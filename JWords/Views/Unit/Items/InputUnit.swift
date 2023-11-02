@@ -50,6 +50,13 @@ struct InputUnit: Reducer {
                     return .none
                 default: return .none
                 }
+            case .meaningInput(let action):
+                switch action {
+                case .onTab:
+                    state.focusedField = .kanji
+                    return .none
+                default: return .none
+                }
             default: return .none
             }
         }
