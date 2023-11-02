@@ -21,6 +21,7 @@ struct AddUnit: Reducer {
             inputUnit.kanjiInput.hurigana = .init(hurigana: "")
             inputUnit.kanjiInput.isEditing = true
             inputUnit.meaningInput.text = ""
+            inputUnit.focusedField = .kanji
         }
         
         mutating func setNoSetAlert() {
@@ -68,8 +69,9 @@ struct AddUnit: Reducer {
                 switch action {
                 case .alreadyExist(let unit):
                     state.alreadyExist = unit
-                    if unit != nil {
+                    if let unit = unit {
                         state.setExistAlert()
+                        state.inputUnit.meaningInput.text = unit.meaningText
                     }
                     return .none
                 default: return .none
@@ -127,6 +129,7 @@ struct AddUnitView: View {
                     }
                     .buttonStyle(InputButtonStyle(isAble: vs.inputUnit.ableToAdd))
                     .disabled(!vs.inputUnit.ableToAdd)
+                    .keyboardShortcut(.return, modifiers: .control)
                 }
             }
             .alert(
