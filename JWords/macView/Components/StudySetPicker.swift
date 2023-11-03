@@ -11,16 +11,24 @@ import ComposableArchitecture
 struct SelectStudySet: Reducer {
     
     struct State: Equatable {
-        var sets = [StudySet]()
-        var selectedID: String? = nil
-        var unitCount: Int? = nil
+        var sets: [StudySet]
+        var selectedID: String?
+        var unitCount: Int?
         let pickerName: String
         
-        init(pickerName: String = "") {
+        init(
+            sets: [StudySet] = [],
+            selectedID: String? = nil,
+            unitCount: Int? = nil,
+            pickerName: String = ""
+        ) {
+            self.sets = sets
+            self.selectedID = selectedID
+            self.unitCount = unitCount
             self.pickerName = pickerName
         }
         
-        fileprivate var selectedSet: StudySet? {
+        var selectedSet: StudySet? {
             sets.first(where: { $0.id == selectedID })
         }
         

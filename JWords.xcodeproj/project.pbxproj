@@ -86,6 +86,8 @@
 		069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5012AE3914100ED398C /* EditUnitsTest.swift */; };
 		069FA5042AE3930100ED398C /* StudyUnitsInSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */; };
 		069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */; };
+		069FA5082AE4D2B400ED398C /* TodaySelectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */; };
+		069FA50A2AECA91400ED398C /* PieChartReducerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069FA5092AECA91400ED398C /* PieChartReducerTest.swift */; };
 		06B2DA3E29EA6A0B009C67EF /* SettingSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */; };
 		06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608929A0928600AA67E6 /* View+Extension.swift */; };
 		06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BC608B29A09FC000AA67E6 /* ViewModifier.swift */; };
@@ -104,6 +106,7 @@
 		06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */; };
 		06E917542A07168F002289B4 /* StudySetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* StudySetClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
+		5A07D3F42AF38D330095DD87 /* SelectionStudySetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */; };
 		5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */; };
 		5A0ED7CE2ADFCCBF00669DB9 /* StudySettingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */; };
 		5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ED7D12ADFCE7200669DB9 /* ListType.swift */; };
@@ -117,6 +120,7 @@
 		5A67DC312869529700AC156C /* MacAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67DC302869529700AC156C /* MacAppView.swift */; };
 		5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AF528D8071D00CADF9B /* TodayView.swift */; };
 		5A735AFF28D80EAE00CADF9B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735AFE28D80EAE00CADF9B /* MainTabView.swift */; };
+		5A76E4A92AF4D3D8001BC92C /* EditHuriganaTextTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A76E4A82AF4D3D8001BC92C /* EditHuriganaTextTest.swift */; };
 		5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */; };
 		5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A77B98E29EFA99000EA7B41 /* BaseCell.swift */; };
 		5A7B920129F10C0500ED3CAA /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B920029F10C0500ED3CAA /* SelectionCell.swift */; };
@@ -254,6 +258,8 @@
 		069FA5012AE3914100ED398C /* EditUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnitsTest.swift; sourceTree = "<group>"; };
 		069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitsInSetTest.swift; sourceTree = "<group>"; };
 		069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnitsTest.swift; sourceTree = "<group>"; };
+		069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionTest.swift; sourceTree = "<group>"; };
+		069FA5092AECA91400ED398C /* PieChartReducerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartReducerTest.swift; sourceTree = "<group>"; };
 		06A1F4D628670C99003440B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBar.swift; sourceTree = "<group>"; };
 		06BC608929A0928600AA67E6 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -278,6 +284,7 @@
 		06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		06E917532A07168F002289B4 /* StudySetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
+		5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionStudySetTest.swift; sourceTree = "<group>"; };
 		5A0ED7BC2ADE348300669DB9 /* GetImageForOCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetImageForOCRTest.swift; sourceTree = "<group>"; };
 		5A0ED7CD2ADFCCBF00669DB9 /* StudySettingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettingTest.swift; sourceTree = "<group>"; };
 		5A0ED7D12ADFCE7200669DB9 /* ListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListType.swift; sourceTree = "<group>"; };
@@ -291,6 +298,7 @@
 		5A67DC302869529700AC156C /* MacAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacAppView.swift; sourceTree = "<group>"; };
 		5A735AF528D8071D00CADF9B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		5A735AFE28D80EAE00CADF9B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		5A76E4A82AF4D3D8001BC92C /* EditHuriganaTextTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHuriganaTextTest.swift; sourceTree = "<group>"; };
 		5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCell.swift; sourceTree = "<group>"; };
 		5A77B98E29EFA99000EA7B41 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		5A7B920029F10C0500ED3CAA /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
@@ -612,6 +620,10 @@
 				069FA5012AE3914100ED398C /* EditUnitsTest.swift */,
 				069FA5032AE3930100ED398C /* StudyUnitsInSetTest.swift */,
 				069FA5052AE4AD6300ED398C /* StudyUnitsTest.swift */,
+				069FA5072AE4D2B400ED398C /* TodaySelectionTest.swift */,
+				069FA5092AECA91400ED398C /* PieChartReducerTest.swift */,
+				5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */,
+				5A76E4A82AF4D3D8001BC92C /* EditHuriganaTextTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1076,6 +1088,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				069FA5022AE3914100ED398C /* EditUnitsTest.swift in Sources */,
+				5A07D3F42AF38D330095DD87 /* SelectionStudySetTest.swift in Sources */,
 				0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */,
 				5ADE2DB72ADCB76900449A79 /* OCRResult.swift in Sources */,
 				060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */,
@@ -1083,6 +1096,7 @@
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
 				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
 				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
+				069FA5082AE4D2B400ED398C /* TodaySelectionTest.swift in Sources */,
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 				069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
@@ -1092,10 +1106,12 @@
 				0641C1BA2ADB875800C6EA05 /* EditUnitTest.swift in Sources */,
 				060703F92ADA8CE70078489C /* StudySet.swift in Sources */,
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
+				5A76E4A92AF4D3D8001BC92C /* EditHuriganaTextTest.swift in Sources */,
 				069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */,
 				0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */,
+				069FA50A2AECA91400ED398C /* PieChartReducerTest.swift in Sources */,
 				069FA4FA2AE367B300ED398C /* MoveUnitsTest.swift in Sources */,
 				0641C1C02ADBB61700C6EA05 /* MeaningInputTest.swift in Sources */,
 				069FA5002AE38AD000ED398C /* SwitchBetweenListTest.swift in Sources */,

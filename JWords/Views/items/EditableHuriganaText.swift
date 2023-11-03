@@ -12,9 +12,13 @@ struct EditHuriganaText: Reducer {
     struct State: Equatable {
         var huris: [Huri]
         
+        init(huris: [Huri]) {
+            self.huris = huris
+        }
+        
         init(hurigana: String) {
             self.huris = hurigana
-                .split(separator: "`")
+                .split(separator: String.betweenHurigana)
                 .enumerated()
                 .map { (index, huriString) in
                     Huri(id: "\(index)\(huriString)", huriString: String(huriString))
