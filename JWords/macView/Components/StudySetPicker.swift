@@ -28,7 +28,7 @@ struct SelectStudySet: Reducer {
             self.pickerName = pickerName
         }
         
-        fileprivate var selectedSet: StudySet? {
+        var selectedSet: StudySet? {
             sets.first(where: { $0.id == selectedID })
         }
         
