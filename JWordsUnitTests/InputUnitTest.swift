@@ -51,4 +51,15 @@ final class InputUnitTest: XCTestCase {
         }
     }
     
+    func testMeaningInputOnTab() async {
+        let store = TestStore(
+            initialState: InputUnit.State(),
+            reducer: { InputUnit() }
+        )
+        
+        await store.send(.meaningInput(.onTab)) {
+            $0.focusedField = .kanji
+        }
+    }
+    
 }
