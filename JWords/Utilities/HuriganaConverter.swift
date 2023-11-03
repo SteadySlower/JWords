@@ -10,6 +10,7 @@ import Foundation
 extension String {
     static let huriganaFrom = "⌜"
     static let huriganaTo = "⌟"
+    static let betweenHurigana = "`"
 }
 
 // CFStringTokenizer: 연속된 String을 Token (단어, 문장) 단위로 쪼개주는 객체
@@ -100,7 +101,7 @@ class HuriganaConverter {
                 }
             }
             
-            result.append("`")
+            result.append(.betweenHurigana)
         }
         
         return result
@@ -109,7 +110,7 @@ class HuriganaConverter {
     func extractKanjis(from hurigana: String) -> [String] {
         var result = [String]()
         let huris = hurigana
-            .split(separator: "`")
+            .split(separator: String.betweenHurigana)
             .enumerated()
             .map { (index, huriString) in
                 Huri(id: "\(index)\(huriString)", huriString: String(huriString))
@@ -127,7 +128,7 @@ class HuriganaConverter {
     
     func huriToKanjiText(from hurigana: String) -> String {
         hurigana
-            .split(separator: "`")
+            .split(separator: String.betweenHurigana)
             .enumerated()
             .map { (index, huriString) in
                 Huri(id: "\(index)\(huriString)", huriString: String(huriString))
