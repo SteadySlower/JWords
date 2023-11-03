@@ -28,4 +28,14 @@ final class SelectionStudySetTest: XCTestCase {
         }
     }
     
+    func testUpdateID() async {
+        let sets: [StudySet] = .testMock
+        let store = TestStore(
+            initialState: SelectStudySet.State(
+                sets:
+            ),
+            reducer: { SelectStudySet() }
+        )
+    }
+    
 }
