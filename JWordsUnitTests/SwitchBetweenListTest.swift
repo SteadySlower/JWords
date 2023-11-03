@@ -14,11 +14,20 @@ import XCTest
 final class SwitchBetweenListTest: XCTestCase {
     
     func test_edit_toEditUnitSelected() async {
+        let units: [StudyUnit] = .testMock
+        let frontType: FrontType = .allCases.randomElement()!
+        
         let store = TestStore(
             initialState: SwitchBetweenList.State(
-                units: .testMock,
-                frontType: .allCases.randomElement()!,
-                isLocked: Bool.random()
+                study: .init(
+                    units: units,
+                    frontType: frontType,
+                    isLocked: .random()
+                ),
+                edit: .init(
+                    units: units,
+                    frontType: frontType
+                )
             ),
             reducer: { SwitchBetweenList() }
         )

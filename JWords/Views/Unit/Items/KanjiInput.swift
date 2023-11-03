@@ -16,7 +16,6 @@ struct KanjiInput: Reducer {
         var isEditing: Bool = true
         
         mutating func convertToHurigana() {
-            if text.isEmpty { return }
             let hurigana = HuriganaConverter.shared.convert(text)
             self.hurigana = EditHuriganaText.State(hurigana: hurigana)
             isEditing = false
@@ -42,6 +41,7 @@ struct KanjiInput: Reducer {
                 state.text = text
                 return .none
             case .convertToHurigana:
+                if state.text.isEmpty { return .none }
                 state.convertToHurigana()
                 return .send(.huriganaUpdated(state.hurigana.hurigana))
             case .editText:

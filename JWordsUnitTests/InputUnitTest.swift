@@ -47,6 +47,7 @@ final class InputUnitTest: XCTestCase {
         )
         
         await store.send(.kanjiInput(.onTab)) {
+            $0.kanjiInput.isEditing = false
             $0.focusedField = .meaning
         }
     }
