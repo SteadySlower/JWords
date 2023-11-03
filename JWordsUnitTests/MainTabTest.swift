@@ -37,6 +37,5 @@ final class MainTabTest: XCTestCase {
 
 
 /* TODO: WILL_MAKE_TEST_LIST
- - SelectStudySet
  - EditableHuriUnit
 */
