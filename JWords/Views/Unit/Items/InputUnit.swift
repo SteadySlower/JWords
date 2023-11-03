@@ -46,6 +46,14 @@ struct InputUnit: Reducer {
                     return .send(.alreadyExist(unit))
                 case .onTab:
                     state.focusedField = .meaning
+                    state.kanjiInput.convertToHurigana()
+                    return .none
+                default: return .none
+                }
+            case .meaningInput(let action):
+                switch action {
+                case .onTab:
+                    state.focusedField = .kanji
                     return .none
                 default: return .none
                 }

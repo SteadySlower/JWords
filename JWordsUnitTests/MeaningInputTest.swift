@@ -26,5 +26,22 @@ final class MeaningInputTest: XCTestCase {
         }
     }
     
+    func testUpdateTextHasTab() async {
+        let store = TestStore(
+            initialState: MeaningInput.State(),
+            reducer: { MeaningInput() }
+        )
+        
+        let textWithTab = [
+            "\t",
+            "\t" + Random.string,
+            Random.string + "\t",
+            Random.string + "\t" + Random.string,
+        ].randomElement()!
+        
+        await store.send(.updateText(textWithTab))
+        await store.receive(.onTab)
+    }
+    
 }
 
