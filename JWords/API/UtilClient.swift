@@ -75,10 +75,19 @@ extension UtilClient: DependencyKey {
 }
 
 extension UtilClient: TestDependencyKey {
+    
+    private static var sampleImage: InputImageType? {
+        #if os(iOS)
+        return UIImage(named: "Sample Image")
+        #elseif os(macOS)
+        return NSImage(named: "Sample Image")
+        #endif
+    }
+    
   static let previewValue = Self(
     filterOnlyFailUnits: { _ in .mock },
     shuffleUnits: { _ in .mock },
-    resizeImage: { _ in UIImage(named: "Sample Image") }
+    resizeImage: { _ in sampleImage }
   )
 }
 

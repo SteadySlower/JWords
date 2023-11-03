@@ -14,6 +14,12 @@ struct KanjiInput: Reducer {
         var text: String = ""
         var hurigana = EditHuriganaText.State(hurigana: "")
         var isEditing: Bool = true
+        
+        mutating func convertToHurigana() {
+            let hurigana = HuriganaConverter.shared.convert(text)
+            self.hurigana = EditHuriganaText.State(hurigana: hurigana)
+            isEditing = false
+        }
     }
     
     enum Action: Equatable {
@@ -36,9 +42,7 @@ struct KanjiInput: Reducer {
                 return .none
             case .convertToHurigana:
                 if state.text.isEmpty { return .none }
-                let hurigana = HuriganaConverter.shared.convert(state.text)
-                state.hurigana = EditHuriganaText.State(hurigana: hurigana)
-                state.isEditing = false
+                state.convertToHurigana()
                 return .send(.huriganaUpdated(state.hurigana.hurigana))
             case .editText:
                 state.isEditing = true
