@@ -12,6 +12,10 @@ struct EditHuriganaText: Reducer {
     struct State: Equatable {
         var huris: [Huri]
         
+        init(huris: [Huri]) {
+            self.huris = huris
+        }
+        
         init(hurigana: String) {
             self.huris = hurigana
                 .split(separator: String.betweenHurigana)
