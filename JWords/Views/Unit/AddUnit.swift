@@ -21,7 +21,6 @@ struct AddUnit: Reducer {
             inputUnit.kanjiInput.hurigana = .init(hurigana: "")
             inputUnit.kanjiInput.isEditing = true
             inputUnit.meaningInput.text = ""
-            inputUnit.focusedField = .kanji
         }
         
         mutating func setNoSetAlert() {
