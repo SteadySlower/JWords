@@ -10,6 +10,14 @@ import SwiftUI
 
 enum UnitInputField {
     case kanji, meaning
+    
+    mutating func toggle() {
+        if self == .kanji {
+            self = .meaning
+        } else {
+            self = .kanji
+        }
+    }
 }
 
 struct InputUnit: Reducer {
@@ -47,13 +55,14 @@ struct InputUnit: Reducer {
                 case .onTab:
                     state.focusedField = .meaning
                     state.kanjiInput.convertToHurigana()
-                    return .none
+                    let unit = try! unitClient.checkIfExist(state.kanjiInput.hurigana.hurigana)
+                    return .send(.alreadyExist(unit))
                 default: return .none
                 }
             case .meaningInput(let action):
                 switch action {
                 case .onTab:
-                    state.focusedField = .kanji
+                    state.focusedField?.toggle()
                     return .none
                 default: return .none
                 }
