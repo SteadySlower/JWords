@@ -42,8 +42,19 @@ struct KanjiSearchBar: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             ZStack {
+                if vs.query.isEmpty {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
+                    .padding(.leading, 2)
+                }
                 TextField("", text: vs.binding(get: \.query, send: SearchKanji.Action.updateQuery))
             }
+            .frame(height: 30)
         }
     }
 }
