@@ -303,6 +303,20 @@ class CoreDataService {
         return result
     }
     
+    func fetchKanjis(kanji: String) throws -> [Kanji] {
+        if kanji.count > 1 { return [] }
+        
+        let fetchRequest: NSFetchRequest<StudyKanjiMO> = StudyKanjiMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "kanji == \(kanji)")
+        
+        do {
+            return try self.context.fetch(fetchRequest).map { Kanji(from: $0) }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 unit 찾을 수 없음")

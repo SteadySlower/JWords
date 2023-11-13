@@ -63,7 +63,7 @@ struct KanjiSearchBar: View {
     KanjiSearchBar(
         store: .init(
             initialState: SearchKanji.State(),
-            reducer: { SearchKanji() }
+            reducer: { SearchKanji()._printChanges() }
         )
     )
 }
