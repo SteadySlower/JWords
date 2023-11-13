@@ -11,11 +11,12 @@ import ComposableArchitecture
 struct SearchKanji: Reducer {
     
     struct State: Equatable {
-
+        var query: String = ""
+        var result: [Kanji] = []
     }
     
     enum Action: Equatable {
-
+        case updateQuery(String)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -23,6 +24,9 @@ struct SearchKanji: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .updateQuery(let query):
+                state.query = query
+                return .none
             default:
                 return .none
             }
@@ -32,11 +36,23 @@ struct SearchKanji: Reducer {
 }
 
 struct KanjiSearchBar: View {
+    
+    let store: StoreOf<SearchKanji>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        WithViewStore(store, observe: { $0 }) { vs in
+            ZStack {
+                TextField("", text: vs.binding(get: \.query, send: SearchKanji.Action.updateQuery))
+            }
+        }
     }
 }
 
 #Preview {
-    KanjiSearchBar()
+    KanjiSearchBar(
+        store: .init(
+            initialState: SearchKanji.State(),
+            reducer: { SearchKanji() }
+        )
+    )
 }
