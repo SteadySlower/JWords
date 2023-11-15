@@ -303,11 +303,11 @@ class CoreDataService {
         return result
     }
     
-    func fetchKanjis(kanji: String) throws -> [Kanji] {
-        if kanji.count > 1 { return [] }
+    func fetchKanjis(kanjiText: String) throws -> [Kanji] {
+        if kanjiText.count > 1 { return [] }
         
         let fetchRequest: NSFetchRequest<StudyKanjiMO> = StudyKanjiMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "kanji == \(kanji)")
+        fetchRequest.predicate = NSPredicate(format: "kanji == \(kanjiText)")
         
         do {
             return try self.context.fetch(fetchRequest).map { Kanji(from: $0) }
