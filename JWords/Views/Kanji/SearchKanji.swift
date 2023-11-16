@@ -17,6 +17,7 @@ struct SearchKanji: Reducer {
     
     enum Action: Equatable {
         case updateQuery(String)
+        case kanjiSearched([Kanji])
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -26,7 +27,12 @@ struct SearchKanji: Reducer {
             switch action {
             case .updateQuery(let query):
                 state.query = query
-                return .none
+                guard !query.isEmpty else { return .none }
+                if state.query.isHanGeul {
+                    return .send(.kanjiSearched(try! kanjiClient.searchWithMeaning(query)))
+                } else {
+                    return .send(.kanjiSearched(try! kanjiClient.searchWithKanjiText(query)))
+                }
             default:
                 return .none
             }
