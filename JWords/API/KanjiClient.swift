@@ -49,7 +49,8 @@ extension KanjiClient: TestDependencyKey {
     fetch: { _ in .mock },
     unitKanjis: { _ in .mock },
     kanjiUnits: { _ in .mock },
-    edit: { _, _ in .init(index: 0) }
+    edit: { _, _ in .init(index: 0) },
+    searchWithKanjiText: { _ in .init(index: 0) }
   )
 }
 
