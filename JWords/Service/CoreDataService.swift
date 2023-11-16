@@ -307,7 +307,7 @@ class CoreDataService {
         if kanjiText.count > 1 { return [] }
         
         let fetchRequest: NSFetchRequest<StudyKanjiMO> = StudyKanjiMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "kanji == \(kanjiText)")
+        fetchRequest.predicate = NSPredicate(format: "kanji CONTAINS[cd] %@", kanjiText)
         
         do {
             return try self.context.fetch(fetchRequest).map { Kanji(from: $0) }
