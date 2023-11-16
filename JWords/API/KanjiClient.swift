@@ -15,6 +15,7 @@ struct KanjiClient {
     var kanjiUnits: (Kanji) throws -> [StudyUnit]
     var edit: (Kanji, String) throws -> Kanji
     var searchWithKanjiText: (String) throws -> [Kanji]
+    var searchWithMeaning: (String) throws -> [Kanji]
 }
 
 extension DependencyValues {
@@ -40,6 +41,9 @@ extension KanjiClient: DependencyKey {
     },
     searchWithKanjiText: { kanjiText in
         try cd.fetchKanjis(kanjiText: kanjiText)
+    },
+    searchWithMeaning: { meaningText in
+        try cd.fetchKanjis(meaningText: meaningText)
     }
   )
 }
@@ -50,7 +54,8 @@ extension KanjiClient: TestDependencyKey {
     unitKanjis: { _ in .mock },
     kanjiUnits: { _ in .mock },
     edit: { _, _ in .init(index: 0) },
-    searchWithKanjiText: { _ in .mock }
+    searchWithKanjiText: { _ in .mock },
+    searchWithMeaning: { _ in .mock }
   )
 }
 
