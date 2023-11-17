@@ -8,7 +8,7 @@
         <attribute name="meaning" optional="YES" attributeType="String"/>
         <attribute name="ondoku" optional="YES" attributeType="String"/>
         <attribute name="studyState" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StudySet" inverseName="kanjis" inverseEntity="StudySet"/>
+        <relationship name="set" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudySet" inverseName="kanjis" inverseEntity="StudySet"/>
         <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="kanjis" inverseEntity="StudyUnit"/>
     </entity>
     <entity name="StudySet" representedClassName="StudySetMO" syncable="YES" codeGenerationType="class">
@@ -18,7 +18,7 @@
         <attribute name="isAutoSchedule" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="preferredFrontType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="kanjis" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StudyKanji" inverseName="set" inverseEntity="StudyKanji"/>
+        <relationship name="kanjis" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyKanji" inverseName="set" inverseEntity="StudyKanji"/>
         <relationship name="units" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="set" inverseEntity="StudyUnit"/>
     </entity>
     <entity name="StudyUnit" representedClassName="StudyUnitMO" syncable="YES" codeGenerationType="class">

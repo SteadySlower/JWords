@@ -130,6 +130,8 @@
 		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
 		5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C42A11CA630027B408 /* KanjiCell.swift */; };
 		5A9A1BD72B02074A000FFE2B /* SearchKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */; };
+		5A9A1BD92B0710C4000FFE2B /* Studyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1BD82B0710C4000FFE2B /* Studyable.swift */; };
+		5A9A1BDB2B0711D6000FFE2B /* AddKanjiToSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1BDA2B0711D6000FFE2B /* AddKanjiToSet.swift */; };
 		5AA9097B2A83237B0075AFB9 /* ScheduleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* ScheduleClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5AB308382ABBDEE0002EAC3E /* TutorialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB308372ABBDEE0002EAC3E /* TutorialList.swift */; };
@@ -310,6 +312,8 @@
 		5A8843C42A11CA630027B408 /* KanjiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCell.swift; sourceTree = "<group>"; };
 		5A8FF2E528DAF33E00B5E934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKanji.swift; sourceTree = "<group>"; };
+		5A9A1BD82B0710C4000FFE2B /* Studyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Studyable.swift; sourceTree = "<group>"; };
+		5A9A1BDA2B0711D6000FFE2B /* AddKanjiToSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKanjiToSet.swift; sourceTree = "<group>"; };
 		5AA9097A2A83237A0075AFB9 /* ScheduleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
@@ -764,6 +768,7 @@
 				5A8843C02A11BBB40027B408 /* KanjiList.swift */,
 				5A8843C42A11CA630027B408 /* KanjiCell.swift */,
 				5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */,
+				5A9A1BDA2B0711D6000FFE2B /* AddKanjiToSet.swift */,
 			);
 			path = Kanji;
 			sourceTree = "<group>";
@@ -809,6 +814,7 @@
 				5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */,
 				06C992F12ACABF4C0062F9FB /* InputImageType.swift */,
 				06581A9C2ACBF351007914A3 /* Inputs.swift */,
+				5A9A1BD82B0710C4000FFE2B /* Studyable.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1051,6 +1057,7 @@
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
 				0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */,
 				5A7C6FD929FB6D1700DD84A4 /* PasteBoardClient.swift in Sources */,
+				5A9A1BDB2B0711D6000FFE2B /* AddKanjiToSet.swift in Sources */,
 				061D99462ACE59D400C08E17 /* GetImageForOCRView.swift in Sources */,
 				06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */,
 				068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */,
@@ -1072,6 +1079,7 @@
 				06C992F22ACABF4C0062F9FB /* InputImageType.swift in Sources */,
 				06308A732A04902A00BDEE2D /* StudySet.swift in Sources */,
 				06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */,
+				5A9A1BD92B0710C4000FFE2B /* Studyable.swift in Sources */,
 				5A77B98F29EFA99000EA7B41 /* BaseCell.swift in Sources */,
 				5A67DC23286943A900AC156C /* HomeCell.swift in Sources */,
 				0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */,

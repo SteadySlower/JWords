@@ -5,4 +5,6 @@
 //  Created by Jong Won Moon on 11/17/23.
 //
 
-import Foundation
+protocol Studyable {
+    var id: String { get }
+}
