@@ -303,23 +303,14 @@ class CoreDataService {
         return result
     }
     
-    func fetchKanjis(kanjiText: String) throws -> [Kanji] {
-        if kanjiText.count > 1 { return [] }
-        
+    func fetchKanjis(query: String) throws -> [Kanji] {
         let fetchRequest: NSFetchRequest<StudyKanjiMO> = StudyKanjiMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "kanji CONTAINS[cd] %@", kanjiText)
         
-        do {
-            return try self.context.fetch(fetchRequest).map { Kanji(from: $0) }
-        } catch {
-            NSLog("CoreData Error: %s", error.localizedDescription)
-            throw AppError.coreData
-        }
-    }
-    
-    func fetchKanjis(meaningText: String) throws -> [Kanji] {
-        let fetchRequest: NSFetchRequest<StudyKanjiMO> = StudyKanjiMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "meaning CONTAINS[cd] %@", meaningText)
+        let kanjiPredicate = NSPredicate(format: "kanji CONTAINS[cd] %@", query)
+        let meaningPredicate = NSPredicate(format: "meaning CONTAINS[cd] %@", query)
+        let combinedPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [kanjiPredicate, meaningPredicate])
+        
+        fetchRequest.predicate = combinedPredicate
         
         do {
             return try self.context.fetch(fetchRequest).map { Kanji(from: $0) }

@@ -28,11 +28,7 @@ struct SearchKanji: Reducer {
             case .updateQuery(let query):
                 state.query = query
                 guard !query.isEmpty else { return .none }
-                if state.query.isHanGeul {
-                    return .send(.kanjiSearched(try! kanjiClient.searchWithMeaning(query)))
-                } else {
-                    return .send(.kanjiSearched(try! kanjiClient.searchWithKanjiText(query)))
-                }
+                return .send(.kanjiSearched(try! kanjiClient.search(query)))
             default:
                 return .none
             }
