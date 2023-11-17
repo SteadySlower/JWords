@@ -420,6 +420,28 @@ class CoreDataService {
         }
     }
     
+    func addKanjiToSet(kanji: Kanji, to set: StudySet) throws {
+        guard let kanjiMO = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
+            print("디버그: objectID로 kanji 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let setMO = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        setMO.addToKanjis(kanjiMO)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     private func getKanjiMO(_ kanji: String) throws -> StudyKanjiMO {
         let fetchRequest = StudyKanjiMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji)
