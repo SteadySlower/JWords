@@ -442,6 +442,20 @@ class CoreDataService {
         }
     }
     
+    func getKanjisFromSet(of set: StudySet) throws -> [Kanji] {
+        guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let units = set.kanjis else {
+            print("디버그: kanjis가 nil")
+            throw AppError.coreData
+        }
+        
+        return units.compactMap { $0 as? StudyKanjiMO }.map { Kanji(from: $0) }.sorted(by: { $0.createdAt < $1.createdAt })
+    }
+    
     private func getKanjiMO(_ kanji: String) throws -> StudyKanjiMO {
         let fetchRequest = StudyKanjiMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji)
