@@ -16,7 +16,6 @@ struct KanjiClient {
     var edit: (Kanji, String) throws -> Kanji
     var search: (String) throws -> [Kanji]
     var addToSet: (Kanji, StudySet) throws -> Void
-    var fetchFromSet: (StudySet) throws -> [Kanji]
 }
 
 extension DependencyValues {
@@ -45,9 +44,6 @@ extension KanjiClient: DependencyKey {
     },
     addToSet: { kanji, set in
         try cd.addKanjiToSet(kanji: kanji, to: set)
-    },
-    fetchFromSet: { set in
-        try cd.getKanjisFromSet(of: set)
     }
   )
 }
@@ -59,8 +55,7 @@ extension KanjiClient: TestDependencyKey {
     kanjiUnits: { _ in .mock },
     edit: { _, _ in .init(index: 0) },
     search: { _ in .mock },
-    addToSet: { _, _ in  },
-    fetchFromSet: { _ in .mock }
+    addToSet: { _, _ in  }
   )
 }
 
