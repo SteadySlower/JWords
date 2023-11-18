@@ -131,9 +131,9 @@ struct KanjiListView: View {
                                 }
                         }
                     }
-                    .padding(.top, 10)
                 }
             }
+            .padding(.top, 10)
             .padding(.horizontal, 20)
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
