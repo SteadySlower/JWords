@@ -40,6 +40,7 @@ struct SearchKanji: Reducer {
 struct KanjiSearchBar: View {
     
     let store: StoreOf<SearchKanji>
+    @FocusState private var isEditing: Bool
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -55,6 +56,20 @@ struct KanjiSearchBar: View {
                     .padding(.leading, 2)
                 }
                 TextField("", text: vs.binding(get: \.query, send: SearchKanji.Action.updateQuery))
+                    .focused($isEditing)
+                if isEditing {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            isEditing = false
+                        }, label: {
+                            Image(systemName: "keyboard.chevron.compact.down")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.gray)
+                        })
+                    }
+                }
             }
             .frame(height: 30)
         }
