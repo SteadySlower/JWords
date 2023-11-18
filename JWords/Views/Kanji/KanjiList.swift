@@ -121,7 +121,6 @@ struct KanjiListView: View {
                             }
                             .foregroundColor(.black)
                         }
-                        .padding(.horizontal, 20)
                         if !vs.isLastPage && !vs.isSearching {
                             ProgressView()
                                 .foregroundColor(.gray)
@@ -135,6 +134,7 @@ struct KanjiListView: View {
                     .padding(.top, 10)
                 }
             }
+            .padding(.horizontal, 20)
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
             .navigationTitle("한자 리스트")
