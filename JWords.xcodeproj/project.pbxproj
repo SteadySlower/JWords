@@ -129,6 +129,7 @@
 		5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C02A11BBB40027B408 /* KanjiList.swift */; };
 		5A8843C32A11BBDF0027B408 /* Kanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C22A11BBDF0027B408 /* Kanji.swift */; };
 		5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8843C42A11CA630027B408 /* KanjiCell.swift */; };
+		5A9A1BD72B02074A000FFE2B /* SearchKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */; };
 		5AA9097B2A83237B0075AFB9 /* ScheduleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9097A2A83237A0075AFB9 /* ScheduleClient.swift */; };
 		5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */; };
 		5AB308382ABBDEE0002EAC3E /* TutorialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB308372ABBDEE0002EAC3E /* TutorialList.swift */; };
@@ -308,6 +309,7 @@
 		5A8843C22A11BBDF0027B408 /* Kanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanji.swift; sourceTree = "<group>"; };
 		5A8843C42A11CA630027B408 /* KanjiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCell.swift; sourceTree = "<group>"; };
 		5A8FF2E528DAF33E00B5E934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKanji.swift; sourceTree = "<group>"; };
 		5AA9097A2A83237A0075AFB9 /* ScheduleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleClient.swift; sourceTree = "<group>"; };
 		5AAB886528D84DBB000B46CA /* TodaySelectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySelectionModal.swift; sourceTree = "<group>"; };
 		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 			children = (
 				5A8843C02A11BBB40027B408 /* KanjiList.swift */,
 				5A8843C42A11CA630027B408 /* KanjiCell.swift */,
+				5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */,
 			);
 			path = Kanji;
 			sourceTree = "<group>";
@@ -1058,6 +1061,7 @@
 				5A653FEB2907C1C800E3466E /* TodaySchedule.swift in Sources */,
 				061D99402ACE59BC00C08E17 /* OCRResultView.swift in Sources */,
 				5A67DC2D2869470C00AC156C /* StudyCell.swift in Sources */,
+				5A9A1BD72B02074A000FFE2B /* SearchKanji.swift in Sources */,
 				064BA4462AC256E400288749 /* KanjiInput.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,

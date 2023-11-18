@@ -18,9 +18,14 @@ struct KanjiList: Reducer {
         var kanjis: [Kanji] = []
         var studyKanjiSamples: StudyKanjiSamples.State?
         var isLastPage = false
+        var searchKanji = SearchKanji.State()
         
         var showStudyView: Bool {
             studyKanjiSamples != nil
+        }
+        
+        var isSearching: Bool {
+            !searchKanji.query.isEmpty
         }
     }
     
@@ -30,6 +35,7 @@ struct KanjiList: Reducer {
         case kanjiCellTapped(Kanji)
         case studyKanjiSamples(StudyKanjiSamples.Action)
         case showStudyView(Bool)
+        case searchKanji(SearchKanji.Action)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -38,6 +44,7 @@ struct KanjiList: Reducer {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                guard !state.isSearching else { return .none }
                 return .send(.fetchKanjis)
             case .fetchKanjis:
                 let last = state.kanjis.last
@@ -54,6 +61,18 @@ struct KanjiList: Reducer {
                     state.studyKanjiSamples = nil
                 }
                 return .none
+            case .searchKanji(let action):
+                switch action {
+                case .updateQuery(let query):
+                    if query.isEmpty {
+                        return .send(.fetchKanjis)
+                    } else {
+                        return .none
+                    }
+                case .kanjiSearched(let kanjis):
+                    state.kanjis = kanjis
+                    return .none
+                }
             default:
                 return .none
             }
@@ -61,6 +80,11 @@ struct KanjiList: Reducer {
         .ifLet(\.studyKanjiSamples, action: /Action.studyKanjiSamples) {
             StudyKanjiSamples()
         }
+        Scope(
+            state: \.searchKanji,
+            action: /Action.searchKanji,
+            child: { SearchKanji() }
+        )
     }
 
 }
@@ -82,6 +106,11 @@ struct KanjiListView: View {
                                 get: \.showStudyView,
                                 send: KanjiList.Action.showStudyView))
                 { EmptyView() }
+                KanjiSearchBar(
+                    store: store.scope(
+                        state: \.searchKanji,
+                        action: KanjiList.Action.searchKanji)
+                )
                 ScrollView {
                     LazyVStack {
                         ForEach(vs.kanjis, id: \.id) { kanji in
@@ -92,8 +121,7 @@ struct KanjiListView: View {
                             }
                             .foregroundColor(.black)
                         }
-                        .padding(.horizontal, 20)
-                        if !vs.isLastPage {
+                        if !vs.isLastPage && !vs.isSearching {
                             ProgressView()
                                 .foregroundColor(.gray)
                                 .onAppear {
@@ -103,9 +131,10 @@ struct KanjiListView: View {
                                 }
                         }
                     }
-                    .padding(.top, 10)
                 }
             }
+            .padding(.top, 10)
+            .padding(.horizontal, 20)
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
             .navigationTitle("한자 리스트")
