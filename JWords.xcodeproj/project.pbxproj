@@ -927,7 +927,7 @@
 			};
 			buildConfigurationList = 06CEF23E2866F1C800A620CC /* Build configuration list for PBXProject "JWords" */;
 			compatibilityVersion = "Xcode 13.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
