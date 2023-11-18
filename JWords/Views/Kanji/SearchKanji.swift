@@ -49,13 +49,14 @@ struct KanjiSearchBar: View {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .resizable()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 30, height: 30)
                             .foregroundColor(.gray)
                         Spacer()
                     }
                     .padding(.leading, 2)
                 }
                 TextField("", text: vs.binding(get: \.query, send: SearchKanji.Action.updateQuery))
+                    .font(.system(size: 30))
                     .focused($isEditing)
                 if isEditing {
                     HStack {
@@ -65,13 +66,13 @@ struct KanjiSearchBar: View {
                         }, label: {
                             Image(systemName: "keyboard.chevron.compact.down")
                                 .resizable()
-                                .frame(width: 20, height: 20)
+                                .frame(width: 30, height: 30)
                                 .foregroundColor(.gray)
                         })
                     }
                 }
             }
-            .frame(height: 30)
+            .frame(height: 50)
         }
     }
 }
