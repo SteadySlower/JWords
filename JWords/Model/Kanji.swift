@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-struct Kanji: Equatable, Studyable {
+struct Kanji: Equatable {
     
     let id: String
     let objectID: NSManagedObjectID

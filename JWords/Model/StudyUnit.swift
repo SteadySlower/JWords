@@ -24,7 +24,7 @@ enum UnitType: Int, CaseIterable {
     }
 }
 
-struct StudyUnit: Equatable, Identifiable, Hashable, Studyable {
+struct StudyUnit: Equatable, Identifiable, Hashable {
     
     let id: String
     let objectID: NSManagedObjectID
