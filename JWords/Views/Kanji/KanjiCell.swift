@@ -6,9 +6,28 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 #if os(macOS)
 import Cocoa
 #endif
+
+struct DisplayKanji: Reducer {
+    struct State: Equatable {
+        
+    }
+    
+    enum Action: Equatable {
+        
+    }
+    
+    var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            switch action {
+            default: return .none
+            }
+        }
+    }
+}
 
 struct KanjiCell: View {
     
