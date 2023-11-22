@@ -13,11 +13,12 @@ import Cocoa
 
 struct DisplayKanji: Reducer {
     struct State: Equatable {
-        
+        let kanji: Kanji
     }
     
     enum Action: Equatable {
-        
+        case editButtonTapped
+        case kanjiEdited
     }
     
     var body: some Reducer<State, Action> {
