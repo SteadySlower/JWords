@@ -62,7 +62,7 @@ struct KanjiInputView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
+            VStack(spacing: 20) {
                 inputField(title: "한자",
                            placeholder: "一",
                            text: vs.binding(
@@ -88,6 +88,8 @@ struct KanjiInputView: View {
                                 send: InputKanji.Action.updateKundoku)
                 )
             }
+            .padding(.horizontal, 20)
+            .padding(.trailing, 30)
         }
     }
     
