@@ -63,37 +63,44 @@ struct KanjiInputView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                HStack {
-                    Text("한자")
-                    TextField("一", text: vs.binding(
-                        get: \.kanji,
-                        send: InputKanji.Action.updateKanji)
-                    )
-                }
-                HStack {
-                    Text("뜻")
-                    TextField("한 일", text: vs.binding(
-                        get: \.meaning,
-                        send: InputKanji.Action.updateMeaning)
-                    )
-                }
-                HStack {
-                    Text("음독")
-                    TextField(vs.kanji.isEmpty ? "いち、　いっ" : "",
-                      text: vs.binding(
-                        get: \.ondoku,
-                        send: InputKanji.Action.updateOndoku)
-                    )
-                }
-                HStack {
-                    Text("훈독")
-                    TextField(vs.kanji.isEmpty ? "ひと, ひとつ" : "",
-                      text: vs.binding(
-                        get: \.kundoku,
-                        send: InputKanji.Action.updateKundoku)
-                    )
-                }
+                inputField(title: "한자",
+                           placeholder: "一",
+                           text: vs.binding(
+                                get: \.kanji,
+                                send: InputKanji.Action.updateKanji)
+                )
+                inputField(title: "뜻",
+                           placeholder: "한 일",
+                           text: vs.binding(
+                                get: \.meaning,
+                                send: InputKanji.Action.updateMeaning)
+                )
+                inputField(title: "음독",
+                           placeholder: vs.kanji.isEmpty ? "いち、　いっ" : "",
+                           text: vs.binding(
+                                get: \.ondoku,
+                                send: InputKanji.Action.updateOndoku)
+                )
+                inputField(title: "훈독",
+                           placeholder: vs.kanji.isEmpty ? "ひと, ひとつ" : "",
+                           text: vs.binding(
+                                get: \.kundoku,
+                                send: InputKanji.Action.updateKundoku)
+                )
             }
+        }
+    }
+    
+    private func inputField(title: String, placeholder: String, text: Binding<String>) -> some View {
+        HStack(alignment: .center) {
+            Text(title)
+            TextField(placeholder, text: text)
+            .background(
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.gray.opacity(0.5))
+                    .padding(.top, 30)
+            )
         }
     }
 }
