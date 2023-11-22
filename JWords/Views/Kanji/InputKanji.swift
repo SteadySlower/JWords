@@ -69,7 +69,7 @@ struct KanjiInputView: View {
                                 get: \.kanji,
                                 send: InputKanji.Action.updateKanji)
                 )
-                inputField(title: "뜻",
+                inputField(title: "뜻   ",
                            placeholder: "한 일",
                            text: vs.binding(
                                 get: \.meaning,
