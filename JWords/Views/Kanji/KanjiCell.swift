@@ -19,8 +19,8 @@ struct DisplayKanji: Reducer {
     }
     
     enum Action: Equatable {
-        case editButtonTapped
-        case kanjiEdited
+        case showSamples(Kanji)
+        case edit(Kanji)
     }
     
     var body: some Reducer<State, Action> {
@@ -38,36 +38,40 @@ struct KanjiCell: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            HStack {
-                VStack {
-                    Text(vs.kanji.kanjiText)
-                        .font(.system(size: 100))
+            Button(action: {
+                vs.send(.showSamples(vs.kanji))
+            }, label: {
+                HStack {
+                    VStack {
+                        Text(vs.kanji.kanjiText)
+                            .font(.system(size: 100))
+                        Spacer()
+                    }
                     Spacer()
-                }
-                Spacer()
-                VStack(alignment: .trailing) {
-                    Text(vs.kanji.meaningText)
-                        .font(.system(size: 30))
                     VStack(alignment: .trailing) {
-                        Text("음독")
-                            .font(.system(size: 15))
-                        Text(vs.kanji.ondoku)
+                        Text(vs.kanji.meaningText)
+                            .font(.system(size: 30))
+                        VStack(alignment: .trailing) {
+                            Text("음독")
+                                .font(.system(size: 15))
+                            Text(vs.kanji.ondoku)
+                        }
+                        VStack(alignment: .trailing) {
+                            Text("훈독")
+                                .font(.system(size: 15))
+                            Text(vs.kanji.kundoku)
+                        }
+                        Button("✏️") {
+                            vs.send(.edit(vs.kanji))
+                        }
                     }
-                    VStack(alignment: .trailing) {
-                        Text("훈독")
-                            .font(.system(size: 15))
-                        Text(vs.kanji.kundoku)
-                    }
-                    Button("✏️") {
-                        
-                    }
+                    .multilineTextAlignment(.trailing)
                 }
-                .multilineTextAlignment(.trailing)
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 10)
-            .defaultRectangleBackground()
-            .minimumScaleFactor(0.5)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 10)
+                .defaultRectangleBackground()
+                .minimumScaleFactor(0.5)
+            })
         }
     }
 }

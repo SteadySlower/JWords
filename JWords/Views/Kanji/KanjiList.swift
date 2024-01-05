@@ -57,10 +57,15 @@ struct KanjiList: Reducer {
                     )
                 )
                 return .none
-            case .kanjiCellTapped(let kanji):
-                let units = try! kanjiClient.kanjiUnits(kanji)
-                state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
-                return .none
+            case let .kanji(_, action):
+                switch action {
+                case .showSamples(let kanji):
+                    let units = try! kanjiClient.kanjiUnits(kanji)
+                    state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
+                    return .none
+                case .edit:
+                    return .none
+                }
             case .showStudyView(let isPresent):
                 if !isPresent {
                     state.studyKanjiSamples = nil
