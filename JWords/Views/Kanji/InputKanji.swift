@@ -14,17 +14,20 @@ struct InputKanji: Reducer {
         var meaning: String
         var ondoku: String
         var kundoku: String
+        let isKanjiEditable: Bool
         
         init(
             kanji: String = "",
             meaning: String = "",
             ondoku: String = "",
-            kundoku: String = ""
+            kundoku: String = "",
+            isKanjiEditable: Bool = true
         ) {
             self.kanji = kanji
             self.meaning = meaning
             self.ondoku = ondoku
             self.kundoku = kundoku
+            self.isKanjiEditable = isKanjiEditable
         }
     }
     
@@ -69,6 +72,7 @@ struct KanjiInputView: View {
                                 get: \.kanji,
                                 send: InputKanji.Action.updateKanji)
                 )
+                .disabled(!vs.isKanjiEditable)
                 inputField(title: "뜻   ",
                            placeholder: "한 일",
                            text: vs.binding(

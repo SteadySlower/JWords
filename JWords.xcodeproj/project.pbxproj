@@ -141,6 +141,7 @@
 		5AE1DB1F28C5E46B006DB89C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE1DB1E28C5E46B006DB89C /* Error.swift */; };
 		5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */; };
 		5AFC70AF2B0B2E0D0044FFCA /* InputKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC70AE2B0B2E0D0044FFCA /* InputKanji.swift */; };
+		5AFC70B72B0DE28C0044FFCA /* EditKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC70B62B0DE28C0044FFCA /* EditKanji.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -322,6 +323,7 @@
 		5AE1DB1E28C5E46B006DB89C /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		5AE7A76C28D981D9005E12B6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		5AFC70AE2B0B2E0D0044FFCA /* InputKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKanji.swift; sourceTree = "<group>"; };
+		5AFC70B62B0DE28C0044FFCA /* EditKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditKanji.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -767,6 +769,7 @@
 				5A8843C42A11CA630027B408 /* KanjiCell.swift */,
 				5A9A1BD62B02074A000FFE2B /* SearchKanji.swift */,
 				5AFC70AE2B0B2E0D0044FFCA /* InputKanji.swift */,
+				5AFC70B62B0DE28C0044FFCA /* EditKanji.swift */,
 			);
 			path = Kanji;
 			sourceTree = "<group>";
@@ -1009,6 +1012,7 @@
 				06004E3B2AC5489700947F5D /* SelectList.swift in Sources */,
 				5A735AF628D8071D00CADF9B /* TodayView.swift in Sources */,
 				061D993C2ACE599D00C08E17 /* FlexBox.swift in Sources */,
+				5AFC70B72B0DE28C0044FFCA /* EditKanji.swift in Sources */,
 				5A77B98D29EF8C6A00EA7B41 /* EditCell.swift in Sources */,
 				06581AA72ACC433D007914A3 /* KanjiWikiService.swift in Sources */,
 				061D99482ACE59DD00C08E17 /* OCRAddUnitView.swift in Sources */,
