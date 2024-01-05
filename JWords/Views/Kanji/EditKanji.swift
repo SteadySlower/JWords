@@ -80,6 +80,7 @@ struct EditKanjiView: View {
                     .buttonStyle(InputButtonStyle())
                 }
             }
+            .presentationDetents([.medium])
         }
     }
 }
