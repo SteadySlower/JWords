@@ -55,6 +55,9 @@ struct KanjiCell: View {
                         .font(.system(size: 15))
                     Text(kanji.kundoku)
                 }
+                Button("✏️") {
+                    
+                }
             }
             .multilineTextAlignment(.trailing)
         }
@@ -74,6 +77,6 @@ struct KanjiCell: View {
         createdAt: .now,
         usedIn: 1
     ))
-    .frame(height: 100)
+    .frame(height: 150)
     .padding(.horizontal, 20)
 }
