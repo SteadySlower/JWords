@@ -82,6 +82,18 @@ struct KanjiList: Reducer {
             case .showEditView(let isPresent):
                 if !isPresent { state.edit = nil }
                 return .none
+            case .edit(let action):
+                switch action {
+                case .cancel:
+                    state.edit = nil
+                    return .none
+                case .edited(let kanji):
+                    state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
+                    state.edit = nil
+                    return .none
+                default:
+                    return .none
+                }
             case .searchKanji(let action):
                 switch action {
                 case .updateQuery(let query):
