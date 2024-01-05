@@ -64,3 +64,16 @@ struct KanjiCell: View {
         .minimumScaleFactor(0.5)
     }
 }
+
+#Preview {
+    KanjiCell(kanji: .init(
+        kanjiText: "一",
+        meaningText: "한 일",
+        ondoku: "いち",
+        kundoku: "い",
+        createdAt: .now,
+        usedIn: 1
+    ))
+    .frame(height: 100)
+    .padding(.horizontal, 20)
+}
