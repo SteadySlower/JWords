@@ -12,8 +12,10 @@ import Cocoa
 #endif
 
 struct DisplayKanji: Reducer {
-    struct State: Equatable {
+    struct State: Equatable, Identifiable {
         let kanji: Kanji
+        
+        var id: String { kanji.id }
     }
     
     enum Action: Equatable {
@@ -32,51 +34,58 @@ struct DisplayKanji: Reducer {
 
 struct KanjiCell: View {
     
-    let kanji: Kanji
+    let store: StoreOf<DisplayKanji>
     
     var body: some View {
-        HStack {
-            VStack {
-                Text(kanji.kanjiText)
-                    .font(.system(size: 100))
+        WithViewStore(store, observe: { $0 }) { vs in
+            HStack {
+                VStack {
+                    Text(vs.kanji.kanjiText)
+                        .font(.system(size: 100))
+                    Spacer()
+                }
                 Spacer()
-            }
-            Spacer()
-            VStack(alignment: .trailing) {
-                Text(kanji.meaningText)
-                    .font(.system(size: 30))
                 VStack(alignment: .trailing) {
-                    Text("음독")
-                        .font(.system(size: 15))
-                    Text(kanji.ondoku)
+                    Text(vs.kanji.meaningText)
+                        .font(.system(size: 30))
+                    VStack(alignment: .trailing) {
+                        Text("음독")
+                            .font(.system(size: 15))
+                        Text(vs.kanji.ondoku)
+                    }
+                    VStack(alignment: .trailing) {
+                        Text("훈독")
+                            .font(.system(size: 15))
+                        Text(vs.kanji.kundoku)
+                    }
+                    Button("✏️") {
+                        
+                    }
                 }
-                VStack(alignment: .trailing) {
-                    Text("훈독")
-                        .font(.system(size: 15))
-                    Text(kanji.kundoku)
-                }
-                Button("✏️") {
-                    
-                }
+                .multilineTextAlignment(.trailing)
             }
-            .multilineTextAlignment(.trailing)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
+            .defaultRectangleBackground()
+            .minimumScaleFactor(0.5)
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 10)
-        .defaultRectangleBackground()
-        .minimumScaleFactor(0.5)
     }
 }
 
 #Preview {
-    KanjiCell(kanji: .init(
-        kanjiText: "一",
-        meaningText: "한 일",
-        ondoku: "いち",
-        kundoku: "い",
-        createdAt: .now,
-        usedIn: 1
-    ))
+    KanjiCell(
+        store: .init(
+            initialState: DisplayKanji.State(kanji: .init(
+                kanjiText: "一",
+                meaningText: "한 일",
+                ondoku: "いち",
+                kundoku: "い",
+                createdAt: .now,
+                usedIn: 1
+            )),
+            reducer: { DisplayKanji()._printChanges() }
+        )
+    )
     .frame(height: 150)
     .padding(.horizontal, 20)
 }
