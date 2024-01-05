@@ -27,19 +27,13 @@ struct EditKanji: Reducer {
     
     enum Action: Equatable {
         case input(InputKanji.Action)
+        case edit
+        case cancel
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .input(let action):
-                switch action {
-                case .updateKanji:
-                    state.input.kanji = state.kanji.kanjiText
-                    return .none
-                default:
-                    return .none
-                }
             default: return .none
             }
         }
@@ -58,11 +52,23 @@ struct EditKanjiView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            KanjiInputView(
-                store: store.scope(
-                    state: \.input,
-                    action: EditKanji.Action.input)
-            )
+            VStack(spacing: 40) {
+                KanjiInputView(
+                    store: store.scope(
+                        state: \.input,
+                        action: EditKanji.Action.input)
+                )
+                HStack(spacing: 100) {
+                    Button("취소") {
+                        vs.send(.cancel)
+                    }
+                    .buttonStyle(InputButtonStyle())
+                    Button("수정") {
+                        vs.send(.edit)
+                    }
+                    .buttonStyle(InputButtonStyle())
+                }
+            }
         }
     }
 }
