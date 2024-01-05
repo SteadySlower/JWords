@@ -15,13 +15,18 @@ struct KanjiList: Reducer {
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     
     struct State: Equatable {
-        var kanjis: [Kanji] = []
+        var kanjis: IdentifiedArrayOf<DisplayKanji.State>
         var studyKanjiSamples: StudyKanjiSamples.State?
         var isLastPage = false
         var searchKanji = SearchKanji.State()
+        var edit: EditKanji.State?
         
         var showStudyView: Bool {
             studyKanjiSamples != nil
+        }
+        
+        var showEditModal: Bool {
+            edit != nil
         }
         
         var isSearching: Bool {
@@ -36,6 +41,9 @@ struct KanjiList: Reducer {
         case studyKanjiSamples(StudyKanjiSamples.Action)
         case showStudyView(Bool)
         case searchKanji(SearchKanji.Action)
+        case kanji(DisplayKanji.State.ID, DisplayKanji.Action)
+        case showEditView(Bool)
+        case edit(EditKanji.Action)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -48,19 +56,44 @@ struct KanjiList: Reducer {
                 return .send(.fetchKanjis)
             case .fetchKanjis:
                 let last = state.kanjis.last
-                let fetched = try! kanjiClient.fetch(last)
+                let fetched = try! kanjiClient.fetch(last?.kanji)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
-                state.kanjis.append(contentsOf: fetched)
+                state.kanjis.append(contentsOf:
+                    IdentifiedArray(
+                        uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
+                    )
+                )
                 return .none
-            case .kanjiCellTapped(let kanji):
-                let units = try! kanjiClient.kanjiUnits(kanji)
-                state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
-                return .none
+            case let .kanji(_, action):
+                switch action {
+                case .showSamples(let kanji):
+                    let units = try! kanjiClient.kanjiUnits(kanji)
+                    state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
+                    return .none
+                case .edit(let kanji):
+                    state.edit = EditKanji.State(kanji)
+                    return .none
+                }
             case .showStudyView(let isPresent):
                 if !isPresent {
                     state.studyKanjiSamples = nil
                 }
                 return .none
+            case .showEditView(let isPresent):
+                if !isPresent { state.edit = nil }
+                return .none
+            case .edit(let action):
+                switch action {
+                case .cancel:
+                    state.edit = nil
+                    return .none
+                case .edited(let kanji):
+                    state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
+                    state.edit = nil
+                    return .none
+                default:
+                    return .none
+                }
             case .searchKanji(let action):
                 switch action {
                 case .updateQuery(let query):
@@ -70,15 +103,21 @@ struct KanjiList: Reducer {
                         return .none
                     }
                 case .kanjiSearched(let kanjis):
-                    state.kanjis = kanjis
+                    state.kanjis = IdentifiedArray(uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) })
                     return .none
                 }
             default:
                 return .none
             }
         }
+        .forEach(\.kanjis, action: /Action.kanji) {
+            DisplayKanji()
+        }
         .ifLet(\.studyKanjiSamples, action: /Action.studyKanjiSamples) {
             StudyKanjiSamples()
+        }
+        .ifLet(\.edit, action: /Action.edit) {
+            EditKanji()
         }
         Scope(
             state: \.searchKanji,
@@ -113,13 +152,11 @@ struct KanjiListView: View {
                 )
                 ScrollView {
                     LazyVStack {
-                        ForEach(vs.kanjis, id: \.id) { kanji in
-                            Button {
-                                vs.send(.kanjiCellTapped(kanji))
-                            } label: {
-                                KanjiCell(kanji: kanji)
-                            }
-                            .foregroundColor(.black)
+                        ForEachStore(store.scope(
+                            state: \.kanjis,
+                            action: KanjiList.Action.kanji)
+                        ) {
+                            KanjiCell(store: $0)
                         }
                         if !vs.isLastPage && !vs.isSearching {
                             ProgressView()
@@ -132,6 +169,7 @@ struct KanjiListView: View {
                         }
                     }
                 }
+                .scrollIndicators(.hidden)
             }
             .padding(.top, 10)
             .padding(.horizontal, 20)
@@ -141,6 +179,17 @@ struct KanjiListView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
+            .sheet(isPresented: vs.binding(
+                get: \.showEditModal,
+                send: KanjiList.Action.showEditView)
+            ) {
+                IfLetStore(store.scope(
+                    state: \.edit,
+                    action: KanjiList.Action.edit)
+                ) {
+                    EditKanjiView(store: $0)
+                }
+            }
         }
     }
 }

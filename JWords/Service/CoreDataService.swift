@@ -333,13 +333,15 @@ class CoreDataService {
         return samples.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
     }
     
-    func editKanji(kanji: Kanji, meaningText: String) throws -> Kanji {
+    func editKanji(kanji: Kanji, input: StudyKanjiInput) throws -> Kanji {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
         }
         
-        mo.meaning = meaningText
+        mo.meaning = input.meaningText
+        mo.ondoku = input.ondoku
+        mo.kundoku = input.kundoku
         
         do {
             try context.save()

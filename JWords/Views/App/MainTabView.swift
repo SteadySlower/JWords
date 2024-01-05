@@ -18,7 +18,7 @@ struct MainTab: Reducer {
         var selectedTab: Tab = .today
         var todayList: TodayList.State = .init()
         var homeList: HomeList.State = .init()
-        var kanjiList: KanjiList.State = .init()
+        var kanjiList: KanjiList.State = .init(kanjis: [])
         var ocr: AddUnitWithOCR.State = .init()
     }
     

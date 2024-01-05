@@ -18,3 +18,10 @@ struct StudyUnitInput {
     let kanjiText: String
     let meaningText: String
 }
+
+struct StudyKanjiInput {
+    let kanjiText: String
+    let meaningText: String
+    let ondoku: String
+    let kundoku: String
+}
