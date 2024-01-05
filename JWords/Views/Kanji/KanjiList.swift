@@ -19,9 +19,14 @@ struct KanjiList: Reducer {
         var studyKanjiSamples: StudyKanjiSamples.State?
         var isLastPage = false
         var searchKanji = SearchKanji.State()
+        var edit: EditKanji.State?
         
         var showStudyView: Bool {
             studyKanjiSamples != nil
+        }
+        
+        var showEditModal: Bool {
+            edit != nil
         }
         
         var isSearching: Bool {
@@ -37,6 +42,8 @@ struct KanjiList: Reducer {
         case showStudyView(Bool)
         case searchKanji(SearchKanji.Action)
         case kanji(DisplayKanji.State.ID, DisplayKanji.Action)
+        case showEditView(Bool)
+        case edit(EditKanji.Action)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -63,13 +70,17 @@ struct KanjiList: Reducer {
                     let units = try! kanjiClient.kanjiUnits(kanji)
                     state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
                     return .none
-                case .edit:
+                case .edit(let kanji):
+                    state.edit = EditKanji.State(kanji)
                     return .none
                 }
             case .showStudyView(let isPresent):
                 if !isPresent {
                     state.studyKanjiSamples = nil
                 }
+                return .none
+            case .showEditView(let isPresent):
+                if !isPresent { state.edit = nil }
                 return .none
             case .searchKanji(let action):
                 switch action {
@@ -92,6 +103,9 @@ struct KanjiList: Reducer {
         }
         .ifLet(\.studyKanjiSamples, action: /Action.studyKanjiSamples) {
             StudyKanjiSamples()
+        }
+        .ifLet(\.edit, action: /Action.edit) {
+            EditKanji()
         }
         Scope(
             state: \.searchKanji,
@@ -153,6 +167,17 @@ struct KanjiListView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
+            .sheet(isPresented: vs.binding(
+                get: \.showEditModal,
+                send: KanjiList.Action.showEditView)
+            ) {
+                IfLetStore(store.scope(
+                    state: \.edit,
+                    action: KanjiList.Action.edit)
+                ) {
+                    EditKanjiView(store: $0)
+                }
+            }
         }
     }
 }
