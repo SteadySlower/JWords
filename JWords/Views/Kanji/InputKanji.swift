@@ -42,6 +42,7 @@ struct InputKanji: Reducer {
         Reduce { state, action in
             switch action {
             case .updateKanji(let kanji):
+                guard state.isKanjiEditable else { return .none }
                 state.kanji = kanji
                 return .none
             case .updateMeaning(let meaning):

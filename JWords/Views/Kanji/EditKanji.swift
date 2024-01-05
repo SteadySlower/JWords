@@ -28,12 +28,23 @@ struct EditKanji: Reducer {
     enum Action: Equatable {
         case input(InputKanji.Action)
         case edit
+        case edited(Kanji)
         case cancel
     }
+    
+    @Dependency(\.kanjiClient) var kanjiClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .edit:
+                let input = StudyKanjiInput(
+                    kanjiText: state.input.kanji,
+                    meaningText: state.input.meaning,
+                    ondoku: state.input.ondoku,
+                    kundoku: state.input.kundoku)
+                let edited = try! kanjiClient.edit(state.kanji, input)
+                return .send(.edited(edited))
             default: return .none
             }
         }

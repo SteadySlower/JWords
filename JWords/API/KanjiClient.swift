@@ -13,7 +13,7 @@ struct KanjiClient {
     var fetch: (Kanji?) throws -> [Kanji]
     var unitKanjis: (StudyUnit) throws -> [Kanji]
     var kanjiUnits: (Kanji) throws -> [StudyUnit]
-    var edit: (Kanji, String) throws -> Kanji
+    var edit: (Kanji, StudyKanjiInput) throws -> Kanji
     var search: (String) throws -> [Kanji]
 }
 
@@ -35,8 +35,8 @@ extension KanjiClient: DependencyKey {
     kanjiUnits: { kanji in
         try cd.fetchSampleUnit(ofKanji: kanji)
     },
-    edit: { kanji, meaningText in
-        try cd.editKanji(kanji: kanji, meaningText: meaningText)
+    edit: { kanji, input in
+        try cd.editKanji(kanji: kanji, input: input)
     },
     search: { query in
         try cd.fetchKanjis(query: query)
