@@ -13,7 +13,7 @@ import XCTest
 @MainActor
 final class InputUnitTest: XCTestCase {
     
-    func testKanjiInputHuriganaUpdatedAlreadyExist() async {
+    func test_kanjiInput_HuriganaUpdated_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
             initialState: InputUnit.State(),
@@ -27,7 +27,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(alreadyExist))
     }
     
-    func testKanjiInputHuriganaUpdatedAlreadyExistNil() async {
+    func test_kanjiInput_huriganaUpdated_alreadyExist_nçil() async {
         let store = TestStore(
             initialState: InputUnit.State(),
             reducer: { InputUnit() },
@@ -40,7 +40,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(nil))
     }
     
-    func testKanjiInputOnTab() async {
+    func test_kanjiInput_onTab() async {
         let store = TestStore(
             initialState: InputUnit.State(),
             reducer: { InputUnit() }
@@ -52,7 +52,7 @@ final class InputUnitTest: XCTestCase {
         }
     }
     
-    func testMeaningInputOnTab() async {
+    func test_meaningInput_onTab() async {
         let store = TestStore(
             initialState: InputUnit.State(),
             reducer: { InputUnit() }
