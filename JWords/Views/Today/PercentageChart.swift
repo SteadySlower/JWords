@@ -10,58 +10,20 @@ import SwiftUI
 
 struct PieChartReducer: Reducer {
     struct State: Equatable {
-        private(set) var _percentage: Float = 0.0
-        var displayPercentage: Float = 0.0
-        
-        mutating func clear() {
-            _percentage = 0.0
-            displayPercentage = 0.0
-        }
-        
-        mutating func updatePercentage(_ percentage: Float) {
-            displayPercentage = 0.0
-            _percentage = percentage
-        }
+        var percentage: Float = 0.0
     }
     
-    enum Action: Equatable {
-        case startAnimation
-        case addToDisplayPercentage(Float)
-        case clearState
-    }
+    enum Action: Equatable {}
     
-    @Dependency(\.continuousClock) var clock
-    enum CancelID { case timer }
-    
-    var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            case .startAnimation:
-                let percentage = state._percentage
-                return .run { send in
-                    for await _ in clock.timer(interval: .seconds(0.005)) {
-                        await send(.addToDisplayPercentage(percentage / 200))
-                    }
-                }
-                .cancellable(id: CancelID.timer, cancelInFlight: true)
-            case .addToDisplayPercentage(let percentage):
-                state.displayPercentage += percentage
-                if state.displayPercentage > state._percentage {
-                    state.displayPercentage = state._percentage
-                    return .cancel(id: CancelID.timer)
-                }
-                return .none
-            case .clearState:
-                state.clear()
-                return .none
-            }
-        }
-    }
+    var body: some Reducer<State, Action> { Reduce { _,  _ in return .none } }
 }
 
 struct PercentageChart: View {
     
     let store: StoreOf<PieChartReducer>
+    @State var percentage: CGFloat = 0
+    @State var timer: Timer?
+    @State var counter: Int = 0
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
@@ -69,16 +31,33 @@ struct PercentageChart: View {
                 Circle()
                     .stroke(Color.blue, lineWidth: 10)
                 Circle()
-                    .trim(from: 0.0, to: CGFloat(vs.displayPercentage))
+                    .trim(from: 0.0, to: percentage)
                     .stroke(Color.red, lineWidth: 10)
                     .rotationEffect(.degrees(-90))
-                Text("\(String(format: "%.1f", vs.displayPercentage * 100))%")
+                Text("\(String(format: "%.1f", percentage * 100))%")
                     .font(.body)
                     .fixedSize()
             }
             .padding(5)
-            .onAppear { vs.send(.startAnimation) }
-            .onDisappear { vs.send(.clearState) }
+            .onAppear { startAnimation(CGFloat(vs.percentage)) }
+            .onDisappear { percentage = 0.0 }
         }
+    }
+    
+    private func startAnimation(_ percentage: CGFloat) {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.001, repeats: true) { _ in
+            
+            self.percentage += percentage / 1000
+            
+            if self.percentage >= percentage {
+                self.percentage = percentage
+                stopAnimation()
+            }
+        }
+    }
+    
+    private func stopAnimation() {
+        timer?.invalidate()
+        timer = nil
     }
 }

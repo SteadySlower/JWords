@@ -30,7 +30,7 @@ struct TodayStatus: Reducer {
             self.allUnits = allUnits
             self.toStudyUnits = toStudyUnits
             let percentage = allUnits.count != 0 ? Float(toStudyUnits.count) / Float(allUnits.count) : 0.0
-            pieChart.updatePercentage(percentage)
+            pieChart.percentage = percentage
         }
     }
     
