@@ -104,6 +104,7 @@
 		06CEF2652866F1CB00A620CC /* JWordsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2642866F1CB00A620CC /* JWordsUITestsLaunchTests.swift */; };
 		06CEF2782866F32700A620CC /* JWordsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */; };
 		06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */; };
+		06E46CB42B491BB5001C10E0 /* SearchKanjiTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E46CB32B491BB5001C10E0 /* SearchKanjiTest.swift */; };
 		06E917542A07168F002289B4 /* StudySetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E917532A07168F002289B4 /* StudySetClient.swift */; };
 		06E917572A071711002289B4 /* jwords.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 06E917552A071711002289B4 /* jwords.xcdatamodeld */; };
 		5A07D3F42AF38D330095DD87 /* SelectionStudySetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */; };
@@ -285,6 +286,7 @@
 		06CEF2772866F32700A620CC /* JWordsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWordsAcceptanceTests.swift; sourceTree = "<group>"; };
 		06CEF27E2866F38500A620CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		06D0B12C2ACAF2BB00169129 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
+		06E46CB32B491BB5001C10E0 /* SearchKanjiTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKanjiTest.swift; sourceTree = "<group>"; };
 		06E917532A07168F002289B4 /* StudySetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetClient.swift; sourceTree = "<group>"; };
 		06E917562A071711002289B4 /* jwords.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = jwords.xcdatamodel; sourceTree = "<group>"; };
 		5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionStudySetTest.swift; sourceTree = "<group>"; };
@@ -630,6 +632,7 @@
 				069FA5092AECA91400ED398C /* PieChartReducerTest.swift */,
 				5A07D3F32AF38D330095DD87 /* SelectionStudySetTest.swift */,
 				5A76E4A82AF4D3D8001BC92C /* EditHuriganaTextTest.swift */,
+				06E46CB32B491BB5001C10E0 /* SearchKanjiTest.swift */,
 			);
 			path = JWordsUnitTests;
 			sourceTree = "<group>";
@@ -1120,6 +1123,7 @@
 				060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */,
 				5A76E4A92AF4D3D8001BC92C /* EditHuriganaTextTest.swift in Sources */,
 				069FA4FE2AE3798F00ED398C /* StudyOneUnitTest.swift in Sources */,
+				06E46CB42B491BB5001C10E0 /* SearchKanjiTest.swift in Sources */,
 				0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */,
 				06581AA92ACCEEBD007914A3 /* MainTabTest.swift in Sources */,
 				5A0ED7BD2ADE348300669DB9 /* GetImageForOCRTest.swift in Sources */,
