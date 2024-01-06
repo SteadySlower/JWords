@@ -177,4 +177,21 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_searchKanji_updateQuery_with_empty_string() async {
+        let fetched: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        let store = TestStore(
+            initialState: KanjiList.State(
+                kanjis: []
+            ),
+            reducer: { KanjiList() },
+            withDependencies: {
+                $0.kanjiClient.fetch = { _ in fetched }
+            }
+        )
+        
+        await store.send(.searchKanji(.updateQuery("")))
+        
+        await store.receive(.fetchKanjis)
+    }
+    
 }
