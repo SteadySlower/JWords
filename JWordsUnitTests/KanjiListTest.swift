@@ -79,19 +79,24 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
-    func test_kanjiCellTapped() async {
-        let kanji: Kanji = .testMock
+    func test_kanji_showSamples() async {
+        let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        let kanji: Kanji = kanjis.randomElement()!
         let units: [StudyUnit] = .testMock
         
         let store = TestStore(
-            initialState: KanjiList.State(kanjis: []),
+            initialState: KanjiList.State(
+                kanjis: IdentifiedArray(
+                    uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) }
+                )
+            ),
             reducer: { KanjiList() },
             withDependencies: {
                 $0.kanjiClient.kanjiUnits = { _ in units }
             }
         )
         
-        await store.send(.kanjiCellTapped(kanji)) {
+        await store.send(.kanji(kanji.id, .showSamples(kanji))) {
             $0.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
         }
     }
