@@ -135,4 +135,18 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_edit_cancel() async {
+        let store = TestStore(
+            initialState: KanjiList.State(
+                kanjis: [],
+                edit: EditKanji.State(.testMock)
+            ),
+            reducer: { KanjiList() }
+        )
+        
+        await store.send(.edit(.cancel)) {
+            $0.edit = nil
+        }
+    }
+    
 }
