@@ -33,5 +33,17 @@ final class SearchKanjiTest: XCTestCase {
         await store.receive(.kanjiSearched(searched))
     }
     
+    func test_updateQuery_with_empty_query() async {
+        let store = TestStore(
+            initialState: SearchKanji.State(query: Random.string),
+            reducer: { SearchKanji() }
+        )
+        
+        let emptyString = ""
+    
+        await store.send(.updateQuery(emptyString)) {
+            $0.query = emptyString
+        }
+    }
 }
 
