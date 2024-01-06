@@ -121,4 +121,18 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_showEditView_false() async {
+        let store = TestStore(
+            initialState: KanjiList.State(
+                kanjis: [],
+                edit: EditKanji.State(.testMock)
+            ),
+            reducer: { KanjiList() }
+        )
+        
+        await store.send(.showEditView(false)) {
+            $0.edit = nil
+        }
+    }
+    
 }
