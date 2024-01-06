@@ -36,7 +36,7 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
-    func test_fetchKanji() async {
+    func test_fetchKanjis() async {
         let fetchKanjiCount = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
         
@@ -57,7 +57,7 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
-    func test_fetchKanji_lastPage() async {
+    func test_fetchKanjis_lastPage() async {
         let fetchKanjiCount = Random.int(from: 0, to: KanjiList.NUMBER_OF_KANJI_IN_A_PAGE - 1)
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
         
