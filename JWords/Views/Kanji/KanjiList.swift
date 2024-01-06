@@ -37,7 +37,6 @@ struct KanjiList: Reducer {
     enum Action: Equatable {
         case onAppear
         case fetchKanjis
-        case kanjiCellTapped(Kanji)
         case studyKanjiSamples(StudyKanjiSamples.Action)
         case showStudyView(Bool)
         case searchKanji(SearchKanji.Action)
