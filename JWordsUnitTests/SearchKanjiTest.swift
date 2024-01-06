@@ -13,7 +13,7 @@ import XCTest
 @MainActor
 final class SearchKanjiTest: XCTestCase {
     
-    func testUpdateQuery() async {
+    func test_updateQuery() async {
         let searched: [Kanji] = .testMock(count: Random.int(from: 0, to: 100))
         
         let store = TestStore(
