@@ -113,10 +113,7 @@ final class KanjiListTest: XCTestCase {
                     units: units
                 )
             ),
-            reducer: { KanjiList() },
-            withDependencies: {
-                $0.kanjiClient.kanjiUnits = { _ in units }
-            }
+            reducer: { KanjiList() }
         )
         
         await store.send(.showStudyView(false)) {
