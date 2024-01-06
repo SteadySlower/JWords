@@ -191,7 +191,33 @@ final class KanjiListTest: XCTestCase {
         
         await store.send(.searchKanji(.updateQuery("")))
         
-        await store.receive(.fetchKanjis)
+        await store.receive(.fetchKanjis) {
+            $0.kanjis = IdentifiedArray(
+                uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
+            )
+            $0.isLastPage = fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
+        }
+    }
+    
+    func test_searchKanji_kanjiSearched() async {
+        let existingKanjis: [Kanji] = .testMock(count: Random.int(from: 0, to: 100))
+        let searched: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        
+        let store = TestStore(
+            initialState: KanjiList.State(
+                kanjis: IdentifiedArray(
+                    uniqueElements: existingKanjis.map { DisplayKanji.State(kanji: $0) }
+                )
+            ),
+            reducer: { KanjiList() },
+            withDependencies: {
+                $0.kanjiClient.search = { _ in searched }
+            }
+        )
+        
+        await store.send(.searchKanji(.kanjiSearched(searched))) {
+            $0.kanjis = IdentifiedArray(uniqueElements: searched.map { DisplayKanji.State(kanji: $0) })
+        }
     }
     
 }
