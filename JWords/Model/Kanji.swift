@@ -42,9 +42,18 @@ struct Kanji: Equatable {
     }
     
     // initializer for test mocking
-    init(kanjiText: String, meaningText: String, ondoku: String, kundoku: String, createdAt: Date, usedIn: Int) {
-        self.id = UUID().uuidString
-        self.objectID = NSManagedObjectID()
+    init(
+        id: String = UUID().uuidString,
+        objectID: NSManagedObjectID = NSManagedObjectID(),
+        kanjiText: String,
+        meaningText: String,
+        ondoku: String,
+        kundoku: String,
+        createdAt: Date,
+        usedIn: Int
+    ) {
+        self.id = id
+        self.objectID = objectID
         self.kanjiText = kanjiText
         self.meaningText = meaningText
         self.ondoku = ondoku
