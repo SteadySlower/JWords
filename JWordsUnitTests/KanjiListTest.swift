@@ -18,7 +18,7 @@ final class KanjiListTest: XCTestCase {
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
         
         let store = TestStore(
-            initialState: KanjiList.State(),
+            initialState: KanjiList.State(kanjis: []),
             reducer: { KanjiList() },
             withDependencies: {
                 $0.kanjiClient.fetch = { _ in fetched }
@@ -28,7 +28,11 @@ final class KanjiListTest: XCTestCase {
         await store.send(.onAppear)
         
         await store.receive(.fetchKanjis) {
-            $0.kanjis.append(contentsOf: fetched)
+            $0.kanjis.append(contentsOf:
+                IdentifiedArray(
+                    uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
+                )
+            )
         }
     }
     
@@ -37,7 +41,7 @@ final class KanjiListTest: XCTestCase {
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
         
         let store = TestStore(
-            initialState: KanjiList.State(),
+            initialState: KanjiList.State(kanjis: []),
             reducer: { KanjiList() },
             withDependencies: {
                 $0.kanjiClient.fetch = { _ in fetched }
@@ -45,7 +49,11 @@ final class KanjiListTest: XCTestCase {
         )
         
         await store.send(.fetchKanjis) {
-            $0.kanjis.append(contentsOf: fetched)
+            $0.kanjis.append(contentsOf:
+                IdentifiedArray(
+                    uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
+                )
+            )
         }
     }
     
@@ -54,7 +62,7 @@ final class KanjiListTest: XCTestCase {
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
         
         let store = TestStore(
-            initialState: KanjiList.State(),
+            initialState: KanjiList.State(kanjis: []),
             reducer: { KanjiList() },
             withDependencies: {
                 $0.kanjiClient.fetch = { _ in fetched }
@@ -62,7 +70,11 @@ final class KanjiListTest: XCTestCase {
         )
         
         await store.send(.fetchKanjis) {
-            $0.kanjis.append(contentsOf: fetched)
+            $0.kanjis.append(contentsOf:
+                IdentifiedArray(
+                    uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
+                )
+            )
             $0.isLastPage = true
         }
     }
@@ -72,7 +84,7 @@ final class KanjiListTest: XCTestCase {
         let units: [StudyUnit] = .testMock
         
         let store = TestStore(
-            initialState: KanjiList.State(),
+            initialState: KanjiList.State(kanjis: []),
             reducer: { KanjiList() },
             withDependencies: {
                 $0.kanjiClient.kanjiUnits = { _ in units }
@@ -90,6 +102,7 @@ final class KanjiListTest: XCTestCase {
         
         let store = TestStore(
             initialState: KanjiList.State(
+                kanjis: [],
                 studyKanjiSamples: StudyKanjiSamples.State(
                     kanji: kanji,
                     units: units
