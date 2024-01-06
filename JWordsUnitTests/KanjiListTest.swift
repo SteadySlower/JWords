@@ -149,4 +149,32 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    func test_edit_edited() async {
+        let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        let toEdit = kanjis.randomElement()!
+        
+        let store = TestStore(
+            initialState: KanjiList.State(
+                kanjis: IdentifiedArray(
+                    uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) }
+                ),
+                edit: EditKanji.State(toEdit)
+            ),
+            reducer: { KanjiList() }
+        )
+        
+        let edited = Kanji(id: toEdit.id,
+                           kanjiText: toEdit.kanjiText,
+                           meaningText: Random.string,
+                           ondoku: Random.string,
+                           kundoku: Random.string,
+                           createdAt: toEdit.createdAt,
+                           usedIn: toEdit.usedIn)
+        
+        await store.send(.edit(.edited(edited))) {
+            $0.kanjis.updateOrAppend(DisplayKanji.State(kanji: edited))
+            $0.edit = nil
+        }
+    }
+    
 }
