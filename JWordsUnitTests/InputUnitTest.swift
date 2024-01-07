@@ -55,6 +55,23 @@ final class InputUnitTest: XCTestCase {
             $0.focusedField = .meaning
         }
         
+        await store.receive(.alreadyExist(alreadyExist))
+    }
+    
+    func test_kanjiInput_onTab_alreadyExist_nil() async {
+        let store = TestStore(
+            initialState: InputUnit.State(),
+            reducer: { InputUnit() },
+            withDependencies: {
+                $0.studyUnitClient.checkIfExist = { _ in nil }
+            }
+        )
+        
+        await store.send(.kanjiInput(.onTab)) {
+            $0.kanjiInput.isEditing = false
+            $0.focusedField = .meaning
+        }
+        
         await store.receive(.alreadyExist(nil))
     }
     
