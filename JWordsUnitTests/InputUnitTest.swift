@@ -13,7 +13,7 @@ import XCTest
 @MainActor
 final class InputUnitTest: XCTestCase {
     
-    func testKanjiInputHuriganaUpdatedAlreadyExist() async {
+    func test_kanjiInput_HuriganaUpdated_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
             initialState: InputUnit.State(),
@@ -27,7 +27,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(alreadyExist))
     }
     
-    func testKanjiInputHuriganaUpdatedAlreadyExistNil() async {
+    func test_kanjiInput_huriganaUpdated_alreadyExist_nil() async {
         let store = TestStore(
             initialState: InputUnit.State(),
             reducer: { InputUnit() },
@@ -40,19 +40,42 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(nil))
     }
     
-    func testKanjiInputOnTab() async {
+    func test_kanjiInput_onTab_alreadyExist() async {
+        let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
             initialState: InputUnit.State(),
-            reducer: { InputUnit() }
+            reducer: { InputUnit() },
+            withDependencies: {
+                $0.studyUnitClient.checkIfExist = { _ in alreadyExist }
+            }
         )
         
         await store.send(.kanjiInput(.onTab)) {
             $0.kanjiInput.isEditing = false
             $0.focusedField = .meaning
         }
+        
+        await store.receive(.alreadyExist(alreadyExist))
     }
     
-    func testMeaningInputOnTab() async {
+    func test_kanjiInput_onTab_alreadyExist_nil() async {
+        let store = TestStore(
+            initialState: InputUnit.State(),
+            reducer: { InputUnit() },
+            withDependencies: {
+                $0.studyUnitClient.checkIfExist = { _ in nil }
+            }
+        )
+        
+        await store.send(.kanjiInput(.onTab)) {
+            $0.kanjiInput.isEditing = false
+            $0.focusedField = .meaning
+        }
+        
+        await store.receive(.alreadyExist(nil))
+    }
+    
+    func test_meaningInput_onTab() async {
         let store = TestStore(
             initialState: InputUnit.State(),
             reducer: { InputUnit() }
