@@ -27,7 +27,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(alreadyExist))
     }
     
-    func test_kanjiInput_huriganaUpdated_alreadyExist_nçil() async {
+    func test_kanjiInput_huriganaUpdated_alreadyExist_nil() async {
         let store = TestStore(
             initialState: InputUnit.State(),
             reducer: { InputUnit() },
