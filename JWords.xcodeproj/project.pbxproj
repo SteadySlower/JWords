@@ -136,6 +136,7 @@
 		5AB308382ABBDEE0002EAC3E /* TutorialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB308372ABBDEE0002EAC3E /* TutorialList.swift */; };
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5AC72B012B4BCD1200412058 /* KanjiCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC72B002B4BCD1200412058 /* KanjiCanvas.swift */; };
+		5AC72B032B4BD2CD00412058 /* WritingKanjiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC72B022B4BD2CC00412058 /* WritingKanjiView.swift */; };
 		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
 		5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */; };
 		5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE2DB42ADCB64900449A79 /* OCRTest.swift */; };
@@ -320,6 +321,7 @@
 		5AB308372ABBDEE0002EAC3E /* TutorialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialList.swift; sourceTree = "<group>"; };
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5AC72B002B4BCD1200412058 /* KanjiCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCanvas.swift; sourceTree = "<group>"; };
+		5AC72B022B4BD2CC00412058 /* WritingKanjiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingKanjiView.swift; sourceTree = "<group>"; };
 		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
 		5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		5ADE2DB42ADCB64900449A79 /* OCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRTest.swift; sourceTree = "<group>"; };
@@ -801,6 +803,7 @@
 			isa = PBXGroup;
 			children = (
 				5AC72B002B4BCD1200412058 /* KanjiCanvas.swift */,
+				5AC72B022B4BD2CC00412058 /* WritingKanjiView.swift */,
 			);
 			path = Writing;
 			sourceTree = "<group>";
@@ -1048,6 +1051,7 @@
 				06004E302AC5485800947F5D /* UnitsList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
 				06004E412AC55C5700947F5D /* StudyModals.swift in Sources */,
+				5AC72B032B4BD2CD00412058 /* WritingKanjiView.swift in Sources */,
 				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
 				064BA4542AC39BA600288749 /* ButtonStyle.swift in Sources */,
 				064BA44F2AC2D14200288749 /* InputFieldTextEditor.swift in Sources */,
