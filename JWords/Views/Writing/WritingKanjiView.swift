@@ -7,28 +7,37 @@
 
 import SwiftUI
 
-private let KANJI_FRAME_SIZE: CGFloat = 300
-
 struct WritingKanjiView: View {
     
+    @State var showAnswer: Bool = false
     let kanji: Kanji
     
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                Text(kanji.kanjiText)
-                    .font(.system(size: KANJI_FRAME_SIZE))
+        GeometryReader { proxy in
+            VStack {
                 VStack(alignment: .leading) {
-                    Text(kanji.meaningText)
-                    Text(kanji.ondoku)
-                    Text(kanji.kundoku)
+                    Text(showAnswer ? kanji.kanjiText : "?")
+                        .font(.system(size: proxy.size.height / 6))
+                    VStack(alignment: .leading) {
+                        Text(kanji.meaningText)
+                        VStack(alignment: .leading) {
+                            Text("음독: \(showAnswer ? kanji.ondoku : "???")")
+                            Text("훈독: \(showAnswer ? kanji.kundoku : "???")")
+                        }
+                    }
+                    .font(.system(size: proxy.size.height / 15))
                 }
-                .font(.system(size: KANJI_FRAME_SIZE / 5))
+                KanjiCanvas()
+                    .border(.black)
+                    .padding(.top, 30)
+                Button(action: {
+                    showAnswer.toggle()
+                }, label: {
+                    Text(showAnswer ? "정답 보기" : "정답 숨기기")
+                        .font(.system(size: proxy.size.height / 30))
+                })
+                .buttonStyle(InputButtonStyle())
             }
-            KanjiCanvas()
-                .frame(width: KANJI_FRAME_SIZE + 50, height: KANJI_FRAME_SIZE + 50)
-                .border(.black)
-                .padding(.top, 30)
         }
     }
 }
