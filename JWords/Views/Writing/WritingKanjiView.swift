@@ -14,12 +14,21 @@ struct WritingKanjiView: View {
     let kanji: Kanji
     
     var body: some View {
-        HStack {
-            Text(kanji.kanjiText)
-                .font(.system(size: KANJI_FRAME_SIZE))
+        VStack {
+            VStack(alignment: .leading) {
+                Text(kanji.kanjiText)
+                    .font(.system(size: KANJI_FRAME_SIZE))
+                VStack(alignment: .leading) {
+                    Text(kanji.meaningText)
+                    Text(kanji.ondoku)
+                    Text(kanji.kundoku)
+                }
+                .font(.system(size: KANJI_FRAME_SIZE / 5))
+            }
             KanjiCanvas()
-                .frame(width: KANJI_FRAME_SIZE, height: KANJI_FRAME_SIZE)
+                .frame(width: KANJI_FRAME_SIZE + 50, height: KANJI_FRAME_SIZE + 50)
                 .border(.black)
+                .padding(.top, 30)
         }
     }
 }
