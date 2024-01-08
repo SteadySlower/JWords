@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+private let KANJI_FRAME_SIZE: CGFloat = 300
+
 struct WritingKanjiView: View {
     
     let kanji: Kanji
     
     var body: some View {
-        KanjiCanvas()
+        HStack {
+            Text(kanji.kanjiText)
+                .font(.system(size: KANJI_FRAME_SIZE))
+            KanjiCanvas()
+                .frame(width: KANJI_FRAME_SIZE, height: KANJI_FRAME_SIZE)
+                .border(.black)
+        }
     }
 }
 
