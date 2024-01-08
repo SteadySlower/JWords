@@ -12,7 +12,29 @@ struct KanjiCanvas: View {
     @State private var canvasView = PKCanvasView()
     
     var body: some View {
-        CanvasView(canvasView: $canvasView)
+        ZStack {
+            CanvasView(canvasView: $canvasView)
+            resetButton
+                .padding([.trailing, .bottom], 20)
+        }
+    }
+}
+
+extension KanjiCanvas {
+    var resetButton: some View {
+        HStack {
+            Spacer()
+            VStack {
+                Spacer()
+                Button(action: {
+                    canvasView.drawing = PKDrawing()
+                }, label: {
+                    Image(systemName: "eraser")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                })
+            }
+        }
     }
 }
 
