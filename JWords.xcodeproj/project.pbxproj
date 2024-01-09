@@ -137,6 +137,7 @@
 		5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ABE51082AA7127C0052A551 /* kanjiList.json */; };
 		5AC72B012B4BCD1200412058 /* KanjiCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC72B002B4BCD1200412058 /* KanjiCanvas.swift */; };
 		5AC72B032B4BD2CD00412058 /* WritingKanjiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC72B022B4BD2CC00412058 /* WritingKanjiView.swift */; };
+		5AC72B052B4BDA5800412058 /* WrtingKanjiList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC72B042B4BDA5800412058 /* WrtingKanjiList.swift */; };
 		5AC78AA02ABBEA3200E39A71 /* TutorialPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */; };
 		5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */; };
 		5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE2DB42ADCB64900449A79 /* OCRTest.swift */; };
@@ -322,6 +323,7 @@
 		5ABE51082AA7127C0052A551 /* kanjiList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kanjiList.json; sourceTree = "<group>"; };
 		5AC72B002B4BCD1200412058 /* KanjiCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCanvas.swift; sourceTree = "<group>"; };
 		5AC72B022B4BD2CC00412058 /* WritingKanjiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingKanjiView.swift; sourceTree = "<group>"; };
+		5AC72B042B4BDA5800412058 /* WrtingKanjiList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrtingKanjiList.swift; sourceTree = "<group>"; };
 		5AC78A9F2ABBEA3200E39A71 /* TutorialPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageView.swift; sourceTree = "<group>"; };
 		5AC78AA22ABC0CA500E39A71 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		5ADE2DB42ADCB64900449A79 /* OCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRTest.swift; sourceTree = "<group>"; };
@@ -804,6 +806,7 @@
 			children = (
 				5AC72B002B4BCD1200412058 /* KanjiCanvas.swift */,
 				5AC72B022B4BD2CC00412058 /* WritingKanjiView.swift */,
+				5AC72B042B4BDA5800412058 /* WrtingKanjiList.swift */,
 			);
 			path = Writing;
 			sourceTree = "<group>";
@@ -1036,6 +1039,7 @@
 				06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */,
 				06581A9F2ACBF7E2007914A3 /* StudyUnitClient.swift in Sources */,
 				06BC608C29A09FC000AA67E6 /* ViewModifier.swift in Sources */,
+				5AC72B052B4BDA5800412058 /* WrtingKanjiList.swift in Sources */,
 				069941872A9A066B00B5D769 /* Array+Extension.swift in Sources */,
 				06581AB42ACCFDAD007914A3 /* InputSetTitle.swift in Sources */,
 				06004E2B2AC538B500947F5D /* KeyBoardDismissingBackground.swift in Sources */,
