@@ -2,76 +2,243 @@
   "sourceLanguage" : "ko",
   "strings" : {
     "" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "???" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "???"
+          }
+        }
+      }
     },
     "%@%%" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%%"
+          }
+        }
+      }
     },
     "%@가 쓰이는 단어" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Words with %@"
+          }
+        }
+      }
     },
     "%@가 이미 존재합니다. 똑같은 표제어로 수정할 수 없습니다." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ already exists. You cannot edit with same word."
+          }
+        }
+      }
     },
     "%@와 동일한 단어가 존재합니다" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ already exists."
+          }
+        }
+      }
     },
     "%@의 읽는 법을 수정합니다." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit pronunciation of %@"
+          }
+        }
+      }
     },
     "%lld개의 단어 이동하기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move %@ words"
+          }
+        }
+      }
     },
     "↖️" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↖️"
+          }
+        }
+      }
     },
     "↖️ 일본어 스캔" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↖️ Scan Japanese"
+          }
+        }
+      }
     },
     "↘️" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↘️"
+          }
+        }
+      }
     },
     "↘️ 한국어 스캔" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↘️ Scan English"
+          }
+        }
+      }
     },
     "✏️" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✏️"
+          }
+        }
+      }
     },
     "📚 자동으로 추가하기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📚 Add word books with preset schedule"
+          }
+        }
+      }
     },
     "🔼" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🔼"
+          }
+        }
+      }
     },
     "🔽" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🔽"
+          }
+        }
+      }
     },
     "OCR" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OCR"
+          }
+        }
+      }
     },
     "공부 단어장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Books to Study"
+          }
+        }
+      }
     },
     "단어 리스트 모드" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List Modes"
+          }
+        }
+      }
     },
     "단어 수: %lld개" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word count: %11d"
+          }
+        }
+      }
     },
     "단어 수정" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Word"
+          }
+        }
+      }
     },
     "단어 스캐너" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word Scanner"
+          }
+        }
+      }
     },
     "단어 필터" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word Filter"
+          }
+        }
+      }
     },
     "단어장 %lld권의\n모든 단어 %lld개 중에" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Out of all %2$lld words in %1$lld word books"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "new",
@@ -81,115 +248,374 @@
       }
     },
     "단어장 선택" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a word book"
+          }
+        }
+      }
     },
     "단어장을 선택 해주세요." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a word book"
+          }
+        }
+      }
     },
     "닫힌 단어장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closed Books"
+          }
+        }
+      }
     },
     "로딩중" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading"
+          }
+        }
+      }
     },
     "모든 단어장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Books"
+          }
+        }
+      }
     },
     "복습" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review"
+          }
+        }
+      }
     },
     "복습 단어장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Books"
+          }
+        }
+      }
     },
     "선택된 단어장 없음" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No book Chosen"
+          }
+        }
+      }
     },
     "수정" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
     },
     "스캔 결과" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Result"
+          }
+        }
+      }
     },
     "앞면 유형" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Front side type"
+          }
+        }
+      }
     },
     "에러" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
     },
     "열린 단어장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Books Only"
+          }
+        }
+      }
     },
     "오늘 단어장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today Books"
+          }
+        }
+      }
     },
     "오늘 학습할 단어장이 아직 없습니다📚" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Books to study today yet📚"
+          }
+        }
+      }
     },
     "음독" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ondoku"
+          }
+        }
+      }
     },
     "이동 안함" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't move words"
+          }
+        }
+      }
     },
     "이동할 단어장 고르기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a book to move words to"
+          }
+        }
+      }
     },
     "이미지 스캔하기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Image"
+          }
+        }
+      }
     },
     "정면에서 찍을 수록 인식률이 높습니다.\n글자 크기가 클 수록 인식률이 높습니다.\n요미가나가 없이 한자만 있는 텍스트의 인식률이 높습니다.\n단어 사이에 간격이 넓을 수록 인식률이 높습니다." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take picture in the front.\\nThe bigger the letter, the clearer the scan result will be.\\nYou can get the clearer result with text without \"Yomigana\".\\nThe bigger gap between words guarantees clearer result."
+          }
+        }
+      }
     },
     "추가" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
     },
     "취소" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "튜토리얼 보기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See Tutorial"
+          }
+        }
+      }
     },
     "틀린 단어 %lld개" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong words count: %11d"
+          }
+        }
+      }
     },
     "틀린 단어 모아보기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only not passed words"
+          }
+        }
+      }
     },
     "표제어 중복" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Word Overlapping"
+          }
+        }
+      }
     },
     "학습" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Study"
+          }
+        }
+      }
     },
     "학습 혹은 복습할 단어장을 골라주세요." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Study or Review Book"
+          }
+        }
+      }
     },
     "한자 리스트" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanji List"
+          }
+        }
+      }
     },
     "현재 단어장 마감" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close current book"
+          }
+        }
+      }
     },
     "현재 단어장은 복습 리스트에 있습니다.\n단어를 이동하면 복습 리스트에서 제외됩니다." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The current book is in the review list.\\nIf you move words from this, the book will be remove from review list."
+          }
+        }
+      }
     },
     "확인" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
     },
     "후리가나 변환" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convert to Hurigana"
+          }
+        }
+      }
     },
     "후리가나 수정" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convert to Hurigana"
+          }
+        }
+      }
     },
     "훈독" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kundoku"
+          }
+        }
+      }
     },
     "漢" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "漢"
+          }
+        }
+      }
     },
     "漢 " : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "漢 "
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
