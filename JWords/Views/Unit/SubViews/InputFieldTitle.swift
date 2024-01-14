@@ -12,7 +12,7 @@ struct InputFieldTitle: View {
     let title: String
     
     var body: some View {
-        Text(title)
+        Text(title.localize())
             .font(.system(size: Constants.Size.UNIT_INPUT_FONT - 10))
             .bold()
             .leadingAlignment()
