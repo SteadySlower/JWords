@@ -38,6 +38,7 @@
 		06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */; };
 		06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A702A048EFD00BDEE2D /* StudyUnit.swift */; };
 		06308A732A04902A00BDEE2D /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A722A04902A00BDEE2D /* StudySet.swift */; };
+		0640982B2B5376DA00FBC976 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0640982A2B5376DA00FBC976 /* Localizable.xcstrings */; };
 		0641C1BA2ADB875800C6EA05 /* EditUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1B92ADB875800C6EA05 /* EditUnitTest.swift */; };
 		0641C1BC2ADB97FB00C6EA05 /* InputUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1BB2ADB97FB00C6EA05 /* InputUnitTest.swift */; };
 		0641C1BE2ADB9BEB00C6EA05 /* KanjiInputTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1BD2ADB9BEB00C6EA05 /* KanjiInputTest.swift */; };
@@ -213,6 +214,7 @@
 		06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriUnit.swift; sourceTree = "<group>"; };
 		06308A702A048EFD00BDEE2D /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		06308A722A04902A00BDEE2D /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
+		0640982A2B5376DA00FBC976 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		0641C1B92ADB875800C6EA05 /* EditUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUnitTest.swift; sourceTree = "<group>"; };
 		0641C1BB2ADB97FB00C6EA05 /* InputUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUnitTest.swift; sourceTree = "<group>"; };
 		0641C1BD2ADB9BEB00C6EA05 /* KanjiInputTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiInputTest.swift; sourceTree = "<group>"; };
@@ -586,6 +588,7 @@
 				06CEF24F2866F1CB00A620CC /* JWords.entitlements */,
 				06CEF24C2866F1CB00A620CC /* Preview Content */,
 				06E917552A071711002289B4 /* jwords.xcdatamodeld */,
+				0640982A2B5376DA00FBC976 /* Localizable.xcstrings */,
 			);
 			path = JWords;
 			sourceTree = "<group>";
@@ -939,7 +942,6 @@
 				en,
 				Base,
 				ko,
-				ja,
 			);
 			mainGroup = 06CEF23A2866F1C800A620CC;
 			packageReferences = (
@@ -965,6 +967,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06CEF24E2866F1CB00A620CC /* Preview Assets.xcassets in Resources */,
+				0640982B2B5376DA00FBC976 /* Localizable.xcstrings in Resources */,
 				06CEF24B2866F1CB00A620CC /* Assets.xcassets in Resources */,
 				0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */,
 				5ABE51092AA7127C0052A551 /* kanjiList.json in Resources */,

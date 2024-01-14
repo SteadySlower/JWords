@@ -95,7 +95,7 @@ struct StudySetPicker: View {
                                  get: \.selectedID,
                                  send: SelectStudySet.Action.updateID)
                     ) {
-                        Text(vs.pickerDefaultText)
+                        Text(vs.pickerDefaultText.localize())
                             .tag(nil as String?)
                         ForEach(vs.sets, id: \.id) { studySet in
                             Text(studySet.title)

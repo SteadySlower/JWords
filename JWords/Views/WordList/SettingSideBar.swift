@@ -96,7 +96,7 @@ struct SettingSideBar: View {
                         send: StudySetting.Action.setFilter)
                     ) {
                         ForEach(UnitFilter.allCases, id: \.self) {
-                            Text($0.pickerText)
+                            Text($0.pickerText.localize())
                         }
                     }
                     .pickerStyle(.segmented)
@@ -110,7 +110,7 @@ struct SettingSideBar: View {
                         send: StudySetting.Action.setFrontType)
                     ) {
                         ForEach(FrontType.allCases, id: \.self) {
-                            Text($0.pickerText)
+                            Text($0.pickerText.localize())
                         }
                     }
                     .pickerStyle(.segmented)
@@ -124,7 +124,7 @@ struct SettingSideBar: View {
                         send: StudySetting.Action.setListType)
                     ) {
                         ForEach(vs.selectableListType, id: \.self) { type in
-                            Text(type.pickerText)
+                            Text(type.pickerText.localize())
                                 .tag(type)
                         }
                     }
