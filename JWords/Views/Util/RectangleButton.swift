@@ -33,7 +33,7 @@ struct RectangleButton: View {
                             .resizable()
                             .frame(width: 20, height: 20)
                     }
-                    Text(title)
+                    Text(title.localize())
                         .fixedSize()
                     Spacer()
                 }
@@ -53,7 +53,7 @@ struct RectangleButton: View {
                             .resizable()
                             .frame(width: 15, height: 15)
                     }
-                    Text(title)
+                    Text(title.localize())
                     Spacer()
                 }
                 .padding(8)
