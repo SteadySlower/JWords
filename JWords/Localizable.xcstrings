@@ -365,6 +365,17 @@
         }
       }
     },
+    "뜻 (뒷면)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meaning (Back)"
+          }
+        }
+      }
+    },
     "로딩중" : {
       "localizations" : {
         "en" : {
@@ -471,7 +482,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Books Only"
+            "value" : "Open Only"
           }
         }
       }
@@ -563,7 +574,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take picture in the front.\\nThe bigger the letter, the clearer the scan result will be.\\nYou can get the clearer result with text without \"Yomigana\".\\nThe bigger gap between words guarantees clearer result."
+            "value" : "Take picture in the front.\nThe bigger the letter, the clearer the scan result will be.\nYou can get the clearer result with text without \"Yomigana\".\nThe bigger gap between words guarantees clearer result."
           }
         }
       }
@@ -588,13 +599,24 @@
         }
       }
     },
-    "클립보드에서\\n이미지 가져오기" : {
+    "카메라로 촬영하기" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Get image\\nfrom clipboard"
+            "value" : "Use Camera"
+          }
+        }
+      }
+    },
+    "클립보드에서\n이미지 가져오기" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get image\nfrom clipboard"
           }
         }
       }
