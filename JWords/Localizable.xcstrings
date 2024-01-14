@@ -506,6 +506,17 @@
         }
       }
     },
+    "이동" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move"
+          }
+        }
+      }
+    },
     "이동 안함" : {
       "localizations" : {
         "en" : {
