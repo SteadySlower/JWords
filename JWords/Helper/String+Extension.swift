@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension String {
     
@@ -74,5 +75,9 @@ extension String {
         let letters = CharacterSet(charactersIn: "가-힣")
         let range = self.rangeOfCharacter(from: letters.inverted)
         return range == nil
+    }
+
+    func localize() -> LocalizedStringKey {
+        LocalizedStringKey(self)
     }
 }
