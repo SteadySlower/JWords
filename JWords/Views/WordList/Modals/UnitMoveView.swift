@@ -142,7 +142,7 @@ struct UnitMoveView: View {
         Button {
             onTapped()
         } label: {
-            Text(text)
+            Text(text.localize())
                 .font(.system(size: 20))
                 .foregroundColor(foregroundColor)
                 .padding(.vertical, 10)
