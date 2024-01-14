@@ -172,10 +172,26 @@
       }
     },
     "O제외" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "without O"
+          }
+        }
+      }
     },
     "X만" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only X"
+          }
+        }
+      }
     },
     "공부 단어장" : {
       "localizations" : {
@@ -188,7 +204,15 @@
       }
     },
     "단어 (앞면)" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Japanese (Front)"
+          }
+        }
+      }
     },
     "단어 리스트 모드" : {
       "localizations" : {
@@ -267,13 +291,37 @@
       }
     },
     "단어장 수정" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Book"
+          }
+        }
+      }
     },
     "단어장 없음" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Books"
+          }
+        }
+      }
     },
     "단어장 이름" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Book Name"
+          }
+        }
+      }
     },
     "단어장을 선택 해주세요." : {
       "localizations" : {
@@ -286,10 +334,26 @@
       }
     },
     "단어장을 선택해주세요" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a book"
+          }
+        }
+      }
     },
     "단어추가" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add word"
+          }
+        }
+      }
     },
     "닫힌 단어장" : {
       "localizations" : {
@@ -342,7 +406,15 @@
       }
     },
     "삭제" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "선택된 단어장 없음" : {
       "localizations" : {
@@ -465,7 +537,15 @@
       }
     },
     "전부" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        }
+      }
     },
     "정면에서 찍을 수록 인식률이 높습니다.\n글자 크기가 클 수록 인식률이 높습니다.\n요미가나가 없이 한자만 있는 텍스트의 인식률이 높습니다.\n단어 사이에 간격이 넓을 수록 인식률이 높습니다." : {
       "localizations" : {
@@ -498,7 +578,15 @@
       }
     },
     "클립보드에서\\n이미지 가져오기" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get image\\nfrom clipboard"
+          }
+        }
+      }
     },
     "튜토리얼 보기" : {
       "localizations" : {
@@ -561,7 +649,15 @@
       }
     },
     "한" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eng"
+          }
+        }
+      }
     },
     "한자 리스트" : {
       "localizations" : {
@@ -604,7 +700,15 @@
       }
     },
     "후리가나 (앞면)" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Japanese (Front)"
+          }
+        }
+      }
     },
     "후리가나 변환" : {
       "localizations" : {
