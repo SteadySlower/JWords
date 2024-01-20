@@ -33,7 +33,7 @@ struct WritingKanjiView: View {
                 Button(action: {
                     showAnswer.toggle()
                 }, label: {
-                    Text(showAnswer ? "정답 보기" : "정답 숨기기")
+                    Text(showAnswer ? "정답 숨기기" : "정답 보기")
                         .font(.system(size: proxy.size.height / 30))
                 })
                 .buttonStyle(InputButtonStyle())
