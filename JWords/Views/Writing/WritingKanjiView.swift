@@ -42,7 +42,7 @@ struct WritingKanjiView: View {
                     if let kanji = vs.kanji {
                         VStack(alignment: .leading) {
                             Text(vs.showAnswer ? kanji.kanjiText : "?")
-                                .font(.system(size: proxy.size.height / 6))
+                                .font(.system(size: 200))
                             VStack(alignment: .leading) {
                                 Text(kanji.meaningText)
                                 VStack(alignment: .leading) {
@@ -50,9 +50,9 @@ struct WritingKanjiView: View {
                                     Text("훈독: \(vs.showAnswer ? kanji.kundoku : "???")")
                                 }
                             }
-                            .font(.system(size: proxy.size.height / 15))
+                            .font(.system(size: 50))
                         }
-                        .frame(height: proxy.size.height / 2)
+                        .minimumScaleFactor(0.5)
                     }
                     Spacer()
                     VStack {
@@ -67,7 +67,7 @@ struct WritingKanjiView: View {
                         })
                         .buttonStyle(InputButtonStyle())
                     }
-                    .frame(height: proxy.size.height / 2)
+                    .frame(height: proxy.size.height / 2 + 50)
                 }
             }
         }
