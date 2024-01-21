@@ -10,12 +10,14 @@ import SwiftUI
 struct WritingKanjiList: View {
     
     let kanjis: [Kanji]
+    let kanjiTapped: (Kanji) -> Void
     
     var body: some View {
         ScrollView {
             LazyVStack {
                 ForEach(kanjis, id: \.id) { kanji in
                     cell(kanji)
+                        .onTapGesture { kanjiTapped(kanji) }
                 }
             }
         }
@@ -36,5 +38,5 @@ extension WritingKanjiList {
 }
 
 #Preview {
-    WritingKanjiList(kanjis: .mock)
+    WritingKanjiList(kanjis: .mock) { _ in }
 }

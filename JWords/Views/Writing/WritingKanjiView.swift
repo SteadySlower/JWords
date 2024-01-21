@@ -9,8 +9,8 @@ import SwiftUI
 
 struct WritingKanjiView: View {
     
-    @State var showAnswer: Bool = false
     let kanji: Kanji?
+    @Binding var showAnswer: Bool
     
     var body: some View {
         GeometryReader { proxy in
@@ -56,10 +56,14 @@ struct WritingKanjiView: View {
         ondoku: "kan",
         kundoku: "kan",
         createdAt: .now,
-        usedIn: 10)
+        usedIn: 10),
+        showAnswer: .constant(false)
     )
 }
 
 #Preview {
-    WritingKanjiView(kanji: nil)
+    WritingKanjiView(
+        kanji: nil,
+        showAnswer: .constant(false)
+    )
 }

@@ -9,12 +9,14 @@ import SwiftUI
 
 struct WritingKanjisView: View {
     
+    @State var toWrite: Kanji?
+    @State var showAnswer: Bool = false
     let kanjis: [Kanji]
     
     var body: some View {
         HStack {
-            WritingKanjiList(kanjis: kanjis)
-            WritingKanjiView(kanji: .init(index: 0))
+            WritingKanjiList(kanjis: kanjis) { toWrite = $0; showAnswer = false }
+            WritingKanjiView(kanji: toWrite, showAnswer: $showAnswer)
                 .padding(.trailing, 10)
         }
     }
