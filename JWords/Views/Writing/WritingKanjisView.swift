@@ -16,7 +16,10 @@ struct WritingKanjisView: View {
     var body: some View {
         HStack {
             WritingKanjiList(kanjis: kanjis) { toWrite = $0; showAnswer = false }
-            WritingKanjiView(kanji: toWrite, showAnswer: $showAnswer)
+            WritingKanjiView(
+                store: .init(
+                    initialState: .init(kanji: toWrite),
+                    reducer: { WriteKanji() }))
                 .padding(.trailing, 10)
         }
     }

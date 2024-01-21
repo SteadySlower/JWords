@@ -11,14 +11,21 @@ import ComposableArchitecture
 struct WriteKanji: Reducer {
     
     struct State: Equatable {
+        var kanji: Kanji?
+        var showAnswer: Bool = false
     }
     
     enum Action: Equatable {
+        case toggleShowAnswer
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .toggleShowAnswer:
+                state.showAnswer.toggle()
+                return .none
+            }
         }
     }
     
@@ -26,61 +33,69 @@ struct WriteKanji: Reducer {
 
 struct WritingKanjiView: View {
     
-    let kanji: Kanji?
-    @Binding var showAnswer: Bool
+    let store: StoreOf<WriteKanji>
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack {
-                if let kanji = kanji {
-                    VStack(alignment: .leading) {
-                        Text(showAnswer ? kanji.kanjiText : "?")
-                            .font(.system(size: proxy.size.height / 6))
+        WithViewStore(store, observe: { $0 }) { vs in
+            GeometryReader { proxy in
+                VStack {
+                    if let kanji = vs.kanji {
                         VStack(alignment: .leading) {
-                            Text(kanji.meaningText)
+                            Text(vs.showAnswer ? kanji.kanjiText : "?")
+                                .font(.system(size: proxy.size.height / 6))
                             VStack(alignment: .leading) {
-                                Text("음독: \(showAnswer ? kanji.ondoku : "???")")
-                                Text("훈독: \(showAnswer ? kanji.kundoku : "???")")
+                                Text(kanji.meaningText)
+                                VStack(alignment: .leading) {
+                                    Text("음독: \(vs.showAnswer ? kanji.ondoku : "???")")
+                                    Text("훈독: \(vs.showAnswer ? kanji.kundoku : "???")")
+                                }
                             }
+                            .font(.system(size: proxy.size.height / 15))
                         }
-                        .font(.system(size: proxy.size.height / 15))
+                        .frame(height: proxy.size.height / 2)
+                    }
+                    Spacer()
+                    VStack {
+                        KanjiCanvas()
+                            .border(.black)
+                            .padding(.top, 30)
+                        Button(action: {
+                            vs.send(.toggleShowAnswer)
+                        }, label: {
+                            Text(vs.showAnswer ? "정답 숨기기" : "정답 보기")
+                                .font(.system(size: proxy.size.height / 30))
+                        })
+                        .buttonStyle(InputButtonStyle())
                     }
                     .frame(height: proxy.size.height / 2)
                 }
-                Spacer()
-                VStack {
-                    KanjiCanvas()
-                        .border(.black)
-                        .padding(.top, 30)
-                    Button(action: {
-                        showAnswer.toggle()
-                    }, label: {
-                        Text(showAnswer ? "정답 숨기기" : "정답 보기")
-                            .font(.system(size: proxy.size.height / 30))
-                    })
-                    .buttonStyle(InputButtonStyle())
-                }
-                .frame(height: proxy.size.height / 2)
             }
         }
     }
 }
 
 #Preview {
-    WritingKanjiView(kanji: .init(
-        kanjiText: "漢",
-        meaningText: "한나라 한",
-        ondoku: "kan",
-        kundoku: "kan",
-        createdAt: .now,
-        usedIn: 10),
-        showAnswer: .constant(false)
+    WritingKanjiView(store: .init(
+        initialState: WriteKanji.State(
+            kanji: .init(
+                kanjiText: "漢",
+                meaningText: "한나라 한",
+                ondoku: "kan",
+                kundoku: "kan",
+                createdAt: .now,
+                usedIn: 10),
+            showAnswer: false
+        ),
+        reducer: { WriteKanji() })
     )
 }
 
 #Preview {
-    WritingKanjiView(
-        kanji: nil,
-        showAnswer: .constant(false)
+    WritingKanjiView(store: .init(
+        initialState: WriteKanji.State(
+            kanji: nil,
+            showAnswer: false
+        ),
+        reducer: { WriteKanji() })
     )
 }
