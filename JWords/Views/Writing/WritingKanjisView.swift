@@ -6,26 +6,64 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct WriteKanjis: Reducer {
+    
+    struct State: Equatable {
+        var kanjis: [Kanji]
+        var toWrite: WriteKanji.State = .init()
+    }
+    
+    enum Action: Equatable {
+        case kanjiSelected(Kanji)
+        case toWrite(WriteKanji.Action)
+    }
+    
+    var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .kanjiSelected(let kanji):
+                state.toWrite.kanji = kanji
+                state.toWrite.showAnswer = false
+                return .none
+            default: return .none
+            }
+        }
+        Scope(
+            state: \.toWrite,
+            action: /Action.toWrite,
+            child: { WriteKanji() }
+        )
+    }
+    
+}
 
 struct WritingKanjisView: View {
     
-    @State var toWrite: Kanji?
-    @State var showAnswer: Bool = false
-    let kanjis: [Kanji]
+    let store: StoreOf<WriteKanjis>
     
     var body: some View {
-        HStack {
-            WritingKanjiList(kanjis: kanjis) { toWrite = $0; showAnswer = false }
-            WritingKanjiView(
-                store: .init(
-                    initialState: .init(kanji: toWrite),
-                    reducer: { WriteKanji() }))
+        WithViewStore(store, observe: { $0 }) { vs in
+            HStack {
+                WritingKanjiList(kanjis: vs.kanjis) { vs.send(.kanjiSelected($0)) }
+                WritingKanjiView(
+                    store: store.scope(
+                        state: \.toWrite,
+                        action: WriteKanjis.Action.toWrite
+                    )
+                )
                 .padding(.trailing, 10)
+            }
         }
     }
 }
 
 
 #Preview {
-    WritingKanjisView(kanjis: .mock)
+    WritingKanjisView(store: .init(
+        initialState: WriteKanjis.State(kanjis: .mock),
+        reducer: { WriteKanjis() }
+    )
+    )
 }
