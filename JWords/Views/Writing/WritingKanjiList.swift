@@ -15,13 +15,25 @@ struct WritingKanjiList: View {
         ScrollView {
             LazyVStack {
                 ForEach(kanjis, id: \.id) { kanji in
-                    Text(kanji.meaningText)
+                    cell(kanji)
                 }
             }
         }
     }
 }
 
+extension WritingKanjiList {
+    
+    private func cell(_ kanji: Kanji) -> some View {
+        Text(kanji.meaningText)
+            .font(.system(size: 50))
+            .frame(maxWidth: .infinity)
+            .frame(height: 100)
+            .defaultRectangleBackground()
+            .padding(.horizontal, 5)
+    }
+    
+}
 
 #Preview {
     WritingKanjiList(kanjis: .mock)
