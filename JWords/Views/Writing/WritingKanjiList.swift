@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WrtingKanjiList: View {
+struct WritingKanjiList: View {
     
     let kanjis: [Kanji]
     
@@ -22,6 +22,7 @@ struct WrtingKanjiList: View {
     }
 }
 
+
 #Preview {
-    WrtingKanjiList(kanjis: .mock)
+    WritingKanjiList(kanjis: .mock)
 }
