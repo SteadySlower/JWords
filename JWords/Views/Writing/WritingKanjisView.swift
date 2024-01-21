@@ -15,6 +15,7 @@ struct WritingKanjisView: View {
         HStack {
             WritingKanjiList(kanjis: kanjis)
             WritingKanjiView(kanji: .init(index: 0))
+                .padding(.trailing, 10)
         }
     }
 }
