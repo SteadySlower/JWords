@@ -7,6 +7,25 @@
 
 import SwiftUI
 import PencilKit
+import ComposableArchitecture
+
+struct DrawWithPencil: Reducer {
+    
+    struct State: Equatable {
+        var canvas: PKCanvasView
+    }
+    
+    enum Action: Equatable {
+        case toggleShowAnswer
+    }
+    
+    var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            return .none
+        }
+    }
+    
+}
 
 struct KanjiCanvas: View {
     @State private var canvasView = PKCanvasView()
