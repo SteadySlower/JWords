@@ -13,10 +13,18 @@ struct WriteKanji: Reducer {
     struct State: Equatable {
         var kanji: Kanji?
         var showAnswer: Bool = false
+        var drawWithPencil = DrawWithPencil.State()
+        
+        mutating func setKanji(_ kanji: Kanji) {
+            self.kanji = kanji
+            self.showAnswer = false
+            self.drawWithPencil.resetCanvas()
+        }
     }
     
     enum Action: Equatable {
         case toggleShowAnswer
+        case drawWithPencel(DrawWithPencil.Action)
     }
     
     var body: some Reducer<State, Action> {
@@ -25,8 +33,12 @@ struct WriteKanji: Reducer {
             case .toggleShowAnswer:
                 state.showAnswer.toggle()
                 return .none
+            default: return .none
             }
         }
+        Scope(state: \.drawWithPencil,
+              action: /Action.drawWithPencel,
+              child: { DrawWithPencil() })
     }
     
 }
@@ -56,7 +68,10 @@ struct WritingKanjiView: View {
                     }
                     Spacer()
                     VStack {
-                        KanjiCanvas()
+                        KanjiCanvas(store: store.scope(
+                            state: \.drawWithPencil,
+                            action: WriteKanji.Action.drawWithPencel)
+                        )
                             .border(.black)
                             .padding(.top, 30)
                         Button(action: {

@@ -6,57 +6,71 @@
 //
 
 import SwiftUI
-import PencilKit
 import ComposableArchitecture
 
 struct DrawWithPencil: Reducer {
     
     struct State: Equatable {
-        var canvas: PKCanvasView
+        fileprivate var didDraw: Bool = false
+        
+        mutating func resetCanvas() {
+            self.didDraw = false
+        }
     }
     
     enum Action: Equatable {
-        case toggleShowAnswer
+        case resetCanvas
+        case updateDidDraw(Bool)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .resetCanvas:
+                state.didDraw = false
+                return .none
+            case .updateDidDraw(let bool):
+                state.didDraw = bool
+                return .none
+            }
         }
     }
     
 }
 
 struct KanjiCanvas: View {
-    @State private var didDraw: Bool = false
+    
+    let store: StoreOf<DrawWithPencil>
     
     var body: some View {
-        ZStack {
-            CanvasView(didDraw: $didDraw)
-            resetButton
+        WithViewStore(store, observe: { $0 }) { vs in
+            ZStack {
+                CanvasView(didDraw: vs.binding(
+                    get: \.didDraw,
+                    send: DrawWithPencil.Action.updateDidDraw)
+                )
+                HStack {
+                    Spacer()
+                    VStack {
+                        Spacer()
+                        Button(action: {
+                            vs.send(.resetCanvas)
+                        }, label: {
+                            Image(systemName: "eraser")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                        })
+                    }
+                }
                 .padding([.trailing, .bottom], 20)
-        }
-    }
-}
-
-extension KanjiCanvas {
-    var resetButton: some View {
-        HStack {
-            Spacer()
-            VStack {
-                Spacer()
-                Button(action: {
-                    didDraw = false
-                }, label: {
-                    Image(systemName: "eraser")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                })
             }
         }
     }
 }
 
 #Preview {
-    KanjiCanvas()
+    KanjiCanvas(store: .init(
+        initialState: DrawWithPencil.State(),
+        reducer: { DrawWithPencil() })
+    )
 }

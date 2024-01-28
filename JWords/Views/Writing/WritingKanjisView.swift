@@ -24,8 +24,7 @@ struct WriteKanjis: Reducer {
         Reduce { state, action in
             switch action {
             case .kanjiSelected(let kanji):
-                state.toWrite.kanji = kanji
-                state.toWrite.showAnswer = false
+                state.toWrite.setKanji(kanji)
                 return .none
             default: return .none
             }
