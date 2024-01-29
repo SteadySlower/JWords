@@ -94,6 +94,7 @@ struct EditKanjiView: View {
                     meaningText: "한 일",
                     ondoku: "いち",
                     kundoku: "い",
+                    studyState: .undefined,
                     createdAt: .now,
                     usedIn: 1
                 )

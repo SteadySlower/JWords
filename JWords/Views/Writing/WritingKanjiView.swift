@@ -97,6 +97,7 @@ struct WritingKanjiView: View {
                 meaningText: "한나라 한",
                 ondoku: "kan",
                 kundoku: "kan",
+                studyState: .undefined,
                 createdAt: .now,
                 usedIn: 10),
             showAnswer: false

@@ -16,6 +16,7 @@ struct Kanji: Equatable {
     let meaningText: String
     let ondoku: String
     let kundoku: String
+    var studyState: StudyState
     let createdAt: Date
     let usedIn: Int
     
@@ -26,6 +27,7 @@ struct Kanji: Equatable {
         self.meaningText = mo.meaning ?? ""
         self.ondoku = mo.ondoku ?? ""
         self.kundoku = mo.kundoku ?? ""
+        self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
         self.createdAt = mo.createdAt ?? Date()
         self.usedIn = mo.words?.count ?? 0
     }
@@ -37,6 +39,7 @@ struct Kanji: Equatable {
         self.meaningText = "한자\(index)"
         self.ondoku = "かん"
         self.kundoku = "かん"
+        self.studyState = StudyState(rawValue: (0..<3).randomElement()!) ?? .undefined
         self.createdAt = Date()
         self.usedIn = index
     }
@@ -49,6 +52,7 @@ struct Kanji: Equatable {
         meaningText: String,
         ondoku: String,
         kundoku: String,
+        studyState: StudyState,
         createdAt: Date,
         usedIn: Int
     ) {
@@ -58,6 +62,7 @@ struct Kanji: Equatable {
         self.meaningText = meaningText
         self.ondoku = ondoku
         self.kundoku = kundoku
+        self.studyState = studyState
         self.createdAt = createdAt
         self.usedIn = usedIn
     }
