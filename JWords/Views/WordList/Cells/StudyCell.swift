@@ -100,7 +100,7 @@ struct StudyCell: View {
     
     let store: StoreOf<StudyOneUnit>
     
-    @GestureState private var dragAmount = CGSize.zero
+    @State private var dragAmount = CGSize.zero
     
     // gestures
     let dragGesture = DragGesture(minimumDistance: 30, coordinateSpace: .global)
@@ -124,12 +124,22 @@ struct StudyCell: View {
                         .padding(.top, 5)
                 }
             }
-            .gesture(dragGesture
-                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
-                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
-            )
-            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
-            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
+            .addCellGesture(isLocked: vs.isLocked) { gesture in
+                switch gesture {
+                case .tapped:
+                    vs.send(.cellTapped)
+                case .doubleTapped:
+                    vs.send(.cellDoubleTapped)
+                case .dragging(let size):
+                    dragAmount.width = size.width
+                case .draggedLeft:
+                    vs.send(.cellDrag(direction: .left))
+                    dragAmount = .zero
+                case .draggedRight:
+                    vs.send(.cellDrag(direction: .right))
+                    dragAmount = .zero
+                }
+            }
         }
     }
     
@@ -174,18 +184,6 @@ struct StudyCell: View {
                 kanjiCell(kanji, vs)
             }
         }
-    }
-    
-}
-
-
-// MARK: View Methods
-
-extension StudyCell {
-    
-    private func dragUpdating(_ isLocked: Bool, _ value: _EndedGesture<DragGesture>.Value, _ state: inout CGSize, _ transaction: inout Transaction) {
-        if isLocked { return }
-        state.width = value.translation.width
     }
     
 }
