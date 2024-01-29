@@ -62,18 +62,6 @@ extension SlidableCell {
         }
     }
     
-    private func fontSize(of text: String) -> CGFloat {
-        if text.count == 1 {
-            return 50
-        } else if text.count <= 20 {
-            return 40
-        } else if text.count <= 30 {
-            return 35
-        } else {
-            return 20
-        }
-    }
-    
 }
 
 #Preview {
