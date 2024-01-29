@@ -7,7 +7,7 @@
         <attribute name="kundoku" optional="YES" attributeType="String"/>
         <attribute name="meaning" optional="YES" attributeType="String"/>
         <attribute name="ondoku" optional="YES" attributeType="String"/>
-        <attribute name="studyState" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="studyState" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
         <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="kanjis" inverseEntity="StudyUnit"/>
     </entity>
     <entity name="StudySet" representedClassName="StudySetMO" syncable="YES" codeGenerationType="class">
