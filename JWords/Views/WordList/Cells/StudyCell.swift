@@ -58,9 +58,8 @@ struct StudyOneUnit: Reducer {
     @Dependency(\.kanjiClient) var kanjiClient
     
     enum Action: Equatable {
-        case cellTapped
-        case cellDoubleTapped
-        case cellDrag(direction: SwipeDirection)
+        case toggleFront
+        case updateStudyState(StudyState)
         case kanjiButtonTapped
     }
     
@@ -69,17 +68,12 @@ struct StudyOneUnit: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .cellTapped:
+            case .toggleFront:
                 state.isFront.toggle()
                 return .none
-            case .cellDoubleTapped:
+            case .updateStudyState(let studyState):
                 if state.isLocked { return .none }
-                state.studyState = try! unitClient.studyState(state.unit, .undefined)
-                return .none
-            case .cellDrag(let direction):
-                if state.isLocked { return .none }
-                let newState: StudyState = direction == .left ? .success : .fail
-                state.studyState = try! unitClient.studyState(state.unit, newState)
+                state.studyState = try! unitClient.studyState(state.unit, studyState)
                 return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {
@@ -127,16 +121,16 @@ struct StudyCell: View {
             .addCellGesture(isLocked: vs.isLocked) { gesture in
                 switch gesture {
                 case .tapped:
-                    vs.send(.cellTapped)
+                    vs.send(.toggleFront)
                 case .doubleTapped:
-                    vs.send(.cellDoubleTapped)
+                    vs.send(.updateStudyState(.undefined))
                 case .dragging(let size):
                     dragAmount.width = size.width
                 case .draggedLeft:
-                    vs.send(.cellDrag(direction: .left))
+                    vs.send(.updateStudyState(.success))
                     dragAmount = .zero
                 case .draggedRight:
-                    vs.send(.cellDrag(direction: .right))
+                    vs.send(.updateStudyState(.fail))
                     dragAmount = .zero
                 }
             }
