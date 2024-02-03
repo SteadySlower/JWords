@@ -50,10 +50,6 @@ struct StudyOneUnit: Reducer {
 
     }
     
-    enum SwipeDirection: Equatable {
-        case left, right
-    }
-    
     @Dependency(\.studyUnitClient) var unitClient
     @Dependency(\.kanjiClient) var kanjiClient
     
