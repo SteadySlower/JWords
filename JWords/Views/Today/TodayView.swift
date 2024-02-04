@@ -180,7 +180,7 @@ struct TodayView: View {
                         .frame(height: 120)
                         VStack(spacing: 8) {
                             ForEach(vs.todayStatus.studySets, id: \.id) { set in
-                                HomeCell(studySet: set) {
+                                SetCell(studySet: set) {
                                     vs.send(.homeCellTapped(set))
                                 }
                             }
@@ -192,7 +192,7 @@ struct TodayView: View {
                             .trailingAlignment()
                         VStack(spacing: 8) {
                             ForEach(vs.reviewSets, id: \.id) { reviewSet in
-                                HomeCell(studySet: reviewSet) {
+                                SetCell(studySet: reviewSet) {
                                     vs.send(.homeCellTapped(reviewSet))
                                 }
                             }

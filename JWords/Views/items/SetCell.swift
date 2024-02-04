@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct HomeCell: View {
+struct SetCell: View {
     private let studySet: StudySet
     private let onTapped: () -> Void
     private let cellWidth = Constants.Size.deviceWidth * 0.9
