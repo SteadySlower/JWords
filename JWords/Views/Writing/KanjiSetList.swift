@@ -39,6 +39,17 @@ struct KanjiSetList: Reducer {
             case .showWriteKanjis(let show):
                 if !show { state.writeKanjis = nil }
                 return .none
+            case .addKanjiSet(let action):
+                switch action {
+                case .cancel:
+                    state.addKanjiSet = nil
+                    return .none
+                case .added(let newSet):
+                    state.sets.insert(newSet, at: 0)
+                    state.addKanjiSet = nil
+                    return .none
+                default: return .none
+                }
             case .showAddKanjiSet(let show):
                 state.addKanjiSet = show ? .init() : nil
                 return .none
