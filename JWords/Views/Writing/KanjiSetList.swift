@@ -27,12 +27,14 @@ struct KanjiSetList: Reducer {
         case showAddKanjiSet(Bool)
     }
     
+    @Dependency(\.writingKanjiClient) var wkClient
+    
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .setSelected(let set):
-                // TODO: add fetch kanjis logic from client
-                state.writeKanjis = .init(kanjis: .mock)
+                let kanjis = try! wkClient.fetch(set)
+                state.writeKanjis = .init(kanjis: kanjis)
                 return .none
             case .showWriteKanjis(let show):
                 if !show { state.writeKanjis = nil }
