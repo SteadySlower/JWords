@@ -12,7 +12,18 @@ struct WriteKanjis: Reducer {
     
     struct State: Equatable {
         var kanjis: WritingKanjiList.State
-        var toWrite: WriteKanji.State = .init()
+        var toWrite: WriteKanji.State
+        
+        init(kanjis: [Kanji]) {
+            self.kanjis = WritingKanjiList.State(
+                kanjis: IdentifiedArray(
+                    uniqueElements: kanjis.map {
+                        DisplayWritingKanji.State(kanji: $0)
+                    }
+                )
+            )
+            self.toWrite = .init()
+        }
     }
     
     enum Action: Equatable {
@@ -77,13 +88,7 @@ struct WritingKanjisView: View {
 #Preview {
     WritingKanjisView(store: .init(
         initialState: WriteKanjis.State(
-            kanjis: WritingKanjiList.State(
-                kanjis: IdentifiedArray(
-                    uniqueElements: [Kanji].mock.map {
-                        DisplayWritingKanji.State(kanji: $0)
-                    }
-                )
-            )
+            kanjis: .mock
         ),
         reducer: { WriteKanjis() }
     )
