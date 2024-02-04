@@ -18,7 +18,10 @@ struct AddKanjiSet: Reducer {
         case updateTitle(String)
         case add
         case cancel
+        case added(KanjiSet)
     }
+    
+    @Dependency(\.kanjiSetClient) var kanjiSetClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -26,6 +29,9 @@ struct AddKanjiSet: Reducer {
             case .updateTitle(let title):
                 state.title = title
                 return .none
+            case .add:
+                let newSet = try! kanjiSetClient.insert(state.title)
+                return .send(.added(newSet))
             default: return .none
             }
         }
