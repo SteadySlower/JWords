@@ -29,6 +29,11 @@ struct DisplayWritingKanji: Reducer {
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
+            switch action {
+            case .updateStudyState(let newState):
+                state.studyState = newState
+            default: return .none
+            }
             return .none
         }
     }
