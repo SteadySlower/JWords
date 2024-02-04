@@ -9,12 +9,21 @@ import SwiftUI
 import ComposableArchitecture
 
 struct SetCell: View {
-    private let studySet: StudySet
+    private let title: String
+    private let schedule: SetSchedule
+    private let dayFromToday: Int
     private let onTapped: () -> Void
     private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    init(studySet: StudySet, onTapped: @escaping () -> Void) {
-        self.studySet = studySet
+    init(
+        title: String,
+        schedule: SetSchedule,
+        dayFromToday: Int,
+        onTapped: @escaping () -> Void
+    ) {
+        self.title = title
+        self.schedule = schedule
+        self.dayFromToday = dayFromToday
         self.onTapped = onTapped
     }
     
@@ -25,7 +34,7 @@ struct SetCell: View {
             } label: {
                 VStack {
                     HStack {
-                        Text(studySet.title)
+                        Text(title)
                             .foregroundColor(.black)
                         Spacer()
                     }
@@ -43,7 +52,7 @@ struct SetCell: View {
     }
     
     private var dateTextColor: Color {
-        switch studySet.schedule {
+        switch schedule {
         case .none: return .black
         case .study: return .blue
         case .review: return .pink
@@ -51,7 +60,7 @@ struct SetCell: View {
     }
     
     private var dateText: String {
-        let dayGap = studySet.dayFromToday
+        let dayGap = dayFromToday
         return dayGap == 0 ? "今日" : "\(dayGap)日前"
     }
 }

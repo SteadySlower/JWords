@@ -121,7 +121,12 @@ struct HomeView: View {
                         }
                         .frame(height: 20)
                         ForEach(vs.sets, id: \.id) { set in
-                            SetCell(studySet: set) { vs.send(.homeCellTapped(set)) }
+                            SetCell(
+                                title: set.title,
+                                schedule: set.schedule,
+                                dayFromToday: set.dayFromToday,
+                                onTapped: { vs.send(.homeCellTapped(set)) }
+                            )
                         }
                     }
                     .padding(.horizontal, 20)
