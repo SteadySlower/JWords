@@ -10,6 +10,7 @@ import XCTestDynamicOverlay
 
 struct WritingKanjiClient {
     private static let cd = CoreDataService.shared
+    var fetch: (KanjiSet) throws -> [Kanji]
     var studyState: (Kanji, StudyState) throws -> StudyState
 }
 
@@ -22,6 +23,10 @@ extension DependencyValues {
 
 extension WritingKanjiClient: DependencyKey {
   static let liveValue = WritingKanjiClient(
+    fetch: { set in
+        // TODO: Add service logic
+        return .mock
+    },
     studyState: { kanji, newState in
         try cd.updateStudyState(kanji: kanji, newState: newState)
         return newState
@@ -31,6 +36,7 @@ extension WritingKanjiClient: DependencyKey {
 
 extension WritingKanjiClient: TestDependencyKey {
   static let previewValue = Self(
+    fetch: { _ in .mock },
     studyState: { _, state in state }
   )
 }
