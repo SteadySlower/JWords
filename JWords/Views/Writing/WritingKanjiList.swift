@@ -60,9 +60,11 @@ struct WritingKanjiListView: View {
                         action: WritingKanjiList.Action.kanji)
                     ) {
                         WritingKanjiCell(store: $0)
+                            .padding(.horizontal, 5)
                     }
                 }
             }
+
         }
     }
 }
