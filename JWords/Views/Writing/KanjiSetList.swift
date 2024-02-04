@@ -14,7 +14,7 @@ struct KanjiSetList: Reducer {
     }
     
     enum Action: Equatable {
-        
+        case setSelected(KanjiSet)
     }
     
     var body: some Reducer<State, Action> {
@@ -35,7 +35,12 @@ struct KanjiSetListView: View {
                     VStack {}
                     .frame(height: 20)
                     ForEach(vs.sets, id: \.id) { set in
-//                        SetCell(studySet: set) { vs.send(.homeCellTapped(set)) }
+                        SetCell(
+                            title: set.title,
+                            schedule: set.schedule,
+                            dayFromToday: set.dayFromToday,
+                            onTapped: { vs.send(.setSelected(set)) }
+                        )
                     }
                 }
                 .padding(.horizontal, 20)
@@ -43,7 +48,10 @@ struct KanjiSetListView: View {
         }
     }
 }
-//
-//#Preview {
-//    KanjiSetListView()
-//}
+
+#Preview {
+    KanjiSetListView(store: Store(
+        initialState: KanjiSetList.State(sets: .mock),
+        reducer: { KanjiSetList() })
+    )
+}
