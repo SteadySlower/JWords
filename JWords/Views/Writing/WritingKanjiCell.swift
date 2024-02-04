@@ -27,11 +27,13 @@ struct DisplayWritingKanji: Reducer {
         case updateStudyState(StudyState)
     }
     
+    @Dependency(\.writingKanjiClient) var wkClient
+    
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .updateStudyState(let newState):
-                state.studyState = newState
+                state.studyState = try! wkClient.studyState(state.kanji, newState)
             default: return .none
             }
             return .none
