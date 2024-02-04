@@ -5,6 +5,7 @@
 //  Created by JW Moon on 2/4/24.
 //
 
+import Foundation
 import ComposableArchitecture
 import XCTestDynamicOverlay
 
@@ -24,9 +25,11 @@ extension DependencyValues {
 extension KanjiSetClient: DependencyKey {
   static let liveValue = KanjiSetClient(
     insert: { title in
-        return .init(index: 0)
+        // TODO: Add Service Logic
+        return .init(title: title, createdAt: Date(), closed: false)
     },
     fetch: {
+        // TODO: Add Service Logic
         return []
     }
   )
@@ -34,7 +37,7 @@ extension KanjiSetClient: DependencyKey {
 
 extension KanjiSetClient: TestDependencyKey {
   static let previewValue = Self(
-    insert: { _ in .init(index: 0) },
+    insert: { title in .init(title: title, createdAt: Date(), closed: false) },
     fetch: { .mock }
   )
 }
