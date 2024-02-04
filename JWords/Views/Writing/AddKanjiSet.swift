@@ -39,27 +39,33 @@ struct AddKanjiSetView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            InputFieldTitle(title: "한자쓰기장 이름")
-            InputSetTextField(
-                placeHolder: "한자쓰기 이름",
-                text: vs.binding(
-                    get: \.title,
-                    send: AddKanjiSet.Action.updateTitle)
-            )
-            HStack {
-                Spacer()
-                Button("취소") {
-                    vs.send(.cancel)
+            VStack(spacing: 50) {
+                VStack {
+                    InputFieldTitle(title: "한자쓰기장 이름")
+                    InputSetTextField(
+                        placeHolder: "한자쓰기 이름",
+                        text: vs.binding(
+                            get: \.title,
+                            send: AddKanjiSet.Action.updateTitle)
+                    )
                 }
-                .buttonStyle(InputButtonStyle())
-                Spacer()
-                Button("추가") {
-                    vs.send(.add)
+                HStack {
+                    Spacer()
+                    Button("취소") {
+                        vs.send(.cancel)
+                    }
+                    .buttonStyle(InputButtonStyle())
+                    Spacer()
+                    Button("추가") {
+                        vs.send(.add)
+                    }
+                    .buttonStyle(InputButtonStyle(isAble: vs.ableToAdd))
+                    .disabled(!vs.ableToAdd)
+                    Spacer()
                 }
-                .buttonStyle(InputButtonStyle(isAble: vs.ableToAdd))
-                .disabled(!vs.ableToAdd)
-                Spacer()
             }
+            .padding(.horizontal)
+            .presentationDetents([.medium])
         }
     }
 }
