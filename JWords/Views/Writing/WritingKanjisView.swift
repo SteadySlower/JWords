@@ -11,21 +11,26 @@ import ComposableArchitecture
 struct WriteKanjis: Reducer {
     
     struct State: Equatable {
-        var kanjis: [Kanji]
+        var kanjis: WritingKanjiList.State
         var toWrite: WriteKanji.State = .init()
     }
     
     enum Action: Equatable {
-        case kanjiSelected(Kanji)
+        case kanjis(WritingKanjiList.Action)
         case toWrite(WriteKanji.Action)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .kanjiSelected(let kanji):
-                state.toWrite.setKanji(kanji)
-                return .none
+            case .kanjis(let action):
+                switch action {
+                case .kanjiSelected(let kanji):
+                    state.toWrite.setKanji(kanji)
+                    return .none
+                default:
+                    return .none
+                }
             default: return .none
             }
         }
@@ -33,6 +38,11 @@ struct WriteKanjis: Reducer {
             state: \.toWrite,
             action: /Action.toWrite,
             child: { WriteKanji() }
+        )
+        Scope(
+            state: \.kanjis,
+            action: /Action.kanjis,
+            child: { WritingKanjiList() }
         )
     }
     
@@ -45,7 +55,12 @@ struct WritingKanjisView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             HStack {
-                WritingKanjiList(kanjis: vs.kanjis) { vs.send(.kanjiSelected($0)) }
+                WritingKanjiListView(
+                    store: store.scope(
+                        state: \.kanjis,
+                        action: WriteKanjis.Action.kanjis
+                    )
+                )
                 WritingKanjiView(
                     store: store.scope(
                         state: \.toWrite,
@@ -61,7 +76,15 @@ struct WritingKanjisView: View {
 
 #Preview {
     WritingKanjisView(store: .init(
-        initialState: WriteKanjis.State(kanjis: .mock),
+        initialState: WriteKanjis.State(
+            kanjis: WritingKanjiList.State(
+                kanjis: IdentifiedArray(
+                    uniqueElements: [Kanji].mock.map {
+                        DisplayWritingKanji.State(kanji: $0)
+                    }
+                )
+            )
+        ),
         reducer: { WriteKanjis() }
     )
     )

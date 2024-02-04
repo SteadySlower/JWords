@@ -15,7 +15,7 @@ struct WriteKanji: Reducer {
         var showAnswer: Bool = false
         var drawWithPencil = DrawWithPencil.State()
         
-        mutating func setKanji(_ kanji: Kanji) {
+        mutating func setKanji(_ kanji: Kanji?) {
             self.kanji = kanji
             self.showAnswer = false
             self.drawWithPencil.resetCanvas()

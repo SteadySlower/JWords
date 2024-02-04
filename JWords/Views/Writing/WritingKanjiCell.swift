@@ -22,7 +22,8 @@ struct DisplayWritingKanji: Reducer {
         }
     }
     
-    enum Action {
+    enum Action: Equatable {
+        case select
         case updateStudyState(StudyState)
     }
     
@@ -54,7 +55,7 @@ struct WritingKanjiCell: View {
             .addCellGesture(isLocked: false) { gesture in
                 switch gesture {
                 case .tapped:
-                    return
+                    vs.send(.select)
                 case .doubleTapped:
                     vs.send(.updateStudyState(.undefined))
                 case .dragging(let size):
