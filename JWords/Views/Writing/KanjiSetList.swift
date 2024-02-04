@@ -14,12 +14,17 @@ struct KanjiSetList: Reducer {
         
         var writeKanjis: WriteKanjis.State?
         var showWriteKanji: Bool { writeKanjis != nil }
+        
+        var addKanjiSet: AddKanjiSet.State?
+        var showAddKanjiSet: Bool { addKanjiSet != nil }
     }
     
     enum Action: Equatable {
         case setSelected(KanjiSet)
         case writeKanjis(WriteKanjis.Action)
         case showWriteKanjis(Bool)
+        case addKanjiSet(AddKanjiSet.Action)
+        case showAddKanjiSet(Bool)
     }
     
     var body: some Reducer<State, Action> {
@@ -29,11 +34,20 @@ struct KanjiSetList: Reducer {
                 // TODO: add fetch kanjis logic from client
                 state.writeKanjis = .init(kanjis: .mock)
                 return .none
+            case .showWriteKanjis(let show):
+                if !show { state.writeKanjis = nil }
+                return .none
+            case .showAddKanjiSet(let show):
+                state.addKanjiSet = show ? .init() : nil
+                return .none
             default: return .none
             }
         }
         .ifLet(\.writeKanjis, action: /Action.writeKanjis) {
             WriteKanjis()
+        }
+        .ifLet(\.addKanjiSet, action: /Action.addKanjiSet) {
+            AddKanjiSet()
         }
     }
 }
@@ -70,6 +84,30 @@ struct KanjiSetListView: View {
                 .padding(.horizontal, 20)
             }
             .navigationTitle("한자 쓰기장")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .sheet(isPresented: vs.binding(
+                get: \.showAddKanjiSet,
+                send: KanjiSetList.Action.showAddKanjiSet)
+            ) {
+                IfLetStore(store.scope(state: \.addKanjiSet,
+                                            action: KanjiSetList.Action.addKanjiSet)
+                ) {
+                    AddKanjiSetView(store: $0)
+                }
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        vs.send(.showAddKanjiSet(true))
+                    } label: {
+                        Image(systemName: "folder.badge.plus")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
+                }
+            }
         }
     }
 }
