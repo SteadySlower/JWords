@@ -9,6 +9,7 @@ import ComposableArchitecture
 import XCTestDynamicOverlay
 
 struct WritingKanjiClient {
+    private static let cd = CoreDataService.shared
     var studyState: (Kanji, StudyState) throws -> StudyState
 }
 
@@ -21,9 +22,9 @@ extension DependencyValues {
 
 extension WritingKanjiClient: DependencyKey {
   static let liveValue = WritingKanjiClient(
-    studyState: { kanji, state in
-        // TODO: add service logic
-        return state
+    studyState: { kanji, newState in
+        try cd.updateStudyState(kanji: kanji, newState: newState)
+        return newState
     }
   )
 }
