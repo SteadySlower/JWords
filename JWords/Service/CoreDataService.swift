@@ -448,4 +448,23 @@ class CoreDataService {
             throw AppError.coreData
         }
     }
+    
+    // MARK: API for Writing Kanjis
+    
+    func updateStudyState(kanji: Kanji, newState: StudyState) throws {
+        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
+            print("디버그: objectID로 kanji 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.studyState = Int16(newState.rawValue)
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
 }
