@@ -24,8 +24,7 @@ extension DependencyValues {
 extension WritingKanjiClient: DependencyKey {
   static let liveValue = WritingKanjiClient(
     fetch: { set in
-        // TODO: Add service logic
-        return .mock
+        try cd.fetchKanjis(kanjiSet: set)
     },
     studyState: { kanji, newState in
         try cd.updateStudyState(kanji: kanji, newState: newState)
