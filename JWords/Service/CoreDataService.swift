@@ -489,4 +489,27 @@ extension CoreDataService {
             .sorted(by: { $0.createdAt < $1.createdAt })
     }
     
+    func insertKanji(_ kanji: Kanji, in set: KanjiSet) throws -> KanjiSet {
+        guard let kanjiMO = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
+            print("디버그: objectID로 kanji 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let setMO = try? context.existingObject(with: set.objectID) as? StudyKanjiSetMO else {
+            print("디버그: objectID로 study kanji set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        kanjiMO.addToSet(setMO)
+        
+        do {
+            try context.save()
+            return KanjiSet(from: setMO)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
 }
