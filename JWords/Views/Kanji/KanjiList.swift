@@ -192,3 +192,14 @@ struct KanjiListView: View {
         }
     }
 }
+
+#Preview {
+    KanjiListView(store: .init(
+        initialState: KanjiList.State(
+            kanjis: IdentifiedArray(
+                uniqueElements: [Kanji].mock.map { DisplayKanji.State(kanji: $0) }
+            )
+        ),
+        reducer: { KanjiList() })
+    )
+}
