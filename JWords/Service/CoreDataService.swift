@@ -472,4 +472,21 @@ extension CoreDataService {
         }
     }
     
+    func fetchKanjis(kanjiSet: KanjiSet) throws -> [Kanji] {
+        guard let set = try? context.existingObject(with: kanjiSet.objectID) as? StudyKanjiSetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let kanjis = set.kanjis else {
+            print("디버그: units가 nil")
+            throw AppError.coreData
+        }
+        
+        return kanjis
+            .compactMap { $0 as? StudyKanjiMO }
+            .map { Kanji(from: $0) }
+            .sorted(by: { $0.createdAt < $1.createdAt })
+    }
+    
 }
