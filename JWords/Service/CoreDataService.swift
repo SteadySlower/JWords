@@ -449,7 +449,11 @@ class CoreDataService {
         }
     }
     
-    // MARK: API for Writing Kanjis
+}
+
+// MARK: API for Writing Kanjis
+
+extension CoreDataService {
     
     func updateStudyState(kanji: Kanji, newState: StudyState) throws {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
@@ -467,4 +471,5 @@ class CoreDataService {
             throw AppError.coreData
         }
     }
+    
 }
