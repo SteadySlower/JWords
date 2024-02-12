@@ -121,6 +121,9 @@
         }
       }
     },
+    "▶️" : {
+
+    },
     "✏️" : {
       "localizations" : {
         "en" : {
@@ -162,6 +165,9 @@
       }
     },
     "Hello World!" : {
+
+    },
+    "Hello, World!" : {
 
     },
     "OCR" : {
