@@ -455,6 +455,22 @@ class CoreDataService {
 
 extension CoreDataService {
     
+    func fetchKanjiSets(includeClosed: Bool = false) throws -> [KanjiSet] {
+        let fetchRequest: NSFetchRequest<StudyKanjiSetMO> = StudyKanjiSetMO.fetchRequest()
+        let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
+        fetchRequest.sortDescriptors = [createdAtDesc]
+        if !includeClosed {
+            fetchRequest.predicate = NSPredicate(format: "closed == false")
+        }
+        
+        do {
+            return try self.context.fetch(fetchRequest).map { KanjiSet(from: $0) }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func updateStudyState(kanji: Kanji, newState: StudyState) throws {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 kanji 찾을 수 없음")
