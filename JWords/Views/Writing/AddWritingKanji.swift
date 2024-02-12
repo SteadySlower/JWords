@@ -13,6 +13,10 @@ struct AddWritingKanji: Reducer {
         let kanji: Kanji
         let kanjiSets: [KanjiSet]
         var selectedID: String?
+        
+        var selectedSet: KanjiSet? {
+            kanjiSets.first(where: { $0.id == selectedID })
+        }
     }
     
     enum Action: Equatable {
@@ -31,10 +35,10 @@ struct AddWritingKanji: Reducer {
                 state.selectedID = id
                 return .none
             case .add:
-                // TODO: add logic
-                return .none
+                guard let toAddSet = state.selectedSet else { return .none }
+                let addedSet = try! kanjiSetClient.addKanji(state.kanji, toAddSet)
+                return .send(.added(addedSet))
             case .cancel:
-                // TODO: add logic
                 return .none
             case .added:
                 // TODO: add logic
@@ -120,7 +124,7 @@ extension AddWritingKanjiView {
             kanji: .init(index: 0),
             kanjiSets: .mock
         ), reducer: {
-            AddWritingKanji()
+            AddWritingKanji()._printChanges()
         })
     )
 }

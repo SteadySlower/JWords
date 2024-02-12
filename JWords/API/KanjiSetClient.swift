@@ -35,7 +35,7 @@ extension KanjiSetClient: DependencyKey {
     },
     addKanji: { kanji, set in
         // TODO: Add Service Logic
-        return .init(index: 0)
+        return set
     }
   )
 }
@@ -44,7 +44,7 @@ extension KanjiSetClient: TestDependencyKey {
   static let previewValue = Self(
     insert: { title in .init(title: title, createdAt: Date(), closed: false) },
     fetch: { .mock },
-    addKanji: { _, _ in .init(index: 0) }
+    addKanji: { _, set in set }
   )
 }
 
