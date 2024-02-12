@@ -17,6 +17,9 @@ struct AddWritingKanji: Reducer {
     
     enum Action: Equatable {
         case updateID(String?)
+        case add
+        case cancel
+        case added(KanjiSet)
     }
     
     @Dependency(\.kanjiSetClient) var kanjiSetClient
@@ -26,6 +29,15 @@ struct AddWritingKanji: Reducer {
             switch action {
             case .updateID(let id):
                 state.selectedID = id
+                return .none
+            case .add:
+                // TODO: add logic
+                return .none
+            case .cancel:
+                // TODO: add logic
+                return .none
+            case .added:
+                // TODO: add logic
                 return .none
             }
         }
@@ -40,11 +52,17 @@ struct AddWritingKanjiView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
                 picker(
+                    kanji: vs.kanji,
                     sets: vs.kanjiSets,
                     selectedID: vs.binding(
                         get: \.selectedID,
                         send: AddWritingKanji.Action.updateID
                     )
+                )
+                buttons(
+                    isOKButtonAble: vs.selectedID != nil,
+                    addButtonTapped: { vs.send(.add) },
+                    cancelButtonTapped: { vs.send(.cancel) }
                 )
             }
         }
@@ -53,9 +71,9 @@ struct AddWritingKanjiView: View {
 
 extension AddWritingKanjiView {
     
-    private func picker(sets: [KanjiSet], selectedID: Binding<String?>) -> some View {
+    private func picker(kanji: Kanji, sets: [KanjiSet], selectedID: Binding<String?>) -> some View {
         VStack {
-            Text("이 한자를 추가할 한자쓰기장을 골라주세요.")
+            Text("\(kanji.kanjiText)를 추가할 한자쓰기장을 골라주세요.")
             Picker("한자 쓰기장 고르기", selection: selectedID) {
                 Text("선택되지 않음")
                     .tag(nil as String?)
@@ -68,6 +86,29 @@ extension AddWritingKanjiView {
             #if os(iOS)
             .pickerStyle(.wheel)
             #endif
+        }
+    }
+    
+    func buttons(
+        isOKButtonAble: Bool,
+        addButtonTapped: @escaping () -> Void,
+        cancelButtonTapped: @escaping () -> Void
+    ) -> some View {
+        HStack {
+            HStack {
+                Spacer()
+                Button("취소") {
+                    cancelButtonTapped()
+                }
+                .buttonStyle(InputButtonStyle())
+                Spacer()
+                Button("추가") {
+                    addButtonTapped()
+                }
+                .buttonStyle(InputButtonStyle(isAble: isOKButtonAble))
+                .disabled(!isOKButtonAble)
+                Spacer()
+            }
         }
     }
     
