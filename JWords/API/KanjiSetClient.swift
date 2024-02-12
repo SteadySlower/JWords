@@ -13,6 +13,7 @@ struct KanjiSetClient {
     private static let cd = CoreDataService.shared
     var insert: (String) throws -> KanjiSet
     var fetch: () throws -> [KanjiSet]
+    var addKanji: (Kanji, KanjiSet) throws -> KanjiSet
 }
 
 extension DependencyValues {
@@ -31,6 +32,10 @@ extension KanjiSetClient: DependencyKey {
     fetch: {
         // TODO: Add Service Logic
         return []
+    },
+    addKanji: { kanji, set in
+        // TODO: Add Service Logic
+        return .init(index: 0)
     }
   )
 }
@@ -38,7 +43,8 @@ extension KanjiSetClient: DependencyKey {
 extension KanjiSetClient: TestDependencyKey {
   static let previewValue = Self(
     insert: { title in .init(title: title, createdAt: Date(), closed: false) },
-    fetch: { .mock }
+    fetch: { .mock },
+    addKanji: { _, _ in .init(index: 0) }
   )
 }
 
