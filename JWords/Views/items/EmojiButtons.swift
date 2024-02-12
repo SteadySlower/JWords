@@ -14,6 +14,12 @@ struct EmojiButtons: View {
     private let buttonGap: CGFloat
     private let offSetStart: CGFloat
     
+    private let buttonColors = [
+        Color.red.opacity(0.5),
+        Color.blue.opacity(0.5),
+        Color.green.opacity(0.5)
+    ]
+    
     init(
         buttons: [(emoji: String, action: () -> Void)],
         buttonSize: CGSize = .init(width: 30, height: 30),
@@ -51,9 +57,16 @@ extension EmojiButtons {
         
         return ZStack {
             ForEach(0..<buttons.count, id: \.self) { idx in
-                Button(buttons[idx].emoji) {
+                Button(action: {
                     buttons[idx].action()
-                }
+                }, label: {
+                    ZStack {
+                        Circle()
+                            .fill(buttonColors[idx % buttonColors.count])
+                            .frame(width: buttonSize.width + 5, height: buttonSize.height + 5)
+                        Text(buttons[idx].emoji)
+                    }
+                })
                 .frame(width: buttonSize.width, height: buttonSize.height)
                 .offset(
                     x: showButtons ? -buttonSize.width : 0,
