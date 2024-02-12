@@ -69,6 +69,7 @@ struct AddWritingKanjiView: View {
                     cancelButtonTapped: { vs.send(.cancel) }
                 )
             }
+            .presentationDetents([.medium])
         }
     }
 }
