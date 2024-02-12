@@ -83,7 +83,7 @@
 		067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067840F529C595EF0019ABA8 /* PasteBoardService.swift */; };
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068A9B972B79CA3A008364B7 /* EmojiButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B962B79CA3A008364B7 /* EmojiButtons.swift */; };
-		068A9B992B79E8B5008364B7 /* AddWrtingKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B982B79E8B5008364B7 /* AddWrtingKanji.swift */; };
+		068A9B992B79E8B5008364B7 /* AddWritingKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */; };
 		068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* UnitMoveView.swift */; };
 		0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8732AAC987300E5FF05 /* PercentageChart.swift */; };
 		0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */; };
@@ -273,7 +273,7 @@
 		067840F529C595EF0019ABA8 /* PasteBoardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardService.swift; sourceTree = "<group>"; };
 		0688A1D329B3345E0057B2DB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		068A9B962B79CA3A008364B7 /* EmojiButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiButtons.swift; sourceTree = "<group>"; };
-		068A9B982B79E8B5008364B7 /* AddWrtingKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWrtingKanji.swift; sourceTree = "<group>"; };
+		068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWritingKanji.swift; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* UnitMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitMoveView.swift; sourceTree = "<group>"; };
 		0690F8732AAC987300E5FF05 /* PercentageChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChart.swift; sourceTree = "<group>"; };
 		0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayStatusView.swift; sourceTree = "<group>"; };
@@ -838,7 +838,7 @@
 				0625FAF32B6E435D00B33545 /* WritingKanjiCell.swift */,
 				0625FAF92B6FA49F00B33545 /* KanjiSetList.swift */,
 				0625FAFB2B6FAD7A00B33545 /* AddKanjiSet.swift */,
-				068A9B982B79E8B5008364B7 /* AddWrtingKanji.swift */,
+				068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */,
 			);
 			path = Writing;
 			sourceTree = "<group>";
@@ -1088,7 +1088,7 @@
 				5A8843C12A11BBB40027B408 /* KanjiList.swift in Sources */,
 				06004E302AC5485800947F5D /* UnitsList.swift in Sources */,
 				067840F629C595EF0019ABA8 /* PasteBoardService.swift in Sources */,
-				068A9B992B79E8B5008364B7 /* AddWrtingKanji.swift in Sources */,
+				068A9B992B79E8B5008364B7 /* AddWritingKanji.swift in Sources */,
 				06004E412AC55C5700947F5D /* StudyModals.swift in Sources */,
 				5AC72B032B4BD2CD00412058 /* WritingKanjiView.swift in Sources */,
 				064BA4482AC2CC0B00288749 /* MeaningInput.swift in Sources */,
