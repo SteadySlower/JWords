@@ -22,7 +22,7 @@ struct EmojiButtons: View {
         self.buttons = buttons
         self.buttonSize = buttonSize
         self.buttonGap = buttonGap
-        let totalLengthOfButtons = buttonSize.width * CGFloat(buttons.count) + buttonGap * CGFloat(buttons.count - 1)
+        let totalLengthOfButtons = buttonSize.height * CGFloat(buttons.count) + buttonGap * CGFloat(buttons.count - 1)
         self.offSetStart = -((totalLengthOfButtons / 2) - buttonSize.width / 2)
     }
     
@@ -38,7 +38,7 @@ struct EmojiButtons: View {
 
 extension EmojiButtons {
     private var toggleButton: some View {
-        Button("🔼") {
+        Button("▶️") {
             showButtons.toggle()
         }
         .frame(width: buttonSize.width, height: buttonSize.height)
@@ -47,7 +47,7 @@ extension EmojiButtons {
     }
     
     private var emojiButtons: some View {
-        let offSetCoefficient = buttonSize.width + buttonGap
+        let offSetCoefficient = buttonSize.height + buttonGap
         
         return ZStack {
             ForEach(0..<buttons.count, id: \.self) { idx in
@@ -56,8 +56,8 @@ extension EmojiButtons {
                 }
                 .frame(width: buttonSize.width, height: buttonSize.height)
                 .offset(
-                    x: showButtons ? (offSetStart + CGFloat(idx) * offSetCoefficient) : 0,
-                    y: showButtons ? -buttonSize.height : 0
+                    x: showButtons ? -buttonSize.width : 0,
+                    y: showButtons ? (offSetStart + CGFloat(idx) * offSetCoefficient) : 0
                 )
                 .opacity(showButtons ? 1 : 0)
                 .animation(.easeIn(duration: 0.3), value: showButtons)
