@@ -72,6 +72,9 @@ struct KanjiList: Reducer {
                 case .edit(let kanji):
                     state.edit = EditKanji.State(kanji)
                     return .none
+                case .addToWrite(let kanji):
+                    // TODO: show modal to Add kanji to KanjiSet
+                    return .none
                 }
             case .showStudyView(let isPresent):
                 if !isPresent {

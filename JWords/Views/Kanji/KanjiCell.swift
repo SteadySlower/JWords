@@ -21,6 +21,7 @@ struct DisplayKanji: Reducer {
     enum Action: Equatable {
         case showSamples(Kanji)
         case edit(Kanji)
+        case addToWrite(Kanji)
     }
     
     var body: some Reducer<State, Action> {
@@ -61,9 +62,10 @@ struct KanjiCell: View {
                                 .font(.system(size: 15))
                             Text(vs.kanji.kundoku)
                         }
-                        Button("✏️") {
-                            vs.send(.edit(vs.kanji))
-                        }
+                        EmojiButtons(buttons: [
+                            (emoji: "✏️", action: { vs.send(.edit(vs.kanji)) }),
+                            (emoji: "📖", action: { vs.send(.addToWrite(vs.kanji)) })
+                        ])
                     }
                     .multilineTextAlignment(.trailing)
                 }
