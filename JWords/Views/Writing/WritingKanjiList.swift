@@ -63,6 +63,7 @@ struct WritingKanjiListView: View {
                             .padding(.horizontal, 5)
                     }
                 }
+                .padding(.top, 8)
             }
 
         }
