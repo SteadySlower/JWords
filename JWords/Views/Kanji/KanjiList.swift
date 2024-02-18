@@ -20,6 +20,7 @@ struct KanjiList: Reducer {
         var isLastPage = false
         var searchKanji = SearchKanji.State()
         var edit: EditKanji.State?
+        var addWriting: AddWritingKanji.State?
         
         var showStudyView: Bool {
             studyKanjiSamples != nil
@@ -27,6 +28,10 @@ struct KanjiList: Reducer {
         
         var showEditModal: Bool {
             edit != nil
+        }
+        
+        var showAddWritingModel: Bool {
+            addWriting != nil
         }
         
         var isSearching: Bool {
@@ -42,10 +47,13 @@ struct KanjiList: Reducer {
         case searchKanji(SearchKanji.Action)
         case kanji(DisplayKanji.State.ID, DisplayKanji.Action)
         case showEditView(Bool)
+        case showAddWritingModal(Bool)
         case edit(EditKanji.Action)
+        case addWriting(AddWritingKanji.Action)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
+    @Dependency(\.kanjiSetClient) var kanjiSetClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -72,6 +80,10 @@ struct KanjiList: Reducer {
                 case .edit(let kanji):
                     state.edit = EditKanji.State(kanji)
                     return .none
+                case .addToWrite(let kanji):
+                    let sets = try! kanjiSetClient.fetch()
+                    state.addWriting = AddWritingKanji.State(kanji: kanji, kanjiSets: sets)
+                    return .none
                 }
             case .showStudyView(let isPresent):
                 if !isPresent {
@@ -80,6 +92,9 @@ struct KanjiList: Reducer {
                 return .none
             case .showEditView(let isPresent):
                 if !isPresent { state.edit = nil }
+                return .none
+            case .showAddWritingModal(let isPresent):
+                if !isPresent { state.addWriting = nil }
                 return .none
             case .edit(let action):
                 switch action {
@@ -92,6 +107,13 @@ struct KanjiList: Reducer {
                     return .none
                 default:
                     return .none
+                }
+            case .addWriting(let action):
+                switch action {
+                case .cancel, .added:
+                    state.addWriting = nil
+                    return .none
+                default: return .none
                 }
             case .searchKanji(let action):
                 switch action {
@@ -117,6 +139,9 @@ struct KanjiList: Reducer {
         }
         .ifLet(\.edit, action: /Action.edit) {
             EditKanji()
+        }
+        .ifLet(\.addWriting, action: /Action.addWriting) {
+            AddWritingKanji()
         }
         Scope(
             state: \.searchKanji,
@@ -189,6 +214,28 @@ struct KanjiListView: View {
                     EditKanjiView(store: $0)
                 }
             }
+            .sheet(isPresented: vs.binding(
+                get: \.showAddWritingModel,
+                send: KanjiList.Action.showAddWritingModal)
+            ) {
+                IfLetStore(store.scope(
+                    state: \.addWriting,
+                    action: KanjiList.Action.addWriting)
+                ) {
+                    AddWritingKanjiView(store: $0)
+                }
+            }
         }
     }
+}
+
+#Preview {
+    KanjiListView(store: .init(
+        initialState: KanjiList.State(
+            kanjis: IdentifiedArray(
+                uniqueElements: [Kanji].mock.map { DisplayKanji.State(kanji: $0) }
+            )
+        ),
+        reducer: { KanjiList() })
+    )
 }

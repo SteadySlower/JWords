@@ -50,17 +50,12 @@ struct StudyOneUnit: Reducer {
 
     }
     
-    enum SwipeDirection: Equatable {
-        case left, right
-    }
-    
     @Dependency(\.studyUnitClient) var unitClient
     @Dependency(\.kanjiClient) var kanjiClient
     
     enum Action: Equatable {
-        case cellTapped
-        case cellDoubleTapped
-        case cellDrag(direction: SwipeDirection)
+        case toggleFront
+        case updateStudyState(StudyState)
         case kanjiButtonTapped
     }
     
@@ -69,17 +64,12 @@ struct StudyOneUnit: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .cellTapped:
+            case .toggleFront:
                 state.isFront.toggle()
                 return .none
-            case .cellDoubleTapped:
+            case .updateStudyState(let studyState):
                 if state.isLocked { return .none }
-                state.studyState = try! unitClient.studyState(state.unit, .undefined)
-                return .none
-            case .cellDrag(let direction):
-                if state.isLocked { return .none }
-                let newState: StudyState = direction == .left ? .success : .fail
-                state.studyState = try! unitClient.studyState(state.unit, newState)
+                state.studyState = try! unitClient.studyState(state.unit, studyState)
                 return .none
             case .kanjiButtonTapped:
                 if state.kanjis.isEmpty {
@@ -100,7 +90,7 @@ struct StudyCell: View {
     
     let store: StoreOf<StudyOneUnit>
     
-    @GestureState private var dragAmount = CGSize.zero
+    @State private var dragAmount = CGSize.zero
     
     // gestures
     let dragGesture = DragGesture(minimumDistance: 30, coordinateSpace: .global)
@@ -124,12 +114,22 @@ struct StudyCell: View {
                         .padding(.top, 5)
                 }
             }
-            .gesture(dragGesture
-                .updating($dragAmount) { dragUpdating(vs.isLocked, $0, &$1, &$2) }
-                .onEnded { vs.send(.cellDrag(direction: $0.translation.width > 0 ? .left : .right)) }
-            )
-            .gesture(doubleTapGesture.onEnded { vs.send(.cellDoubleTapped) })
-            .gesture(tapGesture.onEnded { vs.send(.cellTapped) })
+            .addCellGesture(isLocked: vs.isLocked) { gesture in
+                switch gesture {
+                case .tapped:
+                    vs.send(.toggleFront)
+                case .doubleTapped:
+                    vs.send(.updateStudyState(.undefined))
+                case .dragging(let size):
+                    dragAmount.width = size.width
+                case .draggedLeft:
+                    vs.send(.updateStudyState(.success))
+                    dragAmount = .zero
+                case .draggedRight:
+                    vs.send(.updateStudyState(.fail))
+                    dragAmount = .zero
+                }
+            }
         }
     }
     
@@ -174,18 +174,6 @@ struct StudyCell: View {
                 kanjiCell(kanji, vs)
             }
         }
-    }
-    
-}
-
-
-// MARK: View Methods
-
-extension StudyCell {
-    
-    private func dragUpdating(_ isLocked: Bool, _ value: _EndedGesture<DragGesture>.Value, _ state: inout CGSize, _ transaction: inout Transaction) {
-        if isLocked { return }
-        state.width = value.translation.width
     }
     
 }

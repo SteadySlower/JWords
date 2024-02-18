@@ -21,6 +21,7 @@ struct DisplayKanji: Reducer {
     enum Action: Equatable {
         case showSamples(Kanji)
         case edit(Kanji)
+        case addToWrite(Kanji)
     }
     
     var body: some Reducer<State, Action> {
@@ -61,9 +62,7 @@ struct KanjiCell: View {
                                 .font(.system(size: 15))
                             Text(vs.kanji.kundoku)
                         }
-                        Button("✏️") {
-                            vs.send(.edit(vs.kanji))
-                        }
+                        cellButton(vs: vs)
                     }
                     .multilineTextAlignment(.trailing)
                 }
@@ -72,6 +71,18 @@ struct KanjiCell: View {
                 .defaultRectangleBackground()
                 .minimumScaleFactor(0.5)
             })
+        }
+    }
+    
+    @ViewBuilder
+    private func cellButton(vs: ViewStore<DisplayKanji.State, DisplayKanji.Action>) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            EmojiButtons(buttons: [
+                (emoji: "✏️", action: { vs.send(.edit(vs.kanji)) }),
+                (emoji: "📖", action: { vs.send(.addToWrite(vs.kanji)) })
+            ])
+        } else {
+            Button("✏️", action: { vs.send(.edit(vs.kanji)) })
         }
     }
 }
@@ -84,6 +95,7 @@ struct KanjiCell: View {
                 meaningText: "한 일",
                 ondoku: "いち",
                 kundoku: "い",
+                studyState: .undefined,
                 createdAt: .now,
                 usedIn: 1
             )),

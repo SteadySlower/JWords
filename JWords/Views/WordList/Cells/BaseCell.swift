@@ -46,44 +46,16 @@ struct BaseCell: View {
     }
 
     var body: some View {
-        ZStack {
-            if dragAmount == .zero {
-                cellColor(unit.studyState)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            } else {
-                cellColor(dragAmount)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-            cellFace
-        }
-        .defaultRectangleBackground()
-        .offset(dragAmount)
+        SlidableCell(
+            studyState: unit.studyState,
+            dragAmount: dragAmount,
+            content: { cellFace }
+        )
     }
 }
 
 extension BaseCell {
-    
-    private func cellColor(_ studyState: StudyState) -> Color {
-        switch studyState {
-        case .undefined:
-            return Color.white
-        case .success:
-            return Color(red: 207/256, green: 240/256, blue: 204/256)
-        case .fail:
-            return Color(red: 253/256, green: 253/256, blue: 150/256)
-        }
-    }
-    
-    private func cellColor(_ dragAmount: CGSize) -> Color {
-        let opacity = (abs(dragAmount.width) * abs(dragAmount.width)) / (150 * 150)
         
-        if dragAmount.width > 0 {
-            return Color(red: 207/256, green: 240/256, blue: 204/256).opacity(opacity)
-        } else {
-            return Color(red: 253/256, green: 253/256, blue: 150/256).opacity(opacity)
-        }
-    }
-    
     private var cellFace: some View {
         let frontFontSize: CGFloat = fontSize(of: kanjiText)
         let backFontSize: CGFloat = 25

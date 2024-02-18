@@ -448,4 +448,106 @@ class CoreDataService {
             throw AppError.coreData
         }
     }
+    
+}
+
+// MARK: API for Writing Kanjis
+
+extension CoreDataService {
+    
+    func insertKanjiSet(title: String, isAutoSchedule: Bool) throws -> KanjiSet {
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyKanjiSet", into: context) as? StudyKanjiSetMO else {
+            print("디버그: StudyKanjiSetMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.id = "kanjiSet_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        mo.title = title
+        mo.isAutoSchedule = isAutoSchedule
+        mo.closed = false
+        mo.createdAt = Date()
+        
+        do {
+            try context.save()
+            return KanjiSet(from: mo)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func fetchKanjiSets(includeClosed: Bool = false) throws -> [KanjiSet] {
+        let fetchRequest: NSFetchRequest<StudyKanjiSetMO> = StudyKanjiSetMO.fetchRequest()
+        let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
+        fetchRequest.sortDescriptors = [createdAtDesc]
+        if !includeClosed {
+            fetchRequest.predicate = NSPredicate(format: "closed == false")
+        }
+        
+        do {
+            return try self.context.fetch(fetchRequest).map { KanjiSet(from: $0) }
+        } catch {
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func updateStudyState(kanji: Kanji, newState: StudyState) throws {
+        guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
+            print("디버그: objectID로 kanji 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.studyState = Int16(newState.rawValue)
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
+    func fetchKanjis(kanjiSet: KanjiSet) throws -> [Kanji] {
+        guard let set = try? context.existingObject(with: kanjiSet.objectID) as? StudyKanjiSetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let kanjis = set.kanjis else {
+            print("디버그: units가 nil")
+            throw AppError.coreData
+        }
+        
+        return kanjis
+            .compactMap { $0 as? StudyKanjiMO }
+            .map { Kanji(from: $0) }
+            .sorted(by: { $0.createdAt < $1.createdAt })
+    }
+    
+    func insertKanji(_ kanji: Kanji, in set: KanjiSet) throws -> KanjiSet {
+        guard let kanjiMO = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
+            print("디버그: objectID로 kanji 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        guard let setMO = try? context.existingObject(with: set.objectID) as? StudyKanjiSetMO else {
+            print("디버그: objectID로 study kanji set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        kanjiMO.addToSet(setMO)
+        
+        do {
+            try context.save()
+            return KanjiSet(from: setMO)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
 }

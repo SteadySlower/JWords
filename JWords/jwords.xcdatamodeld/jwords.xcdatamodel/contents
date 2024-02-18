@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23C71" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="StudyKanji" representedClassName="StudyKanjiMO" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="String"/>
@@ -7,7 +7,17 @@
         <attribute name="kundoku" optional="YES" attributeType="String"/>
         <attribute name="meaning" optional="YES" attributeType="String"/>
         <attribute name="ondoku" optional="YES" attributeType="String"/>
+        <attribute name="studyState" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <relationship name="set" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyKanjiSet" inverseName="kanjis" inverseEntity="StudyKanjiSet"/>
         <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyUnit" inverseName="kanjis" inverseEntity="StudyUnit"/>
+    </entity>
+    <entity name="StudyKanjiSet" representedClassName="StudyKanjiSetMO" syncable="YES" codeGenerationType="class">
+        <attribute name="closed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isAutoSchedule" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="kanjis" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StudyKanji" inverseName="set" inverseEntity="StudyKanji"/>
     </entity>
     <entity name="StudySet" representedClassName="StudySetMO" syncable="YES" codeGenerationType="class">
         <attribute name="closed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

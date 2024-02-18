@@ -51,6 +51,16 @@
         }
       }
     },
+    "%@를 추가할 한자쓰기장을 골라주세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the kanji writing book to add %@."
+          }
+        }
+      }
+    },
     "%@와 동일한 단어가 존재합니다" : {
       "localizations" : {
         "en" : {
@@ -121,6 +131,16 @@
         }
       }
     },
+    "▶️" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "▶️"
+          }
+        }
+      }
+    },
     "✏️" : {
       "localizations" : {
         "en" : {
@@ -157,6 +177,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "🔽"
+          }
+        }
+      }
+    },
+    "Hello World!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello World!"
           }
         }
       }
@@ -427,6 +457,16 @@
         }
       }
     },
+    "선택되지 않음" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Chosen"
+          }
+        }
+      }
+    },
     "선택된 단어장 없음" : {
       "localizations" : {
         "en" : {
@@ -517,6 +557,16 @@
         }
       }
     },
+    "음독: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ondoku: %@"
+          }
+        }
+      }
+    },
     "이동" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -565,6 +615,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "All"
+          }
+        }
+      }
+    },
+    "정답 보기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Answer"
+          }
+        }
+      }
+    },
+    "정답 숨기기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide Answer"
           }
         }
       }
@@ -702,6 +772,36 @@
         }
       }
     },
+    "한자 쓰기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write Kanji"
+          }
+        }
+      }
+    },
+    "한자 쓰기장" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanji Writing Book"
+          }
+        }
+      }
+    },
+    "한자 쓰기장 고르기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Kanji Writing Book"
+          }
+        }
+      }
+    },
     "현재 단어장 마감" : {
       "localizations" : {
         "en" : {
@@ -769,6 +869,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "kundoku"
+          }
+        }
+      }
+    },
+    "훈독: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kundoku: %@"
           }
         }
       }
