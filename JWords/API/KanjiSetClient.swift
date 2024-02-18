@@ -26,16 +26,13 @@ extension DependencyValues {
 extension KanjiSetClient: DependencyKey {
   static let liveValue = KanjiSetClient(
     insert: { title in
-        // TODO: Add Service Logic
-        return .init(title: title, createdAt: Date(), closed: false)
+        try cd.insertKanjiSet(title: title, isAutoSchedule: true)
     },
     fetch: {
-        // TODO: Add Service Logic
-        return []
+        try cd.fetchKanjiSets()
     },
     addKanji: { kanji, set in
-        // TODO: Add Service Logic
-        return set
+        try cd.insertKanji(kanji, in: set)
     }
   )
 }
