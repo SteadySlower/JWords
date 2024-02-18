@@ -123,17 +123,19 @@ struct MainTabView: View {
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
-                NavigationView {
-                    KanjiSetListView(store: store.scope(
-                        state: \.kanjiSetList,
-                        action: MainTab.Action.kanjiSetList)
-                    )
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    NavigationView {
+                        KanjiSetListView(store: store.scope(
+                            state: \.kanjiSetList,
+                            action: MainTab.Action.kanjiSetList)
+                        )
+                    }
+                    .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
+                    .tag(Tab.kanjiWriting)
+                    #if os(iOS)
+                    .navigationViewStyle(.stack)
+                    #endif
                 }
-                .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
-                .tag(Tab.kanjiWriting)
-                #if os(iOS)
-                .navigationViewStyle(.stack)
-                #endif
                 NavigationView {
                     OCRAddUnitView(store: store.scope(
                         state: \.ocr,
