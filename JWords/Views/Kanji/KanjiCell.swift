@@ -62,10 +62,7 @@ struct KanjiCell: View {
                                 .font(.system(size: 15))
                             Text(vs.kanji.kundoku)
                         }
-                        EmojiButtons(buttons: [
-                            (emoji: "✏️", action: { vs.send(.edit(vs.kanji)) }),
-                            (emoji: "📖", action: { vs.send(.addToWrite(vs.kanji)) })
-                        ])
+                        cellButton(vs: vs)
                     }
                     .multilineTextAlignment(.trailing)
                 }
@@ -74,6 +71,18 @@ struct KanjiCell: View {
                 .defaultRectangleBackground()
                 .minimumScaleFactor(0.5)
             })
+        }
+    }
+    
+    @ViewBuilder
+    private func cellButton(vs: ViewStore<DisplayKanji.State, DisplayKanji.Action>) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            EmojiButtons(buttons: [
+                (emoji: "✏️", action: { vs.send(.edit(vs.kanji)) }),
+                (emoji: "📖", action: { vs.send(.addToWrite(vs.kanji)) })
+            ])
+        } else {
+            Button("✏️", action: { vs.send(.edit(vs.kanji)) })
         }
     }
 }

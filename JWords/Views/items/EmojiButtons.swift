@@ -58,6 +58,7 @@ extension EmojiButtons {
         return ZStack {
             ForEach(0..<buttons.count, id: \.self) { idx in
                 Button(action: {
+                    showButtons.toggle()
                     buttons[idx].action()
                 }, label: {
                     ZStack {
