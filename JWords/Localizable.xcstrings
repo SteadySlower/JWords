@@ -52,7 +52,14 @@
       }
     },
     "%@를 추가할 한자쓰기장을 골라주세요." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the kanji writing book to add %@."
+          }
+        }
+      }
     },
     "%@와 동일한 단어가 존재합니다" : {
       "localizations" : {
@@ -125,7 +132,14 @@
       }
     },
     "▶️" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "▶️"
+          }
+        }
+      }
     },
     "✏️" : {
       "localizations" : {
@@ -168,7 +182,14 @@
       }
     },
     "Hello World!" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello World!"
+          }
+        }
+      }
     },
     "OCR" : {
       "localizations" : {
@@ -437,7 +458,14 @@
       }
     },
     "선택되지 않음" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Chosen"
+          }
+        }
+      }
     },
     "선택된 단어장 없음" : {
       "localizations" : {
@@ -530,7 +558,14 @@
       }
     },
     "음독: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ondoku: %@"
+          }
+        }
+      }
     },
     "이동" : {
       "extractionState" : "manual",
@@ -585,10 +620,24 @@
       }
     },
     "정답 보기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Answer"
+          }
+        }
+      }
     },
     "정답 숨기기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide Answer"
+          }
+        }
+      }
     },
     "정면에서 찍을 수록 인식률이 높습니다.\n글자 크기가 클 수록 인식률이 높습니다.\n요미가나가 없이 한자만 있는 텍스트의 인식률이 높습니다.\n단어 사이에 간격이 넓을 수록 인식률이 높습니다." : {
       "localizations" : {
@@ -724,13 +773,34 @@
       }
     },
     "한자 쓰기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write Kanji"
+          }
+        }
+      }
     },
     "한자 쓰기장" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanji Writing Book"
+          }
+        }
+      }
     },
     "한자 쓰기장 고르기" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Kanji Writing Book"
+          }
+        }
+      }
     },
     "현재 단어장 마감" : {
       "localizations" : {
@@ -804,7 +874,14 @@
       }
     },
     "훈독: %@" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kundoku: %@"
+          }
+        }
+      }
     },
     "漢" : {
       "localizations" : {
