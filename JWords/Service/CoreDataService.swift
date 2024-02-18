@@ -455,6 +455,28 @@ class CoreDataService {
 
 extension CoreDataService {
     
+    func insertKanjiSet(title: String, isAutoSchedule: Bool) throws -> KanjiSet {
+        guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyKanjiSet", into: context) as? StudyKanjiSetMO else {
+            print("디버그: StudyKanjiSetMO 객체를 만들 수 없음")
+            throw AppError.coreData
+        }
+        
+        mo.id = "kanjiSet_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
+        mo.title = title
+        mo.isAutoSchedule = isAutoSchedule
+        mo.closed = false
+        mo.createdAt = Date()
+        
+        do {
+            try context.save()
+            return KanjiSet(from: mo)
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     func fetchKanjiSets(includeClosed: Bool = false) throws -> [KanjiSet] {
         let fetchRequest: NSFetchRequest<StudyKanjiSetMO> = StudyKanjiSetMO.fetchRequest()
         let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
