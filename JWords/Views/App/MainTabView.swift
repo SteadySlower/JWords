@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 enum Tab {
-    case today, home, kanji, ocr
+    case today, home, kanji, kanjiWriting, ocr
 }
 
 struct MainTab: Reducer {
@@ -19,6 +19,7 @@ struct MainTab: Reducer {
         var todayList: TodayList.State = .init()
         var homeList: HomeList.State = .init()
         var kanjiList: KanjiList.State = .init(kanjis: [])
+        var kanjiSetList: KanjiSetList.State = .init(sets: [])
         var ocr: AddUnitWithOCR.State = .init()
     }
     
@@ -27,6 +28,7 @@ struct MainTab: Reducer {
         case todayList(TodayList.Action)
         case homeList(HomeList.Action)
         case kanjiList(KanjiList.Action)
+        case kanjiSetList(KanjiSetList.Action)
         case ocr(AddUnitWithOCR.Action)
     }
     
@@ -54,6 +56,11 @@ struct MainTab: Reducer {
             state: \.kanjiList,
             action: /Action.kanjiList,
             child: { KanjiList() }
+        )
+        Scope(
+            state: \.kanjiSetList,
+            action: /Action.kanjiSetList,
+            child: { KanjiSetList() }
         )
         Scope(
             state: \.ocr,
@@ -116,6 +123,14 @@ struct MainTabView: View {
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
+                NavigationView {
+                    KanjiSetListView(store: store.scope(
+                        state: \.kanjiSetList,
+                        action: MainTab.Action.kanjiSetList)
+                    )
+                }
+                .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
+                .tag(Tab.kanjiWriting)
                 NavigationView {
                     OCRAddUnitView(store: store.scope(
                         state: \.ocr,
