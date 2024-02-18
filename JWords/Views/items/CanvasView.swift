@@ -15,7 +15,7 @@ struct CanvasView {
 
 extension CanvasView: UIViewRepresentable {
     func makeUIView(context: Context) -> PKCanvasView {
-        canvasView.tool = PKInkingTool(.pencil, color: .black, width: 5)
+        canvasView.tool = PKInkingTool(.pen, color: .black, width: 5)
         canvasView.delegate = context.coordinator
         #if targetEnvironment(simulator)
         canvasView.drawingPolicy = .anyInput
