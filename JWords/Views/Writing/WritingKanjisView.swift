@@ -80,6 +80,9 @@ struct WritingKanjisView: View {
                 )
                 .padding(.trailing, 10)
             }
+            #if os(iOS)
+            .toolbar(.hidden, for: .tabBar)
+            #endif
         }
     }
 }
