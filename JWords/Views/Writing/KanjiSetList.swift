@@ -20,6 +20,7 @@ struct KanjiSetList: Reducer {
     }
     
     enum Action: Equatable {
+        case fetchSets
         case setSelected(KanjiSet)
         case writeKanjis(WriteKanjis.Action)
         case showWriteKanjis(Bool)
@@ -27,11 +28,15 @@ struct KanjiSetList: Reducer {
         case showAddKanjiSet(Bool)
     }
     
+    @Dependency(\.kanjiSetClient) var ksClient
     @Dependency(\.writingKanjiClient) var wkClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .fetchSets:
+                state.sets = try! ksClient.fetch()
+                return .none
             case .setSelected(let set):
                 let kanjis = try! wkClient.fetch(set)
                 state.writeKanjis = .init(kanjis: kanjis)
@@ -96,6 +101,7 @@ struct KanjiSetListView: View {
                 }
                 .padding(.horizontal, 20)
             }
+            .onAppear { vs.send(.fetchSets) }
             .navigationTitle("한자 쓰기장")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
