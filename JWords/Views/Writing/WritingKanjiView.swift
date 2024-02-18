@@ -72,7 +72,6 @@ struct WritingKanjiView: View {
                             state: \.drawWithPencil,
                             action: WriteKanji.Action.drawWithPencel)
                         )
-                            .border(.black)
                             .padding(.top, 30)
                         Button(action: {
                             vs.send(.toggleShowAnswer)

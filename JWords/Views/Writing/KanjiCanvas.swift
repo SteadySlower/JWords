@@ -44,23 +44,21 @@ struct KanjiCanvas: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
+            VStack {
                 CanvasView(didDraw: vs.binding(
                     get: \.didDraw,
                     send: DrawWithPencil.Action.updateDidDraw)
                 )
+                .border(.black)
                 HStack {
                     Spacer()
-                    VStack {
-                        Spacer()
-                        Button(action: {
-                            vs.send(.resetCanvas)
-                        }, label: {
-                            Image(systemName: "eraser")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                        })
-                    }
+                    Button(action: {
+                        vs.send(.resetCanvas)
+                    }, label: {
+                        Image(systemName: "eraser")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                    })
                 }
                 .padding([.trailing, .bottom], 20)
             }
