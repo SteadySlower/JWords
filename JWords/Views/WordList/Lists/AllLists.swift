@@ -146,27 +146,16 @@ struct SwitchBetweenList {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .edit(let action):
-                switch action {
-                case .toEditUnitSelected(let unit):
-                    return .send(.toEditUnitSelected(unit))
-                default: return .none
-                }
-            default: return .none
+            case .edit(.toEditUnitSelected(let unit)):
+                return .send(.toEditUnitSelected(unit))
+            default: break
             }
+            return .none
         }
-        .ifLet(\.edit, action: /Action.edit) {
-            EditUnits()
-        }
-        .ifLet(\.select, action: /Action.select) {
-            SelectUnits()
-        }
-        .ifLet(\.delete, action: /Action.delete) {
-            DeleteUnits()
-        }
-        Scope(state: \.study, action: /Action.study) {
-            UnitsList()
-        }
+        .ifLet(\.edit, action: \.edit) { EditUnits() }
+        .ifLet(\.select, action: \.select) { SelectUnits() }
+        .ifLet(\.delete, action: \.delete) { DeleteUnits() }
+        Scope(state: \.study, action: \.study) { UnitsList() }
     }
 }
 
