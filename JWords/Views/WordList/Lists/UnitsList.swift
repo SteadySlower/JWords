@@ -40,18 +40,12 @@ struct UnitsList {
     }
     
     enum Action: Equatable {
-        case unit(StudyOneUnit.State.ID, StudyOneUnit.Action)
+        case unit(IdentifiedActionOf<StudyOneUnit>)
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            default: return .none
-            }
-        }
-        .forEach(\._units, action: /Action.unit) {
-            StudyOneUnit()
-        }
+        EmptyReducer()
+        .forEach(\._units, action: \.unit) { StudyOneUnit() }
     }
     
 }
