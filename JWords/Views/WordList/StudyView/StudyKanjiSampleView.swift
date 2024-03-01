@@ -42,7 +42,7 @@ struct StudyKanjiSampleView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyKanjiSamples.Action.lists)
+                action: \.lists)
             )
             .navigationTitle("\(vs.kanji.kanjiText)가 쓰이는 단어")
             #if os(iOS)

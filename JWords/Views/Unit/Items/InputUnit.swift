@@ -70,12 +70,12 @@ struct UnitInputView: View {
             VStack(spacing: 10) {
                 KanjiInputField(store: store.scope(
                     state: \.kanjiInput,
-                    action: InputUnit.Action.kanjiInput)
+                    action: \.kanjiInput)
                 )
                 .focused($focusedField, equals: .kanji)
                 MeaningInputField(store: store.scope(
                     state: \.meaningInput,
-                    action: InputUnit.Action.meaningInput)
+                    action: \.meaningInput)
                 )
                 .focused($focusedField, equals: .meaning)
 

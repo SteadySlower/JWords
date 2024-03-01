@@ -63,7 +63,7 @@ struct MainTabView: View {
                 NavigationView {
                     TodayView(store: store.scope(
                         state: \.todayList,
-                        action: MainTab.Action.todayList)
+                        action: \.todayList)
                     )
                 }
                 .tabItem { Label("오늘 단어장", systemImage: "calendar") }
@@ -74,7 +74,7 @@ struct MainTabView: View {
                 NavigationView {
                     HomeView(store: store.scope(
                         state: \.homeList,
-                        action: MainTab.Action.homeList)
+                        action: \.homeList)
                     )
                 }
                 .tabItem { Label("모든 단어장", systemImage: "books.vertical") }
@@ -85,7 +85,7 @@ struct MainTabView: View {
                 NavigationView {
                     KanjiListView(store: store.scope(
                         state: \.kanjiList,
-                        action: MainTab.Action.kanjiList)
+                        action: \.kanjiList)
                     )
                 }
                 .tabItem {
@@ -107,7 +107,7 @@ struct MainTabView: View {
                     NavigationView {
                         KanjiSetListView(store: store.scope(
                             state: \.kanjiSetList,
-                            action: MainTab.Action.kanjiSetList)
+                            action: \.kanjiSetList)
                         )
                     }
                     .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
@@ -119,7 +119,7 @@ struct MainTabView: View {
                 NavigationView {
                     OCRAddUnitView(store: store.scope(
                         state: \.ocr,
-                        action: MainTab.Action.ocr)
+                        action: \.ocr)
                     )
                 }
                 .tabItem { Label("단어 스캐너", systemImage: "scanner") }

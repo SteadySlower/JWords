@@ -130,7 +130,7 @@ struct StudySetView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyUnitsInSet.Action.lists)
+                action: \.lists)
             )
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
@@ -138,12 +138,12 @@ struct StudySetView: View {
             ) {
                 SettingSideBar(store: store.scope(
                     state: \.setting,
-                    action: StudyUnitsInSet.Action.setting)
+                    action: \.setting)
                 )
             }
             .withListModals(store: store.scope(
                 state: \.modals,
-                action: StudyUnitsInSet.Action.modals)
+                action: \.modals)
             )
             .navigationTitle(vs.set.title)
             #if os(iOS)
@@ -151,7 +151,7 @@ struct StudySetView: View {
                 ToolbarItem {
                     StudyToolBarButtons(store: store.scope(
                         state: \.tools,
-                        action: StudyUnitsInSet.Action.tools)
+                        action: \.tools)
                     )
                 }
             }

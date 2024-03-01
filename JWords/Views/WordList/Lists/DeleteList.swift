@@ -38,7 +38,7 @@ struct DeleteList: View {
             ForEachStore(
               store.scope(
                 state: \.units,
-                action: DeleteUnits.Action.units)
+                action: \.units)
             ) {
                 DeleteCell(store: $0)
             }

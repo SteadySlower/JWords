@@ -42,7 +42,7 @@ struct SelectList: View {
             ForEachStore(
               store.scope(
                 state: \.units,
-                action: SelectUnits.Action.unit)
+                action: \.unit)
             ) {
                 SelectionCell(store: $0)
             }

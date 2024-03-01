@@ -117,7 +117,7 @@ struct HomeView: View {
                     destination: IfLetStore(
                             store.scope(
                                 state: \.studyUnitsInSet,
-                                action: HomeList.Action.studyUnitsInSet)
+                                action: \.studyUnitsInSet)
                             ) { StudySetView(store: $0) },
                     isActive: vs.binding(
                                 get: \.showStudySetView,
@@ -135,8 +135,9 @@ struct HomeView: View {
                 get: \.showAddSetModal,
                 send: HomeList.Action.setAddSetModal)
             ) {
-                IfLetStore(store.scope(state: \.addSet,
-                                            action: HomeList.Action.addSet)
+                IfLetStore(store.scope(
+                    state: \.addSet,
+                    action: \.addSet)
                 ) {
                     AddSetView(store: $0)
                 }

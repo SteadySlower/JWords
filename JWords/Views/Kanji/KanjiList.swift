@@ -119,7 +119,7 @@ struct KanjiListView: View {
                     destination: IfLetStore(
                             store.scope(
                                 state: \.studyKanjiSamples,
-                                action: KanjiList.Action.studyKanjiSamples)
+                                action: \.studyKanjiSamples)
                             ) { StudyKanjiSampleView(store: $0) },
                     isActive: vs.binding(
                                 get: \.showStudyView,
@@ -128,13 +128,13 @@ struct KanjiListView: View {
                 KanjiSearchBar(
                     store: store.scope(
                         state: \.searchKanji,
-                        action: KanjiList.Action.searchKanji)
+                        action: \.searchKanji)
                 )
                 ScrollView {
                     LazyVStack {
                         ForEachStore(store.scope(
                             state: \.kanjis,
-                            action: KanjiList.Action.kanji)
+                            action: \.kanji)
                         ) {
                             KanjiCell(store: $0)
                         }
@@ -165,7 +165,7 @@ struct KanjiListView: View {
             ) {
                 IfLetStore(store.scope(
                     state: \.edit,
-                    action: KanjiList.Action.edit)
+                    action: \.edit)
                 ) {
                     EditKanjiView(store: $0)
                 }
@@ -176,7 +176,7 @@ struct KanjiListView: View {
             ) {
                 IfLetStore(store.scope(
                     state: \.addWriting,
-                    action: KanjiList.Action.addWriting)
+                    action: \.addWriting)
                 ) {
                     AddWritingKanjiView(store: $0)
                 }

@@ -80,7 +80,7 @@ struct KanjiSetListView: View {
                         destination: IfLetStore(
                                 store.scope(
                                     state: \.writeKanjis,
-                                    action: KanjiSetList.Action.writeKanjis)
+                                    action: \.writeKanjis)
                                 ) { WritingKanjisView(store: $0) },
                         isActive: vs.binding(
                                     get: \.showWriteKanji,
@@ -98,8 +98,9 @@ struct KanjiSetListView: View {
                 get: \.showAddKanjiSet,
                 send: KanjiSetList.Action.showAddKanjiSet)
             ) {
-                IfLetStore(store.scope(state: \.addKanjiSet,
-                                            action: KanjiSetList.Action.addKanjiSet)
+                IfLetStore(store.scope(
+                    state: \.addKanjiSet,
+                    action: \.addKanjiSet)
                 ) {
                     AddKanjiSetView(store: $0)
                 }

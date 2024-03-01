@@ -56,15 +56,15 @@ struct OCRAddUnitView: View {
                 VStack(spacing: 35) {
                     OCRView(store: store.scope(
                         state: \.ocr,
-                        action: AddUnitWithOCR.Action.ocr)
+                        action: \.ocr)
                     )
                     StudySetPicker(store: store.scope(
                         state: \.selectSet,
-                        action: AddUnitWithOCR.Action.selectSet)
+                        action: \.selectSet)
                     )
                     AddUnitView(store: store.scope(
                         state: \.addUnit,
-                        action: AddUnitWithOCR.Action.addUnit)
+                        action: \.addUnit)
                     )
                 }
                 .padding(.vertical, 10)

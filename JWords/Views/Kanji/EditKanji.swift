@@ -65,7 +65,7 @@ struct EditKanjiView: View {
                 KanjiInputView(
                     store: store.scope(
                         state: \.input,
-                        action: EditKanji.Action.input)
+                        action: \.input)
                 )
                 HStack(spacing: 100) {
                     Button("취소") {

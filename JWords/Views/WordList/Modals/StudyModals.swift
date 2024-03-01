@@ -161,7 +161,7 @@ struct ListModals: ViewModifier {
                 ) {
                     IfLetStore(store.scope(
                         state: \.editSet,
-                        action: ShowModalsInList.Action.editSet)
+                        action: \.editSet)
                     ) {
                         EditSetView(store: $0)
                     }
@@ -172,7 +172,7 @@ struct ListModals: ViewModifier {
                 ) {
                     IfLetStore(store.scope(
                         state: \.addUnit,
-                        action: ShowModalsInList.Action.addUnit)
+                        action: \.addUnit)
                     ) {
                         AddUnitView(store: $0)
                             .padding(.horizontal, 10)
@@ -185,7 +185,7 @@ struct ListModals: ViewModifier {
                 ) {
                     IfLetStore(store.scope(
                         state: \.editUnit,
-                        action: ShowModalsInList.Action.editUnit)
+                        action: \.editUnit)
                     ) {
                         EditUnitView(store: $0)
                             .padding(.horizontal, 10)
@@ -198,7 +198,7 @@ struct ListModals: ViewModifier {
                 ) {
                     IfLetStore(store.scope(
                         state: \.moveUnits,
-                        action: ShowModalsInList.Action.moveUnits)
+                        action: \.moveUnits)
                     ) {
                         UnitMoveView(store: $0)
                     }

@@ -44,7 +44,7 @@ struct EditList: View {
     var body: some View {
         LazyVStack(spacing: 32) {
             ForEachStore(
-              store.scope(state: \.units, action: EditUnits.Action.unit)
+              store.scope(state: \.units, action: \.unit)
             ) {
                 EditCell(store: $0)
             }

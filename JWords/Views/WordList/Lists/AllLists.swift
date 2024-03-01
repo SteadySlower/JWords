@@ -171,26 +171,26 @@ struct AllLists: View {
                     case .study:
                         StudyList(store: store.scope(
                             state: \.study,
-                            action: SwitchBetweenList.Action.study)
+                            action: \.study)
                         )
                     case .edit:
                         IfLetStore(store.scope(
                             state: \.edit,
-                            action: SwitchBetweenList.Action.edit)
+                            action: \.edit)
                         ) {
                             EditList(store: $0)
                         }
                     case .select:
                         IfLetStore(store.scope(
                             state: \.select,
-                            action: SwitchBetweenList.Action.select)
+                            action: \.select)
                         ) {
                             SelectList(store: $0)
                         }
                     case .delete:
                         IfLetStore(store.scope(
                             state: \.delete,
-                            action: SwitchBetweenList.Action.delete)
+                            action: \.delete)
                         ) {
                             DeleteList(store: $0)
                         }

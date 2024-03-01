@@ -69,9 +69,10 @@ struct WritingKanjiView: View {
                     VStack {
                         KanjiCanvas(store: store.scope(
                             state: \.drawWithPencil,
-                            action: WriteKanji.Action.drawWithPencel)
+                            action: \.drawWithPencel
+                            )
                         )
-                            .padding(.top, 30)
+                        .padding(.top, 30)
                         Button(action: {
                             vs.send(.toggleShowAnswer)
                         }, label: {

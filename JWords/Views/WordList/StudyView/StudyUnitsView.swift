@@ -90,7 +90,7 @@ struct StudyUnitsView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyUnits.Action.lists)
+                action: \.lists)
             )
             .sideBar(showSideBar: vs.binding(
                 get: \.showSideBar,
@@ -98,12 +98,12 @@ struct StudyUnitsView: View {
             ) {
                 SettingSideBar(store: store.scope(
                     state: \.setting,
-                    action: StudyUnits.Action.setting)
+                    action: \.setting)
                 )
             }
             .withListModals(store: store.scope(
                 state: \.modals,
-                action: StudyUnits.Action.modals)
+                action: \.modals)
             )
             .navigationTitle("틀린 단어 모아보기")
             #if os(iOS)
@@ -111,7 +111,7 @@ struct StudyUnitsView: View {
                 ToolbarItem {
                     StudyToolBarButtons(store: store.scope(
                         state: \.tools,
-                        action: StudyUnits.Action.tools)
+                        action: \.tools)
                     )
                 }
             }

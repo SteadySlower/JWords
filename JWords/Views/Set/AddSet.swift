@@ -57,7 +57,7 @@ struct AddSetView: View {
             VStack(spacing: 30) {
                 InputSetView(store: store.scope(
                     state: \.inputSet,
-                    action: AddSet.Action.inputSet)
+                    action: \.inputSet)
                 )
                 HStack {
                     Spacer()

@@ -148,7 +148,7 @@ struct TodayView: View {
                             .trailingAlignment()
                         TodayStatusView(store: store.scope(
                             state: \.todayStatus,
-                            action: TodayList.Action.todayStatus)
+                            action: \.todayStatus)
                         )
                         .frame(height: 120)
                         VStack(spacing: 8) {
@@ -184,7 +184,7 @@ struct TodayView: View {
                     destination: IfLetStore(
                             store.scope(
                                 state: \.studyUnitsInSet,
-                                action: TodayList.Action.studyUnitsInSet)
+                                action: \.studyUnitsInSet)
                             ) { StudySetView(store: $0) },
                     isActive: vs.binding(
                                 get: \.showStudySetView,
@@ -194,7 +194,7 @@ struct TodayView: View {
                     destination: IfLetStore(
                             store.scope(
                                 state: \.studyUnits,
-                                action: TodayList.Action.studyUnits)
+                                action: \.studyUnits)
                             ) { StudyUnitsView(store: $0) },
                     isActive: vs.binding(
                                 get: \.showStudyUnitsView,
@@ -215,7 +215,7 @@ struct TodayView: View {
             ) {
                 IfLetStore(store.scope(
                     state: \.todaySelection,
-                    action: TodayList.Action.todaySelection)
+                    action: \.todaySelection)
                 ) {
                     TodaySelectionModal(store: $0)
                 }

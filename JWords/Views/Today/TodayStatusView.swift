@@ -76,7 +76,7 @@ struct TodayStatusView: View {
                     HStack {
                         PercentageChart(store: store.scope(
                             state: \.pieChart,
-                            action: TodayStatus.Action.pieChart)
+                            action: \.pieChart)
                         )
                         Spacer()
                         VStack(alignment: .trailing) {
