@@ -38,36 +38,15 @@ struct MainTab {
             switch action {
             case .tabChanged(let tab):
                 state.selectedTab = tab
-                return .none
-            default:
-                return .none
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.todayList,
-            action: /Action.todayList,
-            child: { TodayList() }
-        )
-        Scope(
-            state: \.homeList,
-            action: /Action.homeList,
-            child: { HomeList() }
-        )
-        Scope(
-            state: \.kanjiList,
-            action: /Action.kanjiList,
-            child: { KanjiList() }
-        )
-        Scope(
-            state: \.kanjiSetList,
-            action: /Action.kanjiSetList,
-            child: { KanjiSetList() }
-        )
-        Scope(
-            state: \.ocr,
-            action: /Action.ocr,
-            child: { AddUnitWithOCR() }
-        )
+        Scope(state: \.todayList, action: \.todayList) { TodayList() }
+        Scope(state: \.homeList, action: \.homeList) { HomeList() }
+        Scope(state: \.kanjiList, action: \.kanjiList) { KanjiList() }
+        Scope(state: \.kanjiSetList, action: \.kanjiSetList) { KanjiSetList() }
+        Scope(state: \.ocr, action: \.ocr) { AddUnitWithOCR() }
     }
     
 }
