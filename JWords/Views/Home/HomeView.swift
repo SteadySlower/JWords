@@ -52,46 +52,27 @@ struct HomeList {
             case .onAppear:
                 state.clear()
                 state.sets = try! setClient.fetch(state.includeClosed)
-                return .none
             case .setAddSetModal(let isPresent):
                 state.addSet = isPresent ? AddSet.State() : nil
-                return .none
             case let .homeCellTapped(set):
                 let units = try! unitClient.fetch(set)
                 state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
-                return .none
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .send(.onAppear)
-            case .studyUnitsInSet(let action):
-                switch action {
-                case .dismiss:
-                    state.studyUnitsInSet = nil
-                    return .none
-                default: return .none
-                }
-            case .addSet(let action):
-                switch action {
-                case .added(let set):
-                    state.sets.insert(set, at: 0)
-                    state.addSet = nil
-                    return .none
-                case .cancel:
-                    state.addSet = nil
-                    return .none
-                default:
-                    return .none
-                }
-            default:
-                return .none
+            case .studyUnitsInSet(.dismiss):
+                state.studyUnitsInSet = nil
+            case .addSet(.added(let set)):
+                state.sets.insert(set, at: 0)
+                state.addSet = nil
+            case .addSet(.cancel):
+                state.addSet = nil
+            default: break
             }
+            return .none
         }
-        .ifLet(\.studyUnitsInSet, action: /Action.studyUnitsInSet) {
-            StudyUnitsInSet()
-        }
-        .ifLet(\.addSet, action: /Action.addSet) {
-            AddSet()
-        }
+        .ifLet(\.studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
+        .ifLet(\.addSet, action: \.addSet) { AddSet() }
     }
 
 }
