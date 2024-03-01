@@ -44,7 +44,7 @@ struct KanjiList {
         case studyKanjiSamples(StudyKanjiSamples.Action)
         case showStudyView(Bool)
         case searchKanji(SearchKanji.Action)
-        case kanji(DisplayKanji.State.ID, DisplayKanji.Action)
+        case kanji(IdentifiedActionOf<DisplayKanji>)
         case showEditView(Bool)
         case showAddWritingModal(Bool)
         case edit(EditKanji.Action)
@@ -64,30 +64,18 @@ struct KanjiList {
                 let last = state.kanjis.last
                 let fetched = try! kanjiClient.fetch(last?.kanji)
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
-                state.kanjis.append(contentsOf:
-                    IdentifiedArray(
-                        uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
-                    )
-                )
-                return .none
-            case let .kanji(_, action):
-                switch action {
-                case .showSamples(let kanji):
-                    let units = try! kanjiClient.kanjiUnits(kanji)
-                    state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
-                    return .none
-                case .edit(let kanji):
-                    state.edit = EditKanji.State(kanji)
-                    return .none
-                case .addToWrite(let kanji):
-                    let sets = try! kanjiSetClient.fetch()
-                    state.addWriting = AddWritingKanji.State(kanji: kanji, kanjiSets: sets)
-                    return .none
-                }
+                let idArrayOfFetched = fetched.map { DisplayKanji.State(kanji: $0) }
+                state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
+            case .kanji(.element(_, .showSamples(let kanji))):
+                let units = try! kanjiClient.kanjiUnits(kanji)
+                state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
+            case .kanji(.element(_, .edit(let kanji))):
+                state.edit = EditKanji.State(kanji)
+            case .kanji(.element(_, .addToWrite(let kanji))):
+                let sets = try! kanjiSetClient.fetch()
+                state.addWriting = AddWritingKanji.State(kanji: kanji, kanjiSets: sets)
             case .showStudyView(let isPresent):
-                if !isPresent {
-                    state.studyKanjiSamples = nil
-                }
+                if !isPresent { state.studyKanjiSamples = nil }
                 return .none
             case .showEditView(let isPresent):
                 if !isPresent { state.edit = nil }
@@ -95,58 +83,27 @@ struct KanjiList {
             case .showAddWritingModal(let isPresent):
                 if !isPresent { state.addWriting = nil }
                 return .none
-            case .edit(let action):
-                switch action {
-                case .cancel:
-                    state.edit = nil
-                    return .none
-                case .edited(let kanji):
-                    state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
-                    state.edit = nil
-                    return .none
-                default:
-                    return .none
-                }
-            case .addWriting(let action):
-                switch action {
-                case .cancel, .added:
-                    state.addWriting = nil
-                    return .none
-                default: return .none
-                }
-            case .searchKanji(let action):
-                switch action {
-                case .updateQuery(let query):
-                    if query.isEmpty {
-                        return .send(.fetchKanjis)
-                    } else {
-                        return .none
-                    }
-                case .kanjiSearched(let kanjis):
-                    state.kanjis = IdentifiedArray(uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) })
-                    return .none
-                }
-            default:
-                return .none
+            case .edit(.cancel):
+                state.edit = nil
+            case .edit(.edited(let kanji)):
+                state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
+                state.edit = nil
+            case .addWriting(.added), .addWriting(.cancel):
+                state.addWriting = nil
+            case .searchKanji(.updateQuery(let query)):
+                // If query is empty, fetch all kanjis
+                return query.isEmpty ? .send(.fetchKanjis) : .none
+            case .searchKanji(.kanjiSearched(let kanjis)):
+                state.kanjis = IdentifiedArray(uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) })
+            default: break
             }
+            return .none
         }
-        .forEach(\.kanjis, action: /Action.kanji) {
-            DisplayKanji()
-        }
-        .ifLet(\.studyKanjiSamples, action: /Action.studyKanjiSamples) {
-            StudyKanjiSamples()
-        }
-        .ifLet(\.edit, action: /Action.edit) {
-            EditKanji()
-        }
-        .ifLet(\.addWriting, action: /Action.addWriting) {
-            AddWritingKanji()
-        }
-        Scope(
-            state: \.searchKanji,
-            action: /Action.searchKanji,
-            child: { SearchKanji() }
-        )
+        .forEach(\.kanjis, action: \.kanji) { DisplayKanji() }
+        .ifLet(\.studyKanjiSamples, action: \.studyKanjiSamples) { StudyKanjiSamples() }
+        .ifLet(\.edit, action: \.edit) { EditKanji() }
+        .ifLet(\.addWriting, action: \.addWriting) { AddWritingKanji() }
+        Scope(state: \.searchKanji, action: \.searchKanji) { SearchKanji() }
     }
 
 }
