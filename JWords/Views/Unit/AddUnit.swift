@@ -65,16 +65,11 @@ struct AddUnit {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .inputUnit(let action):
-                switch action {
-                case .alreadyExist(let unit):
-                    state.alreadyExist = unit
-                    if let unit = unit {
-                        state.setExistAlert()
-                        state.inputUnit.meaningInput.text = unit.meaningText
-                    }
-                    return .none
-                default: return .none
+            case .inputUnit(.alreadyExist(let unit)):
+                state.alreadyExist = unit
+                if let unit = unit {
+                    state.setExistAlert()
+                    state.inputUnit.meaningInput.text = unit.meaningText
                 }
             case .add:
                 guard let set = state.set else {
@@ -97,13 +92,12 @@ struct AddUnit {
                     let unit = try! unitClient.insert(set, input)
                     return .send(.added(unit))
                 }
-            default: return .none
+            default: break
             }
+            return .none
         }
-        .ifLet(\.$alert, action: /Action.alert)
-        Scope(state: \.inputUnit, action: /Action.inputUnit) {
-            InputUnit()
-        }
+        .ifLet(\.$alert, action: \.alert)
+        Scope(state: \.inputUnit, action: \.inputUnit) { InputUnit() }
     }
     
 }
