@@ -39,14 +39,11 @@ struct AddSet {
                 )
                 let set = try! setClient.insert(input)
                 return .send(.added(set))
-            default: return .none
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.inputSet,
-            action: /Action.inputSet,
-            child: { InputSet() }
-        )
+        Scope(state: \.inputSet, action: \.inputSet) { InputSet() }
     }
     
 }
