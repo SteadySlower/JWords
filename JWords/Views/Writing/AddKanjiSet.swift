@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct AddKanjiSet: Reducer {
+@Reducer
+struct AddKanjiSet {
     struct State: Equatable {
         var title: String = ""
         var ableToAdd: Bool { !title.isEmpty }

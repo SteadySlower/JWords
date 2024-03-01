@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MacApp: Reducer {
+@Reducer
+struct MacApp {
     
     struct State: Equatable {
         var kanjiList = KanjiList.State(kanjis: [])
@@ -21,18 +22,9 @@ struct MacApp: Reducer {
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            default:
-                return .none
-            }
-        }
-        Scope(state: \.kanjiList, action: /Action.kanjiList(action:)) {
-            KanjiList()
-        }
-        Scope(state: \.ocr, action: /Action.ocr(action:)) {
-            AddUnitWithOCR()
-        }
+        EmptyReducer()
+        Scope(state: \.kanjiList, action: \.kanjiList) { KanjiList() }
+        Scope(state: \.ocr, action: \.ocr) { AddUnitWithOCR() }
     }
     
 }

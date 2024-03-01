@@ -8,42 +8,28 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct WritingKanjiList: Reducer {
+@Reducer
+struct WritingKanjiList {
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<DisplayWritingKanji.State>
-        
-        func findKanjiByID(id: DisplayWritingKanji.State.ID) -> Kanji? {
-            kanjis.filter { $0.id == id }.first?.kanji
-        }
     }
     
     enum Action: Equatable {
-        case fetchKanjis
         case kanjiSelected(Kanji?)
-        case kanji(DisplayWritingKanji.State.ID, DisplayWritingKanji.Action)
+        case kanji(IdentifiedActionOf<DisplayWritingKanji>)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .fetchKanjis:
-                return .none
-            case .kanji(let id, let action):
-                switch action {
-                case .select:
-                    let selected = state.findKanjiByID(id: id)
-                    return .send(.kanjiSelected(selected))
-                default:
-                    return .none
-                }
-            default: return .none
+            case let .kanji(.element(id, .select)):
+                let selected = state.kanjis[id: id]?.kanji
+                return .send(.kanjiSelected(selected))
+            default: break
             }
+            return .none
         }
-        .forEach(
-            \.kanjis,
-             action: /Action.kanji,
-             element: { DisplayWritingKanji() }
-        )
+        .forEach(\.kanjis, action: \.kanji) { DisplayWritingKanji() }
     }
 }
 

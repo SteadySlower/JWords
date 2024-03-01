@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct DeleteUnits: Reducer {
+@Reducer
+struct DeleteUnits {
     struct State: Equatable {
         var units: IdentifiedArrayOf<DeleteUnit.State>
         
@@ -19,18 +20,12 @@ struct DeleteUnits: Reducer {
     }
     
     enum Action: Equatable {
-        case unit(DeleteUnit.State.ID, DeleteUnit.Action)
+        case units(IdentifiedActionOf<DeleteUnit>)
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            default: return .none
-            }
-        }
-        .forEach(\.units, action: /Action.unit) {
-            DeleteUnit()
-        }
+        EmptyReducer()
+        .forEach(\.units, action: \.units) { DeleteUnit() }
     }
 }
 
@@ -43,7 +38,7 @@ struct DeleteList: View {
             ForEachStore(
               store.scope(
                 state: \.units,
-                action: DeleteUnits.Action.unit)
+                action: DeleteUnits.Action.units)
             ) {
                 DeleteCell(store: $0)
             }

@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct OCR: Reducer {
+@Reducer
+struct OCR {
     
     struct State: Equatable {
         var getImage = GetImageForOCR.State()
@@ -29,52 +30,30 @@ struct OCR: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .getImage(let action):
-                switch action {
-                case .imageFetched(let image):
-                    state.ocr = GetTextsFromOCR.State(image: image)
-                    return .merge(
-                        .run{ send in
-                            await send(.koreanOcrResponse(TaskResult {
-                                try await ocrClient.ocr(image, .korean)
-                            }))
-                        },
-                        .run{ send in
-                            await send(.japaneseOcrResponse(TaskResult {
-                                try await ocrClient.ocr(image, .japanese)
-                            }))
-                        }
-                    )
-                default:
-                    return .none
-                }
-            case .ocr(let action):
-                switch action {
-                case .ocrMarkTapped(let lang, let text):
-                    if lang == .korean {
-                        return .send(.koreanOCR(text))
-                    } else {
-                        return .send(.japaneseOCR(text))
+            case .getImage(.imageFetched(let image)):
+                state.ocr = GetTextsFromOCR.State(image: image)
+                return .merge(
+                    .run { send in
+                        await send(.koreanOcrResponse(TaskResult { try await ocrClient.ocr(image, .korean)}))
+                    },
+                    .run { send in
+                        await send(.japaneseOcrResponse(TaskResult {try await ocrClient.ocr(image, .japanese)}))
                     }
-                case .removeImageButtonTapped:
-                    state.ocr = nil
-                    return .none
-                }
+                )
+            case .ocr(.ocrMarkTapped(let lang, let text)):
+                return lang == .korean ? .send(.koreanOCR(text)) : .send(.japaneseOCR(text))
+            case .ocr(.removeImageButtonTapped):
+                state.ocr = nil
             case .japaneseOcrResponse(.success(let result)):
                 state.ocr?.japaneseOcrResult = result
-                return .none
             case .koreanOcrResponse(.success(let result)):
                 state.ocr?.koreanOcrResult = result
-                return .none
-            default: return .none
+            default: break
             }
+            return .none
         }
-        .ifLet(\.ocr, action: /Action.ocr) {
-            GetTextsFromOCR()
-        }
-        Scope(state: \.getImage, action: /Action.getImage) {
-            GetImageForOCR()
-        }
+        .ifLet(\.ocr, action: \.ocr) { GetTextsFromOCR() }
+        Scope(state: \.getImage, action: \.getImage) { GetImageForOCR() }
     }
     
 }

@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct EditKanji: Reducer {
+@Reducer
+struct EditKanji {
     struct State: Equatable {
         let kanji: Kanji
         var input: InputKanji.State
@@ -45,14 +46,11 @@ struct EditKanji: Reducer {
                     kundoku: state.input.kundoku)
                 let edited = try! kanjiClient.edit(state.kanji, input)
                 return .send(.edited(edited))
-            default: return .none
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.input,
-            action: /Action.input,
-            child: { InputKanji() }
-        )
+        Scope(state: \.input, action: \.input) { InputKanji() }
     }
     
 }

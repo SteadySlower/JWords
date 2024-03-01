@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct KanjiSetList: Reducer {
+@Reducer
+struct KanjiSetList {
     struct State: Equatable {
         var sets: [KanjiSet]
         
@@ -36,37 +37,24 @@ struct KanjiSetList: Reducer {
             switch action {
             case .fetchSets:
                 state.sets = try! ksClient.fetch()
-                return .none
             case .setSelected(let set):
                 let kanjis = try! wkClient.fetch(set)
                 state.writeKanjis = .init(kanjis: kanjis)
-                return .none
             case .showWriteKanjis(let show):
                 if !show { state.writeKanjis = nil }
-                return .none
-            case .addKanjiSet(let action):
-                switch action {
-                case .cancel:
-                    state.addKanjiSet = nil
-                    return .none
-                case .added(let newSet):
-                    state.sets.insert(newSet, at: 0)
-                    state.addKanjiSet = nil
-                    return .none
-                default: return .none
-                }
+            case .addKanjiSet(.cancel):
+                state.addKanjiSet = nil
+            case .addKanjiSet(.added(let newSet)):
+                state.sets.insert(newSet, at: 0)
+                state.addKanjiSet = nil
             case .showAddKanjiSet(let show):
                 state.addKanjiSet = show ? .init() : nil
-                return .none
-            default: return .none
+            default: break
             }
+            return .none
         }
-        .ifLet(\.writeKanjis, action: /Action.writeKanjis) {
-            WriteKanjis()
-        }
-        .ifLet(\.addKanjiSet, action: /Action.addKanjiSet) {
-            AddKanjiSet()
-        }
+        .ifLet(\.writeKanjis, action: \.writeKanjis) { WriteKanjis() }
+        .ifLet(\.addKanjiSet, action: \.addKanjiSet) { AddKanjiSet() }
     }
 }
 

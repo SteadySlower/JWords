@@ -14,7 +14,8 @@ extension View {
     }
 }
 
-struct ShowModalsInList: Reducer {
+@Reducer
+struct ShowModalsInList {
     
     struct State: Equatable {
         var editSet: EditSet.State?
@@ -93,16 +94,12 @@ struct ShowModalsInList: Reducer {
             switch action {
             case .showEditSetModal(let show):
                 if !show { state.editSet = nil }
-                return .none
             case .showAddUnitModal(let show):
                 if !show { state.addUnit = nil }
-                return .none
             case .showEditUnitModal(let show):
                 if !show { state.editUnit = nil }
-                return .none
             case .showMoveUnitsModal(let show):
                 if !show { state.moveUnits = nil }
-                return .none
             case .editSet(let action):
                 switch action {
                 case .edited(let set):
@@ -110,8 +107,7 @@ struct ShowModalsInList: Reducer {
                     return .send(.setEdited(set))
                 case .cancel:
                     state.editSet = nil
-                    return .none
-                default: return .none
+                default: break
                 }
             case .addUnit(let action):
                 switch action {
@@ -120,8 +116,7 @@ struct ShowModalsInList: Reducer {
                     return .send(.unitAdded(unit))
                 case .cancel:
                     state.addUnit = nil
-                    return .none
-                default: return .none
+                default: break
                 }
             case .editUnit(let action):
                 switch action {
@@ -130,8 +125,7 @@ struct ShowModalsInList: Reducer {
                     return .send(.unitEdited(unit))
                 case .cancel:
                     state.editUnit = nil
-                    return .none
-                default: return .none
+                default: break
                 }
             case .moveUnits(let action):
                 switch action {
@@ -140,36 +134,16 @@ struct ShowModalsInList: Reducer {
                     return .send(.unitsMoved)
                 case .cancelButtonTapped:
                     state.moveUnits = nil
-                    return .none
-                default: return .none
+                default: break
                 }
-            default: return .none
+            default: break
             }
+            return .none
         }
-        .ifLet(
-            \.editSet,
-             action: /Action.editSet
-        ) {
-            EditSet()
-        }
-        .ifLet(
-            \.addUnit,
-             action: /Action.addUnit
-        ) {
-            AddUnit()
-        }
-        .ifLet(
-            \.editUnit,
-             action: /Action.editUnit
-        ) {
-            EditUnit()
-        }
-        .ifLet(
-            \.moveUnits,
-             action: /Action.moveUnits
-        ) {
-            MoveUnits()
-        }
+        .ifLet(\.editSet, action: \.editSet) { EditSet() }
+        .ifLet(\.addUnit, action: \.addUnit) { AddUnit() }
+        .ifLet(\.editUnit, action: \.editUnit) { EditUnit() }
+        .ifLet(\.moveUnits, action: \.moveUnits) { MoveUnits() }
     }
 
 }

@@ -13,7 +13,8 @@ enum Schedule: Equatable {
     case none, study, review
 }
 
-struct TodaySelection: Reducer {
+@Reducer
+struct TodaySelection {
     struct State: Equatable {
         var sets = [StudySet]()
         var schedules: [StudySet:Schedule]

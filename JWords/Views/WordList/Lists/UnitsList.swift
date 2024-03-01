@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct UnitsList: Reducer {
+@Reducer
+struct UnitsList {
     struct State: Equatable {
         var _units: IdentifiedArrayOf<StudyOneUnit.State>
         var units: IdentifiedArrayOf<StudyOneUnit.State> {
@@ -39,18 +40,12 @@ struct UnitsList: Reducer {
     }
     
     enum Action: Equatable {
-        case unit(StudyOneUnit.State.ID, StudyOneUnit.Action)
+        case unit(IdentifiedActionOf<StudyOneUnit>)
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            default: return .none
-            }
-        }
-        .forEach(\._units, action: /Action.unit) {
-            StudyOneUnit()
-        }
+        EmptyReducer()
+        .forEach(\._units, action: \.unit) { StudyOneUnit() }
     }
     
 }

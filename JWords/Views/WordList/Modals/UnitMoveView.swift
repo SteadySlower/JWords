@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MoveUnits: Reducer {
+@Reducer
+struct MoveUnits {
     struct State: Equatable {
         let fromSet: StudySet
         let isReviewSet: Bool

@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct WriteKanjis: Reducer {
+@Reducer
+struct WriteKanjis {
     
     struct State: Equatable {
         var kanjis: WritingKanjiList.State
@@ -45,16 +46,8 @@ struct WriteKanjis: Reducer {
             default: return .none
             }
         }
-        Scope(
-            state: \.toWrite,
-            action: /Action.toWrite,
-            child: { WriteKanji() }
-        )
-        Scope(
-            state: \.kanjis,
-            action: /Action.kanjis,
-            child: { WritingKanjiList() }
-        )
+        Scope(state: \.toWrite, action: \.toWrite) { WriteKanji() }
+        Scope(state: \.kanjis, action: \.kanjis) { WritingKanjiList() }
     }
     
 }

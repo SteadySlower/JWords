@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct MeaningInput: Reducer {
+@Reducer
+struct MeaningInput {
 
     struct State: Equatable {
         var text: String = ""

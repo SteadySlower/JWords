@@ -26,7 +26,8 @@ private enum ImageSource {
     }
 }
 
-struct GetImageForOCR: Reducer {
+@Reducer
+struct GetImageForOCR {
     struct State: Equatable {
         var showCameraScanner: Bool = false
     }

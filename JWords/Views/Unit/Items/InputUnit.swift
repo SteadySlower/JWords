@@ -12,7 +12,8 @@ enum UnitInputField {
     case kanji, meaning
 }
 
-struct InputUnit: Reducer {
+@Reducer
+struct InputUnit {
 
     struct State: Equatable {
         @BindingState var focusedField: UnitInputField?
@@ -39,38 +40,22 @@ struct InputUnit: Reducer {
         BindingReducer()
         Reduce { state, action in
             switch action {
-            case .kanjiInput(let action):
-                switch action {
-                case .huriganaUpdated(let hurigana):
-                    let unit = try! unitClient.checkIfExist(hurigana)
-                    return .send(.alreadyExist(unit))
-                case .onTab:
-                    state.focusedField = .meaning
-                    state.kanjiInput.convertToHurigana()
-                    let unit = try! unitClient.checkIfExist(state.kanjiInput.hurigana.hurigana)
-                    return .send(.alreadyExist(unit))
-                default: return .none
-                }
-            case .meaningInput(let action):
-                switch action {
-                case .onTab:
-                    state.focusedField = .kanji
-                    return .none
-                default: return .none
-                }
-            default: return .none
+            case .kanjiInput(.huriganaUpdated(let hurigana)):
+                let unit = try! unitClient.checkIfExist(hurigana)
+                return .send(.alreadyExist(unit))
+            case .kanjiInput(.onTab):
+                state.focusedField = .meaning
+                state.kanjiInput.convertToHurigana()
+                let unit = try! unitClient.checkIfExist(state.kanjiInput.hurigana.hurigana)
+                return .send(.alreadyExist(unit))
+            case .meaningInput(.onTab):
+                state.focusedField = .kanji
+            default: break
             }
+            return .none
         }
-        Scope(state: \.kanjiInput,
-              action: /Action.kanjiInput
-        ) {
-            KanjiInput()
-        }
-        Scope(state: \.meaningInput,
-              action: /Action.meaningInput
-        ) {
-            MeaningInput()
-        }
+        Scope(state: \.kanjiInput, action: \.kanjiInput) { KanjiInput() }
+        Scope(state: \.meaningInput, action: \.meaningInput) { MeaningInput() }
     }
     
 }

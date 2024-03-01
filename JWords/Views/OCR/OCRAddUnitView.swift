@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct AddUnitWithOCR: Reducer {
+@Reducer
+struct AddUnitWithOCR {
     struct State: Equatable {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State(pickerName: "")
@@ -24,44 +25,24 @@ struct AddUnitWithOCR: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .ocr(let action):
-                switch action {
-                case .koreanOCR(let meaning):
-                    state.addUnit.inputUnit.meaningInput.text = meaning
-                    return .none
-                case .japaneseOCR(let kanji):
-                    state.addUnit.inputUnit.kanjiInput.isEditing = true
-                    state.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
-                    state.addUnit.inputUnit.kanjiInput.text = kanji
-                    return .none
-                default: return .none
-                }
-            case .selectSet(let action):
-                switch action {
-                case .idUpdated(let set):
-                    state.addUnit.set = set
-                    return .none
-                default: return .none
-                }
-            case .addUnit(let action):
-                switch action {
-                case .added:
-                    state.addUnit.clearInput()
-                    state.selectSet.onUnitAdded()
-                    return .none
-                default: return .none
-                }
+            case .ocr(.koreanOCR(let meaning)):
+                state.addUnit.inputUnit.meaningInput.text = meaning
+            case .ocr(.japaneseOCR(let kanji)):
+                state.addUnit.inputUnit.kanjiInput.isEditing = true
+                state.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+                state.addUnit.inputUnit.kanjiInput.text = kanji
+            case .selectSet(.idUpdated(let set)):
+                state.addUnit.set = set
+            case .addUnit(.added):
+                state.addUnit.clearInput()
+                state.selectSet.onUnitAdded()
+            default: break
             }
+            return .none
         }
-        Scope(state: \.ocr, action: /Action.ocr) {
-            OCR()
-        }
-        Scope(state: \.selectSet, action: /Action.selectSet) {
-            SelectStudySet()
-        }
-        Scope(state: \.addUnit, action: /Action.addUnit) {
-            AddUnit()
-        }
+        Scope(state: \.ocr, action: \.ocr) { OCR() }
+        Scope(state: \.selectSet, action: \.selectSet) { SelectStudySet() }
+        Scope(state: \.addUnit, action: \.addUnit) { AddUnit() }
     }
 }
 

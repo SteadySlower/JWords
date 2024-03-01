@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct KanjiInput: Reducer {
+@Reducer
+struct KanjiInput {
 
     struct State: Equatable {
         var text: String = ""
@@ -39,7 +40,6 @@ struct KanjiInput: Reducer {
             case .updateText(let text):
                 if text.hasTab { return .send(.onTab) }
                 state.text = text
-                return .none
             case .convertToHurigana:
                 if state.text.isEmpty { return .none }
                 state.convertToHurigana()
@@ -48,19 +48,13 @@ struct KanjiInput: Reducer {
                 state.isEditing = true
                 state.hurigana = EditHuriganaText.State(hurigana: "")
                 return .send(.huriganaUpdated(state.hurigana.hurigana))
-            case .editHuriText(let action):
-                switch action {
-                case .onHuriUpdated:
-                    return .send(.huriganaUpdated(state.hurigana.hurigana))
-                default: return .none
-                }
-            default:
-                return .none
+            case .editHuriText(.onHuriUpdated):
+                return .send(.huriganaUpdated(state.hurigana.hurigana))
+            default: break
             }
+            return .none
         }
-        Scope(state: \.hurigana, action: /Action.editHuriText) {
-            EditHuriganaText()
-        }
+        Scope(state: \.hurigana, action: \.editHuriText) { EditHuriganaText() }
     }
     
 }

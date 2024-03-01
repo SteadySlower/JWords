@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct DrawWithPencil: Reducer {
+@Reducer
+struct DrawWithPencil {
     
     struct State: Equatable {
         fileprivate var didDraw: Bool = false

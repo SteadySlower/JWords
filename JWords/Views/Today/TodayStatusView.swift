@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct TodayStatus: Reducer {
+@Reducer
+struct TodayStatus {
     struct State: Equatable {
         private(set) var studySets = [StudySet]()
         private(set) var allUnits = [StudyUnit]()
@@ -40,16 +41,8 @@ struct TodayStatus: Reducer {
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            default: return .none
-            }
-        }
-        Scope(
-            state: \.pieChart,
-            action: /Action.pieChart,
-            child: { PieChartReducer() }
-        )
+        EmptyReducer()
+        Scope(state: \.pieChart, action: \.pieChart) { PieChartReducer() }
     }
 }
 

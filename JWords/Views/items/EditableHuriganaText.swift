@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct EditHuriganaText: Reducer {
+@Reducer
+struct EditHuriganaText {
     struct State: Equatable {
         var huris: [Huri]
         

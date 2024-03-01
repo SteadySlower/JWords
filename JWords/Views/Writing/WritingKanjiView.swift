@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct WriteKanji: Reducer {
+@Reducer
+struct WriteKanji {
     
     struct State: Equatable {
         var kanji: Kanji?
@@ -32,13 +33,11 @@ struct WriteKanji: Reducer {
             switch action {
             case .toggleShowAnswer:
                 state.showAnswer.toggle()
-                return .none
-            default: return .none
+            default: break
             }
+            return .none
         }
-        Scope(state: \.drawWithPencil,
-              action: /Action.drawWithPencel,
-              child: { DrawWithPencil() })
+        Scope(state: \.drawWithPencil, action: \.drawWithPencel) { DrawWithPencil() }
     }
     
 }

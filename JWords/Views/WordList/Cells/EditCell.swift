@@ -9,7 +9,8 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct ToEditUnit: Reducer {
+@Reducer
+struct ToEditUnit {
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit

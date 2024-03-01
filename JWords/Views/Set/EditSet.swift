@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct EditSet: Reducer {
+@Reducer
+struct EditSet {
     
     struct State: Equatable {
         let set: StudySet
@@ -46,14 +47,11 @@ struct EditSet: Reducer {
                 )
                 let edited = try! setClient.update(state.set, input)
                 return .send(.edited(edited))
-            default: return .none
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.inputSet,
-            action: /Action.inputSet,
-            child: { InputSet() }
-        )
+        Scope(state: \.inputSet, action: \.inputSet) { InputSet() }
     }
     
 }

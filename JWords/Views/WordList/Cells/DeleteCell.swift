@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct DeleteUnit: Reducer {
+@Reducer
+struct DeleteUnit {
     
     struct State: Equatable, Identifiable {
         let id: String

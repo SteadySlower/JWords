@@ -21,7 +21,8 @@ enum UnitFilter: Hashable, CaseIterable, Equatable {
     }
 }
 
-struct StudySetting: Reducer {
+@Reducer
+struct StudySetting {
     struct State: Equatable {
         let showSetEditButtons: Bool
         let selectableListType: [ListType]

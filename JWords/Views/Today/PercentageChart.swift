@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct PieChartReducer: Reducer {
+@Reducer
+struct PieChartReducer {
     struct State: Equatable {
         var percentage: Float = 0.0
     }

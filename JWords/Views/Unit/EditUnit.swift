@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct EditUnit: Reducer {
+@Reducer
+struct EditUnit {
     
     struct State: Equatable {
         let unit: StudyUnit
@@ -63,15 +64,10 @@ struct EditUnit: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .inputUnit(let action):
-                switch action {
-                case .alreadyExist(let unit):
-                    if let unit = unit,
-                       unit.kanjiText != state.unit.kanjiText {
-                        state.setUneditableAlert()
-                    }
-                    return .none
-                default: return .none
+            case .inputUnit(.alreadyExist(let unit)):
+                if let unit = unit,
+                   unit.kanjiText != state.unit.kanjiText {
+                    state.setUneditableAlert()
                 }
             case .edit:
                 let input = StudyUnitInput(
@@ -80,18 +76,14 @@ struct EditUnit: Reducer {
                     meaningText: state.meaningText)
                 let unit = try! unitClient.edit(state.unit, input)
                 return .send(.edited(unit))
-            case .alert(let action):
-                if action == .presented(.cancel) {
-                    return .send(.cancel)
-                }
-                return .none
-            default: return .none
+            case .alert(.presented(.cancel)):
+                return .send(.cancel)
+            default: break
             }
+            return .none
         }
-        .ifLet(\.$alert, action: /Action.alert)
-        Scope(state: \.inputUnit, action: /Action.inputUnit) {
-            InputUnit()
-        }
+        .ifLet(\.$alert, action: \.alert)
+        Scope(state: \.inputUnit, action: \.inputUnit) { InputUnit() }
     }
     
 }
