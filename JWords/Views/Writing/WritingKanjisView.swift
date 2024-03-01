@@ -46,16 +46,8 @@ struct WriteKanjis {
             default: return .none
             }
         }
-        Scope(
-            state: \.toWrite,
-            action: /Action.toWrite,
-            child: { WriteKanji() }
-        )
-        Scope(
-            state: \.kanjis,
-            action: /Action.kanjis,
-            child: { WritingKanjiList() }
-        )
+        Scope(state: \.toWrite, action: \.toWrite) { WriteKanji() }
+        Scope(state: \.kanjis, action: \.kanjis) { WritingKanjiList() }
     }
     
 }
