@@ -46,14 +46,11 @@ struct EditKanji {
                     kundoku: state.input.kundoku)
                 let edited = try! kanjiClient.edit(state.kanji, input)
                 return .send(.edited(edited))
-            default: return .none
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.input,
-            action: /Action.input,
-            child: { InputKanji() }
-        )
+        Scope(state: \.input, action: \.input) { InputKanji() }
     }
     
 }
