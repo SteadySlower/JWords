@@ -62,16 +62,10 @@ struct StudyUnitsInSet {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .lists(let action):
-                switch action {
-                case .toEditUnitSelected(let unit):
-                    state.modals.setEditUnitModal(unit)
-                    return .none
-                default: return .none
-                }
+            case .lists(.toEditUnitSelected(let unit)):
+                state.modals.setEditUnitModal(unit)
             case .showSideBar(let show):
                 state.showSideBar = show
-                return .none
             case .tools(let action):
                 switch action {
                 case .set:
@@ -81,32 +75,26 @@ struct StudyUnitsInSet {
                         let isReviewSet = scheduleClient.isReview(state.set)
                         state.modals.setMoveUnitModal(from: state.set, isReview: isReviewSet, toMove: state.lists.notSucceededUnits)
                     }
-                    return .none
                 case .shuffle:
                     let units = state.lists.study._units.map { $0.unit }
                     let shuffled = utilClient.shuffleUnits(units)
                     state.lists.study = .init(units: shuffled, frontType: state.setting.frontType, isLocked: false)
                     state.lists.clear()
-                    return .none
                 case .setting:
                     state.showSideBar.toggle()
-                    return .none
                 }
             case .modals(let action):
                 switch action {
                 case .setEdited(let set):
                     state.set = set
-                    return .none
                 case .unitAdded(let unit):
                     state.lists.addNewUnit(unit)
-                    return .none
                 case .unitEdited(let unit):
                     state.lists.updateUnit(unit)
                     state.setting.listType = .study
-                    return .none
                 case .unitsMoved:
                     return .send(.dismiss)
-                default: return .none
+                default: break
                 }
             case .setting(let action):
                 switch action {
@@ -121,30 +109,15 @@ struct StudyUnitsInSet {
                 case .setListType(let listType):
                     state.lists.setListType(listType)
                 }
-                return .send(.showSideBar(false))
-            default: return .none
+                state.showSideBar = false
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.lists,
-            action: /Action.lists,
-            child: { SwitchBetweenList() }
-        )
-        Scope(
-            state: \.setting,
-            action: /Action.setting,
-            child: { StudySetting() }
-        )
-        Scope(
-            state: \.modals,
-            action: /Action.modals,
-            child: { ShowModalsInList() }
-        )
-        Scope(
-            state: \.tools,
-            action: /Action.tools,
-            child: { StudyTools() }
-        )
+        Scope(state: \.lists, action: \.lists) { SwitchBetweenList() }
+        Scope(state: \.setting, action: \.setting) { StudySetting() }
+        Scope(state: \.modals, action: \.modals) { ShowModalsInList() }
+        Scope(state: \.tools, action: \.tools) { StudyTools() }
 
     }
 }
