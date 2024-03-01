@@ -25,7 +25,8 @@ enum ListType: CaseIterable {
     }
 }
 
-struct SwitchBetweenList: Reducer {
+@Reducer
+struct SwitchBetweenList {
     struct State: Equatable {
         
         var type: ListType

@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct TodayList: Reducer {
+@Reducer
+struct TodayList {
     struct State: Equatable {
         var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []

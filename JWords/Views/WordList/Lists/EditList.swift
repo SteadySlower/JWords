@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct EditUnits: Reducer {
+@Reducer
+struct EditUnits {
     struct State: Equatable {
         var units: IdentifiedArrayOf<ToEditUnit.State>
         

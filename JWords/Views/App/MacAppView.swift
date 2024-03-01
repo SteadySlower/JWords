@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MacApp: Reducer {
+@Reducer
+struct MacApp {
     
     struct State: Equatable {
         var kanjiList = KanjiList.State(kanjis: [])

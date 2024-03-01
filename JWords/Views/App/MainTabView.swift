@@ -12,7 +12,8 @@ enum Tab {
     case today, home, kanji, kanjiWriting, ocr
 }
 
-struct MainTab: Reducer {
+@Reducer
+struct MainTab {
     
     struct State: Equatable {
         var selectedTab: Tab = .today

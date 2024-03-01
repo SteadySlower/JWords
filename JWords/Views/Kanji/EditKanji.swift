@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct EditKanji: Reducer {
+@Reducer
+struct EditKanji {
     struct State: Equatable {
         let kanji: Kanji
         var input: InputKanji.State

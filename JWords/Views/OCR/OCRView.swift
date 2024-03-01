@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct OCR: Reducer {
+@Reducer
+struct OCR {
     
     struct State: Equatable {
         var getImage = GetImageForOCR.State()

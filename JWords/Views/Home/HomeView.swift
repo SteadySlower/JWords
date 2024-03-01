@@ -9,7 +9,8 @@ import SwiftUI
 import Combine
 import ComposableArchitecture
 
-struct HomeList: Reducer {
+@Reducer
+struct HomeList {
     struct State: Equatable {
         var sets: [StudySet] = []
         var studyUnitsInSet: StudyUnitsInSet.State?

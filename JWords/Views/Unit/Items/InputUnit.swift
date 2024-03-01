@@ -12,7 +12,8 @@ enum UnitInputField {
     case kanji, meaning
 }
 
-struct InputUnit: Reducer {
+@Reducer
+struct InputUnit {
 
     struct State: Equatable {
         @BindingState var focusedField: UnitInputField?

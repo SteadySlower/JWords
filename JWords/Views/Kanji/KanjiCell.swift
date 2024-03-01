@@ -11,7 +11,8 @@ import ComposableArchitecture
 import Cocoa
 #endif
 
-struct DisplayKanji: Reducer {
+@Reducer
+struct DisplayKanji {
     struct State: Equatable, Identifiable {
         let kanji: Kanji
         

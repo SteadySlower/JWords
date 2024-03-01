@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct AddSet: Reducer {
+@Reducer
+struct AddSet {
     
     struct State: Equatable {
         var inputSet: InputSet.State = .init()

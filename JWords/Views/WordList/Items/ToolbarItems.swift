@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyTools: Reducer {
+@Reducer
+struct StudyTools {
     
     enum ToolButton: Hashable {
         case set, shuffle, setting

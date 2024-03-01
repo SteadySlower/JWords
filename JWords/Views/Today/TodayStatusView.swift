@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct TodayStatus: Reducer {
+@Reducer
+struct TodayStatus {
     struct State: Equatable {
         private(set) var studySets = [StudySet]()
         private(set) var allUnits = [StudyUnit]()

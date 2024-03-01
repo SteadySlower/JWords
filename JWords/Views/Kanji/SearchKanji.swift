@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct SearchKanji: Reducer {
+@Reducer
+struct SearchKanji {
     
     struct State: Equatable {
         var query: String = ""

@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyKanjiSamples: Reducer {
+@Reducer
+struct StudyKanjiSamples {
     struct State: Equatable {
         let kanji: Kanji
         var lists: SwitchBetweenList.State

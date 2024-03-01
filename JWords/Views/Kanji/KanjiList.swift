@@ -8,9 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-
-
-struct KanjiList: Reducer {
+@Reducer
+struct KanjiList {
     // FIXME: move it to proper place
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     

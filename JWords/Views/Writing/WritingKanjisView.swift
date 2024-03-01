@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct WriteKanjis: Reducer {
+@Reducer
+struct WriteKanjis {
     
     struct State: Equatable {
         var kanjis: WritingKanjiList.State

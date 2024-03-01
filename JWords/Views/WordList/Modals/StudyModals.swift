@@ -14,7 +14,8 @@ extension View {
     }
 }
 
-struct ShowModalsInList: Reducer {
+@Reducer
+struct ShowModalsInList {
     
     struct State: Equatable {
         var editSet: EditSet.State?

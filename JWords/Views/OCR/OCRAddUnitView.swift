@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct AddUnitWithOCR: Reducer {
+@Reducer
+struct AddUnitWithOCR {
     struct State: Equatable {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State(pickerName: "")

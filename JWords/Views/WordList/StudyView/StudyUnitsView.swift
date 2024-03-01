@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct StudyUnits: Reducer {
+@Reducer
+struct StudyUnits {
     struct State: Equatable {
         var lists: SwitchBetweenList.State
         var setting: StudySetting.State

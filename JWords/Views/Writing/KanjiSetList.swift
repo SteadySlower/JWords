@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct KanjiSetList: Reducer {
+@Reducer
+struct KanjiSetList {
     struct State: Equatable {
         var sets: [KanjiSet]
         

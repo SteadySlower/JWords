@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct DisplayWritingKanji: Reducer {
+@Reducer
+struct DisplayWritingKanji {
     struct State: Equatable, Identifiable {
         var id: String { kanji.id }
         var kanji: Kanji
