@@ -46,37 +46,20 @@ struct StudyUnits {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .lists(let action):
-                switch action {
-                case .toEditUnitSelected(let unit):
-                    state.modals.setEditUnitModal(unit)
-                    return .none
-                default: return .none
-                }
+            case .lists(.toEditUnitSelected(let unit)):
+                state.modals.setEditUnitModal(unit)
             case .showSideBar(let show):
                 state.showSideBar = show
-                return .none
-            case .tools(let action):
-                switch action {
-                case .shuffle:
-                    let units = state.lists.study._units.map { $0.unit }
-                    let shuffled = utilClient.shuffleUnits(units)
-                    state.lists.study = .init(units: shuffled, frontType: state.setting.frontType, isLocked: false)
-                    state.lists.clear()
-                    return .none
-                case .setting:
-                    state.showSideBar.toggle()
-                    return .none
-                default: return .none
-                }
-            case .modals(let action):
-                switch action {
-                case .unitEdited(let unit):
-                    state.lists.updateUnit(unit)
-                    state.setting.listType = .study
-                    return .none
-                default: return .none
-                }
+            case .tools(.shuffle):
+                let units = state.lists.study._units.map { $0.unit }
+                let shuffled = utilClient.shuffleUnits(units)
+                state.lists.study = .init(units: shuffled, frontType: state.setting.frontType, isLocked: false)
+                state.lists.clear()
+            case .tools(.setting):
+                state.showSideBar.toggle()
+            case .modals(.unitEdited(let unit)):
+                state.lists.updateUnit(unit)
+                state.setting.listType = .study
             case .setting(let action):
                 switch action {
                 case .setFilter(let filter):
@@ -85,33 +68,17 @@ struct StudyUnits {
                     state.lists.setFrontType(frontType)
                 case .setListType(let listType):
                     state.lists.setListType(listType)
-                default: return .none
+                default: break
                 }
-                return .send(.showSideBar(false))
-            default: return .none
+                state.showSideBar = false
+            default: break
             }
+            return .none
         }
-        Scope(
-            state: \.lists,
-            action: /Action.lists,
-            child: { SwitchBetweenList() }
-        )
-        Scope(
-            state: \.setting,
-            action: /Action.setting,
-            child: { StudySetting() }
-        )
-        Scope(
-            state: \.modals,
-            action: /Action.modals,
-            child: { ShowModalsInList() }
-        )
-        Scope(
-            state: \.tools,
-            action: /Action.tools,
-            child: { StudyTools() }
-        )
-
+        Scope(state: \.lists, action: \.lists) { SwitchBetweenList() }
+        Scope(state: \.setting, action: \.setting) { StudySetting() }
+        Scope(state: \.modals, action: \.modals) { ShowModalsInList() }
+        Scope(state: \.tools, action: \.tools) { StudyTools() }
     }
 }
 
