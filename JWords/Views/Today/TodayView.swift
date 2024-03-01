@@ -67,81 +67,53 @@ struct TodayList {
             switch action {
             case .onAppear:
                 fetchSchedule(&state)
-                return .none
             case .setSelectionModal(let isPresent):
-                if !isPresent {
-                    if let newStudy = state.todaySelection?.studySets,
-                       let newReview = state.todaySelection?.reviewSets 
-                    {
-                        let newStudySets = scheduleClient.updateStudy(newStudy)
-                        let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
-                        let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
-                        state.todayStatus.update(
-                            studySets: newStudySets,
-                            allUnits: newAllStudyUnits,
-                            toStudyUnits: newToStudyUnits)
-                        state.reviewSets = scheduleClient.updateReview(newReview)
-                    }
-                    state.todaySelection = nil
+                guard !isPresent else { return .none }
+                if let newStudy = state.todaySelection?.studySets,
+                   let newReview = state.todaySelection?.reviewSets
+                {
+                    let newStudySets = scheduleClient.updateStudy(newStudy)
+                    let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
+                    let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
+                    state.todayStatus.update(
+                        studySets: newStudySets,
+                        allUnits: newAllStudyUnits,
+                        toStudyUnits: newToStudyUnits)
+                    state.reviewSets = scheduleClient.updateReview(newReview)
                 }
-                return .none
-            case .todayStatus(let action):
-                switch action {
-                case .onTapped:
-                    if state.todayStatus.isEmpty {
-                        state.clear()
-                        let sets = try! setClient.fetch(false)
-                        scheduleClient.autoSet(sets)
-                        fetchSchedule(&state)
-                        return .none
-                    } else {
-                        state.studyUnits = StudyUnits.State(units: state.todayStatus.toStudyUnits)
-                        return .none
-                    }
-                default: return .none
+                state.todaySelection = nil
+            case .todayStatus(.onTapped):
+                if state.todayStatus.isEmpty {
+                    state.clear()
+                    let sets = try! setClient.fetch(false)
+                    scheduleClient.autoSet(sets)
+                    fetchSchedule(&state)
+                } else {
+                    state.studyUnits = StudyUnits.State(units: state.todayStatus.toStudyUnits)
                 }
             case .homeCellTapped(let set):
                 let units = try! unitClient.fetch(set)
                 state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
-                return .none
             case .listButtonTapped:
                 state.todaySelection = TodaySelection.State(todaySets: state.todayStatus.studySets,
                                                             reviewSets: state.reviewSets)
                 state.todayStatus.clear()
                 state.reviewSets = []
-                return .none
             case .clearScheduleButtonTapped:
                 state.clear()
                 scheduleClient.clear()
-                return .none
             case .showTutorial(let show):
                 state.showTutorial = show
-                return .none
-            case .studyUnitsInSet(let action):
-                switch action {
-                case .dismiss:
-                    state.studyUnitsInSet = nil
-                    return .none
-                default: return .none
-                }
-            default:
-                return .none
+            case .studyUnitsInSet(.dismiss):
+                state.studyUnitsInSet = nil
+            default: break
             }
+            return .none
         }
-        .ifLet(\.studyUnitsInSet, action: /Action.studyUnitsInSet) {
-            StudyUnitsInSet() 
-        }
-        .ifLet(\.studyUnits, action: /Action.studyUnits) {
-            StudyUnits()
-        }
-        .ifLet(\.todaySelection, action: /Action.todaySelection) {
-            TodaySelection()
-        }
-        Scope(
-            state: \.todayStatus,
-            action: /Action.todayStatus,
-            child: { TodayStatus() }
-        )
+        .ifLet(\.studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
+        .ifLet(\.studyUnits, action: \.studyUnits) { StudyUnits() }
+        .ifLet(\.todaySelection, action: \.todaySelection) { TodaySelection() }
+        Scope(state: \.todayStatus, action: \.todayStatus) { TodayStatus() }
     }
     
     private func fetchSchedule(_ state: inout TodayList.State) {
