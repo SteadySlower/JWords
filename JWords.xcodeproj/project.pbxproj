@@ -16,7 +16,6 @@
 		06004E412AC55C5700947F5D /* StudyModals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E402AC55C5700947F5D /* StudyModals.swift */; };
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
-		060703F22AD0E7CA0078489C /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 060703F12AD0E7CA0078489C /* ComposableArchitecture */; };
 		060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F62ADA8CA40078489C /* StudyUnit.swift */; };
 		060703F92ADA8CE70078489C /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F82ADA8CE70078489C /* StudySet.swift */; };
 		060703FB2ADAC9EB0078489C /* AddUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703FA2ADAC9EB0078489C /* AddUnitTest.swift */; };
@@ -84,6 +83,7 @@
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068A9B972B79CA3A008364B7 /* EmojiButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B962B79CA3A008364B7 /* EmojiButtons.swift */; };
 		068A9B992B79E8B5008364B7 /* AddWritingKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */; };
+		068A9BB82B91D39B008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BB72B91D39B008364B7 /* ComposableArchitecture */; };
 		068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* UnitMoveView.swift */; };
 		0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8732AAC987300E5FF05 /* PercentageChart.swift */; };
 		0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */; };
@@ -361,7 +361,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				060703F22AD0E7CA0078489C /* ComposableArchitecture in Frameworks */,
+				068A9BB82B91D39B008364B7 /* ComposableArchitecture in Frameworks */,
 				06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -891,7 +891,7 @@
 			name = JWords;
 			packageProductDependencies = (
 				06CEAC512AB6B71B007783F6 /* GoogleMobileAds */,
-				060703F12AD0E7CA0078489C /* ComposableArchitecture */,
+				068A9BB72B91D39B008364B7 /* ComposableArchitecture */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -997,7 +997,7 @@
 			packageReferences = (
 				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
-				060703F02AD0E7CA0078489C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				068A9BB62B91D39B008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
 			projectDirPath = "";
@@ -1629,12 +1629,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		060703F02AD0E7CA0078489C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		068A9BB62B91D39B008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.0;
+				kind = exactVersion;
+				version = 1.4.2;
 			};
 		};
 		06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
@@ -1656,9 +1656,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		060703F12AD0E7CA0078489C /* ComposableArchitecture */ = {
+		068A9BB72B91D39B008364B7 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 060703F02AD0E7CA0078489C /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			package = 068A9BB62B91D39B008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
 		06CEAC512AB6B71B007783F6 /* GoogleMobileAds */ = {
