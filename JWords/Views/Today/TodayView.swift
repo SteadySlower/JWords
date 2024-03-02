@@ -18,14 +18,14 @@ struct TodayList {
         @Presents var studyUnitsInSet: StudyUnitsInSet.State?
         @Presents var studyUnits: StudyUnits.State?
         @Presents var todaySelection: TodaySelection.State?
-        var showTutorial: Bool = false
+        @Presents var tutorial: ShowTutorial.State?
         
         mutating func clear() {
             reviewSets = []
             studyUnitsInSet = nil
             studyUnits = nil
             todaySelection = nil
-            showTutorial = false
+            tutorial = nil
             todayStatus.clear()
         }
         
@@ -47,6 +47,7 @@ struct TodayList {
         case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
         case studyUnits(PresentationAction<StudyUnits.Action>)
         case todaySelection(PresentationAction<TodaySelection.Action>)
+        case tutorial(PresentationAction<ShowTutorial.Action>)
     }
     
     var body: some Reducer<State, Action> {
@@ -87,8 +88,6 @@ struct TodayList {
             case .clearScheduleButtonTapped:
                 state.clear()
                 scheduleClient.clear()
-            case .showTutorial(let show):
-                state.showTutorial = show
             case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
                 state.studyUnitsInSet = nil
             default: break
@@ -98,6 +97,7 @@ struct TodayList {
         .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
         .ifLet(\.$studyUnits, action: \.studyUnits) { StudyUnits() }
         .ifLet(\.$todaySelection, action: \.todaySelection) { TodaySelection() }
+        .ifLet(\.$tutorial, action: \.tutorial) { ShowTutorial() }
         Scope(state: \.todayStatus, action: \.todayStatus) { TodayStatus() }
     }
     
@@ -174,8 +174,8 @@ struct TodayView: View {
         .navigationDestination(item: $store.scope(state: \.studyUnits, action: \.studyUnits)) {
             StudyUnitsView(store: $0)
         }
-        .navigationDestination(isPresented: $store.showTutorial.sending(\.showTutorial)) {
-            TutorialList()
+        .navigationDestination(item: $store.scope(state: \.tutorial, action: \.tutorial)) {
+            TutorialList(store: $0)
         }
         .sheet(item: $store.scope(state: \.todaySelection, action: \.todaySelection)) {
             TodaySelectionModal(store: $0)
