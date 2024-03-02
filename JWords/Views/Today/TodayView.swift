@@ -15,7 +15,7 @@ struct TodayList {
         var reviewSets: [StudySet] = []
         var studyUnitsInSet: StudyUnitsInSet.State?
         var studyUnits: StudyUnits.State?
-        var todaySelection: TodaySelection.State?
+        @PresentationState var todaySelection: TodaySelection.State?
         
         var showStudySetView: Bool {
             studyUnitsInSet != nil
@@ -23,10 +23,6 @@ struct TodayList {
         
         var showStudyUnitsView: Bool {
             studyUnits != nil
-        }
-        
-        var showModal: Bool {
-            todaySelection != nil
         }
         
         var showTutorial: Bool = false
@@ -51,9 +47,8 @@ struct TodayList {
         case onAppear
         case studyUnitsInSet(StudyUnitsInSet.Action)
         case studyUnits(StudyUnits.Action)
-        case todaySelection(TodaySelection.Action)
+        case todaySelection(PresentationAction<TodaySelection.Action>)
         case todayStatus(TodayStatus.Action)
-        case setSelectionModal(Bool)
         case listButtonTapped
         case clearScheduleButtonTapped
         case showStudySetView(Bool)
@@ -67,8 +62,7 @@ struct TodayList {
             switch action {
             case .onAppear:
                 fetchSchedule(&state)
-            case .setSelectionModal(let isPresent):
-                guard !isPresent else { return .none }
+            case .todaySelection(.dismiss):
                 if let newStudy = state.todaySelection?.studySets,
                    let newReview = state.todaySelection?.reviewSets
                 {
@@ -81,7 +75,6 @@ struct TodayList {
                         toStudyUnits: newToStudyUnits)
                     state.reviewSets = scheduleClient.updateReview(newReview)
                 }
-                state.todaySelection = nil
             case .todayStatus(.onTapped):
                 if state.todayStatus.isEmpty {
                     state.clear()
@@ -112,7 +105,7 @@ struct TodayList {
         }
         .ifLet(\.studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
         .ifLet(\.studyUnits, action: \.studyUnits) { StudyUnits() }
-        .ifLet(\.todaySelection, action: \.todaySelection) { TodaySelection() }
+        .ifLet(\.$todaySelection, action: \.todaySelection) { TodaySelection() }
         Scope(state: \.todayStatus, action: \.todayStatus) { TodayStatus() }
     }
     
@@ -209,16 +202,8 @@ struct TodayView: View {
             }
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
-            .sheet(isPresented: vs.binding(
-                get: \.showModal,
-                send: TodayList.Action.setSelectionModal)
-            ) {
-                IfLetStore(store.scope(
-                    state: \.todaySelection,
-                    action: \.todaySelection)
-                ) {
-                    TodaySelectionModal(store: $0)
-                }
+            .sheet(store: store.scope(state: \.$todaySelection, action: \.todaySelection)) {
+                TodaySelectionModal(store: $0)
             }
             .navigationTitle("오늘 단어장")
             #if os(iOS)
