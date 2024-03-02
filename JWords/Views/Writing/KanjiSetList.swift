@@ -13,19 +13,17 @@ struct KanjiSetList {
     struct State: Equatable {
         var sets: [KanjiSet]
         
-        var writeKanjis: WriteKanjis.State?
-        var showWriteKanji: Bool { writeKanjis != nil }
-        
+        @PresentationState var writeKanjis: WriteKanjis.State?
         @PresentationState var addKanjiSet: AddKanjiSet.State?
     }
     
     enum Action: Equatable {
         case fetchSets
         case setSelected(KanjiSet)
-        case writeKanjis(WriteKanjis.Action)
-        case showWriteKanjis(Bool)
-        case addKanjiSet(PresentationAction<AddKanjiSet.Action>)
         case toAddKanjiSet
+        
+        case writeKanjis(PresentationAction<WriteKanjis.Action>)
+        case addKanjiSet(PresentationAction<AddKanjiSet.Action>)
     }
     
     @Dependency(\.kanjiSetClient) var ksClient
@@ -39,8 +37,6 @@ struct KanjiSetList {
             case .setSelected(let set):
                 let kanjis = try! wkClient.fetch(set)
                 state.writeKanjis = .init(kanjis: kanjis)
-            case .showWriteKanjis(let show):
-                if !show { state.writeKanjis = nil }
             case .toAddKanjiSet:
                 state.addKanjiSet = .init()
             case .addKanjiSet(.presented(.added(let newSet))):
@@ -52,7 +48,7 @@ struct KanjiSetList {
             }
             return .none
         }
-        .ifLet(\.writeKanjis, action: \.writeKanjis) { WriteKanjis() }
+        .ifLet(\.$writeKanjis, action: \.writeKanjis) { WriteKanjis() }
         .ifLet(\.$addKanjiSet, action: \.addKanjiSet) { AddKanjiSet() }
     }
 }
@@ -75,16 +71,6 @@ struct KanjiSetListView: View {
                             onTapped: { vs.send(.setSelected(set)) }
                         )
                     }
-                    NavigationLink(
-                        destination: IfLetStore(
-                                store.scope(
-                                    state: \.writeKanjis,
-                                    action: \.writeKanjis)
-                                ) { WritingKanjisView(store: $0) },
-                        isActive: vs.binding(
-                                    get: \.showWriteKanji,
-                                    send: KanjiSetList.Action.showWriteKanjis))
-                    { EmptyView() }
                 }
                 .padding(.horizontal, 20)
             }
@@ -93,6 +79,7 @@ struct KanjiSetListView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
+            .navigationDestination(store: store.scope(state: \.$writeKanjis, action: \.writeKanjis)) { WritingKanjisView(store: $0) }
             .sheet(store: store.scope(state: \.$addKanjiSet, action: \.addKanjiSet)) {
                 AddKanjiSetView(store: $0)
             }
@@ -112,10 +99,10 @@ struct KanjiSetListView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         KanjiSetListView(store: Store(
             initialState: KanjiSetList.State(sets: .mock),
-            reducer: { KanjiSetList() })
+            reducer: { KanjiSetList()._printChanges() })
         )
     }
 }

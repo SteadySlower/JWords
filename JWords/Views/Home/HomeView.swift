@@ -13,14 +13,11 @@ import ComposableArchitecture
 struct HomeList {
     struct State: Equatable {
         var sets: [StudySet] = []
-        var studyUnitsInSet: StudyUnitsInSet.State?
-        @PresentationState var addSet: AddSet.State?
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-        var showStudySetView: Bool {
-            studyUnitsInSet != nil
-        }
+        @PresentationState var studyUnitsInSet: StudyUnitsInSet.State?
+        @PresentationState var addSet: AddSet.State?
         
         mutating func clear() {
             sets = []
@@ -32,10 +29,10 @@ struct HomeList {
     enum Action: Equatable {
         case onAppear
         case homeCellTapped(StudySet)
-        case showStudySetView(Bool)
         case updateIncludeClosed(Bool)
-        case studyUnitsInSet(StudyUnitsInSet.Action)
         case toAddSet
+        
+        case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
         case addSet(PresentationAction<AddSet.Action>)
     }
     
@@ -54,7 +51,7 @@ struct HomeList {
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .send(.onAppear)
-            case .studyUnitsInSet(.dismiss):
+            case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
                 state.studyUnitsInSet = nil
             case .toAddSet:
                 state.addSet = AddSet.State()
@@ -67,7 +64,7 @@ struct HomeList {
             }
             return .none
         }
-        .ifLet(\.studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
+        .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
         .ifLet(\.$addSet, action: \.addSet) { AddSet() }
     }
 
@@ -109,16 +106,6 @@ struct HomeView: View {
                     }
                     .padding(.horizontal, 20)
                 }
-                NavigationLink(
-                    destination: IfLetStore(
-                            store.scope(
-                                state: \.studyUnitsInSet,
-                                action: \.studyUnitsInSet)
-                            ) { StudySetView(store: $0) },
-                    isActive: vs.binding(
-                                get: \.showStudySetView,
-                                send: HomeList.Action.showStudySetView))
-                { EmptyView() }
             }
             .withBannerAD()
             .navigationTitle("모든 단어장")
@@ -127,6 +114,9 @@ struct HomeView: View {
             #endif
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
+            .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
+                StudySetView(store: $0)
+            }
             .sheet(store: store.scope(state: \.$addSet, action: \.addSet)) {
                 AddSetView(store: $0)
             }

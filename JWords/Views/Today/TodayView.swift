@@ -13,18 +13,10 @@ struct TodayList {
     struct State: Equatable {
         var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []
-        var studyUnitsInSet: StudyUnitsInSet.State?
-        var studyUnits: StudyUnits.State?
+        
+        @PresentationState var studyUnitsInSet: StudyUnitsInSet.State?
+        @PresentationState var studyUnits: StudyUnits.State?
         @PresentationState var todaySelection: TodaySelection.State?
-        
-        var showStudySetView: Bool {
-            studyUnitsInSet != nil
-        }
-        
-        var showStudyUnitsView: Bool {
-            studyUnits != nil
-        }
-        
         var showTutorial: Bool = false
         
         mutating func clear() {
@@ -45,16 +37,15 @@ struct TodayList {
     
     enum Action: Equatable {
         case onAppear
-        case studyUnitsInSet(StudyUnitsInSet.Action)
-        case studyUnits(StudyUnits.Action)
-        case todaySelection(PresentationAction<TodaySelection.Action>)
         case todayStatus(TodayStatus.Action)
         case listButtonTapped
         case clearScheduleButtonTapped
-        case showStudySetView(Bool)
-        case showStudyUnitsView(Bool)
-        case showTutorial(Bool)
         case homeCellTapped(StudySet)
+        
+        case showTutorial(Bool)
+        case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
+        case studyUnits(PresentationAction<StudyUnits.Action>)
+        case todaySelection(PresentationAction<TodaySelection.Action>)
     }
     
     var body: some Reducer<State, Action> {
@@ -97,14 +88,14 @@ struct TodayList {
                 scheduleClient.clear()
             case .showTutorial(let show):
                 state.showTutorial = show
-            case .studyUnitsInSet(.dismiss):
+            case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
                 state.studyUnitsInSet = nil
             default: break
             }
             return .none
         }
-        .ifLet(\.studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
-        .ifLet(\.studyUnits, action: \.studyUnits) { StudyUnits() }
+        .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
+        .ifLet(\.$studyUnits, action: \.studyUnits) { StudyUnits() }
         .ifLet(\.$todaySelection, action: \.todaySelection) { TodaySelection() }
         Scope(state: \.todayStatus, action: \.todayStatus) { TodayStatus() }
     }
@@ -173,35 +164,18 @@ struct TodayView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
-                NavigationLink(
-                    destination: IfLetStore(
-                            store.scope(
-                                state: \.studyUnitsInSet,
-                                action: \.studyUnitsInSet)
-                            ) { StudySetView(store: $0) },
-                    isActive: vs.binding(
-                                get: \.showStudySetView,
-                                send: TodayList.Action.showStudySetView))
-                { EmptyView() }
-                NavigationLink(
-                    destination: IfLetStore(
-                            store.scope(
-                                state: \.studyUnits,
-                                action: \.studyUnits)
-                            ) { StudyUnitsView(store: $0) },
-                    isActive: vs.binding(
-                                get: \.showStudyUnitsView,
-                                send: TodayList.Action.showStudyUnitsView))
-                { EmptyView() }
-                NavigationLink(
-                    destination: TutorialList(),
-                    isActive: vs.binding(
-                                get: \.showTutorial,
-                                send: TodayList.Action.showTutorial))
-                { EmptyView() }
             }
             .withBannerAD()
             .onAppear { vs.send(.onAppear) }
+            .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
+                StudySetView(store: $0)
+            }
+            .navigationDestination(store: store.scope(state: \.$studyUnits, action: \.studyUnits)) {
+                StudyUnitsView(store: $0)
+            }
+            .navigationDestination(isPresented: vs.binding(get: \.showTutorial,send: TodayList.Action.showTutorial)) {
+                TutorialList()
+            }
             .sheet(store: store.scope(state: \.$todaySelection, action: \.todaySelection)) {
                 TodaySelectionModal(store: $0)
             }

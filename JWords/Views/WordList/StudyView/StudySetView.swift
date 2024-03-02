@@ -53,7 +53,6 @@ struct StudyUnitsInSet {
         case showSideBar(Bool)
         case setting(StudySetting.Action)
         case tools(StudyTools.Action)
-        case dismiss
     }
     
     @Dependency(\.scheduleClient) var scheduleClient
@@ -92,8 +91,6 @@ struct StudyUnitsInSet {
                 case .unitEdited(let unit):
                     state.lists.updateUnit(unit)
                     state.setting.listType = .study
-                case .unitsMoved:
-                    return .send(.dismiss)
                 default: break
                 }
             case .setting(let action):
