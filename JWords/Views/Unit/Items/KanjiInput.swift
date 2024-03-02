@@ -23,13 +23,17 @@ struct KanjiInput {
         }
     }
     
-    enum Action: Equatable {
+    enum Action: Equatable, ViewAction {
         case updateText(String)
-        case onTab
-        case convertToHurigana
-        case editText
-        case huriganaUpdated(String)
         case editHuriText(EditHuriganaText.Action)
+        case huriganaUpdated(String)
+        case onTab
+        
+        case view(View)
+        enum View {
+            case convertToHurigana
+            case editText
+        }
     }
     
     private let cd = CoreDataService.shared
@@ -40,11 +44,11 @@ struct KanjiInput {
             case .updateText(let text):
                 if text.hasTab { return .send(.onTab) }
                 state.text = text
-            case .convertToHurigana:
+            case .view(.convertToHurigana):
                 if state.text.isEmpty { return .none }
                 state.convertToHurigana()
                 return .send(.huriganaUpdated(state.hurigana.hurigana))
-            case .editText:
+            case .view(.editText):
                 state.isEditing = true
                 state.hurigana = EditHuriganaText.State(hurigana: "")
                 return .send(.huriganaUpdated(state.hurigana.hurigana))
@@ -59,6 +63,7 @@ struct KanjiInput {
     
 }
 
+@ViewAction(for: KanjiInput.self)
 struct KanjiInputField: View {
     
     @Bindable var store: StoreOf<KanjiInput>
@@ -69,7 +74,7 @@ struct KanjiInputField: View {
                 InputFieldTitle(title: "단어 (앞면)")
                 InputFieldTextEditor(text: $store.text.sending(\.updateText))
                 Button("후리가나 변환") {
-                    store.send(.convertToHurigana)
+                    send(.convertToHurigana)
                 }
                 .buttonStyle(InputFieldButtonStyle())
                 .trailingAlignment()
@@ -88,7 +93,7 @@ struct KanjiInputField: View {
                 .frame(height: 100)
                 .defaultRectangleBackground()
                 Button("단어 수정") {
-                    store.send(.editText)
+                    send(.editText)
                 }
                 .buttonStyle(InputFieldButtonStyle())
                 .trailingAlignment()
