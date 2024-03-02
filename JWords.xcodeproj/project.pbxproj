@@ -83,7 +83,7 @@
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068A9B972B79CA3A008364B7 /* EmojiButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B962B79CA3A008364B7 /* EmojiButtons.swift */; };
 		068A9B992B79E8B5008364B7 /* AddWritingKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */; };
-		068A9BBE2B9300A2008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBD2B9300A2008364B7 /* ComposableArchitecture */; };
+		068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBF2B932D69008364B7 /* ComposableArchitecture */; };
 		068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* UnitMoveView.swift */; };
 		0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8732AAC987300E5FF05 /* PercentageChart.swift */; };
 		0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */; };
@@ -361,7 +361,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				068A9BBE2B9300A2008364B7 /* ComposableArchitecture in Frameworks */,
+				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
 				06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -891,7 +891,7 @@
 			name = JWords;
 			packageProductDependencies = (
 				06CEAC512AB6B71B007783F6 /* GoogleMobileAds */,
-				068A9BBD2B9300A2008364B7 /* ComposableArchitecture */,
+				068A9BBF2B932D69008364B7 /* ComposableArchitecture */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -1634,7 +1634,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = exactVersion;
-				version = 1.7.3;
+				version = 1.8.2;
 			};
 		};
 		06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
@@ -1656,7 +1656,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		068A9BBD2B9300A2008364B7 /* ComposableArchitecture */ = {
+		068A9BBF2B932D69008364B7 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 068A9BBC2B9300A2008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
