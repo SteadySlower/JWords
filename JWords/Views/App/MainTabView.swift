@@ -14,7 +14,7 @@ enum Tab {
 
 @Reducer
 struct MainTab {
-    
+    @ObservableState
     struct State: Equatable {
         var selectedTab: Tab = .today
         var todayList: TodayList.State = .init()
@@ -53,84 +53,80 @@ struct MainTab {
 
 struct MainTabView: View {
     
-    let store: StoreOf<MainTab>
+    @Bindable var store: StoreOf<MainTab>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            TabView(selection:
-                vs.binding(get: \.selectedTab, send: MainTab.Action.tabChanged)
-            ) {
-                NavigationStack {
-                    TodayView(store: store.scope(
-                        state: \.todayList,
-                        action: \.todayList)
-                    )
-                }
-                .tabItem { Label("오늘 단어장", systemImage: "calendar") }
-                .tag(Tab.today)
-                #if os(iOS)
-                .navigationViewStyle(.stack)
-                #endif
-                NavigationStack {
-                    HomeView(store: store.scope(
-                        state: \.homeList,
-                        action: \.homeList)
-                    )
-                }
-                .tabItem { Label("모든 단어장", systemImage: "books.vertical") }
-                .tag(Tab.home)
-                #if os(iOS)
-                .navigationViewStyle(.stack)
-                #endif
-                NavigationStack {
-                    KanjiListView(store: store.scope(
-                        state: \.kanjiList,
-                        action: \.kanjiList)
-                    )
-                }
-                .tabItem {
-                #if os(iOS)
-                Label {
-                    Text("한자 리스트")
-                } icon: {
-                    Image(uiImage:
-                            ImageRenderer(content: Text("漢").font(.title)).uiImage ?? UIImage()
-                    )
-                }
-                #endif
-                }
-                .tag(Tab.kanji)
-                #if os(iOS)
-                .navigationViewStyle(.stack)
-                #endif
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    NavigationStack {
-                        KanjiSetListView(store: store.scope(
-                            state: \.kanjiSetList,
-                            action: \.kanjiSetList)
-                        )
-                    }
-                    .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
-                    .tag(Tab.kanjiWriting)
-                    #if os(iOS)
-                    .navigationViewStyle(.stack)
-                    #endif
-                }
-                NavigationStack {
-                    OCRAddUnitView(store: store.scope(
-                        state: \.ocr,
-                        action: \.ocr)
-                    )
-                }
-                .tabItem { Label("단어 스캐너", systemImage: "scanner") }
-                #if os(iOS)
-                .navigationViewStyle(.stack)
-                #endif
-                .tag(Tab.ocr)
+        TabView(selection: $store.selectedTab.sending(\.tabChanged)) {
+            NavigationStack {
+                TodayView(store: store.scope(
+                    state: \.todayList,
+                    action: \.todayList)
+                )
             }
-            .tint(.black)
-            .onAppear { setTabBar() }
+            .tabItem { Label("오늘 단어장", systemImage: "calendar") }
+            .tag(Tab.today)
+            #if os(iOS)
+            .navigationViewStyle(.stack)
+            #endif
+            NavigationStack {
+                HomeView(store: store.scope(
+                    state: \.homeList,
+                    action: \.homeList)
+                )
+            }
+            .tabItem { Label("모든 단어장", systemImage: "books.vertical") }
+            .tag(Tab.home)
+            #if os(iOS)
+            .navigationViewStyle(.stack)
+            #endif
+            NavigationStack {
+                KanjiListView(store: store.scope(
+                    state: \.kanjiList,
+                    action: \.kanjiList)
+                )
+            }
+            .tabItem {
+            #if os(iOS)
+            Label {
+                Text("한자 리스트")
+            } icon: {
+                Image(uiImage:
+                        ImageRenderer(content: Text("漢").font(.title)).uiImage ?? UIImage()
+                )
+            }
+            #endif
+            }
+            .tag(Tab.kanji)
+            #if os(iOS)
+            .navigationViewStyle(.stack)
+            #endif
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                NavigationStack {
+                    KanjiSetListView(store: store.scope(
+                        state: \.kanjiSetList,
+                        action: \.kanjiSetList)
+                    )
+                }
+                .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
+                .tag(Tab.kanjiWriting)
+                #if os(iOS)
+                .navigationViewStyle(.stack)
+                #endif
+            }
+            NavigationStack {
+                OCRAddUnitView(store: store.scope(
+                    state: \.ocr,
+                    action: \.ocr)
+                )
+            }
+            .tabItem { Label("단어 스캐너", systemImage: "scanner") }
+            #if os(iOS)
+            .navigationViewStyle(.stack)
+            #endif
+            .tag(Tab.ocr)
         }
+        .tint(.black)
+        .onAppear { setTabBar() }
     }
     
     private func setTabBar() {

@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct DisplayWritingKanji {
+    @ObservableState
     struct State: Equatable, Identifiable {
         var id: String { kanji.id }
         var kanji: Kanji
@@ -46,35 +47,33 @@ struct DisplayWritingKanji {
 struct WritingKanjiCell: View {
     
     let store: StoreOf<DisplayWritingKanji>
-    @State var dragAmount: CGSize = .zero
+    @State private var dragAmount: CGSize = .zero
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            SlidableCell(
-                studyState: vs.studyState,
-                dragAmount: dragAmount) 
-            {
-                Text(vs.kanji.meaningText)
-                    .font(.system(size: 50))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 100)
-                    .padding(.horizontal, 5)
-            }
-            .addCellGesture(isLocked: false) { gesture in
-                switch gesture {
-                case .tapped:
-                    vs.send(.select)
-                case .doubleTapped:
-                    vs.send(.updateStudyState(.undefined))
-                case .dragging(let size):
-                    dragAmount.width = size.width
-                case .draggedLeft:
-                    vs.send(.updateStudyState(.success))
-                    dragAmount = .zero
-                case .draggedRight:
-                    vs.send(.updateStudyState(.fail))
-                    dragAmount = .zero
-                }
+        SlidableCell(
+            studyState: store.studyState,
+            dragAmount: dragAmount)
+        {
+            Text(store.kanji.meaningText)
+                .font(.system(size: 50))
+                .frame(maxWidth: .infinity)
+                .frame(height: 100)
+                .padding(.horizontal, 5)
+        }
+        .addCellGesture(isLocked: false) { gesture in
+            switch gesture {
+            case .tapped:
+                store.send(.select)
+            case .doubleTapped:
+                store.send(.updateStudyState(.undefined))
+            case .dragging(let size):
+                dragAmount.width = size.width
+            case .draggedLeft:
+                store.send(.updateStudyState(.success))
+                dragAmount = .zero
+            case .draggedRight:
+                store.send(.updateStudyState(.fail))
+                dragAmount = .zero
             }
         }
     }

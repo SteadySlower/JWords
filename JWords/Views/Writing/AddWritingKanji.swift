@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct AddWritingKanji {
+    @ObservableState
     struct State: Equatable {
         let kanji: Kanji
         let kanjiSets: [KanjiSet]
@@ -51,27 +52,22 @@ struct AddWritingKanji {
 
 struct AddWritingKanjiView: View {
     
-    let store: StoreOf<AddWritingKanji>
+    @Bindable var store: StoreOf<AddWritingKanji>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                picker(
-                    kanji: vs.kanji,
-                    sets: vs.kanjiSets,
-                    selectedID: vs.binding(
-                        get: \.selectedID,
-                        send: AddWritingKanji.Action.updateID
-                    )
-                )
-                buttons(
-                    isOKButtonAble: vs.selectedID != nil,
-                    addButtonTapped: { vs.send(.add) },
-                    cancelButtonTapped: { vs.send(.cancel) }
-                )
-            }
-            .presentationDetents([.medium])
+        VStack {
+            picker(
+                kanji: store.kanji,
+                sets: store.kanjiSets,
+                selectedID: $store.selectedID.sending(\.updateID)
+            )
+            buttons(
+                isOKButtonAble: store.selectedID != nil,
+                addButtonTapped: { store.send(.add) },
+                cancelButtonTapped: { store.send(.cancel) }
+            )
         }
+        .presentationDetents([.medium])
     }
 }
 

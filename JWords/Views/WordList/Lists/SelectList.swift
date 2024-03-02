@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct SelectUnits {
+    @ObservableState
     struct State: Equatable {
         var units: IdentifiedArrayOf<SelectUnit.State>
         
@@ -39,11 +40,7 @@ struct SelectList: View {
     
     var body: some View {
         LazyVStack(spacing: 32) {
-            ForEachStore(
-              store.scope(
-                state: \.units,
-                action: \.unit)
-            ) {
+            ForEachStore(store.scope(state: \.units, action: \.unit)) {
                 SelectionCell(store: $0)
             }
         }

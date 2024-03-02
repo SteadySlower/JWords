@@ -10,7 +10,7 @@ import SwiftUI
 
 @Reducer
 struct KanjiInput {
-
+    @ObservableState
     struct State: Equatable {
         var text: String = ""
         var hurigana = EditHuriganaText.State(hurigana: "")
@@ -61,39 +61,37 @@ struct KanjiInput {
 
 struct KanjiInputField: View {
     
-    let store: StoreOf<KanjiInput>
+    @Bindable var store: StoreOf<KanjiInput>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            if vs.isEditing {
-                VStack {
-                    InputFieldTitle(title: "단어 (앞면)")
-                    InputFieldTextEditor(text: vs.binding(get: \.text, send: KanjiInput.Action.updateText))
-                    Button("후리가나 변환") {
-                        vs.send(.convertToHurigana)
-                    }
-                    .buttonStyle(InputFieldButtonStyle())
-                    .trailingAlignment()
+        if store.isEditing {
+            VStack {
+                InputFieldTitle(title: "단어 (앞면)")
+                InputFieldTextEditor(text: $store.text.sending(\.updateText))
+                Button("후리가나 변환") {
+                    store.send(.convertToHurigana)
                 }
-            } else {
-                VStack {
-                    InputFieldTitle(title: "후리가나 (앞면)")
-                    ScrollView {
-                        EditableHuriganaText(store: store.scope(
-                            state: \.hurigana,
-                            action: \.editHuriText),
-                            fontsize: Constants.Size.UNIT_INPUT_FONT
-                        )
-                        .padding(.horizontal, 5)
-                    }
-                    .frame(height: 100)
-                    .defaultRectangleBackground()
-                    Button("단어 수정") {
-                        vs.send(.editText)
-                    }
-                    .buttonStyle(InputFieldButtonStyle())
-                    .trailingAlignment()
+                .buttonStyle(InputFieldButtonStyle())
+                .trailingAlignment()
+            }
+        } else {
+            VStack {
+                InputFieldTitle(title: "후리가나 (앞면)")
+                ScrollView {
+                    EditableHuriganaText(store: store.scope(
+                        state: \.hurigana,
+                        action: \.editHuriText),
+                        fontsize: Constants.Size.UNIT_INPUT_FONT
+                    )
+                    .padding(.horizontal, 5)
                 }
+                .frame(height: 100)
+                .defaultRectangleBackground()
+                Button("단어 수정") {
+                    store.send(.editText)
+                }
+                .buttonStyle(InputFieldButtonStyle())
+                .trailingAlignment()
             }
         }
     }

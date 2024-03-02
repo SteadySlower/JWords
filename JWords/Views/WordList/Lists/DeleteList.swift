@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct DeleteUnits {
+    @ObservableState
     struct State: Equatable {
         var units: IdentifiedArrayOf<DeleteUnit.State>
         
@@ -35,11 +36,7 @@ struct DeleteList: View {
     
     var body: some View {
         LazyVStack(spacing: 32) {
-            ForEachStore(
-              store.scope(
-                state: \.units,
-                action: \.units)
-            ) {
+            ForEachStore(store.scope(state: \.units, action: \.units)) {
                 DeleteCell(store: $0)
             }
         }

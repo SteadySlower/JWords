@@ -37,6 +37,7 @@ struct StudyTools {
         }
     }
     
+    @ObservableState
     struct State: Equatable {
         let activeButtons: [ToolButton]
     }
@@ -47,13 +48,7 @@ struct StudyTools {
         case setting
     }
     
-    var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            default: return .none
-            }
-        }
-    }
+    var body: some Reducer<State, Action> { EmptyReducer() }
 }
 
 struct StudyToolBarButtons: View {
@@ -61,16 +56,14 @@ struct StudyToolBarButtons: View {
     let store: StoreOf<StudyTools>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            HStack {
-                ForEach(vs.activeButtons, id: \.self) { button in
-                    Button {
-                        vs.send(button.action)
-                    } label: {
-                        Image(systemName: button.imageName)
-                            .resizable()
-                            .foregroundColor(.black)
-                    }
+        HStack {
+            ForEach(store.activeButtons, id: \.self) { button in
+                Button {
+                    store.send(button.action)
+                } label: {
+                    Image(systemName: button.imageName)
+                        .resizable()
+                        .foregroundColor(.black)
                 }
             }
         }

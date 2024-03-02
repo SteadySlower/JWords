@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct SearchKanji {
-    
+    @ObservableState
     struct State: Equatable {
         var query: String = ""
         var result: [Kanji] = []
@@ -40,41 +40,39 @@ struct SearchKanji {
 
 struct KanjiSearchBar: View {
     
-    let store: StoreOf<SearchKanji>
+    @Bindable var store: StoreOf<SearchKanji>
     @FocusState private var isEditing: Bool
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            ZStack {
-                if vs.query.isEmpty {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
+        ZStack {
+            if store.query.isEmpty {
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                .padding(.leading, 2)
+            }
+            TextField("", text: $store.query.sending(\.updateQuery))
+                .font(.system(size: 30))
+                .focused($isEditing)
+            if isEditing {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        isEditing = false
+                    }, label: {
+                        Image(systemName: "keyboard.chevron.compact.down")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(.gray)
-                        Spacer()
-                    }
-                    .padding(.leading, 2)
-                }
-                TextField("", text: vs.binding(get: \.query, send: SearchKanji.Action.updateQuery))
-                    .font(.system(size: 30))
-                    .focused($isEditing)
-                if isEditing {
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            isEditing = false
-                        }, label: {
-                            Image(systemName: "keyboard.chevron.compact.down")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(.gray)
-                        })
-                    }
+                    })
                 }
             }
-            .frame(height: 50)
         }
+        .frame(height: 50)
     }
 }
 

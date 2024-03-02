@@ -12,15 +12,15 @@ import ComposableArchitecture
 struct KanjiList {
     // FIXME: move it to proper place
     static let NUMBER_OF_KANJI_IN_A_PAGE = 20
-    
+    @ObservableState
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<DisplayKanji.State>
         var isLastPage = false
         var searchKanji = SearchKanji.State()
         
-        @PresentationState var samples: StudyKanjiSamples.State?
-        @PresentationState var edit: EditKanji.State?
-        @PresentationState var addWriting: AddWritingKanji.State?
+        @Presents var samples: StudyKanjiSamples.State?
+        @Presents var edit: EditKanji.State?
+        @Presents var addWriting: AddWritingKanji.State?
         
         var isSearching: Bool {
             !searchKanji.query.isEmpty
@@ -91,51 +91,49 @@ struct KanjiListView: View {
     let store: StoreOf<KanjiList>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                KanjiSearchBar(
-                    store: store.scope(
-                        state: \.searchKanji,
-                        action: \.searchKanji)
-                )
-                ScrollView {
-                    LazyVStack {
-                        ForEachStore(store.scope(
-                            state: \.kanjis,
-                            action: \.kanji)
-                        ) {
-                            KanjiCell(store: $0)
-                        }
-                        if !vs.isLastPage && !vs.isSearching {
-                            ProgressView()
-                                .foregroundColor(.gray)
-                                .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        vs.send(.fetchKanjis)
-                                    }
+        VStack {
+            KanjiSearchBar(
+                store: store.scope(
+                    state: \.searchKanji,
+                    action: \.searchKanji)
+            )
+            ScrollView {
+                LazyVStack {
+                    ForEachStore(store.scope(
+                        state: \.kanjis,
+                        action: \.kanji)
+                    ) {
+                        KanjiCell(store: $0)
+                    }
+                    if !store.isLastPage && !store.isSearching {
+                        ProgressView()
+                            .foregroundColor(.gray)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    store.send(.fetchKanjis)
                                 }
-                        }
+                            }
                     }
                 }
-                .scrollIndicators(.hidden)
             }
-            .padding(.top, 10)
-            .padding(.horizontal, 20)
-            .withBannerAD()
-            .onAppear { vs.send(.onAppear) }
-            .navigationTitle("한자 리스트")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .navigationDestination(store: store.scope(state: \.$samples, action: \.samples)) {
-                StudyKanjiSampleView(store: $0)
-            }
-            .sheet(store: store.scope(state: \.$edit, action: \.edit)) {
-                EditKanjiView(store: $0)
-            }
-            .sheet(store: store.scope(state: \.$addWriting, action: \.addWriting)) {
-                AddWritingKanjiView(store: $0)
-            }
+            .scrollIndicators(.hidden)
+        }
+        .padding(.top, 10)
+        .padding(.horizontal, 20)
+        .withBannerAD()
+        .onAppear { store.send(.onAppear) }
+        .navigationTitle("한자 리스트")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .navigationDestination(store: store.scope(state: \.$samples, action: \.samples)) {
+            StudyKanjiSampleView(store: $0)
+        }
+        .sheet(store: store.scope(state: \.$edit, action: \.edit)) {
+            EditKanjiView(store: $0)
+        }
+        .sheet(store: store.scope(state: \.$addWriting, action: \.addWriting)) {
+            AddWritingKanjiView(store: $0)
         }
     }
 }

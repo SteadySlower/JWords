@@ -16,12 +16,12 @@ extension View {
 
 @Reducer
 struct ShowModalsInList {
-    
+    @ObservableState
     struct State: Equatable {
-        @PresentationState var editSet: EditSet.State?
-        @PresentationState var addUnit: AddUnit.State?
-        @PresentationState var editUnit: EditUnit.State?
-        @PresentationState var moveUnits: MoveUnits.State?
+        @Presents var editSet: EditSet.State?
+        @Presents var addUnit: AddUnit.State?
+        @Presents var editUnit: EditUnit.State?
+        @Presents var moveUnits: MoveUnits.State?
         
         private mutating func clear() {
             editSet = nil
@@ -124,25 +124,23 @@ struct ListModals: ViewModifier {
     let store: StoreOf<ShowModalsInList>
     
     func body(content: Content) -> some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            content
-                .sheet(store: store.scope(state: \.$editSet, action: \.editSet)) {
-                    EditSetView(store: $0)
-                }
-                .sheet(store: store.scope(state: \.$addUnit, action: \.addUnit)) {
-                    AddUnitView(store: $0)
-                        .padding(.horizontal, 10)
-                        .presentationDetents([.medium])
-                }
-                .sheet(store: store.scope(state: \.$editUnit, action: \.editUnit)) {
-                    EditUnitView(store: $0)
-                        .padding(.horizontal, 10)
-                        .presentationDetents([.medium])
-                }
-                .sheet(store: store.scope(state: \.$moveUnits, action: \.moveUnits)) {
-                    UnitMoveView(store: $0)
-                }
-        }
+        content
+            .sheet(store: store.scope(state: \.$editSet, action: \.editSet)) {
+                EditSetView(store: $0)
+            }
+            .sheet(store: store.scope(state: \.$addUnit, action: \.addUnit)) {
+                AddUnitView(store: $0)
+                    .padding(.horizontal, 10)
+                    .presentationDetents([.medium])
+            }
+            .sheet(store: store.scope(state: \.$editUnit, action: \.editUnit)) {
+                EditUnitView(store: $0)
+                    .padding(.horizontal, 10)
+                    .presentationDetents([.medium])
+            }
+            .sheet(store: store.scope(state: \.$moveUnits, action: \.moveUnits)) {
+                UnitMoveView(store: $0)
+            }
     }
     
 }

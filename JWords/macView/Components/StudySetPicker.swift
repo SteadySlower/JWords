@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct SelectStudySet {
-    
+    @ObservableState
     struct State: Equatable {
         var sets: [StudySet]
         var selectedID: String?
@@ -80,36 +80,30 @@ struct SelectStudySet {
 
 struct StudySetPicker: View {
     
-    let store: StoreOf<SelectStudySet>
+    @Bindable var store: StoreOf<SelectStudySet>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                Text("단어장 선택")
-                    .font(.system(size: 20))
-                    .bold()
-                    .leadingAlignment()
-                    .padding(.leading, 10)
-                HStack {
-                    Picker(vs.pickerName, selection:
-                            vs.binding(
-                                 get: \.selectedID,
-                                 send: SelectStudySet.Action.updateID)
-                    ) {
-                        Text(vs.pickerDefaultText.localize())
-                            .tag(nil as String?)
-                        ForEach(vs.sets, id: \.id) { studySet in
-                            Text(studySet.title)
-                                .tag(studySet.id as String?)
-                        }
+        VStack {
+            Text("단어장 선택")
+                .font(.system(size: 20))
+                .bold()
+                .leadingAlignment()
+                .padding(.leading, 10)
+            HStack {
+                Picker(store.pickerName, selection: $store.selectedID.sending(\.updateID)) {
+                    Text(store.pickerDefaultText.localize())
+                        .tag(nil as String?)
+                    ForEach(store.sets, id: \.id) { studySet in
+                        Text(studySet.title)
+                            .tag(studySet.id as String?)
                     }
-                    .tint(.black)
-                    Spacer()
-                    Text("단어 수: \(vs.unitCount ?? 0)개")
-                    .opacity(vs.selectedID == nil ? 0 : 1)
                 }
-                .onAppear { vs.send(.onAppear) }
+                .tint(.black)
+                Spacer()
+                Text("단어 수: \(store.unitCount ?? 0)개")
+                .opacity(store.selectedID == nil ? 0 : 1)
             }
+            .onAppear { store.send(.onAppear) }
         }
     }
 }

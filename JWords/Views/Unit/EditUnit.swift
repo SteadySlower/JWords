@@ -10,11 +10,11 @@ import SwiftUI
 
 @Reducer
 struct EditUnit {
-    
+    @ObservableState
     struct State: Equatable {
         let unit: StudyUnit
         var inputUnit = InputUnit.State()
-        @PresentationState var alert: AlertState<AlertAction>?
+        @Presents var alert: AlertState<AlertAction>?
         
         init(unit: StudyUnit) {
             self.unit = unit
@@ -93,25 +93,23 @@ struct EditUnitView: View {
     let store: StoreOf<EditUnit>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 40) {
-                UnitInputView(store: store.scope(
-                    state: \.inputUnit,
-                    action: \.inputUnit)
-                )
-                HStack(spacing: 100) {
-                    Button("취소") {
-                        vs.send(.cancel)
-                    }
-                    .buttonStyle(InputButtonStyle())
-                    Button("수정") {
-                        vs.send(.edit)
-                    }
-                    .buttonStyle(InputButtonStyle(isAble: vs.inputUnit.ableToAdd))
-                    .disabled(!vs.inputUnit.ableToAdd)
+        VStack(spacing: 40) {
+            UnitInputView(store: store.scope(
+                state: \.inputUnit,
+                action: \.inputUnit)
+            )
+            HStack(spacing: 100) {
+                Button("취소") {
+                    store.send(.cancel)
                 }
+                .buttonStyle(InputButtonStyle())
+                Button("수정") {
+                    store.send(.edit)
+                }
+                .buttonStyle(InputButtonStyle(isAble: store.inputUnit.ableToAdd))
+                .disabled(!store.inputUnit.ableToAdd)
             }
-            .alert(store: store.scope(state: \.$alert, action: \.alert))
         }
+        .alert(store: store.scope(state: \.$alert, action: \.alert))
     }
 }

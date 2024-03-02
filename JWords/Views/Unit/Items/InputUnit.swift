@@ -14,9 +14,9 @@ enum UnitInputField {
 
 @Reducer
 struct InputUnit {
-
+    @ObservableState
     struct State: Equatable {
-        @BindingState var focusedField: UnitInputField?
+        var focusedField: UnitInputField?
         var kanjiInput = KanjiInput.State()
         var meaningInput = MeaningInput.State()
         
@@ -62,26 +62,24 @@ struct InputUnit {
 
 struct UnitInputView: View {
     
-    let store: StoreOf<InputUnit>
+    @Bindable var store: StoreOf<InputUnit>
     @FocusState var focusedField: UnitInputField?
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 10) {
-                KanjiInputField(store: store.scope(
-                    state: \.kanjiInput,
-                    action: \.kanjiInput)
-                )
-                .focused($focusedField, equals: .kanji)
-                MeaningInputField(store: store.scope(
-                    state: \.meaningInput,
-                    action: \.meaningInput)
-                )
-                .focused($focusedField, equals: .meaning)
+        VStack(spacing: 10) {
+            KanjiInputField(store: store.scope(
+                state: \.kanjiInput,
+                action: \.kanjiInput)
+            )
+            .focused($focusedField, equals: .kanji)
+            MeaningInputField(store: store.scope(
+                state: \.meaningInput,
+                action: \.meaningInput)
+            )
+            .focused($focusedField, equals: .meaning)
 
-            }
-            .synchronize(vs.$focusedField, $focusedField)
         }
+        .synchronize($store.focusedField, $focusedField)
     }
     
 }

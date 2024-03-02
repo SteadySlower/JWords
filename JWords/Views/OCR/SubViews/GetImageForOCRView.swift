@@ -28,6 +28,7 @@ private enum ImageSource {
 
 @Reducer
 struct GetImageForOCR {
+    @ObservableState
     struct State: Equatable {
         var showCameraScanner: Bool = false
     }
@@ -69,33 +70,29 @@ struct GetImageForOCR {
 
 struct GetImageForOCRView: View {
     
-    let store: StoreOf<GetImageForOCR>
+    @Bindable var store: StoreOf<GetImageForOCR>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                ScanGuide()
-                HStack {
-                    Spacer()
-                    button(for: .clipboard) {
-                        vs.send(.clipBoardButtonTapped)
-                    }
-                    Spacer()
-                    button(for: .camera) {
-                        vs.send(.cameraButtonTapped)
-                    }
-                    Spacer()
+        VStack {
+            ScanGuide()
+            HStack {
+                Spacer()
+                button(for: .clipboard) {
+                    store.send(.clipBoardButtonTapped)
                 }
+                Spacer()
+                button(for: .camera) {
+                    store.send(.cameraButtonTapped)
+                }
+                Spacer()
             }
-            #if os(iOS)
-            .sheet(isPresented: vs.binding(
-                get: \.showCameraScanner,
-                send: GetImageForOCR.Action.showCameraScanner)
-            ) {
-                CameraScanner { vs.send(.cameraImageSelected($0)) }
-            }
-            #endif
         }
+        #if os(iOS)
+        .sheet(isPresented: $store.showCameraScanner.sending(\.showCameraScanner)
+        ) {
+            CameraScanner { store.send(.cameraImageSelected($0)) }
+        }
+        #endif
     }
 }
 

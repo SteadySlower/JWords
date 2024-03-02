@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct StudyKanjiSamples {
+    @ObservableState
     struct State: Equatable {
         let kanji: Kanji
         var lists: SwitchBetweenList.State
@@ -39,16 +40,11 @@ struct StudyKanjiSampleView: View {
     let store: StoreOf<StudyKanjiSamples>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            AllLists(store: store.scope(
-                state: \.lists,
-                action: \.lists)
-            )
-            .navigationTitle("\(vs.kanji.kanjiText)가 쓰이는 단어")
-            #if os(iOS)
-            .toolbar(.hidden, for: .tabBar)
-            #endif
-        }
+        AllLists(store: store.scope(state: \.lists, action: \.lists))
+        .navigationTitle("\(store.kanji.kanjiText)가 쓰이는 단어")
+        #if os(iOS)
+        .toolbar(.hidden, for: .tabBar)
+        #endif
     }
 }
 

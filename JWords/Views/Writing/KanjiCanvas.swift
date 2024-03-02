@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct DrawWithPencil {
-    
+    @ObservableState
     struct State: Equatable {
         fileprivate var didDraw: Bool = false
         
@@ -36,33 +36,27 @@ struct DrawWithPencil {
             }
         }
     }
-    
 }
 
 struct KanjiCanvas: View {
     
-    let store: StoreOf<DrawWithPencil>
+    @Bindable var store: StoreOf<DrawWithPencil>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                CanvasView(didDraw: vs.binding(
-                    get: \.didDraw,
-                    send: DrawWithPencil.Action.updateDidDraw)
-                )
-                .border(.black)
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        vs.send(.resetCanvas)
-                    }, label: {
-                        Image(systemName: "eraser")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                    })
-                }
-                .padding([.trailing, .bottom], 20)
+        VStack {
+            CanvasView(didDraw: $store.didDraw.sending(\.updateDidDraw))
+            .border(.black)
+            HStack {
+                Spacer()
+                Button(action: {
+                    store.send(.resetCanvas)
+                }, label: {
+                    Image(systemName: "eraser")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                })
             }
+            .padding([.trailing, .bottom], 20)
         }
     }
 }

@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct EditHuriganaText {
+    @ObservableState
     struct State: Equatable {
         var huris: [Huri]
         
@@ -69,14 +70,12 @@ struct EditableHuriganaText: View {
     }
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            FlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2, alignment: .leading) {
-                ForEach(vs.huris, id: \.id) { huri in
-                    EditableHuriUnit(huri: huri, fontSize: fontSize) { vs.send(.onGanaUpdated($0)) }
-                }
+        FlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2, alignment: .leading) {
+            ForEach(store.huris, id: \.id) { huri in
+                EditableHuriUnit(huri: huri, fontSize: fontSize) { store.send(.onGanaUpdated($0)) }
             }
-            .padding(.top, fontSize / 2)
         }
+        .padding(.top, fontSize / 2)
     }
 }
 

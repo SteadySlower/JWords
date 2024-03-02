@@ -11,13 +11,14 @@ import ComposableArchitecture
 
 @Reducer
 struct HomeList {
+    @ObservableState
     struct State: Equatable {
         var sets: [StudySet] = []
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-        @PresentationState var studyUnitsInSet: StudyUnitsInSet.State?
-        @PresentationState var addSet: AddSet.State?
+        @Presents var studyUnitsInSet: StudyUnitsInSet.State?
+        @Presents var addSet: AddSet.State?
         
         mutating func clear() {
             sets = []
@@ -72,63 +73,53 @@ struct HomeList {
 
 struct HomeView: View {
     
-    let store: StoreOf<HomeList>
+    @Bindable var store: StoreOf<HomeList>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                Picker("닫힌 단어장", selection: vs.binding(
-                    get: \.includeClosed,
-                    send: HomeList.Action.updateIncludeClosed)
-                ) {
-                    Text("열린 단어장")
-                        .tag(false)
-                    Text("모든 단어장")
-                        .tag(true)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, 100)
-                .padding(.top, 20)
-                ScrollView {
-                    VStack(spacing: 8) {
-                        VStack {
-                            
-                        }
-                        .frame(height: 20)
-                        ForEach(vs.sets, id: \.id) { set in
-                            SetCell(
-                                title: set.title,
-                                schedule: set.schedule,
-                                dayFromToday: set.dayFromToday,
-                                onTapped: { vs.send(.homeCellTapped(set)) }
-                            )
-                        }
+        VStack {
+            Picker("닫힌 단어장", selection: $store.includeClosed.sending(\.updateIncludeClosed)) {
+                Text("열린 단어장").tag(false)
+                Text("모든 단어장").tag(true)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, 100)
+            .padding(.top, 20)
+            ScrollView {
+                VStack(spacing: 8) {
+                    VStack {}.frame(height: 20)
+                    ForEach(store.sets, id: \.id) { set in
+                        SetCell(
+                            title: set.title,
+                            schedule: set.schedule,
+                            dayFromToday: set.dayFromToday,
+                            onTapped: { store.send(.homeCellTapped(set)) }
+                        )
                     }
-                    .padding(.horizontal, 20)
                 }
+                .padding(.horizontal, 20)
             }
-            .withBannerAD()
-            .navigationTitle("모든 단어장")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .loadingView(vs.isLoading)
-            .onAppear { vs.send(.onAppear) }
-            .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
-                StudySetView(store: $0)
-            }
-            .sheet(store: store.scope(state: \.$addSet, action: \.addSet)) {
-                AddSetView(store: $0)
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        vs.send(.toAddSet)
-                    } label: {
-                        Image(systemName: "folder.badge.plus")
-                            .resizable()
-                            .foregroundColor(.black)
-                    }
+        }
+        .withBannerAD()
+        .navigationTitle("모든 단어장")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .loadingView(store.isLoading)
+        .onAppear { store.send(.onAppear) }
+        .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
+            StudySetView(store: $0)
+        }
+        .sheet(store: store.scope(state: \.$addSet, action: \.addSet)) {
+            AddSetView(store: $0)
+        }
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    store.send(.toAddSet)
+                } label: {
+                    Image(systemName: "folder.badge.plus")
+                        .resizable()
+                        .foregroundColor(.black)
                 }
             }
         }
