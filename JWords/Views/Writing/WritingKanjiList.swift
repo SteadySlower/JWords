@@ -41,14 +41,10 @@ struct WritingKanjiListView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
-                ForEachStore(store.scope(
-                    state: \.kanjis,
-                    action: \.kanji
-                    )
-                ) {
-                    WritingKanjiCell(store: $0)
-                        .padding(.horizontal, 5)
-                }
+                ForEach(
+                    store.scope(state: \.kanjis, action: \.kanji),
+                    id: \.state.id
+                ) { WritingKanjiCell(store: $0).padding(.horizontal, 5) }
             }
             .padding(.top, 8)
         }

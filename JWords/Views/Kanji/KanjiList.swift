@@ -99,12 +99,10 @@ struct KanjiListView: View {
             )
             ScrollView {
                 LazyVStack {
-                    ForEachStore(store.scope(
-                        state: \.kanjis,
-                        action: \.kanji)
-                    ) {
-                        KanjiCell(store: $0)
-                    }
+                    ForEach(
+                        store.scope(state: \.kanjis, action: \.kanji),
+                        id: \.state.id
+                    ) { KanjiCell(store: $0) }
                     if !store.isLastPage && !store.isSearching {
                         ProgressView()
                             .foregroundColor(.gray)

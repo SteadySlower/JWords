@@ -40,9 +40,10 @@ struct SelectList: View {
     
     var body: some View {
         LazyVStack(spacing: 32) {
-            ForEachStore(store.scope(state: \.units, action: \.unit)) {
-                SelectionCell(store: $0)
-            }
+            ForEach(
+                store.scope(state: \.units, action: \.unit),
+                id: \.state.id
+            ) { SelectionCell(store: $0) }
         }
     }
     

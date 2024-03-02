@@ -36,9 +36,10 @@ struct DeleteList: View {
     
     var body: some View {
         LazyVStack(spacing: 32) {
-            ForEachStore(store.scope(state: \.units, action: \.units)) {
-                DeleteCell(store: $0)
-            }
+            ForEach(
+                store.scope(state: \.units, action: \.units),
+                id: \.state.id
+            ) { DeleteCell(store: $0) }
         }
     }
     
