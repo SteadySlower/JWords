@@ -90,7 +90,7 @@ struct EditUnit {
 
 struct EditUnitView: View {
     
-    let store: StoreOf<EditUnit>
+    @Bindable var store: StoreOf<EditUnit>
     
     var body: some View {
         VStack(spacing: 40) {
@@ -110,6 +110,6 @@ struct EditUnitView: View {
                 .disabled(!store.inputUnit.ableToAdd)
             }
         }
-        .alert(store: store.scope(state: \.$alert, action: \.alert))
+        .alert($store.scope(state: \.alert, action: \.alert))
     }
 }

@@ -104,7 +104,7 @@ struct AddUnit {
 
 struct AddUnitView: View {
     
-    let store: StoreOf<AddUnit>
+   @Bindable var store: StoreOf<AddUnit>
     
     var body: some View {
         VStack(spacing: 40) {
@@ -125,6 +125,6 @@ struct AddUnitView: View {
                 .keyboardShortcut(.return, modifiers: .control)
             }
         }
-        .alert(store: store.scope(state: \.$alert, action: \.alert))
+        .alert($store.scope(state: \.alert, action: \.alert))
     }
 }
