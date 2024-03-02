@@ -106,10 +106,10 @@ struct HomeView: View {
         #endif
         .loadingView(store.isLoading)
         .onAppear { store.send(.onAppear) }
-        .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
+        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
             StudySetView(store: $0)
         }
-        .sheet(store: store.scope(state: \.$addSet, action: \.addSet)) {
+        .sheet(item: $store.scope(state: \.addSet, action: \.addSet)) {
             AddSetView(store: $0)
         }
         .toolbar {

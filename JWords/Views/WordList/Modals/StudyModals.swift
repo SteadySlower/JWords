@@ -121,24 +121,24 @@ struct ShowModalsInList {
 
 struct ListModals: ViewModifier {
     
-    let store: StoreOf<ShowModalsInList>
+    @Bindable var store: StoreOf<ShowModalsInList>
     
     func body(content: Content) -> some View {
         content
-            .sheet(store: store.scope(state: \.$editSet, action: \.editSet)) {
+            .sheet(item: $store.scope(state: \.editSet, action: \.editSet)) {
                 EditSetView(store: $0)
             }
-            .sheet(store: store.scope(state: \.$addUnit, action: \.addUnit)) {
+            .sheet(item: $store.scope(state: \.addUnit, action: \.addUnit)) {
                 AddUnitView(store: $0)
                     .padding(.horizontal, 10)
                     .presentationDetents([.medium])
             }
-            .sheet(store: store.scope(state: \.$editUnit, action: \.editUnit)) {
+            .sheet(item: $store.scope(state: \.editUnit, action: \.editUnit)) {
                 EditUnitView(store: $0)
                     .padding(.horizontal, 10)
                     .presentationDetents([.medium])
             }
-            .sheet(store: store.scope(state: \.$moveUnits, action: \.moveUnits)) {
+            .sheet(item: $store.scope(state: \.moveUnits, action: \.moveUnits)) {
                 UnitMoveView(store: $0)
             }
     }

@@ -56,7 +56,7 @@ struct KanjiSetList {
 
 struct KanjiSetListView: View {
     
-    let store: StoreOf<KanjiSetList>
+    @Bindable var store: StoreOf<KanjiSetList>
     
     var body: some View {
         ScrollView {
@@ -79,8 +79,8 @@ struct KanjiSetListView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .navigationDestination(store: store.scope(state: \.$writeKanjis, action: \.writeKanjis)) { WritingKanjisView(store: $0) }
-        .sheet(store: store.scope(state: \.$addKanjiSet, action: \.addKanjiSet)) {
+        .navigationDestination(item: $store.scope(state: \.writeKanjis, action: \.writeKanjis)) { WritingKanjisView(store: $0) }
+        .sheet(item: $store.scope(state: \.addKanjiSet, action: \.addKanjiSet)) {
             AddKanjiSetView(store: $0)
         }
         .toolbar {

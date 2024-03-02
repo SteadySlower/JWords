@@ -88,7 +88,7 @@ struct KanjiList {
 
 struct KanjiListView: View {
     
-    let store: StoreOf<KanjiList>
+    @Bindable var store: StoreOf<KanjiList>
     
     var body: some View {
         VStack {
@@ -124,13 +124,13 @@ struct KanjiListView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .navigationDestination(store: store.scope(state: \.$samples, action: \.samples)) {
+        .navigationDestination(item: $store.scope(state: \.samples, action: \.samples)) {
             StudyKanjiSampleView(store: $0)
         }
-        .sheet(store: store.scope(state: \.$edit, action: \.edit)) {
+        .sheet(item: $store.scope(state: \.edit, action: \.edit)) {
             EditKanjiView(store: $0)
         }
-        .sheet(store: store.scope(state: \.$addWriting, action: \.addWriting)) {
+        .sheet(item: $store.scope(state: \.addWriting, action: \.addWriting)) {
             AddWritingKanjiView(store: $0)
         }
     }

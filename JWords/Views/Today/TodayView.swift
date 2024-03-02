@@ -168,16 +168,16 @@ struct TodayView: View {
         }
         .withBannerAD()
         .onAppear { store.send(.onAppear) }
-        .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
+        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
             StudySetView(store: $0)
         }
-        .navigationDestination(store: store.scope(state: \.$studyUnits, action: \.studyUnits)) {
+        .navigationDestination(item: $store.scope(state: \.studyUnits, action: \.studyUnits)) {
             StudyUnitsView(store: $0)
         }
         .navigationDestination(isPresented: $store.showTutorial.sending(\.showTutorial)) {
             TutorialList()
         }
-        .sheet(store: store.scope(state: \.$todaySelection, action: \.todaySelection)) {
+        .sheet(item: $store.scope(state: \.todaySelection, action: \.todaySelection)) {
             TodaySelectionModal(store: $0)
         }
         .navigationTitle("오늘 단어장")
