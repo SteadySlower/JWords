@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct EditKanji {
+    @ObservableState
     struct State: Equatable {
         let kanji: Kanji
         var input: InputKanji.State
@@ -60,26 +61,25 @@ struct EditKanjiView: View {
     let store: StoreOf<EditKanji>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 40) {
-                KanjiInputView(
-                    store: store.scope(
-                        state: \.input,
-                        action: \.input)
+        VStack(spacing: 40) {
+            KanjiInputView(
+                store: store.scope(
+                    state: \.input,
+                    action: \.input
                 )
-                HStack(spacing: 100) {
-                    Button("취소") {
-                        vs.send(.cancel)
-                    }
-                    .buttonStyle(InputButtonStyle())
-                    Button("수정") {
-                        vs.send(.edit)
-                    }
-                    .buttonStyle(InputButtonStyle())
+            )
+            HStack(spacing: 100) {
+                Button("취소") {
+                    store.send(.cancel)
                 }
+                .buttonStyle(InputButtonStyle())
+                Button("수정") {
+                    store.send(.edit)
+                }
+                .buttonStyle(InputButtonStyle())
             }
-            .presentationDetents([.medium])
         }
+        .presentationDetents([.medium])
     }
 }
 

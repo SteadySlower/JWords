@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct TodayStatus {
+    @ObservableState
     struct State: Equatable {
         private(set) var studySets = [StudySet]()
         private(set) var allUnits = [StudyUnit]()
@@ -51,48 +52,46 @@ struct TodayStatusView: View {
     let store: StoreOf<TodayStatus>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            Button {
-                vs.send(.onTapped)
-            } label: {
-                if vs.isEmpty {
-                    VStack(spacing: 10) {
-                        Text("오늘 학습할 단어장이 아직 없습니다📚")
+        Button {
+            store.send(.onTapped)
+        } label: {
+            if store.isEmpty {
+                VStack(spacing: 10) {
+                    Text("오늘 학습할 단어장이 아직 없습니다📚")
+                        .font(.system(size: 30))
+                        .lineLimit(1)
+                    Button {
+                        store.send(.onTapped)
+                    } label: {
+                        Text("📚 자동으로 추가하기")
                             .font(.system(size: 30))
                             .lineLimit(1)
-                        Button {
-                            vs.send(.onTapped)
-                        } label: {
-                            Text("📚 자동으로 추가하기")
-                                .font(.system(size: 30))
-                                .lineLimit(1)
-                        }
                     }
-                    .foregroundColor(.black)
-                    .padding(8)
-                    .minimumScaleFactor(0.5)
-                    .defaultRectangleBackground()
-                } else {
-                    HStack {
-                        PercentageChart(store: store.scope(
-                            state: \.pieChart,
-                            action: \.pieChart)
-                        )
-                        Spacer()
-                        VStack(alignment: .trailing) {
-                            Text("단어장 \(vs.studySets.count)권의\n모든 단어 \(vs.allUnits.count)개 중에")
-                                .font(.system(size: 15))
-                                .multilineTextAlignment(.trailing)
-                            Text("틀린 단어 \(vs.toStudyUnits.count)개")
-                                .font(.system(size: 30))
-                                .multilineTextAlignment(.trailing)
-                        }
-                        .minimumScaleFactor(0.5)
-                    }
-                    .foregroundColor(.black)
-                    .padding(8)
-                    .defaultRectangleBackground()
                 }
+                .foregroundColor(.black)
+                .padding(8)
+                .minimumScaleFactor(0.5)
+                .defaultRectangleBackground()
+            } else {
+                HStack {
+                    PercentageChart(store: store.scope(
+                        state: \.pieChart,
+                        action: \.pieChart)
+                    )
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text("단어장 \(store.studySets.count)권의\n모든 단어 \(store.allUnits.count)개 중에")
+                            .font(.system(size: 15))
+                            .multilineTextAlignment(.trailing)
+                        Text("틀린 단어 \(store.toStudyUnits.count)개")
+                            .font(.system(size: 30))
+                            .multilineTextAlignment(.trailing)
+                    }
+                    .minimumScaleFactor(0.5)
+                }
+                .foregroundColor(.black)
+                .padding(8)
+                .defaultRectangleBackground()
             }
         }
     }

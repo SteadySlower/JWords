@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct InputKanji {
+    @ObservableState
     struct State: Equatable {
         var kanji: String
         var meaning: String
@@ -63,40 +64,33 @@ struct InputKanji {
 
 struct KanjiInputView: View {
     
-    let store: StoreOf<InputKanji>
+    @Bindable var store: StoreOf<InputKanji>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 20) {
-                inputField(title: "한자",
-                           placeholder: "一",
-                           text: vs.binding(
-                                get: \.kanji,
-                                send: InputKanji.Action.updateKanji)
-                )
-                .disabled(!vs.isKanjiEditable)
-                inputField(title: "뜻   ",
-                           placeholder: "한 일",
-                           text: vs.binding(
-                                get: \.meaning,
-                                send: InputKanji.Action.updateMeaning)
-                )
-                inputField(title: "음독",
-                           placeholder: vs.kanji.isEmpty ? "いち、　いっ" : "",
-                           text: vs.binding(
-                                get: \.ondoku,
-                                send: InputKanji.Action.updateOndoku)
-                )
-                inputField(title: "훈독",
-                           placeholder: vs.kanji.isEmpty ? "ひと, ひとつ" : "",
-                           text: vs.binding(
-                                get: \.kundoku,
-                                send: InputKanji.Action.updateKundoku)
-                )
-            }
-            .padding(.horizontal, 20)
-            .padding(.trailing, 30)
+        VStack(spacing: 20) {
+            inputField(
+                title: "한자",
+                placeholder: "一",
+                text: $store.kanji.sending(\.updateKanji)
+            ).disabled(!store.isKanjiEditable)
+            inputField(
+                title: "뜻   ",
+                placeholder: "한 일",
+                text: $store.meaning.sending(\.updateMeaning)
+            )
+            inputField(
+                title: "음독",
+                placeholder: store.kanji.isEmpty ? "いち、　いっ" : "",
+                text: $store.ondoku.sending(\.updateOndoku)
+            )
+            inputField(
+                title: "훈독",
+                placeholder: store.kanji.isEmpty ? "ひと, ひとつ" : "",
+                text: $store.kundoku.sending(\.updateKundoku)
+            )
         }
+        .padding(.horizontal, 20)
+        .padding(.trailing, 30)
     }
     
     private func inputField(title: String, placeholder: String, text: Binding<String>) -> some View {

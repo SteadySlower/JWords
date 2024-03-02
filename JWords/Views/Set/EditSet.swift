@@ -10,7 +10,7 @@ import SwiftUI
 
 @Reducer
 struct EditSet {
-    
+    @ObservableState
     struct State: Equatable {
         let set: StudySet
         var inputSet: InputSet.State
@@ -61,30 +61,28 @@ struct EditSetView: View {
     let store: StoreOf<EditSet>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 30) {
-                InputSetView(store: store.scope(
-                    state: \.inputSet,
-                    action: \.inputSet)
-                )
-                HStack {
-                    Spacer()
-                    Button("취소") {
-                        vs.send(.cancel)
-                    }
-                    .buttonStyle(InputButtonStyle())
-                    Spacer()
-                    Button("수정") {
-                        vs.send(.edit)
-                    }
-                    .buttonStyle(InputButtonStyle(isAble: vs.ableToEdit))
-                    .disabled(!vs.ableToEdit)
-                    Spacer()
+        VStack(spacing: 30) {
+            InputSetView(store: store.scope(
+                state: \.inputSet,
+                action: \.inputSet)
+            )
+            HStack {
+                Spacer()
+                Button("취소") {
+                    store.send(.cancel)
                 }
+                .buttonStyle(InputButtonStyle())
+                Spacer()
+                Button("수정") {
+                    store.send(.edit)
+                }
+                .buttonStyle(InputButtonStyle(isAble: store.ableToEdit))
+                .disabled(!store.ableToEdit)
+                Spacer()
             }
-            .padding(.horizontal, 10)
-            .presentationDetents([.medium])
         }
+        .padding(.horizontal, 10)
+        .presentationDetents([.medium])
     }
 }
 

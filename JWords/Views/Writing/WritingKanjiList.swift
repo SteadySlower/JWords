@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct WritingKanjiList {
+    @ObservableState
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<DisplayWritingKanji.State>
     }
@@ -38,21 +39,14 @@ struct WritingKanjiListView: View {
     let store: StoreOf<WritingKanjiList>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
-                LazyVStack {
-                    ForEachStore(store.scope(
-                        state: \.kanjis,
-                        action: \.kanji
-                        )
-                    ) {
-                        WritingKanjiCell(store: $0)
-                            .padding(.horizontal, 5)
-                    }
-                }
-                .padding(.top, 8)
+        ScrollView {
+            LazyVStack {
+                ForEach(
+                    store.scope(state: \.kanjis, action: \.kanji),
+                    id: \.state.id
+                ) { WritingKanjiCell(store: $0).padding(.horizontal, 5) }
             }
-
+            .padding(.top, 8)
         }
     }
 }

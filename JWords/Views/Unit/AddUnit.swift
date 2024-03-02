@@ -10,12 +10,12 @@ import SwiftUI
 
 @Reducer
 struct AddUnit {
-    
+    @ObservableState
     struct State: Equatable {
         var set: StudySet?
         var alreadyExist: StudyUnit?
         var inputUnit = InputUnit.State()
-        @PresentationState var alert: AlertState<AlertAction>?
+        @Presents var alert: AlertState<AlertAction>?
         
         mutating func clearInput() {
             inputUnit.kanjiInput.text = ""
@@ -104,29 +104,27 @@ struct AddUnit {
 
 struct AddUnitView: View {
     
-    let store: StoreOf<AddUnit>
+   @Bindable var store: StoreOf<AddUnit>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 40) {
-                UnitInputView(store: store.scope(
-                    state: \.inputUnit,
-                    action: AddUnit.Action.inputUnit)
-                )
-                HStack(spacing: 100) {
-                    Button("취소") {
-                        vs.send(.cancel)
-                    }
-                    .buttonStyle(InputButtonStyle())
-                    Button("추가") {
-                        vs.send(.add)
-                    }
-                    .buttonStyle(InputButtonStyle(isAble: vs.inputUnit.ableToAdd))
-                    .disabled(!vs.inputUnit.ableToAdd)
-                    .keyboardShortcut(.return, modifiers: .control)
+        VStack(spacing: 40) {
+            UnitInputView(store: store.scope(
+                state: \.inputUnit,
+                action: AddUnit.Action.inputUnit)
+            )
+            HStack(spacing: 100) {
+                Button("취소") {
+                    store.send(.cancel)
                 }
+                .buttonStyle(InputButtonStyle())
+                Button("추가") {
+                    store.send(.add)
+                }
+                .buttonStyle(InputButtonStyle(isAble: store.inputUnit.ableToAdd))
+                .disabled(!store.inputUnit.ableToAdd)
+                .keyboardShortcut(.return, modifiers: .control)
             }
-            .alert(store: store.scope(state: \.$alert, action: \.alert))
         }
+        .alert($store.scope(state: \.alert, action: \.alert))
     }
 }

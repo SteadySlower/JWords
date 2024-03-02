@@ -10,13 +10,14 @@ import ComposableArchitecture
 
 @Reducer
 struct TodayList {
+    @ObservableState
     struct State: Equatable {
         var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []
         
-        @PresentationState var studyUnitsInSet: StudyUnitsInSet.State?
-        @PresentationState var studyUnits: StudyUnits.State?
-        @PresentationState var todaySelection: TodaySelection.State?
+        @Presents var studyUnitsInSet: StudyUnitsInSet.State?
+        @Presents var studyUnits: StudyUnits.State?
+        @Presents var todaySelection: TodaySelection.State?
         var showTutorial: Bool = false
         
         mutating func clear() {
@@ -120,101 +121,98 @@ struct TodayList {
 }
 
 struct TodayView: View {
-    let store: StoreOf<TodayList>
+    
+    @Bindable var store: StoreOf<TodayList>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
-                VStack(spacing: 30) {
-                    VStack(spacing: 20) {
-                        Text("공부 단어장")
-                            .font(.title)
-                            .trailingAlignment()
-                        TodayStatusView(store: store.scope(
-                            state: \.todayStatus,
-                            action: \.todayStatus)
-                        )
-                        .frame(height: 120)
-                        VStack(spacing: 8) {
-                            ForEach(vs.todayStatus.studySets, id: \.id) { set in
-                                SetCell(
-                                    title: set.title,
-                                    schedule: set.schedule,
-                                    dayFromToday: set.dayFromToday,
-                                    onTapped: { vs.send(.homeCellTapped(set)) }
-                                )
-                            }
-                        }
-                    }
-                    VStack(spacing: 20) {
-                        Text("복습 단어장")
-                            .font(.title)
-                            .trailingAlignment()
-                        VStack(spacing: 8) {
-                            ForEach(vs.reviewSets, id: \.id) { reviewSet in
-                                SetCell(
-                                    title: reviewSet.title,
-                                    schedule: reviewSet.schedule,
-                                    dayFromToday: reviewSet.dayFromToday,
-                                    onTapped: { vs.send(.homeCellTapped(reviewSet)) }
-                                )
-                            }
+        ScrollView {
+            VStack(spacing: 30) {
+                VStack(spacing: 20) {
+                    Text("공부 단어장")
+                        .font(.title)
+                        .trailingAlignment()
+                    TodayStatusView(store: store.scope(
+                        state: \.todayStatus,
+                        action: \.todayStatus)
+                    )
+                    .frame(height: 120)
+                    VStack(spacing: 8) {
+                        ForEach(store.todayStatus.studySets, id: \.id) { set in
+                            SetCell(
+                                title: set.title,
+                                schedule: set.schedule,
+                                dayFromToday: set.dayFromToday,
+                                onTapped: { store.send(.homeCellTapped(set)) }
+                            )
                         }
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 10)
-            }
-            .withBannerAD()
-            .onAppear { vs.send(.onAppear) }
-            .navigationDestination(store: store.scope(state: \.$studyUnitsInSet, action: \.studyUnitsInSet)) {
-                StudySetView(store: $0)
-            }
-            .navigationDestination(store: store.scope(state: \.$studyUnits, action: \.studyUnits)) {
-                StudyUnitsView(store: $0)
-            }
-            .navigationDestination(isPresented: vs.binding(get: \.showTutorial,send: TodayList.Action.showTutorial)) {
-                TutorialList()
-            }
-            .sheet(store: store.scope(state: \.$todaySelection, action: \.todaySelection)) {
-                TodaySelectionModal(store: $0)
-            }
-            .navigationTitle("오늘 단어장")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .toolbar { ToolbarItem {
-                HStack {
-                    Button {
-                        vs.send(.listButtonTapped)
-                    } label: {
-                        Image(systemName: "list.bullet.rectangle.portrait")
-                            .resizable()
-                            .foregroundColor(.black)
-                    }
-                    Button {
-                        vs.send(.clearScheduleButtonTapped)
-                    } label: {
-                        Image(systemName: "eraser")
-                            .resizable()
-                            .foregroundColor(.black)
-                    }
-                }
-            }}
-            #if os(iOS)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        vs.send(.showTutorial(true))
-                    } label: {
-                        Image(systemName: "questionmark.circle")
-                            .resizable()
-                            .foregroundColor(.black)
+                VStack(spacing: 20) {
+                    Text("복습 단어장")
+                        .font(.title)
+                        .trailingAlignment()
+                    VStack(spacing: 8) {
+                        ForEach(store.reviewSets, id: \.id) { reviewSet in
+                            SetCell(
+                                title: reviewSet.title,
+                                schedule: reviewSet.schedule,
+                                dayFromToday: reviewSet.dayFromToday,
+                                onTapped: { store.send(.homeCellTapped(reviewSet)) }
+                            )
+                        }
                     }
                 }
             }
-            #endif
+            .padding(.horizontal, 20)
+            .padding(.top, 10)
         }
+        .withBannerAD()
+        .onAppear { store.send(.onAppear) }
+        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
+            StudySetView(store: $0)
+        }
+        .navigationDestination(item: $store.scope(state: \.studyUnits, action: \.studyUnits)) {
+            StudyUnitsView(store: $0)
+        }
+        .navigationDestination(isPresented: $store.showTutorial.sending(\.showTutorial)) {
+            TutorialList()
+        }
+        .sheet(item: $store.scope(state: \.todaySelection, action: \.todaySelection)) {
+            TodaySelectionModal(store: $0)
+        }
+        .navigationTitle("오늘 단어장")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { ToolbarItem {
+            HStack {
+                Button {
+                    store.send(.listButtonTapped)
+                } label: {
+                    Image(systemName: "list.bullet.rectangle.portrait")
+                        .resizable()
+                        .foregroundColor(.black)
+                }
+                Button {
+                    store.send(.clearScheduleButtonTapped)
+                } label: {
+                    Image(systemName: "eraser")
+                        .resizable()
+                        .foregroundColor(.black)
+                }
+            }
+        }}
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    store.send(.showTutorial(true))
+                } label: {
+                    Image(systemName: "questionmark.circle")
+                        .resizable()
+                        .foregroundColor(.black)
+                }
+            }
+        }
+        #endif
     }
     
     private var statusLoadingView: some View {

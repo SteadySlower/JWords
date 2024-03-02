@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct DeleteUnit {
-    
+    @ObservableState
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -27,9 +27,7 @@ struct DeleteUnit {
         case cellTapped
     }
     
-    var body: some Reducer<State, Action> {
-        Reduce { _, _ in .none }
-    }
+    var body: some Reducer<State, Action> { EmptyReducer() }
     
 }
 
@@ -38,18 +36,15 @@ struct DeleteCell: View {
     let store: StoreOf<DeleteUnit>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(unit: vs.unit,
-                     frontType: vs.frontType)
-                .overlay(
-                    Image(systemName: "trash")
-                        .resizable()
-                        .foregroundColor(.red)
-                        .opacity(0.5)
-                        .scaledToFit()
-                        .padding()
-                )
-                .onTapGesture { vs.send(.cellTapped) }
-        }
+        BaseCell(unit: store.unit, frontType: store.frontType)
+            .overlay(
+                Image(systemName: "trash")
+                    .resizable()
+                    .foregroundColor(.red)
+                    .opacity(0.5)
+                    .scaledToFit()
+                    .padding()
+            )
+            .onTapGesture { store.send(.cellTapped) }
     }
 }

@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 @Reducer
 struct ToEditUnit {
+    @ObservableState
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -45,19 +46,16 @@ struct EditCell: View {
     let store: StoreOf<ToEditUnit>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(unit: vs.unit,
-                     frontType: vs.frontType)
-                .overlay(
-                    Image(systemName: "pencil")
-                        .resizable()
-                        .foregroundColor(.green)
-                        .opacity(0.5)
-                        .scaledToFit()
-                        .padding()
-                )
-                .onTapGesture { vs.send(.cellTapped(vs.unit)) }
-        }
+        BaseCell(unit: store.unit, frontType: store.frontType)
+            .overlay(
+                Image(systemName: "pencil")
+                    .resizable()
+                    .foregroundColor(.green)
+                    .opacity(0.5)
+                    .scaledToFit()
+                    .padding()
+            )
+            .onTapGesture { store.send(.cellTapped(store.unit)) }
     }
     
 }

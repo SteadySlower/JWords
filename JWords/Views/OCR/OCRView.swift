@@ -10,7 +10,7 @@ import SwiftUI
 
 @Reducer
 struct OCR {
-    
+    @ObservableState
     struct State: Equatable {
         var getImage = GetImageForOCR.State()
         var ocr: GetTextsFromOCR.State?
@@ -63,19 +63,14 @@ struct OCRView: View {
     let store: StoreOf<OCR>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            if vs.ocr == nil {
-                GetImageForOCRView(store: store.scope(
-                    state: \.getImage,
-                    action: \.getImage)
-                )
-            } else {
-                IfLetStore(store.scope(
-                    state: \.ocr,
-                    action: \.ocr)
-                ) {
-                    OCRResultView(store: $0)
-                }
+        if store.ocr == nil {
+            GetImageForOCRView(store: store.scope(
+                state: \.getImage,
+                action: \.getImage)
+            )
+        } else {
+            if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
+                OCRResultView(store: ocrResultStore)
             }
         }
     }

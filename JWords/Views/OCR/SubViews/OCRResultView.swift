@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct GetTextsFromOCR {
+    @ObservableState
     struct State: Equatable {
         var image: InputImageType
         var koreanOcrResult: [OCRResult] = []
@@ -33,31 +34,29 @@ struct OCRResultView: View {
     let store: StoreOf<GetTextsFromOCR>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                title
-                buttonGuide
-                GeometryReader { proxy in
-                    imageView(vs.image)
-                        .overlay(
-                            copyButtons(lang: .korean,
-                                        results: vs.koreanOcrResult,
-                                        in: proxy.frame(in: .local)) {
-                                            vs.send(.ocrMarkTapped($0, $1))
-                                        }
-                        )
-                        .overlay(
-                            copyButtons(lang: .japanese,
-                                        results: vs.japaneseOcrResult,
-                                        in: proxy.frame(in: .local)) {
-                                            vs.send(.ocrMarkTapped($0, $1))
-                                        }
-                        )
-                }
-                .frame(width: vs.image.size.width, height: vs.image.size.height)
-                xButton { vs.send(.removeImageButtonTapped) }
-                    .padding(.horizontal, 20)
+        VStack {
+            title
+            buttonGuide
+            GeometryReader { proxy in
+                imageView(store.image)
+                    .overlay(
+                        copyButtons(lang: .korean,
+                                    results: store.koreanOcrResult,
+                                    in: proxy.frame(in: .local)) {
+                                        store.send(.ocrMarkTapped($0, $1))
+                                    }
+                    )
+                    .overlay(
+                        copyButtons(lang: .japanese,
+                                    results: store.japaneseOcrResult,
+                                    in: proxy.frame(in: .local)) {
+                                        store.send(.ocrMarkTapped($0, $1))
+                                    }
+                    )
             }
+            .frame(width: store.image.size.width, height: store.image.size.height)
+            xButton { store.send(.removeImageButtonTapped) }
+                .padding(.horizontal, 20)
         }
     }
 }

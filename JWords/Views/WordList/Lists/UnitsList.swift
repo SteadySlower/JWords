@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct UnitsList {
+    @ObservableState
     struct State: Equatable {
         var _units: IdentifiedArrayOf<StudyOneUnit.State>
         var units: IdentifiedArrayOf<StudyOneUnit.State> {
@@ -56,12 +57,10 @@ struct StudyList: View {
     
     var body: some View {
         LazyVStack(spacing: 32) {
-            ForEachStore(store.scope(
-                state: \.units,
-                action: \.unit)
-            ) {
-                StudyCell(store: $0)
-            }
+            ForEach(
+                store.scope(state: \.units,action: \.unit),
+                id: \.state.id
+            ) { StudyCell(store: $0) }
         }
     }
     

@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct WriteKanji {
-    
+    @ObservableState
     struct State: Equatable {
         var kanji: Kanji?
         var showAnswer: Bool = false
@@ -47,42 +47,40 @@ struct WritingKanjiView: View {
     let store: StoreOf<WriteKanji>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            GeometryReader { proxy in
-                VStack {
-                    if let kanji = vs.kanji {
+        GeometryReader { proxy in
+            VStack {
+                if let kanji = store.kanji {
+                    VStack(alignment: .leading) {
+                        Text(store.showAnswer ? kanji.kanjiText : "?")
+                            .font(.system(size: 200))
                         VStack(alignment: .leading) {
-                            Text(vs.showAnswer ? kanji.kanjiText : "?")
-                                .font(.system(size: 200))
+                            Text(kanji.meaningText)
                             VStack(alignment: .leading) {
-                                Text(kanji.meaningText)
-                                VStack(alignment: .leading) {
-                                    Text("음독: \(vs.showAnswer ? kanji.ondoku : "???")")
-                                    Text("훈독: \(vs.showAnswer ? kanji.kundoku : "???")")
-                                }
+                                Text("음독: \(store.showAnswer ? kanji.ondoku : "???")")
+                                Text("훈독: \(store.showAnswer ? kanji.kundoku : "???")")
                             }
-                            .font(.system(size: 50))
                         }
-                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 50))
                     }
-                    Spacer()
-                    VStack {
-                        KanjiCanvas(store: store.scope(
-                            state: \.drawWithPencil,
-                            action: \.drawWithPencel
-                            )
-                        )
-                        .padding(.top, 30)
-                        Button(action: {
-                            vs.send(.toggleShowAnswer)
-                        }, label: {
-                            Text(vs.showAnswer ? "정답 숨기기" : "정답 보기")
-                                .font(.system(size: proxy.size.height / 30))
-                        })
-                        .buttonStyle(InputButtonStyle())
-                    }
-                    .frame(height: proxy.size.height / 2 + 50)
+                    .minimumScaleFactor(0.5)
                 }
+                Spacer()
+                VStack {
+                    KanjiCanvas(store: store.scope(
+                        state: \.drawWithPencil,
+                        action: \.drawWithPencel
+                        )
+                    )
+                    .padding(.top, 30)
+                    Button(action: {
+                        store.send(.toggleShowAnswer)
+                    }, label: {
+                        Text(store.showAnswer ? "정답 숨기기" : "정답 보기")
+                            .font(.system(size: proxy.size.height / 30))
+                    })
+                    .buttonStyle(InputButtonStyle())
+                }
+                .frame(height: proxy.size.height / 2 + 50)
             }
         }
     }

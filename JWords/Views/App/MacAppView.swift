@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct MacApp {
-    
+    @ObservableState
     struct State: Equatable {
         var kanjiList = KanjiList.State(kanjis: [])
         var ocr = AddUnitWithOCR.State()

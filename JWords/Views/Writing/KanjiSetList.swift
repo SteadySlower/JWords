@@ -10,11 +10,12 @@ import ComposableArchitecture
 
 @Reducer
 struct KanjiSetList {
+    @ObservableState
     struct State: Equatable {
         var sets: [KanjiSet]
         
-        @PresentationState var writeKanjis: WriteKanjis.State?
-        @PresentationState var addKanjiSet: AddKanjiSet.State?
+        @Presents var writeKanjis: WriteKanjis.State?
+        @Presents var addKanjiSet: AddKanjiSet.State?
     }
     
     enum Action: Equatable {
@@ -55,43 +56,41 @@ struct KanjiSetList {
 
 struct KanjiSetListView: View {
     
-    let store: StoreOf<KanjiSetList>
+    @Bindable var store: StoreOf<KanjiSetList>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView {
-                VStack(spacing: 8) {
-                    VStack {}
-                    .frame(height: 20)
-                    ForEach(vs.sets, id: \.id) { set in
-                        SetCell(
-                            title: set.title,
-                            schedule: set.schedule,
-                            dayFromToday: set.dayFromToday,
-                            onTapped: { vs.send(.setSelected(set)) }
-                        )
-                    }
+        ScrollView {
+            VStack(spacing: 8) {
+                VStack {}
+                .frame(height: 20)
+                ForEach(store.sets, id: \.id) { set in
+                    SetCell(
+                        title: set.title,
+                        schedule: set.schedule,
+                        dayFromToday: set.dayFromToday,
+                        onTapped: { store.send(.setSelected(set)) }
+                    )
                 }
-                .padding(.horizontal, 20)
             }
-            .onAppear { vs.send(.fetchSets) }
-            .navigationTitle("한자 쓰기장")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .navigationDestination(store: store.scope(state: \.$writeKanjis, action: \.writeKanjis)) { WritingKanjisView(store: $0) }
-            .sheet(store: store.scope(state: \.$addKanjiSet, action: \.addKanjiSet)) {
-                AddKanjiSetView(store: $0)
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        vs.send(.toAddKanjiSet)
-                    } label: {
-                        Image(systemName: "folder.badge.plus")
-                            .resizable()
-                            .foregroundColor(.black)
-                    }
+            .padding(.horizontal, 20)
+        }
+        .onAppear { store.send(.fetchSets) }
+        .navigationTitle("한자 쓰기장")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .navigationDestination(item: $store.scope(state: \.writeKanjis, action: \.writeKanjis)) { WritingKanjisView(store: $0) }
+        .sheet(item: $store.scope(state: \.addKanjiSet, action: \.addKanjiSet)) {
+            AddKanjiSetView(store: $0)
+        }
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    store.send(.toAddKanjiSet)
+                } label: {
+                    Image(systemName: "folder.badge.plus")
+                        .resizable()
+                        .foregroundColor(.black)
                 }
             }
         }

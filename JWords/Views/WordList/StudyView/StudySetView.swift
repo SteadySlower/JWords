@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct StudyUnitsInSet {
+    @ObservableState
     struct State: Equatable {
         var set: StudySet
         var lists: SwitchBetweenList.State
@@ -121,40 +122,19 @@ struct StudyUnitsInSet {
 
 struct StudySetView: View {
     
-    let store: StoreOf<StudyUnitsInSet>
+    @Bindable var store: StoreOf<StudyUnitsInSet>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            AllLists(store: store.scope(
-                state: \.lists,
-                action: \.lists)
-            )
-            .sideBar(showSideBar: vs.binding(
-                get: \.showSideBar,
-                send: StudyUnitsInSet.Action.showSideBar)
-            ) {
-                SettingSideBar(store: store.scope(
-                    state: \.setting,
-                    action: \.setting)
-                )
-            }
-            .withListModals(store: store.scope(
-                state: \.modals,
-                action: \.modals)
-            )
-            .navigationTitle(vs.set.title)
-            #if os(iOS)
-            .toolbar {
-                ToolbarItem {
-                    StudyToolBarButtons(store: store.scope(
-                        state: \.tools,
-                        action: \.tools)
-                    )
-                }
-            }
-            .toolbar(.hidden, for: .tabBar)
-            #endif
+        AllLists(store: store.scope(state: \.lists, action: \.lists))
+        .sideBar(showSideBar: $store.showSideBar.sending(\.showSideBar)) {
+            SettingSideBar(store: store.scope(state: \.setting, action: \.setting))
         }
+        .withListModals(store: store.scope(state: \.modals, action: \.modals))
+        .navigationTitle(store.set.title)
+        #if os(iOS)
+        .toolbar { ToolbarItem { StudyToolBarButtons(store: store.scope(state: \.tools, action: \.tools)) } }
+        .toolbar(.hidden, for: .tabBar)
+        #endif
     }
 }
 

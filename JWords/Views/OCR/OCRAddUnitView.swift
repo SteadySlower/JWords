@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct AddUnitWithOCR {
+    @ObservableState
     struct State: Equatable {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State(pickerName: "")
@@ -51,32 +52,30 @@ struct OCRAddUnitView: View {
     let store: StoreOf<AddUnitWithOCR>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 35) {
-                    OCRView(store: store.scope(
-                        state: \.ocr,
-                        action: \.ocr)
-                    )
-                    StudySetPicker(store: store.scope(
-                        state: \.selectSet,
-                        action: \.selectSet)
-                    )
-                    AddUnitView(store: store.scope(
-                        state: \.addUnit,
-                        action: \.addUnit)
-                    )
-                }
-                .padding(.vertical, 10)
-                .dismissKeyboardWhenBackgroundTapped()
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 35) {
+                OCRView(store: store.scope(
+                    state: \.ocr,
+                    action: \.ocr)
+                )
+                StudySetPicker(store: store.scope(
+                    state: \.selectSet,
+                    action: \.selectSet)
+                )
+                AddUnitView(store: store.scope(
+                    state: \.addUnit,
+                    action: \.addUnit)
+                )
             }
-            .withBannerAD()
-            .padding(.horizontal, 10)
-            .navigationTitle("단어 스캐너")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
+            .padding(.vertical, 10)
+            .dismissKeyboardWhenBackgroundTapped()
         }
+        .withBannerAD()
+        .padding(.horizontal, 10)
+        .navigationTitle("단어 스캐너")
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 

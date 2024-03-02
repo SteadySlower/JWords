@@ -15,6 +15,7 @@ enum Schedule: Equatable {
 
 @Reducer
 struct TodaySelection {
+    @ObservableState
     struct State: Equatable {
         var sets = [StudySet]()
         var schedules: [StudySet:Schedule]
@@ -99,27 +100,27 @@ struct TodaySelectionModal: View {
     let store: StoreOf<TodaySelection>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                Text("학습 혹은 복습할 단어장을 골라주세요.")
-                    .font(.system(size: 20))
-                    .bold()
-                    .padding(.vertical, 10)
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 8) {
-                        ForEach(vs.sets, id: \.id) { set in
-                            setCell(set,
-                                     vs.schedules[set] ?? .none,
-                                     { vs.send(.studyButtonTapped(set)) },
-                                     { vs.send(.reviewButtonTapped(set)) })
-                        }
+        VStack {
+            Text("학습 혹은 복습할 단어장을 골라주세요.")
+                .font(.system(size: 20))
+                .bold()
+                .padding(.vertical, 10)
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 8) {
+                    ForEach(store.sets, id: \.id) { set in
+                        setCell(
+                            set: set,
+                            schedule: store.schedules[set] ?? .none,
+                            studyButtonTapped: { store.send(.studyButtonTapped(set)) },
+                            reviewButtonTapped: { store.send(.reviewButtonTapped(set)) }
+                        )
                     }
-                    
                 }
+                
             }
-            .padding(.horizontal, 10)
-            .onAppear { vs.send(.onAppear) }
         }
+        .padding(.horizontal, 10)
+        .onAppear { store.send(.onAppear) }
     }
 }
 
@@ -127,10 +128,7 @@ struct TodaySelectionModal: View {
 
 extension TodaySelectionModal {
     
-    private func setCell(_ set: StudySet,
-                          _ schedule: Schedule,
-                          _ studyButtonTapped: @escaping () -> Void,
-                          _ reviewButtonTapped: @escaping () -> Void) -> some View {
+    private func setCell(set: StudySet, schedule: Schedule, studyButtonTapped: @escaping () -> Void, reviewButtonTapped: @escaping () -> Void) -> some View {
         
         var dateTextColor: Color {
             switch schedule {

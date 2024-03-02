@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 @Reducer
 struct SelectUnit {
+    @ObservableState
     struct State: Equatable, Identifiable {
         let id: String
         let unit: StudyUnit
@@ -55,28 +56,30 @@ struct SelectionCell: View {
     private let unselectedColor: Color = Color.gray.opacity(0.2)
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            BaseCell(unit: vs.unit,
-                     frontType: vs.frontType)
-                .overlay { vs.isSelected ? AnyView(selectedOverlay) : AnyView(unselectedOverlay) }
-                .onTapGesture { vs.send(.cellTapped) }
-        }
+        BaseCell(unit: store.unit, frontType: store.frontType)
+            .overlay { overlay }
+            .onTapGesture { store.send(.cellTapped) }
     }
     
 }
 
 extension SelectionCell {
     
+    @ViewBuilder
+    private var overlay: some View {
+        if store.isSelected {
+            selectedOverlay
+        } else {
+            unselectedOverlay
+        }
+    }
+    
     private var selectedOverlay: some View {
         selectedColor
             .mask(
                 Rectangle()
-                    .stroke(style: StrokeStyle(lineWidth: 5,
-                                               lineCap: .round,
-                                               dash: [10, 10],
-                                               dashPhase: dashPhase))
-                    .animation(.linear.repeatForever(autoreverses: false).speed(1),
-                               value: dashPhase)
+                    .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
+                    .animation(.linear.repeatForever(autoreverses: false).speed(1), value: dashPhase)
                     .onAppear { dashPhase = -20 }
             )
     }
@@ -85,10 +88,7 @@ extension SelectionCell {
         unselectedColor
             .mask (
                 Rectangle()
-                    .stroke(style: StrokeStyle(lineWidth: 5,
-                                               lineCap: .round,
-                                               dash: [10, 10],
-                                               dashPhase: dashPhase))
+                    .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, dash: [10, 10], dashPhase: dashPhase))
                     .onAppear { dashPhase = 0 }
             )
     }

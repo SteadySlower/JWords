@@ -10,7 +10,7 @@ import SwiftUI
 
 @Reducer
 struct MeaningInput {
-
+    @ObservableState
     struct State: Equatable {
         var text: String = ""
     }
@@ -38,17 +38,12 @@ struct MeaningInput {
 
 struct MeaningInputField: View {
     
-    let store: StoreOf<MeaningInput>
+    @Bindable var store: StoreOf<MeaningInput>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack {
-                InputFieldTitle(title: "뜻 (뒷면)")
-                InputFieldTextEditor(text: vs.binding(
-                    get: \.text,
-                    send: MeaningInput.Action.updateText)
-                )
-            }
+        VStack {
+            InputFieldTitle(title: "뜻 (뒷면)")
+            InputFieldTextEditor(text: $store.text.sending(\.updateText))
         }
     }
     

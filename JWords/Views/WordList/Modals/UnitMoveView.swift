@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct MoveUnits {
+    @ObservableState
     struct State: Equatable {
         let fromSet: StudySet
         let isReviewSet: Bool
@@ -85,58 +86,50 @@ struct MoveUnits {
 }
 
 struct UnitMoveView: View {
-    let store: StoreOf<MoveUnits>
+    
+    @Bindable var store: StoreOf<MoveUnits>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 20) {
-                Text("\(vs.toMoveUnits.count)개의 단어 이동하기")
-                    .font(.system(size: 35))
+        VStack(spacing: 20) {
+            Text("\(store.toMoveUnits.count)개의 단어 이동하기")
+                .font(.system(size: 35))
+                .bold()
+            VStack {
+                Text("단어장 선택")
+                    .font(.system(size: 20))
                     .bold()
-                VStack {
-                    Text("단어장 선택")
-                        .font(.system(size: 20))
-                        .bold()
-                        .leadingAlignment()
-                        .padding(.leading, 10)
-                    Picker("이동할 단어장 고르기", selection: vs.binding(
-                        get: \.selectedID,
-                        send: MoveUnits.Action.updateSelection)
-                    ) {
-                        Text(vs.sets.isEmpty ? "로딩중" : "이동 안함")
-                            .tag(nil as String?)
-                        ForEach(vs.sets, id: \.id) {
-                            Text($0.title)
-                                .tag($0.id as String?)
-                        }
+                    .leadingAlignment()
+                    .padding(.leading, 10)
+                Picker("이동할 단어장 고르기", selection: $store.selectedID.sending(\.updateSelection)) {
+                    Text(store.sets.isEmpty ? "로딩중" : "이동 안함")
+                        .tag(nil as String?)
+                    ForEach(store.sets, id: \.id) {
+                        Text($0.title)
+                            .tag($0.id as String?)
                     }
-                    #if os(iOS)
-                    .pickerStyle(.wheel)
-                    #endif
                 }
-                VStack {
-                    Toggle("현재 단어장 마감",
-                        isOn: vs.binding(
-                            get: \.willCloseSet,
-                            send: MoveUnits.Action.updateWillClose)
-                    )
-                    .tint(.black)
+                #if os(iOS)
+                .pickerStyle(.wheel)
+                #endif
+            }
+            VStack {
+                Toggle("현재 단어장 마감", isOn: $store.willCloseSet.sending(\.updateWillClose))
+                .tint(.black)
+            }
+            if store.isReviewSet {
+                Text("현재 단어장은 복습 리스트에 있습니다.\n단어를 이동하면 복습 리스트에서 제외됩니다.")
+            }
+            HStack {
+                button("취소", foregroundColor: .black) {
+                    store.send(.cancelButtonTapped)
                 }
-                if vs.isReviewSet {
-                    Text("현재 단어장은 복습 리스트에 있습니다.\n단어를 이동하면 복습 리스트에서 제외됩니다.")
-                }
-                HStack {
-                    button("취소", foregroundColor: .black) {
-                        vs.send(.cancelButtonTapped)
-                    }
-                    button("확인", foregroundColor: .black) {
-                        vs.send(.closeButtonTapped)
-                    }
+                button("확인", foregroundColor: .black) {
+                    store.send(.closeButtonTapped)
                 }
             }
-            .padding(.horizontal, 10)
-            .onAppear { vs.send(.onAppear) }
         }
+        .padding(.horizontal, 10)
+        .onAppear { store.send(.onAppear) }
     }
     
     private func button(_ text: String, foregroundColor: Color, onTapped: @escaping () -> Void) -> some View {

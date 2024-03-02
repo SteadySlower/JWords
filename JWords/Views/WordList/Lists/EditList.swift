@@ -10,6 +10,7 @@ import SwiftUI
 
 @Reducer
 struct EditUnits {
+    @ObservableState
     struct State: Equatable {
         var units: IdentifiedArrayOf<ToEditUnit.State>
         
@@ -43,11 +44,10 @@ struct EditList: View {
     
     var body: some View {
         LazyVStack(spacing: 32) {
-            ForEachStore(
-              store.scope(state: \.units, action: \.unit)
-            ) {
-                EditCell(store: $0)
-            }
+            ForEach(
+                store.scope(state: \.units, action: \.unit),
+                id: \.state.id
+            ) { EditCell(store: $0) }
         }
     }
     

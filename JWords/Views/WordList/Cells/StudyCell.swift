@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 @Reducer
 struct StudyOneUnit {
+    @ObservableState
     struct State: Equatable, Identifiable {
         let id: String
         var unit: StudyUnit
@@ -100,60 +101,53 @@ struct StudyCell: View {
     
     // MARK: Body
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 0) {
-                BaseCell(unit: vs.unit,
-                         frontType: vs.frontType,
-                         isFront: vs.isFront,
-                         dragAmount: dragAmount)
-                .overlay(
-                    showKanjisButton(vs)
-                )
-                if vs.showKanjis {
-                    kanjiList(vs)
-                        .opacity(vs.isFront ? 0 : 1)
-                        .padding(.top, 5)
-                }
+        VStack(spacing: 0) {
+            BaseCell(unit: store.unit, frontType: store.frontType, isFront: store.isFront, dragAmount: dragAmount)
+            .overlay(showKanjisButton)
+            if store.showKanjis {
+                kanjiList
+                    .opacity(store.isFront ? 0 : 1)
+                    .padding(.top, 5)
             }
-            .addCellGesture(isLocked: vs.isLocked) { gesture in
-                switch gesture {
-                case .tapped:
-                    vs.send(.toggleFront)
-                case .doubleTapped:
-                    vs.send(.updateStudyState(.undefined))
-                case .dragging(let size):
-                    dragAmount.width = size.width
-                case .draggedLeft:
-                    vs.send(.updateStudyState(.success))
-                    dragAmount = .zero
-                case .draggedRight:
-                    vs.send(.updateStudyState(.fail))
-                    dragAmount = .zero
-                }
+        }
+        .addCellGesture(isLocked: store.isLocked) { gesture in
+            switch gesture {
+            case .tapped:
+                store.send(.toggleFront)
+            case .doubleTapped:
+                store.send(.updateStudyState(.undefined))
+            case .dragging(let size):
+                dragAmount.width = size.width
+            case .draggedLeft:
+                store.send(.updateStudyState(.success))
+                dragAmount = .zero
+            case .draggedRight:
+                store.send(.updateStudyState(.fail))
+                dragAmount = .zero
             }
         }
     }
     
-    private func showKanjisButton(_ vs: VS) -> some View {
+    private var showKanjisButton: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
                 Button {
-                    vs.send(.kanjiButtonTapped)
+                    store.send(.kanjiButtonTapped)
                 } label: {
-                    Text("漢 ") + Text(vs.showKanjis ? "🔼" : "🔽")
+                    Text("漢 ") + Text(store.showKanjis ? "🔼" : "🔽")
                 }
                 .font(.system(size: 24))
                 .padding([.bottom, .trailing], 8)
             }
         }
         .hide(dragAmount != .zero)
-        .hide(vs.isFront)
-        .hide(!vs.showKanjiButton)
+        .hide(store.isFront)
+        .hide(!store.showKanjiButton)
     }
     
-    private func kanjiCell(_ kanji: Kanji, _ vs: VS) -> some View {
+    private func kanjiCell(_ kanji: Kanji) -> some View {
         VStack(spacing: 2) {
             Text(kanji.kanjiText)
                 .font(.system(size: 70))
@@ -169,11 +163,9 @@ struct StudyCell: View {
         .defaultRectangleBackground()
     }
     
-    private func kanjiList(_ vs: VS) -> some View {
+    private var kanjiList: some View {
         FlexBox(horizontalSpacing: 5, verticalSpacing: 5, alignment: .center) {
-            ForEach(vs.kanjis, id: \.id) { kanji in
-                kanjiCell(kanji, vs)
-            }
+            ForEach(store.kanjis, id: \.id) { kanjiCell($0) }
         }
     }
     

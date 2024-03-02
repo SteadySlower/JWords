@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 @Reducer
 struct WriteKanjis {
-    
+    @ObservableState
     struct State: Equatable {
         var kanjis: WritingKanjiList.State
         var toWrite: WriteKanji.State
@@ -57,26 +57,24 @@ struct WritingKanjisView: View {
     let store: StoreOf<WriteKanjis>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            HStack {
-                WritingKanjiListView(
-                    store: store.scope(
-                        state: \.kanjis,
-                        action: \.kanjis
-                    )
+        HStack {
+            WritingKanjiListView(
+                store: store.scope(
+                    state: \.kanjis,
+                    action: \.kanjis
                 )
-                WritingKanjiView(
-                    store: store.scope(
-                        state: \.toWrite,
-                        action: \.toWrite
-                    )
+            )
+            WritingKanjiView(
+                store: store.scope(
+                    state: \.toWrite,
+                    action: \.toWrite
                 )
-                .padding(.trailing, 10)
-            }
-            #if os(iOS)
-            .toolbar(.hidden, for: .tabBar)
-            #endif
+            )
+            .padding(.trailing, 10)
         }
+        #if os(iOS)
+        .toolbar(.hidden, for: .tabBar)
+        #endif
     }
 }
 

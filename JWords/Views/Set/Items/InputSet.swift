@@ -10,7 +10,7 @@ import SwiftUI
 
 @Reducer
 struct InputSet {
-    
+    @ObservableState
     struct State: Equatable {
         var title: String
         var frontType: FrontType
@@ -46,32 +46,26 @@ struct InputSet {
 
 struct InputSetView: View {
     
-    let store: StoreOf<InputSet>
+    @Bindable var store: StoreOf<InputSet>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            VStack(spacing: 30) {
-                VStack {
-                    InputFieldTitle(title: "단어장 이름")
-                    InputSetTextField(
-                        placeHolder: "단어장 이름",
-                        text: vs.binding(
-                            get: \.title,
-                            send: InputSet.Action.updateTitle)
-                    )
-                }
-                VStack {
-                    InputFieldTitle(title: "앞면 유형")
-                    Picker("", selection: vs.binding(
-                        get: \.frontType,
-                        send: InputSet.Action.updateFrontType)
-                    ) {
-                        ForEach(FrontType.allCases, id: \.self) {
-                            Text($0.preferredTypeText)
-                        }
+        VStack(spacing: 30) {
+            VStack {
+                InputFieldTitle(title: "단어장 이름")
+                InputSetTextField(
+                    placeHolder: "단어장 이름",
+                    text: $store.title.sending(\.updateTitle)
+                )
+            }
+            VStack {
+                InputFieldTitle(title: "앞면 유형")
+                Picker("", selection: $store.frontType.sending(\.updateFrontType)
+                ) {
+                    ForEach(FrontType.allCases, id: \.self) {
+                        Text($0.preferredTypeText)
                     }
-                    .pickerStyle(.segmented)
                 }
+                .pickerStyle(.segmented)
             }
         }
     }

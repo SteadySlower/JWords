@@ -13,6 +13,7 @@ import Cocoa
 
 @Reducer
 struct DisplayKanji {
+    @ObservableState
     struct State: Equatable, Identifiable {
         let kanji: Kanji
         
@@ -39,51 +40,49 @@ struct KanjiCell: View {
     let store: StoreOf<DisplayKanji>
     
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { vs in
-            Button(action: {
-                vs.send(.showSamples(vs.kanji))
-            }, label: {
-                HStack {
-                    VStack {
-                        Text(vs.kanji.kanjiText)
-                            .font(.system(size: 100))
-                        Spacer()
-                    }
+        Button(action: {
+            store.send(.showSamples(store.kanji))
+        }, label: {
+            HStack {
+                VStack {
+                    Text(store.kanji.kanjiText)
+                        .font(.system(size: 100))
                     Spacer()
-                    VStack(alignment: .trailing) {
-                        Text(vs.kanji.meaningText)
-                            .font(.system(size: 30))
-                        VStack(alignment: .trailing) {
-                            Text("음독")
-                                .font(.system(size: 15))
-                            Text(vs.kanji.ondoku)
-                        }
-                        VStack(alignment: .trailing) {
-                            Text("훈독")
-                                .font(.system(size: 15))
-                            Text(vs.kanji.kundoku)
-                        }
-                        cellButton(vs: vs)
-                    }
-                    .multilineTextAlignment(.trailing)
                 }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 10)
-                .defaultRectangleBackground()
-                .minimumScaleFactor(0.5)
-            })
-        }
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text(store.kanji.meaningText)
+                        .font(.system(size: 30))
+                    VStack(alignment: .trailing) {
+                        Text("음독")
+                            .font(.system(size: 15))
+                        Text(store.kanji.ondoku)
+                    }
+                    VStack(alignment: .trailing) {
+                        Text("훈독")
+                            .font(.system(size: 15))
+                        Text(store.kanji.kundoku)
+                    }
+                    cellButton
+                }
+                .multilineTextAlignment(.trailing)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
+            .defaultRectangleBackground()
+            .minimumScaleFactor(0.5)
+        })
     }
     
     @ViewBuilder
-    private func cellButton(vs: ViewStore<DisplayKanji.State, DisplayKanji.Action>) -> some View {
+    private var cellButton: some View {
         if UIDevice.current.userInterfaceIdiom == .pad {
             EmojiButtons(buttons: [
-                (emoji: "✏️", action: { vs.send(.edit(vs.kanji)) }),
-                (emoji: "📖", action: { vs.send(.addToWrite(vs.kanji)) })
+                (emoji: "✏️", action: { store.send(.edit(store.kanji)) }),
+                (emoji: "📖", action: { store.send(.addToWrite(store.kanji)) })
             ])
         } else {
-            Button("✏️", action: { vs.send(.edit(vs.kanji)) })
+            Button("✏️", action: { store.send(.edit(store.kanji)) })
         }
     }
 }
