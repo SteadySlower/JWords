@@ -170,16 +170,16 @@ struct AllLists: View {
                 case .study:
                     StudyList(store: store.scope(state: \.study, action: \.study))
                 case .edit:
-                    IfLetStore(store.scope(state: \.edit, action: \.edit)) {
-                        EditList(store: $0)
+                    if let editStore = store.scope(state: \.edit, action: \.edit) {
+                        EditList(store: editStore)
                     }
                 case .select:
-                    IfLetStore(store.scope(state: \.select, action: \.select)) {
-                        SelectList(store: $0)
+                    if let selectStore = store.scope(state: \.select, action: \.select) {
+                        SelectList(store: selectStore)
                     }
                 case .delete:
-                    IfLetStore(store.scope(state: \.delete, action: \.delete)) {
-                        DeleteList(store: $0)
+                    if let deleteStore = store.scope(state: \.delete, action: \.delete) {
+                        DeleteList(store: deleteStore)
                     }
                 }
             }
