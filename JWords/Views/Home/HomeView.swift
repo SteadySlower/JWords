@@ -14,16 +14,12 @@ struct HomeList {
     struct State: Equatable {
         var sets: [StudySet] = []
         var studyUnitsInSet: StudyUnitsInSet.State?
-        var addSet: AddSet.State?
+        @PresentationState var addSet: AddSet.State?
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
         var showStudySetView: Bool {
             studyUnitsInSet != nil
-        }
-        
-        var showAddSetModal: Bool {
-            addSet != nil
         }
         
         mutating func clear() {
@@ -36,11 +32,11 @@ struct HomeList {
     enum Action: Equatable {
         case onAppear
         case homeCellTapped(StudySet)
-        case setAddSetModal(Bool)
         case showStudySetView(Bool)
         case updateIncludeClosed(Bool)
         case studyUnitsInSet(StudyUnitsInSet.Action)
-        case addSet(AddSet.Action)
+        case toAddSet
+        case addSet(PresentationAction<AddSet.Action>)
     }
     
     @Dependency(\.studySetClient) var setClient
@@ -52,8 +48,6 @@ struct HomeList {
             case .onAppear:
                 state.clear()
                 state.sets = try! setClient.fetch(state.includeClosed)
-            case .setAddSetModal(let isPresent):
-                state.addSet = isPresent ? AddSet.State() : nil
             case let .homeCellTapped(set):
                 let units = try! unitClient.fetch(set)
                 state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
@@ -62,17 +56,19 @@ struct HomeList {
                 return .send(.onAppear)
             case .studyUnitsInSet(.dismiss):
                 state.studyUnitsInSet = nil
-            case .addSet(.added(let set)):
+            case .toAddSet:
+                state.addSet = AddSet.State()
+            case .addSet(.presented(.added(let set))):
                 state.sets.insert(set, at: 0)
                 state.addSet = nil
-            case .addSet(.cancel):
+            case .addSet(.presented(.cancel)):
                 state.addSet = nil
             default: break
             }
             return .none
         }
         .ifLet(\.studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
-        .ifLet(\.addSet, action: \.addSet) { AddSet() }
+        .ifLet(\.$addSet, action: \.addSet) { AddSet() }
     }
 
 }
@@ -131,21 +127,13 @@ struct HomeView: View {
             #endif
             .loadingView(vs.isLoading)
             .onAppear { vs.send(.onAppear) }
-            .sheet(isPresented: vs.binding(
-                get: \.showAddSetModal,
-                send: HomeList.Action.setAddSetModal)
-            ) {
-                IfLetStore(store.scope(
-                    state: \.addSet,
-                    action: \.addSet)
-                ) {
-                    AddSetView(store: $0)
-                }
+            .sheet(store: store.scope(state: \.$addSet, action: \.addSet)) {
+                AddSetView(store: $0)
             }
             .toolbar {
                 ToolbarItem {
                     Button {
-                        vs.send(.setAddSetModal(true))
+                        vs.send(.toAddSet)
                     } label: {
                         Image(systemName: "folder.badge.plus")
                             .resizable()
