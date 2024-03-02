@@ -16,8 +16,7 @@ struct KanjiSetList {
         var writeKanjis: WriteKanjis.State?
         var showWriteKanji: Bool { writeKanjis != nil }
         
-        var addKanjiSet: AddKanjiSet.State?
-        var showAddKanjiSet: Bool { addKanjiSet != nil }
+        @PresentationState var addKanjiSet: AddKanjiSet.State?
     }
     
     enum Action: Equatable {
@@ -25,8 +24,8 @@ struct KanjiSetList {
         case setSelected(KanjiSet)
         case writeKanjis(WriteKanjis.Action)
         case showWriteKanjis(Bool)
-        case addKanjiSet(AddKanjiSet.Action)
-        case showAddKanjiSet(Bool)
+        case addKanjiSet(PresentationAction<AddKanjiSet.Action>)
+        case toAddKanjiSet
     }
     
     @Dependency(\.kanjiSetClient) var ksClient
@@ -42,19 +41,19 @@ struct KanjiSetList {
                 state.writeKanjis = .init(kanjis: kanjis)
             case .showWriteKanjis(let show):
                 if !show { state.writeKanjis = nil }
-            case .addKanjiSet(.cancel):
-                state.addKanjiSet = nil
-            case .addKanjiSet(.added(let newSet)):
+            case .toAddKanjiSet:
+                state.addKanjiSet = .init()
+            case .addKanjiSet(.presented(.added(let newSet))):
                 state.sets.insert(newSet, at: 0)
                 state.addKanjiSet = nil
-            case .showAddKanjiSet(let show):
-                state.addKanjiSet = show ? .init() : nil
+            case .addKanjiSet(.presented(.cancel)):
+                state.addKanjiSet = nil
             default: break
             }
             return .none
         }
         .ifLet(\.writeKanjis, action: \.writeKanjis) { WriteKanjis() }
-        .ifLet(\.addKanjiSet, action: \.addKanjiSet) { AddKanjiSet() }
+        .ifLet(\.$addKanjiSet, action: \.addKanjiSet) { AddKanjiSet() }
     }
 }
 
@@ -94,21 +93,13 @@ struct KanjiSetListView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
-            .sheet(isPresented: vs.binding(
-                get: \.showAddKanjiSet,
-                send: KanjiSetList.Action.showAddKanjiSet)
-            ) {
-                IfLetStore(store.scope(
-                    state: \.addKanjiSet,
-                    action: \.addKanjiSet)
-                ) {
-                    AddKanjiSetView(store: $0)
-                }
+            .sheet(store: store.scope(state: \.$addKanjiSet, action: \.addKanjiSet)) {
+                AddKanjiSetView(store: $0)
             }
             .toolbar {
                 ToolbarItem {
                     Button {
-                        vs.send(.showAddKanjiSet(true))
+                        vs.send(.toAddKanjiSet)
                     } label: {
                         Image(systemName: "folder.badge.plus")
                             .resizable()
