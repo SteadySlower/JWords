@@ -256,7 +256,7 @@ struct TodayView: View {
 
 struct TodayView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             TodayView(
                 store: Store(
                     initialState: TodayList.State(),

@@ -126,11 +126,7 @@ struct AddUnitView: View {
                     .keyboardShortcut(.return, modifiers: .control)
                 }
             }
-            .alert(
-                store: store.scope(
-                    state: \.$alert,
-                    action: \.alert)
-            )
+            .alert(store: store.scope(state: \.$alert, action: \.alert))
         }
     }
 }

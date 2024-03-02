@@ -60,7 +60,7 @@ struct MainTabView: View {
             TabView(selection:
                 vs.binding(get: \.selectedTab, send: MainTab.Action.tabChanged)
             ) {
-                NavigationView {
+                NavigationStack {
                     TodayView(store: store.scope(
                         state: \.todayList,
                         action: \.todayList)
@@ -71,7 +71,7 @@ struct MainTabView: View {
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
-                NavigationView {
+                NavigationStack {
                     HomeView(store: store.scope(
                         state: \.homeList,
                         action: \.homeList)
@@ -82,7 +82,7 @@ struct MainTabView: View {
                 #if os(iOS)
                 .navigationViewStyle(.stack)
                 #endif
-                NavigationView {
+                NavigationStack {
                     KanjiListView(store: store.scope(
                         state: \.kanjiList,
                         action: \.kanjiList)
@@ -104,7 +104,7 @@ struct MainTabView: View {
                 .navigationViewStyle(.stack)
                 #endif
                 if UIDevice.current.userInterfaceIdiom == .pad {
-                    NavigationView {
+                    NavigationStack {
                         KanjiSetListView(store: store.scope(
                             state: \.kanjiSetList,
                             action: \.kanjiSetList)
@@ -116,7 +116,7 @@ struct MainTabView: View {
                     .navigationViewStyle(.stack)
                     #endif
                 }
-                NavigationView {
+                NavigationStack {
                     OCRAddUnitView(store: store.scope(
                         state: \.ocr,
                         action: \.ocr)

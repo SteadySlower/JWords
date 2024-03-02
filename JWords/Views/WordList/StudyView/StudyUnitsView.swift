@@ -122,7 +122,7 @@ struct StudyUnitsView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         StudyUnitsView(store: Store(
             initialState: StudyUnits.State(units: .mock),
             reducer: { StudyUnits() })

@@ -53,7 +53,7 @@ struct StudyKanjiSampleView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         StudyKanjiSampleView(store: Store(
             initialState: StudyKanjiSamples.State(kanji: .init(index: 0), units: .mock),
             reducer: { StudyKanjiSamples() })

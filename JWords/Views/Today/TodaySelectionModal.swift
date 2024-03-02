@@ -181,7 +181,7 @@ extension TodaySelectionModal {
 
 struct TodaySelectionModal_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             TodaySelectionModal(
                 store: Store(
                     initialState: TodaySelection.State(

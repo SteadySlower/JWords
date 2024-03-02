@@ -162,7 +162,7 @@ struct StudySetView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         StudySetView(store: Store(
             initialState: StudyUnitsInSet.State(
                 set: .init(index: 0),
