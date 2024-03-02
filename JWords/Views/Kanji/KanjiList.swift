@@ -15,23 +15,12 @@ struct KanjiList {
     
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<DisplayKanji.State>
-        var studyKanjiSamples: StudyKanjiSamples.State?
         var isLastPage = false
         var searchKanji = SearchKanji.State()
-        var edit: EditKanji.State?
-        var addWriting: AddWritingKanji.State?
         
-        var showStudyView: Bool {
-            studyKanjiSamples != nil
-        }
-        
-        var showEditModal: Bool {
-            edit != nil
-        }
-        
-        var showAddWritingModel: Bool {
-            addWriting != nil
-        }
+        @PresentationState var samples: StudyKanjiSamples.State?
+        @PresentationState var edit: EditKanji.State?
+        @PresentationState var addWriting: AddWritingKanji.State?
         
         var isSearching: Bool {
             !searchKanji.query.isEmpty
@@ -41,14 +30,12 @@ struct KanjiList {
     enum Action: Equatable {
         case onAppear
         case fetchKanjis
-        case studyKanjiSamples(StudyKanjiSamples.Action)
-        case showStudyView(Bool)
         case searchKanji(SearchKanji.Action)
         case kanji(IdentifiedActionOf<DisplayKanji>)
-        case showEditView(Bool)
-        case showAddWritingModal(Bool)
-        case edit(EditKanji.Action)
-        case addWriting(AddWritingKanji.Action)
+        
+        case samples(PresentationAction<StudyKanjiSamples.Action>)
+        case edit(PresentationAction<EditKanji.Action>)
+        case addWriting(PresentationAction<AddWritingKanji.Action>)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -68,27 +55,18 @@ struct KanjiList {
                 state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
             case .kanji(.element(_, .showSamples(let kanji))):
                 let units = try! kanjiClient.kanjiUnits(kanji)
-                state.studyKanjiSamples = StudyKanjiSamples.State(kanji: kanji, units: units)
+                state.samples = StudyKanjiSamples.State(kanji: kanji, units: units)
             case .kanji(.element(_, .edit(let kanji))):
                 state.edit = EditKanji.State(kanji)
             case .kanji(.element(_, .addToWrite(let kanji))):
                 let sets = try! kanjiSetClient.fetch()
                 state.addWriting = AddWritingKanji.State(kanji: kanji, kanjiSets: sets)
-            case .showStudyView(let isPresent):
-                if !isPresent { state.studyKanjiSamples = nil }
-                return .none
-            case .showEditView(let isPresent):
-                if !isPresent { state.edit = nil }
-                return .none
-            case .showAddWritingModal(let isPresent):
-                if !isPresent { state.addWriting = nil }
-                return .none
-            case .edit(.cancel):
+            case .edit(.presented(.cancel)):
                 state.edit = nil
-            case .edit(.edited(let kanji)):
+            case .edit(.presented(.edited(let kanji))):
                 state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
                 state.edit = nil
-            case .addWriting(.added), .addWriting(.cancel):
+            case .addWriting(.presented(.added)), .addWriting(.presented(.cancel)):
                 state.addWriting = nil
             case .searchKanji(.updateQuery(let query)):
                 // If query is empty, fetch all kanjis
@@ -100,9 +78,9 @@ struct KanjiList {
             return .none
         }
         .forEach(\.kanjis, action: \.kanji) { DisplayKanji() }
-        .ifLet(\.studyKanjiSamples, action: \.studyKanjiSamples) { StudyKanjiSamples() }
-        .ifLet(\.edit, action: \.edit) { EditKanji() }
-        .ifLet(\.addWriting, action: \.addWriting) { AddWritingKanji() }
+        .ifLet(\.$samples, action: \.samples) { StudyKanjiSamples() }
+        .ifLet(\.$edit, action: \.edit) { EditKanji() }
+        .ifLet(\.$addWriting, action: \.addWriting) { AddWritingKanji() }
         Scope(state: \.searchKanji, action: \.searchKanji) { SearchKanji() }
     }
 
@@ -115,26 +93,16 @@ struct KanjiListView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }) { vs in
             VStack {
-                NavigationLink(
-                    destination: IfLetStore(
-                            store.scope(
-                                state: \.studyKanjiSamples,
-                                action: KanjiList.Action.studyKanjiSamples)
-                            ) { StudyKanjiSampleView(store: $0) },
-                    isActive: vs.binding(
-                                get: \.showStudyView,
-                                send: KanjiList.Action.showStudyView))
-                { EmptyView() }
                 KanjiSearchBar(
                     store: store.scope(
                         state: \.searchKanji,
-                        action: KanjiList.Action.searchKanji)
+                        action: \.searchKanji)
                 )
                 ScrollView {
                     LazyVStack {
                         ForEachStore(store.scope(
                             state: \.kanjis,
-                            action: KanjiList.Action.kanji)
+                            action: \.kanji)
                         ) {
                             KanjiCell(store: $0)
                         }
@@ -159,27 +127,14 @@ struct KanjiListView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
-            .sheet(isPresented: vs.binding(
-                get: \.showEditModal,
-                send: KanjiList.Action.showEditView)
-            ) {
-                IfLetStore(store.scope(
-                    state: \.edit,
-                    action: KanjiList.Action.edit)
-                ) {
-                    EditKanjiView(store: $0)
-                }
+            .navigationDestination(store: store.scope(state: \.$samples, action: \.samples)) {
+                StudyKanjiSampleView(store: $0)
             }
-            .sheet(isPresented: vs.binding(
-                get: \.showAddWritingModel,
-                send: KanjiList.Action.showAddWritingModal)
-            ) {
-                IfLetStore(store.scope(
-                    state: \.addWriting,
-                    action: KanjiList.Action.addWriting)
-                ) {
-                    AddWritingKanjiView(store: $0)
-                }
+            .sheet(store: store.scope(state: \.$edit, action: \.edit)) {
+                EditKanjiView(store: $0)
+            }
+            .sheet(store: store.scope(state: \.$addWriting, action: \.addWriting)) {
+                AddWritingKanjiView(store: $0)
             }
         }
     }

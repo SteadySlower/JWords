@@ -62,13 +62,13 @@ struct WritingKanjisView: View {
                 WritingKanjiListView(
                     store: store.scope(
                         state: \.kanjis,
-                        action: WriteKanjis.Action.kanjis
+                        action: \.kanjis
                     )
                 )
                 WritingKanjiView(
                     store: store.scope(
                         state: \.toWrite,
-                        action: WriteKanjis.Action.toWrite
+                        action: \.toWrite
                     )
                 )
                 .padding(.trailing, 10)

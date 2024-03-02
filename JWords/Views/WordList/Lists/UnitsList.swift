@@ -58,7 +58,7 @@ struct StudyList: View {
         LazyVStack(spacing: 32) {
             ForEachStore(store.scope(
                 state: \.units,
-                action: UnitsList.Action.unit)
+                action: \.unit)
             ) {
                 StudyCell(store: $0)
             }

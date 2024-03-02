@@ -18,26 +18,10 @@ extension View {
 struct ShowModalsInList {
     
     struct State: Equatable {
-        var editSet: EditSet.State?
-        var addUnit: AddUnit.State?
-        var editUnit: EditUnit.State?
-        var moveUnits: MoveUnits.State?
-        
-        var showEditSetModal: Bool {
-            editSet != nil
-        }
-        
-        var showAddUnitModal: Bool {
-            addUnit != nil
-        }
-        
-        var showEditUnitModal: Bool {
-            editUnit != nil
-        }
-        
-        var showMoveUnitsModal: Bool {
-            moveUnits != nil
-        }
+        @PresentationState var editSet: EditSet.State?
+        @PresentationState var addUnit: AddUnit.State?
+        @PresentationState var editUnit: EditUnit.State?
+        @PresentationState var moveUnits: MoveUnits.State?
         
         private mutating func clear() {
             editSet = nil
@@ -73,15 +57,10 @@ struct ShowModalsInList {
     }
     
     enum Action: Equatable {
-        case showEditSetModal(Bool)
-        case showAddUnitModal(Bool)
-        case showEditUnitModal(Bool)
-        case showMoveUnitsModal(Bool)
-        
-        case editSet(EditSet.Action)
-        case addUnit(AddUnit.Action)
-        case editUnit(EditUnit.Action)
-        case moveUnits(MoveUnits.Action)
+        case editSet(PresentationAction<EditSet.Action>)
+        case addUnit(PresentationAction<AddUnit.Action>)
+        case editUnit(PresentationAction<EditUnit.Action>)
+        case moveUnits(PresentationAction<MoveUnits.Action>)
         
         case setEdited(StudySet)
         case unitAdded(StudyUnit)
@@ -92,15 +71,7 @@ struct ShowModalsInList {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .showEditSetModal(let show):
-                if !show { state.editSet = nil }
-            case .showAddUnitModal(let show):
-                if !show { state.addUnit = nil }
-            case .showEditUnitModal(let show):
-                if !show { state.editUnit = nil }
-            case .showMoveUnitsModal(let show):
-                if !show { state.moveUnits = nil }
-            case .editSet(let action):
+            case .editSet(.presented(let action)):
                 switch action {
                 case .edited(let set):
                     state.editSet = nil
@@ -109,7 +80,7 @@ struct ShowModalsInList {
                     state.editSet = nil
                 default: break
                 }
-            case .addUnit(let action):
+            case .addUnit(.presented(let action)):
                 switch action {
                 case .added(let unit):
                     state.addUnit = nil
@@ -118,7 +89,7 @@ struct ShowModalsInList {
                     state.addUnit = nil
                 default: break
                 }
-            case .editUnit(let action):
+            case .editUnit(.presented(let action)):
                 switch action {
                 case .edited(let unit):
                     state.editUnit = nil
@@ -127,7 +98,7 @@ struct ShowModalsInList {
                     state.editUnit = nil
                 default: break
                 }
-            case .moveUnits(let action):
+            case .moveUnits(.presented(let action)):
                 switch action {
                 case .onMoved:
                     state.moveUnits = nil
@@ -140,10 +111,10 @@ struct ShowModalsInList {
             }
             return .none
         }
-        .ifLet(\.editSet, action: \.editSet) { EditSet() }
-        .ifLet(\.addUnit, action: \.addUnit) { AddUnit() }
-        .ifLet(\.editUnit, action: \.editUnit) { EditUnit() }
-        .ifLet(\.moveUnits, action: \.moveUnits) { MoveUnits() }
+        .ifLet(\.$editSet, action: \.editSet) { EditSet() }
+        .ifLet(\.$addUnit, action: \.addUnit) { AddUnit() }
+        .ifLet(\.$editUnit, action: \.editUnit) { EditUnit() }
+        .ifLet(\.$moveUnits, action: \.moveUnits) { MoveUnits() }
     }
 
 }
@@ -155,53 +126,21 @@ struct ListModals: ViewModifier {
     func body(content: Content) -> some View {
         WithViewStore(store, observe: { $0 }) { vs in
             content
-                .sheet(isPresented: vs.binding(
-                    get: \.showEditSetModal,
-                    send: ShowModalsInList.Action.showEditSetModal)
-                ) {
-                    IfLetStore(store.scope(
-                        state: \.editSet,
-                        action: ShowModalsInList.Action.editSet)
-                    ) {
-                        EditSetView(store: $0)
-                    }
+                .sheet(store: store.scope(state: \.$editSet, action: \.editSet)) {
+                    EditSetView(store: $0)
                 }
-                .sheet(isPresented: vs.binding(
-                    get: \.showAddUnitModal,
-                    send: ShowModalsInList.Action.showAddUnitModal)
-                ) {
-                    IfLetStore(store.scope(
-                        state: \.addUnit,
-                        action: ShowModalsInList.Action.addUnit)
-                    ) {
-                        AddUnitView(store: $0)
-                            .padding(.horizontal, 10)
-                            .presentationDetents([.medium])
-                    }
+                .sheet(store: store.scope(state: \.$addUnit, action: \.addUnit)) {
+                    AddUnitView(store: $0)
+                        .padding(.horizontal, 10)
+                        .presentationDetents([.medium])
                 }
-                .sheet(isPresented: vs.binding(
-                    get: \.showEditUnitModal,
-                    send: ShowModalsInList.Action.showEditUnitModal)
-                ) {
-                    IfLetStore(store.scope(
-                        state: \.editUnit,
-                        action: ShowModalsInList.Action.editUnit)
-                    ) {
-                        EditUnitView(store: $0)
-                            .padding(.horizontal, 10)
-                            .presentationDetents([.medium])
-                    }
+                .sheet(store: store.scope(state: \.$editUnit, action: \.editUnit)) {
+                    EditUnitView(store: $0)
+                        .padding(.horizontal, 10)
+                        .presentationDetents([.medium])
                 }
-                .sheet(isPresented: vs.binding(
-                    get: \.showMoveUnitsModal,
-                    send: ShowModalsInList.Action.showMoveUnitsModal)
-                ) {
-                    IfLetStore(store.scope(
-                        state: \.moveUnits,
-                        action: ShowModalsInList.Action.moveUnits)
-                    ) {
-                        UnitMoveView(store: $0)
-                    }
+                .sheet(store: store.scope(state: \.$moveUnits, action: \.moveUnits)) {
+                    UnitMoveView(store: $0)
                 }
         }
     }

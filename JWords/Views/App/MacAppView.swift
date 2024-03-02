@@ -17,8 +17,8 @@ struct MacApp {
     }
     
     enum Action: Equatable {
-        case kanjiList(action: KanjiList.Action)
-        case ocr(action: AddUnitWithOCR.Action)
+        case kanjiList(KanjiList.Action)
+        case ocr(AddUnitWithOCR.Action)
     }
     
     var body: some Reducer<State, Action> {
@@ -37,12 +37,12 @@ struct MacAppView: View {
         TabView {
             KanjiListView(store: store.scope(
                 state: \.kanjiList,
-                action: MacApp.Action.kanjiList(action:))
+                action: \.kanjiList)
             )
             .tabItem { Text("한자 리스트") }
             OCRAddUnitView(store: store.scope(
                 state: \.ocr,
-                action: MacApp.Action.ocr(action:))
+                action: \.ocr)
             )
             .tabItem { Text("OCR") }
         }

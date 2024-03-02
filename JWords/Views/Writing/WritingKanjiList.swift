@@ -43,7 +43,8 @@ struct WritingKanjiListView: View {
                 LazyVStack {
                     ForEachStore(store.scope(
                         state: \.kanjis,
-                        action: WritingKanjiList.Action.kanji)
+                        action: \.kanji
+                        )
                     ) {
                         WritingKanjiCell(store: $0)
                             .padding(.horizontal, 5)

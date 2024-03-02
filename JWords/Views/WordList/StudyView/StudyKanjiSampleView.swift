@@ -42,7 +42,7 @@ struct StudyKanjiSampleView: View {
         WithViewStore(store, observe: { $0 }) { vs in
             AllLists(store: store.scope(
                 state: \.lists,
-                action: StudyKanjiSamples.Action.lists)
+                action: \.lists)
             )
             .navigationTitle("\(vs.kanji.kanjiText)가 쓰이는 단어")
             #if os(iOS)
@@ -53,7 +53,7 @@ struct StudyKanjiSampleView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         StudyKanjiSampleView(store: Store(
             initialState: StudyKanjiSamples.State(kanji: .init(index: 0), units: .mock),
             reducer: { StudyKanjiSamples() })

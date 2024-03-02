@@ -97,7 +97,7 @@ struct EditUnitView: View {
             VStack(spacing: 40) {
                 UnitInputView(store: store.scope(
                     state: \.inputUnit,
-                    action: EditUnit.Action.inputUnit)
+                    action: \.inputUnit)
                 )
                 HStack(spacing: 100) {
                     Button("취소") {
@@ -111,7 +111,7 @@ struct EditUnitView: View {
                     .disabled(!vs.inputUnit.ableToAdd)
                 }
             }
-            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+            .alert(store: store.scope(state: \.$alert, action: \.alert))
         }
     }
 }

@@ -67,12 +67,12 @@ struct OCRView: View {
             if vs.ocr == nil {
                 GetImageForOCRView(store: store.scope(
                     state: \.getImage,
-                    action: OCR.Action.getImage)
+                    action: \.getImage)
                 )
             } else {
                 IfLetStore(store.scope(
                     state: \.ocr,
-                    action: OCR.Action.ocr)
+                    action: \.ocr)
                 ) {
                     OCRResultView(store: $0)
                 }

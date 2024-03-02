@@ -81,7 +81,7 @@ struct KanjiInputField: View {
                     ScrollView {
                         EditableHuriganaText(store: store.scope(
                             state: \.hurigana,
-                            action: KanjiInput.Action.editHuriText),
+                            action: \.editHuriText),
                             fontsize: Constants.Size.UNIT_INPUT_FONT
                         )
                         .padding(.horizontal, 5)
