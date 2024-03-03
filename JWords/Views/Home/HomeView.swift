@@ -17,12 +17,10 @@ struct HomeList {
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-        @Presents var studyUnitsInSet: StudyUnitsInSet.State?
         @Presents var addSet: AddSet.State?
         
         mutating func clear() {
             sets = []
-            studyUnitsInSet = nil
             addSet = nil
         }
     }
@@ -33,7 +31,6 @@ struct HomeList {
         case updateIncludeClosed(Bool)
         case toAddSet
         
-        case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
         case addSet(PresentationAction<AddSet.Action>)
     }
     
@@ -46,14 +43,9 @@ struct HomeList {
             case .onAppear:
                 state.clear()
                 state.sets = try! setClient.fetch(state.includeClosed)
-            case let .homeCellTapped(set):
-                let units = try! unitClient.fetch(set)
-                state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .send(.onAppear)
-            case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
-                state.studyUnitsInSet = nil
             case .toAddSet:
                 state.addSet = AddSet.State()
             case .addSet(.presented(.added(let set))):
@@ -65,7 +57,6 @@ struct HomeList {
             }
             return .none
         }
-        .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
         .ifLet(\.$addSet, action: \.addSet) { AddSet() }
     }
 
@@ -106,9 +97,6 @@ struct HomeView: View {
         #endif
         .loadingView(store.isLoading)
         .onAppear { store.send(.onAppear) }
-        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
-            StudySetView(store: $0)
-        }
         .sheet(item: $store.scope(state: \.addSet, action: \.addSet)) {
             AddSetView(store: $0)
         }
