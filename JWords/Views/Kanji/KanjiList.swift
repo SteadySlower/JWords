@@ -18,12 +18,17 @@ struct KanjiList {
         var isLastPage = false
         var searchKanji = SearchKanji.State()
         
-        @Presents var edit: EditKanji.State?
-        @Presents var addWriting: AddWritingKanji.State?
+        @Presents var destination: Destination.State?
         
         var isSearching: Bool {
             !searchKanji.query.isEmpty
         }
+    }
+    
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case edit(EditKanji)
+        case addWriting(AddWritingKanji)
     }
     
     enum Action: Equatable {
@@ -32,8 +37,7 @@ struct KanjiList {
         case searchKanji(SearchKanji.Action)
         case kanji(IdentifiedActionOf<DisplayKanji>)
         
-        case edit(PresentationAction<EditKanji.Action>)
-        case addWriting(PresentationAction<AddWritingKanji.Action>)
+        case destination(PresentationAction<Destination.Action>)
     }
     
     @Dependency(\.kanjiClient) var kanjiClient
@@ -52,17 +56,13 @@ struct KanjiList {
                 let idArrayOfFetched = fetched.map { DisplayKanji.State(kanji: $0) }
                 state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
             case .kanji(.element(_, .edit(let kanji))):
-                state.edit = EditKanji.State(kanji)
+                state.destination = .edit(EditKanji.State(kanji))
             case .kanji(.element(_, .addToWrite(let kanji))):
                 let sets = try! kanjiSetClient.fetch()
-                state.addWriting = AddWritingKanji.State(kanji: kanji, kanjiSets: sets)
-            case .edit(.presented(.cancel)):
-                state.edit = nil
-            case .edit(.presented(.edited(let kanji))):
+                state.destination = .addWriting(AddWritingKanji.State(kanji: kanji, kanjiSets: sets))
+            case .destination(.presented(.edit(.edited(let kanji)))):
                 state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
-                state.edit = nil
-            case .addWriting(.presented(.added)), .addWriting(.presented(.cancel)):
-                state.addWriting = nil
+                state.destination = nil
             case .searchKanji(.updateQuery(let query)):
                 // If query is empty, fetch all kanjis
                 return query.isEmpty ? .send(.fetchKanjis) : .none
@@ -73,8 +73,7 @@ struct KanjiList {
             return .none
         }
         .forEach(\.kanjis, action: \.kanji) { DisplayKanji() }
-        .ifLet(\.$edit, action: \.edit) { EditKanji() }
-        .ifLet(\.$addWriting, action: \.addWriting) { AddWritingKanji() }
+        .ifLet(\.$destination, action: \.destination)
         Scope(state: \.searchKanji, action: \.searchKanji) { SearchKanji() }
     }
 
@@ -118,10 +117,10 @@ struct KanjiListView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .sheet(item: $store.scope(state: \.edit, action: \.edit)) {
+        .sheet(item: $store.scope(state: \.destination?.edit, action: \.destination.edit)) {
             EditKanjiView(store: $0)
         }
-        .sheet(item: $store.scope(state: \.addWriting, action: \.addWriting)) {
+        .sheet(item: $store.scope(state: \.destination?.addWriting, action: \.destination.addWriting)) {
             AddWritingKanjiView(store: $0)
         }
     }
