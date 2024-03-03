@@ -14,7 +14,6 @@ struct KanjiSetList {
     struct State: Equatable {
         var sets: [KanjiSet]
         
-        @Presents var writeKanjis: WriteKanjis.State?
         @Presents var addKanjiSet: AddKanjiSet.State?
     }
     
@@ -23,7 +22,6 @@ struct KanjiSetList {
         case setSelected(KanjiSet)
         case toAddKanjiSet
         
-        case writeKanjis(PresentationAction<WriteKanjis.Action>)
         case addKanjiSet(PresentationAction<AddKanjiSet.Action>)
     }
     
@@ -35,9 +33,6 @@ struct KanjiSetList {
             switch action {
             case .fetchSets:
                 state.sets = try! ksClient.fetch()
-            case .setSelected(let set):
-                let kanjis = try! wkClient.fetch(set)
-                state.writeKanjis = .init(kanjis: kanjis)
             case .toAddKanjiSet:
                 state.addKanjiSet = .init()
             case .addKanjiSet(.presented(.added(let newSet))):
@@ -49,7 +44,6 @@ struct KanjiSetList {
             }
             return .none
         }
-        .ifLet(\.$writeKanjis, action: \.writeKanjis) { WriteKanjis() }
         .ifLet(\.$addKanjiSet, action: \.addKanjiSet) { AddKanjiSet() }
     }
 }
@@ -79,7 +73,6 @@ struct KanjiSetListView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .navigationDestination(item: $store.scope(state: \.writeKanjis, action: \.writeKanjis)) { WritingKanjisView(store: $0) }
         .sheet(item: $store.scope(state: \.addKanjiSet, action: \.addKanjiSet)) {
             AddKanjiSetView(store: $0)
         }
