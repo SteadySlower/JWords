@@ -17,20 +17,10 @@ struct MainTab {
     @ObservableState
     struct State: Equatable {
         var selectedTab: Tab = .today
-        var todayList: TodayList.State = .init()
-        var homeList: HomeList.State = .init()
-        var kanjiList: KanjiList.State = .init(kanjis: [])
-        var kanjiSetList: KanjiSetList.State = .init(sets: [])
-        var ocr: AddUnitWithOCR.State = .init()
     }
     
     enum Action: Equatable {
         case tabChanged(Tab)
-        case todayList(TodayList.Action)
-        case homeList(HomeList.Action)
-        case kanjiList(KanjiList.Action)
-        case kanjiSetList(KanjiSetList.Action)
-        case ocr(AddUnitWithOCR.Action)
     }
     
     var body: some Reducer<State, Action> {
@@ -38,15 +28,9 @@ struct MainTab {
             switch action {
             case .tabChanged(let tab):
                 state.selectedTab = tab
-            default: break
             }
             return .none
         }
-        Scope(state: \.todayList, action: \.todayList) { TodayList() }
-        Scope(state: \.homeList, action: \.homeList) { HomeList() }
-        Scope(state: \.kanjiList, action: \.kanjiList) { KanjiList() }
-        Scope(state: \.kanjiSetList, action: \.kanjiSetList) { KanjiSetList() }
-        Scope(state: \.ocr, action: \.ocr) { AddUnitWithOCR() }
     }
     
 }
@@ -57,34 +41,16 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $store.selectedTab.sending(\.tabChanged)) {
-            NavigationStack {
-                TodayView(store: store.scope(
-                    state: \.todayList,
-                    action: \.todayList)
-                )
-            }
+            TodayCoordinatorView(
+                store: .init(initialState: .init(),
+                reducer: { TodayCoordinator() })
+            )
             .tabItem { Label("오늘 단어장", systemImage: "calendar") }
             .tag(Tab.today)
-            #if os(iOS)
-            .navigationViewStyle(.stack)
-            #endif
-            NavigationStack {
-                HomeView(store: store.scope(
-                    state: \.homeList,
-                    action: \.homeList)
-                )
-            }
+            SetCoordinatorView(store: .init(initialState: .init(), reducer: { SetCoordinator() }))
             .tabItem { Label("모든 단어장", systemImage: "books.vertical") }
             .tag(Tab.home)
-            #if os(iOS)
-            .navigationViewStyle(.stack)
-            #endif
-            NavigationStack {
-                KanjiListView(store: store.scope(
-                    state: \.kanjiList,
-                    action: \.kanjiList)
-                )
-            }
+            KanjiCoordinatorView(store: .init(initialState: .init(), reducer: { KanjiCoordinator() }))
             .tabItem {
             #if os(iOS)
             Label {
@@ -97,32 +63,13 @@ struct MainTabView: View {
             #endif
             }
             .tag(Tab.kanji)
-            #if os(iOS)
-            .navigationViewStyle(.stack)
-            #endif
             if UIDevice.current.userInterfaceIdiom == .pad {
-                NavigationStack {
-                    KanjiSetListView(store: store.scope(
-                        state: \.kanjiSetList,
-                        action: \.kanjiSetList)
-                    )
-                }
+                WritingCoordinatorView(store: .init(initialState: .init(), reducer: { WritingCoordinator() }))
                 .tabItem { Label("한자 쓰기", systemImage: "applepencil.and.scribble") }
                 .tag(Tab.kanjiWriting)
-                #if os(iOS)
-                .navigationViewStyle(.stack)
-                #endif
             }
-            NavigationStack {
-                OCRAddUnitView(store: store.scope(
-                    state: \.ocr,
-                    action: \.ocr)
-                )
-            }
+            ScannerCoordinatorView(store: .init(initialState: .init(), reducer: { ScannerCoordinator() }))
             .tabItem { Label("단어 스캐너", systemImage: "scanner") }
-            #if os(iOS)
-            .navigationViewStyle(.stack)
-            #endif
             .tag(Tab.ocr)
         }
         .tint(.black)
