@@ -15,17 +15,10 @@ struct TodayList {
         var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []
         
-        @Presents var studyUnitsInSet: StudyUnitsInSet.State?
-        @Presents var studyUnits: StudyUnits.State?
         @Presents var todaySelection: TodaySelection.State?
-        @Presents var tutorial: ShowTutorial.State?
         
         mutating func clear() {
             reviewSets = []
-            studyUnitsInSet = nil
-            studyUnits = nil
-            todaySelection = nil
-            tutorial = nil
             todayStatus.clear()
         }
         
@@ -42,12 +35,10 @@ struct TodayList {
         case listButtonTapped
         case clearScheduleButtonTapped
         case homeCellTapped(StudySet)
+        case studyFilteredUnits([StudyUnit])
+        case tutorialButtonTapped
         
-        case showTutorial(Bool)
-        case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
-        case studyUnits(PresentationAction<StudyUnits.Action>)
         case todaySelection(PresentationAction<TodaySelection.Action>)
-        case tutorial(PresentationAction<ShowTutorial.Action>)
     }
     
     var body: some Reducer<State, Action> {
@@ -75,11 +66,8 @@ struct TodayList {
                     scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
                 } else {
-                    state.studyUnits = StudyUnits.State(units: state.todayStatus.toStudyUnits)
+                    return .send(.studyFilteredUnits(state.todayStatus.toStudyUnits))
                 }
-            case .homeCellTapped(let set):
-                let units = try! unitClient.fetch(set)
-                state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
             case .listButtonTapped:
                 state.todaySelection = TodaySelection.State(todaySets: state.todayStatus.studySets,
                                                             reviewSets: state.reviewSets)
@@ -88,16 +76,11 @@ struct TodayList {
             case .clearScheduleButtonTapped:
                 state.clear()
                 scheduleClient.clear()
-            case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
-                state.studyUnitsInSet = nil
             default: break
             }
             return .none
         }
-        .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
-        .ifLet(\.$studyUnits, action: \.studyUnits) { StudyUnits() }
         .ifLet(\.$todaySelection, action: \.todaySelection) { TodaySelection() }
-        .ifLet(\.$tutorial, action: \.tutorial) { ShowTutorial() }
         Scope(state: \.todayStatus, action: \.todayStatus) { TodayStatus() }
     }
     
@@ -168,15 +151,6 @@ struct TodayView: View {
         }
         .withBannerAD()
         .onAppear { store.send(.onAppear) }
-        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
-            StudySetView(store: $0)
-        }
-        .navigationDestination(item: $store.scope(state: \.studyUnits, action: \.studyUnits)) {
-            StudyUnitsView(store: $0)
-        }
-        .navigationDestination(item: $store.scope(state: \.tutorial, action: \.tutorial)) {
-            TutorialList(store: $0)
-        }
         .sheet(item: $store.scope(state: \.todaySelection, action: \.todaySelection)) {
             TodaySelectionModal(store: $0)
         }
@@ -204,7 +178,7 @@ struct TodayView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    store.send(.showTutorial(true))
+                    store.send(.tutorialButtonTapped)
                 } label: {
                     Image(systemName: "questionmark.circle")
                         .resizable()
