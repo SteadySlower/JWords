@@ -30,15 +30,20 @@ private enum ImageSource {
 struct GetImageForOCR {
     @ObservableState
     struct State: Equatable {
-        var showCameraScanner: Bool = false
+        @Presents var destination: Destination.State?
+    }
+    
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case cameraScanner(ScanWithCamera)
     }
     
     enum Action: Equatable {
         case clipBoardButtonTapped
         case cameraButtonTapped
-        case showCameraScanner(Bool)
-        case cameraImageSelected(InputImageType)
         case imageFetched(InputImageType)
+        
+        case destination(PresentationAction<Destination.Action>)
     }
     
     @Dependency(\.pasteBoardClient) var pasteBoardClient
@@ -54,17 +59,16 @@ struct GetImageForOCR {
                 else { return .none }
                 return .send(.imageFetched(resized))
             case .cameraButtonTapped:
-                state.showCameraScanner = true
+                state.destination = .cameraScanner(.init())
                 return .none
-            case .showCameraScanner(let show):
-                state.showCameraScanner = show
-                return .none
-            case .cameraImageSelected(let image):
+            case .destination(.presented(.cameraScanner(.imageSelected(let image)))):
                 guard let resized = utilClient.resizeImage(image) else { return .none }
                 return .send(.imageFetched(resized))
-            default: return .none
+            default: break
             }
+            return .none
         }
+        .ifLet(\.$destination, action: \.destination)
     }
 }
 
@@ -88,9 +92,8 @@ struct GetImageForOCRView: View {
             }
         }
         #if os(iOS)
-        .sheet(isPresented: $store.showCameraScanner.sending(\.showCameraScanner)
-        ) {
-            CameraScanner { store.send(.cameraImageSelected($0)) }
+        .sheet(item: $store.scope(state: \.destination?.cameraScanner, action: \.destination.cameraScanner)) {
+            CameraScanner(store: $0)
         }
         #endif
     }
