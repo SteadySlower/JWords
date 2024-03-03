@@ -18,7 +18,6 @@ struct KanjiList {
         var isLastPage = false
         var searchKanji = SearchKanji.State()
         
-        @Presents var samples: StudyKanjiSamples.State?
         @Presents var edit: EditKanji.State?
         @Presents var addWriting: AddWritingKanji.State?
         
@@ -33,7 +32,6 @@ struct KanjiList {
         case searchKanji(SearchKanji.Action)
         case kanji(IdentifiedActionOf<DisplayKanji>)
         
-        case samples(PresentationAction<StudyKanjiSamples.Action>)
         case edit(PresentationAction<EditKanji.Action>)
         case addWriting(PresentationAction<AddWritingKanji.Action>)
     }
@@ -53,9 +51,6 @@ struct KanjiList {
                 if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
                 let idArrayOfFetched = fetched.map { DisplayKanji.State(kanji: $0) }
                 state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
-            case .kanji(.element(_, .showSamples(let kanji))):
-                let units = try! kanjiClient.kanjiUnits(kanji)
-                state.samples = StudyKanjiSamples.State(kanji: kanji, units: units)
             case .kanji(.element(_, .edit(let kanji))):
                 state.edit = EditKanji.State(kanji)
             case .kanji(.element(_, .addToWrite(let kanji))):
@@ -78,7 +73,6 @@ struct KanjiList {
             return .none
         }
         .forEach(\.kanjis, action: \.kanji) { DisplayKanji() }
-        .ifLet(\.$samples, action: \.samples) { StudyKanjiSamples() }
         .ifLet(\.$edit, action: \.edit) { EditKanji() }
         .ifLet(\.$addWriting, action: \.addWriting) { AddWritingKanji() }
         Scope(state: \.searchKanji, action: \.searchKanji) { SearchKanji() }
@@ -124,9 +118,6 @@ struct KanjiListView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .navigationDestination(item: $store.scope(state: \.samples, action: \.samples)) {
-            StudyKanjiSampleView(store: $0)
-        }
         .sheet(item: $store.scope(state: \.edit, action: \.edit)) {
             EditKanjiView(store: $0)
         }
