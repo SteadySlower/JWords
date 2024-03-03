@@ -14,7 +14,12 @@ struct KanjiSetList {
     struct State: Equatable {
         var sets: [KanjiSet]
         
-        @Presents var addKanjiSet: AddKanjiSet.State?
+        @Presents var destination: Destination.State?
+    }
+    
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case addKanjiSet(AddKanjiSet)
     }
     
     enum Action: Equatable {
@@ -22,7 +27,7 @@ struct KanjiSetList {
         case setSelected(KanjiSet)
         case toAddKanjiSet
         
-        case addKanjiSet(PresentationAction<AddKanjiSet.Action>)
+        case destination(PresentationAction<Destination.Action>)
     }
     
     @Dependency(\.kanjiSetClient) var ksClient
@@ -34,17 +39,17 @@ struct KanjiSetList {
             case .fetchSets:
                 state.sets = try! ksClient.fetch()
             case .toAddKanjiSet:
-                state.addKanjiSet = .init()
-            case .addKanjiSet(.presented(.added(let newSet))):
+                state.destination = .addKanjiSet(AddKanjiSet.State())
+            case .destination(.presented(.addKanjiSet(.added(let newSet)))):
                 state.sets.insert(newSet, at: 0)
-                state.addKanjiSet = nil
-            case .addKanjiSet(.presented(.cancel)):
-                state.addKanjiSet = nil
+                state.destination = nil
+            case .destination(.presented(.addKanjiSet(.cancel))):
+                state.destination = nil
             default: break
             }
             return .none
         }
-        .ifLet(\.$addKanjiSet, action: \.addKanjiSet) { AddKanjiSet() }
+        .ifLet(\.$destination, action: \.destination)
     }
 }
 
@@ -73,7 +78,7 @@ struct KanjiSetListView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .sheet(item: $store.scope(state: \.addKanjiSet, action: \.addKanjiSet)) {
+        .sheet(item: $store.scope(state: \.destination?.addKanjiSet, action: \.destination.addKanjiSet)) {
             AddKanjiSetView(store: $0)
         }
         .toolbar {
