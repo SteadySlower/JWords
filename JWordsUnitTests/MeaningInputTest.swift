@@ -13,7 +13,7 @@ import XCTest
 @MainActor
 final class MeaningInputTest: XCTestCase {
     
-    func testUpdateText() async {
+    func test_setText() async {
         let store = TestStore(
             initialState: MeaningInput.State(),
             reducer: { MeaningInput() }
@@ -21,12 +21,12 @@ final class MeaningInputTest: XCTestCase {
         
         let text = Random.string
         
-        await store.send(.updateText(text)) {
+        await store.send(.setText(text)) {
             $0.text = text
         }
     }
     
-    func testUpdateTextHasTab() async {
+    func test_setText_hasTab() async {
         let store = TestStore(
             initialState: MeaningInput.State(),
             reducer: { MeaningInput() }
@@ -39,7 +39,7 @@ final class MeaningInputTest: XCTestCase {
             Random.string + "\t" + Random.string,
         ].randomElement()!
         
-        await store.send(.updateText(textWithTab))
+        await store.send(.setText(textWithTab))
         await store.receive(.onTab)
     }
     

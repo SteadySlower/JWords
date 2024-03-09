@@ -16,16 +16,14 @@ struct MeaningInput {
     }
     
     enum Action: Equatable {
-        case updateText(String)
+        case setText(String)
         case onTab
     }
-    
-    private let cd = CoreDataService.shared
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .updateText(let text):
+            case .setText(let text):
                 if text.hasTab { return .send(.onTab) }
                 state.text = text
                 return .none
@@ -43,7 +41,7 @@ struct MeaningInputField: View {
     var body: some View {
         VStack {
             InputFieldTitle(title: "뜻 (뒷면)")
-            InputFieldTextEditor(text: $store.text.sending(\.updateText))
+            InputFieldTextEditor(text: $store.text.sending(\.setText))
         }
     }
     
