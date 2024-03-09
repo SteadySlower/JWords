@@ -9,14 +9,34 @@ import SwiftUI
 
 #if os(iOS)
 import UIKit
+import ComposableArchitecture
+
+@Reducer
+struct ScanWithCamera {
+    struct State: Equatable {}
+    
+    enum Action: Equatable {
+        case imageSelected(InputImageType)
+        case cancel
+    }
+    
+    @Dependency(\.dismiss) var dismiss
+    
+    var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .cancel:
+                return .run { _ in await self.dismiss() }
+            default: break
+            }
+            return .none
+        }
+    }
+}
 
 struct CameraScanner: UIViewControllerRepresentable {
-    private let imageSelected: (InputImageType) -> Void
-    @Environment(\.dismiss) var dismiss
     
-    init(_ imageSelected: @escaping (InputImageType) -> Void) {
-        self.imageSelected = imageSelected
-    }
+    let store: StoreOf<ScanWithCamera>
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: CameraScanner
@@ -27,13 +47,12 @@ struct CameraScanner: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
-                parent.imageSelected(uiImage)
+                parent.store.send(.imageSelected(uiImage))
             }
-            parent.dismiss()
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            parent.dismiss()
+            parent.store.send(.cancel)
         }
     }
 

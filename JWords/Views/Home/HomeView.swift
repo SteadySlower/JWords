@@ -17,14 +17,17 @@ struct HomeList {
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-        @Presents var studyUnitsInSet: StudyUnitsInSet.State?
-        @Presents var addSet: AddSet.State?
+        @Presents var destination: Destination.State?
         
         mutating func clear() {
             sets = []
-            studyUnitsInSet = nil
-            addSet = nil
+            destination = nil
         }
+    }
+    
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case addSet(AddSet)
     }
     
     enum Action: Equatable {
@@ -33,8 +36,7 @@ struct HomeList {
         case updateIncludeClosed(Bool)
         case toAddSet
         
-        case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
-        case addSet(PresentationAction<AddSet.Action>)
+        case destination(PresentationAction<Destination.Action>)
     }
     
     @Dependency(\.studySetClient) var setClient
@@ -46,27 +48,19 @@ struct HomeList {
             case .onAppear:
                 state.clear()
                 state.sets = try! setClient.fetch(state.includeClosed)
-            case let .homeCellTapped(set):
-                let units = try! unitClient.fetch(set)
-                state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
             case .updateIncludeClosed(let bool):
                 state.includeClosed = bool
                 return .send(.onAppear)
-            case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
-                state.studyUnitsInSet = nil
             case .toAddSet:
-                state.addSet = AddSet.State()
-            case .addSet(.presented(.added(let set))):
+                state.destination = .addSet(.init())
+            case .destination(.presented(.addSet(.added(let set)))):
                 state.sets.insert(set, at: 0)
-                state.addSet = nil
-            case .addSet(.presented(.cancel)):
-                state.addSet = nil
+                state.destination = nil
             default: break
             }
             return .none
         }
-        .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
-        .ifLet(\.$addSet, action: \.addSet) { AddSet() }
+        .ifLet(\.$destination, action: \.destination)
     }
 
 }
@@ -106,10 +100,7 @@ struct HomeView: View {
         #endif
         .loadingView(store.isLoading)
         .onAppear { store.send(.onAppear) }
-        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
-            StudySetView(store: $0)
-        }
-        .sheet(item: $store.scope(state: \.addSet, action: \.addSet)) {
+        .sheet(item: $store.scope(state: \.destination?.addSet, action: \.destination.addSet)) {
             AddSetView(store: $0)
         }
         .toolbar {

@@ -60,6 +60,7 @@ struct EditUnit {
     }
     
     @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -77,7 +78,9 @@ struct EditUnit {
                 let unit = try! unitClient.edit(state.unit, input)
                 return .send(.edited(unit))
             case .alert(.presented(.cancel)):
-                return .send(.cancel)
+                return .run { _ in await self.dismiss() }
+            case .cancel:
+                return .run { _ in await self.dismiss() }
             default: break
             }
             return .none

@@ -15,20 +15,17 @@ struct TodayList {
         var todayStatus = TodayStatus.State()
         var reviewSets: [StudySet] = []
         
-        @Presents var studyUnitsInSet: StudyUnitsInSet.State?
-        @Presents var studyUnits: StudyUnits.State?
-        @Presents var todaySelection: TodaySelection.State?
-        var showTutorial: Bool = false
+        @Presents var destination: Destination.State?
         
         mutating func clear() {
             reviewSets = []
-            studyUnitsInSet = nil
-            studyUnits = nil
-            todaySelection = nil
-            showTutorial = false
             todayStatus.clear()
         }
-        
+    }
+    
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case todaySelection(TodaySelection)
     }
     
     @Dependency(\.scheduleClient) var scheduleClient
@@ -42,11 +39,10 @@ struct TodayList {
         case listButtonTapped
         case clearScheduleButtonTapped
         case homeCellTapped(StudySet)
+        case studyFilteredUnits([StudyUnit])
+        case tutorialButtonTapped
         
-        case showTutorial(Bool)
-        case studyUnitsInSet(PresentationAction<StudyUnitsInSet.Action>)
-        case studyUnits(PresentationAction<StudyUnits.Action>)
-        case todaySelection(PresentationAction<TodaySelection.Action>)
+        case destination(PresentationAction<Destination.Action>)
     }
     
     var body: some Reducer<State, Action> {
@@ -54,10 +50,11 @@ struct TodayList {
             switch action {
             case .onAppear:
                 fetchSchedule(&state)
-            case .todaySelection(.dismiss):
-                if let newStudy = state.todaySelection?.studySets,
-                   let newReview = state.todaySelection?.reviewSets
-                {
+            case .destination(.dismiss):
+                switch state.destination {
+                case .todaySelection(let todayState):
+                    let newStudy = todayState.studySets
+                    let newReview = todayState.reviewSets
                     let newStudySets = scheduleClient.updateStudy(newStudy)
                     let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
                     let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
@@ -66,6 +63,7 @@ struct TodayList {
                         allUnits: newAllStudyUnits,
                         toStudyUnits: newToStudyUnits)
                     state.reviewSets = scheduleClient.updateReview(newReview)
+                default: break
                 }
             case .todayStatus(.onTapped):
                 if state.todayStatus.isEmpty {
@@ -74,30 +72,21 @@ struct TodayList {
                     scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
                 } else {
-                    state.studyUnits = StudyUnits.State(units: state.todayStatus.toStudyUnits)
+                    return .send(.studyFilteredUnits(state.todayStatus.toStudyUnits))
                 }
-            case .homeCellTapped(let set):
-                let units = try! unitClient.fetch(set)
-                state.studyUnitsInSet = StudyUnitsInSet.State(set: set, units: units)
             case .listButtonTapped:
-                state.todaySelection = TodaySelection.State(todaySets: state.todayStatus.studySets,
-                                                            reviewSets: state.reviewSets)
+                state.destination = .todaySelection(TodaySelection.State(todaySets: state.todayStatus.studySets,
+                                                                         reviewSets: state.reviewSets))
                 state.todayStatus.clear()
                 state.reviewSets = []
             case .clearScheduleButtonTapped:
                 state.clear()
                 scheduleClient.clear()
-            case .showTutorial(let show):
-                state.showTutorial = show
-            case .studyUnitsInSet(.presented(.modals(.unitsMoved))):
-                state.studyUnitsInSet = nil
             default: break
             }
             return .none
         }
-        .ifLet(\.$studyUnitsInSet, action: \.studyUnitsInSet) { StudyUnitsInSet() }
-        .ifLet(\.$studyUnits, action: \.studyUnits) { StudyUnits() }
-        .ifLet(\.$todaySelection, action: \.todaySelection) { TodaySelection() }
+        .ifLet(\.$destination, action: \.destination)
         Scope(state: \.todayStatus, action: \.todayStatus) { TodayStatus() }
     }
     
@@ -168,16 +157,7 @@ struct TodayView: View {
         }
         .withBannerAD()
         .onAppear { store.send(.onAppear) }
-        .navigationDestination(item: $store.scope(state: \.studyUnitsInSet, action: \.studyUnitsInSet)) {
-            StudySetView(store: $0)
-        }
-        .navigationDestination(item: $store.scope(state: \.studyUnits, action: \.studyUnits)) {
-            StudyUnitsView(store: $0)
-        }
-        .navigationDestination(isPresented: $store.showTutorial.sending(\.showTutorial)) {
-            TutorialList()
-        }
-        .sheet(item: $store.scope(state: \.todaySelection, action: \.todaySelection)) {
+        .sheet(item: $store.scope(state: \.destination?.todaySelection, action: \.destination.todaySelection)) {
             TodaySelectionModal(store: $0)
         }
         .navigationTitle("오늘 단어장")
@@ -204,7 +184,7 @@ struct TodayView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    store.send(.showTutorial(true))
+                    store.send(.tutorialButtonTapped)
                 } label: {
                     Image(systemName: "questionmark.circle")
                         .resizable()

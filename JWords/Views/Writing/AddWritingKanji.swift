@@ -25,10 +25,10 @@ struct AddWritingKanji {
         case updateID(String?)
         case add
         case cancel
-        case added(KanjiSet)
     }
     
     @Dependency(\.kanjiSetClient) var kanjiSetClient
+    @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -38,13 +38,10 @@ struct AddWritingKanji {
                 return .none
             case .add:
                 guard let toAddSet = state.selectedSet else { return .none }
-                let addedSet = try! kanjiSetClient.addKanji(state.kanji, toAddSet)
-                return .send(.added(addedSet))
+                _ = try! kanjiSetClient.addKanji(state.kanji, toAddSet)
+                return .run { _ in await self.dismiss() }
             case .cancel:
-                return .none
-            case .added:
-                // TODO: add logic
-                return .none
+                return .run { _ in await self.dismiss() }
             }
         }
     }

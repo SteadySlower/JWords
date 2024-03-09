@@ -83,7 +83,12 @@
 		0688A1D429B3345E0057B2DB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0688A1D329B3345E0057B2DB /* String+Extension.swift */; };
 		068A9B972B79CA3A008364B7 /* EmojiButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B962B79CA3A008364B7 /* EmojiButtons.swift */; };
 		068A9B992B79E8B5008364B7 /* AddWritingKanji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */; };
-		068A9BBE2B9300A2008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBD2B9300A2008364B7 /* ComposableArchitecture */; };
+		068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBF2B932D69008364B7 /* ComposableArchitecture */; };
+		068A9BC22B933537008364B7 /* TodayCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BC12B933537008364B7 /* TodayCoordinatorView.swift */; };
+		068A9BC62B93455B008364B7 /* SetCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BC52B93455B008364B7 /* SetCoordinatorView.swift */; };
+		068A9BC82B93456A008364B7 /* KanjiCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BC72B93456A008364B7 /* KanjiCoordinatorView.swift */; };
+		068A9BCA2B934587008364B7 /* WritingCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BC92B934587008364B7 /* WritingCoordinatorView.swift */; };
+		068A9BCC2B934594008364B7 /* ScannerCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BCB2B934594008364B7 /* ScannerCoordinatorView.swift */; };
 		068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* UnitMoveView.swift */; };
 		0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8732AAC987300E5FF05 /* PercentageChart.swift */; };
 		0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */; };
@@ -274,6 +279,11 @@
 		0688A1D329B3345E0057B2DB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		068A9B962B79CA3A008364B7 /* EmojiButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiButtons.swift; sourceTree = "<group>"; };
 		068A9B982B79E8B5008364B7 /* AddWritingKanji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWritingKanji.swift; sourceTree = "<group>"; };
+		068A9BC12B933537008364B7 /* TodayCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCoordinatorView.swift; sourceTree = "<group>"; };
+		068A9BC52B93455B008364B7 /* SetCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCoordinatorView.swift; sourceTree = "<group>"; };
+		068A9BC72B93456A008364B7 /* KanjiCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCoordinatorView.swift; sourceTree = "<group>"; };
+		068A9BC92B934587008364B7 /* WritingCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingCoordinatorView.swift; sourceTree = "<group>"; };
+		068A9BCB2B934594008364B7 /* ScannerCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerCoordinatorView.swift; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* UnitMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitMoveView.swift; sourceTree = "<group>"; };
 		0690F8732AAC987300E5FF05 /* PercentageChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChart.swift; sourceTree = "<group>"; };
 		0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayStatusView.swift; sourceTree = "<group>"; };
@@ -361,7 +371,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				068A9BBE2B9300A2008364B7 /* ComposableArchitecture in Frameworks */,
+				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
 				06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -500,6 +510,18 @@
 				06581AB52ACCFDB6007914A3 /* InputSetTextField.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		068A9BC32B9344E7008364B7 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				068A9BC12B933537008364B7 /* TodayCoordinatorView.swift */,
+				068A9BC52B93455B008364B7 /* SetCoordinatorView.swift */,
+				068A9BC72B93456A008364B7 /* KanjiCoordinatorView.swift */,
+				068A9BC92B934587008364B7 /* WritingCoordinatorView.swift */,
+				068A9BCB2B934594008364B7 /* ScannerCoordinatorView.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		0697715D28CF02E300569280 /* Util */ = {
@@ -727,6 +749,7 @@
 		5A67DC1D286942E800AC156C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				068A9BC32B9344E7008364B7 /* Coordinators */,
 				5AC72AFF2B4BCCC400412058 /* Writing */,
 				06581AAA2ACCFCEC007914A3 /* Set */,
 				06C992FE2ACAC9620062F9FB /* Util */,
@@ -891,7 +914,7 @@
 			name = JWords;
 			packageProductDependencies = (
 				06CEAC512AB6B71B007783F6 /* GoogleMobileAds */,
-				068A9BBD2B9300A2008364B7 /* ComposableArchitecture */,
+				068A9BBF2B932D69008364B7 /* ComposableArchitecture */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -1060,6 +1083,7 @@
 				06C992EE2ACAAFD90062F9FB /* StudyKanjiSampleView.swift in Sources */,
 				064BA4562AC3A50D00288749 /* AddUnit.swift in Sources */,
 				5AAB886628D84DBB000B46CA /* TodaySelectionModal.swift in Sources */,
+				068A9BCA2B934587008364B7 /* WritingCoordinatorView.swift in Sources */,
 				06581AA12ACC0069007914A3 /* KanjiClient.swift in Sources */,
 				06C992E72AC675F10062F9FB /* AllLists.swift in Sources */,
 				06004E3B2AC5489700947F5D /* SelectList.swift in Sources */,
@@ -1100,6 +1124,7 @@
 				5AC72B012B4BCD1200412058 /* KanjiCanvas.swift in Sources */,
 				06581AB12ACCFD29007914A3 /* InputSet.swift in Sources */,
 				5AE7A76D28D981D9005E12B6 /* Date+Extension.swift in Sources */,
+				068A9BCC2B934594008364B7 /* ScannerCoordinatorView.swift in Sources */,
 				06581AA52ACC3E11007914A3 /* OCRService.swift in Sources */,
 				06BC608A29A0928600AA67E6 /* View+Extension.swift in Sources */,
 				064BA44D2AC2D00200288749 /* InputFieldTitle.swift in Sources */,
@@ -1107,6 +1132,7 @@
 				061D994A2ACE59E900C08E17 /* OCRView.swift in Sources */,
 				06581A9D2ACBF351007914A3 /* Inputs.swift in Sources */,
 				5AC78AA32ABC0CA500E39A71 /* Tutorial.swift in Sources */,
+				068A9BC22B933537008364B7 /* TodayCoordinatorView.swift in Sources */,
 				06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */,
 				06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */,
 				06581AA32ACC2FA0007914A3 /* KeyValueStoreService.swift in Sources */,
@@ -1133,6 +1159,7 @@
 				064BA4462AC256E400288749 /* KanjiInput.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
 				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
+				068A9BC82B93456A008364B7 /* KanjiCoordinatorView.swift in Sources */,
 				5A8614D82A1C627300000653 /* CKImageService.swift in Sources */,
 				061D99442ACE59CE00C08E17 /* ScanGuide.swift in Sources */,
 				06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */,
@@ -1146,6 +1173,7 @@
 				5A67DC23286943A900AC156C /* SetCell.swift in Sources */,
 				0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */,
 				0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */,
+				068A9BC62B93455B008364B7 /* SetCoordinatorView.swift in Sources */,
 				5A8843C52A11CA630027B408 /* KanjiCell.swift in Sources */,
 				0625FAFE2B6FB28600B33545 /* KanjiSetClient.swift in Sources */,
 				5AFC70AF2B0B2E0D0044FFCA /* InputKanji.swift in Sources */,
@@ -1634,7 +1662,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = exactVersion;
-				version = 1.7.3;
+				version = 1.8.2;
 			};
 		};
 		06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
@@ -1656,7 +1684,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		068A9BBD2B9300A2008364B7 /* ComposableArchitecture */ = {
+		068A9BBF2B932D69008364B7 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 068A9BBC2B9300A2008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;

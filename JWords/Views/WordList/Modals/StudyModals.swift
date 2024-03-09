@@ -18,103 +18,63 @@ extension View {
 struct ShowModalsInList {
     @ObservableState
     struct State: Equatable {
-        @Presents var editSet: EditSet.State?
-        @Presents var addUnit: AddUnit.State?
-        @Presents var editUnit: EditUnit.State?
-        @Presents var moveUnits: MoveUnits.State?
         
-        private mutating func clear() {
-            editSet = nil
-            addUnit = nil
-            editUnit = nil
-            moveUnits = nil
-        }
+        @Presents var destination: Destination.State?
         
         mutating func setEditSetModal(_ set: StudySet) {
-            clear()
-            editSet = EditSet.State(set)
+            destination = .editSet(.init(set))
         }
         
         mutating func setAddUnitModal(_ set: StudySet) {
-            clear()
-            addUnit = AddUnit.State(set: set)
+            destination = .addUnit(.init(set: set))
         }
         
         mutating func setEditUnitModal(_ unit: StudyUnit) {
-            clear()
-            editUnit = EditUnit.State(unit: unit)
+            destination = .editUnit(.init(unit: unit))
         }
         
         mutating func setMoveUnitModal(from set: StudySet, isReview: Bool, toMove units: [StudyUnit]) {
-            clear()
-            moveUnits = MoveUnits.State(
-                fromSet: set,
-                isReviewSet: isReview,
-                toMoveUnits: units,
-                willCloseSet: set.dayFromToday >= 28 ? true : false
-            )
+            destination = .moveUnits(.init(fromSet: set, isReviewSet: isReview, toMoveUnits: units, willCloseSet: set.dayFromToday >= 28 ? true : false))
         }
     }
     
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case editSet(EditSet)
+        case addUnit(AddUnit)
+        case editUnit(EditUnit)
+        case moveUnits(MoveUnits)
+    }
+    
     enum Action: Equatable {
-        case editSet(PresentationAction<EditSet.Action>)
-        case addUnit(PresentationAction<AddUnit.Action>)
-        case editUnit(PresentationAction<EditUnit.Action>)
-        case moveUnits(PresentationAction<MoveUnits.Action>)
-        
         case setEdited(StudySet)
         case unitAdded(StudyUnit)
         case unitEdited(StudyUnit)
         case unitsMoved
+        
+        case destination(PresentationAction<Destination.Action>)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .editSet(.presented(let action)):
-                switch action {
-                case .edited(let set):
-                    state.editSet = nil
-                    return .send(.setEdited(set))
-                case .cancel:
-                    state.editSet = nil
-                default: break
-                }
-            case .addUnit(.presented(let action)):
-                switch action {
-                case .added(let unit):
-                    state.addUnit = nil
-                    return .send(.unitAdded(unit))
-                case .cancel:
-                    state.addUnit = nil
-                default: break
-                }
-            case .editUnit(.presented(let action)):
-                switch action {
-                case .edited(let unit):
-                    state.editUnit = nil
-                    return .send(.unitEdited(unit))
-                case .cancel:
-                    state.editUnit = nil
-                default: break
-                }
-            case .moveUnits(.presented(let action)):
-                switch action {
-                case .onMoved:
-                    state.moveUnits = nil
-                    return .send(.unitsMoved)
-                case .cancelButtonTapped:
-                    state.moveUnits = nil
-                default: break
-                }
+            case .destination(.presented(.editSet(.edited(let set)))):
+                state.destination = nil
+                return .send(.setEdited(set))
+            case .destination(.presented(.addUnit(.added(let unit)))):
+                state.destination = nil
+                return .send(.unitAdded(unit))
+            case .destination(.presented(.editUnit(.edited(let unit)))):
+                state.destination = nil
+                return .send(.unitEdited(unit))
+            case .destination(.presented(.moveUnits(.onMoved))):
+                state.destination = nil
+                return .send(.unitsMoved)
             default: break
             }
             return .none
         }
-        .ifLet(\.$editSet, action: \.editSet) { EditSet() }
-        .ifLet(\.$addUnit, action: \.addUnit) { AddUnit() }
-        .ifLet(\.$editUnit, action: \.editUnit) { EditUnit() }
-        .ifLet(\.$moveUnits, action: \.moveUnits) { MoveUnits() }
+        .ifLet(\.$destination, action: \.destination)
     }
 
 }
@@ -125,20 +85,20 @@ struct ListModals: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .sheet(item: $store.scope(state: \.editSet, action: \.editSet)) {
+            .sheet(item: $store.scope(state: \.destination?.editSet, action: \.destination.editSet)) {
                 EditSetView(store: $0)
             }
-            .sheet(item: $store.scope(state: \.addUnit, action: \.addUnit)) {
+            .sheet(item: $store.scope(state: \.destination?.addUnit, action: \.destination.addUnit)) {
                 AddUnitView(store: $0)
                     .padding(.horizontal, 10)
                     .presentationDetents([.medium])
             }
-            .sheet(item: $store.scope(state: \.editUnit, action: \.editUnit)) {
+            .sheet(item: $store.scope(state: \.destination?.editUnit, action: \.destination.editUnit)) {
                 EditUnitView(store: $0)
                     .padding(.horizontal, 10)
                     .presentationDetents([.medium])
             }
-            .sheet(item: $store.scope(state: \.moveUnits, action: \.moveUnits)) {
+            .sheet(item: $store.scope(state: \.destination?.moveUnits, action: \.destination.moveUnits)) {
                 UnitMoveView(store: $0)
             }
     }

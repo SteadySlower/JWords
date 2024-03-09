@@ -61,6 +61,7 @@ struct AddUnit {
     enum AlertAction: Equatable {}
     
     @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -92,6 +93,8 @@ struct AddUnit {
                     let unit = try! unitClient.insert(set, input)
                     return .send(.added(unit))
                 }
+            case .cancel:
+                return .run { _ in await self.dismiss() }
             default: break
             }
             return .none

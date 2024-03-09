@@ -6,8 +6,15 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+@Reducer
+struct ShowTutorial {}
 
 struct TutorialList: View {
+    
+    let store: StoreOf<ShowTutorial>
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -44,6 +51,6 @@ struct TutorialList: View {
 
 struct TutorialList_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialList()
+        TutorialList(store: Store(initialState: .init(), reducer: { ShowTutorial() }))
     }
 }
