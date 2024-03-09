@@ -24,7 +24,7 @@ struct KanjiInput {
     }
     
     enum Action: Equatable, ViewAction {
-        case updateText(String)
+        case setText(String)
         case editHuriText(EditHuriganaText.Action)
         case huriganaUpdated(String)
         case onTab
@@ -41,7 +41,7 @@ struct KanjiInput {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .updateText(let text):
+            case .setText(let text):
                 if text.hasTab { return .send(.onTab) }
                 state.text = text
             case .view(.convertToHurigana):
@@ -72,7 +72,7 @@ struct KanjiInputField: View {
         if store.isEditing {
             VStack {
                 InputFieldTitle(title: "단어 (앞면)")
-                InputFieldTextEditor(text: $store.text.sending(\.updateText))
+                InputFieldTextEditor(text: $store.text.sending(\.setText))
                 Button("후리가나 변환") {
                     send(.convertToHurigana)
                 }
