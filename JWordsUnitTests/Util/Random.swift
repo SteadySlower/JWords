@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@testable import JWords
 
 class Random {
     
@@ -34,6 +35,11 @@ class Random {
     
     static func int(from: Int, to: Int) -> Int {
         (from...to).randomElement() ?? from
+    }
+    
+    static var studyState: StudyState {
+        let allCases: [StudyState] = [.undefined, .success, .fail]
+        return allCases.randomElement()!
     }
     
     

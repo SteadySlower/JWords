@@ -67,7 +67,7 @@ struct EditUnit {
             switch action {
             case .inputUnit(.alreadyExist(let unit)):
                 if let unit = unit,
-                   unit.kanjiText != state.unit.kanjiText {
+                   unit.id != state.unit.id {
                     state.setUneditableAlert()
                 }
             case .edit:
