@@ -35,9 +35,9 @@ struct TodayCoordinator {
             switch action {
             case .todayList(let action):
                 switch action {
-                case .studyFilteredUnits(let units):
+                case .toStudyFilteredUnits(let units):
                     state.path.append(.studyUnits(StudyUnits.State(units: units)))
-                case .homeCellTapped(let set):
+                case .toStudySet(let set):
                     let units = try! unitClient.fetch(set)
                     state.path.append(.studyUnitsInSet(StudyUnitsInSet.State(set: set, units: units)))
                 case .tutorialButtonTapped:

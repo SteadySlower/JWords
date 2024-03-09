@@ -34,12 +34,12 @@ struct TodayList {
     @Dependency(\.utilClient) var utilClient
     
     enum Action: Equatable {
-        case onAppear
+        case fetchSetsAndSchedule
         case todayStatus(TodayStatus.Action)
-        case listButtonTapped
-        case clearScheduleButtonTapped
-        case homeCellTapped(StudySet)
-        case studyFilteredUnits([StudyUnit])
+        case toSetSchedule
+        case clearSchedule
+        case toStudySet(StudySet)
+        case toStudyFilteredUnits([StudyUnit])
         case tutorialButtonTapped
         
         case destination(PresentationAction<Destination.Action>)
@@ -48,21 +48,12 @@ struct TodayList {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
+            case .fetchSetsAndSchedule:
                 fetchSchedule(&state)
             case .destination(.dismiss):
                 switch state.destination {
-                case .todaySelection(let todayState):
-                    let newStudy = todayState.studySets
-                    let newReview = todayState.reviewSets
-                    let newStudySets = scheduleClient.updateStudy(newStudy)
-                    let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
-                    let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
-                    state.todayStatus.update(
-                        studySets: newStudySets,
-                        allUnits: newAllStudyUnits,
-                        toStudyUnits: newToStudyUnits)
-                    state.reviewSets = scheduleClient.updateReview(newReview)
+                case .todaySelection(let selectionState):
+                    updateSchedule(&state, selectionState: selectionState)
                 default: break
                 }
             case .todayStatus(.onTapped):
@@ -72,14 +63,13 @@ struct TodayList {
                     scheduleClient.autoSet(sets)
                     fetchSchedule(&state)
                 } else {
-                    return .send(.studyFilteredUnits(state.todayStatus.toStudyUnits))
+                    return .send(.toStudyFilteredUnits(state.todayStatus.toStudyUnits))
                 }
-            case .listButtonTapped:
+            case .toSetSchedule:
                 state.destination = .todaySelection(TodaySelection.State(todaySets: state.todayStatus.studySets,
                                                                          reviewSets: state.reviewSets))
-                state.todayStatus.clear()
-                state.reviewSets = []
-            case .clearScheduleButtonTapped:
+                state.clear()
+            case .clearSchedule:
                 state.clear()
                 scheduleClient.clear()
             default: break
@@ -106,6 +96,19 @@ struct TodayList {
         
         state.reviewSets = scheduleClient.review(allSets)
     }
+    
+    func updateSchedule(_ state: inout TodayList.State, selectionState: TodaySelection.State) {
+        let newStudy = selectionState.studySets
+        let newReview = selectionState.reviewSets
+        let newStudySets = scheduleClient.updateStudy(newStudy)
+        let newAllStudyUnits = try! unitClient.fetchAll(newStudySets)
+        let newToStudyUnits = utilClient.filterOnlyFailUnits(newAllStudyUnits)
+        state.todayStatus.update(
+            studySets: newStudySets,
+            allUnits: newAllStudyUnits,
+            toStudyUnits: newToStudyUnits)
+        state.reviewSets = scheduleClient.updateReview(newReview)
+    }
 
 }
 
@@ -131,7 +134,7 @@ struct TodayView: View {
                                 title: set.title,
                                 schedule: set.schedule,
                                 dayFromToday: set.dayFromToday,
-                                onTapped: { store.send(.homeCellTapped(set)) }
+                                onTapped: { store.send(.toStudySet(set)) }
                             )
                         }
                     }
@@ -146,7 +149,7 @@ struct TodayView: View {
                                 title: reviewSet.title,
                                 schedule: reviewSet.schedule,
                                 dayFromToday: reviewSet.dayFromToday,
-                                onTapped: { store.send(.homeCellTapped(reviewSet)) }
+                                onTapped: { store.send(.toStudySet(reviewSet)) }
                             )
                         }
                     }
@@ -156,7 +159,7 @@ struct TodayView: View {
             .padding(.top, 10)
         }
         .withBannerAD()
-        .onAppear { store.send(.onAppear) }
+        .onAppear { store.send(.fetchSetsAndSchedule) }
         .sheet(item: $store.scope(state: \.destination?.todaySelection, action: \.destination.todaySelection)) {
             TodaySelectionModal(store: $0)
         }
@@ -166,14 +169,14 @@ struct TodayView: View {
         .toolbar { ToolbarItem {
             HStack {
                 Button {
-                    store.send(.listButtonTapped)
+                    store.send(.toSetSchedule)
                 } label: {
                     Image(systemName: "list.bullet.rectangle.portrait")
                         .resizable()
                         .foregroundColor(.black)
                 }
                 Button {
-                    store.send(.clearScheduleButtonTapped)
+                    store.send(.clearSchedule)
                 } label: {
                     Image(systemName: "eraser")
                         .resizable()

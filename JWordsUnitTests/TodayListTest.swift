@@ -1,149 +1,156 @@
-////
-////  TodayListTest.swift
-////  JWordsUnitTests
-////
-////  Created by JW Moon on 2023/10/05.
-////
 //
-//import ComposableArchitecture
-//import XCTest
+//  TodayListTest.swift
+//  JWordsUnitTests
 //
-//@testable import JWords
+//  Created by JW Moon on 2023/10/05.
 //
-//@MainActor
-//final class TodayListTest: XCTestCase {
-//    
-//    private func setTestStore() async -> TestStore<TodayList.State, TodayList.Action> {
-//        let fetchSets: [StudySet] = .testMock
-//        let fetchAllUnits: [StudyUnit] = .testMock
-//        let scheduleStudySets: [StudySet] = .notClosedTestMock
-//        let scheduleReviewSets: [StudySet] = .notClosedTestMock
-//        let filterOnlyFailUnits: [StudyUnit] = .testMock
-//        
-//        let store = TestStore(initialState: TodayList.State()) {
-//            TodayList()
-//        } withDependencies: {
-//            $0.studySetClient.fetch = { _ in fetchSets }
-//            $0.studyUnitClient.fetchAll = { _ in fetchAllUnits }
-//            $0.scheduleClient.study = { _ in scheduleStudySets }
-//            $0.scheduleClient.review = { _ in scheduleReviewSets }
-//            $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
-//        }
-//
-//        
-//        await store.send(.onAppear) {
-//            $0.todayStatus.update(
-//                studySets: scheduleStudySets,
-//                allUnits: fetchAllUnits,
-//                toStudyUnits: filterOnlyFailUnits
-//            )
-//            $0.reviewSets = scheduleReviewSets
-//        }
-//        
-//        return store
-//    }
-//    
-//    func testOnAppear() async {
-//        _ = await setTestStore()
-//    }
-//    
-//    func testListButtonTapped() async {
-//        let store = await setTestStore()
-//        
-//        await store.send(.listButtonTapped) {
-//            $0.todaySelection = TodaySelection.State(
-//                todaySets: $0.todayStatus.studySets,
-//                reviewSets: $0.reviewSets
-//            )
-//            $0.todayStatus.clear()
-//            $0.reviewSets = []
-//        }
-//    }
-//    
-//    func testSetSelectionModalFalse() async {
-//        let store = await setTestStore()
-//        
-//        await store.send(.listButtonTapped) {
-//            $0.todaySelection = TodaySelection.State(
-//                todaySets: $0.todayStatus.studySets,
-//                reviewSets: $0.reviewSets
-//            )
-//            $0.todayStatus.clear()
-//            $0.reviewSets = []
-//        }
-//        
-//        let updateStudySets: [StudySet] = .testMock
-//        let updateReviewSets: [StudySet] = .testMock
-//        let newFetchAllUnits: [StudyUnit] = .testMock
-//        let newFilterOnlyFailUnits: [StudyUnit] = .testMock
-//        
-//        store.dependencies.scheduleClient.updateStudy = { _ in updateStudySets }
-//        store.dependencies.scheduleClient.updateReview = { _ in updateReviewSets }
-//        store.dependencies.studyUnitClient.fetchAll = { _ in newFetchAllUnits }
-//        store.dependencies.utilClient.filterOnlyFailUnits = { _ in newFilterOnlyFailUnits }
-//        
-//        await store.send(.setSelectionModal(false)) {
-//            $0.todayStatus.update(
-//                studySets: updateStudySets,
-//                allUnits: newFetchAllUnits,
-//                toStudyUnits: newFilterOnlyFailUnits
-//            )
-//            $0.reviewSets = updateReviewSets
-//            $0.todaySelection = nil
-//        }
-//    }
-//    
-//    func testHomeCellTapped() async {
-//        let store = await setTestStore()
-//        
-//        let fetchedUnits: [StudyUnit] = .testMock
-//        store.dependencies.studyUnitClient.fetch = { _ in fetchedUnits }
-//        
-//        let studySets = store.state.todayStatus.studySets
-//        let reviewSets = store.state.reviewSets
-//        let tappedSet = (studySets + reviewSets).randomElement()!
-//        
-//        await store.send(.homeCellTapped(tappedSet)) {
-//            $0.studyUnitsInSet = .init(set: tappedSet, units: fetchedUnits)
-//        }
-//    }
-//    
-//    func testStudyUnitsInSetDismiss() async {
-//        let store = await setTestStore()
-//        
-//        let fetchedUnits: [StudyUnit] = .testMock
-//        store.dependencies.studyUnitClient.fetch = { _ in fetchedUnits }
-//        
-//        let studySets = store.state.todayStatus.studySets
-//        let reviewSets = store.state.reviewSets
-//        let tappedSet = (studySets + reviewSets).randomElement()!
-//        
-//        await store.send(.homeCellTapped(tappedSet)) {
-//            $0.studyUnitsInSet = .init(set: tappedSet, units: fetchedUnits)
-//        }
-//        
-//        await store.send(.studyUnitsInSet(.dismiss)) {
-//            $0.studyUnitsInSet = nil
-//        }
-//    }
-//    
-//    func testClearScheduleButtonTapped() async {
-//        let store = await setTestStore()
-//        
-//        store.dependencies.scheduleClient.clear = {}
-//        
-//        await store.send(.clearScheduleButtonTapped) {
-//            $0.clear()
-//        }
-//    }
-//    
-//    func testShowTutorial() async {
-//        let store = await setTestStore()
-//        
-//        XCTAssert(store.state.showTutorial == false)
-//        
-//        await store.send(.showTutorial(true)) {
-//            $0.showTutorial = true
-//        }
-//    }
-//}
+
+import ComposableArchitecture
+import XCTest
+
+@testable import JWords
+
+@MainActor
+final class TodayListTest: XCTestCase {
+    
+    func test_fetchSetsAndSchedule() async -> TestStore<TodayList.State, TodayList.Action> {
+        let fetchSets: [StudySet] = .testMock
+        let fetchAllUnits: [StudyUnit] = .testMock
+        let scheduleStudySets: [StudySet] = .notClosedTestMock
+        let scheduleReviewSets: [StudySet] = .notClosedTestMock
+        let filterOnlyFailUnits: [StudyUnit] = .testMock
+
+        let store = TestStore(initialState: TodayList.State()) {
+            TodayList()
+        } withDependencies: {
+            $0.studySetClient.fetch = { _ in fetchSets }
+            $0.studyUnitClient.fetchAll = { _ in fetchAllUnits }
+            $0.scheduleClient.study = { _ in scheduleStudySets }
+            $0.scheduleClient.review = { _ in scheduleReviewSets }
+            $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
+        }
+
+        await store.send(.fetchSetsAndSchedule) {
+            $0.todayStatus.update(
+                studySets: scheduleStudySets,
+                allUnits: fetchAllUnits,
+                toStudyUnits: filterOnlyFailUnits
+            )
+            $0.reviewSets = scheduleReviewSets
+        }
+        
+        return store
+    }
+    
+    func test_toSetSchedule() async {
+        let store = TestStore(initialState: TodayList.State()) {
+            TodayList()
+        } withDependencies: {
+            $0.studySetClient.fetch = { _ in .testMock }
+            $0.studyUnitClient.fetchAll = { _ in .testMock }
+            $0.scheduleClient.study = { _ in .notClosedTestMock }
+            $0.scheduleClient.review = { _ in .notClosedTestMock }
+            $0.utilClient.filterOnlyFailUnits = { _ in .testMock }
+        }
+        
+        await store.send(.toSetSchedule) {
+            $0.destination = .todaySelection(TodaySelection.State(todaySets: $0.todayStatus.studySets, reviewSets: $0.reviewSets))
+            $0.clear()
+        }
+    }
+    
+    func test_destination_dismiss_todaySelection() async {
+        let updatedStudySets: [StudySet] = .testMock
+        let updatedReviewSets: [StudySet] = .testMock
+        let newlyFetchedAllUnits: [StudyUnit] = .testMock
+        let newlyFilteredOnlyFailUnits: [StudyUnit] = .testMock
+        
+        let store = TestStore(initialState: TodayList.State()) {
+            TodayList()
+        } withDependencies: {
+            $0.scheduleClient.updateStudy = { _ in updatedStudySets }
+            $0.scheduleClient.updateReview = { _ in updatedReviewSets }
+            $0.studyUnitClient.fetchAll = { _ in newlyFetchedAllUnits }
+            $0.utilClient.filterOnlyFailUnits = { _ in newlyFilteredOnlyFailUnits }
+        }
+        
+        await store.send(.toSetSchedule) {
+            $0.destination = .todaySelection(TodaySelection.State(todaySets: $0.todayStatus.studySets, reviewSets: $0.reviewSets))
+            $0.clear()
+        }
+        
+        await store.send(.destination(.dismiss)) {
+            $0.todayStatus.update(
+                studySets: updatedStudySets,
+                allUnits: newlyFetchedAllUnits,
+                toStudyUnits: newlyFilteredOnlyFailUnits
+            )
+            $0.reviewSets = updatedReviewSets
+            $0.destination = nil
+        }
+    }
+    
+    func test_todayStatus_onTapped_when_todayStatus_isEmpty() async {
+        let fetchSets: [StudySet] = .testMock
+        let fetchAllUnits: [StudyUnit] = .testMock
+        let scheduleStudySets: [StudySet] = .notClosedTestMock
+        let scheduleReviewSets: [StudySet] = .notClosedTestMock
+        let filterOnlyFailUnits: [StudyUnit] = .testMock
+        
+        let store = TestStore(initialState: TodayList.State()) {
+            TodayList()
+        } withDependencies: {
+            $0.studySetClient.fetch = { _ in fetchSets }
+            $0.studyUnitClient.fetchAll = { _ in fetchAllUnits }
+            $0.scheduleClient.study = { _ in scheduleStudySets }
+            $0.scheduleClient.review = { _ in scheduleReviewSets }
+            $0.utilClient.filterOnlyFailUnits = { _ in filterOnlyFailUnits }
+            $0.scheduleClient.autoSet = { _ in }
+        }
+        
+        await store.send(.todayStatus(.onTapped)) {
+            $0.todayStatus.update(
+                studySets: scheduleStudySets,
+                allUnits: fetchAllUnits,
+                toStudyUnits: filterOnlyFailUnits
+            )
+            $0.reviewSets = scheduleReviewSets
+        }
+    }
+    
+    func test_todayStatus_onTapped_when_todayStatus_not_isEmpty() async {
+        let toStudyUnits: [StudyUnit] = .testMock
+        
+        let store = TestStore(
+            initialState: TodayList.State(
+                todayStatus: .init(studySets: .testMock, toStudyUnits: toStudyUnits)
+            ),
+            reducer: { TodayList() }
+        )
+
+        await store.send(.todayStatus(.onTapped))
+        await store.receive(.toStudyFilteredUnits(toStudyUnits))
+    }
+    
+    func test_clearSchedule() async {
+        let store = TestStore(
+            initialState: TodayList.State(
+                todayStatus: .init(
+                    studySets: .testMock,
+                    allUnits: .testMock,
+                    toStudyUnits: .testMock
+                )
+            ),
+            reducer: { TodayList() },
+            withDependencies: {
+                $0.scheduleClient.clear = {}
+            }
+        )
+        
+        await store.send(.clearSchedule) {
+            $0.clear()
+        }
+    }
+
+}
+
