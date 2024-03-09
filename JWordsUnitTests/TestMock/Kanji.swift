@@ -15,6 +15,7 @@ extension Kanji {
             meaningText: Random.string,
             ondoku: Random.string,
             kundoku: Random.string,
+            studyState: .init(rawValue: Random.int(from: 0, to: 2))!,
             createdAt: Random.dateWithinYear,
             usedIn: Random.int(from: 0, to: 100)
         )

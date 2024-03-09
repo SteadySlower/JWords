@@ -21,16 +21,24 @@ final class MainTabTest: XCTestCase {
         
         XCTAssertEqual(store.state.selectedTab, .today)
         
-        await store.send(.tabChanged(.home)) {
+        await store.send(.setTab(.home)) {
             $0.selectedTab = .home
         }
         
-        await store.send(.tabChanged(.kanji)) {
+        await store.send(.setTab(.kanji)) {
             $0.selectedTab = .kanji
         }
         
-        await store.send(.tabChanged(.ocr)) {
+        await store.send(.setTab(.kanjiWriting)) {
+            $0.selectedTab = .kanjiWriting
+        }
+        
+        await store.send(.setTab(.ocr)) {
             $0.selectedTab = .ocr
+        }
+        
+        await store.send(.setTab(.today)) {
+            $0.selectedTab = .today
         }
     }
 }

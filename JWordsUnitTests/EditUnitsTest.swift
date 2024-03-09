@@ -24,7 +24,7 @@ final class EditUnitsTest: XCTestCase {
         
         let unit = store.state.units.randomElement()!.unit
         
-        await store.send(.unit(unit.id, .cellTapped(unit)))
+        await store.send(.unit(.element(id: unit.id, action: .cellTapped(unit))))
         await store.receive(.toEditUnitSelected(unit))
     }
     
