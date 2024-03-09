@@ -31,7 +31,7 @@ struct SetCoordinator {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .homeList(.homeCellTapped(let set)):
+            case .homeList(.toStudySet(let set)):
                 let units = try! unitClient.fetch(set)
                 state.path.append(.studyUnitsInSet(StudyUnitsInSet.State(set: set, units: units)))
             case .path(let action):

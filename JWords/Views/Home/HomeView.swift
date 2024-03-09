@@ -31,9 +31,9 @@ struct HomeList {
     }
     
     enum Action: Equatable {
-        case onAppear
-        case homeCellTapped(StudySet)
-        case updateIncludeClosed(Bool)
+        case fetchSets
+        case toStudySet(StudySet)
+        case setIncludeClosed(Bool)
         case toAddSet
         
         case destination(PresentationAction<Destination.Action>)
@@ -45,12 +45,11 @@ struct HomeList {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
-                state.clear()
-                state.sets = try! setClient.fetch(state.includeClosed)
-            case .updateIncludeClosed(let bool):
+            case .fetchSets:
+                fetchSets(&state)
+            case .setIncludeClosed(let bool):
                 state.includeClosed = bool
-                return .send(.onAppear)
+                fetchSets(&state)
             case .toAddSet:
                 state.destination = .addSet(.init())
             case .destination(.presented(.addSet(.added(let set)))):
@@ -62,6 +61,11 @@ struct HomeList {
         }
         .ifLet(\.$destination, action: \.destination)
     }
+    
+    private func fetchSets(_ state: inout HomeList.State) {
+        state.clear()
+        state.sets = try! setClient.fetch(state.includeClosed)
+    }
 
 }
 
@@ -71,7 +75,7 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            Picker("닫힌 단어장", selection: $store.includeClosed.sending(\.updateIncludeClosed)) {
+            Picker("닫힌 단어장", selection: $store.includeClosed.sending(\.setIncludeClosed)) {
                 Text("열린 단어장").tag(false)
                 Text("모든 단어장").tag(true)
             }
@@ -86,7 +90,7 @@ struct HomeView: View {
                             title: set.title,
                             schedule: set.schedule,
                             dayFromToday: set.dayFromToday,
-                            onTapped: { store.send(.homeCellTapped(set)) }
+                            onTapped: { store.send(.toStudySet(set)) }
                         )
                     }
                 }
@@ -99,7 +103,7 @@ struct HomeView: View {
         .navigationBarTitleDisplayMode(.inline)
         #endif
         .loadingView(store.isLoading)
-        .onAppear { store.send(.onAppear) }
+        .onAppear { store.send(.fetchSets) }
         .sheet(item: $store.scope(state: \.destination?.addSet, action: \.destination.addSet)) {
             AddSetView(store: $0)
         }
