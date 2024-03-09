@@ -17,12 +17,17 @@ struct HomeList {
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-        @Presents var addSet: AddSet.State?
+        @Presents var destination: Destination.State?
         
         mutating func clear() {
             sets = []
-            addSet = nil
+            destination = nil
         }
+    }
+    
+    @Reducer(state: .equatable, action: .equatable)
+    enum Destination {
+        case addSet(AddSet)
     }
     
     enum Action: Equatable {
@@ -31,7 +36,7 @@ struct HomeList {
         case updateIncludeClosed(Bool)
         case toAddSet
         
-        case addSet(PresentationAction<AddSet.Action>)
+        case destination(PresentationAction<Destination.Action>)
     }
     
     @Dependency(\.studySetClient) var setClient
@@ -47,17 +52,15 @@ struct HomeList {
                 state.includeClosed = bool
                 return .send(.onAppear)
             case .toAddSet:
-                state.addSet = AddSet.State()
-            case .addSet(.presented(.added(let set))):
+                state.destination = .addSet(.init())
+            case .destination(.presented(.addSet(.added(let set)))):
                 state.sets.insert(set, at: 0)
-                state.addSet = nil
-            case .addSet(.presented(.cancel)):
-                state.addSet = nil
+                state.destination = nil
             default: break
             }
             return .none
         }
-        .ifLet(\.$addSet, action: \.addSet) { AddSet() }
+        .ifLet(\.$destination, action: \.destination)
     }
 
 }
@@ -97,7 +100,7 @@ struct HomeView: View {
         #endif
         .loadingView(store.isLoading)
         .onAppear { store.send(.onAppear) }
-        .sheet(item: $store.scope(state: \.addSet, action: \.addSet)) {
+        .sheet(item: $store.scope(state: \.destination?.addSet, action: \.destination.addSet)) {
             AddSetView(store: $0)
         }
         .toolbar {

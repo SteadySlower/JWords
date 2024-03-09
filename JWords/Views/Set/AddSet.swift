@@ -27,6 +27,7 @@ struct AddSet {
     }
     
     @Dependency(\.studySetClient) var setClient
+    @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -39,6 +40,8 @@ struct AddSet {
                 )
                 let set = try! setClient.insert(input)
                 return .send(.added(set))
+            case .cancel:
+                return .run { _ in await self.dismiss() }
             default: break
             }
             return .none
