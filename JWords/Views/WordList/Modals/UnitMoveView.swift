@@ -45,13 +45,14 @@ struct MoveUnits {
     @Dependency(\.scheduleClient) var scheduleClient
     @Dependency(\.studySetClient) var setClient
     @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(\.dismiss) var dismiss
     
     enum Action: Equatable {
         case onAppear
         case updateSelection(String?)
         case updateWillClose(Bool)
-        case closeButtonTapped
-        case cancelButtonTapped
+        case close
+        case cancel
         case onMoved
     }
     
@@ -67,7 +68,7 @@ struct MoveUnits {
             case .updateWillClose(let willClose):
                 state.willCloseSet = willClose
                 return .none
-            case .closeButtonTapped:
+            case .close:
                 if let toSet = state.selectedSet {
                     try! unitClient.move(state.toMoveUnits, state.fromSet, toSet)
                 }
@@ -78,6 +79,8 @@ struct MoveUnits {
                     scheduleClient.reviewed(state.fromSet)
                 }
                 return .send(.onMoved)
+            case .cancel:
+                return .run { _ in await self.dismiss() }
             default:
                 return .none
             }
@@ -121,10 +124,10 @@ struct UnitMoveView: View {
             }
             HStack {
                 button("취소", foregroundColor: .black) {
-                    store.send(.cancelButtonTapped)
+                    store.send(.cancel)
                 }
                 button("확인", foregroundColor: .black) {
-                    store.send(.closeButtonTapped)
+                    store.send(.close)
                 }
             }
         }
