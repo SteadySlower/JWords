@@ -13,7 +13,7 @@ import XCTest
 @MainActor
 final class InputUnitTest: XCTestCase {
     
-    func test_kanjiInput_HuriganaUpdated_alreadyExist() async {
+    func test_kanjiInput_huriganaUpdated_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
             initialState: InputUnit.State(),
@@ -43,7 +43,9 @@ final class InputUnitTest: XCTestCase {
     func test_kanjiInput_onTab_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
-            initialState: InputUnit.State(),
+            initialState: InputUnit.State(
+                kanjiInput: .init(text: Random.string)
+            ),
             reducer: { InputUnit() },
             withDependencies: {
                 $0.studyUnitClient.checkIfExist = { _ in alreadyExist }
@@ -51,7 +53,7 @@ final class InputUnitTest: XCTestCase {
         )
         
         await store.send(.kanjiInput(.onTab)) {
-            $0.kanjiInput.isEditing = false
+            $0.kanjiInput.convertToHurigana()
             $0.focusedField = .meaning
         }
         
@@ -60,7 +62,9 @@ final class InputUnitTest: XCTestCase {
     
     func test_kanjiInput_onTab_alreadyExist_nil() async {
         let store = TestStore(
-            initialState: InputUnit.State(),
+            initialState: InputUnit.State(
+                kanjiInput: .init(text: Random.string)
+            ),
             reducer: { InputUnit() },
             withDependencies: {
                 $0.studyUnitClient.checkIfExist = { _ in nil }
@@ -68,7 +72,7 @@ final class InputUnitTest: XCTestCase {
         )
         
         await store.send(.kanjiInput(.onTab)) {
-            $0.kanjiInput.isEditing = false
+            $0.kanjiInput.convertToHurigana()
             $0.focusedField = .meaning
         }
         
