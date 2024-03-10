@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class StudySettingTest: XCTestCase {
     
+    @MainActor
     func test_setFrontType() async {
         let currentFrontType = FrontType.allCases.randomElement()!
         let store = TestStore(
@@ -31,6 +30,7 @@ final class StudySettingTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_setFilter() async {
         let store = TestStore(
             initialState: StudySetting.State(
@@ -48,9 +48,9 @@ final class StudySettingTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_setListType() async {
         let selectableListType: [ListType] = .testMock
-        
         let store = TestStore(
             initialState: StudySetting.State(
                 showSetEditButtons: Bool.random(),
