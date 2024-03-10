@@ -39,8 +39,8 @@ struct GetImageForOCR {
     }
     
     enum Action: Equatable {
-        case clipBoardButtonTapped
-        case cameraButtonTapped
+        case getImageFromClipboard
+        case getImageFromCamera
         case imageFetched(InputImageType)
         
         case destination(PresentationAction<Destination.Action>)
@@ -52,13 +52,13 @@ struct GetImageForOCR {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .clipBoardButtonTapped:
+            case .getImageFromClipboard:
                 guard
                     let fetchedImage = pasteBoardClient.fetchImage(),
                     let resized = utilClient.resizeImage(fetchedImage)
                 else { return .none }
                 return .send(.imageFetched(resized))
-            case .cameraButtonTapped:
+            case .getImageFromCamera:
                 state.destination = .cameraScanner(.init())
                 return .none
             case .destination(.presented(.cameraScanner(.imageSelected(let image)))):
@@ -82,11 +82,11 @@ struct GetImageForOCRView: View {
             HStack {
                 Spacer()
                 button(for: .clipboard) {
-                    store.send(.clipBoardButtonTapped)
+                    store.send(.getImageFromClipboard)
                 }
                 Spacer()
                 button(for: .camera) {
-                    store.send(.cameraButtonTapped)
+                    store.send(.getImageFromCamera)
                 }
                 Spacer()
             }
