@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class KanjiListTest: XCTestCase {
     
+    @MainActor
     func test_fetchKanjis() async {
         let fetchKanjiCount = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
@@ -34,6 +33,7 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_fetchKanjis_lastPage() async {
         let fetchKanjiCount = Random.int(from: 0, to: KanjiList.NUMBER_OF_KANJI_IN_A_PAGE - 1)
         let fetched: [Kanji] = .testMock(count: fetchKanjiCount)
@@ -56,6 +56,7 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_kanji_edit() async {
         let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
         let store = TestStore(
@@ -72,6 +73,7 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_kanji_addToWrite() async {
         let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
         let kanjiSets: [KanjiSet] = .testMock
@@ -92,50 +94,32 @@ final class KanjiListTest: XCTestCase {
         }
     }
     
-//    func test_edit_cancel() async {
-//        let store = TestStore(
-//            initialState: KanjiList.State(
-//                kanjis: [],
-//                edit: EditKanji.State(.testMock)
-//            ),
-//            reducer: { KanjiList() }
-//        )
-//        
-//        await store.send(.edit(.cancel)) {
-//            $0.edit = nil
-//        }
-//    }
+    @MainActor
+    func test_destination_presented_edit_edited() async {
+        let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        let toEdit = kanjis.randomElement()!
+        
+        let store = TestStore(
+            initialState: KanjiList.State(
+                kanjis: IdentifiedArray(
+                    uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) }
+                ),
+                destination: .edit(.init(toEdit))
+            ),
+            reducer: { KanjiList() }
+        )
+        
+        let edited: Kanji = .testMock
+        
+        await store.send(.destination(.presented(.edit(.edited(edited))))) {
+            $0.kanjis.updateOrAppend(DisplayKanji.State(kanji: edited))
+            $0.destination = nil
+        }
+    }
     
-//    func test_edit_edited() async {
-//        let kanjis: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
-//        let toEdit = kanjis.randomElement()!
-//        
-//        let store = TestStore(
-//            initialState: KanjiList.State(
-//                kanjis: IdentifiedArray(
-//                    uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) }
-//                ),
-//                edit: EditKanji.State(toEdit)
-//            ),
-//            reducer: { KanjiList() }
-//        )
-//        
-//        let edited = Kanji(id: toEdit.id,
-//                           kanjiText: toEdit.kanjiText,
-//                           meaningText: Random.string,
-//                           ondoku: Random.string,
-//                           kundoku: Random.string,
-//                           createdAt: toEdit.createdAt,
-//                           usedIn: toEdit.usedIn)
-//        
-//        await store.send(.edit(.edited(edited))) {
-//            $0.kanjis.updateOrAppend(DisplayKanji.State(kanji: edited))
-//            $0.edit = nil
-//        }
-//    }
-    
-    func test_searchKanji_updateQuery_with_empty_string() async {
-        let fetched: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+    @MainActor
+    func test_searchKanji_queryRemoved() async {
+        let fetched: [Kanji] = .testMock(count: KanjiList.NUMBER_OF_KANJI_IN_A_PAGE)
         let store = TestStore(
             initialState: KanjiList.State(
                 kanjis: []
@@ -146,19 +130,17 @@ final class KanjiListTest: XCTestCase {
             }
         )
         
-        await store.send(.searchKanji(.updateQuery("")))
-        
-        await store.receive(.fetchKanjis) {
+        await store.send(.searchKanji(.queryRemoved)) {
             $0.kanjis = IdentifiedArray(
                 uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
             )
-            $0.isLastPage = fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
         }
     }
     
+    @MainActor
     func test_searchKanji_kanjiSearched() async {
         let existingKanjis: [Kanji] = .testMock(count: Random.int(from: 0, to: 100))
-        let searched: [Kanji] = .testMock(count: Random.int(from: 1, to: 100))
+        let searched: [Kanji] = .testMock(count: Random.int(from: 0, to: 100))
         
         let store = TestStore(
             initialState: KanjiList.State(
@@ -166,10 +148,7 @@ final class KanjiListTest: XCTestCase {
                     uniqueElements: existingKanjis.map { DisplayKanji.State(kanji: $0) }
                 )
             ),
-            reducer: { KanjiList() },
-            withDependencies: {
-                $0.kanjiClient.search = { _ in searched }
-            }
+            reducer: { KanjiList() }
         )
         
         await store.send(.searchKanji(.kanjiSearched(searched))) {
