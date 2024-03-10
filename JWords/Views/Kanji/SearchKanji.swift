@@ -18,6 +18,7 @@ struct SearchKanji {
     
     enum Action: Equatable {
         case updateQuery(String)
+        case queryRemoved
         case kanjiSearched([Kanji])
     }
     
@@ -28,8 +29,12 @@ struct SearchKanji {
             switch action {
             case .updateQuery(let query):
                 state.query = query
-                guard !query.isEmpty else { return .none }
-                return .send(.kanjiSearched(try! kanjiClient.search(query)))
+                if query.isEmpty {
+                    return .send(.queryRemoved)
+                } else {
+                    let searched = try! kanjiClient.search(query)
+                    return .send(.kanjiSearched(searched))
+                }
             default:
                 return .none
             }

@@ -57,6 +57,7 @@
 		0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */; };
 		0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
+		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* InputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* InputUnit.swift */; };
 		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
@@ -89,6 +90,7 @@
 		068A9BC82B93456A008364B7 /* KanjiCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BC72B93456A008364B7 /* KanjiCoordinatorView.swift */; };
 		068A9BCA2B934587008364B7 /* WritingCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BC92B934587008364B7 /* WritingCoordinatorView.swift */; };
 		068A9BCC2B934594008364B7 /* ScannerCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BCB2B934594008364B7 /* ScannerCoordinatorView.swift */; };
+		068A9BDE2B9CA942008364B7 /* KanjiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068A9BDD2B9CA942008364B7 /* KanjiSet.swift */; };
 		068D4CFC28B2189300F44F6E /* UnitMoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068D4CFB28B2189300F44F6E /* UnitMoveView.swift */; };
 		0690F8742AAC987300E5FF05 /* PercentageChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8732AAC987300E5FF05 /* PercentageChart.swift */; };
 		0690F8762AAC9EE200E5FF05 /* TodayStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */; };
@@ -110,7 +112,6 @@
 		06C992EC2AC9233D0062F9FB /* StudyUnitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C992EB2AC9233D0062F9FB /* StudyUnitsView.swift */; };
 		06C992EE2ACAAFD90062F9FB /* StudyKanjiSampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C992ED2ACAAFD90062F9FB /* StudyKanjiSampleView.swift */; };
 		06C992F22ACABF4C0062F9FB /* InputImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C992F12ACABF4C0062F9FB /* InputImageType.swift */; };
-		06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 06CEAC512AB6B71B007783F6 /* GoogleMobileAds */; };
 		06CEAC552AB6BB96007783F6 /* BannerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEAC542AB6BB96007783F6 /* BannerAdView.swift */; };
 		06CEF2472866F1C800A620CC /* JWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CEF2462866F1C800A620CC /* JWordsApp.swift */; };
 		06CEF24B2866F1CB00A620CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06CEF24A2866F1CB00A620CC /* Assets.xcassets */; };
@@ -284,6 +285,7 @@
 		068A9BC72B93456A008364B7 /* KanjiCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiCoordinatorView.swift; sourceTree = "<group>"; };
 		068A9BC92B934587008364B7 /* WritingCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingCoordinatorView.swift; sourceTree = "<group>"; };
 		068A9BCB2B934594008364B7 /* ScannerCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerCoordinatorView.swift; sourceTree = "<group>"; };
+		068A9BDD2B9CA942008364B7 /* KanjiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiSet.swift; sourceTree = "<group>"; };
 		068D4CFB28B2189300F44F6E /* UnitMoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitMoveView.swift; sourceTree = "<group>"; };
 		0690F8732AAC987300E5FF05 /* PercentageChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChart.swift; sourceTree = "<group>"; };
 		0690F8752AAC9EE200E5FF05 /* TodayStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayStatusView.swift; sourceTree = "<group>"; };
@@ -371,8 +373,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
-				06CEAC522AB6B71B007783F6 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +452,7 @@
 				0641C1C12ADBB89A00C6EA05 /* Kanji.swift */,
 				5ADE2DB62ADCB76900449A79 /* OCRResult.swift */,
 				5A0ED7D12ADFCE7200669DB9 /* ListType.swift */,
+				068A9BDD2B9CA942008364B7 /* KanjiSet.swift */,
 			);
 			path = TestMock;
 			sourceTree = "<group>";
@@ -913,8 +916,8 @@
 			);
 			name = JWords;
 			packageProductDependencies = (
-				06CEAC512AB6B71B007783F6 /* GoogleMobileAds */,
 				068A9BBF2B932D69008364B7 /* ComposableArchitecture */,
+				064780522B9D6EFB00FDBCEF /* GoogleMobileAds */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -1226,6 +1229,7 @@
 				5ADE2DB52ADCB64900449A79 /* OCRTest.swift in Sources */,
 				0641C1BE2ADB9BEB00C6EA05 /* KanjiInputTest.swift in Sources */,
 				0641C1BC2ADB97FB00C6EA05 /* InputUnitTest.swift in Sources */,
+				068A9BDE2B9CA942008364B7 /* KanjiSet.swift in Sources */,
 				0641C1C22ADBB89A00C6EA05 /* Kanji.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1684,15 +1688,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		064780522B9D6EFB00FDBCEF /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
 		068A9BBF2B932D69008364B7 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 068A9BBC2B9300A2008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
-		};
-		06CEAC512AB6B71B007783F6 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 

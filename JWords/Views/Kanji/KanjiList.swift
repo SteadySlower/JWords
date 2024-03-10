@@ -32,7 +32,6 @@ struct KanjiList {
     }
     
     enum Action: Equatable {
-        case onAppear
         case fetchKanjis
         case searchKanji(SearchKanji.Action)
         case kanji(IdentifiedActionOf<DisplayKanji>)
@@ -46,15 +45,8 @@ struct KanjiList {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
-                guard !state.isSearching else { return .none }
-                return .send(.fetchKanjis)
             case .fetchKanjis:
-                let last = state.kanjis.last
-                let fetched = try! kanjiClient.fetch(last?.kanji)
-                if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
-                let idArrayOfFetched = fetched.map { DisplayKanji.State(kanji: $0) }
-                state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
+                fetchKanji(&state)
             case .kanji(.element(_, .edit(let kanji))):
                 state.destination = .edit(EditKanji.State(kanji))
             case .kanji(.element(_, .addToWrite(let kanji))):
@@ -63,9 +55,9 @@ struct KanjiList {
             case .destination(.presented(.edit(.edited(let kanji)))):
                 state.kanjis.updateOrAppend(DisplayKanji.State(kanji: kanji))
                 state.destination = nil
-            case .searchKanji(.updateQuery(let query)):
-                // If query is empty, fetch all kanjis
-                return query.isEmpty ? .send(.fetchKanjis) : .none
+            case .searchKanji(.queryRemoved):
+                state.kanjis = []
+                fetchKanji(&state)
             case .searchKanji(.kanjiSearched(let kanjis)):
                 state.kanjis = IdentifiedArray(uniqueElements: kanjis.map { DisplayKanji.State(kanji: $0) })
             default: break
@@ -75,6 +67,15 @@ struct KanjiList {
         .forEach(\.kanjis, action: \.kanji) { DisplayKanji() }
         .ifLet(\.$destination, action: \.destination)
         Scope(state: \.searchKanji, action: \.searchKanji) { SearchKanji() }
+    }
+    
+    func fetchKanji(_ state: inout State) {
+        guard !state.isSearching else { return }
+        let last = state.kanjis.last?.kanji
+        let fetched = try! kanjiClient.fetch(last)
+        if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
+        let idArrayOfFetched = fetched.map { DisplayKanji.State(kanji: $0) }
+        state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
     }
 
 }
@@ -112,7 +113,7 @@ struct KanjiListView: View {
         .padding(.top, 10)
         .padding(.horizontal, 20)
         .withBannerAD()
-        .onAppear { store.send(.onAppear) }
+        .onAppear { store.send(.fetchKanjis) }
         .navigationTitle("한자 리스트")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
