@@ -19,7 +19,7 @@ struct GetTextsFromOCR {
     
     enum Action: Equatable {
         case ocrMarkTapped(OCRLang, String)
-        case removeImageButtonTapped
+        case removeImage
     }
     
     var body: some Reducer<State, Action> {
@@ -55,7 +55,7 @@ struct OCRResultView: View {
                     )
             }
             .frame(width: store.image.size.width, height: store.image.size.height)
-            xButton { store.send(.removeImageButtonTapped) }
+            xButton { store.send(.removeImage) }
                 .padding(.horizontal, 20)
         }
     }

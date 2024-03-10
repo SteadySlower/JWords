@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class OCRTest: XCTestCase {
     
+    @MainActor
     func test_getImage_imageFetched() async {
         let koreanOCRResult: [OCRResult] = .testMock
         let japaneseOCRResult: [OCRResult] = .testMock
@@ -51,6 +50,7 @@ final class OCRTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_ocr_ocrMarkTapped() async {
         let store = TestStore(
             initialState: OCR.State(
@@ -71,7 +71,8 @@ final class OCRTest: XCTestCase {
         }
     }
     
-    func test_ocr_removeImageButtonTapped() async {
+    @MainActor
+    func test_ocr_removeImage() async {
         let store = TestStore(
             initialState: OCR.State(
                 ocr: GetTextsFromOCR.State(image: UIImage())
@@ -79,11 +80,12 @@ final class OCRTest: XCTestCase {
             reducer: { OCR() }
         )
         
-        await store.send(.ocr(.removeImageButtonTapped)) {
+        await store.send(.ocr(.removeImage)) {
             $0.ocr = nil
         }
     }
     
+    @MainActor
     func test_japaneseOcrResponse() async {
         let store = TestStore(
             initialState: OCR.State(
@@ -99,6 +101,7 @@ final class OCRTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_koreanOcrResponse() async {
         let store = TestStore(
             initialState: OCR.State(
