@@ -25,17 +25,17 @@ struct InputSet {
     }
     
     enum Action: Equatable {
-        case updateTitle(String)
-        case updateFrontType(FrontType)
+        case setTitle(String)
+        case setFrontType(FrontType)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .updateTitle(let title):
+            case .setTitle(let title):
                 state.title = title
                 return .none
-            case .updateFrontType(let frontType):
+            case .setFrontType(let frontType):
                 state.frontType = frontType
                 return .none
             }
@@ -54,12 +54,12 @@ struct InputSetView: View {
                 InputFieldTitle(title: "단어장 이름")
                 InputSetTextField(
                     placeHolder: "단어장 이름",
-                    text: $store.title.sending(\.updateTitle)
+                    text: $store.title.sending(\.setTitle)
                 )
             }
             VStack {
                 InputFieldTitle(title: "앞면 유형")
-                Picker("", selection: $store.frontType.sending(\.updateFrontType)
+                Picker("", selection: $store.frontType.sending(\.setFrontType)
                 ) {
                     ForEach(FrontType.allCases, id: \.self) {
                         Text($0.preferredTypeText)

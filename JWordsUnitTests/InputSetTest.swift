@@ -7,13 +7,12 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class InputSetTest: XCTestCase {
     
-    func test_updateTitle() async {
+    @MainActor
+    func test_setTitle() async {
         let store = TestStore(
             initialState: InputSet.State(),
             reducer: { InputSet() }
@@ -21,12 +20,13 @@ final class InputSetTest: XCTestCase {
         
         let text = Random.string
         
-        await store.send(.updateTitle(text)) {
+        await store.send(.setTitle(text)) {
             $0.title = text
         }
     }
     
-    func test_updateFrontType() async {
+    @MainActor
+    func test_setFrontType() async {
         let types: [FrontType] = [.kanji, .meaning].shuffled()
         let type1 = types[0]
         let type2 = types[1]
@@ -38,7 +38,7 @@ final class InputSetTest: XCTestCase {
             reducer: { InputSet() }
         )
         
-        await store.send(.updateFrontType(type2)) {
+        await store.send(.setFrontType(type2)) {
             $0.frontType = type2
         }
     }
