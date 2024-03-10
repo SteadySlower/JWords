@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class AddUnitWithOCRTest: XCTestCase {
     
+    @MainActor
     func test_ocr_koreanOCR() async {
         let store = TestStore(
             initialState: AddUnitWithOCR.State(),
@@ -26,7 +25,8 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
-    func test_ocr_japaneseOCR_emptyKanjiInput() async {
+    @MainActor
+    func test_ocr_japaneseOCR_when_kanjiInput_empty() async {
         let store = TestStore(
             initialState: AddUnitWithOCR.State(),
             reducer: { AddUnitWithOCR() }
@@ -39,7 +39,8 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
-    func test_ocr_japaneseOCR_withKanjiInput() async {
+    @MainActor
+    func test_ocr_japaneseOCR_when_kanjiInput_exist() async {
         let store = TestStore(
             initialState: AddUnitWithOCR.State(
                 addUnit: .init(
@@ -64,7 +65,8 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
-    func test_selectSet_idUpdate_notNil() async {
+    @MainActor
+    func test_selectSet_idUpdated_notNil() async {
         let store = TestStore(
             initialState: AddUnitWithOCR.State(),
             reducer: { AddUnitWithOCR() }
@@ -77,7 +79,8 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
-    func test_selectSet_idUpdate_nil() async {
+    @MainActor
+    func test_selectSet_idUpdated_nil() async {
         let store = TestStore(
             initialState: AddUnitWithOCR.State(
                 addUnit: .init(
@@ -92,6 +95,7 @@ final class AddUnitWithOCRTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_addUnit_added() async {
         let store = TestStore(
             initialState: AddUnitWithOCR.State(
