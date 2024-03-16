@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class SwitchBetweenListTest: XCTestCase {
     
+    @MainActor
     func test_edit_toEditUnitSelected() async {
         let units: [StudyUnit] = .testMock
         let frontType: FrontType = .allCases.randomElement()!
