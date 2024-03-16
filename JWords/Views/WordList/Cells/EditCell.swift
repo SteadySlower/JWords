@@ -26,17 +26,12 @@ struct ToEditUnit {
     }
     
     enum Action: Equatable {
-        case cellTapped(StudyUnit)
+        case toEdit(StudyUnit)
     }
     
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            case .cellTapped:
-                return .none
-            }
-        }
+        EmptyReducer()
     }
 
 }
@@ -55,7 +50,7 @@ struct EditCell: View {
                     .scaledToFit()
                     .padding()
             )
-            .onTapGesture { store.send(.cellTapped(store.unit)) }
+            .onTapGesture { store.send(.toEdit(store.unit)) }
     }
     
 }

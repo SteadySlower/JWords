@@ -28,7 +28,7 @@ struct EditUnits {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .unit(.element(_, .cellTapped(let unit))):
+            case .unit(.element(_, .toEdit(let unit))):
                 return .send(.toEditUnitSelected(unit))
             default: break
             }

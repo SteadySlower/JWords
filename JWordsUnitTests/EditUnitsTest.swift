@@ -12,7 +12,7 @@ import XCTest
 final class EditUnitsTest: XCTestCase {
     
     @MainActor
-    func test_unit_element_cellTapped() async {
+    func test_unit_element_toEdit() async {
         let store = TestStore(
             initialState: EditUnits.State(
                 units: .testMock,
@@ -23,7 +23,7 @@ final class EditUnitsTest: XCTestCase {
         
         let unit = store.state.units.randomElement()!.unit
         
-        await store.send(.unit(.element(id: unit.id, action: .cellTapped(unit))))
+        await store.send(.unit(.element(id: unit.id, action: .toEdit(unit))))
         await store.receive(.toEditUnitSelected(unit))
     }
     
