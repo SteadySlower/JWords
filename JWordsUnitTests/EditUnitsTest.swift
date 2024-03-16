@@ -7,13 +7,12 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class EditUnitsTest: XCTestCase {
     
-    func test_unit_cellTapped() async {
+    @MainActor
+    func test_unit_element_cellTapped() async {
         let store = TestStore(
             initialState: EditUnits.State(
                 units: .testMock,
