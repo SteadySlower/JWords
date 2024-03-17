@@ -40,7 +40,7 @@ struct TodayList {
         case clearSchedule
         case toStudySet(StudySet)
         case toStudyFilteredUnits([StudyUnit])
-        case tutorialButtonTapped
+        case showTutorial
         
         case destination(PresentationAction<Destination.Action>)
     }
@@ -187,7 +187,7 @@ struct TodayView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    store.send(.tutorialButtonTapped)
+                    store.send(.showTutorial)
                 } label: {
                     Image(systemName: "questionmark.circle")
                         .resizable()

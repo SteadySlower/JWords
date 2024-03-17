@@ -40,7 +40,7 @@ struct TodayCoordinator {
                 case .toStudySet(let set):
                     let units = try! unitClient.fetch(set)
                     state.path.append(.studyUnitsInSet(StudyUnitsInSet.State(set: set, units: units)))
-                case .tutorialButtonTapped:
+                case .showTutorial:
                     state.path.append(.tutorial(ShowTutorial.State()))
                 default: break
                 }
