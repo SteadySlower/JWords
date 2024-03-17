@@ -7,28 +7,23 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class EditHuriganaTextTest: XCTestCase {
     
+    @MainActor
     func test_onGanaUpdated() async {
-        let toBeUpdatedHuri = Huri(id: Random.string, huriString: Random.string)
-        var mockHuris = [toBeUpdatedHuri]
-        (0..<Random.int(from: 0, to: 100)).forEach { _ in
-            mockHuris.append(Huri(id: Random.string, huriString: Random.string))
-        }
-        mockHuris = mockHuris.shuffled()
-        let updatedHuri = Huri(id: toBeUpdatedHuri.id, huriString: Random.string)
+        let huris: [Huri] = .testMock
+        let toUpdate = huris.randomElement()!
+        let updated = Huri(id: toUpdate.id, huriString: Random.string)
         
         let store = TestStore(
-            initialState: EditHuriganaText.State(huris: mockHuris),
+            initialState: EditHuriganaText.State(huris: huris),
             reducer: { EditHuriganaText() }
         )
         
-        await store.send(.onGanaUpdated(updatedHuri)) {
-            $0.updateHuri(updatedHuri)
+        await store.send(.onGanaUpdated(updated)) {
+            $0.updateHuri(updated)
         }
         
         await store.receive(.onHuriUpdated)

@@ -57,6 +57,7 @@
 		0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */; };
 		0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
+		064780602BA71D7300FDBCEF /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0647805F2BA71D7300FDBCEF /* Huri.swift */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* InputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* InputUnit.swift */; };
 		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
@@ -253,6 +254,7 @@
 		0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSetTest.swift; sourceTree = "<group>"; };
 		0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUnitWithOCRTest.swift; sourceTree = "<group>"; };
 		0647529E29B45AB90047E84A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0647805F2BA71D7300FDBCEF /* Huri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Huri.swift; sourceTree = "<group>"; };
 		06496B0A2AA311140061DCA9 /* OCRClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRClient.swift; sourceTree = "<group>"; };
 		064BA4422AC2558700288749 /* InputUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUnit.swift; sourceTree = "<group>"; };
 		064BA4452AC256E400288749 /* KanjiInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiInput.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 				5ADE2DB62ADCB76900449A79 /* OCRResult.swift */,
 				5A0ED7D12ADFCE7200669DB9 /* ListType.swift */,
 				068A9BDD2B9CA942008364B7 /* KanjiSet.swift */,
+				0647805F2BA71D7300FDBCEF /* Huri.swift */,
 			);
 			path = TestMock;
 			sourceTree = "<group>";
@@ -1206,6 +1209,7 @@
 				0697715F28CF030D00569280 /* Random.swift in Sources */,
 				069FA5062AE4AD6300ED398C /* StudyUnitsTest.swift in Sources */,
 				061D99392ACD64EF00C08E17 /* HomeListTest.swift in Sources */,
+				064780602BA71D7300FDBCEF /* Huri.swift in Sources */,
 				069FA4FC2AE36F6C00ED398C /* ShowModalsInListTest.swift in Sources */,
 				069FA5042AE3930100ED398C /* StudyUnitsInSetTest.swift in Sources */,
 				5A0ED7D22ADFCE7200669DB9 /* ListType.swift in Sources */,
