@@ -23,9 +23,7 @@ struct GetTextsFromOCR {
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            return .none
-        }
+        EmptyReducer()
     }
 }
 

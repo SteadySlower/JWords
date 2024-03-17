@@ -1,5 +1,5 @@
 //
-//  SelectionStudySetTest.swift
+//  SelectStudySetTest.swift
 //  JWordsUnitTests
 //
 //  Created by Jong Won Moon on 11/2/23.
@@ -9,7 +9,7 @@ import ComposableArchitecture
 import XCTest
 @testable import JWords
 
-final class SelectionStudySetTest: XCTestCase {
+final class SelectStudySetTest: XCTestCase {
     
     @MainActor
     func test_fetchSets() async {

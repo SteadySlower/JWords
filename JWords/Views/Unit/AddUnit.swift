@@ -117,7 +117,7 @@ struct AddUnitView: View {
         VStack(spacing: 40) {
             UnitInputView(store: store.scope(
                 state: \.inputUnit,
-                action: AddUnit.Action.inputUnit)
+                action: \.inputUnit)
             )
             HStack(spacing: 100) {
                 Button("취소") {
