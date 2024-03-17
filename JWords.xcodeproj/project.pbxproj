@@ -63,7 +63,6 @@
 		0647806C2BA721B700FDBCEF /* DeleteListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0647806B2BA721B700FDBCEF /* DeleteListTest.swift */; };
 		064780712BA7221100FDBCEF /* ToEditUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780702BA7221100FDBCEF /* ToEditUnitTest.swift */; };
 		064780752BA7222800FDBCEF /* DeleteUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780742BA7222800FDBCEF /* DeleteUnitTest.swift */; };
-		064780772BA7222E00FDBCEF /* BaseCellTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780762BA7222E00FDBCEF /* BaseCellTest.swift */; };
 		0647807B2BA722E600FDBCEF /* SelectListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0647807A2BA722E600FDBCEF /* SelectListTest.swift */; };
 		0647807D2BA7233300FDBCEF /* SelectUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0647807C2BA7233300FDBCEF /* SelectUnitTest.swift */; };
 		064780812BA7245100FDBCEF /* StudyToolsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780802BA7245100FDBCEF /* StudyToolsTest.swift */; };
@@ -292,7 +291,6 @@
 		0647806B2BA721B700FDBCEF /* DeleteListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteListTest.swift; sourceTree = "<group>"; };
 		064780702BA7221100FDBCEF /* ToEditUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToEditUnitTest.swift; sourceTree = "<group>"; };
 		064780742BA7222800FDBCEF /* DeleteUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteUnitTest.swift; sourceTree = "<group>"; };
-		064780762BA7222E00FDBCEF /* BaseCellTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellTest.swift; sourceTree = "<group>"; };
 		0647807A2BA722E600FDBCEF /* SelectListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectListTest.swift; sourceTree = "<group>"; };
 		0647807C2BA7233300FDBCEF /* SelectUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectUnitTest.swift; sourceTree = "<group>"; };
 		064780802BA7245100FDBCEF /* StudyToolsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyToolsTest.swift; sourceTree = "<group>"; };
@@ -484,7 +482,6 @@
 				5A77B98C29EF8C6A00EA7B41 /* EditCell.swift */,
 				5A67DC2C2869470C00AC156C /* StudyCell.swift */,
 				069941842A99EFFC00B5D769 /* DeleteCell.swift */,
-				5A77B98E29EFA99000EA7B41 /* BaseCell.swift */,
 				5A7B920029F10C0500ED3CAA /* SelectionCell.swift */,
 			);
 			path = Cells;
@@ -503,6 +500,7 @@
 		06004E422AC5A60D00947F5D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5A77B98E29EFA99000EA7B41 /* BaseCell.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
 				06004E432AC5A62400947F5D /* ToolbarItems.swift */,
 			);
@@ -592,7 +590,6 @@
 				064780702BA7221100FDBCEF /* ToEditUnitTest.swift */,
 				069FA4FD2AE3798F00ED398C /* StudyOneUnitTest.swift */,
 				064780742BA7222800FDBCEF /* DeleteUnitTest.swift */,
-				064780762BA7222E00FDBCEF /* BaseCellTest.swift */,
 				0647807C2BA7233300FDBCEF /* SelectUnitTest.swift */,
 			);
 			path = Cells;
@@ -1480,7 +1477,6 @@
 				0641C1C42ADBB97800C6EA05 /* KanjiListTest.swift in Sources */,
 				064780A82BA7288600FDBCEF /* WritingKanjiListTest.swift in Sources */,
 				0641C1C62ADBC04C00C6EA05 /* AddSetTest.swift in Sources */,
-				064780772BA7222E00FDBCEF /* BaseCellTest.swift in Sources */,
 				0641C1C82ADBC10B00C6EA05 /* EditSetTest.swift in Sources */,
 				0647806A2BA7217300FDBCEF /* UnitsListTest.swift in Sources */,
 				064780AE2BA728AE00FDBCEF /* KanjiSetListTest.swift in Sources */,
