@@ -7,12 +7,12 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
+
 final class SearchKanjiTest: XCTestCase {
     
+    @MainActor
     func test_updateQuery() async {
         let searched: [Kanji] = .testMock(count: Random.int(from: 0, to: 100))
         
@@ -29,21 +29,20 @@ final class SearchKanjiTest: XCTestCase {
         await store.send(.updateQuery(query)) {
             $0.query = query
         }
-        
         await store.receive(.kanjiSearched(searched))
     }
     
+    @MainActor
     func test_updateQuery_with_empty_query() async {
         let store = TestStore(
             initialState: SearchKanji.State(query: Random.string),
             reducer: { SearchKanji() }
         )
-        
-        let emptyString = ""
-    
-        await store.send(.updateQuery(emptyString)) {
-            $0.query = emptyString
+
+        await store.send(.updateQuery("")) {
+            $0.query = ""
         }
+        await store.receive(.queryRemoved)
     }
 }
 

@@ -35,9 +35,9 @@ struct SearchKanji {
                     let searched = try! kanjiClient.search(query)
                     return .send(.kanjiSearched(searched))
                 }
-            default:
-                return .none
+            default: break
             }
+            return .none
         }
     }
 
