@@ -7,17 +7,16 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class MainTabTest: XCTestCase {
+    
+    @MainActor
     func testChangeTab() async {
         let store = TestStore(
             initialState: MainTab.State(),
             reducer: { MainTab() }
         )
-
         
         XCTAssertEqual(store.state.selectedTab, .today)
         

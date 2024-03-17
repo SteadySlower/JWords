@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class InputUnitTest: XCTestCase {
     
+    @MainActor
     func test_kanjiInput_huriganaUpdated_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
@@ -27,6 +26,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(alreadyExist))
     }
     
+    @MainActor
     func test_kanjiInput_huriganaUpdated_alreadyExist_nil() async {
         let store = TestStore(
             initialState: InputUnit.State(),
@@ -40,6 +40,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(nil))
     }
     
+    @MainActor
     func test_kanjiInput_onTab_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
         let store = TestStore(
@@ -60,6 +61,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(alreadyExist))
     }
     
+    @MainActor
     func test_kanjiInput_onTab_alreadyExist_nil() async {
         let store = TestStore(
             initialState: InputUnit.State(
@@ -79,6 +81,7 @@ final class InputUnitTest: XCTestCase {
         await store.receive(.alreadyExist(nil))
     }
     
+    @MainActor
     func test_meaningInput_onTab() async {
         let store = TestStore(
             initialState: InputUnit.State(),
@@ -89,5 +92,4 @@ final class InputUnitTest: XCTestCase {
             $0.focusedField = .kanji
         }
     }
-    
 }

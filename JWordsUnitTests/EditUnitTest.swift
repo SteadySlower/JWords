@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class EditUnitTest: XCTestCase {
     
+    @MainActor
     func test_init() async {
         let unit: StudyUnit = .testMock
         let store = TestStore(
@@ -27,6 +26,7 @@ final class EditUnitTest: XCTestCase {
         XCTAssert(store.state.inputUnit.meaningInput.text == unit.meaningText)
     }
     
+    @MainActor
     func test_inputUnit_alreadyExist_nil() async {
         let store = TestStore(
             initialState: EditUnit.State(unit: .testMock),
@@ -36,6 +36,7 @@ final class EditUnitTest: XCTestCase {
         await store.send(.inputUnit(.alreadyExist(nil)))
     }
     
+    @MainActor
     func test_inputUnit_alreadyExist_with_same_id() async {
         let id = Random.string
         let unit: StudyUnit = .init(
@@ -58,6 +59,7 @@ final class EditUnitTest: XCTestCase {
         await store.send(.inputUnit(.alreadyExist(alreadyExist)))
     }
     
+    @MainActor
     func test_inputUnit_alreadyExist_with_different_id() async {
         let unit: StudyUnit = .testMock
         let alreadyExist: StudyUnit = .testMock
@@ -72,6 +74,7 @@ final class EditUnitTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_edit() async {
         let unit: StudyUnit = .testMock
         let edited: StudyUnit = .testMock
@@ -88,6 +91,7 @@ final class EditUnitTest: XCTestCase {
         await store.receive(.edited(edited))
     }
     
+    @MainActor
     func test_alert_presented_cancel() async {
         let isDismissInvoked: LockIsolated<[Bool]> = .init([])
         let unit: StudyUnit = .testMock
@@ -112,6 +116,7 @@ final class EditUnitTest: XCTestCase {
         XCTAssertEqual(isDismissInvoked.value, [true])
     }
     
+    @MainActor
     func test_cancel() async {
         let isDismissInvoked: LockIsolated<[Bool]> = .init([])
         

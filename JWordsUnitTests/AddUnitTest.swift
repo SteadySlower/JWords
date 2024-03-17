@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class AddUnitTest: XCTestCase {
     
+    @MainActor
     func test_inputUnit_alreadyExist() async {
         let store = TestStore(
             initialState: AddUnit.State(),
@@ -28,6 +27,7 @@ final class AddUnitTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_add_no_set() async {
         let store = TestStore(
             initialState: AddUnit.State(),
@@ -39,6 +39,7 @@ final class AddUnitTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_add_alreadyExist() async {
         let inserted: StudyUnit = .testMock
         
@@ -55,6 +56,7 @@ final class AddUnitTest: XCTestCase {
         await store.receive(.added(inserted))
     }
     
+    @MainActor
     func test_add_not_alreadyExist() async {
         let inserted: StudyUnit = .testMock
         
@@ -70,6 +72,7 @@ final class AddUnitTest: XCTestCase {
         await store.receive(.added(inserted))
     }
     
+    @MainActor
     func test_cancel() async {
         let isDismissInvoked: LockIsolated<[Bool]> = .init([])
         let store = TestStore(

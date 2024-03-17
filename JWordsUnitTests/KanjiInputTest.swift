@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class KanjiInputTest: XCTestCase {
-    
+
+    @MainActor
     func test_setText() async {
         let store = TestStore(
             initialState: KanjiInput.State(),
@@ -26,6 +25,7 @@ final class KanjiInputTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_setText_hasTab() async {
         let store = TestStore(
             initialState: KanjiInput.State(),
@@ -43,6 +43,7 @@ final class KanjiInputTest: XCTestCase {
         await store.receive(.onTab)
     }
     
+    @MainActor
     func test_view_convertToHurigana_when_textEmpty() async {
         let store = TestStore(
             initialState: KanjiInput.State(
@@ -54,6 +55,7 @@ final class KanjiInputTest: XCTestCase {
         await store.send(.view(.convertToHurigana))
     }
     
+    @MainActor
     func test_convertToHurigana() async {
         let text = Random.string
         let hurigana = HuriganaConverter.shared.convert(text)
@@ -73,6 +75,7 @@ final class KanjiInputTest: XCTestCase {
         await store.receive(.huriganaUpdated(hurigana))
     }
     
+    @MainActor
     func test_editText() async {
         let text = Random.string
         let hurigana = HuriganaConverter.shared.convert(text)
@@ -93,6 +96,7 @@ final class KanjiInputTest: XCTestCase {
         await store.receive(.huriganaUpdated(store.state.hurigana.hurigana))
     }
     
+    @MainActor
     func test_editText_onHuriUpdated() async {
         let hurigana = HuriganaConverter.shared.convert(Random.string)
         

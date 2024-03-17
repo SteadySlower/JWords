@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class MeaningInputTest: XCTestCase {
     
+    @MainActor
     func test_setText() async {
         let store = TestStore(
             initialState: MeaningInput.State(),
@@ -26,6 +25,7 @@ final class MeaningInputTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_setText_hasTab() async {
         let store = TestStore(
             initialState: MeaningInput.State(),

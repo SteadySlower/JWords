@@ -7,15 +7,14 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
 private let fetchedAllSets: [StudySet] = .testMock
 private let fetchedSetsNotClosed: [StudySet] = .notClosedTestMock
 
-@MainActor
 final class HomeListTest: XCTestCase {
     
+    @MainActor
     private func get_test_store() async -> TestStore<HomeList.State, HomeList.Action> {
         return TestStore(
             initialState: HomeList.State(),
@@ -25,6 +24,7 @@ final class HomeListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_fetchSets() async {
         let store = await get_test_store()
         
@@ -33,7 +33,7 @@ final class HomeListTest: XCTestCase {
         }
     }
     
-    
+    @MainActor
     func test_setIncludeClosed() async {
         let store = await get_test_store()
         
@@ -50,6 +50,7 @@ final class HomeListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_toAddSet() async {
         let store = await get_test_store()
         
@@ -60,6 +61,7 @@ final class HomeListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_destination_present_addSet_added() async {
         let store = await get_test_store()
         

@@ -7,12 +7,11 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class TodayListTest: XCTestCase {
-    
+
+    @MainActor
     func test_fetchSetsAndSchedule() async -> TestStore<TodayList.State, TodayList.Action> {
         let fetchSets: [StudySet] = .testMock
         let fetchAllUnits: [StudyUnit] = .testMock
@@ -42,6 +41,7 @@ final class TodayListTest: XCTestCase {
         return store
     }
     
+    @MainActor
     func test_toSetSchedule() async {
         let store = TestStore(initialState: TodayList.State()) {
             TodayList()
@@ -59,6 +59,7 @@ final class TodayListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_destination_dismiss_todaySelection() async {
         let updatedStudySets: [StudySet] = .testMock
         let updatedReviewSets: [StudySet] = .testMock
@@ -90,6 +91,7 @@ final class TodayListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_todayStatus_onTapped_when_todayStatus_isEmpty() async {
         let fetchSets: [StudySet] = .testMock
         let fetchAllUnits: [StudyUnit] = .testMock
@@ -118,6 +120,7 @@ final class TodayListTest: XCTestCase {
         }
     }
     
+    @MainActor
     func test_todayStatus_onTapped_when_todayStatus_not_isEmpty() async {
         let toStudyUnits: [StudyUnit] = .testMock
         
@@ -132,6 +135,7 @@ final class TodayListTest: XCTestCase {
         await store.receive(.toStudyFilteredUnits(toStudyUnits))
     }
     
+    @MainActor
     func test_clearSchedule() async {
         let store = TestStore(
             initialState: TodayList.State(
