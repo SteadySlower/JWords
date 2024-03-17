@@ -7,13 +7,12 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class TodaySelectionTest: XCTestCase {
     
-    func test_onAppear() async {
+    @MainActor
+    func test_fetchSets() async {
         let todaySets: [StudySet] = .testMock
         let reviewSets: [StudySet] = .testMock
         let otherSets: [StudySet] = .testMock
@@ -32,7 +31,7 @@ final class TodaySelectionTest: XCTestCase {
         
         let schedules = store.state.schedules
         
-        await store.send(.onAppear) {
+        await store.send(.fetchSets) {
             $0.sets = allSets.sorted(by: { set1, set2 in
                 if schedules[set1, default: .none] != .none
                     && schedules[set2, default: .none] == .none {
@@ -44,7 +43,8 @@ final class TodaySelectionTest: XCTestCase {
         }
     }
     
-    func test_studyButtonTapped_noneToStudy() async {
+    @MainActor
+    func test_toggleStudy_none_to_study() async {
         let store = TestStore(
             initialState: TodaySelection.State(
                 todaySets: .testMock,
@@ -55,12 +55,13 @@ final class TodaySelectionTest: XCTestCase {
         
         let noneSet: StudySet = .testMock
         
-        await store.send(.studyButtonTapped(noneSet)) {
+        await store.send(.toggleStudy(noneSet)) {
             $0.schedules[noneSet] = .study
         }
     }
     
-    func test_studyButtonTapped_studyToNone() async {
+    @MainActor
+    func test_toggleStudy_study_to_none() async {
         let studySets: [StudySet] = .testMock
         let store = TestStore(
             initialState: TodaySelection.State(
@@ -72,12 +73,13 @@ final class TodaySelectionTest: XCTestCase {
         
         let studySet = studySets.randomElement()!
         
-        await store.send(.studyButtonTapped(studySet)) {
+        await store.send(.toggleStudy(studySet)) {
             $0.schedules[studySet] = Schedule.none
         }
     }
     
-    func test_studyButtonTapped_reviewToStudy() async {
+    @MainActor
+    func test_toggleStudy_review_to_study() async {
         let reviewSets: [StudySet] = .testMock
         let store = TestStore(
             initialState: TodaySelection.State(
@@ -89,12 +91,13 @@ final class TodaySelectionTest: XCTestCase {
         
         let reviewSet = reviewSets.randomElement()!
         
-        await store.send(.studyButtonTapped(reviewSet)) {
+        await store.send(.toggleStudy(reviewSet)) {
             $0.schedules[reviewSet] = .study
         }
     }
     
-    func test_reviewButtonTapped_NoneToReivew() async {
+    @MainActor
+    func test_toggleReview_none_to_reivew() async {
         let store = TestStore(
             initialState: TodaySelection.State(
                 todaySets: .testMock,
@@ -105,12 +108,13 @@ final class TodaySelectionTest: XCTestCase {
         
         let noneSet: StudySet = .testMock
         
-        await store.send(.reviewButtonTapped(noneSet)) {
+        await store.send(.toggleReview(noneSet)) {
             $0.schedules[noneSet] = .review
         }
     }
     
-    func test_reviewButtonTapped_reviewToNone() async {
+    @MainActor
+    func test_toggleReview_review_to_none() async {
         let reviewSets: [StudySet] = .testMock
         let store = TestStore(
             initialState: TodaySelection.State(
@@ -120,12 +124,13 @@ final class TodaySelectionTest: XCTestCase {
             reducer: { TodaySelection() }
         )
         let reviewSet = reviewSets.randomElement()!
-        await store.send(.reviewButtonTapped(reviewSet)) {
+        await store.send(.toggleReview(reviewSet)) {
             $0.schedules[reviewSet] = Schedule.none
         }
     }
     
-    func test_reviewButtonTapped_reviewToStudy() async {
+    @MainActor
+    func test_toggleReview_review_to_study() async {
         let studySets: [StudySet] = .testMock
         let store = TestStore(
             initialState: TodaySelection.State(
@@ -135,9 +140,8 @@ final class TodaySelectionTest: XCTestCase {
             reducer: { TodaySelection() }
         )
         let studySet = studySets.randomElement()!
-        await store.send(.reviewButtonTapped(studySet)) {
+        await store.send(.toggleReview(studySet)) {
             $0.schedules[studySet] = .review
         }
     }
-    
 }
