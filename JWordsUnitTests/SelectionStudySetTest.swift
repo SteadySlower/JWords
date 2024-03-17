@@ -7,13 +7,12 @@
 
 import ComposableArchitecture
 import XCTest
-
 @testable import JWords
 
-@MainActor
 final class SelectionStudySetTest: XCTestCase {
     
-    func testOnAppear() async {
+    @MainActor
+    func test_fetchSets() async {
         let sets: [StudySet] = .testMock
         let store = TestStore(
             initialState: SelectStudySet.State(),
@@ -23,12 +22,13 @@ final class SelectionStudySetTest: XCTestCase {
             }
         )
         
-        await store.send(.onAppear) {
+        await store.send(.fetchSets) {
             $0.sets = sets
         }
     }
     
-    func testUpdateID() async {
+    @MainActor
+    func testUpdateID_not_nil() async {
         let sets: [StudySet] = .testMock
         let unitCount = Random.int(from: 0, to: 9999)
         let id = sets.randomElement()!.id
@@ -51,7 +51,8 @@ final class SelectionStudySetTest: XCTestCase {
         await store.receive(.idUpdated(store.state.selectedSet))
     }
     
-    func testUpdateID_toNil() async {
+    @MainActor
+    func testUpdateID_nil() async {
         let sets: [StudySet] = .testMock
         let unitCount = Random.int(from: 0, to: 9999)
         let id = sets.randomElement()!.id

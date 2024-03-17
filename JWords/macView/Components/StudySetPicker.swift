@@ -15,18 +15,15 @@ struct SelectStudySet {
         var sets: [StudySet]
         var selectedID: String?
         var unitCount: Int?
-        let pickerName: String
         
         init(
             sets: [StudySet] = [],
             selectedID: String? = nil,
-            unitCount: Int? = nil,
-            pickerName: String = ""
+            unitCount: Int? = nil
         ) {
             self.sets = sets
             self.selectedID = selectedID
             self.unitCount = unitCount
-            self.pickerName = pickerName
         }
         
         var selectedSet: StudySet? {
@@ -51,7 +48,7 @@ struct SelectStudySet {
     @Dependency(\.studySetClient) var setClient
     
     enum Action: Equatable {
-        case onAppear
+        case fetchSets
         case updateID(String?)
         case idUpdated(StudySet?)
     }
@@ -59,16 +56,15 @@ struct SelectStudySet {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
+            case .fetchSets:
                 state.sets = try! setClient.fetch(false)
                 return .none
             case .updateID(let id):
                 state.selectedID = id
-                state.unitCount = nil
-                defer {
-                    if let set = state.selectedSet {
-                        state.unitCount = try! setClient.countUnits(set)
-                    }
+                if let set = state.selectedSet {
+                    state.unitCount = try! setClient.countUnits(set)
+                } else {
+                    state.unitCount = nil
                 }
                 return .send(.idUpdated(state.selectedSet))
             default:
@@ -81,6 +77,7 @@ struct SelectStudySet {
 struct StudySetPicker: View {
     
     @Bindable var store: StoreOf<SelectStudySet>
+    let pickerName: String
     
     var body: some View {
         VStack {
@@ -90,7 +87,7 @@ struct StudySetPicker: View {
                 .leadingAlignment()
                 .padding(.leading, 10)
             HStack {
-                Picker(store.pickerName, selection: $store.selectedID.sending(\.updateID)) {
+                Picker(pickerName, selection: $store.selectedID.sending(\.updateID)) {
                     Text(store.pickerDefaultText.localize())
                         .tag(nil as String?)
                     ForEach(store.sets, id: \.id) { studySet in
@@ -103,7 +100,7 @@ struct StudySetPicker: View {
                 Text("단어 수: \(store.unitCount ?? 0)개")
                 .opacity(store.selectedID == nil ? 0 : 1)
             }
-            .onAppear { store.send(.onAppear) }
+            .onAppear { store.send(.fetchSets) }
         }
     }
 }
