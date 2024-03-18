@@ -19,7 +19,7 @@ struct WriteKanji {
         mutating func setKanji(_ kanji: Kanji?) {
             self.kanji = kanji
             self.showAnswer = false
-            self.drawWithPencil.resetCanvas()
+            self.drawWithPencil.didDraw = false
         }
     }
     
