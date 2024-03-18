@@ -500,7 +500,6 @@
 		06004E422AC5A60D00947F5D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				5A77B98E29EFA99000EA7B41 /* BaseCell.swift */,
 				06B2DA3D29EA6A0B009C67EF /* SettingSideBar.swift */,
 				06004E432AC5A62400947F5D /* ToolbarItems.swift */,
 			);
@@ -763,6 +762,14 @@
 				064780832BA7252900FDBCEF /* Today */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		064780BF2BA8808700FDBCEF /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				5A77B98E29EFA99000EA7B41 /* BaseCell.swift */,
+			);
+			path = Subview;
 			sourceTree = "<group>";
 		};
 		064BA4402AC2556200288749 /* Unit */ = {
@@ -1060,6 +1067,7 @@
 		5A67DC28286946DF00AC156C /* WordList */ = {
 			isa = PBXGroup;
 			children = (
+				064780BF2BA8808700FDBCEF /* Subview */,
 				06004E3D2AC5559800947F5D /* StudyView */,
 				06004E2E2AC5484B00947F5D /* Lists */,
 				06004E3C2AC548BE00947F5D /* Cells */,
