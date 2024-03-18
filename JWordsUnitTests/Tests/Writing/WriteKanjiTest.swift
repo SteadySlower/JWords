@@ -10,5 +10,19 @@ import XCTest
 @testable import JWords
 
 final class WriteKanjiTest: XCTestCase {
-    #warning("TODO")
+    
+    @MainActor
+    func test_toggleShowAnswer() async {
+        let store = TestStore(
+            initialState: WriteKanji.State(),
+            reducer: { WriteKanji() }
+        )
+        
+        XCTAssertEqual(store.state.showAnswer, false)
+        
+        await store.send(.toggleShowAnswer) {
+            $0.showAnswer.toggle()
+        }
+    }
+    
 }
