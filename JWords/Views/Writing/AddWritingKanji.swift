@@ -22,7 +22,7 @@ struct AddWritingKanji {
     }
     
     enum Action: Equatable {
-        case updateID(String?)
+        case setID(String?)
         case add
         case cancel
     }
@@ -33,7 +33,7 @@ struct AddWritingKanji {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .updateID(let id):
+            case .setID(let id):
                 state.selectedID = id
                 return .none
             case .add:
@@ -56,7 +56,7 @@ struct AddWritingKanjiView: View {
             picker(
                 kanji: store.kanji,
                 sets: store.kanjiSets,
-                selectedID: $store.selectedID.sending(\.updateID)
+                selectedID: $store.selectedID.sending(\.setID)
             )
             buttons(
                 isOKButtonAble: store.selectedID != nil,
