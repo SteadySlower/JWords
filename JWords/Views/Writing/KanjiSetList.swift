@@ -12,7 +12,7 @@ import ComposableArchitecture
 struct KanjiSetList {
     @ObservableState
     struct State: Equatable {
-        var sets: [KanjiSet]
+        var sets: [KanjiSet] = []
         
         @Presents var destination: Destination.State?
     }
