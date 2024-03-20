@@ -60,25 +60,23 @@ struct TodaySelection {
     @Dependency(\.studySetClient) var setClient
     
     enum Action: Equatable {        
-        case onAppear
-        case studyButtonTapped(StudySet)
-        case reviewButtonTapped(StudySet)
+        case fetchSets
+        case toggleStudy(StudySet)
+        case toggleReview(StudySet)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
+            case .fetchSets:
                 let sets = try! setClient.fetch(false)
                 state.sets = sortSetsBySchedule(sets, schedule: state.schedules)
-                return .none
-            case let .studyButtonTapped(set):
+            case let .toggleStudy(set):
                 state.toggleStudy(set)
-                return .none
-            case let .reviewButtonTapped(set):
+            case let .toggleReview(set):
                 state.toggleReview(set)
-                return .none
             }
+            return .none
         }
     }
     
@@ -111,8 +109,8 @@ struct TodaySelectionModal: View {
                         setCell(
                             set: set,
                             schedule: store.schedules[set] ?? .none,
-                            studyButtonTapped: { store.send(.studyButtonTapped(set)) },
-                            reviewButtonTapped: { store.send(.reviewButtonTapped(set)) }
+                            studyButtonTapped: { store.send(.toggleStudy(set)) },
+                            reviewButtonTapped: { store.send(.toggleReview(set)) }
                         )
                     }
                 }
@@ -120,7 +118,7 @@ struct TodaySelectionModal: View {
             }
         }
         .padding(.horizontal, 10)
-        .onAppear { store.send(.onAppear) }
+        .onAppear { store.send(.fetchSets) }
     }
 }
 

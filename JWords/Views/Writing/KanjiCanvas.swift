@@ -12,16 +12,12 @@ import ComposableArchitecture
 struct DrawWithPencil {
     @ObservableState
     struct State: Equatable {
-        fileprivate var didDraw: Bool = false
-        
-        mutating func resetCanvas() {
-            self.didDraw = false
-        }
+        var didDraw: Bool = false
     }
     
     enum Action: Equatable {
         case resetCanvas
-        case updateDidDraw(Bool)
+        case setDidDraw(Bool)
     }
     
     var body: some Reducer<State, Action> {
@@ -29,11 +25,10 @@ struct DrawWithPencil {
             switch action {
             case .resetCanvas:
                 state.didDraw = false
-                return .none
-            case .updateDidDraw(let bool):
+            case .setDidDraw(let bool):
                 state.didDraw = bool
-                return .none
             }
+            return .none
         }
     }
 }
@@ -44,7 +39,7 @@ struct KanjiCanvas: View {
     
     var body: some View {
         VStack {
-            CanvasView(didDraw: $store.didDraw.sending(\.updateDidDraw))
+            CanvasView(didDraw: $store.didDraw.sending(\.setDidDraw))
             .border(.black)
             HStack {
                 Spacer()

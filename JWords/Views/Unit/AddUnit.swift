@@ -78,13 +78,8 @@ struct AddUnit {
                     return .none
                 }
                 if let alreadyExist = state.alreadyExist {
-                    let input = StudyUnitInput(
-                        type: alreadyExist.type,
-                        kanjiText: alreadyExist.kanjiText,
-                        meaningText: state.inputUnit.meaningInput.text)
-                    let edited = try! unitClient.edit(alreadyExist, input)
-                    let unit = try! unitClient.insertExisting(set, edited)
-                    return .send(.added(unit))
+                    let addedUnit = addAlreadyExist(in: set, alreadyExist: alreadyExist, meaningText: state.inputUnit.meaningInput.text)
+                    return .send(.added(addedUnit))
                 } else {
                     let input = StudyUnitInput(
                         type: .word,
@@ -103,6 +98,15 @@ struct AddUnit {
         Scope(state: \.inputUnit, action: \.inputUnit) { InputUnit() }
     }
     
+    func addAlreadyExist(in set: StudySet, alreadyExist: StudyUnit, meaningText: String) -> StudyUnit {
+        let input = StudyUnitInput(
+            type: alreadyExist.type,
+            kanjiText: alreadyExist.kanjiText,
+            meaningText: meaningText)
+        let edited = try! unitClient.edit(alreadyExist, input)
+        return try! unitClient.insertExisting(set, edited)
+    }
+    
 }
 
 struct AddUnitView: View {
@@ -113,7 +117,7 @@ struct AddUnitView: View {
         VStack(spacing: 40) {
             UnitInputView(store: store.scope(
                 state: \.inputUnit,
-                action: AddUnit.Action.inputUnit)
+                action: \.inputUnit)
             )
             HStack(spacing: 100) {
                 Button("취소") {

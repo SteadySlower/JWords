@@ -58,7 +58,7 @@ struct StudyOneUnit {
     enum Action: Equatable {
         case toggleFront
         case updateStudyState(StudyState)
-        case kanjiButtonTapped
+        case showKanjis
     }
     
     private let cd = CoreDataService.shared
@@ -68,19 +68,17 @@ struct StudyOneUnit {
             switch action {
             case .toggleFront:
                 state.isFront.toggle()
-                return .none
             case .updateStudyState(let studyState):
-                if state.isLocked { return .none }
+                if state.isLocked { break }
                 state.studyState = try! unitClient.studyState(state.unit, studyState)
-                return .none
-            case .kanjiButtonTapped:
+            case .showKanjis:
                 if state.kanjis.isEmpty {
                     state.kanjis = try! kanjiClient.unitKanjis(state.unit)
                 } else {
                     state.kanjis = []
                 }
-                return .none
             }
+            return .none
         }
     }
 
@@ -134,7 +132,7 @@ struct StudyCell: View {
             HStack {
                 Spacer()
                 Button {
-                    store.send(.kanjiButtonTapped)
+                    store.send(.showKanjis)
                 } label: {
                     Text("漢 ") + Text(store.showKanjis ? "🔼" : "🔽")
                 }

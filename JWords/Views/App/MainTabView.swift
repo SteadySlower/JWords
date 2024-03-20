@@ -20,13 +20,13 @@ struct MainTab {
     }
     
     enum Action: Equatable {
-        case tabChanged(Tab)
+        case setTab(Tab)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .tabChanged(let tab):
+            case .setTab(let tab):
                 state.selectedTab = tab
             }
             return .none
@@ -40,7 +40,7 @@ struct MainTabView: View {
     @Bindable var store: StoreOf<MainTab>
     
     var body: some View {
-        TabView(selection: $store.selectedTab.sending(\.tabChanged)) {
+        TabView(selection: $store.selectedTab.sending(\.setTab)) {
             TodayCoordinatorView(
                 store: .init(initialState: .init(),
                 reducer: { TodayCoordinator() })

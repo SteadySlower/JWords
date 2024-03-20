@@ -32,14 +32,14 @@ struct SelectUnit {
     }
     
     enum Action: Equatable {
-        case cellTapped
+        case toggleSelection
     }
     
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .cellTapped:
+            case .toggleSelection:
                 state.isSelected.toggle()
                 return .none
             }
@@ -58,7 +58,7 @@ struct SelectionCell: View {
     var body: some View {
         BaseCell(unit: store.unit, frontType: store.frontType)
             .overlay { overlay }
-            .onTapGesture { store.send(.cellTapped) }
+            .onTapGesture { store.send(.toggleSelection) }
     }
     
 }

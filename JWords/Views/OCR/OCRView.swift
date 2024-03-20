@@ -42,7 +42,7 @@ struct OCR {
                 )
             case .ocr(.ocrMarkTapped(let lang, let text)):
                 return lang == .korean ? .send(.koreanOCR(text)) : .send(.japaneseOCR(text))
-            case .ocr(.removeImageButtonTapped):
+            case .ocr(.removeImage):
                 state.ocr = nil
             case .japaneseOcrResponse(.success(let result)):
                 state.ocr?.japaneseOcrResult = result

@@ -20,9 +20,7 @@ struct ScannerCoordinator {
     }
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            return .none
-        }
+        EmptyReducer()
         Scope(state: \.ocr, action: \.ocr) { AddUnitWithOCR() }
     }
 }

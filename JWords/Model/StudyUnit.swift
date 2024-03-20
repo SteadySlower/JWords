@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-enum StudyState: Int {
+enum StudyState: Int, CaseIterable {
     case undefined = 0, success, fail
 }
 

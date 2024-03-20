@@ -24,13 +24,15 @@ struct MoveUnits {
             selectedID: String? = nil,
             isReviewSet: Bool,
             toMoveUnits: [StudyUnit],
-            willCloseSet: Bool
+            willCloseSet: Bool,
+            sets: [StudySet] = []
         ) {
             self.fromSet = fromSet
             self.selectedID = selectedID
             self.isReviewSet = isReviewSet
             self.toMoveUnits = toMoveUnits
             self.willCloseSet = willCloseSet
+            self.sets = sets
         }
         
         var selectedSet: StudySet? {
@@ -48,9 +50,9 @@ struct MoveUnits {
     @Dependency(\.dismiss) var dismiss
     
     enum Action: Equatable {
-        case onAppear
-        case updateSelection(String?)
-        case updateWillClose(Bool)
+        case fetchSets
+        case setSelectedID(String?)
+        case setWillClose(Bool)
         case close
         case cancel
         case onMoved
@@ -59,13 +61,13 @@ struct MoveUnits {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
+            case .fetchSets:
                 state.sets = try! setClient.fetch(false).filter { $0.id != state.fromSet.id }
                 return .none
-            case .updateSelection(let id):
+            case .setSelectedID(let id):
                 state.selectedID = id
                 return .none
-            case .updateWillClose(let willClose):
+            case .setWillClose(let willClose):
                 state.willCloseSet = willClose
                 return .none
             case .close:
@@ -103,7 +105,7 @@ struct UnitMoveView: View {
                     .bold()
                     .leadingAlignment()
                     .padding(.leading, 10)
-                Picker("이동할 단어장 고르기", selection: $store.selectedID.sending(\.updateSelection)) {
+                Picker("이동할 단어장 고르기", selection: $store.selectedID.sending(\.setSelectedID)) {
                     Text(store.sets.isEmpty ? "로딩중" : "이동 안함")
                         .tag(nil as String?)
                     ForEach(store.sets, id: \.id) {
@@ -116,7 +118,7 @@ struct UnitMoveView: View {
                 #endif
             }
             VStack {
-                Toggle("현재 단어장 마감", isOn: $store.willCloseSet.sending(\.updateWillClose))
+                Toggle("현재 단어장 마감", isOn: $store.willCloseSet.sending(\.setWillClose))
                 .tint(.black)
             }
             if store.isReviewSet {
@@ -132,7 +134,7 @@ struct UnitMoveView: View {
             }
         }
         .padding(.horizontal, 10)
-        .onAppear { store.send(.onAppear) }
+        .onAppear { store.send(.fetchSets) }
     }
     
     private func button(_ text: String, foregroundColor: Color, onTapped: @escaping () -> Void) -> some View {

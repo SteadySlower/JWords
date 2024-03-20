@@ -13,7 +13,7 @@ struct AddUnitWithOCR {
     @ObservableState
     struct State: Equatable {
         var ocr = OCR.State()
-        var selectSet = SelectStudySet.State(pickerName: "")
+        var selectSet = SelectStudySet.State()
         var addUnit = AddUnit.State()
     }
     
@@ -60,7 +60,8 @@ struct OCRAddUnitView: View {
                 )
                 StudySetPicker(store: store.scope(
                     state: \.selectSet,
-                    action: \.selectSet)
+                    action: \.selectSet),
+                    pickerName: ""
                 )
                 AddUnitView(store: store.scope(
                     state: \.addUnit,
