@@ -34,29 +34,26 @@ struct InputKanji {
     }
     
     enum Action: Equatable {
-        case updateKanji(String)
-        case updateMeaning(String)
-        case updateOndoku(String)
-        case updateKundoku(String)
+        case setKanji(String)
+        case setMeaning(String)
+        case setOndoku(String)
+        case setKundoku(String)
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .updateKanji(let kanji):
-                guard state.isKanjiEditable else { return .none }
+            case .setKanji(let kanji):
+                guard state.isKanjiEditable else { break }
                 state.kanji = kanji
-                return .none
-            case .updateMeaning(let meaning):
+            case .setMeaning(let meaning):
                 state.meaning = meaning
-                return .none
-            case .updateOndoku(let ondoku):
+            case .setOndoku(let ondoku):
                 state.ondoku = ondoku
-                return .none
-            case .updateKundoku(let kundoku):
+            case .setKundoku(let kundoku):
                 state.kundoku = kundoku
-                return .none
             }
+            return .none
         }
     }
     
@@ -71,22 +68,22 @@ struct KanjiInputView: View {
             inputField(
                 title: "한자",
                 placeholder: "一",
-                text: $store.kanji.sending(\.updateKanji)
+                text: $store.kanji.sending(\.setKanji)
             ).disabled(!store.isKanjiEditable)
             inputField(
                 title: "뜻   ",
                 placeholder: "한 일",
-                text: $store.meaning.sending(\.updateMeaning)
+                text: $store.meaning.sending(\.setMeaning)
             )
             inputField(
                 title: "음독",
                 placeholder: store.kanji.isEmpty ? "いち、　いっ" : "",
-                text: $store.ondoku.sending(\.updateOndoku)
+                text: $store.ondoku.sending(\.setOndoku)
             )
             inputField(
                 title: "훈독",
                 placeholder: store.kanji.isEmpty ? "ひと, ひとつ" : "",
-                text: $store.kundoku.sending(\.updateKundoku)
+                text: $store.kundoku.sending(\.setKundoku)
             )
         }
         .padding(.horizontal, 20)
