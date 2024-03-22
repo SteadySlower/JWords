@@ -89,6 +89,7 @@
 		064780BA2BA7296700FDBCEF /* KanjiCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780B92BA7296700FDBCEF /* KanjiCoordinatorTest.swift */; };
 		064780BC2BA7297100FDBCEF /* WritingCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780BB2BA7297100FDBCEF /* WritingCoordinatorTest.swift */; };
 		064780BE2BA7297700FDBCEF /* ScannerCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780BD2BA7297700FDBCEF /* ScannerCoordinatorTest.swift */; };
+		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* InputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* InputUnit.swift */; };
 		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
@@ -436,6 +437,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1195,6 +1197,7 @@
 			name = JWords;
 			packageProductDependencies = (
 				068A9BBF2B932D69008364B7 /* ComposableArchitecture */,
+				064780522B9D6EFB00FDBCEF /* GoogleMobileAds */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -1268,7 +1271,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1340;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					06CEF2422866F1C800A620CC = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -1299,6 +1302,7 @@
 			mainGroup = 06CEF23A2866F1C800A620CC;
 			packageReferences = (
 				5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				068A9BBC2B9300A2008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 06CEF2442866F1C800A620CC /* Products */;
@@ -1585,7 +1589,6 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1620,7 +1623,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1651,7 +1653,6 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1686,7 +1687,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1981,6 +1981,14 @@
 				version = 1.9.2;
 			};
 		};
+		06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1992,6 +2000,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		064780522B9D6EFB00FDBCEF /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
 		068A9BBF2B932D69008364B7 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 068A9BBC2B9300A2008364B7 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
