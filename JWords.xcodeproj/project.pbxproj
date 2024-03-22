@@ -1978,7 +1978,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = exactVersion;
-				version = 1.8.2;
+				version = 1.9.2;
 			};
 		};
 		5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
