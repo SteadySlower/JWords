@@ -21,7 +21,7 @@ final class SetCoordinatorTest: XCTestCase {
             }
         )
         let set: StudySet = .testMock
-        await store.send(.homeList(.toStudySet(set))) {
+        await store.send(\.homeList.toStudySet, set) {
             $0.path.append(.studyUnitsInSet(StudyUnitsInSet.State(set: set, units: units)))
         }
     }
@@ -34,7 +34,7 @@ final class SetCoordinatorTest: XCTestCase {
             ])),
             reducer: { SetCoordinator() }
         )
-        await store.send(.path(.element(id: 0, action: .studyUnitsInSet(.modals(.unitsMoved))))) {
+        await store.send(\.path[id: 0].studyUnitsInSet.modals.unitsMoved) {
             $0.path.pop(from: 0)
         }
     }

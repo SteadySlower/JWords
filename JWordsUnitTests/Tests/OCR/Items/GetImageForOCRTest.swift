@@ -52,7 +52,7 @@ final class GetImageForOCRTest: XCTestCase {
             }
         )
         
-        await store.send(.destination(.presented(.cameraScanner(.imageSelected(UIImage())))))
+        await store.send(\.destination.cameraScanner.imageSelected, UIImage())
         await store.receive(.imageFetched(image))
     }
     

@@ -23,7 +23,7 @@ struct AddKanjiSet {
         case added(KanjiSet)
     }
     
-    @Dependency(\.kanjiSetClient) var kanjiSetClient
+    @Dependency(KanjiSetClient.self) var kanjiSetClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

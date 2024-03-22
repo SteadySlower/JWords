@@ -27,7 +27,7 @@ struct AddWritingKanji {
         case cancel
     }
     
-    @Dependency(\.kanjiSetClient) var kanjiSetClient
+    @Dependency(KanjiSetClient.self) var kanjiSetClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {

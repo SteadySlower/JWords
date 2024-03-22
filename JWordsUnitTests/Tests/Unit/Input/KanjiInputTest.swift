@@ -52,7 +52,7 @@ final class KanjiInputTest: XCTestCase {
             reducer: { KanjiInput() }
         )
         
-        await store.send(.view(.convertToHurigana))
+        await store.send(\.view.convertToHurigana)
     }
     
     @MainActor
@@ -67,7 +67,7 @@ final class KanjiInputTest: XCTestCase {
             reducer: { KanjiInput() }
         )
         
-        await store.send(.view(.convertToHurigana)) {
+        await store.send(\.view.convertToHurigana) {
             $0.hurigana = EditHuriganaText.State(hurigana: hurigana)
             $0.isEditing = false
         }
@@ -88,7 +88,7 @@ final class KanjiInputTest: XCTestCase {
             reducer: { KanjiInput() }
         )
         
-        await store.send(.view(.editText)) {
+        await store.send(\.view.editText) {
             $0.isEditing = true
             $0.hurigana = EditHuriganaText.State(hurigana: "")
         }
@@ -107,7 +107,7 @@ final class KanjiInputTest: XCTestCase {
             reducer: { KanjiInput() }
         )
         
-        await store.send(.editHuriText(.onHuriUpdated))
+        await store.send(\.editHuriText.onHuriUpdated)
         await store.receive(.huriganaUpdated(hurigana))
     }
     

@@ -71,7 +71,7 @@ final class HomeListTest: XCTestCase {
             $0.destination = .addSet(.init())
         }
         
-        await store.send(.destination(.presented(.addSet(.added(set))))) {
+        await store.send(\.destination.addSet.added, set) {
             $0.sets.insert(set, at: 0)
             $0.destination = nil
         }

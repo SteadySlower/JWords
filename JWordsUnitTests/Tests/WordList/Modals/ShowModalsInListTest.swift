@@ -19,9 +19,8 @@ final class ShowModalsInListTest: XCTestCase {
             ),
             reducer: { ShowModalsInList() }
         )
-        
         let set: StudySet = .testMock
-        await store.send(.destination(.presented(.editSet(.edited(set))))) {
+        await store.send(\.destination.editSet.edited, set) {
             $0.destination = nil
         }
         await store.receive(.setEdited(set))
@@ -37,7 +36,7 @@ final class ShowModalsInListTest: XCTestCase {
         )
         
         let unit: StudyUnit = .testMock
-        await store.send(.destination(.presented(.addUnit(.added(unit))))) {
+        await store.send(\.destination.addUnit.added, unit) {
             $0.destination = nil
         }
         await store.receive(.unitAdded(unit))
@@ -53,7 +52,7 @@ final class ShowModalsInListTest: XCTestCase {
         )
         
         let unit: StudyUnit = .testMock
-        await store.send(.destination(.presented(.editUnit(.edited(unit))))) {
+        await store.send(\.destination.editUnit.edited, unit) {
             $0.destination = nil
         }
         await store.receive(.unitEdited(unit))
@@ -73,7 +72,7 @@ final class ShowModalsInListTest: XCTestCase {
             reducer: { ShowModalsInList() }
         )
         
-        await store.send(.destination(.presented(.moveUnits(.onMoved)))) {
+        await store.send(\.destination.moveUnits.onMoved) {
             $0.destination = nil
         }
         await store.receive(.unitsMoved)

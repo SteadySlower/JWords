@@ -18,7 +18,7 @@ final class TodayCoordinatorTest: XCTestCase {
             reducer: { TodayCoordinator() }
         )
         let units: [StudyUnit] = .testMock
-        await store.send(.todayList(.toStudyFilteredUnits(units))) {
+        await store.send(\.todayList.toStudyFilteredUnits, units) {
             $0.path.append(.studyUnits(StudyUnits.State(units: units)))
         }
     }
@@ -34,7 +34,7 @@ final class TodayCoordinatorTest: XCTestCase {
             }
         )
         let set: StudySet = .testMock
-        await store.send(.todayList(.toStudySet(set))) {
+        await store.send(\.todayList.toStudySet, set) {
             $0.path.append(.studyUnitsInSet(StudyUnitsInSet.State(set: set, units: units)))
         }
     }
@@ -45,7 +45,7 @@ final class TodayCoordinatorTest: XCTestCase {
             initialState: TodayCoordinator.State(),
             reducer: { TodayCoordinator() }
         )
-        await store.send(.todayList(.showTutorial)) {
+        await store.send(\.todayList.showTutorial) {
             $0.path.append(.tutorial(ShowTutorial.State()))
         }
     }
@@ -60,7 +60,7 @@ final class TodayCoordinatorTest: XCTestCase {
             ),
             reducer: { TodayCoordinator() }
         )
-        await store.send(.path(.element(id: 0, action: .studyUnitsInSet(.modals(.unitsMoved))))) {
+        await store.send(\.path[id: 0].studyUnitsInSet.modals.unitsMoved) {
             $0.path.pop(from: 0)
         }
     }

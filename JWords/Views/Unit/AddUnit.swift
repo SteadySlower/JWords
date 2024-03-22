@@ -60,7 +60,7 @@ struct AddUnit {
     
     enum AlertAction: Equatable {}
     
-    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(StudyUnitClient.self) var unitClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {

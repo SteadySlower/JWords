@@ -34,7 +34,7 @@ struct InputUnit {
         case alreadyExist(StudyUnit?)
     }
     
-    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(StudyUnitClient.self) var unitClient
     
     var body: some Reducer<State, Action> {
         BindingReducer()

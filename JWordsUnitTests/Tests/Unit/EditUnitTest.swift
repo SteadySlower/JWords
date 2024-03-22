@@ -33,7 +33,7 @@ final class EditUnitTest: XCTestCase {
             reducer: { EditUnit() }
         )
         
-        await store.send(.inputUnit(.alreadyExist(nil)))
+        await store.send(\.inputUnit.alreadyExist, nil)
     }
     
     @MainActor
@@ -56,7 +56,7 @@ final class EditUnitTest: XCTestCase {
             reducer: { EditUnit() }
         )
         
-        await store.send(.inputUnit(.alreadyExist(alreadyExist)))
+        await store.send(\.inputUnit.alreadyExist, alreadyExist)
     }
     
     @MainActor
@@ -69,7 +69,7 @@ final class EditUnitTest: XCTestCase {
             reducer: { EditUnit() }
         )
         
-        await store.send(.inputUnit(.alreadyExist(alreadyExist))) {
+        await store.send(\.inputUnit.alreadyExist, alreadyExist) {
             $0.setUneditableAlert()
         }
     }
@@ -105,11 +105,11 @@ final class EditUnitTest: XCTestCase {
             }
         )
         
-        await store.send(.inputUnit(.alreadyExist(alreadyExist))) {
+        await store.send(\.inputUnit.alreadyExist, alreadyExist) {
             $0.setUneditableAlert()
         }
         
-        await store.send(.alert(.presented(.cancel))) {
+        await store.send(\.alert.cancel) {
             $0.alert = nil
         }
         

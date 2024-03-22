@@ -20,7 +20,7 @@ final class AddUnitWithOCRTest: XCTestCase {
         
         let ocr = Random.string
         
-        await store.send(.ocr(.koreanOCR(ocr))) {
+        await store.send(\.ocr.koreanOCR, ocr) {
             $0.addUnit.inputUnit.meaningInput.text = ocr
         }
     }
@@ -34,7 +34,7 @@ final class AddUnitWithOCRTest: XCTestCase {
         
         let ocr = Random.string
         
-        await store.send(.ocr(.japaneseOCR(ocr))) {
+        await store.send(\.ocr.japaneseOCR, ocr) {
             $0.addUnit.inputUnit.kanjiInput.text = ocr
         }
     }
@@ -58,7 +58,7 @@ final class AddUnitWithOCRTest: XCTestCase {
         
         let ocr = Random.string
         
-        await store.send(.ocr(.japaneseOCR(ocr))) {
+        await store.send(\.ocr.japaneseOCR, ocr) {
             $0.addUnit.inputUnit.kanjiInput.text = ocr
             $0.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
             $0.addUnit.inputUnit.kanjiInput.isEditing = true
@@ -74,7 +74,7 @@ final class AddUnitWithOCRTest: XCTestCase {
         
         let set: StudySet = .testMock
         
-        await store.send(.selectSet(.idUpdated(set))) {
+        await store.send(\.selectSet.idUpdated, set) {
             $0.addUnit.set = set
         }
     }
@@ -90,7 +90,7 @@ final class AddUnitWithOCRTest: XCTestCase {
             reducer: { AddUnitWithOCR() }
         )
         
-        await store.send(.selectSet(.idUpdated(nil))) {
+        await store.send(\.selectSet.idUpdated, nil) {
             $0.addUnit.set = nil
         }
     }
@@ -116,7 +116,7 @@ final class AddUnitWithOCRTest: XCTestCase {
             reducer: { AddUnitWithOCR() }
         )
         
-        await store.send(.addUnit(.added(.testMock))) {
+            await store.send(\.addUnit.added, .testMock) {
             $0.addUnit.clearInput()
             $0.selectSet.onUnitAdded()
         }

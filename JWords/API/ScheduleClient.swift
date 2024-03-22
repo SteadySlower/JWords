@@ -21,13 +21,6 @@ struct ScheduleClient {
     var isReview: (StudySet) -> Bool
 }
 
-extension DependencyValues {
-  var scheduleClient: ScheduleClient {
-    get { self[ScheduleClient.self] }
-    set { self[ScheduleClient.self] = newValue }
-  }
-}
-
 extension ScheduleClient: DependencyKey {
   static let liveValue = ScheduleClient(
     study: { sets in

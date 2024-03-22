@@ -47,7 +47,7 @@ final class KanjiSetListTest: XCTestCase {
             ),
             reducer: { KanjiSetList() }
         )
-        await store.send(.destination(.presented(.addKanjiSet(.added(kanjiSet))))) {
+        await store.send(\.destination.addKanjiSet.added, kanjiSet) {
             $0.sets.insert(kanjiSet, at: 0)
             $0.destination = nil
         }
@@ -62,7 +62,7 @@ final class KanjiSetListTest: XCTestCase {
             ),
             reducer: { KanjiSetList() }
         )
-        await store.send(.destination(.presented(.addKanjiSet(.cancel)))) {
+        await store.send(\.destination.addKanjiSet.cancel) {
             $0.destination = nil
         }
     }

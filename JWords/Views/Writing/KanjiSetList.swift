@@ -30,8 +30,8 @@ struct KanjiSetList {
         case destination(PresentationAction<Destination.Action>)
     }
     
-    @Dependency(\.kanjiSetClient) var ksClient
-    @Dependency(\.writingKanjiClient) var wkClient
+    @Dependency(KanjiSetClient.self) var ksClient
+    @Dependency(WritingKanjiClient.self) var wkClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

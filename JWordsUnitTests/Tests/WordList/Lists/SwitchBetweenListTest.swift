@@ -33,7 +33,7 @@ final class SwitchBetweenListTest: XCTestCase {
         
         let unit: StudyUnit = .testMock
         
-        await store.send(.edit(.toEditUnitSelected(unit)))
+        await store.send(\.edit.toEditUnitSelected, unit)
         await store.receive(.toEditUnitSelected(unit))
     }
     

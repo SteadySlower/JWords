@@ -26,7 +26,7 @@ struct AddSet {
         case added(StudySet)
     }
     
-    @Dependency(\.studySetClient) var setClient
+    @Dependency(StudySetClient.self) var setClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {

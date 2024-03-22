@@ -26,7 +26,7 @@ struct SetCoordinator {
         case path(StackAction<Path.State, Path.Action>)
     }
     
-    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(StudyUnitClient.self) var unitClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

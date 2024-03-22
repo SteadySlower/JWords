@@ -28,10 +28,10 @@ struct TodayList {
         case todaySelection(TodaySelection)
     }
     
-    @Dependency(\.scheduleClient) var scheduleClient
-    @Dependency(\.studySetClient) var setClient
-    @Dependency(\.studyUnitClient) var unitClient
-    @Dependency(\.utilClient) var utilClient
+    @Dependency(ScheduleClient.self) var scheduleClient
+    @Dependency(StudySetClient.self) var setClient
+    @Dependency(StudyUnitClient.self) var unitClient
+    @Dependency(UtilClient.self) var utilClient
     
     enum Action: Equatable {
         case fetchSetsAndSchedule

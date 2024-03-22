@@ -42,7 +42,7 @@ struct StudyUnits {
         case dismiss
     }
     
-    @Dependency(\.utilClient) var utilClient
+    @Dependency(UtilClient.self) var utilClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

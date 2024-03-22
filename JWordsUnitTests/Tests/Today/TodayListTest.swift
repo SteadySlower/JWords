@@ -80,7 +80,7 @@ final class TodayListTest: XCTestCase {
             $0.clear()
         }
         
-        await store.send(.destination(.dismiss)) {
+        await store.send(\.destination.dismiss) {
             $0.todayStatus.update(
                 studySets: updatedStudySets,
                 allUnits: newlyFetchedAllUnits,
@@ -110,7 +110,7 @@ final class TodayListTest: XCTestCase {
             $0.scheduleClient.autoSet = { _ in }
         }
         
-        await store.send(.todayStatus(.onTapped)) {
+        await store.send(\.todayStatus.onTapped) {
             $0.todayStatus.update(
                 studySets: scheduleStudySets,
                 allUnits: fetchAllUnits,
@@ -131,7 +131,7 @@ final class TodayListTest: XCTestCase {
             reducer: { TodayList() }
         )
 
-        await store.send(.todayStatus(.onTapped))
+        await store.send(\.todayStatus.onTapped)
         await store.receive(.toStudyFilteredUnits(toStudyUnits))
     }
     

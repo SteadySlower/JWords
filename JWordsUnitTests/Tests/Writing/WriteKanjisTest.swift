@@ -19,7 +19,7 @@ final class WriteKanjisTest: XCTestCase {
             reducer: { WriteKanjis() }
         )
         let kanji = kanjis.randomElement()!
-        await store.send(.kanjis(.kanjiSelected(kanji))) {
+        await store.send(\.kanjis.kanjiSelected, kanji) {
             $0.toWrite.setKanji(kanji)
         }
     }

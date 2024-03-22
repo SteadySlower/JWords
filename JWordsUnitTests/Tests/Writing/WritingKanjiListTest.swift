@@ -19,7 +19,7 @@ final class WritingKanjiListTest: XCTestCase {
             reducer: { WritingKanjiList() }
         )
         let kanji = kanjis.randomElement()!
-        await store.send(.kanji(.element(id: kanji.id, action: .select)))
+        await store.send(\.kanji[id: kanji.id].select)
         await store.receive(.kanjiSelected(kanji))
     }
     

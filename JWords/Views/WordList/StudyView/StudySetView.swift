@@ -56,8 +56,8 @@ struct StudyUnitsInSet {
         case tools(StudyTools.Action)
     }
     
-    @Dependency(\.scheduleClient) var scheduleClient
-    @Dependency(\.utilClient) var utilClient
+    @Dependency(ScheduleClient.self) var scheduleClient
+    @Dependency(UtilClient.self) var utilClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

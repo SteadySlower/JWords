@@ -24,7 +24,7 @@ final class KanjiCoordinatorTest: XCTestCase {
             }
         )
         let kanji = kanjis.randomElement()!
-        await store.send(.kanjiList(.kanji(.element(id: kanji.id, action: .showSamples(kanji))))) {
+        await store.send(\.kanjiList.kanji[id: kanji.id].showSamples, kanji) {
             $0.path.append(.samples(StudyKanjiSamples.State(kanji: kanji, units: units)))
         }
     }

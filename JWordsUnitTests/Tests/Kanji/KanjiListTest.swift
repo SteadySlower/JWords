@@ -68,7 +68,7 @@ final class KanjiListTest: XCTestCase {
         
         let toEdit: Kanji = kanjis.randomElement()!
         
-        await store.send(.kanji(.element(id: toEdit.id, action: .edit(toEdit)))) {
+        await store.send(\.kanji[id: toEdit.id].edit, toEdit) {
             $0.destination = .edit(.init(toEdit))
         }
     }
@@ -89,7 +89,7 @@ final class KanjiListTest: XCTestCase {
         
         let toAddToWrite: Kanji = kanjis.randomElement()!
         
-        await store.send(.kanji(.element(id: toAddToWrite.id, action: .addToWrite(toAddToWrite)))) {
+        await store.send(\.kanji[id: toAddToWrite.id].addToWrite, toAddToWrite) {
             $0.destination = .addWriting(.init(kanji: toAddToWrite, kanjiSets: kanjiSets))
         }
     }
@@ -111,7 +111,7 @@ final class KanjiListTest: XCTestCase {
         
         let edited: Kanji = .testMock
         
-        await store.send(.destination(.presented(.edit(.edited(edited))))) {
+        await store.send(\.destination.edit.edited, edited) {
             $0.kanjis.updateOrAppend(DisplayKanji.State(kanji: edited))
             $0.destination = nil
         }
@@ -130,7 +130,7 @@ final class KanjiListTest: XCTestCase {
             }
         )
         
-        await store.send(.searchKanji(.queryRemoved)) {
+        await store.send(\.searchKanji.queryRemoved) {
             $0.kanjis = IdentifiedArray(
                 uniqueElements: fetched.map { DisplayKanji.State(kanji: $0) }
             )
@@ -151,7 +151,7 @@ final class KanjiListTest: XCTestCase {
             reducer: { KanjiList() }
         )
         
-        await store.send(.searchKanji(.kanjiSearched(searched))) {
+        await store.send(\.searchKanji.kanjiSearched, searched) {
             $0.kanjis = IdentifiedArray(uniqueElements: searched.map { DisplayKanji.State(kanji: $0) })
         }
     }

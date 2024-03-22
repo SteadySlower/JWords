@@ -23,7 +23,7 @@ final class EditUnitsTest: XCTestCase {
         
         let unit = store.state.units.randomElement()!.unit
         
-        await store.send(.unit(.element(id: unit.id, action: .toEdit(unit))))
+        await store.send(\.unit[id: unit.id].toEdit, unit)
         await store.receive(.toEditUnitSelected(unit))
     }
     

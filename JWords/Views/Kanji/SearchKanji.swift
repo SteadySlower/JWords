@@ -22,7 +22,7 @@ struct SearchKanji {
         case kanjiSearched([Kanji])
     }
     
-    @Dependency(\.kanjiClient) var kanjiClient
+    @Dependency(KanjiClient.self) var kanjiClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

@@ -22,7 +22,7 @@ final class InputUnitTest: XCTestCase {
             }
         )
         
-        await store.send(.kanjiInput(.huriganaUpdated(Random.string)))
+        await store.send(\.kanjiInput.huriganaUpdated, Random.string)
         await store.receive(.alreadyExist(alreadyExist))
     }
     
@@ -36,7 +36,7 @@ final class InputUnitTest: XCTestCase {
             }
         )
         
-        await store.send(.kanjiInput(.huriganaUpdated(Random.string)))
+        await store.send(\.kanjiInput.huriganaUpdated, Random.string)
         await store.receive(.alreadyExist(nil))
     }
     
@@ -53,7 +53,7 @@ final class InputUnitTest: XCTestCase {
             }
         )
         
-        await store.send(.kanjiInput(.onTab)) {
+        await store.send(\.kanjiInput.onTab) {
             $0.kanjiInput.convertToHurigana()
             $0.focusedField = .meaning
         }
@@ -73,7 +73,7 @@ final class InputUnitTest: XCTestCase {
             }
         )
         
-        await store.send(.kanjiInput(.onTab)) {
+        await store.send(\.kanjiInput.onTab) {
             $0.kanjiInput.convertToHurigana()
             $0.focusedField = .meaning
         }
@@ -88,7 +88,7 @@ final class InputUnitTest: XCTestCase {
             reducer: { InputUnit() }
         )
         
-        await store.send(.meaningInput(.onTab)) {
+        await store.send(\.meaningInput.onTab) {
             $0.focusedField = .kanji
         }
     }
