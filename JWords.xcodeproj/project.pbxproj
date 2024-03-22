@@ -57,6 +57,7 @@
 		0641C1CA2ADBC1E200C6EA05 /* InputSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1C92ADBC1E200C6EA05 /* InputSetTest.swift */; };
 		0641C1CC2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641C1CB2ADBC58800C6EA05 /* AddUnitWithOCRTest.swift */; };
 		0647529F29B45AB90047E84A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0647529E29B45AB90047E84A /* GoogleService-Info.plist */; };
+		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
 		064780602BA71D7300FDBCEF /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0647805F2BA71D7300FDBCEF /* Huri.swift */; };
 		064780682BA7212400FDBCEF /* StudyKanjiSamplesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780672BA7212400FDBCEF /* StudyKanjiSamplesTest.swift */; };
 		0647806A2BA7217300FDBCEF /* UnitsListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780692BA7217300FDBCEF /* UnitsListTest.swift */; };
@@ -89,7 +90,6 @@
 		064780BA2BA7296700FDBCEF /* KanjiCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780B92BA7296700FDBCEF /* KanjiCoordinatorTest.swift */; };
 		064780BC2BA7297100FDBCEF /* WritingCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780BB2BA7297100FDBCEF /* WritingCoordinatorTest.swift */; };
 		064780BE2BA7297700FDBCEF /* ScannerCoordinatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064780BD2BA7297700FDBCEF /* ScannerCoordinatorTest.swift */; };
-		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
 		06496B0B2AA311140061DCA9 /* OCRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06496B0A2AA311140061DCA9 /* OCRClient.swift */; };
 		064BA4432AC2558700288749 /* InputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4422AC2558700288749 /* InputUnit.swift */; };
 		064BA4462AC256E400288749 /* KanjiInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064BA4452AC256E400288749 /* KanjiInput.swift */; };
@@ -1986,7 +1986,7 @@
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
+				minimumVersion = 11.0.0;
 			};
 		};
 		5A5328C1286C126B0080D500 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
