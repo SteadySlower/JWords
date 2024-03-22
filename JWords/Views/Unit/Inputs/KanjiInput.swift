@@ -30,6 +30,8 @@ struct KanjiInput {
         case onTab
         
         case view(View)
+        
+        @CasePathable
         enum View {
             case convertToHurigana
             case editText
