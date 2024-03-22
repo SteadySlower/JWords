@@ -20,7 +20,7 @@ final class AddUnitTest: XCTestCase {
         
         let unit: StudyUnit = .testMock
         
-        await store.send(.inputUnit(.alreadyExist(unit))) {
+        await store.send(\.inputUnit.alreadyExist, unit) {
             $0.alreadyExist = unit
             $0.inputUnit.meaningInput.text = unit.meaningText
             $0.setExistAlert()
