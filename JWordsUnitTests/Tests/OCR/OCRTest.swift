@@ -30,7 +30,7 @@ final class OCRTest: XCTestCase {
         
         let image = UIImage(named: "Sample Image")!
         
-        await store.send(.getImage(.imageFetched(image))) {
+        await store.send(\.getImage.imageFetched, image) {
             $0.ocr = .init(image: image)
         }
         
@@ -62,7 +62,7 @@ final class OCRTest: XCTestCase {
         let lang: OCRLang = [.korean, .japanese].randomElement()!
         let text = Random.string
         
-        await store.send(.ocr(.ocrMarkTapped(lang, text)))
+        await store.send(\.ocr.ocrMarkTapped, (lang, text))
         
         if lang == .korean {
             await store.receive(.koreanOCR(text))
@@ -80,7 +80,7 @@ final class OCRTest: XCTestCase {
             reducer: { OCR() }
         )
         
-        await store.send(.ocr(.removeImage)) {
+        await store.send(\.ocr.removeImage) {
             $0.ocr = nil
         }
     }
@@ -96,7 +96,7 @@ final class OCRTest: XCTestCase {
         
         let ocrResult: [OCRResult] = .testMock
         
-        await store.send(.japaneseOcrResponse(.success(ocrResult))) {
+        await store.send(\.japaneseOcrResponse.success, ocrResult) {
             $0.ocr?.japaneseOcrResult = ocrResult
         }
     }
@@ -112,7 +112,7 @@ final class OCRTest: XCTestCase {
         
         let ocrResult: [OCRResult] = .testMock
         
-        await store.send(.koreanOcrResponse(.success(ocrResult))) {
+        await store.send(\.koreanOcrResponse.success, ocrResult) {
             $0.ocr?.koreanOcrResult = ocrResult
         }
     }
