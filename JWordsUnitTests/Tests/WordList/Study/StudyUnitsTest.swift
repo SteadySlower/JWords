@@ -21,7 +21,7 @@ final class StudyUnitsTest: XCTestCase {
         )
         
         let unit: StudyUnit = .testMock
-        await store.send(.lists(.toEditUnitSelected(unit))) {
+        await store.send(\.lists.toEditUnitSelected, unit) {
             $0.modals.setEditUnitModal(unit)
         }
     }
@@ -54,7 +54,7 @@ final class StudyUnitsTest: XCTestCase {
                 $0.utilClient.shuffleUnits =  { _ in shuffled }
             }
         )
-        await store.send(.tools(.shuffle)) {
+        await store.send(\.tools.shuffle) {
             $0.lists.study = .init(
                 units: shuffled,
                 frontType: $0.setting.frontType,
@@ -73,7 +73,7 @@ final class StudyUnitsTest: XCTestCase {
             reducer: { StudyUnits() }
         )
         
-        await store.send(.tools(.setting)) {
+        await store.send(\.tools.setting) {
             $0.showSideBar.toggle()
         }
     }
@@ -95,7 +95,7 @@ final class StudyUnitsTest: XCTestCase {
             studyState: toEdit.studyState,
             studySets: toEdit.studySets
         )
-        await store.send(.modals(.unitEdited(edited))) {
+        await store.send(\.modals.unitEdited, edited) {
             $0.lists.updateUnit(edited)
             $0.setting.listType = .study
         }
@@ -113,7 +113,7 @@ final class StudyUnitsTest: XCTestCase {
             .allCases
             .filter { store.state.lists.study.filter != $0 }
             .randomElement()!
-        await store.send(.setting(.setFilter(filter))) {
+        await store.send(\.setting.setFilter, filter) {
             $0.setting.filter = filter
             $0.lists.setFilter(filter)
             $0.showSideBar = false
@@ -131,7 +131,7 @@ final class StudyUnitsTest: XCTestCase {
         let frontType: FrontType = .allCases
             .filter { store.state.setting.frontType != $0 }
             .randomElement()!
-        await store.send(.setting(.setFrontType(frontType))) {
+        await store.send(\.setting.setFrontType, frontType) {
             $0.setting.frontType = frontType
             $0.lists.setFrontType(frontType)
             $0.showSideBar = false
@@ -149,7 +149,7 @@ final class StudyUnitsTest: XCTestCase {
         let listType: ListType = store.state.setting.selectableListType
             .filter { store.state.setting.listType != $0 }
             .randomElement()!
-        await store.send(.setting(.setListType(listType))) {
+        await store.send(\.setting.setListType, listType) {
             $0.setting.listType = listType
             $0.lists.setListType(listType)
             $0.showSideBar = false
