@@ -20,7 +20,7 @@ final class WritingCoordinatorTest: XCTestCase {
                 $0.writingKanjiClient.fetch = { _ in kanjis }
             }
         )
-        await store.send(.kanjiSetList(.setSelected(.testMock))) {
+        await store.send(\.kanjiSetList.setSelected, .testMock) {
             $0.path.append(.writing(.init(kanjis: kanjis)))
         }
     }
