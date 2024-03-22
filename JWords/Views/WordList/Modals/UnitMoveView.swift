@@ -44,9 +44,9 @@ struct MoveUnits {
         }
     }
     
-    @Dependency(\.scheduleClient) var scheduleClient
-    @Dependency(\.studySetClient) var setClient
-    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(ScheduleClient.self) var scheduleClient
+    @Dependency(StudySetClient.self) var setClient
+    @Dependency(StudyUnitClient.self) var unitClient
     @Dependency(\.dismiss) var dismiss
     
     enum Action: Equatable {

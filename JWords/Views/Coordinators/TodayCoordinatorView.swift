@@ -28,7 +28,7 @@ struct TodayCoordinator {
         case todayList(TodayList.Action)
     }
     
-    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(StudyUnitClient.self) var unitClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

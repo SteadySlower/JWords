@@ -13,13 +13,6 @@ struct OCRClient {
     var ocr: @Sendable (InputImageType, OCRLang) async throws -> [OCRResult]
 }
 
-extension DependencyValues {
-  var ocrClient: OCRClient {
-    get { self[OCRClient.self] }
-    set { self[OCRClient.self] = newValue }
-  }
-}
-
 extension OCRClient: DependencyKey {
   static let liveValue = OCRClient(
     ocr: { image, lang in

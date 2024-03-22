@@ -25,7 +25,7 @@ struct OCR {
         case japaneseOCR(String)
     }
     
-    @Dependency(\.ocrClient) var ocrClient
+    @Dependency(OCRClient.self) var ocrClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

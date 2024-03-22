@@ -26,7 +26,7 @@ struct WritingCoordinator {
         case path(StackAction<Path.State, Path.Action>)
     }
     
-    @Dependency(\.writingKanjiClient) var wkClient
+    @Dependency(WritingKanjiClient.self) var wkClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

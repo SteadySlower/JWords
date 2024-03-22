@@ -57,7 +57,7 @@ struct TodaySelection {
         
     }
     
-    @Dependency(\.studySetClient) var setClient
+    @Dependency(StudySetClient.self) var setClient
     
     enum Action: Equatable {        
         case fetchSets

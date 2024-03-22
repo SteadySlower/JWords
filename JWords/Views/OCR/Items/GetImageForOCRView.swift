@@ -46,8 +46,8 @@ struct GetImageForOCR {
         case destination(PresentationAction<Destination.Action>)
     }
     
-    @Dependency(\.pasteBoardClient) var pasteBoardClient
-    @Dependency(\.utilClient) var utilClient
+    @Dependency(PasteBoardClient.self) var pasteBoardClient
+    @Dependency(UtilClient.self) var utilClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

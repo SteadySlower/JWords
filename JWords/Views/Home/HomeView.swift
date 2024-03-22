@@ -39,8 +39,8 @@ struct HomeList {
         case destination(PresentationAction<Destination.Action>)
     }
     
-    @Dependency(\.studySetClient) var setClient
-    @Dependency(\.studyUnitClient) var unitClient
+    @Dependency(StudySetClient.self) var setClient
+    @Dependency(StudyUnitClient.self) var unitClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in

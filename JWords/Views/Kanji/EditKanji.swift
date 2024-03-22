@@ -34,7 +34,7 @@ struct EditKanji {
         case cancel
     }
     
-    @Dependency(\.kanjiClient) var kanjiClient
+    @Dependency(KanjiClient.self) var kanjiClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {

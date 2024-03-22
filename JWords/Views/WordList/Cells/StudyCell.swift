@@ -52,8 +52,8 @@ struct StudyOneUnit {
 
     }
     
-    @Dependency(\.studyUnitClient) var unitClient
-    @Dependency(\.kanjiClient) var kanjiClient
+    @Dependency(StudyUnitClient.self) var unitClient
+    @Dependency(KanjiClient.self) var kanjiClient
     
     enum Action: Equatable {
         case toggleFront

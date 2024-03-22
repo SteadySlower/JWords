@@ -17,13 +17,6 @@ struct StudySetClient {
     var countUnits: (StudySet) throws -> Int
 }
 
-extension DependencyValues {
-  var studySetClient: StudySetClient {
-    get { self[StudySetClient.self] }
-    set { self[StudySetClient.self] = newValue }
-  }
-}
-
 extension StudySetClient: DependencyKey {
   static let liveValue = StudySetClient(
     insert: { input in

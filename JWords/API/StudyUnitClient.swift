@@ -21,13 +21,6 @@ struct StudyUnitClient {
     var fetchAll: ([StudySet]) throws -> [StudyUnit]
 }
 
-extension DependencyValues {
-  var studyUnitClient: StudyUnitClient {
-    get { self[StudyUnitClient.self] }
-    set { self[StudyUnitClient.self] = newValue }
-  }
-}
-
 extension StudyUnitClient: DependencyKey {
   static let liveValue = StudyUnitClient(
     checkIfExist: { kanjiText in

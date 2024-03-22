@@ -19,13 +19,6 @@ struct UtilClient {
     var resizeImage: (InputImageType) -> InputImageType?
 }
 
-extension DependencyValues {
-  var utilClient: UtilClient {
-    get { self[UtilClient.self] }
-    set { self[UtilClient.self] = newValue }
-  }
-}
-
 extension UtilClient: DependencyKey {
   static let liveValue = UtilClient(
     filterOnlyFailUnits: { units in
