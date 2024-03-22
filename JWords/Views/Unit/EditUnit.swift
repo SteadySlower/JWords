@@ -55,6 +55,7 @@ struct EditUnit {
         case alert(PresentationAction<AlertAction>)
     }
     
+    @CasePathable
     enum AlertAction: Equatable {
         case cancel
     }
