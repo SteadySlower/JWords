@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     
     static let huriganaFrom = "⌜"
     static let huriganaTo = "⌟"

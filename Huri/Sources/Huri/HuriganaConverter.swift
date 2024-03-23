@@ -9,7 +9,9 @@ import Foundation
 
 public class HuriganaConverter {
     
-    func convert(_ input: String) -> String {
+    public init() {}
+    
+    public func convert(_ input: String) -> String {
         var result = ""
         
         // 주어진 String의 공백과 \n을 모두 없앤다.
@@ -60,7 +62,7 @@ public class HuriganaConverter {
         return result
     }
     
-    func extractKanjis(from hurigana: String) -> [String] {
+    public func extractKanjis(from hurigana: String) -> [String] {
         var result = [String]()
         let huris = hurigana
             .split(separator: String.betweenHurigana)
@@ -79,7 +81,7 @@ public class HuriganaConverter {
         return result.filter { !$0.isEmpty }
     }
     
-    func huriToKanjiText(from hurigana: String) -> String {
+    public func huriToKanjiText(from hurigana: String) -> String {
         hurigana
             .split(separator: String.betweenHurigana)
             .enumerated()

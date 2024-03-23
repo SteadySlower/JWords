@@ -31,7 +31,6 @@
 		061D99462ACE59D400C08E17 /* GetImageForOCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99452ACE59D400C08E17 /* GetImageForOCRView.swift */; };
 		061D99482ACE59DD00C08E17 /* OCRAddUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99472ACE59DD00C08E17 /* OCRAddUnitView.swift */; };
 		061D994A2ACE59E900C08E17 /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061D99492ACE59E900C08E17 /* OCRView.swift */; };
-		0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */; };
 		0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622727929FCFC2600EEAD50 /* Character+Extension.swift */; };
 		0625FAF42B6E435D00B33545 /* WritingKanjiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAF32B6E435D00B33545 /* WritingKanjiCell.swift */; };
 		0625FAF62B6F98B600B33545 /* WritingKanjiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAF52B6F98B600B33545 /* WritingKanjiClient.swift */; };
@@ -262,7 +261,6 @@
 		061D99452ACE59D400C08E17 /* GetImageForOCRView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetImageForOCRView.swift; sourceTree = "<group>"; };
 		061D99472ACE59DD00C08E17 /* OCRAddUnitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCRAddUnitView.swift; sourceTree = "<group>"; };
 		061D99492ACE59E900C08E17 /* OCRView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCRView.swift; sourceTree = "<group>"; };
-		0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuriganaConverter.swift; sourceTree = "<group>"; };
 		0622727929FCFC2600EEAD50 /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
 		0625FAF32B6E435D00B33545 /* WritingKanjiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingKanjiCell.swift; sourceTree = "<group>"; };
 		0625FAF52B6F98B600B33545 /* WritingKanjiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingKanjiClient.swift; sourceTree = "<group>"; };
@@ -998,7 +996,6 @@
 			isa = PBXGroup;
 			children = (
 				5A5FF631286AD79E000150A7 /* ImageCompressor.swift */,
-				0622727729FCFAD700EEAD50 /* HuriganaConverter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1449,7 +1446,6 @@
 				5A9A1BD72B02074A000FFE2B /* SearchKanji.swift in Sources */,
 				064BA4462AC256E400288749 /* KanjiInput.swift in Sources */,
 				5A5C468828D98894000E212B /* Calendar+Extension.swift in Sources */,
-				0622727829FCFAD700EEAD50 /* HuriganaConverter.swift in Sources */,
 				068A9BC82B93456A008364B7 /* KanjiCoordinatorView.swift in Sources */,
 				5A8614D82A1C627300000653 /* CKImageService.swift in Sources */,
 				061D99442ACE59CE00C08E17 /* ScanGuide.swift in Sources */,
