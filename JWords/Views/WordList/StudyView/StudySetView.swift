@@ -58,12 +58,14 @@ struct StudyUnitsInSet {
     
     @Dependency(ScheduleClient.self) var scheduleClient
     @Dependency(UtilClient.self) var utilClient
+    @Dependency(HuriganaClient.self) var hgClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .lists(.toEditUnitSelected(let unit)):
-                state.modals.setEditUnitModal(unit)
+                let convertedKanjiText = hgClient.huriToKanjiText(unit.kanjiText)
+                state.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText)
             case .showSideBar(let show):
                 state.showSideBar = show
             case .tools(let action):

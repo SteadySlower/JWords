@@ -16,10 +16,10 @@ struct EditUnit {
         var inputUnit = InputUnit.State()
         @Presents var alert: AlertState<AlertAction>?
         
-        init(unit: StudyUnit) {
+        init(unit: StudyUnit, convertedKanjiText: String) {
             self.unit = unit
             self.inputUnit = InputUnit.State()
-            inputUnit.kanjiInput.text = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText)
+            inputUnit.kanjiInput.text = convertedKanjiText
             inputUnit.kanjiInput.hurigana = EditHuriganaText.State(hurigana: unit.kanjiText)
             inputUnit.kanjiInput.isEditing = false
             inputUnit.meaningInput.text = unit.meaningText

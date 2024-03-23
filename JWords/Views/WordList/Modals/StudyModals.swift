@@ -29,8 +29,8 @@ struct ShowModalsInList {
             destination = .addUnit(.init(set: set))
         }
         
-        mutating func setEditUnitModal(_ unit: StudyUnit) {
-            destination = .editUnit(.init(unit: unit))
+        mutating func setEditUnitModal(unit: StudyUnit, convertedKanjiText: String) {
+            destination = .editUnit(.init(unit: unit, convertedKanjiText: convertedKanjiText))
         }
         
         mutating func setMoveUnitModal(from set: StudySet, isReview: Bool, toMove units: [StudyUnit]) {
