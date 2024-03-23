@@ -17,6 +17,13 @@ struct HuriganaClient {
     var extractKanjis: (String) -> [String]
 }
 
+extension DependencyValues {
+  var huriganaClient: HuriganaClient {
+    get { self[HuriganaClient.self] }
+    set { self[HuriganaClient.self] = newValue }
+  }
+}
+
 extension HuriganaClient: DependencyKey {
   static let liveValue = HuriganaClient(
     convert: { converter.convert($0) },

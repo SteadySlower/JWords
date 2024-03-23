@@ -14,6 +14,13 @@ struct WritingKanjiClient {
     var studyState: (Kanji, StudyState) throws -> StudyState
 }
 
+extension DependencyValues {
+  var writingKanjiClient: WritingKanjiClient {
+    get { self[WritingKanjiClient.self] }
+    set { self[WritingKanjiClient.self] = newValue }
+  }
+}
+
 extension WritingKanjiClient: DependencyKey {
   static let liveValue = WritingKanjiClient(
     fetch: { set in

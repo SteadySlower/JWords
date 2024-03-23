@@ -19,6 +19,13 @@ struct PasteBoardClient {
     var copyString: (String) -> Void
 }
 
+extension DependencyValues {
+  var pasteBoardClient: PasteBoardClient {
+    get { self[PasteBoardClient.self] }
+    set { self[PasteBoardClient.self] = newValue }
+  }
+}
+
 extension PasteBoardClient: DependencyKey {
   static let liveValue = PasteBoardClient(
     fetchImage: {
