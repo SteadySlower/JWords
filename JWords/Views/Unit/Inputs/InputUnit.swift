@@ -35,6 +35,7 @@ struct InputUnit {
     }
     
     @Dependency(StudyUnitClient.self) var unitClient
+    @Dependency(HuriganaClient.self) var hgClient
     
     var body: some Reducer<State, Action> {
         BindingReducer()
@@ -45,7 +46,8 @@ struct InputUnit {
                 return .send(.alreadyExist(unit))
             case .kanjiInput(.onTab):
                 state.focusedField = .meaning
-                state.kanjiInput.convertToHurigana()
+                let hurigana = hgClient.convert(state.kanjiInput.text)
+                state.kanjiInput.setHurigana(hurigana)
                 let unit = try! unitClient.checkIfExist(state.kanjiInput.hurigana.hurigana)
                 return .send(.alreadyExist(unit))
             case .meaningInput(.onTab):

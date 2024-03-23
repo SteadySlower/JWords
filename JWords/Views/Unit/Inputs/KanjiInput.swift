@@ -16,8 +16,7 @@ struct KanjiInput {
         var hurigana = EditHuriganaText.State(hurigana: "")
         var isEditing: Bool = true
         
-        mutating func convertToHurigana() {
-            let hurigana = HuriganaConverter.shared.convert(text)
+        mutating func setHurigana(_ hurigana: String) {
             self.hurigana = EditHuriganaText.State(hurigana: hurigana)
             isEditing = false
         }
@@ -38,7 +37,7 @@ struct KanjiInput {
         }
     }
     
-    private let cd = CoreDataService.shared
+    @Dependency(HuriganaClient.self) var hgClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -48,7 +47,8 @@ struct KanjiInput {
                 state.text = text
             case .view(.convertToHurigana):
                 if state.text.isEmpty { return .none }
-                state.convertToHurigana()
+                let hurigana = hgClient.convert(state.text)
+                state.setHurigana(hurigana)
                 return .send(.huriganaUpdated(state.hurigana.hurigana))
             case .view(.editText):
                 state.isEditing = true
