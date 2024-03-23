@@ -7,11 +7,7 @@
 
 import Foundation
 
-
-
 public class HuriganaConverter {
-    
-    static let shared = HuriganaConverter()
     
     func convert(_ input: String) -> String {
         var result = ""

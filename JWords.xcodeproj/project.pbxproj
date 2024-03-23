@@ -16,6 +16,7 @@
 		06004E412AC55C5700947F5D /* StudyModals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E402AC55C5700947F5D /* StudyModals.swift */; };
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		060149AF2BAE5FED00A49993 /* Huri in Frameworks */ = {isa = PBXBuildFile; productRef = 060149AE2BAE5FED00A49993 /* Huri */; };
+		060149B12BAEEB4500A49993 /* HuriganaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060149B02BAEEB4500A49993 /* HuriganaClient.swift */; };
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
 		060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F62ADA8CA40078489C /* StudyUnit.swift */; };
 		060703F92ADA8CE70078489C /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F82ADA8CE70078489C /* StudySet.swift */; };
@@ -246,6 +247,7 @@
 		06004E402AC55C5700947F5D /* StudyModals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModals.swift; sourceTree = "<group>"; };
 		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
 		060149AD2BAE5EF200A49993 /* Huri */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Huri; sourceTree = "<group>"; };
+		060149B02BAEEB4500A49993 /* HuriganaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuriganaClient.swift; sourceTree = "<group>"; };
 		060703EE2ACFFB510078489C /* UtilClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilClient.swift; sourceTree = "<group>"; };
 		060703F62ADA8CA40078489C /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		060703F82ADA8CE70078489C /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
@@ -1030,6 +1032,7 @@
 				06496B0A2AA311140061DCA9 /* OCRClient.swift */,
 				0625FAF52B6F98B600B33545 /* WritingKanjiClient.swift */,
 				0625FAFD2B6FB28600B33545 /* KanjiSetClient.swift */,
+				060149B02BAEEB4500A49993 /* HuriganaClient.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1452,6 +1455,7 @@
 				061D99442ACE59CE00C08E17 /* ScanGuide.swift in Sources */,
 				06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */,
 				068A9B972B79CA3A008364B7 /* EmojiButtons.swift in Sources */,
+				060149B12BAEEB4500A49993 /* HuriganaClient.swift in Sources */,
 				06004E3F2AC555C800947F5D /* StudySetView.swift in Sources */,
 				0625FAF62B6F98B600B33545 /* WritingKanjiClient.swift in Sources */,
 				06C992F22ACABF4C0062F9FB /* InputImageType.swift in Sources */,

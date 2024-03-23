@@ -6,3 +6,30 @@
 //
 
 import Foundation
+import ComposableArchitecture
+import XCTestDynamicOverlay
+import Huri
+
+struct HuriganaClient {
+    private static let converter = HuriganaConverter()
+    var convert: (String) -> String
+    var huriToKanjiText: (String) -> String
+    var extractKanjis: (String) -> [String]
+}
+
+extension HuriganaClient: DependencyKey {
+  static let liveValue = HuriganaClient(
+    convert: { converter.convert($0) },
+    huriToKanjiText: { converter.huriToKanjiText(from: $0) },
+    extractKanjis: { converter.extractKanjis(from: $0) }
+  )
+}
+
+extension HuriganaClient: TestDependencyKey {
+  static let previewValue = Self(
+    convert: { _ in "" },
+    huriToKanjiText: { _ in "" },
+    extractKanjis: { _ in [""] }
+  )
+}
+
