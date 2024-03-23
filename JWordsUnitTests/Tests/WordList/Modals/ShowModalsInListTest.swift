@@ -46,7 +46,10 @@ final class ShowModalsInListTest: XCTestCase {
     func test_destination_presented_editUnit_edited() async {
         let store = TestStore(
             initialState: ShowModalsInList.State(
-                destination: .editUnit(.init(unit: .testMock))
+                destination: .editUnit(.init(
+                    unit: .testMock,
+                    convertedKanjiText: Random.string)
+                )
             ),
             reducer: { ShowModalsInList() }
         )

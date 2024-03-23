@@ -14,13 +14,14 @@ final class EditUnitTest: XCTestCase {
     @MainActor
     func test_init() async {
         let unit: StudyUnit = .testMock
+        let convertedKanjiText = Random.string
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit),
+            initialState: EditUnit.State(unit: unit, convertedKanjiText: convertedKanjiText),
             reducer: { EditUnit() }
         )
         
         XCTAssert(store.state.unit == unit)
-        XCTAssert(store.state.inputUnit.kanjiInput.text == HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText))
+        XCTAssert(store.state.inputUnit.kanjiInput.text == convertedKanjiText)
         XCTAssert(store.state.inputUnit.kanjiInput.hurigana.hurigana == EditHuriganaText.State(hurigana: unit.kanjiText).hurigana)
         XCTAssert(store.state.inputUnit.kanjiInput.isEditing == false)
         XCTAssert(store.state.inputUnit.meaningInput.text == unit.meaningText)
@@ -29,7 +30,10 @@ final class EditUnitTest: XCTestCase {
     @MainActor
     func test_inputUnit_alreadyExist_nil() async {
         let store = TestStore(
-            initialState: EditUnit.State(unit: .testMock),
+            initialState: EditUnit.State(
+                unit: .testMock,
+                convertedKanjiText: Random.string
+            ),
             reducer: { EditUnit() }
         )
         
@@ -52,7 +56,7 @@ final class EditUnitTest: XCTestCase {
             studyState: Random.studyState,
             studySets: .testMock)
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit),
+            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string),
             reducer: { EditUnit() }
         )
         
@@ -65,7 +69,7 @@ final class EditUnitTest: XCTestCase {
         let alreadyExist: StudyUnit = .testMock
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit),
+            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string),
             reducer: { EditUnit() }
         )
         
@@ -80,7 +84,7 @@ final class EditUnitTest: XCTestCase {
         let edited: StudyUnit = .testMock
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit)
+            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string)
         ) {
             EditUnit()
         } withDependencies: {
@@ -98,7 +102,7 @@ final class EditUnitTest: XCTestCase {
         let alreadyExist: StudyUnit = .testMock
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit),
+            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string),
             reducer: { EditUnit() },
             withDependencies: {
                 $0.dismiss = DismissEffect { isDismissInvoked.withValue { $0.append(true) } }
@@ -121,7 +125,7 @@ final class EditUnitTest: XCTestCase {
         let isDismissInvoked: LockIsolated<[Bool]> = .init([])
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: .testMock),
+            initialState: EditUnit.State(unit: .testMock, convertedKanjiText: Random.string),
             reducer: { EditUnit() },
             withDependencies: {
                 $0.dismiss = DismissEffect { isDismissInvoked.withValue { $0.append(true) } }

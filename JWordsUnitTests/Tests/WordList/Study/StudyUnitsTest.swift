@@ -13,16 +13,20 @@ final class StudyUnitsTest: XCTestCase {
     
     @MainActor
     func test_lists_toEditUnitSelected() async {
+        let convertedKanjiText = Random.string
         let store = TestStore(
             initialState: StudyUnits.State(
                 units: .testMock
             ),
-            reducer: { StudyUnits() }
+            reducer: { StudyUnits() },
+            withDependencies: {
+                $0.huriganaClient.huriToKanjiText = { _ in convertedKanjiText }
+            }
         )
         
         let unit: StudyUnit = .testMock
         await store.send(\.lists.toEditUnitSelected, unit) {
-            $0.modals.setEditUnitModal(unit)
+            $0.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText)
         }
     }
     
