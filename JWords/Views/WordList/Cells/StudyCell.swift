@@ -18,7 +18,6 @@ struct StudyOneUnit {
         let isLocked: Bool
         let frontType: FrontType
         var kanjis: [Kanji] = []
-        let showKanjiButton: Bool
         var studyState: StudyState {
             get {
                 unit.studyState
@@ -44,10 +43,6 @@ struct StudyOneUnit {
             self.unit = unit
             self.isLocked = isLocked
             self.frontType = frontType
-            self.showKanjiButton = {
-                guard unit.type != .kanji else { return false }
-                return HuriganaConverter.shared.extractKanjis(from: unit.kanjiText).count == 0 ? false : true
-            }()
         }
 
     }
@@ -142,7 +137,6 @@ struct StudyCell: View {
         }
         .hide(dragAmount != .zero)
         .hide(store.isFront)
-        .hide(!store.showKanjiButton)
     }
     
     private func kanjiCell(_ kanji: Kanji) -> some View {
