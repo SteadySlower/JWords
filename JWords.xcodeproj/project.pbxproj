@@ -15,6 +15,7 @@
 		06004E3F2AC555C800947F5D /* StudySetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E3E2AC555C800947F5D /* StudySetView.swift */; };
 		06004E412AC55C5700947F5D /* StudyModals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E402AC55C5700947F5D /* StudyModals.swift */; };
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
+		060149AF2BAE5FED00A49993 /* Huri in Frameworks */ = {isa = PBXBuildFile; productRef = 060149AE2BAE5FED00A49993 /* Huri */; };
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
 		060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F62ADA8CA40078489C /* StudyUnit.swift */; };
 		060703F92ADA8CE70078489C /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F82ADA8CE70078489C /* StudySet.swift */; };
@@ -244,6 +245,7 @@
 		06004E3E2AC555C800947F5D /* StudySetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySetView.swift; sourceTree = "<group>"; };
 		06004E402AC55C5700947F5D /* StudyModals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModals.swift; sourceTree = "<group>"; };
 		06004E432AC5A62400947F5D /* ToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItems.swift; sourceTree = "<group>"; };
+		060149AD2BAE5EF200A49993 /* Huri */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Huri; sourceTree = "<group>"; };
 		060703EE2ACFFB510078489C /* UtilClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilClient.swift; sourceTree = "<group>"; };
 		060703F62ADA8CA40078489C /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		060703F82ADA8CE70078489C /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				060149AF2BAE5FED00A49993 /* Huri in Frameworks */,
 				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
 			);
@@ -910,6 +913,7 @@
 		06CEF23A2866F1C800A620CC = {
 			isa = PBXGroup;
 			children = (
+				060149AD2BAE5EF200A49993 /* Huri */,
 				06CEF27E2866F38500A620CC /* README.md */,
 				06CEF2452866F1C800A620CC /* JWords */,
 				06CEF2572866F1CB00A620CC /* JWordsUnitTests */,
@@ -1198,6 +1202,7 @@
 			packageProductDependencies = (
 				068A9BBF2B932D69008364B7 /* ComposableArchitecture */,
 				064780522B9D6EFB00FDBCEF /* GoogleMobileAds */,
+				060149AE2BAE5FED00A49993 /* Huri */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -2000,6 +2005,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		060149AE2BAE5FED00A49993 /* Huri */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Huri;
+		};
 		064780522B9D6EFB00FDBCEF /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
