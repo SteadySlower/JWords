@@ -40,7 +40,6 @@
 		0625FAFC2B6FAD7A00B33545 /* AddKanjiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAFB2B6FAD7A00B33545 /* AddKanjiSet.swift */; };
 		0625FAFE2B6FB28600B33545 /* KanjiSetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAFD2B6FB28600B33545 /* KanjiSetClient.swift */; };
 		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
-		06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */; };
 		06308A712A048EFD00BDEE2D /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A702A048EFD00BDEE2D /* StudyUnit.swift */; };
 		06308A732A04902A00BDEE2D /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A722A04902A00BDEE2D /* StudySet.swift */; };
 		0640982B2B5376DA00FBC976 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0640982A2B5376DA00FBC976 /* Localizable.xcstrings */; };
@@ -267,7 +266,6 @@
 		0625FAFB2B6FAD7A00B33545 /* AddKanjiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKanjiSet.swift; sourceTree = "<group>"; };
 		0625FAFD2B6FB28600B33545 /* KanjiSetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiSetClient.swift; sourceTree = "<group>"; };
 		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
-		06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriUnit.swift; sourceTree = "<group>"; };
 		06308A702A048EFD00BDEE2D /* StudyUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyUnit.swift; sourceTree = "<group>"; };
 		06308A722A04902A00BDEE2D /* StudySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySet.swift; sourceTree = "<group>"; };
 		0640982A2B5376DA00FBC976 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -1076,7 +1074,6 @@
 				06C992FE2ACAC9620062F9FB /* Util */,
 				06CEAC532AB6BB78007783F6 /* Ad */,
 				5A67DC22286943A800AC156C /* SetCell.swift */,
-				06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */,
 				064098382B5D2C6A00FBC976 /* CanvasView.swift */,
 				06F0B4462B67DC7E00A99CCD /* SlidableCell.swift */,
 				068A9B962B79CA3A008364B7 /* EmojiButtons.swift */,
@@ -1411,7 +1408,6 @@
 				06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */,
 				06581AA32ACC2FA0007914A3 /* KeyValueStoreService.swift in Sources */,
 				061D993E2ACE59AA00C08E17 /* RectangleButton.swift in Sources */,
-				06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */,
 				061D99422ACE59C600C08E17 /* CameraScanner.swift in Sources */,
 				06D0B12D2ACAF2BB00169129 /* CoreDataService.swift in Sources */,
 				0622727A29FCFC2600EEAD50 /* Character+Extension.swift in Sources */,
