@@ -45,7 +45,24 @@ final class KanjiInputTest: XCTestCase {
     }
     
     @MainActor
-    func test_view_convertToHurigana_when_textEmpty() async {
+    func test_view_updateHuri() async {
+        let huris: [Huri] = .testMock
+        let huri = huris.randomElement()!
+        let updatedHuri = Huri(id: huri.id, kanji: huri.kanji, gana: Random.string)
+        let store = TestStore(
+            initialState: KanjiInput.State(
+                huris: huris
+            ),
+            reducer: { KanjiInput() }
+        )
+        
+        await store.send(\.view.updateHuri, updatedHuri) {
+            $0.huris.update(updatedHuri)
+        }
+    }
+    
+    @MainActor
+    func test_view_convertToHurigana_when_text_empty() async {
         let store = TestStore(
             initialState: KanjiInput.State(
                 text: ""
@@ -57,7 +74,7 @@ final class KanjiInputTest: XCTestCase {
     }
     
     @MainActor
-    func test_convertToHurigana() async {
+    func test_view_convertToHurigana_when_text_not_empty() async {
         let text = Random.string
         let hurigana = Random.string
         let huris: [Huri] = .testMock
@@ -82,7 +99,7 @@ final class KanjiInputTest: XCTestCase {
     }
     
     @MainActor
-    func test_editText() async {
+    func test_view_editText() async {
         let store = TestStore(
             initialState: KanjiInput.State(
                 text: Random.string,
@@ -98,23 +115,6 @@ final class KanjiInputTest: XCTestCase {
         }
         
         await store.receive(.huriganaCleared)
-    }
-    
-    @MainActor
-    func test_editText_view_updateHuri() async {
-        let huris: [Huri] = .testMock
-        let huri = huris.randomElement()!
-        let updatedHuri = Huri(id: huri.id, kanji: huri.kanji, gana: Random.string)
-        let store = TestStore(
-            initialState: KanjiInput.State(
-                huris: huris
-            ),
-            reducer: { KanjiInput() }
-        )
-        
-        await store.send(\.view.updateHuri, updatedHuri) {
-            $0.huris.update(updatedHuri)
-        }
     }
     
 }
