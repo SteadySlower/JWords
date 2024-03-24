@@ -95,21 +95,18 @@ final class EditUnitTest: XCTestCase {
     
     @MainActor
     func test_edit() async {
-        let unit: StudyUnit = .testMock
         let edited: StudyUnit = .testMock
-        
         let store = TestStore(
             initialState: EditUnit.State(
-                unit: unit,
+                unit: .testMock,
                 convertedKanjiText: Random.string,
                 huris: .testMock
-            )
-        ) {
-            EditUnit()
-        } withDependencies: {
-            $0.studyUnitClient.edit = { _, _ in edited }
-        }
-
+            ),
+            reducer: { EditUnit() },
+            withDependencies: {
+                $0.studyUnitClient.edit = { _, _ in edited }
+                $0.huriganaClient.hurisToHurigana = { _ in Random.string }
+            })
         await store.send(.edit)
         await store.receive(.edited(edited))
     }

@@ -44,9 +44,5 @@ public extension Array where Element == Huri {
         guard let i = self.firstIndex(where: { $0.id == huri.id }) else { return }
         self[i] = huri
     }
-    
-    func toHurigana() -> String {
-        self.map { $0.toString + String.betweenHurigana }.joined()
-    }
 }
 

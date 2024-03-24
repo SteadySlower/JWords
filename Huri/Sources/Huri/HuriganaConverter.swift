@@ -101,6 +101,10 @@ public class HuriganaConverter {
             .reduce("", +)
     }
     
+    public func hurisToHurigana(huris: [Huri]) -> String {
+        huris.map { $0.toString + String.betweenHurigana }.joined()
+    }
+    
     private func trimHuri(_ token: String, _ gana: String) -> (String, String, String) {
         var gana = gana
         var token = token

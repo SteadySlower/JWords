@@ -26,10 +26,6 @@ struct EditUnit {
             inputUnit.meaningInput.text = unit.meaningText
         }
         
-        var kanjiText: String {
-            inputUnit.kanjiInput.huris.toHurigana()
-        }
-        
         var meaningText: String {
             inputUnit.meaningInput.text
         }
@@ -62,6 +58,7 @@ struct EditUnit {
     }
     
     @Dependency(StudyUnitClient.self) var unitClient
+    @Dependency(HuriganaClient.self) var hgClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
@@ -73,9 +70,10 @@ struct EditUnit {
                     state.setUneditableAlert()
                 }
             case .edit:
+                let kanjiText = hgClient.hurisToHurigana(state.inputUnit.kanjiInput.huris)
                 let input = StudyUnitInput(
                     type: .word,
-                    kanjiText: state.kanjiText,
+                    kanjiText: kanjiText,
                     meaningText: state.meaningText)
                 let unit = try! unitClient.edit(state.unit, input)
                 return .send(.edited(unit))

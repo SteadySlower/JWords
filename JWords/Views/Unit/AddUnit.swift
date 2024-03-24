@@ -61,6 +61,7 @@ struct AddUnit {
     enum AlertAction: Equatable {}
     
     @Dependency(StudyUnitClient.self) var unitClient
+    @Dependency(HuriganaClient.self) var hgClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
@@ -81,9 +82,10 @@ struct AddUnit {
                     let addedUnit = addAlreadyExist(in: set, alreadyExist: alreadyExist, meaningText: state.inputUnit.meaningInput.text)
                     return .send(.added(addedUnit))
                 } else {
+                    let kanjiText = hgClient.hurisToHurigana(state.inputUnit.kanjiInput.huris)
                     let input = StudyUnitInput(
                         type: .word,
-                        kanjiText: state.inputUnit.kanjiInput.huris.toHurigana(),
+                        kanjiText: kanjiText,
                         meaningText: state.inputUnit.meaningInput.text)
                     let unit = try! unitClient.insert(set, input)
                     return .send(.added(unit))

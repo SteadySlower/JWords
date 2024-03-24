@@ -16,6 +16,7 @@ struct HuriganaClient {
     var huriToKanjiText: (String) -> String
     var extractKanjis: (String) -> [String]
     var convertToHuris: (String) -> [Huri]
+    var hurisToHurigana: ([Huri]) -> String
 }
 
 extension DependencyValues {
@@ -30,7 +31,8 @@ extension HuriganaClient: DependencyKey {
     convert: { converter.convert($0) },
     huriToKanjiText: { converter.huriToKanjiText(from: $0) },
     extractKanjis: { converter.extractKanjis(from: $0) },
-    convertToHuris: { converter.convertToHuris(from: $0) }
+    convertToHuris: { converter.convertToHuris(from: $0) },
+    hurisToHurigana: { converter.hurisToHurigana(huris: $0) }
   )
 }
 
@@ -39,7 +41,8 @@ extension HuriganaClient: TestDependencyKey {
     convert: { _ in "" },
     huriToKanjiText: { _ in "" },
     extractKanjis: { _ in [""] },
-    convertToHuris: { _ in [] }
+    convertToHuris: { _ in [] },
+    hurisToHurigana: { _ in "" }
   )
 }
 

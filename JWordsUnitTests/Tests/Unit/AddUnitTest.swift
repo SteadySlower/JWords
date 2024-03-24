@@ -59,15 +59,14 @@ final class AddUnitTest: XCTestCase {
     @MainActor
     func test_add_not_alreadyExist() async {
         let inserted: StudyUnit = .testMock
-        
         let store = TestStore(
-            initialState: AddUnit.State(set: .testMock)
-        ) {
-            AddUnit()
-        } withDependencies: {
-            $0.studyUnitClient.insert = { _, _ in inserted }
-        }
-
+            initialState: AddUnit.State(set: .testMock),
+            reducer: { AddUnit() },
+            withDependencies: {
+                $0.studyUnitClient.insert = { _, _ in inserted }
+                $0.huriganaClient.hurisToHurigana = { _ in Random.string }
+            }
+        )
         await store.send(.add)
         await store.receive(.added(inserted))
     }
