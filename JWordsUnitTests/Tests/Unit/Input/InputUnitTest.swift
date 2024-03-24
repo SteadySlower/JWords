@@ -42,9 +42,23 @@ final class InputUnitTest: XCTestCase {
     }
     
     @MainActor
+    func test_kanjiInput_huriganaCleared() async {
+        let store = TestStore(
+            initialState: InputUnit.State(
+                kanjiInput: .init(
+                    text: Random.string,
+                    huris: .testMock
+                )
+            ),
+            reducer: { InputUnit() }
+        )
+        await store.send(\.kanjiInput.huriganaCleared)
+        await store.receive(.alreadyExist(nil))
+    }
+    
+    @MainActor
     func test_kanjiInput_onTab_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
-        let converted = Random.string
         let huris: [Huri] = .testMock
         let store = TestStore(
             initialState: InputUnit.State(
@@ -53,7 +67,7 @@ final class InputUnitTest: XCTestCase {
             reducer: { InputUnit() },
             withDependencies: {
                 $0.studyUnitClient.checkIfExist = { _ in alreadyExist }
-                $0.huriganaClient.convert = { _ in converted }
+                $0.huriganaClient.convert = { _ in Random.string }
                 $0.huriganaClient.convertToHuris = { _ in huris }
             }
         )
@@ -69,7 +83,6 @@ final class InputUnitTest: XCTestCase {
     
     @MainActor
     func test_kanjiInput_onTab_alreadyExist_nil() async {
-        let converted = Random.string
         let huris: [Huri] = .testMock
         let store = TestStore(
             initialState: InputUnit.State(
@@ -78,7 +91,7 @@ final class InputUnitTest: XCTestCase {
             reducer: { InputUnit() },
             withDependencies: {
                 $0.studyUnitClient.checkIfExist = { _ in nil }
-                $0.huriganaClient.convert = { _ in converted }
+                $0.huriganaClient.convert = { _ in Random.string }
                 $0.huriganaClient.convertToHuris = { _ in huris }
             }
         )
