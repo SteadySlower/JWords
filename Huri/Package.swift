@@ -14,7 +14,7 @@ let package = Package(
         ),
         .library(
             name: "HuriView",
-            targets: ["Huri", "HuriView"]
+            targets: ["HuriView"]
         )
     ],
     targets: [
@@ -26,6 +26,7 @@ let package = Package(
         ),
         .target(
             name: "HuriView",
+            dependencies: ["Huri"],
             path: "Sources/HuriView"
         ),
         .testTarget(

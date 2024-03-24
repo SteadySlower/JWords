@@ -23,7 +23,7 @@ struct InputUnit {
         var ableToAdd: Bool {
             !meaningInput.text.isEmpty
             && !kanjiInput.isEditing
-            && !kanjiInput.hurigana.hurigana.isEmpty
+            && !kanjiInput.huris.isEmpty
         }
     }
     
@@ -44,11 +44,14 @@ struct InputUnit {
             case .kanjiInput(.huriganaUpdated(let hurigana)):
                 let unit = try! unitClient.checkIfExist(hurigana)
                 return .send(.alreadyExist(unit))
+            case .kanjiInput(.huriganaCleared):
+                return .send(.alreadyExist(nil))
             case .kanjiInput(.onTab):
                 state.focusedField = .meaning
                 let hurigana = hgClient.convert(state.kanjiInput.text)
-                state.kanjiInput.setHurigana(hurigana)
-                let unit = try! unitClient.checkIfExist(state.kanjiInput.hurigana.hurigana)
+                state.kanjiInput.huris = hgClient.convertToHuris(hurigana)
+                let unit = try! unitClient.checkIfExist(hurigana)
+                state.kanjiInput.isEditing = false
                 return .send(.alreadyExist(unit))
             case .meaningInput(.onTab):
                 state.focusedField = .kanji

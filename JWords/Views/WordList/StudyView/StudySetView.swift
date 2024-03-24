@@ -65,7 +65,8 @@ struct StudyUnitsInSet {
             switch action {
             case .lists(.toEditUnitSelected(let unit)):
                 let convertedKanjiText = hgClient.huriToKanjiText(unit.kanjiText)
-                state.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText)
+                let huris = hgClient.convertToHuris(unit.kanjiText)
+                state.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText, huris: huris)
             case .showSideBar(let show):
                 state.showSideBar = show
             case .tools(let action):

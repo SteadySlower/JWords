@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import XCTest
 @testable import JWords
+import Huri
 
 final class EditUnitTest: XCTestCase {
     
@@ -15,14 +16,19 @@ final class EditUnitTest: XCTestCase {
     func test_init() async {
         let unit: StudyUnit = .testMock
         let convertedKanjiText = Random.string
+        let huris: [Huri] = .testMock
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit, convertedKanjiText: convertedKanjiText),
+            initialState: EditUnit.State(
+                unit: unit,
+                convertedKanjiText: convertedKanjiText,
+                huris: huris
+            ),
             reducer: { EditUnit() }
         )
         
         XCTAssert(store.state.unit == unit)
         XCTAssert(store.state.inputUnit.kanjiInput.text == convertedKanjiText)
-        XCTAssert(store.state.inputUnit.kanjiInput.hurigana.hurigana == EditHuriganaText.State(hurigana: unit.kanjiText).hurigana)
+        XCTAssert(store.state.inputUnit.kanjiInput.huris == huris)
         XCTAssert(store.state.inputUnit.kanjiInput.isEditing == false)
         XCTAssert(store.state.inputUnit.meaningInput.text == unit.meaningText)
     }
@@ -32,7 +38,8 @@ final class EditUnitTest: XCTestCase {
         let store = TestStore(
             initialState: EditUnit.State(
                 unit: .testMock,
-                convertedKanjiText: Random.string
+                convertedKanjiText: Random.string,
+                huris: .testMock
             ),
             reducer: { EditUnit() }
         )
@@ -56,7 +63,11 @@ final class EditUnitTest: XCTestCase {
             studyState: Random.studyState,
             studySets: .testMock)
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string),
+            initialState: EditUnit.State(
+                unit: unit,
+                convertedKanjiText: Random.string,
+                huris: .testMock
+            ),
             reducer: { EditUnit() }
         )
         
@@ -69,7 +80,11 @@ final class EditUnitTest: XCTestCase {
         let alreadyExist: StudyUnit = .testMock
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string),
+            initialState: EditUnit.State(
+                unit: unit,
+                convertedKanjiText: Random.string,
+                huris: .testMock
+            ),
             reducer: { EditUnit() }
         )
         
@@ -84,7 +99,11 @@ final class EditUnitTest: XCTestCase {
         let edited: StudyUnit = .testMock
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string)
+            initialState: EditUnit.State(
+                unit: unit,
+                convertedKanjiText: Random.string,
+                huris: .testMock
+            )
         ) {
             EditUnit()
         } withDependencies: {
@@ -102,7 +121,11 @@ final class EditUnitTest: XCTestCase {
         let alreadyExist: StudyUnit = .testMock
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: unit, convertedKanjiText: Random.string),
+            initialState: EditUnit.State(
+                unit: unit,
+                convertedKanjiText: Random.string,
+                huris: .testMock
+            ),
             reducer: { EditUnit() },
             withDependencies: {
                 $0.dismiss = DismissEffect { isDismissInvoked.withValue { $0.append(true) } }
@@ -125,7 +148,11 @@ final class EditUnitTest: XCTestCase {
         let isDismissInvoked: LockIsolated<[Bool]> = .init([])
         
         let store = TestStore(
-            initialState: EditUnit.State(unit: .testMock, convertedKanjiText: Random.string),
+            initialState: EditUnit.State(
+                unit: .testMock,
+                convertedKanjiText: Random.string,
+                huris: .testMock
+            ),
             reducer: { EditUnit() },
             withDependencies: {
                 $0.dismiss = DismissEffect { isDismissInvoked.withValue { $0.append(true) } }

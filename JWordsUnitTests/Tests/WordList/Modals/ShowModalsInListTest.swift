@@ -48,7 +48,8 @@ final class ShowModalsInListTest: XCTestCase {
             initialState: ShowModalsInList.State(
                 destination: .editUnit(.init(
                     unit: .testMock,
-                    convertedKanjiText: Random.string)
+                    convertedKanjiText: Random.string,
+                    huris: .testMock)
                 )
             ),
             reducer: { ShowModalsInList() }

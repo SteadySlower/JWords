@@ -47,7 +47,7 @@ final class AddUnitWithOCRTest: XCTestCase {
                     inputUnit: .init(
                         kanjiInput: .init(
                             text: Random.string,
-                            hurigana: .init(hurigana: Random.string),
+                            huris: .testMock,
                             isEditing: false
                         )
                     )
@@ -60,7 +60,7 @@ final class AddUnitWithOCRTest: XCTestCase {
         
         await store.send(\.ocr.japaneseOCR, ocr) {
             $0.addUnit.inputUnit.kanjiInput.text = ocr
-            $0.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+            $0.addUnit.inputUnit.kanjiInput.huris = []
             $0.addUnit.inputUnit.kanjiInput.isEditing = true
         }
     }
@@ -104,7 +104,7 @@ final class AddUnitWithOCRTest: XCTestCase {
                     inputUnit: .init(
                         kanjiInput: .init(
                             text: Random.string,
-                            hurigana: .init(hurigana: Random.string),
+                            huris: .testMock,
                             isEditing: false
                         ),
                         meaningInput: .init(
@@ -116,7 +116,7 @@ final class AddUnitWithOCRTest: XCTestCase {
             reducer: { AddUnitWithOCR() }
         )
         
-            await store.send(\.addUnit.added, .testMock) {
+        await store.send(\.addUnit.added, .testMock) {
             $0.addUnit.clearInput()
             $0.selectSet.onUnitAdded()
         }

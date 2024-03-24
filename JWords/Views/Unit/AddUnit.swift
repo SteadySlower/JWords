@@ -19,7 +19,7 @@ struct AddUnit {
         
         mutating func clearInput() {
             inputUnit.kanjiInput.text = ""
-            inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+            inputUnit.kanjiInput.huris = []
             inputUnit.kanjiInput.isEditing = true
             inputUnit.meaningInput.text = ""
         }
@@ -83,7 +83,7 @@ struct AddUnit {
                 } else {
                     let input = StudyUnitInput(
                         type: .word,
-                        kanjiText: state.inputUnit.kanjiInput.hurigana.hurigana,
+                        kanjiText: state.inputUnit.kanjiInput.huris.toHurigana(),
                         meaningText: state.inputUnit.meaningInput.text)
                     let unit = try! unitClient.insert(set, input)
                     return .send(.added(unit))

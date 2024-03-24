@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Huri
 
 extension View {
     func withListModals(store: StoreOf<ShowModalsInList>) -> some View {
@@ -29,8 +30,8 @@ struct ShowModalsInList {
             destination = .addUnit(.init(set: set))
         }
         
-        mutating func setEditUnitModal(unit: StudyUnit, convertedKanjiText: String) {
-            destination = .editUnit(.init(unit: unit, convertedKanjiText: convertedKanjiText))
+        mutating func setEditUnitModal(unit: StudyUnit, convertedKanjiText: String, huris: [Huri]) {
+            destination = .editUnit(.init(unit: unit, convertedKanjiText: convertedKanjiText, huris: huris))
         }
         
         mutating func setMoveUnitModal(from set: StudySet, isReview: Bool, toMove units: [StudyUnit]) {

@@ -8,12 +8,14 @@
 import ComposableArchitecture
 import XCTest
 @testable import JWords
+import Huri
 
 final class StudyUnitsTest: XCTestCase {
     
     @MainActor
     func test_lists_toEditUnitSelected() async {
         let convertedKanjiText = Random.string
+        let huris: [Huri] = .testMock
         let store = TestStore(
             initialState: StudyUnits.State(
                 units: .testMock
@@ -21,12 +23,13 @@ final class StudyUnitsTest: XCTestCase {
             reducer: { StudyUnits() },
             withDependencies: {
                 $0.huriganaClient.huriToKanjiText = { _ in convertedKanjiText }
+                $0.huriganaClient.convertToHuris = { _ in huris }
             }
         )
         
         let unit: StudyUnit = .testMock
         await store.send(\.lists.toEditUnitSelected, unit) {
-            $0.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText)
+            $0.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText, huris: huris)
         }
     }
     

@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Huri
 
 @Reducer
 struct EditUnit {
@@ -16,17 +17,17 @@ struct EditUnit {
         var inputUnit = InputUnit.State()
         @Presents var alert: AlertState<AlertAction>?
         
-        init(unit: StudyUnit, convertedKanjiText: String) {
+        init(unit: StudyUnit, convertedKanjiText: String, huris: [Huri]) {
             self.unit = unit
             self.inputUnit = InputUnit.State()
             inputUnit.kanjiInput.text = convertedKanjiText
-            inputUnit.kanjiInput.hurigana = EditHuriganaText.State(hurigana: unit.kanjiText)
+            inputUnit.kanjiInput.huris = huris
             inputUnit.kanjiInput.isEditing = false
             inputUnit.meaningInput.text = unit.meaningText
         }
         
         var kanjiText: String {
-            inputUnit.kanjiInput.hurigana.hurigana
+            inputUnit.kanjiInput.huris.toHurigana()
         }
         
         var meaningText: String {

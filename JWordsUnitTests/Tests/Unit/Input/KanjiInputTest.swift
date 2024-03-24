@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import XCTest
 @testable import JWords
+import Huri
 
 final class KanjiInputTest: XCTestCase {
 
@@ -59,6 +60,7 @@ final class KanjiInputTest: XCTestCase {
     func test_convertToHurigana() async {
         let text = Random.string
         let hurigana = Random.string
+        let huris: [Huri] = .testMock
         
         let store = TestStore(
             initialState: KanjiInput.State(
@@ -67,25 +69,24 @@ final class KanjiInputTest: XCTestCase {
             reducer: { KanjiInput() },
             withDependencies: {
                 $0.huriganaClient.convert = { _ in hurigana }
+                $0.huriganaClient.convertToHuris = { _ in huris }
             }
         )
         
         await store.send(\.view.convertToHurigana) {
-            $0.hurigana = EditHuriganaText.State(hurigana: hurigana)
+            $0.huris = huris
             $0.isEditing = false
         }
         
-        await store.receive(.huriganaUpdated(store.state.hurigana.hurigana))
+        await store.receive(.huriganaUpdated(hurigana))
     }
     
     @MainActor
     func test_editText() async {
-        let text = Random.string
-        let hurigana = HuriganaConverter.shared.convert(text)
-        
         let store = TestStore(
             initialState: KanjiInput.State(
-                hurigana: .init(hurigana: hurigana),
+                text: Random.string,
+                huris: .testMock,
                 isEditing: false
             ),
             reducer: { KanjiInput() }
@@ -93,25 +94,27 @@ final class KanjiInputTest: XCTestCase {
         
         await store.send(\.view.editText) {
             $0.isEditing = true
-            $0.hurigana = EditHuriganaText.State(hurigana: "")
+            $0.huris = []
         }
         
-        await store.receive(.huriganaUpdated(store.state.hurigana.hurigana))
+        await store.receive(.huriganaCleared)
     }
     
     @MainActor
-    func test_editText_onHuriUpdated() async {
-        let hurigana = HuriganaConverter.shared.convert(Random.string)
-        
+    func test_editText_view_updateHuri() async {
+        let huris: [Huri] = .testMock
+        let huri = huris.randomElement()!
+        let updatedHuri = Huri(id: huri.id, kanji: huri.kanji, gana: Random.string)
         let store = TestStore(
             initialState: KanjiInput.State(
-                hurigana: .init(hurigana: hurigana)
+                huris: huris
             ),
             reducer: { KanjiInput() }
         )
         
-        await store.send(\.editHuriText.onHuriUpdated)
-        await store.receive(.huriganaUpdated(hurigana))
+        await store.send(\.view.updateHuri, updatedHuri) {
+            $0.huris.update(updatedHuri)
+        }
     }
     
 }

@@ -62,6 +62,15 @@ public class HuriganaConverter {
         return result
     }
     
+    public func convertToHuris(from hurigana: String) -> [Huri] {
+        return hurigana
+            .split(separator: String.betweenHurigana)
+            .enumerated()
+            .map { (index, huriString) in
+                Huri(id: "\(index)\(huriString)", huriString: String(huriString))
+            }
+    }
+    
     public func extractKanjis(from hurigana: String) -> [String] {
         var result = [String]()
         let huris = hurigana

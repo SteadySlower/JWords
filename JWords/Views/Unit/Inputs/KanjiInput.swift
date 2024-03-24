@@ -7,31 +7,29 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Huri
+import HuriView
 
 @Reducer
 struct KanjiInput {
     @ObservableState
     struct State: Equatable {
         var text: String = ""
-        var hurigana = EditHuriganaText.State(hurigana: "")
+        var huris: [Huri] = []
         var isEditing: Bool = true
-        
-        mutating func setHurigana(_ hurigana: String) {
-            self.hurigana = EditHuriganaText.State(hurigana: hurigana)
-            isEditing = false
-        }
     }
     
     enum Action: Equatable, ViewAction {
         case setText(String)
-        case editHuriText(EditHuriganaText.Action)
         case huriganaUpdated(String)
+        case huriganaCleared
         case onTab
         
         case view(View)
         
         @CasePathable
-        enum View {
+        enum View: Equatable {
+            case updateHuri(Huri)
             case convertToHurigana
             case editText
         }
@@ -45,22 +43,22 @@ struct KanjiInput {
             case .setText(let text):
                 if text.hasTab { return .send(.onTab) }
                 state.text = text
+            case .view(.updateHuri(let huri)):
+                state.huris.update(huri)
             case .view(.convertToHurigana):
-                if state.text.isEmpty { return .none }
+                if state.text.isEmpty { break }
                 let hurigana = hgClient.convert(state.text)
-                state.setHurigana(hurigana)
-                return .send(.huriganaUpdated(state.hurigana.hurigana))
+                state.huris = hgClient.convertToHuris(hurigana)
+                state.isEditing = false
+                return .send(.huriganaUpdated(hurigana))
             case .view(.editText):
                 state.isEditing = true
-                state.hurigana = EditHuriganaText.State(hurigana: "")
-                return .send(.huriganaUpdated(state.hurigana.hurigana))
-            case .editHuriText(.onHuriUpdated):
-                return .send(.huriganaUpdated(state.hurigana.hurigana))
+                state.huris = []
+                return .send(.huriganaCleared)
             default: break
             }
             return .none
         }
-        Scope(state: \.hurigana, action: \.editHuriText) { EditHuriganaText() }
     }
     
 }
@@ -85,10 +83,10 @@ struct KanjiInputField: View {
             VStack {
                 InputFieldTitle(title: "후리가나 (앞면)")
                 ScrollView {
-                    EditableHuriganaText(store: store.scope(
-                        state: \.hurigana,
-                        action: \.editHuriText),
-                        fontsize: Constants.Size.UNIT_INPUT_FONT
+                    EditableHuriganaText(
+                        huris: store.huris,
+                        fontsize: Constants.Size.UNIT_INPUT_FONT,
+                        onHuriUpdated: { send(.updateHuri($0)) }
                     )
                     .padding(.horizontal, 5)
                 }
