@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HuriView
 
 struct BaseCell: View {
     
@@ -65,7 +66,7 @@ extension BaseCell {
                 HuriganaText(hurigana: kanjiText,
                              fontSize: frontFontSize,
                              hideYomi: isFront,
-                             alignment: unit.type == .sentence ? .leading : .center)
+                             isCenter: unit.type != .sentence)
                 .opacity(showKanjiText ? 1 : 0)
             } else {
                 Text(kanjiText)

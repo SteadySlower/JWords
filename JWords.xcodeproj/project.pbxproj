@@ -39,7 +39,6 @@
 		0625FAFA2B6FA49F00B33545 /* KanjiSetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAF92B6FA49F00B33545 /* KanjiSetList.swift */; };
 		0625FAFC2B6FAD7A00B33545 /* AddKanjiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAFB2B6FAD7A00B33545 /* AddKanjiSet.swift */; };
 		0625FAFE2B6FB28600B33545 /* KanjiSetClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0625FAFD2B6FB28600B33545 /* KanjiSetClient.swift */; };
-		06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */; };
 		06308A6229FE2E2B00BDEE2D /* EditableHuriganaText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */; };
 		06308A6629FE2ED500BDEE2D /* Huri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6529FE2ED500BDEE2D /* Huri.swift */; };
 		06308A6829FE315800BDEE2D /* EditableHuriUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */; };
@@ -269,7 +268,6 @@
 		0625FAF92B6FA49F00B33545 /* KanjiSetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiSetList.swift; sourceTree = "<group>"; };
 		0625FAFB2B6FAD7A00B33545 /* AddKanjiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKanjiSet.swift; sourceTree = "<group>"; };
 		0625FAFD2B6FB28600B33545 /* KanjiSetClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiSetClient.swift; sourceTree = "<group>"; };
-		06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HuriganaText.swift; path = JWords/macView/Components/HuriganaText.swift; sourceTree = SOURCE_ROOT; };
 		06308A6129FE2E2B00BDEE2D /* EditableHuriganaText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriganaText.swift; sourceTree = "<group>"; };
 		06308A6529FE2ED500BDEE2D /* Huri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Huri.swift; sourceTree = "<group>"; };
 		06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHuriUnit.swift; sourceTree = "<group>"; };
@@ -1090,7 +1088,6 @@
 			children = (
 				06C992FE2ACAC9620062F9FB /* Util */,
 				06CEAC532AB6BB78007783F6 /* Ad */,
-				06308A5B29FE0D4700BDEE2D /* HuriganaText.swift */,
 				5A67DC22286943A800AC156C /* SetCell.swift */,
 				06308A6729FE315800BDEE2D /* EditableHuriUnit.swift */,
 				064098382B5D2C6A00FBC976 /* CanvasView.swift */,
@@ -1452,7 +1449,6 @@
 				068A9BC82B93456A008364B7 /* KanjiCoordinatorView.swift in Sources */,
 				5A8614D82A1C627300000653 /* CKImageService.swift in Sources */,
 				061D99442ACE59CE00C08E17 /* ScanGuide.swift in Sources */,
-				06308A5C29FE0D4700BDEE2D /* HuriganaText.swift in Sources */,
 				068A9B972B79CA3A008364B7 /* EmojiButtons.swift in Sources */,
 				060149B12BAEEB4500A49993 /* HuriganaClient.swift in Sources */,
 				06004E3F2AC555C800947F5D /* StudySetView.swift in Sources */,

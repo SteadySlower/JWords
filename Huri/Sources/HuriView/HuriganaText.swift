@@ -8,25 +8,30 @@
 import SwiftUI
 import Huri
 
-struct HuriganaText: View {
+public struct HuriganaText: View {
     private let huris: [Huri]
     private let fontSize: CGFloat
     private let hideYomi: Bool
     private let alignment: FlexBox.Alignment
     
-    init(hurigana: String, fontSize: CGFloat = 20, hideYomi: Bool = false, alignment: FlexBox.Alignment = .center) {
+    public init(
+        hurigana: String,
+        fontSize: CGFloat = 20,
+        hideYomi: Bool = false,
+        isCenter: Bool = true
+    ) {
         self.huris = hurigana
-            .split(separator: "`")
+            .split(separator: String.betweenHurigana)
             .enumerated()
             .map { (index, huriString) in
                 Huri(id: "\(index)\(huriString)", huriString: String(huriString))
             }
         self.fontSize = fontSize
         self.hideYomi = hideYomi
-        self.alignment = alignment
+        self.alignment = isCenter ? .center : .leading
     }
 
-    var body: some View {
+    public var body: some View {
         FlexBox(horizontalSpacing: 0, verticalSpacing: fontSize / 2, alignment: alignment) {
             ForEach(huris) { huri in
                 huriView(for: huri)
