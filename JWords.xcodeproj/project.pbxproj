@@ -17,6 +17,7 @@
 		06004E442AC5A62400947F5D /* ToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06004E432AC5A62400947F5D /* ToolbarItems.swift */; };
 		060149AF2BAE5FED00A49993 /* Huri in Frameworks */ = {isa = PBXBuildFile; productRef = 060149AE2BAE5FED00A49993 /* Huri */; };
 		060149B12BAEEB4500A49993 /* HuriganaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060149B02BAEEB4500A49993 /* HuriganaClient.swift */; };
+		060149B32BAFA5A300A49993 /* HuriView in Frameworks */ = {isa = PBXBuildFile; productRef = 060149B22BAFA5A300A49993 /* HuriView */; };
 		060703EF2ACFFB510078489C /* UtilClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703EE2ACFFB510078489C /* UtilClient.swift */; };
 		060703F72ADA8CA40078489C /* StudyUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F62ADA8CA40078489C /* StudyUnit.swift */; };
 		060703F92ADA8CE70078489C /* StudySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060703F82ADA8CE70078489C /* StudySet.swift */; };
@@ -442,6 +443,7 @@
 				060149AF2BAE5FED00A49993 /* Huri in Frameworks */,
 				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
+				060149B32BAFA5A300A49993 /* HuriView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1203,6 +1205,7 @@
 				068A9BBF2B932D69008364B7 /* ComposableArchitecture */,
 				064780522B9D6EFB00FDBCEF /* GoogleMobileAds */,
 				060149AE2BAE5FED00A49993 /* Huri */,
+				060149B22BAFA5A300A49993 /* HuriView */,
 			);
 			productName = JWords;
 			productReference = 06CEF2432866F1C800A620CC /* JWords.app */;
@@ -2008,6 +2011,10 @@
 		060149AE2BAE5FED00A49993 /* Huri */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Huri;
+		};
+		060149B22BAFA5A300A49993 /* HuriView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HuriView;
 		};
 		064780522B9D6EFB00FDBCEF /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;

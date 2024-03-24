@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct Huri: Identifiable, Equatable {
-    let id: String
-    let kanji: String
-    let gana: String
+public struct Huri: Identifiable, Equatable {
+    public let id: String
+    public let kanji: String
+    public let gana: String
     
-    init(id: String, kanji: String, gana: String) {
+    public init(id: String, kanji: String, gana: String) {
         self.id = id
         self.kanji = kanji
         self.gana = gana
     }
     
-    init(id: String, huriString: String) {
+    public init(id: String, huriString: String) {
         self.id = id
         if huriString.contains(where: { $0 == Character(String.huriganaFrom) }) {
             let kanjiAndGana = huriString.split(separator: Character(String.huriganaFrom))
@@ -30,7 +30,7 @@ struct Huri: Identifiable, Equatable {
         }
     }
     
-    var toString: String {
+    public var toString: String {
         if !self.kanji.isEmpty {
             return "\(self.kanji)\(String.huriganaFrom)\(self.gana)\(String.huriganaTo)"
         } else {
