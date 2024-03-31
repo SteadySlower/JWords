@@ -7,10 +7,12 @@
 
 import Foundation
 import CoreData
+import Huri
 
 class CoreDataService {
     
     static let shared = CoreDataService()
+    private let huriganaConverter = HuriganaConverter()
     private let context: NSManagedObjectContext
     private let kw = KanjiWikiService.shared
     
@@ -167,7 +169,7 @@ class CoreDataService {
             throw AppError.coreData
         }
         
-        HuriganaConverter.shared.extractKanjis(from: kanjiText)
+        huriganaConverter.extractKanjis(from: kanjiText)
             .compactMap { try? getKanjiMO($0) }
             .forEach { mo.addToKanjis($0) }
         
@@ -202,7 +204,7 @@ class CoreDataService {
         }
         
         let previousKanjis = mo.kanjis ?? []
-        let nowKanjis = HuriganaConverter.shared.extractKanjis(from: kanjiText)
+        let nowKanjis = huriganaConverter.extractKanjis(from: kanjiText)
                             .compactMap { try? getKanjiMO($0) }
         let toRemoveKanjis = Set(_immutableCocoaSet: previousKanjis)
                             .subtracting(Set(nowKanjis))

@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Huri
 
 @Reducer
 struct EditUnit {
@@ -16,17 +17,13 @@ struct EditUnit {
         var inputUnit = InputUnit.State()
         @Presents var alert: AlertState<AlertAction>?
         
-        init(unit: StudyUnit) {
+        init(unit: StudyUnit, convertedKanjiText: String, huris: [Huri]) {
             self.unit = unit
             self.inputUnit = InputUnit.State()
-            inputUnit.kanjiInput.text = HuriganaConverter.shared.huriToKanjiText(from: unit.kanjiText)
-            inputUnit.kanjiInput.hurigana = EditHuriganaText.State(hurigana: unit.kanjiText)
+            inputUnit.kanjiInput.text = convertedKanjiText
+            inputUnit.kanjiInput.huris = huris
             inputUnit.kanjiInput.isEditing = false
             inputUnit.meaningInput.text = unit.meaningText
-        }
-        
-        var kanjiText: String {
-            inputUnit.kanjiInput.hurigana.hurigana
         }
         
         var meaningText: String {
@@ -61,6 +58,7 @@ struct EditUnit {
     }
     
     @Dependency(StudyUnitClient.self) var unitClient
+    @Dependency(HuriganaClient.self) var hgClient
     @Dependency(\.dismiss) var dismiss
     
     var body: some Reducer<State, Action> {
@@ -72,9 +70,10 @@ struct EditUnit {
                     state.setUneditableAlert()
                 }
             case .edit:
+                let kanjiText = hgClient.hurisToHurigana(state.inputUnit.kanjiInput.huris)
                 let input = StudyUnitInput(
                     type: .word,
-                    kanjiText: state.kanjiText,
+                    kanjiText: kanjiText,
                     meaningText: state.meaningText)
                 let unit = try! unitClient.edit(state.unit, input)
                 return .send(.edited(unit))

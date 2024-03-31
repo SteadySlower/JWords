@@ -1,11 +1,12 @@
 //
 //  EditableHuriView.swift
-//  JWords
+//  Huri
 //
 //  Created by JW Moon on 2023/04/30.
 //
 
 import SwiftUI
+import Huri
 
 struct EditableHuriUnit: View {
     

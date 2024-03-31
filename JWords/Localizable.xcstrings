@@ -72,6 +72,7 @@
       }
     },
     "%@의 읽는 법을 수정합니다." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -854,6 +855,7 @@
       }
     },
     "후리가나 수정" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

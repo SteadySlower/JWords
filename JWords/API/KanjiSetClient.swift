@@ -16,6 +16,13 @@ struct KanjiSetClient {
     var addKanji: (Kanji, KanjiSet) throws -> KanjiSet
 }
 
+extension DependencyValues {
+  var kanjiSetClient: KanjiSetClient {
+    get { self[KanjiSetClient.self] }
+    set { self[KanjiSetClient.self] = newValue }
+  }
+}
+
 extension KanjiSetClient: DependencyKey {
   static let liveValue = KanjiSetClient(
     insert: { title in

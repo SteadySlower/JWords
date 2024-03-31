@@ -17,6 +17,13 @@ struct KanjiClient {
     var search: (String) throws -> [Kanji]
 }
 
+extension DependencyValues {
+  var kanjiClient: KanjiClient {
+    get { self[KanjiClient.self] }
+    set { self[KanjiClient.self] = newValue }
+  }
+}
+
 extension KanjiClient: DependencyKey {
   static let liveValue = KanjiClient(
     fetch: { kanji in

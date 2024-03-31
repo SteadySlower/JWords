@@ -15,7 +15,7 @@ final class DisplayWritingKanjiTest: XCTestCase {
     func test_updateStudyState() async {
         let kanji: Kanji = .testMock
         let beforeState = kanji.studyState
-        let newState = StudyState.allCases.filter { $0 == beforeState }.randomElement()!
+        let newState = StudyState.allCases.filter { $0 != beforeState }.randomElement()!
         let store = TestStore(
             initialState: DisplayWritingKanji.State(kanji: .testMock),
             reducer: { DisplayWritingKanji() },

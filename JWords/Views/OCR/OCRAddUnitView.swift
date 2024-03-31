@@ -30,7 +30,7 @@ struct AddUnitWithOCR {
                 state.addUnit.inputUnit.meaningInput.text = meaning
             case .ocr(.japaneseOCR(let kanji)):
                 state.addUnit.inputUnit.kanjiInput.isEditing = true
-                state.addUnit.inputUnit.kanjiInput.hurigana = .init(hurigana: "")
+                state.addUnit.inputUnit.kanjiInput.huris = []
                 state.addUnit.inputUnit.kanjiInput.text = kanji
             case .selectSet(.idUpdated(let set)):
                 state.addUnit.set = set

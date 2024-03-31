@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import XCTest
 @testable import JWords
+import Huri
 
 final class InputUnitTest: XCTestCase {
     
@@ -41,8 +42,24 @@ final class InputUnitTest: XCTestCase {
     }
     
     @MainActor
+    func test_kanjiInput_huriganaCleared() async {
+        let store = TestStore(
+            initialState: InputUnit.State(
+                kanjiInput: .init(
+                    text: Random.string,
+                    huris: .testMock
+                )
+            ),
+            reducer: { InputUnit() }
+        )
+        await store.send(\.kanjiInput.huriganaCleared)
+        await store.receive(.alreadyExist(nil))
+    }
+    
+    @MainActor
     func test_kanjiInput_onTab_alreadyExist() async {
         let alreadyExist: StudyUnit = .testMock
+        let huris: [Huri] = .testMock
         let store = TestStore(
             initialState: InputUnit.State(
                 kanjiInput: .init(text: Random.string)
@@ -50,11 +67,14 @@ final class InputUnitTest: XCTestCase {
             reducer: { InputUnit() },
             withDependencies: {
                 $0.studyUnitClient.checkIfExist = { _ in alreadyExist }
+                $0.huriganaClient.convert = { _ in Random.string }
+                $0.huriganaClient.convertToHuris = { _ in huris }
             }
         )
         
         await store.send(\.kanjiInput.onTab) {
-            $0.kanjiInput.convertToHurigana()
+            $0.kanjiInput.huris = huris
+            $0.kanjiInput.isEditing = false
             $0.focusedField = .meaning
         }
         
@@ -63,6 +83,7 @@ final class InputUnitTest: XCTestCase {
     
     @MainActor
     func test_kanjiInput_onTab_alreadyExist_nil() async {
+        let huris: [Huri] = .testMock
         let store = TestStore(
             initialState: InputUnit.State(
                 kanjiInput: .init(text: Random.string)
@@ -70,11 +91,14 @@ final class InputUnitTest: XCTestCase {
             reducer: { InputUnit() },
             withDependencies: {
                 $0.studyUnitClient.checkIfExist = { _ in nil }
+                $0.huriganaClient.convert = { _ in Random.string }
+                $0.huriganaClient.convertToHuris = { _ in huris }
             }
         )
         
         await store.send(\.kanjiInput.onTab) {
-            $0.kanjiInput.convertToHurigana()
+            $0.kanjiInput.huris = huris
+            $0.kanjiInput.isEditing = false
             $0.focusedField = .meaning
         }
         
