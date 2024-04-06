@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array where Element: Hashable {
+public extension Array where Element: Hashable {
     func removeOverlapping() -> Self {
         Array(Set(self))
     }

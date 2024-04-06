@@ -5,7 +5,7 @@
 //  Created by JW Moon on 2023/04/29.
 //
 
-extension Character {
+public extension Character {
     var isKanji: Bool {
         if let scalar = self.unicodeScalars.first,
            scalar.properties.isUnifiedIdeograph {

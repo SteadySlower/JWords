@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Calendar {
+public extension Calendar {
     func getDateGap(from: Date, to: Date) -> Int {
         let fromDateOnly = from.onlyDate
         let toDateOnly = to.onlyDate
