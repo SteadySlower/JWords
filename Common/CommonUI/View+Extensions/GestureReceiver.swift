@@ -1,21 +1,21 @@
 //
-//  View+Extension.swift
-//  JWords
+//  GestureReceiver.swift
+//  CommonUI
 //
-//  Created by JW Moon on 2023/02/18.
+//  Created by JW Moon on 4/6/24.
 //
 
 import SwiftUI
 
 // GestureReceiver
 
-extension View {
+public extension View {
     func addCellGesture(isLocked: Bool, gestureHanlder: @escaping (CellGesture) -> Void) -> some View {
         ModifiedContent(content: self, modifier: GestureReceiver(isLocked: isLocked, gestureHanlder: gestureHanlder))
     }
 }
 
-enum CellGesture {
+public enum CellGesture {
     case tapped
     case doubleTapped
     case dragging(CGSize)
