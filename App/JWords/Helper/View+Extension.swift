@@ -198,7 +198,7 @@ enum CellGesture {
     case draggedRight
 }
 
-struct GestureReceiver: ViewModifier {
+private struct GestureReceiver: ViewModifier {
     
     let isLocked: Bool
     let gestureHanlder: (CellGesture) -> Void
