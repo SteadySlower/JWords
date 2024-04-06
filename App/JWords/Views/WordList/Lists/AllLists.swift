@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Model
 
 enum ListType: CaseIterable {
     case study, edit, select, delete

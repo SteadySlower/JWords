@@ -12,6 +12,7 @@ typealias PasteBoard = UIPasteboard
 import AppKit
 typealias PasteBoard = NSPasteboard
 #endif
+import Model
 
 protocol PasteBoardService {
     func fetchImage() -> InputImageType?

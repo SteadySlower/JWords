@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import XCTestDynamicOverlay
+import Model
 
 struct StudyUnitClient {
     private static let cd = CoreDataService.shared

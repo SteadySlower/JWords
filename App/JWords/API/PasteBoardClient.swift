@@ -12,6 +12,7 @@ import UIKit
 import AppKit
 #endif
 import XCTestDynamicOverlay
+import Model
 
 struct PasteBoardClient {
     private static let pb = PasteBoard.general

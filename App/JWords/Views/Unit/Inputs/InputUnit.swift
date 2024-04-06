@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Model
 
 enum UnitInputField {
     case kanji, meaning

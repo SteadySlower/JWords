@@ -37,6 +37,30 @@ public struct StudyUnit: Equatable, Identifiable, Hashable {
     public var studyState: StudyState
     public let createdAt: Date
     
+    public init(
+        id: String,
+        objectID: NSManagedObjectID,
+        type: UnitType,
+        studySets: [StudySet],
+        kanjiText: String,
+        kanjiImageID: String?,
+        meaningText: String,
+        meaningImageID: String?,
+        studyState: StudyState,
+        createdAt: Date
+    ) {
+        self.id = id
+        self.objectID = objectID
+        self.type = type
+        self.studySets = studySets
+        self.kanjiText = kanjiText
+        self.kanjiImageID = kanjiImageID
+        self.meaningText = meaningText
+        self.meaningImageID = meaningImageID
+        self.studyState = studyState
+        self.createdAt = createdAt
+    }
+    
     // intializer for mocking
     public init(index: Int) {
         self.id = UUID().uuidString

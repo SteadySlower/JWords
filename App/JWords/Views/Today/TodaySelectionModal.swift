@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import ComposableArchitecture
+import Model
 
 enum Schedule: Equatable {
     case none, study, review

@@ -12,6 +12,7 @@ import UIKit
 #elseif os(macOS)
 import AppKit
 #endif
+import Model
 
 struct UtilClient {
     var filterOnlyFailUnits: ([StudyUnit]) -> [StudyUnit]

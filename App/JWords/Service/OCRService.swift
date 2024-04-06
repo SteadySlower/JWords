@@ -11,6 +11,7 @@ import UIKit
 #elseif os(macOS)
 import Cocoa
 #endif
+import Model
 
 enum OCRLang {
     case korean, japanese

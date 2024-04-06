@@ -10,6 +10,7 @@ import ComposableArchitecture
 #if os(macOS)
 import Cocoa
 #endif
+import Model
 
 @Reducer
 struct DisplayKanji {

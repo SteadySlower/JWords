@@ -13,7 +13,7 @@ public enum FrontType: Int, Equatable, Hashable, CaseIterable {
     case kanji
     case meaning
     
-    var pickerText: String {
+    public var pickerText: String {
         switch self {
         case .meaning:
             return "한"
@@ -22,7 +22,7 @@ public enum FrontType: Int, Equatable, Hashable, CaseIterable {
         }
     }
     
-    var preferredTypeText: String {
+    public var preferredTypeText: String {
         switch self {
         case .meaning: return "뜻 앞면"
         case .kanji: return "일본어 앞면"
@@ -43,6 +43,24 @@ public struct StudySet: Equatable, Identifiable, Hashable {
     public let closed: Bool
     public let preferredFrontType: FrontType
     public let isAutoSchedule: Bool
+    
+    public init(
+        id: String,
+        objectID: NSManagedObjectID,
+        title: String,
+        createdAt: Date,
+        closed: Bool,
+        preferredFrontType: FrontType,
+        isAutoSchedule: Bool
+    ) {
+        self.id = id
+        self.objectID = objectID
+        self.title = title
+        self.createdAt = createdAt
+        self.closed = closed
+        self.preferredFrontType = preferredFrontType
+        self.isAutoSchedule = isAutoSchedule
+    }
     
     public init(title: String) {
         self.id = title

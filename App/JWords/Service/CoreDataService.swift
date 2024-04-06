@@ -45,7 +45,7 @@ class CoreDataService {
         
         do {
             try context.save()
-            return StudySet(from: mo)
+            return .initFromMO(from: mo)
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -62,7 +62,7 @@ class CoreDataService {
         }
         
         do {
-            return try self.context.fetch(fetchRequest).map { StudySet(from: $0) }
+            return try self.context.fetch(fetchRequest).map { .initFromMO(from: $0) }
         } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
@@ -84,7 +84,7 @@ class CoreDataService {
         
         do {
             try context.save()
-            return StudySet(from: mo)
+            return .initFromMO(from: mo)
         } catch {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -132,7 +132,7 @@ class CoreDataService {
         
         do {
             if let fetched = try context.fetch(fetchRequest).first {
-                return StudyUnit(from: fetched)
+                return .initFromMO(from: fetched)
             } else {
                 return nil
             }
@@ -153,7 +153,7 @@ class CoreDataService {
             throw AppError.coreData
         }
         
-        return units.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }.sorted(by: { $0.createdAt < $1.createdAt })
+        return units.compactMap { $0 as? StudyUnitMO }.map { .initFromMO(from: $0) }.sorted(by: { $0.createdAt < $1.createdAt })
     }
     
     func insertUnit(in set: StudySet,
@@ -184,7 +184,7 @@ class CoreDataService {
         
         do {
             try context.save()
-            return StudyUnit(from: mo)
+            return .initFromMO(from: mo)
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -224,7 +224,7 @@ class CoreDataService {
 
         do {
             try context.save()
-            return StudyUnit(from: mo)
+            return .initFromMO(from: mo)
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -247,7 +247,7 @@ class CoreDataService {
         
         do {
             try context.save()
-            return StudyUnit(from: mo)
+            return .initFromMO(from: mo)
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -269,7 +269,7 @@ class CoreDataService {
         fetchRequest.fetchLimit = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
         
         do {
-            return try context.fetch(fetchRequest).map { Kanji(from: $0) }
+            return try context.fetch(fetchRequest).map { .initFromMO(from: $0) }
         } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
@@ -290,7 +290,7 @@ class CoreDataService {
         
         let sorted = kanjis
             .compactMap { $0 as? StudyKanjiMO }
-            .map { Kanji(from: $0) }
+            .map { Kanji.initFromMO(from: $0) }
             .sorted(by: {
                 kanjiList.firstIndex(of: $0.kanjiText) ?? 0 < kanjiList.firstIndex(of: $1.kanjiText) ?? 0
             })
@@ -316,7 +316,7 @@ class CoreDataService {
         fetchRequest.predicate = combinedPredicate
         
         do {
-            return try self.context.fetch(fetchRequest).map { Kanji(from: $0) }
+            return try self.context.fetch(fetchRequest).map { .initFromMO(from: $0) }
         } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
@@ -333,7 +333,7 @@ class CoreDataService {
             return []
         }
         
-        return samples.compactMap { $0 as? StudyUnitMO }.map { StudyUnit(from: $0) }
+        return samples.compactMap { $0 as? StudyUnitMO }.map { .initFromMO(from: $0) }
     }
     
     func editKanji(kanji: Kanji, input: StudyKanjiInput) throws -> Kanji {
@@ -348,7 +348,7 @@ class CoreDataService {
         
         do {
             try context.save()
-            return Kanji(from: mo)
+            return .initFromMO(from: mo)
         } catch {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -542,7 +542,7 @@ extension CoreDataService {
         
         return kanjis
             .compactMap { $0 as? StudyKanjiMO }
-            .map { Kanji(from: $0) }
+            .map { .initFromMO(from: $0) }
             .sorted(by: { $0.createdAt < $1.createdAt })
     }
     
@@ -576,4 +576,66 @@ extension CoreDataService {
         }
     }
     
+}
+
+// MARK: Initialize Models from MO
+
+private extension StudySet {
+    static func initFromMO(from mo: StudySetMO) -> StudySet {
+        StudySet(
+            id: mo.id ?? UUID().uuidString,
+            objectID: mo.objectID,
+            title: mo.title ?? "",
+            createdAt: mo.createdAt ?? Date(),
+            closed: mo.closed,
+            preferredFrontType: FrontType(rawValue: Int(mo.preferredFrontType)) ?? .kanji,
+            isAutoSchedule: mo.isAutoSchedule
+        )
+    }
+}
+
+private extension KanjiSet {
+    static func initFromMO(from mo: StudyKanjiSetMO) -> KanjiSet {
+        KanjiSet(
+            id: mo.id ?? UUID().uuidString,
+            objectID: mo.objectID,
+            title: mo.title ?? "",
+            createdAt: mo.createdAt ?? Date(),
+            closed: mo.closed,
+            isAutoSchedule: mo.isAutoSchedule
+        )
+    }
+}
+
+private extension StudyUnit {
+    static func initFromMO(from mo: StudyUnitMO) -> StudyUnit {
+        StudyUnit(
+            id: mo.id ?? UUID().uuidString,
+            objectID: mo.objectID,
+            type: UnitType(rawValue: Int(mo.type)) ?? .word,
+            studySets: mo.set?.compactMap { $0 as? StudySetMO }.map { .initFromMO(from: $0) } ?? [],
+            kanjiText: mo.kanjiText ?? "",
+            kanjiImageID: mo.kanjiImageID,
+            meaningText: mo.meaningText ?? "",
+            meaningImageID: mo.meaningImageID,
+            studyState: StudyState(rawValue: Int(mo.studyState)) ?? .undefined,
+            createdAt: mo.createdAt ?? Date()
+        )
+    }
+}
+
+private extension Kanji {
+    static func initFromMO(from mo: StudyKanjiMO) -> Kanji {
+        Kanji(
+            id: mo.id ?? UUID().uuidString,
+            objectID: mo.objectID,
+            kanjiText: mo.kanji ?? "",
+            meaningText: mo.meaning ?? "",
+            ondoku: mo.ondoku ?? "",
+            kundoku: mo.kundoku ?? "",
+            studyState: StudyState(rawValue: Int(mo.studyState)) ?? .undefined,
+            createdAt: mo.createdAt ?? Date(),
+            usedIn: mo.words?.count ?? 0
+        )
+    }
 }
