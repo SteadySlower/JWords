@@ -7,8 +7,8 @@
 
 #if os(iOS)
 import UIKit
-typealias InputImageType = UIImage
+public typealias InputImageType = UIImage
 #elseif os(macOS)
 import Cocoa
-typealias InputImageType = NSImage
+public typealias InputImageType = NSImage
 #endif

@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import Util
 
-enum FrontType: Int, Equatable, Hashable, CaseIterable {
+public enum FrontType: Int, Equatable, Hashable, CaseIterable {
     case kanji
     case meaning
     
@@ -34,17 +34,17 @@ public enum SetSchedule: Equatable, CaseIterable {
     case none, study, review
 }
 
-struct StudySet: Equatable, Identifiable, Hashable {
+public struct StudySet: Equatable, Identifiable, Hashable {
     
-    let id: String
-    let objectID: NSManagedObjectID
-    let title: String
-    let createdAt: Date
-    let closed: Bool
-    let preferredFrontType: FrontType
-    let isAutoSchedule: Bool
+    public let id: String
+    public let objectID: NSManagedObjectID
+    public let title: String
+    public let createdAt: Date
+    public let closed: Bool
+    public let preferredFrontType: FrontType
+    public let isAutoSchedule: Bool
     
-    init(title: String) {
+    public init(title: String) {
         self.id = title
         self.objectID = NSManagedObjectID()
         self.title = title
@@ -55,7 +55,7 @@ struct StudySet: Equatable, Identifiable, Hashable {
     }
     
     // intializer for mocking
-    init(
+    public init(
         index: Int,
         closed: Bool = false,
         setSchedule: SetSchedule = .study
@@ -79,7 +79,7 @@ struct StudySet: Equatable, Identifiable, Hashable {
     }
     
     // initializer for test mocking
-    init(title: String, createdAt: Date, closed: Bool) {
+    public init(title: String, createdAt: Date, closed: Bool) {
         self.id = UUID().uuidString
         self.objectID = NSManagedObjectID()
         self.title = title
@@ -89,15 +89,15 @@ struct StudySet: Equatable, Identifiable, Hashable {
         self.isAutoSchedule = true
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    var dayFromToday: Int {
+    public var dayFromToday: Int {
         return Calendar.current.getDateGap(from: self.createdAt, to: Date())
     }
     
-    var schedule: SetSchedule {
+    public var schedule: SetSchedule {
         let dayFromToday = self.dayFromToday
         let reviewInterval = [3, 7, 14, 28]
         
@@ -112,7 +112,7 @@ struct StudySet: Equatable, Identifiable, Hashable {
     
 }
 
-extension Array where Element == StudySet {
+public extension Array where Element == StudySet {
     static let mock: [StudySet] = {
         var result = [StudySet]()
         for i in 0..<10 {

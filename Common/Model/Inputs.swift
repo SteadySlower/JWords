@@ -7,21 +7,21 @@
 
 import Foundation
 
-struct StudySetInput {
-    let title: String
-    let isAutoSchedule: Bool
-    let preferredFrontType: FrontType
+public struct StudySetInput {
+    public let title: String
+    public let isAutoSchedule: Bool
+    public let preferredFrontType: FrontType
 }
 
-struct StudyUnitInput {
-    let type: UnitType
-    let kanjiText: String
-    let meaningText: String
+public struct StudyUnitInput {
+    public let type: UnitType
+    public let kanjiText: String
+    public let meaningText: String
 }
 
-struct StudyKanjiInput {
-    let kanjiText: String
-    let meaningText: String
-    let ondoku: String
-    let kundoku: String
+public struct StudyKanjiInput {
+    public let kanjiText: String
+    public let meaningText: String
+    public let ondoku: String
+    public let kundoku: String
 }

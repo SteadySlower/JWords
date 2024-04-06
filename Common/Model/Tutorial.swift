@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Tutorial: CaseIterable {
+public enum Tutorial: CaseIterable {
     case addSet
     case addUnit
     case schedule
@@ -18,7 +18,7 @@ enum Tutorial: CaseIterable {
     case kanjiList
     case scanUnit
     
-    var title: String {
+    public var title: String {
         switch self {
         case .addSet:
             return "단어장 추가하기"
@@ -41,7 +41,7 @@ enum Tutorial: CaseIterable {
         }
     }
     
-    var imageName: String {
+    public var imageName: String {
         switch self {
         case .addSet:
             return "Add Set"
@@ -64,7 +64,7 @@ enum Tutorial: CaseIterable {
         }
     }
     
-    var imageCount: Int {
+    public var imageCount: Int {
         switch self {
         case .addSet:
             return 4

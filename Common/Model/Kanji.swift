@@ -8,19 +8,19 @@
 import Foundation
 import CoreData
 
-struct Kanji: Equatable {
+public struct Kanji: Equatable {
     
-    let id: String
-    let objectID: NSManagedObjectID
-    let kanjiText: String
-    let meaningText: String
-    let ondoku: String
-    let kundoku: String
-    var studyState: StudyState
-    let createdAt: Date
-    let usedIn: Int
+    public let id: String
+    public let objectID: NSManagedObjectID
+    public let kanjiText: String
+    public let meaningText: String
+    public let ondoku: String
+    public let kundoku: String
+    public var studyState: StudyState
+    public let createdAt: Date
+    public let usedIn: Int
     
-    init(index: Int) {
+    public init(index: Int) {
         self.id = UUID().uuidString
         self.objectID = NSManagedObjectID()
         self.kanjiText = "漢"
@@ -33,7 +33,7 @@ struct Kanji: Equatable {
     }
     
     // initializer for test mocking
-    init(
+    public init(
         id: String = UUID().uuidString,
         objectID: NSManagedObjectID = NSManagedObjectID(),
         kanjiText: String,
@@ -57,7 +57,7 @@ struct Kanji: Equatable {
     
 }
 
-extension Array where Element == Kanji {
+public extension Array where Element == Kanji {
     static var mock: [Kanji] {
         var result = [Kanji]()
         for i in 0..<10 {

@@ -8,11 +8,11 @@
 import Foundation
 import CoreData
 
-enum StudyState: Int, CaseIterable {
+public enum StudyState: Int, CaseIterable {
     case undefined = 0, success, fail
 }
 
-enum UnitType: Int, CaseIterable {
+public enum UnitType: Int, CaseIterable {
     case word, kanji, sentence
     
     var description: String {
@@ -24,21 +24,21 @@ enum UnitType: Int, CaseIterable {
     }
 }
 
-struct StudyUnit: Equatable, Identifiable, Hashable {
+public struct StudyUnit: Equatable, Identifiable, Hashable {
     
-    let id: String
-    let objectID: NSManagedObjectID
-    let type: UnitType
-    let studySets: [StudySet]
-    let kanjiText: String
-    let kanjiImageID: String?
-    let meaningText: String
-    let meaningImageID: String?
-    var studyState: StudyState
-    let createdAt: Date
+    public let id: String
+    public let objectID: NSManagedObjectID
+    public let type: UnitType
+    public let studySets: [StudySet]
+    public let kanjiText: String
+    public let kanjiImageID: String?
+    public let meaningText: String
+    public let meaningImageID: String?
+    public var studyState: StudyState
+    public let createdAt: Date
     
     // intializer for mocking
-    init(index: Int) {
+    public init(index: Int) {
         self.id = UUID().uuidString
         self.objectID = NSManagedObjectID()
         self.type = UnitType.allCases.randomElement()!
@@ -52,7 +52,7 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
     }
     
     // initialzer for test mocking
-    init(
+    public init(
         id: String = UUID().uuidString,
         type: UnitType = .allCases.randomElement()!,
         kanjiText: String,
@@ -75,13 +75,13 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
         self.createdAt = createdAt
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
 }
 
-extension Array where Element == StudyUnit {
+public extension Array where Element == StudyUnit {
     static let mock: [StudyUnit] = {
         var result = [StudyUnit]()
         for i in 0..<10 {

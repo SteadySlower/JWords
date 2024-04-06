@@ -7,30 +7,30 @@
 
 import Foundation
 
-struct TodaySchedule: Equatable {
+public struct TodaySchedule: Equatable {
     let studyIDs: [String]
     let reviewIDs: [String]
     let reviewedIDs: [String]
     let createdAt: Date
     
-    init(studyIDs: [String], reviewIDs: [String], reviewedIDs: [String], createdAt: Date) {
+    public init(studyIDs: [String], reviewIDs: [String], reviewedIDs: [String], createdAt: Date) {
         self.studyIDs = studyIDs
         self.reviewIDs = reviewIDs
         self.reviewedIDs = reviewedIDs
         self.createdAt = createdAt
     }
     
-    static let empty: Self = .init(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: .now)
+    public static let empty: Self = .init(studyIDs: [], reviewIDs: [], reviewedIDs: [], createdAt: .now)
 
 }
 
-struct TodaySets: Equatable {
+public struct TodaySets: Equatable {
     
-    let study: [StudySet]
-    let review: [StudySet]
-    let reviewed: [StudySet]
+    public let study: [StudySet]
+    public let review: [StudySet]
+    public let reviewed: [StudySet]
     
-    init(sets: [StudySet], schedule: TodaySchedule) {
+    public init(sets: [StudySet], schedule: TodaySchedule) {
         self.study = sets.filter { schedule.studyIDs.contains($0.id) }
         self.review = sets.filter {
             schedule.reviewIDs.contains($0.id) && !schedule.reviewedIDs.contains($0.id)
