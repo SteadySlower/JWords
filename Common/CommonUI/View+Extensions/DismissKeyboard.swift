@@ -1,13 +1,13 @@
 //
-//  KeyBoardDismissingBackground.swift
-//  JWords
+//  DismissKeyboard.swift
+//  CommonUI
 //
-//  Created by JW Moon on 2023/09/28.
+//  Created by JW Moon on 4/6/24.
 //
 
 import SwiftUI
 
-extension View {
+public extension View {
     func dismissKeyboardWhenBackgroundTapped() -> some View {
         modifier(KeyBoardDismissingBackGround())
     }
