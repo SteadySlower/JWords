@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import Util
 
 enum FrontType: Int, Equatable, Hashable, CaseIterable {
     case kanji
@@ -42,16 +43,6 @@ struct StudySet: Equatable, Identifiable, Hashable {
     let closed: Bool
     let preferredFrontType: FrontType
     let isAutoSchedule: Bool
-    
-    init(from mo: StudySetMO) {
-        self.id = mo.id ?? ""
-        self.objectID = mo.objectID
-        self.title = mo.title ?? ""
-        self.createdAt = mo.createdAt ?? Date()
-        self.closed = mo.closed
-        self.preferredFrontType = FrontType(rawValue: Int(mo.preferredFrontType)) ?? .kanji
-        self.isAutoSchedule = mo.isAutoSchedule
-    }
     
     init(title: String) {
         self.id = title

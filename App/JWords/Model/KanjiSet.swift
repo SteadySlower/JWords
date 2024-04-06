@@ -17,15 +17,6 @@ struct KanjiSet: Equatable, Identifiable, Hashable {
     let closed: Bool
     let isAutoSchedule: Bool
     
-    init(from mo: StudyKanjiSetMO) {
-        self.id = mo.id ?? ""
-        self.objectID = mo.objectID
-        self.title = mo.title ?? ""
-        self.createdAt = mo.createdAt ?? Date()
-        self.closed = mo.closed
-        self.isAutoSchedule = mo.isAutoSchedule
-    }
-    
     // intializer for mocking
     init(
         index: Int,

@@ -20,18 +20,6 @@ struct Kanji: Equatable {
     let createdAt: Date
     let usedIn: Int
     
-    init(from mo: StudyKanjiMO) {
-        self.id = mo.id ?? UUID().uuidString
-        self.objectID = mo.objectID
-        self.kanjiText = mo.kanji ?? ""
-        self.meaningText = mo.meaning ?? ""
-        self.ondoku = mo.ondoku ?? ""
-        self.kundoku = mo.kundoku ?? ""
-        self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
-        self.createdAt = mo.createdAt ?? Date()
-        self.usedIn = mo.words?.count ?? 0
-    }
-    
     init(index: Int) {
         self.id = UUID().uuidString
         self.objectID = NSManagedObjectID()

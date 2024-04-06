@@ -37,19 +37,6 @@ struct StudyUnit: Equatable, Identifiable, Hashable {
     var studyState: StudyState
     let createdAt: Date
     
-    init(from mo: StudyUnitMO) {
-        self.id = mo.id ?? ""
-        self.objectID = mo.objectID
-        self.type = UnitType(rawValue: Int(mo.type)) ?? .word
-        self.kanjiText = mo.kanjiText ?? ""
-        self.kanjiImageID = mo.kanjiImageID
-        self.meaningText = mo.meaningText ?? ""
-        self.meaningImageID = mo.meaningImageID
-        self.studyState = StudyState(rawValue: Int(mo.studyState)) ?? .undefined
-        self.createdAt = mo.createdAt ?? Date()
-        self.studySets = mo.set?.compactMap { $0 as? StudySetMO }.map { StudySet(from: $0) } ?? []
-    }
-    
     // intializer for mocking
     init(index: Int) {
         self.id = UUID().uuidString
