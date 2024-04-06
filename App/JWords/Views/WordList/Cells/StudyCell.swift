@@ -122,22 +122,25 @@ struct StudyCell: View {
         }
     }
     
+    @ViewBuilder
     private var showKanjisButton: some View {
-        VStack {
-            Spacer()
-            HStack {
+        if dragAmount == .zero && !store.isFront {
+            VStack {
                 Spacer()
-                Button {
-                    store.send(.showKanjis)
-                } label: {
-                    Text("漢 ") + Text(store.showKanjis ? "🔼" : "🔽")
+                HStack {
+                    Spacer()
+                    Button {
+                        store.send(.showKanjis)
+                    } label: {
+                        Text("漢 ") + Text(store.showKanjis ? "🔼" : "🔽")
+                    }
+                    .font(.system(size: 24))
+                    .padding([.bottom, .trailing], 8)
                 }
-                .font(.system(size: 24))
-                .padding([.bottom, .trailing], 8)
             }
+        } else {
+            EmptyView()
         }
-        .hide(dragAmount != .zero)
-        .hide(store.isFront)
     }
     
     private func kanjiCell(_ kanji: Kanji) -> some View {

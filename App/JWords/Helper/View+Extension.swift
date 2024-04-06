@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-// MARK: Hide
-
-extension View {
-    @ViewBuilder func hide(_ bool: Bool) -> some View {
-        if bool {
-            EmptyView()
-        } else {
-            self
-        }
-    }
-}
-
 // MARK: Synchronize
 // use to synchronize view's FocusState and the store's state
 
