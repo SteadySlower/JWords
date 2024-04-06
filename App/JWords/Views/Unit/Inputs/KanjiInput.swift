@@ -9,6 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 import Huri
 import HuriView
+import CommonUI
 
 @Reducer
 struct KanjiInput {

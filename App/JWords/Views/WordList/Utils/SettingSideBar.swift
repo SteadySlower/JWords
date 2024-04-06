@@ -9,6 +9,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Model
+import CommonUI
 
 enum UnitFilter: Hashable, CaseIterable, Equatable {
     case all, excludeSuccess, onlyFail

@@ -11,6 +11,7 @@ import ComposableArchitecture
 import Cocoa
 #endif
 import Model
+import CommonUI
 
 @Reducer
 struct DisplayKanji {
