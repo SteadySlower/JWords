@@ -9,10 +9,6 @@ import SwiftUI
 
 extension View {
     
-    func loadingView(_ isLoading: Bool) -> some View {
-        modifier(LoadingView(isLoading: isLoading))
-    }
-    
     func leadingAlignment() -> some View {
         modifier(LeadingAligner())
     }
@@ -28,20 +24,6 @@ extension View {
 
 
 
-private struct LoadingView: ViewModifier {
-    
-    let isLoading: Bool
-    
-    func body(content: Content) -> some View {
-        ZStack {
-            if isLoading {
-                ProgressView()
-                    .scaleEffect(5)
-            }
-            content
-        }
-    }
-}
 
 private struct LeadingAligner: ViewModifier {
     
