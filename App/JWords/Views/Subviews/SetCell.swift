@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Model
 
 struct SetCell: View {
     private let title: String

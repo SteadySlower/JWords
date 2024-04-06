@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import Huri
+import Model
 
 class CoreDataService {
     
@@ -471,7 +472,14 @@ extension CoreDataService {
         
         do {
             try context.save()
-            return KanjiSet(from: mo)
+            return KanjiSet(
+                id: mo.id ?? "",
+                objectID: mo.objectID,
+                title: mo.title ?? "",
+                createdAt: mo.createdAt ?? Date(),
+                closed: mo.closed,
+                isAutoSchedule: mo.isAutoSchedule
+            )
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)
@@ -488,7 +496,16 @@ extension CoreDataService {
         }
         
         do {
-            return try self.context.fetch(fetchRequest).map { KanjiSet(from: $0) }
+            return try self.context.fetch(fetchRequest).map { mo in
+                return KanjiSet(
+                    id: mo.id ?? "",
+                    objectID: mo.objectID,
+                    title: mo.title ?? "",
+                    createdAt: mo.createdAt ?? Date(),
+                    closed: mo.closed,
+                    isAutoSchedule: mo.isAutoSchedule
+                )
+            }
         } catch {
             NSLog("CoreData Error: %s", error.localizedDescription)
             throw AppError.coreData
@@ -544,7 +561,14 @@ extension CoreDataService {
         
         do {
             try context.save()
-            return KanjiSet(from: setMO)
+            return KanjiSet(
+                id: setMO.id ?? "",
+                objectID: setMO.objectID,
+                title: setMO.title ?? "",
+                createdAt: setMO.createdAt ?? Date(),
+                closed: setMO.closed,
+                isAutoSchedule: setMO.isAutoSchedule
+            )
         } catch let error as NSError {
             context.rollback()
             NSLog("CoreData Error: %s", error.localizedDescription)

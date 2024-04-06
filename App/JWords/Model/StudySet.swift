@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import Model
 
 enum FrontType: Int, Equatable, Hashable, CaseIterable {
     case kanji
@@ -29,9 +30,9 @@ enum FrontType: Int, Equatable, Hashable, CaseIterable {
     }
 }
 
-enum SetSchedule: Equatable, CaseIterable {
-    case none, study, review
-}
+//enum SetSchedule: Equatable, CaseIterable {
+//    case none, study, review
+//}
 
 struct StudySet: Equatable, Identifiable, Hashable {
     

@@ -8,17 +8,33 @@
 import Foundation
 import CoreData
 
-struct KanjiSet: Equatable, Identifiable, Hashable {
+public struct KanjiSet: Equatable, Identifiable, Hashable {
     
-    let id: String
-    let objectID: NSManagedObjectID
-    let title: String
-    let createdAt: Date
-    let closed: Bool
-    let isAutoSchedule: Bool
+    public let id: String
+    public let objectID: NSManagedObjectID
+    public let title: String
+    public let createdAt: Date
+    public let closed: Bool
+    public let isAutoSchedule: Bool
+    
+    public init(
+        id: String,
+        objectID: NSManagedObjectID,
+        title: String,
+        createdAt: Date,
+        closed: Bool,
+        isAutoSchedule: Bool
+    ) {
+        self.id = id
+        self.objectID = objectID
+        self.title = title
+        self.createdAt = createdAt
+        self.closed = closed
+        self.isAutoSchedule = isAutoSchedule
+    }
     
     // intializer for mocking
-    init(
+    public init(
         index: Int,
         closed: Bool = false,
         setSchedule: SetSchedule = .study
@@ -41,7 +57,7 @@ struct KanjiSet: Equatable, Identifiable, Hashable {
     }
     
     // initializer for test mocking
-    init(title: String, createdAt: Date, closed: Bool) {
+    public init(title: String, createdAt: Date, closed: Bool) {
         self.id = UUID().uuidString
         self.objectID = NSManagedObjectID()
         self.title = title
@@ -50,15 +66,15 @@ struct KanjiSet: Equatable, Identifiable, Hashable {
         self.isAutoSchedule = true
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    var dayFromToday: Int {
+    public var dayFromToday: Int {
         return Calendar.current.getDateGap(from: self.createdAt, to: Date())
     }
     
-    var schedule: SetSchedule {
+    public var schedule: SetSchedule {
         let dayFromToday = self.dayFromToday
         let reviewInterval = [3, 7, 14, 28]
         
@@ -73,7 +89,7 @@ struct KanjiSet: Equatable, Identifiable, Hashable {
     
 }
 
-extension Array where Element == KanjiSet {
+public extension Array where Element == KanjiSet {
     static let mock: [KanjiSet] = {
         var result = [KanjiSet]()
         for i in 0..<10 {

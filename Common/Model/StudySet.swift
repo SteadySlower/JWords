@@ -30,7 +30,7 @@ enum FrontType: Int, Equatable, Hashable, CaseIterable {
     }
 }
 
-enum SetSchedule: Equatable, CaseIterable {
+public enum SetSchedule: Equatable, CaseIterable {
     case none, study, review
 }
 

@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import XCTest
 @testable import JWords
+import Model
 
 final class KanjiListTest: XCTestCase {
     
