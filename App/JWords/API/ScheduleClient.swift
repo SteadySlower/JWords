@@ -9,6 +9,7 @@ import ComposableArchitecture
 import Foundation
 import XCTestDynamicOverlay
 import Model
+import UserDefaultKit
 
 struct ScheduleClient {
     private static let kv = KeyValueStoreService.shared
