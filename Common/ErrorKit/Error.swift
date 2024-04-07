@@ -5,9 +5,7 @@
 //  Created by Jong Won Moon on 2022/09/05.
 //
 
-import ComposableArchitecture
-
-enum AppError: Error, Equatable {
+public enum AppError: Error, Equatable {
     case generic(massage: String)
     case noMatchingUnit(id: String)
     case coreData
@@ -23,7 +21,7 @@ enum AppError: Error, Equatable {
     // error when add study set
     case emptyTitle
     
-    var errorMessage: String {
+    public var errorMessage: String {
         switch self {
         case .KanjiTooLong:
             return "한자는 1글자 이상 저장할 수 없습니다."
@@ -33,18 +31,6 @@ enum AppError: Error, Equatable {
             return "제목이 비어 있습니다."
         default:
             return "알 수 없는 에러입니다."
-        }
-    }
-    
-    func simpleAlert<T>(action: T.Type) -> AlertState<T> {
-        return AlertState<T> {
-          TextState("에러")
-        } actions: {
-          ButtonState(role: .cancel) {
-            TextState("확인")
-          }
-        } message: {
-            TextState(self.errorMessage)
         }
     }
 }

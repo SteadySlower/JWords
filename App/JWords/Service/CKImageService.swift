@@ -6,6 +6,7 @@
 //
 
 import CloudKit
+import ErrorKit
 
 final class CKImageService {
     

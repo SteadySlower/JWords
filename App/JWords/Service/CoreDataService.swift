@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 import HuriConverter
 import Model
+import ErrorKit
 
 class CoreDataService {
     

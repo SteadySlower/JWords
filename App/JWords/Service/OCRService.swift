@@ -12,6 +12,7 @@ import UIKit
 import Cocoa
 #endif
 import Model
+import ErrorKit
 
 enum OCRLang {
     case korean, japanese

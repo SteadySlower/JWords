@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ErrorKit
 
 struct WikiKanji {
     let kanji: String
