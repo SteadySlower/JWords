@@ -8,20 +8,27 @@
 import Foundation
 import ErrorKit
 
-struct WikiKanji {
-    let kanji: String
-    let meaning: String
-    let ondoku: String
-    let kundoku: String
+public struct WikiKanji {
+    public let kanji: String
+    public let meaning: String
+    public let ondoku: String
+    public let kundoku: String
+    
+    public init(kanji: String, meaning: String, ondoku: String, kundoku: String) {
+        self.kanji = kanji
+        self.meaning = meaning
+        self.ondoku = ondoku
+        self.kundoku = kundoku
+    }
 }
 
-class KanjiWikiService {
+public class KanjiWikiService {
     
-    static let shared = KanjiWikiService()
+    public static let shared = KanjiWikiService()
     
     private let db: [String : WikiKanji]
     
-    init() {
+    public init() {
         let json = (try? getJSON()) ?? [:]
         var db = [String:WikiKanji]()
         
@@ -39,11 +46,11 @@ class KanjiWikiService {
         self.db = db
     }
     
-    func getWikiKanji(_ kanji: String) -> WikiKanji? {
+    public func getWikiKanji(_ kanji: String) -> WikiKanji? {
         return db[kanji]
     }
     
-    func getAllWikiKanji() -> [WikiKanji] {
+    public func getAllWikiKanji() -> [WikiKanji] {
         return Array(db.values)
     }
     
@@ -61,4 +68,3 @@ fileprivate func getJSON() throws -> [String: [String:String]] {
     }
     return json
 }
-

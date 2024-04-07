@@ -10,6 +10,7 @@ import CoreData
 import HuriConverter
 import Model
 import ErrorKit
+import KanjiWiki
 
 class CoreDataService {
     
