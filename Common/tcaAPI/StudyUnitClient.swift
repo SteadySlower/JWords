@@ -5,8 +5,6 @@
 //  Created by JW Moon on 2023/10/03.
 //
 
-import ComposableArchitecture
-import XCTestDynamicOverlay
 import Model
 import CoreDataKit
 
@@ -21,16 +19,7 @@ public struct StudyUnitClient {
     public var move: ([StudyUnit], StudySet, StudySet) throws -> Void
     public var fetch: (StudySet) throws -> [StudyUnit]
     public var fetchAll: ([StudySet]) throws -> [StudyUnit]
-}
-
-extension DependencyValues {
-    public var studyUnitClient: StudyUnitClient {
-    get { self[StudyUnitClient.self] }
-    set { self[StudyUnitClient.self] = newValue }
-  }
-}
-
-extension StudyUnitClient: DependencyKey {
+    
     public static let liveValue = StudyUnitClient(
     checkIfExist: { kanjiText in
         return try cd.checkIfExist(kanjiText)
@@ -86,10 +75,6 @@ extension StudyUnitClient: DependencyKey {
             .reduce([], +)
     }
   )
-    
-}
-
-extension StudyUnitClient: TestDependencyKey {
     public static let previewValue = Self(
     checkIfExist: { _ in nil },
     insert: { _, _ in .init(index: 0) },
@@ -113,5 +98,9 @@ extension StudyUnitClient: TestDependencyKey {
     fetchAll: { _ in .mock }
   )
 }
+
+
+
+
 
 

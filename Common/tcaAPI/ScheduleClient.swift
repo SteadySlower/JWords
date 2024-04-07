@@ -5,9 +5,6 @@
 //  Created by Jong Won Moon on 2023/10/03.
 //
 
-import ComposableArchitecture
-import Foundation
-import XCTestDynamicOverlay
 import Model
 import UserDefaultKit
 
@@ -21,16 +18,7 @@ public struct ScheduleClient {
     public var autoSet: ([StudySet]) -> Void
     public var reviewed: (StudySet) -> Void
     public var isReview: (StudySet) -> Bool
-}
-
-extension DependencyValues {
-    public var scheduleClient: ScheduleClient {
-    get { self[ScheduleClient.self] }
-    set { self[ScheduleClient.self] = newValue }
-  }
-}
-
-extension ScheduleClient: DependencyKey {
+    
     public static let liveValue = ScheduleClient(
     study: { sets in
         let studyIDs = kv.arrayOfString(for: .studySets)
@@ -70,9 +58,6 @@ extension ScheduleClient: DependencyKey {
     }
   )
     
-}
-
-extension ScheduleClient: TestDependencyKey {
     public static let previewValue = Self(
     study: { _ in .mock },
     review: { _ in .mock },

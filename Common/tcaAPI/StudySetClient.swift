@@ -5,8 +5,6 @@
 //  Created by JW Moon on 2023/05/07.
 //
 
-import ComposableArchitecture
-import XCTestDynamicOverlay
 import Model
 import CoreDataKit
 
@@ -17,16 +15,7 @@ public struct StudySetClient {
     public var close: (StudySet) throws -> Void
     public var fetch: (Bool) throws -> [StudySet]
     public var countUnits: (StudySet) throws -> Int
-}
-
-extension DependencyValues {
-    public var studySetClient: StudySetClient {
-    get { self[StudySetClient.self] }
-    set { self[StudySetClient.self] = newValue }
-  }
-}
-
-extension StudySetClient: DependencyKey {
+    
     public static let liveValue = StudySetClient(
     insert: { input in
         return try cd.insertSet(title: input.title,
@@ -50,9 +39,6 @@ extension StudySetClient: DependencyKey {
     }
   )
     
-}
-
-extension StudySetClient: TestDependencyKey {
     public static let previewValue = Self(
     insert: { input in .init(title: input.title) },
     update: { _, _ in return .init(index: 0) },
@@ -68,5 +54,7 @@ extension StudySetClient: TestDependencyKey {
     countUnits: { _ in Int.random(in: 0...100) }
   )
 }
+
+
 
 

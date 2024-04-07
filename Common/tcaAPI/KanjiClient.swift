@@ -5,8 +5,6 @@
 //  Created by JW Moon on 2023/10/03.
 //
 
-import ComposableArchitecture
-import XCTestDynamicOverlay
 import Model
 import CoreDataKit
 
@@ -17,16 +15,7 @@ public struct KanjiClient {
     public var kanjiUnits: (Kanji) throws -> [StudyUnit]
     public var edit: (Kanji, StudyKanjiInput) throws -> Kanji
     public var search: (String) throws -> [Kanji]
-}
-
-extension DependencyValues {
-    public var kanjiClient: KanjiClient {
-    get { self[KanjiClient.self] }
-    set { self[KanjiClient.self] = newValue }
-  }
-}
-
-extension KanjiClient: DependencyKey {
+    
     public static let liveValue = KanjiClient(
     fetch: { kanji, pageSize in
         try cd.fetchAllKanjis(after: kanji, pageSize: pageSize)
@@ -45,9 +34,6 @@ extension KanjiClient: DependencyKey {
     }
   )
     
-}
-
-extension KanjiClient: TestDependencyKey {
     public static let previewValue = Self(
     fetch: { _, _ in .mock },
     unitKanjis: { _ in .mock },
@@ -63,6 +49,9 @@ extension KanjiClient: TestDependencyKey {
     search: { _ in .mock }
   )
 }
+
+
+
 
 
 

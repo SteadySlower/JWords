@@ -5,8 +5,6 @@
 //  Created by JW Moon on 2023/10/06.
 //
 
-import ComposableArchitecture
-import XCTestDynamicOverlay
 #if os(iOS)
 import UIKit
 #elseif os(macOS)
@@ -18,16 +16,7 @@ public struct UtilClient {
     public var filterOnlyFailUnits: ([StudyUnit]) -> [StudyUnit]
     public var shuffleUnits: ([StudyUnit]) -> [StudyUnit]
     public var resizeImage: (InputImageType, CGFloat) -> InputImageType?
-}
-
-extension DependencyValues {
-    public var utilClient: UtilClient {
-    get { self[UtilClient.self] }
-    set { self[UtilClient.self] = newValue }
-  }
-}
-
-extension UtilClient: DependencyKey {
+    
     public static let liveValue = UtilClient(
     filterOnlyFailUnits: { units in
         units
@@ -74,10 +63,6 @@ extension UtilClient: DependencyKey {
     }
   )
     
-}
-
-extension UtilClient: TestDependencyKey {
-    
     private static var sampleImage: InputImageType? {
         #if os(iOS)
         return UIImage(named: "Sample Image")
@@ -98,4 +83,6 @@ extension UtilClient: TestDependencyKey {
     resizeImage: { _,_  in sampleImage }
   )
 }
+
+
 

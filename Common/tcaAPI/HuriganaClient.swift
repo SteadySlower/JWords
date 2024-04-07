@@ -5,9 +5,6 @@
 //  Created by JW Moon on 3/23/24.
 //
 
-import Foundation
-import ComposableArchitecture
-import XCTestDynamicOverlay
 import HuriConverter
 
 public struct HuriganaClient {
@@ -17,16 +14,7 @@ public struct HuriganaClient {
     public var extractKanjis: (String) -> [String]
     public var convertToHuris: (String) -> [Huri]
     public var hurisToHurigana: ([Huri]) -> String
-}
-
-extension DependencyValues {
-    public var huriganaClient: HuriganaClient {
-    get { self[HuriganaClient.self] }
-    set { self[HuriganaClient.self] = newValue }
-  }
-}
-
-extension HuriganaClient: DependencyKey {
+    
     public static let liveValue = HuriganaClient(
     convert: { converter.convert($0) },
     huriToKanjiText: { converter.huriToKanjiText(from: $0) },
@@ -35,9 +23,6 @@ extension HuriganaClient: DependencyKey {
     hurisToHurigana: { converter.hurisToHurigana(huris: $0) }
   )
     
-}
-
-extension HuriganaClient: TestDependencyKey {
     public static let previewValue = Self(
     convert: { _ in "" },
     huriToKanjiText: { _ in "" },
@@ -54,4 +39,3 @@ extension HuriganaClient: TestDependencyKey {
     hurisToHurigana: { _ in "" }
   )
 }
-
