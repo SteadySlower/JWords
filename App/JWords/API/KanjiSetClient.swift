@@ -9,6 +9,7 @@ import Foundation
 import ComposableArchitecture
 import XCTestDynamicOverlay
 import Model
+import CoreDataKit
 
 struct KanjiSetClient {
     private static let cd = CoreDataService.shared

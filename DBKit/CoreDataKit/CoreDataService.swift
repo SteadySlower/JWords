@@ -12,9 +12,9 @@ import Model
 import ErrorKit
 import KanjiWiki
 
-class CoreDataService {
+public class CoreDataService {
     
-    static let shared = CoreDataService()
+    public static let shared = CoreDataService()
     private let huriganaConverter = HuriganaConverter()
     private let context: NSManagedObjectContext
     private let kw = KanjiWikiService.shared
@@ -32,7 +32,7 @@ class CoreDataService {
         self.context = container.viewContext
     }
     
-    func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws -> StudySet {
+    public func insertSet(title: String, isAutoSchedule: Bool, preferredFrontType: FrontType) throws -> StudySet {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudySet", into: context) as? StudySetMO else {
             print("디버그: StudySetMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -55,7 +55,7 @@ class CoreDataService {
         }
     }
     
-    func fetchSets(includeClosed: Bool = false) throws -> [StudySet] {
+    public func fetchSets(includeClosed: Bool = false) throws -> [StudySet] {
         let fetchRequest: NSFetchRequest<StudySetMO> = StudySetMO.fetchRequest()
         let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
         fetchRequest.sortDescriptors = [createdAtDesc]
@@ -71,7 +71,7 @@ class CoreDataService {
         }
     }
     
-    func updateSet(_ set: StudySet,
+    public func updateSet(_ set: StudySet,
                    title: String,
                    isAutoSchedule: Bool,
                    preferredFrontType: FrontType) throws -> StudySet {
@@ -94,7 +94,7 @@ class CoreDataService {
         }
     }
     
-    func countUnits(in set: StudySet) throws -> Int {
+    public func countUnits(in set: StudySet) throws -> Int {
         guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
@@ -108,7 +108,7 @@ class CoreDataService {
         return result
     }
     
-    func closeSet(_ set: StudySet) throws {
+    public func closeSet(_ set: StudySet) throws {
         guard let mo = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
@@ -125,7 +125,7 @@ class CoreDataService {
         }
     }
     
-    func checkIfExist(_ kanjiText: String) throws -> StudyUnit? {
+    public func checkIfExist(_ kanjiText: String) throws -> StudyUnit? {
         
         if kanjiText.isEmpty { return nil }
         
@@ -144,7 +144,7 @@ class CoreDataService {
         }
     }
     
-    func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
+    public func fetchUnits(of set: StudySet) throws -> [StudyUnit] {
         guard let set = try? context.existingObject(with: set.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
@@ -158,7 +158,7 @@ class CoreDataService {
         return units.compactMap { $0 as? StudyUnitMO }.map { .initFromMO(from: $0) }.sorted(by: { $0.createdAt < $1.createdAt })
     }
     
-    func insertUnit(in set: StudySet,
+    public func insertUnit(in set: StudySet,
                     type: UnitType,
                     kanjiText: String,
                     meaningText: String) throws -> StudyUnit {
@@ -194,7 +194,7 @@ class CoreDataService {
         }
     }
     
-    func editUnit(of unit: StudyUnit,
+    public func editUnit(of unit: StudyUnit,
                     type: UnitType,
                     kanjiText: String,
                     kanjiImageID: String? = nil,
@@ -234,7 +234,7 @@ class CoreDataService {
         }
     }
     
-    func addExistingUnit(set: StudySet, unit: StudyUnit) throws -> StudyUnit {
+    public func addExistingUnit(set: StudySet, unit: StudyUnit) throws -> StudyUnit {
         guard let mo = try context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -258,7 +258,7 @@ class CoreDataService {
     }
     
     // API for pagination
-    func fetchAllKanjis(after: Kanji?) throws -> [Kanji] {
+    public func fetchAllKanjis(after: Kanji?, pageSize: Int) throws -> [Kanji] {
         let fetchRequest = StudyKanjiMO.fetchRequest()
         var predicates = [NSPredicate]()
         if let after = after {
@@ -268,7 +268,7 @@ class CoreDataService {
         fetchRequest.predicate = compoundPredicate
         let sortDescriptor = NSSortDescriptor(key: "createdAt", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchRequest.fetchLimit = KanjiList.NUMBER_OF_KANJI_IN_A_PAGE
+        fetchRequest.fetchLimit = pageSize
         
         do {
             return try context.fetch(fetchRequest).map { .initFromMO(from: $0) }
@@ -278,7 +278,7 @@ class CoreDataService {
         }
     }
     
-    func fetchKanjis(usedIn unit: StudyUnit) throws -> [Kanji] {
+    public func fetchKanjis(usedIn unit: StudyUnit) throws -> [Kanji] {
         guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -308,7 +308,7 @@ class CoreDataService {
         return result
     }
     
-    func fetchKanjis(query: String) throws -> [Kanji] {
+    public func fetchKanjis(query: String) throws -> [Kanji] {
         let fetchRequest: NSFetchRequest<StudyKanjiMO> = StudyKanjiMO.fetchRequest()
         
         let kanjiPredicate = NSPredicate(format: "kanji CONTAINS[cd] %@", query)
@@ -325,7 +325,7 @@ class CoreDataService {
         }
     }
     
-    func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
+    public func fetchSampleUnit(ofKanji kanji: Kanji) throws -> [StudyUnit] {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -338,7 +338,7 @@ class CoreDataService {
         return samples.compactMap { $0 as? StudyUnitMO }.map { .initFromMO(from: $0) }
     }
     
-    func editKanji(kanji: Kanji, input: StudyKanjiInput) throws -> Kanji {
+    public func editKanji(kanji: Kanji, input: StudyKanjiInput) throws -> Kanji {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -359,7 +359,7 @@ class CoreDataService {
         
     }
     
-    func updateStudyState(unit: StudyUnit, newState: StudyState) throws {
+    public func updateStudyState(unit: StudyUnit, newState: StudyState) throws {
         guard let mo = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -376,7 +376,7 @@ class CoreDataService {
         }
     }
     
-    func moveUnits(units: [StudyUnit], from: StudySet, to: StudySet) throws {
+    public func moveUnits(units: [StudyUnit], from: StudySet, to: StudySet) throws {
         guard let fromSetMO = try? context.existingObject(with: from.objectID) as? StudySetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
@@ -404,7 +404,7 @@ class CoreDataService {
         
     }
     
-    func deleteUnit(unit: StudyUnit, from set: StudySet) throws {
+    public func deleteUnit(unit: StudyUnit, from set: StudySet) throws {
         guard let unitMO = try? context.existingObject(with: unit.objectID) as? StudyUnitMO else {
             print("디버그: objectID로 unit 찾을 수 없음")
             throw AppError.coreData
@@ -460,7 +460,7 @@ class CoreDataService {
 
 extension CoreDataService {
     
-    func insertKanjiSet(title: String, isAutoSchedule: Bool) throws -> KanjiSet {
+    public func insertKanjiSet(title: String, isAutoSchedule: Bool) throws -> KanjiSet {
         guard let mo = NSEntityDescription.insertNewObject(forEntityName: "StudyKanjiSet", into: context) as? StudyKanjiSetMO else {
             print("디버그: StudyKanjiSetMO 객체를 만들 수 없음")
             throw AppError.coreData
@@ -489,7 +489,7 @@ extension CoreDataService {
         }
     }
     
-    func fetchKanjiSets(includeClosed: Bool = false) throws -> [KanjiSet] {
+    public func fetchKanjiSets(includeClosed: Bool = false) throws -> [KanjiSet] {
         let fetchRequest: NSFetchRequest<StudyKanjiSetMO> = StudyKanjiSetMO.fetchRequest()
         let createdAtDesc = NSSortDescriptor(key: "createdAt", ascending: false)
         fetchRequest.sortDescriptors = [createdAtDesc]
@@ -514,7 +514,7 @@ extension CoreDataService {
         }
     }
     
-    func updateStudyState(kanji: Kanji, newState: StudyState) throws {
+    public func updateStudyState(kanji: Kanji, newState: StudyState) throws {
         guard let mo = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 kanji 찾을 수 없음")
             throw AppError.coreData
@@ -531,7 +531,7 @@ extension CoreDataService {
         }
     }
     
-    func fetchKanjis(kanjiSet: KanjiSet) throws -> [Kanji] {
+    public func fetchKanjis(kanjiSet: KanjiSet) throws -> [Kanji] {
         guard let set = try? context.existingObject(with: kanjiSet.objectID) as? StudyKanjiSetMO else {
             print("디버그: objectID로 set 찾을 수 없음")
             throw AppError.coreData
@@ -548,7 +548,7 @@ extension CoreDataService {
             .sorted(by: { $0.createdAt < $1.createdAt })
     }
     
-    func insertKanji(_ kanji: Kanji, in set: KanjiSet) throws -> KanjiSet {
+    public func insertKanji(_ kanji: Kanji, in set: KanjiSet) throws -> KanjiSet {
         guard let kanjiMO = try? context.existingObject(with: kanji.objectID) as? StudyKanjiMO else {
             print("디버그: objectID로 kanji 찾을 수 없음")
             throw AppError.coreData

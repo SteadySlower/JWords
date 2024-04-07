@@ -58,8 +58,6 @@ struct StudyOneUnit {
         case showKanjis
     }
     
-    private let cd = CoreDataService.shared
-    
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {

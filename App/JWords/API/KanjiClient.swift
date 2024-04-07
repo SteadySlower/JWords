@@ -8,10 +8,11 @@
 import ComposableArchitecture
 import XCTestDynamicOverlay
 import Model
+import CoreDataKit
 
 struct KanjiClient {
     private static let cd = CoreDataService.shared
-    var fetch: (Kanji?) throws -> [Kanji]
+    var fetch: (Kanji?, Int) throws -> [Kanji]
     var unitKanjis: (StudyUnit) throws -> [Kanji]
     var kanjiUnits: (Kanji) throws -> [StudyUnit]
     var edit: (Kanji, StudyKanjiInput) throws -> Kanji
@@ -27,8 +28,8 @@ extension DependencyValues {
 
 extension KanjiClient: DependencyKey {
   static let liveValue = KanjiClient(
-    fetch: { kanji in
-        try cd.fetchAllKanjis(after: kanji)
+    fetch: { kanji, pageSize in
+        try cd.fetchAllKanjis(after: kanji, pageSize: pageSize)
     },
     unitKanjis: { unit in
         try cd.fetchKanjis(usedIn: unit)
@@ -47,7 +48,7 @@ extension KanjiClient: DependencyKey {
 
 extension KanjiClient: TestDependencyKey {
   static let previewValue = Self(
-    fetch: { _ in .mock },
+    fetch: { _, _ in .mock },
     unitKanjis: { _ in .mock },
     kanjiUnits: { _ in .mock },
     edit: { _, _ in .init(index: 0) },
