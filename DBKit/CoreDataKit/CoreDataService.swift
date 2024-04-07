@@ -20,7 +20,11 @@ public class CoreDataService {
     private let kw = KanjiWikiService.shared
     
     init() {
-        let container = NSPersistentCloudKitContainer(name: "jwords")
+        let bundle = Bundle(for: CoreDataService.self)
+        let model = bundle
+            .url(forResource: "jwords", withExtension: "momd")
+            .flatMap { NSManagedObjectModel(contentsOf: $0) }!
+        let container = NSPersistentCloudKitContainer(name: "jwords", managedObjectModel: model)
         container.persistentStoreDescriptions.first!.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         container.viewContext.automaticallyMergesChangesFromParent = true
