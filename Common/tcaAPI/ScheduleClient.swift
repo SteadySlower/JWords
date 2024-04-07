@@ -11,27 +11,27 @@ import XCTestDynamicOverlay
 import Model
 import UserDefaultKit
 
-struct ScheduleClient {
+public struct ScheduleClient {
     private static let kv = KeyValueStoreService.shared
-    var study: ([StudySet]) -> [StudySet]
-    var review: ([StudySet]) -> [StudySet]
-    var updateStudy: ([StudySet]) -> [StudySet]
-    var updateReview: ([StudySet]) -> [StudySet]
-    var clear: () -> Void
-    var autoSet: ([StudySet]) -> Void
-    var reviewed: (StudySet) -> Void
-    var isReview: (StudySet) -> Bool
+    public var study: ([StudySet]) -> [StudySet]
+    public var review: ([StudySet]) -> [StudySet]
+    public var updateStudy: ([StudySet]) -> [StudySet]
+    public var updateReview: ([StudySet]) -> [StudySet]
+    public var clear: () -> Void
+    public var autoSet: ([StudySet]) -> Void
+    public var reviewed: (StudySet) -> Void
+    public var isReview: (StudySet) -> Bool
 }
 
 extension DependencyValues {
-  var scheduleClient: ScheduleClient {
+    public var scheduleClient: ScheduleClient {
     get { self[ScheduleClient.self] }
     set { self[ScheduleClient.self] = newValue }
   }
 }
 
 extension ScheduleClient: DependencyKey {
-  static let liveValue = ScheduleClient(
+    public static let liveValue = ScheduleClient(
     study: { sets in
         let studyIDs = kv.arrayOfString(for: .studySets)
         return sets.filter { studyIDs.contains($0.id) }
@@ -69,10 +69,22 @@ extension ScheduleClient: DependencyKey {
         return reviewIDs.contains(set.id)
     }
   )
+    
 }
 
 extension ScheduleClient: TestDependencyKey {
-  static let previewValue = Self(
+    public static let previewValue = Self(
+    study: { _ in .mock },
+    review: { _ in .mock },
+    updateStudy: { _ in .mock },
+    updateReview: { _ in .mock },
+    clear: { },
+    autoSet: { _ in },
+    reviewed: { _ in },
+    isReview: { _ in false }
+  )
+    
+    public static let testValue: ScheduleClient = Self(
     study: { _ in .mock },
     review: { _ in .mock },
     updateStudy: { _ in .mock },

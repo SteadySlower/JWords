@@ -10,6 +10,7 @@ import SwiftUI
 import HuriConverter
 import HuriView
 import CommonUI
+import tcaAPI
 
 @Reducer
 struct KanjiInput {

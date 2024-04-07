@@ -14,21 +14,21 @@ import AppKit
 #endif
 import Model
 
-struct UtilClient {
-    var filterOnlyFailUnits: ([StudyUnit]) -> [StudyUnit]
-    var shuffleUnits: ([StudyUnit]) -> [StudyUnit]
-    var resizeImage: (InputImageType) -> InputImageType?
+public struct UtilClient {
+    public var filterOnlyFailUnits: ([StudyUnit]) -> [StudyUnit]
+    public var shuffleUnits: ([StudyUnit]) -> [StudyUnit]
+    public var resizeImage: (InputImageType, CGFloat) -> InputImageType?
 }
 
 extension DependencyValues {
-  var utilClient: UtilClient {
+    public var utilClient: UtilClient {
     get { self[UtilClient.self] }
     set { self[UtilClient.self] = newValue }
   }
 }
 
 extension UtilClient: DependencyKey {
-  static let liveValue = UtilClient(
+    public static let liveValue = UtilClient(
     filterOnlyFailUnits: { units in
         units
             .filter { $0.studyState != .success }
@@ -38,9 +38,9 @@ extension UtilClient: DependencyKey {
     shuffleUnits: { units in
         units.shuffled()
     },
-    resizeImage: { image in
+    resizeImage: { image, deviceWidth in
         // Calculate Size
-        let newWidth = Constants.Size.deviceWidth - 10
+        let newWidth = deviceWidth - 10
         let newHeight = newWidth * (image.size.height / image.size.width)
         let newSize = CGSize(width: newWidth, height: newHeight)
         
@@ -73,6 +73,7 @@ extension UtilClient: DependencyKey {
          #endif
     }
   )
+    
 }
 
 extension UtilClient: TestDependencyKey {
@@ -85,10 +86,16 @@ extension UtilClient: TestDependencyKey {
         #endif
     }
     
-  static let previewValue = Self(
+    public static let previewValue = Self(
     filterOnlyFailUnits: { _ in .mock },
     shuffleUnits: { _ in .mock },
-    resizeImage: { _ in sampleImage }
+    resizeImage: { _,_  in sampleImage }
+  )
+    
+    public static let testValue: UtilClient = Self(
+    filterOnlyFailUnits: { _ in .mock },
+    shuffleUnits: { _ in .mock },
+    resizeImage: { _,_  in sampleImage }
   )
 }
 

@@ -11,22 +11,22 @@ import XCTestDynamicOverlay
 import Model
 import CoreDataKit
 
-struct KanjiSetClient {
+public struct KanjiSetClient {
     private static let cd = CoreDataService.shared
-    var insert: (String) throws -> KanjiSet
-    var fetch: () throws -> [KanjiSet]
-    var addKanji: (Kanji, KanjiSet) throws -> KanjiSet
+    public var insert: (String) throws -> KanjiSet
+    public var fetch: () throws -> [KanjiSet]
+    public var addKanji: (Kanji, KanjiSet) throws -> KanjiSet
 }
 
 extension DependencyValues {
-  var kanjiSetClient: KanjiSetClient {
+    public var kanjiSetClient: KanjiSetClient {
     get { self[KanjiSetClient.self] }
     set { self[KanjiSetClient.self] = newValue }
   }
 }
 
 extension KanjiSetClient: DependencyKey {
-  static let liveValue = KanjiSetClient(
+    public static let liveValue = KanjiSetClient(
     insert: { title in
         try cd.insertKanjiSet(title: title, isAutoSchedule: true)
     },
@@ -37,10 +37,17 @@ extension KanjiSetClient: DependencyKey {
         try cd.insertKanji(kanji, in: set)
     }
   )
+    
 }
 
 extension KanjiSetClient: TestDependencyKey {
-  static let previewValue = Self(
+    public static let previewValue = Self(
+    insert: { title in .init(title: title, createdAt: Date(), closed: false) },
+    fetch: { .mock },
+    addKanji: { _, set in set }
+  )
+    
+    public static let testValue: KanjiSetClient = Self(
     insert: { title in .init(title: title, createdAt: Date(), closed: false) },
     fetch: { .mock },
     addKanji: { _, set in set }

@@ -10,28 +10,33 @@ import XCTestDynamicOverlay
 import Model
 import OCRKit
 
-struct OCRClient {
+public struct OCRClient {
     private static let ocr = OCRService.shared
-    var ocr: @Sendable (InputImageType, OCRLang) async throws -> [OCRResult]
+    public var ocr: @Sendable (InputImageType, OCRLang) async throws -> [OCRResult]
 }
 
 extension DependencyValues {
-  var ocrClient: OCRClient {
+    public var ocrClient: OCRClient {
     get { self[OCRClient.self] }
     set { self[OCRClient.self] = newValue }
   }
 }
 
 extension OCRClient: DependencyKey {
-  static let liveValue = OCRClient(
+    public static let liveValue = OCRClient(
     ocr: { image, lang in
         try await ocr.ocr(from: image, lang: lang)
     }
   )
+    
 }
 
 extension OCRClient: TestDependencyKey {
-  static let previewValue = Self(
+    public static let previewValue = Self(
+    ocr: { _, _ in [] }
+  )
+    
+    public static let testValue: OCRClient = Self(
     ocr: { _, _ in [] }
   )
 }
