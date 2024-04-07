@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreData
-import Huri
+import HuriConverter
 import Model
 
 class CoreDataService {

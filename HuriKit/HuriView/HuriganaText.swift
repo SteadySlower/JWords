@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Huri
+import HuriConverter
 
 public struct HuriganaText: View {
     private let huris: [Huri]

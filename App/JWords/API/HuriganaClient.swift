@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 import XCTestDynamicOverlay
-import Huri
+import HuriConverter
 
 struct HuriganaClient {
     private static let converter = HuriganaConverter()
