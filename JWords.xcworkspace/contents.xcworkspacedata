@@ -2,10 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:DBKit/DBKit.xcodeproj">
+      location = "group:README.md">
    </FileRef>
    <FileRef
-      location = "group:README.md">
+      location = "group:DeviceKit/DeviceKit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:DBKit/DBKit.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:HuriKit/HuriKit.xcodeproj">

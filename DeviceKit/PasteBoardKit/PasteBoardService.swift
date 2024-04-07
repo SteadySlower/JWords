@@ -14,12 +14,9 @@ typealias PasteBoard = NSPasteboard
 #endif
 import Model
 
-protocol PasteBoardService {
-    func fetchImage() -> InputImageType?
-    func fetchText() -> String?
-}
-
-class PasteBoardServiceImpl: PasteBoardService {
+public class PasteBoardService {
+    
+    public static let shared = PasteBoardService()
     
     private let pb: PasteBoard
     
@@ -27,7 +24,7 @@ class PasteBoardServiceImpl: PasteBoardService {
         self.pb = pb
     }
     
-    func fetchImage() -> InputImageType? {
+    public func fetchImage() -> InputImageType? {
         #if os(iOS)
         pb.image
         #elseif os(macOS)
@@ -37,11 +34,20 @@ class PasteBoardServiceImpl: PasteBoardService {
         #endif
     }
     
-    func fetchText() -> String? {
+    public func fetchText() -> String? {
         #if os(iOS)
         return pb.string
         #elseif os(macOS)
         return pb.string(forType: .string)
+        #endif
+    }
+    
+    public func copyText(_ text: String) {
+        #if os(iOS)
+        pb.string = text
+        #elseif os(macOS)
+        pb.clearContents()
+        pb.writeObjects([text as NSPasteboardWriting])
         #endif
     }
     

@@ -14,10 +14,10 @@ import Cocoa
 import Model
 import ErrorKit
 
-enum OCRLang {
+public enum OCRLang {
     case korean, japanese
     
-    var recognitionLanguage: String {
+    public var recognitionLanguage: String {
         switch self {
         case .korean:
             return "ko"
@@ -27,10 +27,10 @@ enum OCRLang {
     }
 }
 
-struct OCRResult: Identifiable, Equatable {
-    let id: String
-    let string: String
-    let position: CGRect
+public struct OCRResult: Identifiable, Equatable {
+    public let id: String
+    public let string: String
+    public let position: CGRect
     
     init(string: String, position: CGRect) {
         self.id = "\(string)\(position.minX)\(position.minY)\(position.width)\(position.height)"
@@ -41,9 +41,9 @@ struct OCRResult: Identifiable, Equatable {
     static let empty: Self = .init(string: "", position: .zero)
 }
 
-final class OCRService {
+public final class OCRService {
     
-    static let shared = OCRService()
+    public static let shared = OCRService()
     
     private func ocr(from image: InputImageType, lang: OCRLang, completionHandler: @escaping ([OCRResult], AppError?) -> Void) {
         
@@ -98,7 +98,7 @@ final class OCRService {
         }
     }
     
-    func ocr(from image: InputImageType, lang: OCRLang) async throws -> [OCRResult] {
+    public func ocr(from image: InputImageType, lang: OCRLang) async throws -> [OCRResult] {
         return try await withCheckedThrowingContinuation { continuation in
             ocr(from: image, lang: lang) { rects, error in
                 if let error = error {

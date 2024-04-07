@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import XCTestDynamicOverlay
 import Model
+import OCRKit
 
 struct OCRClient {
     private static let ocr = OCRService.shared

@@ -13,9 +13,10 @@ import AppKit
 #endif
 import XCTestDynamicOverlay
 import Model
+import PasteBoardKit
 
 struct PasteBoardClient {
-    private static let pb = PasteBoard.general
+    private static let pbService = PasteBoardService.shared
     var fetchImage: () -> InputImageType?
     var copyString: (String) -> Void
 }
@@ -30,21 +31,10 @@ extension DependencyValues {
 extension PasteBoardClient: DependencyKey {
   static let liveValue = PasteBoardClient(
     fetchImage: {
-        #if os(iOS)
-        pb.image
-        #elseif os(macOS)
-        let type = PasteBoard.PasteboardType.tiff
-        guard let imgData = pb.data(forType: type) else { return nil }
-        return InputImageType(data: imgData)
-        #endif
+        pbService.fetchImage()
     },
-    copyString: { string in
-        #if os(iOS)
-        pb.string = string
-        #elseif os(macOS)
-        pb.clearContents()
-        pb.writeObjects([string as NSPasteboardWriting])
-        #endif
+    copyString: { text in
+        pbService.copyText(text)
     }
   )
 }
