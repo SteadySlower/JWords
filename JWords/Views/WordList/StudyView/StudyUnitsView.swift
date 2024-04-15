@@ -9,7 +9,8 @@ import ComposableArchitecture
 import SwiftUI
 import Model
 import CommonUI
-import tcaAPI
+import UtilClient
+import HuriganaClient
 
 @Reducer
 struct StudyUnits {

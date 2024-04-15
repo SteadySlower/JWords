@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Model
-import tcaAPI
+import KanjiClient
 
 @Reducer
 struct SearchKanji {

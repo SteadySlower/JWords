@@ -10,7 +10,8 @@ import Combine
 import ComposableArchitecture
 import Model
 import CommonUI
-import tcaAPI
+import StudyUnitClient
+import KanjiClient
 
 @Reducer
 struct StudyOneUnit {

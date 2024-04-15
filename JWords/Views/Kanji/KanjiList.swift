@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 import Model
-import tcaAPI
+import KanjiClient
+import KanjiSetClient
 
 private let NUMBER_OF_KANJI_IN_A_PAGE = 20
 

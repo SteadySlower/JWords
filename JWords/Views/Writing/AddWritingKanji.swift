@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 import Model
 import CommonUI
-import tcaAPI
+import KanjiSetClient
 
 @Reducer
 struct AddWritingKanji {

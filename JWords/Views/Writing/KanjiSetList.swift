@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 import Model
-import tcaAPI
+import KanjiSetClient
+import WritingKanjiClient
 
 @Reducer
 struct KanjiSetList {

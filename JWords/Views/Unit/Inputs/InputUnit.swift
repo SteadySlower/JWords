@@ -9,7 +9,8 @@ import ComposableArchitecture
 import SwiftUI
 import Model
 import CommonUI
-import tcaAPI
+import StudyUnitClient
+import HuriganaClient
 
 enum UnitInputField {
     case kanji, meaning

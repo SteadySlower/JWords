@@ -7,7 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
-import tcaAPI
+import KanjiClient
 
 @Reducer
 struct KanjiCoordinator {

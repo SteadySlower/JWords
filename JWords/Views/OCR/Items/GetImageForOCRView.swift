@@ -8,7 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 import Model
-import tcaAPI
+import PasteBoardClient
+import UtilClient
 
 private enum ImageSource {
     case clipboard, camera

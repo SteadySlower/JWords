@@ -10,7 +10,8 @@ import SwiftUI
 import HuriConverter
 import Model
 import CommonUI
-import tcaAPI
+import StudyUnitClient
+import HuriganaClient
 
 @Reducer
 struct EditUnit {

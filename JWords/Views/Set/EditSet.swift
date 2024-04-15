@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 import Model
 import CommonUI
-import tcaAPI
+import StudySetClient
 
 @Reducer
 struct EditSet {
