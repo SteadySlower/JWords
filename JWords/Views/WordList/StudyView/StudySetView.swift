@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 import Model
-import CommonUI
+import SideBar
 import ScheduleClient
 import UtilClient
 import HuriganaClient

@@ -7,7 +7,22 @@
 
 import SwiftUI
 
-// MARK: SideBar
+public extension View {
+    func sideBar<Content: View>(
+        deviceWidth: CGFloat,
+        showSideBar: Binding<Bool>,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        ZStack {
+            self
+            SideBar(
+                deviceWidth: deviceWidth,
+                showSideBar: showSideBar,
+                content: content
+            )
+        }
+    }
+}
 
 private struct SideBar<Content: View>: View {
     
@@ -61,23 +76,4 @@ private struct SideBar<Content: View>: View {
             showSideBar = false
         }
     }
-}
-
-public extension View {
-    
-    func sideBar<Content: View>(
-        deviceWidth: CGFloat,
-        showSideBar: Binding<Bool>,
-        @ViewBuilder content: @escaping () -> Content
-    ) -> some View {
-        ZStack {
-            self
-            SideBar(
-                deviceWidth: deviceWidth,
-                showSideBar: showSideBar,
-                content: content
-            )
-        }
-    }
-
 }

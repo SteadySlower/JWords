@@ -10,12 +10,20 @@ let package = Package(
         .library(
             name: "CommonUI",
             targets: ["CommonUI"]
-        )
+        ),
+        .library(
+            name: "SideBar",
+            targets: ["SideBar"]
+        ),
     ],
     targets: [
         .target(
             name: "CommonUI",
             path: "Sources/CommonUI"
+        ),
+        .target(
+            name: "SideBar",
+            path: "Sources/SideBar"
         )
     ]
 )
