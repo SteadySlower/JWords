@@ -12,13 +12,23 @@ import StudyUnitClient
 
 @Reducer
 public struct HomeList {
+    
+    public init() {}
+    
     @ObservableState
-    struct State: Equatable {
+    public struct State: Equatable {
         var sets: [StudySet] = []
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
         @Presents var destination: Destination.State?
+        
+        public init() {
+            self.sets = []
+            self.isLoading = false
+            self.includeClosed = false
+            self.destination = nil
+        }
         
         mutating func clear() {
             sets = []
@@ -27,11 +37,11 @@ public struct HomeList {
     }
     
     @Reducer(state: .equatable, action: .equatable)
-    enum Destination {
+    public enum Destination {
         case addSet(AddSet)
     }
     
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case fetchSets
         case toStudySet(StudySet)
         case setIncludeClosed(Bool)

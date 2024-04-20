@@ -48,6 +48,7 @@ let package = Package(
         .target(
             name: "AdView",
             dependencies: [
+                .target(name: "CommonUI"),
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads")
             ],
             path: "Sources/AdView"

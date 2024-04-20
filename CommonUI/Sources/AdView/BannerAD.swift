@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CommonUI
 
 public extension View {
     func withBannerAD() -> some View {
@@ -25,8 +26,8 @@ private struct AddBannerViewModifier: ViewModifier {
     private let adWidth: CGFloat
     
     init() {
-        let deviceWidth = Constants.Size.deviceWidth
-        let deviceHeight = Constants.Size.deviceHeight
+        let deviceWidth = DEVICE_WIDTH
+        let deviceHeight = DEVICE_HEIGHT
         self.adWidth = deviceWidth < deviceHeight ? deviceWidth : deviceHeight
     }
     
