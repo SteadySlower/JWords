@@ -6,18 +6,16 @@
 //
 
 import SwiftUI
-import ComposableArchitecture
 import Model
 import CommonUI
 
-struct SetCell: View {
+public struct SetCell: View {
     private let title: String
     private let schedule: SetSchedule
     private let dayFromToday: Int
     private let onTapped: () -> Void
-    private let cellWidth = Constants.Size.deviceWidth * 0.9
     
-    init(
+    public init(
         title: String,
         schedule: SetSchedule,
         dayFromToday: Int,
@@ -29,7 +27,7 @@ struct SetCell: View {
         self.onTapped = onTapped
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             Button {
                 onTapped()

@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Model
 import KanjiSetClient
 import WritingKanjiClient
+import Cells
 
 @Reducer
 struct KanjiSetList {
