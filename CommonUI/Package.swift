@@ -22,11 +22,17 @@ let package = Package(
         .library(
             name: "AdView",
             targets: ["AdView"]
+        ),
+        .library(
+            name: "Sheets",
+            targets: ["Sheets"]
         )
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads", .upToNextMajor(from: "11.3.0"))
+        .package(path: "../Clients"),
+        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads", .upToNextMajor(from: "11.3.0")),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", exact: "1.9.2")
     ],
     targets: [
         .target(
@@ -52,6 +58,16 @@ let package = Package(
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads")
             ],
             path: "Sources/AdView"
+        ),
+        .target(
+            name: "Sheets",
+            dependencies: [
+                .target(name: "CommonUI"),
+                .product(name: "Model", package: "Core"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "StudySetClient", package: "Clients")
+            ],
+            path: "Sources/Sheets"
         )
     ]
 )
