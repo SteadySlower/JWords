@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ComposableArchitecture
-import WritingKanjiClient
 
 @Reducer
 struct WritingCoordinator {

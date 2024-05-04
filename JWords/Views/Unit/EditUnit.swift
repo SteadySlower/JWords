@@ -7,11 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
-import HuriConverter
-import Model
-import CommonUI
-import StudyUnitClient
-import HuriganaClient
+import Huri
 
 @Reducer
 struct EditUnit {

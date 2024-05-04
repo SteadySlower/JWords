@@ -7,9 +7,6 @@
 
 import SwiftUI
 import ComposableArchitecture
-import Model
-import PasteBoardClient
-import UtilClient
 
 private enum ImageSource {
     case clipboard, camera
@@ -58,14 +55,14 @@ struct GetImageForOCR {
             case .getImageFromClipboard:
                 guard
                     let fetchedImage = pasteBoardClient.fetchImage(),
-                    let resized = utilClient.resizeImage(fetchedImage, Constants.Size.deviceWidth)
+                    let resized = utilClient.resizeImage(fetchedImage)
                 else { return .none }
                 return .send(.imageFetched(resized))
             case .getImageFromCamera:
                 state.destination = .cameraScanner(.init())
                 return .none
             case .destination(.presented(.cameraScanner(.imageSelected(let image)))):
-                guard let resized = utilClient.resizeImage(image, Constants.Size.deviceWidth) else { return .none }
+                guard let resized = utilClient.resizeImage(image) else { return .none }
                 return .send(.imageFetched(resized))
             default: break
             }

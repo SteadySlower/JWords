@@ -7,8 +7,6 @@
 
 import ComposableArchitecture
 import SwiftUI
-import Model
-import CommonUI
 
 @Reducer
 struct TodayStatus {

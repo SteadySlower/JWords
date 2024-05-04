@@ -7,11 +7,6 @@
 
 import SwiftUI
 import ComposableArchitecture
-import Model
-import CommonUI
-import ScheduleClient
-import StudySetClient
-import StudyUnitClient
 
 @Reducer
 struct MoveUnits {

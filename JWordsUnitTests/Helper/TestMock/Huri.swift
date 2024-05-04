@@ -7,7 +7,7 @@
 
 import Foundation
 @testable import JWords
-import HuriConverter
+import Huri
 
 extension Huri {
     static var testMock: Self {

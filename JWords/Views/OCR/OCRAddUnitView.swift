@@ -7,8 +7,6 @@
 
 import SwiftUI
 import ComposableArchitecture
-import CommonUI
-import AdView
 
 @Reducer
 struct AddUnitWithOCR {

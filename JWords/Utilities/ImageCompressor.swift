@@ -9,8 +9,6 @@ import Foundation
 #if os(macOS)
 import Cocoa
 #endif
-import Model
-import ErrorKit
 
 protocol ImageCompressor {
     func compressImageToJPEG(image: InputImageType) throws -> Data

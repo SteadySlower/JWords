@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import XCTest
 @testable import JWords
-import HuriConverter
+import Huri
 
 final class StudyUnitsTest: XCTestCase {
     

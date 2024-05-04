@@ -7,9 +7,6 @@
 
 import SwiftUI
 import ComposableArchitecture
-import Model
-import CommonUI
-import KanjiClient
 
 @Reducer
 struct EditKanji {

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Model
 @testable import JWords
 
 extension KanjiSet {

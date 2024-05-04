@@ -7,7 +7,6 @@
 
 import ComposableArchitecture
 import SwiftUI
-import Model
 
 @Reducer
 struct DeleteUnits {

@@ -7,8 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
-import HuriConverter
-import Model
+import Huri
 
 extension View {
     func withListModals(store: StoreOf<ShowModalsInList>) -> some View {
