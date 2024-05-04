@@ -7,6 +7,8 @@
 
 import ComposableArchitecture
 import SwiftUI
+import OCRKit
+import OCRClient
 
 @Reducer
 struct OCR {

@@ -7,6 +7,9 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Model
+import CommonUI
+import OCRKit
 
 @Reducer
 struct GetTextsFromOCR {

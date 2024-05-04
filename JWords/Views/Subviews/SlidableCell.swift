@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Model
+import CommonUI
 
 struct SlidableCell<V: View>: View {
     

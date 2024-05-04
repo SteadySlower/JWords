@@ -8,6 +8,10 @@
 import SwiftUI
 import Combine
 import ComposableArchitecture
+import Model
+import CommonUI
+import StudyUnitClient
+import KanjiClient
 
 @Reducer
 struct StudyOneUnit {
@@ -55,8 +59,6 @@ struct StudyOneUnit {
         case updateStudyState(StudyState)
         case showKanjis
     }
-    
-    private let cd = CoreDataService.shared
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -121,22 +123,25 @@ struct StudyCell: View {
         }
     }
     
+    @ViewBuilder
     private var showKanjisButton: some View {
-        VStack {
-            Spacer()
-            HStack {
+        if dragAmount == .zero && !store.isFront {
+            VStack {
                 Spacer()
-                Button {
-                    store.send(.showKanjis)
-                } label: {
-                    Text("漢 ") + Text(store.showKanjis ? "🔼" : "🔽")
+                HStack {
+                    Spacer()
+                    Button {
+                        store.send(.showKanjis)
+                    } label: {
+                        Text("漢 ") + Text(store.showKanjis ? "🔼" : "🔽")
+                    }
+                    .font(.system(size: 24))
+                    .padding([.bottom, .trailing], 8)
                 }
-                .font(.system(size: 24))
-                .padding([.bottom, .trailing], 8)
             }
+        } else {
+            EmptyView()
         }
-        .hide(dragAmount != .zero)
-        .hide(store.isFront)
     }
     
     private func kanjiCell(_ kanji: Kanji) -> some View {

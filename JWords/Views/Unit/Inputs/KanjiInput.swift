@@ -7,8 +7,10 @@
 
 import ComposableArchitecture
 import SwiftUI
-import Huri
+import HuriConverter
 import HuriView
+import CommonUI
+import HuriganaClient
 
 @Reducer
 struct KanjiInput {

@@ -7,6 +7,11 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Model
+import SideBar
+import ScheduleClient
+import UtilClient
+import HuriganaClient
 
 @Reducer
 struct StudyUnitsInSet {
@@ -129,7 +134,10 @@ struct StudySetView: View {
     
     var body: some View {
         AllLists(store: store.scope(state: \.lists, action: \.lists))
-        .sideBar(showSideBar: $store.showSideBar.sending(\.showSideBar)) {
+        .sideBar(
+            deviceWidth: Constants.Size.deviceWidth,
+            showSideBar: $store.showSideBar.sending(\.showSideBar)
+        ) {
             SettingSideBar(store: store.scope(state: \.setting, action: \.setting))
         }
         .withListModals(store: store.scope(state: \.modals, action: \.modals))

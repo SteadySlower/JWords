@@ -10,6 +10,7 @@ import SwiftUI
 #if os(iOS)
 import UIKit
 import ComposableArchitecture
+import Model
 
 @Reducer
 struct ScanWithCamera {

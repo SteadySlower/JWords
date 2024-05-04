@@ -7,11 +7,14 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Model
+import KanjiClient
+import KanjiSetClient
+
+private let NUMBER_OF_KANJI_IN_A_PAGE = 20
 
 @Reducer
 struct KanjiList {
-    // FIXME: move it to proper place
-    static let NUMBER_OF_KANJI_IN_A_PAGE = 20
     @ObservableState
     struct State: Equatable {
         var kanjis: IdentifiedArrayOf<DisplayKanji.State>
@@ -72,8 +75,8 @@ struct KanjiList {
     func fetchKanji(_ state: inout State) {
         guard !state.isSearching else { return }
         let last = state.kanjis.last?.kanji
-        let fetched = try! kanjiClient.fetch(last)
-        if fetched.count < KanjiList.NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
+        let fetched = try! kanjiClient.fetch(last, NUMBER_OF_KANJI_IN_A_PAGE)
+        if fetched.count < NUMBER_OF_KANJI_IN_A_PAGE { state.isLastPage = true }
         let idArrayOfFetched = fetched.map { DisplayKanji.State(kanji: $0) }
         state.kanjis.append(contentsOf: IdentifiedArray(uniqueElements: idArrayOfFetched))
     }

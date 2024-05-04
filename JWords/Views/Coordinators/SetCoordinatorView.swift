@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import StudyUnitClient
 
 @Reducer
 struct SetCoordinator {

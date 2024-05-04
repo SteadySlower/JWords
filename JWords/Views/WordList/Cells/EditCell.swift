@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import ComposableArchitecture
+import Model
 
 @Reducer
 struct ToEditUnit {

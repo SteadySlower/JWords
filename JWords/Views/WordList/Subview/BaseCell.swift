@@ -7,6 +7,7 @@
 
 import SwiftUI
 import HuriView
+import Model
 
 struct BaseCell: View {
     
