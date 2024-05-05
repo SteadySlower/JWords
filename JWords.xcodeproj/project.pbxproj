@@ -154,6 +154,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0634A4512BE7C6C7002F5D76 /* StudySet */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = StudySet; sourceTree = "<group>"; };
 		06B18B802BE6824B00F647B5 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		06B18B822BE6824B00F647B5 /* AppError+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppError+Extension.swift"; sourceTree = "<group>"; };
 		06B18B892BE6824B00F647B5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -653,6 +654,7 @@
 		06CEF23A2866F1C800A620CC = {
 			isa = PBXGroup;
 			children = (
+				0634A4512BE7C6C7002F5D76 /* StudySet */,
 				06B18C7B2BE6830900F647B5 /* Home */,
 				06B18C712BE682CC00F647B5 /* CommonUI */,
 				06B18C6F2BE682C600F647B5 /* Clients */,
