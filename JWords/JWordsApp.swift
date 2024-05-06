@@ -28,12 +28,13 @@ struct JWordsApp: App {
     var body: some Scene {
         WindowGroup {
             if !_XCTIsTesting {
-                MainTabView(
-                    store: Store(
-                        initialState: MainTab.State(),
-                        reducer: { MainTab()._printChanges() }
-                    )
-                )
+//                MainTabView(
+//                    store: Store(
+//                        initialState: MainTab.State(),
+//                        reducer: { MainTab()._printChanges() }
+//                    )
+//                )
+                ImageCropView()
             }
 
         }
