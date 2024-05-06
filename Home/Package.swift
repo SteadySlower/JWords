@@ -18,6 +18,7 @@ let package = Package(
         .package(path: "../Core"),
         .package(path: "../Clients"),
         .package(path: "../CommonUI"),
+        .package(path: "../Set"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", exact: "1.9.2")
     ],
     targets: [
@@ -30,7 +31,8 @@ let package = Package(
                 .product(name: "AdView", package: "CommonUI"),
                 .product(name: "Model", package: "Core"),
                 .product(name: "StudySetClient", package: "Clients"),
-                .product(name: "StudyUnitClient", package: "Clients")
+                .product(name: "StudyUnitClient", package: "Clients"),
+                .product(name: "StudySet", package: "Set")
             ],
             path: "Sources"
         )

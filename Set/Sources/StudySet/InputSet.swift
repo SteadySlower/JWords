@@ -12,13 +12,15 @@ import CommonSet
 import CommonUI
 
 @Reducer
-struct InputSet {
+public struct InputSet {
+    public init() {}
+    
     @ObservableState
-    struct State: Equatable {
-        var title: String
-        var frontType: FrontType
+    public struct State: Equatable {
+        public var title: String
+        public var frontType: FrontType
         
-        init(
+        public init(
             title: String = "",
             frontType: FrontType = .kanji
         ) {
@@ -27,12 +29,12 @@ struct InputSet {
         }
     }
     
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case setTitle(String)
         case setFrontType(FrontType)
     }
     
-    var body: some Reducer<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .setTitle(let title):
@@ -47,11 +49,15 @@ struct InputSet {
     
 }
 
-struct InputSetView: View {
+public struct InputSetView: View {
     
     @Bindable var store: StoreOf<InputSet>
     
-    var body: some View {
+    public init(store: StoreOf<InputSet>) {
+        self.store = store
+    }
+    
+    public var body: some View {
         VStack(spacing: 30) {
             VStack {
                 InputFieldTitle(title: "단어장 이름")
