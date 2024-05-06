@@ -10,24 +10,24 @@ import CoreDataKit
 import ComposableArchitecture
 import XCTestDynamicOverlay
 
-public struct StudySetClient {
+struct StudySetClient {
     private static let cd = CoreDataService.shared
-    public var insert: (StudySetInput) throws -> StudySet
-    public var update: (StudySet, StudySetInput) throws -> StudySet
-    public var close: (StudySet) throws -> Void
-    public var fetch: (Bool) throws -> [StudySet]
-    public var countUnits: (StudySet) throws -> Int
+    var insert: (StudySetInput) throws -> StudySet
+    var update: (StudySet, StudySetInput) throws -> StudySet
+    var close: (StudySet) throws -> Void
+    var fetch: (Bool) throws -> [StudySet]
+    var countUnits: (StudySet) throws -> Int
 }
 
 extension DependencyValues {
-    public var studySetClient: StudySetClient {
+    var studySetClient: StudySetClient {
         get { self[StudySetClient.self] }
         set { self[StudySetClient.self] = newValue }
     }
 }
 
 extension StudySetClient: DependencyKey {
-    public static let liveValue = StudySetClient(
+    static let liveValue = StudySetClient(
         insert: { input in
             return try cd.insertSet(
                 title: input.title,
@@ -56,14 +56,14 @@ extension StudySetClient: DependencyKey {
 }
 
 extension StudySetClient: TestDependencyKey {
-    public static let previewValue = Self(
+    static let previewValue = Self(
         insert: { input in .init(title: input.title) },
         update: { _, _ in return .init(index: 0) },
         close: { _ in },
         fetch: { _ in .mock },
         countUnits: { _ in Int.random(in: 0...100) }
     )
-    public static let testValue: StudySetClient = Self(
+    static let testValue: StudySetClient = Self(
         insert: { input in .init(title: input.title) },
         update: { _, _ in return .init(index: 0) },
         close: { _ in },
