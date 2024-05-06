@@ -42,8 +42,7 @@ let package = Package(
         .target(
             name: "Cells",
             dependencies: [
-                .target(name: "CommonUI"),
-                .product(name: "Model", package: "Core")
+                .target(name: "CommonUI")
             ],
             path: "Sources/Cells"
         ),
