@@ -32,6 +32,7 @@ let package = Package(
                 .target(name: "CommonSet"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "CommonUI", package: "CommonUI"),
+                .product(name: "Cells", package: "CommonUI"),
                 .product(name: "Model", package: "Core"),
                 .product(name: "CoreDataKit", package: "DBKit")
             ],

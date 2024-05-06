@@ -7,7 +7,6 @@
 
 import ComposableArchitecture
 import Model
-import StudySetClient
 
 @Reducer
 public struct AddSet {
