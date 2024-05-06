@@ -9,13 +9,16 @@ import SwiftUI
 import ComposableArchitecture
 import Model
 import CommonUI
-import Cells
 
-struct StudySetListView: View {
+public struct StudySetListView: View {
     
     @Bindable var store: StoreOf<StudySetList>
     
-    var body: some View {
+    public init(store: StoreOf<StudySetList>) {
+        self.store = store
+    }
+    
+    public var body: some View {
         VStack {
             Picker("닫힌 단어장", selection: $store.includeClosed.sending(\.setIncludeClosed)) {
                 Text("열린 단어장").tag(false)

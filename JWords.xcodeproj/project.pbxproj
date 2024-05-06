@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		062F7C6E2BE8E47300B4E9A0 /* StudySet in Frameworks */ = {isa = PBXBuildFile; productRef = 062F7C6D2BE8E47300B4E9A0 /* StudySet */; };
 		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
 		068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBF2B932D69008364B7 /* ComposableArchitecture */; };
 		06B18C082BE6824B00F647B5 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B18B802BE6824B00F647B5 /* Size.swift */; };
@@ -260,6 +261,7 @@
 				06B18C892BE6835500F647B5 /* ScheduleClient in Frameworks */,
 				06B18C8F2BE6835500F647B5 /* UtilClient in Frameworks */,
 				06B18C972BE6835500F647B5 /* CommonUI in Frameworks */,
+				062F7C6E2BE8E47300B4E9A0 /* StudySet in Frameworks */,
 				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				06B18C7F2BE6835500F647B5 /* HuriganaClient in Frameworks */,
 				06B18C912BE6835500F647B5 /* WritingKanjiClient in Frameworks */,
@@ -700,6 +702,7 @@
 				06B18CA82BE6835500F647B5 /* OCRKit */,
 				06B18CB02BE6835500F647B5 /* HuriView */,
 				06B18CC52BE68A4A00F647B5 /* Kingfisher */,
+				062F7C6D2BE8E47300B4E9A0 /* StudySet */,
 			);
 			productName = JWords;
 			productReference = 06B18CBE2BE6892C00F647B5 /* JWords.app */;
@@ -1395,6 +1398,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		062F7C6D2BE8E47300B4E9A0 /* StudySet */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StudySet;
+		};
 		064780522B9D6EFB00FDBCEF /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;

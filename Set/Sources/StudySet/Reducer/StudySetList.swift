@@ -15,8 +15,8 @@ public struct StudySetList {
     
     @ObservableState
     public struct State: Equatable {
-        var sets: [StudySet] = []
-        var isLoading: Bool = false
+        public var sets: [StudySet] = []
+        public var isLoading: Bool = false
         var includeClosed: Bool = false
         
         public init() {
@@ -25,7 +25,7 @@ public struct StudySetList {
             self.includeClosed = false
         }
         
-        mutating func clear() {
+        public mutating func clear() {
             sets = []
         }
     }
