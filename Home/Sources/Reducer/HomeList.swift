@@ -21,25 +21,25 @@ public struct HomeList {
         var isLoading: Bool = false
         var includeClosed: Bool = false
         
-//        @Presents var destination: Destination.State?
+        @Presents public var destination: Destination.State?
         
         public init() {
             self.sets = []
             self.isLoading = false
             self.includeClosed = false
-//            self.destination = nil
+            self.destination = nil
         }
         
         mutating func clear() {
             sets = []
-//            destination = nil
+            destination = nil
         }
     }
     
-//    @Reducer(state: .equatable, action: .equatable)
-//    public enum Destination {
-//        case addSet(AddSet)
-//    }
+    @Reducer(state: .equatable, action: .equatable)
+    public enum Destination {
+        case addSet(AddSet)
+    }
     
     public enum Action: Equatable {
         case fetchSets
@@ -47,7 +47,7 @@ public struct HomeList {
         case setIncludeClosed(Bool)
         case toAddSet
         
-//        case destination(PresentationAction<Destination.Action>)
+        case destination(PresentationAction<Destination.Action>)
     }
     
     @Dependency(StudySetClient.self) var setClient
@@ -61,16 +61,16 @@ public struct HomeList {
             case .setIncludeClosed(let bool):
                 state.includeClosed = bool
                 fetchSets(&state)
-//            case .toAddSet:
-//                state.destination = .addSet(.init())
-//            case .destination(.presented(.addSet(.added(let set)))):
-//                state.sets.insert(set, at: 0)
-//                state.destination = nil
+            case .toAddSet:
+                state.destination = .addSet(.init())
+            case .destination(.presented(.addSet(.added(let set)))):
+                state.sets.insert(set, at: 0)
+                state.destination = nil
             default: break
             }
             return .none
         }
-//        .ifLet(\.$destination, action: \.destination)
+        .ifLet(\.$destination, action: \.destination)
     }
     
     private func fetchSets(_ state: inout HomeList.State) {

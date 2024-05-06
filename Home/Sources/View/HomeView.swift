@@ -33,7 +33,7 @@ struct HomeView: View {
                             title: set.title,
                             dayFromToday: set.dayFromToday,
                             dateTextColor: set.schedule.labelColor,
-                            onTapped: {  }
+                            onTapped: { store.send(.toStudySet(set)) }
                         )
                     }
                 }
@@ -47,9 +47,9 @@ struct HomeView: View {
         #endif
         .loadingView(store.isLoading)
         .onAppear { store.send(.fetchSets) }
-//        .sheet(item: $store.scope(state: \.destination?.addSet, action: \.destination.addSet)) {
-//            AddSetView(store: $0)
-//        }
+        .sheet(item: $store.scope(state: \.destination?.addSet, action: \.destination.addSet)) {
+            AddSetView(store: $0)
+        }
         .toolbar {
             ToolbarItem {
                 Button {

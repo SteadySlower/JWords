@@ -11,9 +11,9 @@ import StudySet
 import StudySetClient
 
 @Reducer
-struct AddSet {
+public struct AddSet {
     @ObservableState
-    struct State: Equatable {
+    public struct State: Equatable {
         var inputSet: InputSet.State = .init()
         
         var ableToAdd: Bool {
@@ -21,7 +21,7 @@ struct AddSet {
         }
     }
     
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case inputSet(InputSet.Action)
         case add
         case cancel
@@ -31,7 +31,7 @@ struct AddSet {
     @Dependency(StudySetClient.self) var setClient
     @Dependency(\.dismiss) var dismiss
     
-    var body: some Reducer<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .add:
