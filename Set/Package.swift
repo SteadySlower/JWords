@@ -15,6 +15,7 @@ let package = Package(
     dependencies: [
         .package(path: "../CommonUI"),
         .package(path: "../Core"),
+        .package(path: "../DBKit"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", exact: "1.9.2")
     ],
     targets: [
@@ -31,7 +32,8 @@ let package = Package(
                 .target(name: "CommonSet"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "CommonUI", package: "CommonUI"),
-                .product(name: "Model", package: "Core")
+                .product(name: "Model", package: "Core"),
+                .product(name: "CoreDataKit", package: "DBKit")
             ],
             path: "Sources/StudySet"
         )
