@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		062F7C6E2BE8E47300B4E9A0 /* StudySet in Frameworks */ = {isa = PBXBuildFile; productRef = 062F7C6D2BE8E47300B4E9A0 /* StudySet */; };
 		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
 		068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBF2B932D69008364B7 /* ComposableArchitecture */; };
 		06B18C082BE6824B00F647B5 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B18B802BE6824B00F647B5 /* Size.swift */; };
@@ -96,18 +97,12 @@
 		06B18C932BE6835500F647B5 /* AdView in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C922BE6835500F647B5 /* AdView */; };
 		06B18C952BE6835500F647B5 /* Cells in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C942BE6835500F647B5 /* Cells */; };
 		06B18C972BE6835500F647B5 /* CommonUI in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C962BE6835500F647B5 /* CommonUI */; };
-		06B18C992BE6835500F647B5 /* Sheets in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C982BE6835500F647B5 /* Sheets */; };
 		06B18C9B2BE6835500F647B5 /* SideBar in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C9A2BE6835500F647B5 /* SideBar */; };
 		06B18C9D2BE6835500F647B5 /* ErrorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C9C2BE6835500F647B5 /* ErrorKit */; };
 		06B18C9F2BE6835500F647B5 /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C9E2BE6835500F647B5 /* Model */; };
 		06B18CA12BE6835500F647B5 /* Util in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA02BE6835500F647B5 /* Util */; };
-		06B18CA32BE6835500F647B5 /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA22BE6835500F647B5 /* CoreDataKit */; };
 		06B18CA52BE6835500F647B5 /* KanjiWiki in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA42BE6835500F647B5 /* KanjiWiki */; };
-		06B18CA72BE6835500F647B5 /* UserDefaultKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA62BE6835500F647B5 /* UserDefaultKit */; };
 		06B18CA92BE6835500F647B5 /* OCRKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA82BE6835500F647B5 /* OCRKit */; };
-		06B18CAB2BE6835500F647B5 /* PasteBoardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CAA2BE6835500F647B5 /* PasteBoardKit */; };
-		06B18CAD2BE6835500F647B5 /* Home in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CAC2BE6835500F647B5 /* Home */; };
-		06B18CAF2BE6835500F647B5 /* HuriConverter in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CAE2BE6835500F647B5 /* HuriConverter */; };
 		06B18CB12BE6835500F647B5 /* HuriView in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CB02BE6835500F647B5 /* HuriView */; };
 		06B18CB22BE6852300F647B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06B18BF42BE6824B00F647B5 /* Assets.xcassets */; };
 		06B18CB52BE6852F00F647B5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 06B18BFB2BE6824B00F647B5 /* Localizable.xcstrings */; };
@@ -241,10 +236,10 @@
 		06B18C6B2BE6829F00F647B5 /* DeviceKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DeviceKit; sourceTree = "<group>"; };
 		06B18C6F2BE682C600F647B5 /* Clients */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Clients; sourceTree = "<group>"; };
 		06B18C712BE682CC00F647B5 /* CommonUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CommonUI; sourceTree = "<group>"; };
-		06B18C7B2BE6830900F647B5 /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
 		06B18CBE2BE6892C00F647B5 /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06B18CC12BE6896900F647B5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		06B18CC22BE6896900F647B5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06B372022BE87D7E00E8BBC8 /* Set */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Set; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,30 +247,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06B18CAB2BE6835500F647B5 /* PasteBoardKit in Frameworks */,
 				06B18C932BE6835500F647B5 /* AdView in Frameworks */,
 				06B18C852BE6835500F647B5 /* OCRClient in Frameworks */,
 				06B18CA92BE6835500F647B5 /* OCRKit in Frameworks */,
 				06B18C9F2BE6835500F647B5 /* Model in Frameworks */,
-				06B18C992BE6835500F647B5 /* Sheets in Frameworks */,
 				06B18C952BE6835500F647B5 /* Cells in Frameworks */,
 				06B18C9B2BE6835500F647B5 /* SideBar in Frameworks */,
 				06B18CC62BE68A4A00F647B5 /* Kingfisher in Frameworks */,
 				06B18C872BE6835500F647B5 /* PasteBoardClient in Frameworks */,
-				06B18CAF2BE6835500F647B5 /* HuriConverter in Frameworks */,
 				06B18C9D2BE6835500F647B5 /* ErrorKit in Frameworks */,
 				06B18CA52BE6835500F647B5 /* KanjiWiki in Frameworks */,
 				06B18C892BE6835500F647B5 /* ScheduleClient in Frameworks */,
-				06B18CA72BE6835500F647B5 /* UserDefaultKit in Frameworks */,
 				06B18C8F2BE6835500F647B5 /* UtilClient in Frameworks */,
 				06B18C972BE6835500F647B5 /* CommonUI in Frameworks */,
+				062F7C6E2BE8E47300B4E9A0 /* StudySet in Frameworks */,
 				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				06B18C7F2BE6835500F647B5 /* HuriganaClient in Frameworks */,
-				06B18CAD2BE6835500F647B5 /* Home in Frameworks */,
 				06B18C912BE6835500F647B5 /* WritingKanjiClient in Frameworks */,
 				06B18CA12BE6835500F647B5 /* Util in Frameworks */,
 				06B18C832BE6835500F647B5 /* KanjiSetClient in Frameworks */,
-				06B18CA32BE6835500F647B5 /* CoreDataKit in Frameworks */,
 				068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */,
 				06B18C8D2BE6835500F647B5 /* StudyUnitClient in Frameworks */,
 				06B18C8B2BE6835500F647B5 /* StudySetClient in Frameworks */,
@@ -653,7 +643,7 @@
 		06CEF23A2866F1C800A620CC = {
 			isa = PBXGroup;
 			children = (
-				06B18C7B2BE6830900F647B5 /* Home */,
+				06B372022BE87D7E00E8BBC8 /* Set */,
 				06B18C712BE682CC00F647B5 /* CommonUI */,
 				06B18C6F2BE682C600F647B5 /* Clients */,
 				06B18C6B2BE6829F00F647B5 /* DeviceKit */,
@@ -702,20 +692,15 @@
 				06B18C922BE6835500F647B5 /* AdView */,
 				06B18C942BE6835500F647B5 /* Cells */,
 				06B18C962BE6835500F647B5 /* CommonUI */,
-				06B18C982BE6835500F647B5 /* Sheets */,
 				06B18C9A2BE6835500F647B5 /* SideBar */,
 				06B18C9C2BE6835500F647B5 /* ErrorKit */,
 				06B18C9E2BE6835500F647B5 /* Model */,
 				06B18CA02BE6835500F647B5 /* Util */,
-				06B18CA22BE6835500F647B5 /* CoreDataKit */,
 				06B18CA42BE6835500F647B5 /* KanjiWiki */,
-				06B18CA62BE6835500F647B5 /* UserDefaultKit */,
 				06B18CA82BE6835500F647B5 /* OCRKit */,
-				06B18CAA2BE6835500F647B5 /* PasteBoardKit */,
-				06B18CAC2BE6835500F647B5 /* Home */,
-				06B18CAE2BE6835500F647B5 /* HuriConverter */,
 				06B18CB02BE6835500F647B5 /* HuriView */,
 				06B18CC52BE68A4A00F647B5 /* Kingfisher */,
+				062F7C6D2BE8E47300B4E9A0 /* StudySet */,
 			);
 			productName = JWords;
 			productReference = 06B18CBE2BE6892C00F647B5 /* JWords.app */;
@@ -1411,6 +1396,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		062F7C6D2BE8E47300B4E9A0 /* StudySet */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StudySet;
+		};
 		064780522B9D6EFB00FDBCEF /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 06CEAC502AB6B71B007783F6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
@@ -1473,10 +1462,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CommonUI;
 		};
-		06B18C982BE6835500F647B5 /* Sheets */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Sheets;
-		};
 		06B18C9A2BE6835500F647B5 /* SideBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SideBar;
@@ -1493,33 +1478,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Util;
 		};
-		06B18CA22BE6835500F647B5 /* CoreDataKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoreDataKit;
-		};
 		06B18CA42BE6835500F647B5 /* KanjiWiki */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KanjiWiki;
 		};
-		06B18CA62BE6835500F647B5 /* UserDefaultKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = UserDefaultKit;
-		};
 		06B18CA82BE6835500F647B5 /* OCRKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OCRKit;
-		};
-		06B18CAA2BE6835500F647B5 /* PasteBoardKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = PasteBoardKit;
-		};
-		06B18CAC2BE6835500F647B5 /* Home */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Home;
-		};
-		06B18CAE2BE6835500F647B5 /* HuriConverter */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = HuriConverter;
 		};
 		06B18CB02BE6835500F647B5 /* HuriView */ = {
 			isa = XCSwiftPackageProductDependency;

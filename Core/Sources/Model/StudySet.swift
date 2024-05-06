@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import Util
+import SwiftUI
 
 public enum FrontType: Int, Equatable, Hashable, CaseIterable {
     case kanji
@@ -32,6 +33,14 @@ public enum FrontType: Int, Equatable, Hashable, CaseIterable {
 
 public enum SetSchedule: Equatable, CaseIterable {
     case none, study, review
+    
+    public var labelColor: Color {
+        switch self {
+        case .none: return .black
+        case .study: return .blue
+        case .review: return .pink
+        }
+    }
 }
 
 public struct StudySet: Equatable, Identifiable, Hashable {

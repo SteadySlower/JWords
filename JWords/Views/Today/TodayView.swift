@@ -139,8 +139,8 @@ struct TodayView: View {
                         ForEach(store.todayStatus.studySets, id: \.id) { set in
                             SetCell(
                                 title: set.title,
-                                schedule: set.schedule,
                                 dayFromToday: set.dayFromToday,
+                                dateTextColor: set.schedule.labelColor,
                                 onTapped: { store.send(.toStudySet(set)) }
                             )
                         }
@@ -154,8 +154,8 @@ struct TodayView: View {
                         ForEach(store.reviewSets, id: \.id) { reviewSet in
                             SetCell(
                                 title: reviewSet.title,
-                                schedule: reviewSet.schedule,
                                 dayFromToday: reviewSet.dayFromToday,
+                                dateTextColor: reviewSet.schedule.labelColor,
                                 onTapped: { store.send(.toStudySet(reviewSet)) }
                             )
                         }

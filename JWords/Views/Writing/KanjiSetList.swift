@@ -69,8 +69,8 @@ struct KanjiSetListView: View {
                 ForEach(store.sets, id: \.id) { set in
                     SetCell(
                         title: set.title,
-                        schedule: set.schedule,
                         dayFromToday: set.dayFromToday,
+                        dateTextColor: set.schedule.labelColor,
                         onTapped: { store.send(.setSelected(set)) }
                     )
                 }

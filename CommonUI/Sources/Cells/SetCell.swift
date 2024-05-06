@@ -6,24 +6,18 @@
 //
 
 import SwiftUI
-import Model
 import CommonUI
 
 public struct SetCell: View {
     private let title: String
-    private let schedule: SetSchedule
     private let dayFromToday: Int
+    private let dateTextColor: Color
     private let onTapped: () -> Void
     
-    public init(
-        title: String,
-        schedule: SetSchedule,
-        dayFromToday: Int,
-        onTapped: @escaping () -> Void
-    ) {
+    public init(title: String, dayFromToday: Int, dateTextColor: Color, onTapped: @escaping () -> Void) {
         self.title = title
-        self.schedule = schedule
         self.dayFromToday = dayFromToday
+        self.dateTextColor = dateTextColor
         self.onTapped = onTapped
     }
     
@@ -49,14 +43,6 @@ public struct SetCell: View {
         }
         .frame(height: 50)
         .defaultRectangleBackground()
-    }
-    
-    private var dateTextColor: Color {
-        switch schedule {
-        case .none: return .black
-        case .study: return .blue
-        case .review: return .pink
-        }
     }
     
     private var dateText: String {

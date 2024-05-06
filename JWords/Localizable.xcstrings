@@ -387,6 +387,7 @@
       }
     },
     "닫힌 단어장" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -519,6 +520,7 @@
       }
     },
     "열린 단어장" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

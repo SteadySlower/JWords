@@ -1,7 +1,7 @@
 import XCTest
-@testable import Home
+@testable import Set
 
-final class HomeTests: XCTestCase {
+final class SetTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
