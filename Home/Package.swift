@@ -10,8 +10,7 @@ let package = Package(
         .library(
             name: "Home",
             targets: [
-                "HomeView",
-                "HomeReducer"
+                "Home"
             ]
         ),
     ],
@@ -23,31 +22,17 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "HomeView",
+            name: "Home",
             dependencies: [
-                .target(name: "HomeReducer"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "CommonUI", package: "CommonUI"),
                 .product(name: "Cells", package: "CommonUI"),
-                .product(name: "AdView", package: "CommonUI")
-            ],
-            path: "Sources/View"
-        ),
-        .target(
-            name: "HomeReducer",
-            dependencies: [
-                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "AdView", package: "CommonUI"),
                 .product(name: "Model", package: "Core"),
                 .product(name: "StudySetClient", package: "Clients"),
                 .product(name: "StudyUnitClient", package: "Clients")
             ],
-            path: "Sources/Reducer"
-        ),
-        .testTarget(
-            name: "HomeTests",
-            dependencies: [
-                .target(name: "HomeReducer")
-            ]
-        ),
+            path: "Sources"
+        )
     ]
 )

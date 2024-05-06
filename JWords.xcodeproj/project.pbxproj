@@ -96,14 +96,12 @@
 		06B18C932BE6835500F647B5 /* AdView in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C922BE6835500F647B5 /* AdView */; };
 		06B18C952BE6835500F647B5 /* Cells in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C942BE6835500F647B5 /* Cells */; };
 		06B18C972BE6835500F647B5 /* CommonUI in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C962BE6835500F647B5 /* CommonUI */; };
-		06B18C992BE6835500F647B5 /* Sheets in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C982BE6835500F647B5 /* Sheets */; };
 		06B18C9B2BE6835500F647B5 /* SideBar in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C9A2BE6835500F647B5 /* SideBar */; };
 		06B18C9D2BE6835500F647B5 /* ErrorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C9C2BE6835500F647B5 /* ErrorKit */; };
 		06B18C9F2BE6835500F647B5 /* Model in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18C9E2BE6835500F647B5 /* Model */; };
 		06B18CA12BE6835500F647B5 /* Util in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA02BE6835500F647B5 /* Util */; };
 		06B18CA52BE6835500F647B5 /* KanjiWiki in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA42BE6835500F647B5 /* KanjiWiki */; };
 		06B18CA92BE6835500F647B5 /* OCRKit in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CA82BE6835500F647B5 /* OCRKit */; };
-		06B18CAD2BE6835500F647B5 /* Home in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CAC2BE6835500F647B5 /* Home */; };
 		06B18CB12BE6835500F647B5 /* HuriView in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CB02BE6835500F647B5 /* HuriView */; };
 		06B18CB22BE6852300F647B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06B18BF42BE6824B00F647B5 /* Assets.xcassets */; };
 		06B18CB52BE6852F00F647B5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 06B18BFB2BE6824B00F647B5 /* Localizable.xcstrings */; };
@@ -252,7 +250,6 @@
 				06B18C852BE6835500F647B5 /* OCRClient in Frameworks */,
 				06B18CA92BE6835500F647B5 /* OCRKit in Frameworks */,
 				06B18C9F2BE6835500F647B5 /* Model in Frameworks */,
-				06B18C992BE6835500F647B5 /* Sheets in Frameworks */,
 				06B18C952BE6835500F647B5 /* Cells in Frameworks */,
 				06B18C9B2BE6835500F647B5 /* SideBar in Frameworks */,
 				06B18CC62BE68A4A00F647B5 /* Kingfisher in Frameworks */,
@@ -264,7 +261,6 @@
 				06B18C972BE6835500F647B5 /* CommonUI in Frameworks */,
 				064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */,
 				06B18C7F2BE6835500F647B5 /* HuriganaClient in Frameworks */,
-				06B18CAD2BE6835500F647B5 /* Home in Frameworks */,
 				06B18C912BE6835500F647B5 /* WritingKanjiClient in Frameworks */,
 				06B18CA12BE6835500F647B5 /* Util in Frameworks */,
 				06B18C832BE6835500F647B5 /* KanjiSetClient in Frameworks */,
@@ -694,14 +690,12 @@
 				06B18C922BE6835500F647B5 /* AdView */,
 				06B18C942BE6835500F647B5 /* Cells */,
 				06B18C962BE6835500F647B5 /* CommonUI */,
-				06B18C982BE6835500F647B5 /* Sheets */,
 				06B18C9A2BE6835500F647B5 /* SideBar */,
 				06B18C9C2BE6835500F647B5 /* ErrorKit */,
 				06B18C9E2BE6835500F647B5 /* Model */,
 				06B18CA02BE6835500F647B5 /* Util */,
 				06B18CA42BE6835500F647B5 /* KanjiWiki */,
 				06B18CA82BE6835500F647B5 /* OCRKit */,
-				06B18CAC2BE6835500F647B5 /* Home */,
 				06B18CB02BE6835500F647B5 /* HuriView */,
 				06B18CC52BE68A4A00F647B5 /* Kingfisher */,
 			);
@@ -1461,10 +1455,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CommonUI;
 		};
-		06B18C982BE6835500F647B5 /* Sheets */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Sheets;
-		};
 		06B18C9A2BE6835500F647B5 /* SideBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SideBar;
@@ -1488,10 +1478,6 @@
 		06B18CA82BE6835500F647B5 /* OCRKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OCRKit;
-		};
-		06B18CAC2BE6835500F647B5 /* Home */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Home;
 		};
 		06B18CB02BE6835500F647B5 /* HuriView */ = {
 			isa = XCSwiftPackageProductDependency;
