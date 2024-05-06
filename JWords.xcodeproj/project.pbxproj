@@ -236,7 +236,6 @@
 		06B18C6B2BE6829F00F647B5 /* DeviceKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DeviceKit; sourceTree = "<group>"; };
 		06B18C6F2BE682C600F647B5 /* Clients */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Clients; sourceTree = "<group>"; };
 		06B18C712BE682CC00F647B5 /* CommonUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CommonUI; sourceTree = "<group>"; };
-		06B18C7B2BE6830900F647B5 /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
 		06B18CBE2BE6892C00F647B5 /* JWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06B18CC12BE6896900F647B5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		06B18CC22BE6896900F647B5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -645,7 +644,6 @@
 			isa = PBXGroup;
 			children = (
 				06B372022BE87D7E00E8BBC8 /* Set */,
-				06B18C7B2BE6830900F647B5 /* Home */,
 				06B18C712BE682CC00F647B5 /* CommonUI */,
 				06B18C6F2BE682C600F647B5 /* Clients */,
 				06B18C6B2BE6829F00F647B5 /* DeviceKit */,
