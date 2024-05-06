@@ -22,10 +22,6 @@ let package = Package(
         .library(
             name: "AdView",
             targets: ["AdView"]
-        ),
-        .library(
-            name: "Sheets",
-            targets: ["Sheets"]
         )
     ],
     dependencies: [
@@ -58,16 +54,6 @@ let package = Package(
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads")
             ],
             path: "Sources/AdView"
-        ),
-        .target(
-            name: "Sheets",
-            dependencies: [
-                .target(name: "CommonUI"),
-                .product(name: "Model", package: "Core"),
-                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-                .product(name: "StudySetClient", package: "Clients")
-            ],
-            path: "Sources/Sheets"
         )
     ]
 )
