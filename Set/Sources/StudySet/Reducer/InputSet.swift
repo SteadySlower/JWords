@@ -8,7 +8,6 @@
 import ComposableArchitecture
 import SwiftUI
 import Model
-import CommonSet
 import CommonUI
 
 @Reducer
@@ -49,41 +48,3 @@ public struct InputSet {
     
 }
 
-public struct InputSetView: View {
-    
-    @Bindable var store: StoreOf<InputSet>
-    
-    public init(store: StoreOf<InputSet>) {
-        self.store = store
-    }
-    
-    public var body: some View {
-        VStack(spacing: 30) {
-            VStack {
-                InputFieldTitle(title: "단어장 이름")
-                InputSetTextField(
-                    placeHolder: "단어장 이름",
-                    text: $store.title.sending(\.setTitle)
-                )
-            }
-            VStack {
-                InputFieldTitle(title: "앞면 유형")
-                Picker("", selection: $store.frontType.sending(\.setFrontType)
-                ) {
-                    ForEach(FrontType.allCases, id: \.self) {
-                        Text($0.preferredTypeText)
-                    }
-                }
-                .pickerStyle(.segmented)
-            }
-        }
-    }
-    
-}
-
-#Preview {
-    InputSetView(store: Store(
-        initialState: InputSet.State(),
-        reducer: { InputSet() })
-    )
-}
