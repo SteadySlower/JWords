@@ -7,8 +7,11 @@
 
 import SwiftUI
 import PencilKit
+import Model
 
 struct ImageCropView: View {
+    let image: InputImageType
+    
     @State var start: CGPoint = .zero
     @State var end: CGPoint = .zero
     @State var cropGuide: CGRect?
@@ -17,7 +20,7 @@ struct ImageCropView: View {
     var body: some View {
         VStack {
             ZStack(alignment: .topLeading) {
-                Image("Study View 1")
+                Image(uiImage: image)
                     .resizable()
                 OCRCanvasView(start: $start, end: $end, cropGuide: $cropGuide)
                     .border(.black)
@@ -40,7 +43,7 @@ struct ImageCropView: View {
         }
         .onChange(of: cropGuide, {
             if let cropGuide = cropGuide {
-                croppedImage = cropImage(UIImage(named: "Study View 1")!, toRect: cropGuide, viewWidth: 500, viewHeight: 500)
+                croppedImage = cropImage(image, toRect: cropGuide, viewWidth: 500, viewHeight: 500)
             }
         })
     }
@@ -143,5 +146,5 @@ class OCRPKCanvas: PKCanvasView {
 
 
 #Preview {
-    ImageCropView()
+    ImageCropView(image: UIImage(named: "Study View 1")!)
 }
