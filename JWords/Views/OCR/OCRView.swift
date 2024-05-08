@@ -16,15 +16,19 @@ struct OCR {
     struct State: Equatable {
         var getImage = GetImageForOCR.State()
         var ocr: GetTextsFromOCR.State?
+        var ocrWithCrop: OCRwithCroppedImage.State?
     }
     
     enum Action: Equatable {
         case getImage(GetImageForOCR.Action)
         case ocr(GetTextsFromOCR.Action)
+        case ocrWithCrop(OCRwithCroppedImage.Action)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case koreanOCR(String)
         case japaneseOCR(String)
+        case changeToAuto
+        case changeToManual
     }
     
     @Dependency(OCRClient.self) var ocrClient
@@ -50,11 +54,16 @@ struct OCR {
                 state.ocr?.japaneseOcrResult = result
             case .koreanOcrResponse(.success(let result)):
                 state.ocr?.koreanOcrResult = result
+            case .changeToAuto:
+                state.ocrWithCrop = nil
+            case .changeToManual:
+                state.ocrWithCrop = .init(image: state.ocr!.image)
             default: break
             }
             return .none
         }
         .ifLet(\.ocr, action: \.ocr) { GetTextsFromOCR() }
+        .ifLet(\.ocrWithCrop, action: \.ocrWithCrop) { OCRwithCroppedImage() }
         Scope(state: \.getImage, action: \.getImage) { GetImageForOCR() }
     }
     
@@ -71,10 +80,15 @@ struct OCRView: View {
                 action: \.getImage)
             )
         } else {
-            if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
+            if let ocrCropStore = store.scope(state: \.ocrWithCrop, action: \.ocrWithCrop) {
+                VStack {
+                    CropOCRView(store: ocrCropStore)
+                    autoScanButton { store.send(.changeToAuto) }
+                }
+            } else if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
                 VStack {
                     OCRResultView(store: ocrResultStore)
-                    manualScanButton({  })
+                    manualScanButton { store.send(.changeToManual) }
                 }
             }
         }
