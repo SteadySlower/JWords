@@ -16,7 +16,7 @@ struct OCRwithCroppedImage {
     @ObservableState
     struct State: Equatable {
         var getImage = GetImageForOCR.State()
-        var image: InputImageType?
+        var image: InputImageType
         var koreanResult: String?
         var japaneseResult: String?
     }
@@ -26,6 +26,8 @@ struct OCRwithCroppedImage {
         case imageCropped(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
+        case cropStarted
+        case cropEnded
     }
     
     @Dependency(OCRClient.self) var ocrClient
@@ -61,20 +63,24 @@ struct CropOCRView: View {
     let store: StoreOf<OCRwithCroppedImage>
     
     var body: some View {
-        VStack {
-            if let image = store.image {
-                ImageCropView(image: image) { store.send(.imageCropped($0)) }
-            } else {
-                GetImageForOCRView(store: store.scope(state: \.getImage, action: \.getImage))
+        ImageCropView(
+            image: store.image,
+            onImageCropped: { store.send(.imageCropped($0)) },
+            onCropped: { isCropping in
+                if isCropping {
+                    store.send(.cropStarted)
+                } else {
+                    store.send(.cropEnded)
+                }
             }
-        }
+        )
     }
     
 }
 
 #Preview {
     CropOCRView(store: Store(
-        initialState: OCRwithCroppedImage.State(),
+        initialState: OCRwithCroppedImage.State(image: UIImage(named: "Study View 1")!),
         reducer: { OCRwithCroppedImage() })
     )
 }

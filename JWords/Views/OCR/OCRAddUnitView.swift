@@ -17,6 +17,7 @@ struct AddUnitWithOCR {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State()
         var addUnit = AddUnit.State()
+        var isCropping = false
     }
     
     enum Action: Equatable {
@@ -39,6 +40,10 @@ struct AddUnitWithOCR {
             case .addUnit(.added):
                 state.addUnit.clearInput()
                 state.selectSet.onUnitAdded()
+            case .ocr(.ocrWithCrop(.cropStarted)):
+                state.isCropping = true
+            case .ocr(.ocrWithCrop(.cropEnded)):
+                state.isCropping = false
             default: break
             }
             return .none
@@ -73,6 +78,7 @@ struct OCRAddUnitView: View {
             .padding(.vertical, 10)
             .dismissKeyboardWhenBackgroundTapped()
         }
+        .disabled(store.isCropping)
         .withBannerAD()
         .padding(.horizontal, 10)
         .navigationTitle("단어 스캐너")
