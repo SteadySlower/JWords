@@ -72,9 +72,32 @@ struct OCRView: View {
             )
         } else {
             if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
-                OCRResultView(store: ocrResultStore)
+                VStack {
+                    OCRResultView(store: ocrResultStore)
+                    manualScanButton({  })
+                }
             }
         }
+    }
+    
+    private func manualScanButton(_ onTapped: @escaping () -> Void) -> some View {
+        RectangleButton(
+            image: Image(systemName: "highlighter"),
+            title: "수동 스캔 모드",
+            isVertical: false,
+            onTapped: onTapped
+        )
+        .padding(.horizontal, 20)
+    }
+    
+    private func autoScanButton(_ onTapped: @escaping () -> Void) -> some View {
+        RectangleButton(
+            image: Image(systemName: "autostartstop"),
+            title: "자동 스캔 모드",
+            isVertical: false,
+            onTapped: onTapped
+        )
+        .padding(.horizontal, 20)
     }
 }
 
