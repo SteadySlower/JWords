@@ -77,3 +77,10 @@ struct OCRView: View {
         }
     }
 }
+
+#Preview {
+    OCRView(store: Store(
+        initialState: OCR.State(),
+        reducer: { OCR() }
+    ))
+}
