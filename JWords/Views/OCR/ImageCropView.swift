@@ -69,10 +69,7 @@ func cropImage(_ inputImage: UIImage, toRect cropRect: CGRect, viewWidth: CGFloa
         return nil
     }
 
-
-    // Return image to UIImage
-    let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
-    return croppedImage
+    return UIImage(cgImage: cutImageRef)
 }
 
 struct OCRCanvasView {
