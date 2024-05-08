@@ -45,16 +45,8 @@ struct OCRwithCroppedImage {
                     }
                 )
             case .koreanOcrResponse(.success(let result)):
-                print("한국어 도착")
-                for r in result {
-                    print("한국어: ", r.string)
-                }
                 state.koreanResult = result.first?.string
             case .japaneseOcrResponse(.success(let result)):
-                print("일본어 도착")
-                for r in result {
-                    print("일본어: ", r.string)
-                }
                 state.japaneseResult = result.first?.string
             default: break
             }
@@ -74,12 +66,6 @@ struct CropOCRView: View {
                 ImageCropView(image: image) { store.send(.imageCropped($0)) }
             } else {
                 GetImageForOCRView(store: store.scope(state: \.getImage, action: \.getImage))
-            }
-            if let kResult = store.koreanResult, let jResult = store.japaneseResult {
-                HStack {
-                    Text(kResult)
-                    Text(jResult)
-                }
             }
         }
     }
