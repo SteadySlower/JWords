@@ -12,7 +12,6 @@ import Model
 struct ImageCropView: View {
     let image: InputImageType
     let onImageCropped: (InputImageType) -> Void
-    let onCropped: (Bool) -> Void
     
     @State var start: CGPoint = .zero
     @State var end: CGPoint = .zero
@@ -37,12 +36,11 @@ struct ImageCropView: View {
                         alignment: .topLeading
                     )
             }
-            .frame(width: 500, height: 500)
+            .frame(width: image.size.width, height: image.size.height)
         }
         .onChange(of: cropGuide, {
-            onCropped(cropGuide == nil ? true : false)
             if let cropGuide = cropGuide,
-               let croppedImage = cropImage(image, toRect: cropGuide, viewWidth: 500, viewHeight: 500) {
+               let croppedImage = cropImage(image, toRect: cropGuide, viewWidth: image.size.width, viewHeight: image.size.height) {
                 onImageCropped(croppedImage)
             }
         })
@@ -145,6 +143,6 @@ class OCRPKCanvas: PKCanvasView {
 #Preview {
     ImageCropView(
         image: UIImage(named: "Study View 1")!,
-        onImageCropped: { _ in },
-        onCropped: { _ in })
+        onImageCropped: { _ in }
+    )
 }

@@ -17,7 +17,6 @@ struct AddUnitWithOCR {
         var ocr = OCR.State()
         var selectSet = SelectStudySet.State()
         var addUnit = AddUnit.State()
-        var isCropping = false
     }
     
     enum Action: Equatable {
@@ -40,10 +39,6 @@ struct AddUnitWithOCR {
             case .addUnit(.added):
                 state.addUnit.clearInput()
                 state.selectSet.onUnitAdded()
-            case .ocr(.ocrWithCrop(.cropStarted)):
-                state.isCropping = true
-            case .ocr(.ocrWithCrop(.cropEnded)):
-                state.isCropping = false
             default: break
             }
             return .none
@@ -59,26 +54,35 @@ struct OCRAddUnitView: View {
     let store: StoreOf<AddUnitWithOCR>
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 35) {
+        VStack {
+            if store.ocr.ocr != nil {
                 OCRView(store: store.scope(
                     state: \.ocr,
                     action: \.ocr)
                 )
-                StudySetPicker(store: store.scope(
-                    state: \.selectSet,
-                    action: \.selectSet),
-                    pickerName: ""
-                )
-                AddUnitView(store: store.scope(
-                    state: \.addUnit,
-                    action: \.addUnit)
-                )
             }
-            .padding(.vertical, 10)
-            .dismissKeyboardWhenBackgroundTapped()
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 35) {
+                    if store.ocr.ocr == nil {
+                        OCRView(store: store.scope(
+                            state: \.ocr,
+                            action: \.ocr)
+                        )
+                    }
+                    StudySetPicker(store: store.scope(
+                        state: \.selectSet,
+                        action: \.selectSet),
+                        pickerName: ""
+                    )
+                    AddUnitView(store: store.scope(
+                        state: \.addUnit,
+                        action: \.addUnit)
+                    )
+                }
+                .padding(.vertical, 10)
+                .dismissKeyboardWhenBackgroundTapped()
+            }
         }
-        .disabled(store.isCropping)
         .withBannerAD()
         .padding(.horizontal, 10)
         .navigationTitle("단어 스캐너")

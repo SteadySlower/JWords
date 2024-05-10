@@ -26,8 +26,6 @@ struct OCRwithCroppedImage {
         case imageCropped(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
-        case cropStarted
-        case cropEnded
     }
     
     @Dependency(OCRClient.self) var ocrClient
@@ -65,14 +63,7 @@ struct CropOCRView: View {
     var body: some View {
         ImageCropView(
             image: store.image,
-            onImageCropped: { store.send(.imageCropped($0)) },
-            onCropped: { isCropping in
-                if isCropping {
-                    store.send(.cropStarted)
-                } else {
-                    store.send(.cropEnded)
-                }
-            }
+            onImageCropped: { store.send(.imageCropped($0)) }
         )
     }
     
