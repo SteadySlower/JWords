@@ -85,7 +85,9 @@ struct OCRView: View {
         } else if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
             VStack {
                 OCRResultView(store: ocrResultStore)
-                manualScanButton { store.send(.changeToManual) }
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    manualScanButton { store.send(.changeToManual) }
+                }
                 RemoveImageButton { store.send(.removeImage) }
             }
         } else {
