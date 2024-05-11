@@ -27,6 +27,7 @@ struct OCR {
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
         case koreanOCR(String)
         case japaneseOCR(String)
+        case removeImage
         case changeToAuto
         case changeToManual
     }
@@ -48,12 +49,13 @@ struct OCR {
                 )
             case .ocr(.ocrMarkTapped(let lang, let text)):
                 return lang == .korean ? .send(.koreanOCR(text)) : .send(.japaneseOCR(text))
-            case .ocr(.removeImage):
-                state.ocr = nil
             case .japaneseOcrResponse(.success(let result)):
                 state.ocr?.japaneseOcrResult = result
             case .koreanOcrResponse(.success(let result)):
                 state.ocr?.koreanOcrResult = result
+            case .removeImage:
+                state.ocr = nil
+                state.ocrWithCrop = nil
             case .changeToAuto:
                 state.ocrWithCrop = nil
             case .changeToManual:
@@ -74,23 +76,23 @@ struct OCRView: View {
     let store: StoreOf<OCR>
     
     var body: some View {
-        if store.ocr == nil {
+        if let ocrCropStore = store.scope(state: \.ocrWithCrop, action: \.ocrWithCrop) {
+            VStack {
+                CropOCRView(store: ocrCropStore)
+                autoScanButton { store.send(.changeToAuto) }
+                RemoveImageButton { store.send(.removeImage) }
+            }
+        } else if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
+            VStack {
+                OCRResultView(store: ocrResultStore)
+                manualScanButton { store.send(.changeToManual) }
+                RemoveImageButton { store.send(.removeImage) }
+            }
+        } else {
             GetImageForOCRView(store: store.scope(
                 state: \.getImage,
                 action: \.getImage)
             )
-        } else {
-            if let ocrCropStore = store.scope(state: \.ocrWithCrop, action: \.ocrWithCrop) {
-                VStack {
-                    CropOCRView(store: ocrCropStore)
-                    autoScanButton { store.send(.changeToAuto) }
-                }
-            } else if let ocrResultStore = store.scope(state: \.ocr, action: \.ocr) {
-                VStack {
-                    OCRResultView(store: ocrResultStore)
-                    manualScanButton { store.send(.changeToManual) }
-                }
-            }
         }
     }
     
