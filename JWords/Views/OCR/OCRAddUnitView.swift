@@ -54,34 +54,24 @@ struct OCRAddUnitView: View {
     let store: StoreOf<AddUnitWithOCR>
     
     var body: some View {
-        VStack {
-            if store.ocr.ocr != nil {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 35) {
                 OCRView(store: store.scope(
                     state: \.ocr,
                     action: \.ocr)
                 )
+                StudySetPicker(store: store.scope(
+                    state: \.selectSet,
+                    action: \.selectSet),
+                    pickerName: ""
+                )
+                AddUnitView(store: store.scope(
+                    state: \.addUnit,
+                    action: \.addUnit)
+                )
             }
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 35) {
-                    if store.ocr.ocr == nil {
-                        OCRView(store: store.scope(
-                            state: \.ocr,
-                            action: \.ocr)
-                        )
-                    }
-                    StudySetPicker(store: store.scope(
-                        state: \.selectSet,
-                        action: \.selectSet),
-                        pickerName: ""
-                    )
-                    AddUnitView(store: store.scope(
-                        state: \.addUnit,
-                        action: \.addUnit)
-                    )
-                }
-                .padding(.vertical, 10)
-                .dismissKeyboardWhenBackgroundTapped()
-            }
+            .padding(.vertical, 10)
+            .dismissKeyboardWhenBackgroundTapped()
         }
         .withBannerAD()
         .padding(.horizontal, 10)
