@@ -82,9 +82,6 @@ struct OCRCanvasView {
 
 extension OCRCanvasView: UIViewRepresentable {
     func makeUIView(context: Context) -> OCRPKCanvas {
-        #if targetEnvironment(simulator)
-        canvasView.drawingPolicy = .anyInput
-        #endif
         return canvasView
     }
 
@@ -104,6 +101,10 @@ class OCRPKCanvas: PKCanvasView {
         super.init(frame: .zero)
         self.tool = PKInkingTool(.pen, color: .clear, width: 5)
         self.backgroundColor = .clear
+        self.drawingPolicy = .pencilOnly
+        #if targetEnvironment(simulator)
+        self.drawingPolicy = .anyInput
+        #endif
     }
     
     required init?(coder: NSCoder) {
