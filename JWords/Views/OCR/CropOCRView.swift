@@ -16,14 +16,14 @@ struct OCRwithCroppedImage {
     @ObservableState
     struct State: Equatable {
         var image: InputImageType
-        var koreanResult: String?
-        var japaneseResult: String?
     }
     
     enum Action: Equatable {
         case imageCropped(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
+        case koreanCropped(String)
+        case japaneseCropped(String)
     }
     
     @Dependency(OCRClient.self) var ocrClient
@@ -41,9 +41,13 @@ struct OCRwithCroppedImage {
                     }
                 )
             case .koreanOcrResponse(.success(let result)):
-                state.koreanResult = result.first?.string
+                if let korean = result.first?.string {
+                    return .send(.koreanCropped(korean))
+                }
             case .japaneseOcrResponse(.success(let result)):
-                state.japaneseResult = result.first?.string
+                if let japanese = result.first?.string {
+                    return .send(.japaneseCropped(japanese))
+                }
             default: break
             }
             return .none
