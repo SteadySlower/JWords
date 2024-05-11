@@ -23,7 +23,6 @@ struct ImageCropView: View {
                 Image(uiImage: image)
                     .resizable()
                 OCRCanvasView(start: $start, end: $end, cropGuide: $cropGuide)
-                    .border(.black)
                 Rectangle()
                     .fill(.green.opacity(0.3))
                     .position(
