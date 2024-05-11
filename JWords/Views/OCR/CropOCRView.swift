@@ -15,14 +15,12 @@ import OCRKit
 struct OCRwithCroppedImage {
     @ObservableState
     struct State: Equatable {
-        var getImage = GetImageForOCR.State()
         var image: InputImageType
         var koreanResult: String?
         var japaneseResult: String?
     }
     
     enum Action: Equatable {
-        case getImage(GetImageForOCR.Action)
         case imageCropped(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
@@ -33,8 +31,6 @@ struct OCRwithCroppedImage {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .getImage(.imageFetched(let image)):
-                state.image = image
             case .imageCropped(let image):
                 return .merge(
                     .run { send in
@@ -52,7 +48,6 @@ struct OCRwithCroppedImage {
             }
             return .none
         }
-        Scope(state: \.getImage, action: \.getImage) { GetImageForOCR() }
     }
 }
 
