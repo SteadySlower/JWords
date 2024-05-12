@@ -17,6 +17,18 @@ struct ImageCropView: View {
     @State var end: CGPoint = .zero
     @State var cropGuide: CGRect?
     
+    @State var croppedImage: InputImageType?
+    
+    let viewWidth: CGFloat
+    let viewHeight: CGFloat
+    
+    init(image: InputImageType, onImageCropped: @escaping (InputImageType) -> Void) {
+        self.image = image
+        self.onImageCropped = onImageCropped
+        self.viewWidth = Constants.Size.deviceWidth - 10
+        self.viewHeight = viewWidth * (image.size.height / image.size.width)
+    }
+    
     var body: some View {
         VStack {
             ZStack(alignment: .topLeading) {
@@ -35,12 +47,16 @@ struct ImageCropView: View {
                         alignment: .topLeading
                     )
             }
-            .frame(width: image.size.width, height: image.size.height)
+            .frame(width: viewWidth, height: viewHeight)
+            if let croppedImage = croppedImage {
+                Image(uiImage: croppedImage)
+            }
         }
         .onChange(of: cropGuide, {
             if let cropGuide = cropGuide,
-               let croppedImage = cropImage(image, toRect: cropGuide, viewWidth: image.size.width, viewHeight: image.size.height) {
+               let croppedImage = cropImage(image, toRect: cropGuide, viewWidth: viewWidth, viewHeight: viewHeight) {
                 onImageCropped(croppedImage)
+                self.croppedImage = croppedImage
             }
         })
     }
