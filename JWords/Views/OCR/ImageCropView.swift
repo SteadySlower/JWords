@@ -17,8 +17,6 @@ struct ImageCropView: View {
     @State var end: CGPoint = .zero
     @State var cropGuide: CGRect?
     
-    @State var croppedImage: InputImageType?
-    
     let viewWidth: CGFloat
     let viewHeight: CGFloat
     
@@ -48,15 +46,11 @@ struct ImageCropView: View {
                     )
             }
             .frame(width: viewWidth, height: viewHeight)
-            if let croppedImage = croppedImage {
-                Image(uiImage: croppedImage)
-            }
         }
         .onChange(of: cropGuide, {
             if let cropGuide = cropGuide,
                let croppedImage = cropImage(image, toRect: cropGuide, viewWidth: viewWidth, viewHeight: viewHeight) {
                 onImageCropped(croppedImage)
-                self.croppedImage = croppedImage
             }
         })
     }
