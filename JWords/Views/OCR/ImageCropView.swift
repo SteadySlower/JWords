@@ -11,18 +11,30 @@ import Model
 
 struct ImageCropView: View {
     let image: InputImageType
-    let onImageCropped: (InputImageType) -> Void
+    let onDownwardCropped: (InputImageType) -> Void
+    let onUpwardCropped: (InputImageType) -> Void
+    
     
     @State var start: CGPoint = .zero
     @State var end: CGPoint = .zero
+    
+    var isDownward: Bool {
+        start.y < end.y
+    }
+    
     @State var cropGuide: CGRect?
     
     let viewWidth: CGFloat
     let viewHeight: CGFloat
     
-    init(image: InputImageType, onImageCropped: @escaping (InputImageType) -> Void) {
+    init(
+        image: InputImageType,
+        onDownwardCropped: @escaping (InputImageType) -> Void,
+        onUpwardCropped: @escaping (InputImageType) -> Void
+    ) {
         self.image = image
-        self.onImageCropped = onImageCropped
+        self.onDownwardCropped = onDownwardCropped
+        self.onUpwardCropped = onUpwardCropped
         self.viewWidth = Constants.Size.deviceWidth - 10
         self.viewHeight = viewWidth * (image.size.height / image.size.width)
     }
@@ -34,7 +46,7 @@ struct ImageCropView: View {
                     .resizable()
                 OCRCanvasView(start: $start, end: $end, cropGuide: $cropGuide)
                 Rectangle()
-                    .fill(start.y < end.y ? .red.opacity(0.3) : .green.opacity(0.3))
+                    .fill(isDownward ? .red.opacity(0.3) : .green.opacity(0.3))
                     .position(
                         x: (start.x + end.x) / 2,
                         y: (start.y + end.y) / 2
@@ -50,7 +62,11 @@ struct ImageCropView: View {
         .onChange(of: cropGuide, {
             if let cropGuide = cropGuide,
                let croppedImage = cropImage(image, toRect: cropGuide, viewWidth: viewWidth, viewHeight: viewHeight) {
-                onImageCropped(croppedImage)
+                if isDownward {
+                    onDownwardCropped(croppedImage)
+                } else {
+                    onUpwardCropped(croppedImage)
+                }
             }
         })
     }
@@ -153,6 +169,7 @@ class OCRPKCanvas: PKCanvasView {
 #Preview {
     ImageCropView(
         image: UIImage(named: "Study View 1")!,
-        onImageCropped: { _ in }
+        onDownwardCropped: { _ in },
+        onUpwardCropped: { _ in }
     )
 }

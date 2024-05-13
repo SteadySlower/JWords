@@ -19,11 +19,12 @@ struct OCRwithCroppedImage {
     }
     
     enum Action: Equatable {
-        case imageCropped(InputImageType)
+        case onJapaneseCropped(InputImageType)
+        case onKoreanCropped(InputImageType)
         case koreanOcrResponse(TaskResult<[OCRResult]>)
         case japaneseOcrResponse(TaskResult<[OCRResult]>)
-        case koreanCropped(String)
-        case japaneseCropped(String)
+        case koreanOCRResult(String)
+        case japaneseOCRResult(String)
     }
     
     @Dependency(OCRClient.self) var ocrClient
@@ -31,22 +32,21 @@ struct OCRwithCroppedImage {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .imageCropped(let image):
-                return .merge(
-                    .run { send in
-                        await send(.koreanOcrResponse(TaskResult { try await ocrClient.ocr(image, .korean)}))
-                    },
-                    .run { send in
-                        await send(.japaneseOcrResponse(TaskResult {try await ocrClient.ocr(image, .japanese)}))
-                    }
-                )
+            case .onJapaneseCropped(let image):
+                return .run { send in
+                    await send(.japaneseOcrResponse(TaskResult {try await ocrClient.ocr(image, .japanese)}))
+                }
+            case .onKoreanCropped(let image):
+                return .run { send in
+                    await send(.koreanOcrResponse(TaskResult { try await ocrClient.ocr(image, .korean)}))
+                }
             case .koreanOcrResponse(.success(let result)):
                 if let korean = result.first?.string {
-                    return .send(.koreanCropped(korean))
+                    return .send(.koreanOCRResult(korean))
                 }
             case .japaneseOcrResponse(.success(let result)):
                 if let japanese = result.first?.string {
-                    return .send(.japaneseCropped(japanese))
+                    return .send(.japaneseOCRResult(japanese))
                 }
             default: break
             }
@@ -62,7 +62,8 @@ struct CropOCRView: View {
     var body: some View {
         ImageCropView(
             image: store.image,
-            onImageCropped: { store.send(.imageCropped($0)) }
+            onDownwardCropped: { store.send(.onJapaneseCropped($0)) },
+            onUpwardCropped: { store.send(.onKoreanCropped($0)) }
         )
     }
     
