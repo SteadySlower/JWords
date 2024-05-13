@@ -36,7 +36,7 @@ struct ImageCropView: View {
                     .resizable()
                 OCRCanvasView(start: $start, end: $end, cropGuide: $cropGuide)
                 Rectangle()
-                    .fill(.green.opacity(0.3))
+                    .fill(start.y < end.y ? .red.opacity(0.3) : .green.opacity(0.3))
                     .position(
                         x: (start.x + end.x) / 2,
                         y: (start.y + end.y) / 2
