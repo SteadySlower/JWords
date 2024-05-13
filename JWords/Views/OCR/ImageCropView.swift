@@ -154,9 +154,11 @@ class OCRPKCanvas: PKCanvasView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touches.forEach { touch in
             end = touch.location(in: self)
+            let x = min(start.x, end.x)
+            let y = min(start.y, end.y)
             cropGuide = .init(
-                x: start.x,
-                y: start.y,
+                x: x,
+                y: y,
                 width: abs(end.x - start.x),
                 height: abs(end.y - start.y)
             )
