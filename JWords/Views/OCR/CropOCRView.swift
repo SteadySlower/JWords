@@ -60,11 +60,14 @@ struct CropOCRView: View {
     let store: StoreOf<OCRwithCroppedImage>
     
     var body: some View {
-        ImageCropView(
-            image: store.image,
-            onDownwardCropped: { store.send(.onJapaneseCropped($0)) },
-            onUpwardCropped: { store.send(.onKoreanCropped($0)) }
-        )
+        VStack {
+            Text("manaul_scan_direction")
+            ImageCropView(
+                image: store.image,
+                onDownwardCropped: { store.send(.onJapaneseCropped($0)) },
+                onUpwardCropped: { store.send(.onKoreanCropped($0)) }
+            )
+        }
     }
     
 }
