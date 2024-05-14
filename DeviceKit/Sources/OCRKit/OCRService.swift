@@ -103,6 +103,7 @@ public final class OCRService {
             ocr(from: image, lang: lang) { rects, error in
                 if let error = error {
                     continuation.resume(with: .failure(error))
+                    return
                 }
                 continuation.resume(with: .success(rects))
             }

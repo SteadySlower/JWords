@@ -56,8 +56,6 @@ struct OCRResultView: View {
                     )
             }
             .frame(width: store.image.size.width, height: store.image.size.height)
-            xButton { store.send(.removeImage) }
-                .padding(.horizontal, 20)
         }
     }
 }
@@ -117,14 +115,6 @@ extension OCRResultView {
             Text(lang == .korean ? "↘️" : "↖️")
                 .font(.system(size: 10))
         }
-    }
-    
-    private func xButton(_ onTapped: @escaping () -> Void) -> some View {
-        RectangleButton(
-            image: Image(systemName: "photo.on.rectangle.angled"),
-            title: "다른 이미지 스캔하기",
-            isVertical: false,
-            onTapped: onTapped)
     }
     
 }

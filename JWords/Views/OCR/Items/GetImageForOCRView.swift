@@ -56,17 +56,13 @@ struct GetImageForOCR {
         Reduce { state, action in
             switch action {
             case .getImageFromClipboard:
-                guard
-                    let fetchedImage = pasteBoardClient.fetchImage(),
-                    let resized = utilClient.resizeImage(fetchedImage, Constants.Size.deviceWidth)
-                else { return .none }
-                return .send(.imageFetched(resized))
+                guard let fetchedImage = pasteBoardClient.fetchImage() else { return .none }
+                return .send(.imageFetched(fetchedImage))
             case .getImageFromCamera:
                 state.destination = .cameraScanner(.init())
                 return .none
             case .destination(.presented(.cameraScanner(.imageSelected(let image)))):
-                guard let resized = utilClient.resizeImage(image, Constants.Size.deviceWidth) else { return .none }
-                return .send(.imageFetched(resized))
+                return .send(.imageFetched(image))
             default: break
             }
             return .none

@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		062F7C6E2BE8E47300B4E9A0 /* StudySet in Frameworks */ = {isa = PBXBuildFile; productRef = 062F7C6D2BE8E47300B4E9A0 /* StudySet */; };
+		062F7C702BE90FC600B4E9A0 /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062F7C6F2BE90FC600B4E9A0 /* ImageCropView.swift */; };
 		064780532B9D6EFB00FDBCEF /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 064780522B9D6EFB00FDBCEF /* GoogleMobileAds */; };
+		0650F5E02BEF9D8D0014A7CB /* RemoveImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0650F5DF2BEF9D8D0014A7CB /* RemoveImageButton.swift */; };
 		068A9BC02B932D69008364B7 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 068A9BBF2B932D69008364B7 /* ComposableArchitecture */; };
 		06B18C082BE6824B00F647B5 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B18B802BE6824B00F647B5 /* Size.swift */; };
 		06B18C092BE6824B00F647B5 /* AppError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B18B822BE6824B00F647B5 /* AppError+Extension.swift */; };
@@ -108,6 +110,7 @@
 		06B18CB52BE6852F00F647B5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 06B18BFB2BE6824B00F647B5 /* Localizable.xcstrings */; };
 		06B18CC32BE6896900F647B5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 06B18CC12BE6896900F647B5 /* GoogleService-Info.plist */; };
 		06B18CC62BE68A4A00F647B5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 06B18CC52BE68A4A00F647B5 /* Kingfisher */; };
+		06C20C252BEBA03900319675 /* CropOCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C20C242BEBA03900319675 /* CropOCRView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -149,6 +152,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		062F7C6F2BE90FC600B4E9A0 /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
+		0650F5DF2BEF9D8D0014A7CB /* RemoveImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveImageButton.swift; sourceTree = "<group>"; };
 		06B18B802BE6824B00F647B5 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		06B18B822BE6824B00F647B5 /* AppError+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppError+Extension.swift"; sourceTree = "<group>"; };
 		06B18B892BE6824B00F647B5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -240,6 +245,7 @@
 		06B18CC12BE6896900F647B5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		06B18CC22BE6896900F647B5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06B372022BE87D7E00E8BBC8 /* Set */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Set; sourceTree = "<group>"; };
+		06C20C242BEBA03900319675 /* CropOCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropOCRView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -393,6 +399,7 @@
 			isa = PBXGroup;
 			children = (
 				06B18BA52BE6824B00F647B5 /* ScanGuide.swift */,
+				0650F5DF2BEF9D8D0014A7CB /* RemoveImageButton.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -404,6 +411,8 @@
 				06B18BA62BE6824B00F647B5 /* Subviews */,
 				06B18BA72BE6824B00F647B5 /* OCRAddUnitView.swift */,
 				06B18BA82BE6824B00F647B5 /* OCRView.swift */,
+				062F7C6F2BE90FC600B4E9A0 /* ImageCropView.swift */,
+				06C20C242BEBA03900319675 /* CropOCRView.swift */,
 			);
 			path = OCR;
 			sourceTree = "<group>";
@@ -867,6 +876,7 @@
 				06B18C112BE6824B00F647B5 /* KanjiCoordinatorView.swift in Sources */,
 				06B18C122BE6824B00F647B5 /* ScannerCoordinatorView.swift in Sources */,
 				06B18C1F2BE6824B00F647B5 /* OCRResultView.swift in Sources */,
+				062F7C702BE90FC600B4E9A0 /* ImageCropView.swift in Sources */,
 				06B18C082BE6824B00F647B5 /* Size.swift in Sources */,
 				06B18C172BE6824B00F647B5 /* HomeView.swift in Sources */,
 				06B18C1A2BE6824B00F647B5 /* KanjiCell.swift in Sources */,
@@ -880,6 +890,7 @@
 				06B18C282BE6824B00F647B5 /* StudySetPicker.swift in Sources */,
 				06B18C232BE6824B00F647B5 /* InputSetTextField.swift in Sources */,
 				06B18C222BE6824B00F647B5 /* OCRView.swift in Sources */,
+				0650F5E02BEF9D8D0014A7CB /* RemoveImageButton.swift in Sources */,
 				06B18C462BE6824B00F647B5 /* DeleteList.swift in Sources */,
 				06B18C432BE6824B00F647B5 /* SelectionCell.swift in Sources */,
 				06B18C262BE6824B00F647B5 /* EditSet.swift in Sources */,
@@ -933,6 +944,7 @@
 				06B18C3C2BE6824B00F647B5 /* AddUnit.swift in Sources */,
 				06B18C412BE6824B00F647B5 /* DeleteCell.swift in Sources */,
 				06B18C1B2BE6824B00F647B5 /* KanjiList.swift in Sources */,
+				06C20C252BEBA03900319675 /* CropOCRView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

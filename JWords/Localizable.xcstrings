@@ -192,6 +192,23 @@
         }
       }
     },
+    "manaul_scan_direction" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan image with apple pencil. If you scan upward, a Japanese word is scanned. If you scan downward, an English word is scanned."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "펜슬로 단어가 있는 이미지를 스캔 해주세요. \n위에서 아래로 스캔하면 일본어 단어, 아래에서 위로 스킨하면 한글 뜻이 스캔됩니다."
+          }
+        }
+      }
+    },
     "OCR" : {
       "localizations" : {
         "en" : {
