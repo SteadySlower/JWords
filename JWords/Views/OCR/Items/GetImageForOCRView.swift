@@ -12,19 +12,21 @@ import PasteBoardClient
 import UtilClient
 
 private enum ImageSource {
-    case clipboard, camera
+    case clipboard, camera, photoLibrary
     
     var imageName: String {
         switch self {
         case.clipboard: return "list.clipboard"
         case .camera: return "camera"
+        case .photoLibrary: return "photo.stack"
         }
     }
     
     var buttonText: String {
         switch self {
-        case.clipboard: return "클립보드에서\n이미지 가져오기"
-        case .camera: return "카메라로 촬영하기"
+        case.clipboard: return "클립보드"
+        case .camera: return "카메라"
+        case .photoLibrary: return "photo_library_button_text"
         }
     }
 }
@@ -86,6 +88,10 @@ struct GetImageForOCRView: View {
                 Spacer()
                 button(for: .camera) {
                     store.send(.getImageFromCamera)
+                }
+                Spacer()
+                button(for: .photoLibrary) {
+                    
                 }
                 Spacer()
             }

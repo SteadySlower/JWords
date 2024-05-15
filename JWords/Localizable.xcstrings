@@ -230,6 +230,23 @@
         }
       }
     },
+    "photo_library_button_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Photo Library"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라이브러리"
+          }
+        }
+      }
+    },
     "X만" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -690,7 +707,7 @@
         }
       }
     },
-    "카메라로 촬영하기" : {
+    "카메라" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -701,7 +718,7 @@
         }
       }
     },
-    "클립보드에서\n이미지 가져오기" : {
+    "클립보드" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
