@@ -47,6 +47,8 @@ struct GetImageForOCR {
     enum Action: Equatable {
         case getImageFromClipboard
         case getImageFromCamera
+        case photoPicked(PhotosPickerItem?)
+        case photoParsed(TaskResult<InputImageType?>)
         case imageFetched(InputImageType)
         
         case destination(PresentationAction<Destination.Action>)
@@ -64,6 +66,14 @@ struct GetImageForOCR {
             case .getImageFromCamera:
                 state.destination = .cameraScanner(.init())
                 return .none
+            case .photoPicked(let item):
+                return .run { send in
+                    await send(.photoParsed(TaskResult { try await utilClient.parsePickerImageToImage(item)}))
+                }
+            case .photoParsed(.success(let image)):
+                if let image = image {
+                    return .send(.imageFetched(image))
+                }
             case .destination(.presented(.cameraScanner(.imageSelected(let image)))):
                 return .send(.imageFetched(image))
             default: break
@@ -135,15 +145,7 @@ extension GetImageForOCRView {
                     .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
             )
         }
-        .onChange(of: selectedItem) {
-            Task {
-                if let data = try? await selectedItem?.loadTransferable(type: Data.self),
-                    let image = UIImage(data: data) 
-                {
-                    store.send(.imageFetched(image))
-                }
-            }
-        }
+        .onChange(of: selectedItem) { store.send(.photoPicked(selectedItem)) }
     }
     
 }
