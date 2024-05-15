@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Model
 import PasteBoardClient
 import UtilClient
+import PhotosUI
 
 private enum ImageSource {
     case clipboard, camera, photoLibrary
@@ -76,6 +77,7 @@ struct GetImageForOCR {
 struct GetImageForOCRView: View {
     
     @Bindable var store: StoreOf<GetImageForOCR>
+    @State private var selectedItem: PhotosPickerItem?
     
     var body: some View {
         VStack {
@@ -90,9 +92,7 @@ struct GetImageForOCRView: View {
                     store.send(.getImageFromCamera)
                 }
                 Spacer()
-                button(for: .photoLibrary) {
-                    
-                }
+                photoPicker
                 Spacer()
             }
         }
@@ -113,6 +113,37 @@ extension GetImageForOCRView {
             image: Image(systemName: imageSource.imageName),
             title: imageSource.buttonText,
             onTapped: onTapped)
+    }
+    
+    private var photoPicker: some View {
+        PhotosPicker(selection: $selectedItem) {
+            VStack {
+                Spacer()
+                Image(systemName: ImageSource.photoLibrary.imageName)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Text(LocalizedStringKey(ImageSource.photoLibrary.buttonText))
+                    .fixedSize()
+                Spacer()
+            }
+            .padding(8)
+            .foregroundColor(.black)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1)
+                    .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
+            )
+        }
+        .onChange(of: selectedItem) {
+            Task {
+                if let data = try? await selectedItem?.loadTransferable(type: Data.self),
+                    let image = UIImage(data: data) 
+                {
+                    store.send(.imageFetched(image))
+                }
+            }
+        }
     }
     
 }
