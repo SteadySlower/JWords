@@ -62,6 +62,7 @@ struct CropOCRView: View {
     var body: some View {
         VStack {
             Text("manaul_scan_direction")
+                .lineLimit(nil)
             ImageCropView(
                 image: store.image,
                 onDownwardCropped: { store.send(.onJapaneseCropped($0)) },
