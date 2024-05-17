@@ -13,11 +13,14 @@ import AppKit
 import Model
 import ComposableArchitecture
 import XCTestDynamicOverlay
+import PhotosUI
+import _PhotosUI_SwiftUI
 
 public struct UtilClient {
     public var filterOnlyFailUnits: ([StudyUnit]) -> [StudyUnit]
     public var shuffleUnits: ([StudyUnit]) -> [StudyUnit]
     public var resizeImage: (InputImageType, CGFloat) -> InputImageType?
+    public var parsePickerImageToImage: (PhotosPickerItem?) async throws -> InputImageType?
 }
 
 extension DependencyValues {
@@ -71,6 +74,11 @@ extension UtilClient: DependencyKey {
 
             return newImage
             #endif
+        },
+        parsePickerImageToImage: { item in
+            let data = try await item?.loadTransferable(type: Data.self)
+            guard let data = data else { return nil }
+            return UIImage(data: data)
         }
     )
 }
@@ -87,12 +95,14 @@ extension UtilClient: TestDependencyKey {
     public static let previewValue = Self(
         filterOnlyFailUnits: { _ in .mock },
         shuffleUnits: { _ in .mock },
-        resizeImage: { _,_  in sampleImage }
+        resizeImage: { _,_  in sampleImage },
+        parsePickerImageToImage: { _ in sampleImage }
     )
 
     public static let testValue: UtilClient = Self(
         filterOnlyFailUnits: { _ in .mock },
         shuffleUnits: { _ in .mock },
-        resizeImage: { _,_  in sampleImage }
+        resizeImage: { _,_  in sampleImage },
+        parsePickerImageToImage: { _ in sampleImage }
     )
 }

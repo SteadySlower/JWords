@@ -10,21 +10,24 @@ import ComposableArchitecture
 import Model
 import PasteBoardClient
 import UtilClient
+import PhotosUI
 
 private enum ImageSource {
-    case clipboard, camera
+    case clipboard, camera, photoLibrary
     
     var imageName: String {
         switch self {
         case.clipboard: return "list.clipboard"
         case .camera: return "camera"
+        case .photoLibrary: return "photo.stack"
         }
     }
     
     var buttonText: String {
         switch self {
-        case.clipboard: return "클립보드에서\n이미지 가져오기"
-        case .camera: return "카메라로 촬영하기"
+        case.clipboard: return "클립보드"
+        case .camera: return "카메라"
+        case .photoLibrary: return "photo_library_button_text"
         }
     }
 }
@@ -44,6 +47,8 @@ struct GetImageForOCR {
     enum Action: Equatable {
         case getImageFromClipboard
         case getImageFromCamera
+        case photoPicked(PhotosPickerItem?)
+        case photoParsed(TaskResult<InputImageType?>)
         case imageFetched(InputImageType)
         
         case destination(PresentationAction<Destination.Action>)
@@ -61,6 +66,14 @@ struct GetImageForOCR {
             case .getImageFromCamera:
                 state.destination = .cameraScanner(.init())
                 return .none
+            case .photoPicked(let item):
+                return .run { send in
+                    await send(.photoParsed(TaskResult { try await utilClient.parsePickerImageToImage(item)}))
+                }
+            case .photoParsed(.success(let image)):
+                if let image = image {
+                    return .send(.imageFetched(image))
+                }
             case .destination(.presented(.cameraScanner(.imageSelected(let image)))):
                 return .send(.imageFetched(image))
             default: break
@@ -74,6 +87,7 @@ struct GetImageForOCR {
 struct GetImageForOCRView: View {
     
     @Bindable var store: StoreOf<GetImageForOCR>
+    @State private var selectedItem: PhotosPickerItem?
     
     var body: some View {
         VStack {
@@ -87,6 +101,8 @@ struct GetImageForOCRView: View {
                 button(for: .camera) {
                     store.send(.getImageFromCamera)
                 }
+                Spacer()
+                photoPicker
                 Spacer()
             }
         }
@@ -107,6 +123,29 @@ extension GetImageForOCRView {
             image: Image(systemName: imageSource.imageName),
             title: imageSource.buttonText,
             onTapped: onTapped)
+    }
+    
+    private var photoPicker: some View {
+        PhotosPicker(selection: $selectedItem) {
+            VStack {
+                Spacer()
+                Image(systemName: ImageSource.photoLibrary.imageName)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Text(LocalizedStringKey(ImageSource.photoLibrary.buttonText))
+                    .fixedSize()
+                Spacer()
+            }
+            .padding(8)
+            .foregroundColor(.black)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1)
+                    .shadow(color: Color.gray.opacity(0.5), radius: 4, x: 0, y: 2)
+            )
+        }
+        .onChange(of: selectedItem) { store.send(.photoPicked(selectedItem)) }
     }
     
 }
