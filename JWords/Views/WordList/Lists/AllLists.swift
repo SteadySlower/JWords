@@ -142,6 +142,7 @@ struct SwitchBetweenList {
         case delete(DeleteUnits.Action)
         
         case toEditUnitSelected(StudyUnit)
+        case toDeleteUnitSelected(StudyUnit)
     }
     
     var body: some Reducer<State, Action> {
@@ -149,6 +150,9 @@ struct SwitchBetweenList {
             switch action {
             case .edit(.toEditUnitSelected(let unit)):
                 return .send(.toEditUnitSelected(unit))
+            case .delete(.units(.element(let id, .cellTapped))):
+                guard let unit = state.study.units.map({ $0.unit }).first(where: { $0.id == id }) else { break }
+                return .send(.toDeleteUnitSelected(unit))
             default: break
             }
             return .none
