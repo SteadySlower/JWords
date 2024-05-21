@@ -44,7 +44,8 @@ let package = Package(
             dependencies: [
                 .product(name: "ErrorKit", package: "Core"),
             ],
-            path: "Sources/KanjiWiki"
+            path: "Sources/KanjiWiki",
+            resources: [.process("Resources")]
         ),
     ]
 )
