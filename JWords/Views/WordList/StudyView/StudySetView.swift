@@ -12,6 +12,7 @@ import SideBar
 import ScheduleClient
 import UtilClient
 import HuriganaClient
+import StudyUnitClient
 
 @Reducer
 struct StudyUnitsInSet {
@@ -24,6 +25,8 @@ struct StudyUnitsInSet {
         var tools = StudyTools.State(activeButtons: [.set, .shuffle, .setting])
         
         var showSideBar = false
+        
+        @Presents var alert: AlertState<AlertAction>?
         
         init(set: StudySet, units: [StudyUnit]) {
             self.set = set
@@ -51,6 +54,21 @@ struct StudyUnitsInSet {
                 selectableListType: [.study, .edit, .select, .delete]
             )
         }
+        
+        mutating func setDeleteAlert(_ unit: StudyUnit) {
+            alert = AlertState<AlertAction> {
+                TextState("단어 삭제")
+            } actions: {
+                ButtonState(action: .cancel) {
+                    TextState("취소")
+                }
+                ButtonState(action: .delete(unit)) {
+                    TextState("삭제")
+                }
+            } message: {
+                TextState("선택된 단어를 현재 단어장에서 삭제합니다.\n다른 단어장에서는 삭제되지 않습니다.")
+            }
+        }
     }
     
     enum Action: Equatable {
@@ -59,11 +77,18 @@ struct StudyUnitsInSet {
         case showSideBar(Bool)
         case setting(StudySetting.Action)
         case tools(StudyTools.Action)
+        case alert(PresentationAction<AlertAction>)
+    }
+    
+    enum AlertAction: Equatable {
+        case delete(StudyUnit)
+        case cancel
     }
     
     @Dependency(ScheduleClient.self) var scheduleClient
     @Dependency(UtilClient.self) var utilClient
     @Dependency(HuriganaClient.self) var hgClient
+    @Dependency(StudyUnitClient.self) var unitClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -72,6 +97,8 @@ struct StudyUnitsInSet {
                 let convertedKanjiText = hgClient.huriToKanjiText(unit.kanjiText)
                 let huris = hgClient.convertToHuris(unit.kanjiText)
                 state.modals.setEditUnitModal(unit: unit, convertedKanjiText: convertedKanjiText, huris: huris)
+            case .lists(.toDeleteUnitSelected(let unit)):
+                state.setDeleteAlert(unit)
             case .showSideBar(let show):
                 state.showSideBar = show
             case .tools(let action):
@@ -116,10 +143,19 @@ struct StudyUnitsInSet {
                     state.lists.setListType(listType)
                 }
                 state.showSideBar = false
+            case .alert(let action):
+                switch action {
+                case .presented(.delete(let unit)):
+                    try! unitClient.delete(unit, state.set)
+                    state.lists.study.onDeleted(unit)
+                    state.lists.setListType(.study)
+                default: break
+                }
             default: break
             }
             return .none
         }
+        .ifLet(\.$alert, action: \.alert)
         Scope(state: \.lists, action: \.lists) { SwitchBetweenList() }
         Scope(state: \.setting, action: \.setting) { StudySetting() }
         Scope(state: \.modals, action: \.modals) { ShowModalsInList() }
@@ -141,6 +177,7 @@ struct StudySetView: View {
             SettingSideBar(store: store.scope(state: \.setting, action: \.setting))
         }
         .withListModals(store: store.scope(state: \.modals, action: \.modals))
+        .alert($store.scope(state: \.alert, action: \.alert))
         .navigationTitle(store.set.title)
         #if os(iOS)
         .toolbar { ToolbarItem { StudyToolBarButtons(store: store.scope(state: \.tools, action: \.tools)) } }
