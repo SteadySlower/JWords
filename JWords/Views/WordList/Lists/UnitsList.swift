@@ -39,6 +39,10 @@ struct UnitsList {
         mutating func setFilter(_ filter: UnitFilter) {
             self.filter = filter
         }
+        
+        mutating func onDeleted(_ unit: StudyUnit) {
+            _units.remove(id: unit.id)
+        }
     }
     
     enum Action: Equatable {
