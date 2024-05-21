@@ -57,7 +57,7 @@ public class KanjiWikiService {
 }
 
 fileprivate func getJSON() throws -> [String: [String:String]] {
-    guard let path = Bundle(identifier: "JWMoon.KanjiWiki")?.path(forResource: "kanjiList", ofType: "json") else {
+    guard let path = Bundle.module.path(forResource: "kanjiList", ofType: "json") else {
         throw AppError.generic(massage: "Fail to Fetch JSON file from Bundle")
     }
     
