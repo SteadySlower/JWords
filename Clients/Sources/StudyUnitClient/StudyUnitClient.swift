@@ -17,6 +17,7 @@ public struct StudyUnitClient {
     public var insertExisting: (StudySet, StudyUnit) throws -> StudyUnit
     public var edit: (StudyUnit, StudyUnitInput) throws -> StudyUnit
     public var delete: (StudyUnit, StudySet) throws -> Void
+    public var completeDelete: (StudyUnit) throws -> Void
     public var studyState: (StudyUnit, StudyState) throws -> StudyState
     public var move: ([StudyUnit], StudySet, StudySet) throws -> Void
     public var fetch: (StudySet) throws -> [StudyUnit]
@@ -63,6 +64,9 @@ extension StudyUnitClient: DependencyKey {
                 from: set
             )
         },
+        completeDelete: { unit in
+            try cd.comleteDeleteUnit(unit: unit)
+        },
         studyState: { unit, state in
             try cd.updateStudyState(
                 unit: unit,
@@ -95,6 +99,7 @@ extension StudyUnitClient: TestDependencyKey {
         insertExisting: { _, _ in .init(index: 0) },
         edit: { _, _ in .init(index: 0) },
         delete: { _, _ in },
+        completeDelete: { _ in },
         studyState: { _, state in state },
         move: { _, _, _ in  },
         fetch: { _ in .mock },
@@ -106,6 +111,7 @@ extension StudyUnitClient: TestDependencyKey {
         insertExisting: { _, _ in .init(index: 0) },
         edit: { _, _ in .init(index: 0) },
         delete: { _, _ in },
+        completeDelete: { _ in },
         studyState: { _, state in state },
         move: { _, _, _ in  },
         fetch: { _ in .mock },

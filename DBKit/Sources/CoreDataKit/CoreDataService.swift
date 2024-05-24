@@ -435,6 +435,23 @@ public class CoreDataService {
         }
     }
     
+    public func comleteDeleteUnit(unit: StudyUnit) throws {
+        guard let toDelete = try? context.existingObject(with: unit.objectID) else {
+            print("디버그: objectID로 unit 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        context.delete(toDelete)
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     private func getKanjiMO(_ kanji: String) throws -> StudyKanjiMO {
         let fetchRequest = StudyKanjiMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "kanji == %@", kanji)
