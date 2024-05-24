@@ -59,14 +59,14 @@ struct StudyUnitsInSet {
             alert = AlertState<AlertAction> {
                 TextState("단어 삭제")
             } actions: {
-                ButtonState(action: .cancel) {
-                    TextState("취소")
-                }
                 ButtonState(action: .delete(unit)) {
                     TextState("삭제")
                 }
+                ButtonState(role: .destructive, action: .completeDelete(unit)) {
+                    TextState("완전 삭제")
+                }
             } message: {
-                TextState("선택된 단어를 현재 단어장에서 삭제합니다.\n다른 단어장에서는 삭제되지 않습니다.")
+                TextState("선택된 단어를 현재 단어장에서 삭제합니다.\n삭제: 다른 단어장에서는 삭제되지 않습니다.\n완전 삭제: 다른 모든 단어장에서도 삭제됩니다.")
             }
         }
     }
@@ -82,7 +82,7 @@ struct StudyUnitsInSet {
     
     enum AlertAction: Equatable {
         case delete(StudyUnit)
-        case cancel
+        case completeDelete(StudyUnit)
     }
     
     @Dependency(ScheduleClient.self) var scheduleClient
@@ -147,6 +147,10 @@ struct StudyUnitsInSet {
                 switch action {
                 case .presented(.delete(let unit)):
                     try! unitClient.delete(unit, state.set)
+                    state.lists.study.onDeleted(unit)
+                    state.lists.setListType(.study)
+                case .presented(.completeDelete(let unit)):
+                    try! unitClient.completeDelete(unit)
                     state.lists.study.onDeleted(unit)
                     state.lists.setListType(.study)
                 default: break
