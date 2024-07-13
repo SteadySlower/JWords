@@ -11,12 +11,14 @@ import ErrorKit
 public struct WikiKanji {
     public let kanji: String
     public let meaning: String
+    public let meaningEN: String
     public let ondoku: String
     public let kundoku: String
     
-    public init(kanji: String, meaning: String, ondoku: String, kundoku: String) {
+    public init(kanji: String, meaning: String, meaningEN: String, ondoku: String, kundoku: String) {
         self.kanji = kanji
         self.meaning = meaning
+        self.meaningEN = meaningEN
         self.ondoku = ondoku
         self.kundoku = kundoku
     }
@@ -37,6 +39,7 @@ public class KanjiWikiService {
             let wikiKanji = WikiKanji(
                 kanji: key,
                 meaning: detail["meaning"] ?? "",
+                meaningEN: detail["meaningEN"] ?? "",
                 ondoku: detail["ondoku"] ?? "",
                 kundoku: detail["kundoku"] ?? ""
             )

@@ -193,12 +193,26 @@ struct TodayView: View {
         }}
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    store.send(.showTutorial)
-                } label: {
-                    Image(systemName: "questionmark.circle")
-                        .resizable()
-                        .foregroundColor(.black)
+                HStack {
+                    if isKorean {
+                        Button {
+                            store.send(.showTutorial)
+                        } label: {
+                            Image(systemName: "questionmark.circle")
+                                .resizable()
+                                .foregroundColor(.black)
+                        }
+                    }
+                    Button {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        Image(systemName: "textformat.size.smaller")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
                 }
             }
         }
@@ -227,4 +241,12 @@ struct TodayView_Previews: PreviewProvider {
             )
         }
     }
+}
+
+// TODO: move appropriate place
+
+private var isKorean: Bool {
+    let locale = Locale.preferredLanguages[0]
+    let languageCode = locale.components(separatedBy: "-")[0]
+    return languageCode == "ko"
 }

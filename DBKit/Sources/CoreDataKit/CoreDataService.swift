@@ -467,7 +467,8 @@ public class CoreDataService {
                 let wikiKanji = kw.getWikiKanji(kanji)
                 mo.id = "kanji_" + UUID().uuidString + "_" + String(Int(Date().timeIntervalSince1970))
                 mo.kanji = kanji
-                mo.meaning = wikiKanji?.meaning ?? ""
+                let language = Locale.current.language.languageCode ?? "en"
+                mo.meaning = language == "ko" ? wikiKanji?.meaning : wikiKanji?.meaningEN ?? ""
                 mo.ondoku = wikiKanji?.ondoku ?? ""
                 mo.kundoku = wikiKanji?.kundoku ?? ""
                 mo.createdAt = Date()
