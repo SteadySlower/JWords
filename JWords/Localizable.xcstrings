@@ -290,7 +290,14 @@
       }
     },
     "단어 삭제" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
     },
     "단어 수: %lld개" : {
       "localizations" : {
@@ -507,7 +514,14 @@
       }
     },
     "선택된 단어를 현재 단어장에서 삭제합니다.\n삭제: 다른 단어장에서는 삭제되지 않습니다.\n완전 삭제: 다른 모든 단어장에서도 삭제됩니다." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete the chosen from this word book.\nDelete: This word remains in other word books.\nComplete Delete: This word will be removed from all word books."
+          }
+        }
+      }
     },
     "선택된 단어장 없음" : {
       "localizations" : {
@@ -591,7 +605,14 @@
       }
     },
     "완전 삭제" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete Delete"
+          }
+        }
+      }
     },
     "음독" : {
       "localizations" : {
