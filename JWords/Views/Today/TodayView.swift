@@ -193,10 +193,19 @@ struct TodayView: View {
         }}
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
+                if isKorean {
+                    Button {
+                        store.send(.showTutorial)
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
+                            .foregroundColor(.black)
+                    }
+                }
                 Button {
-                    store.send(.showTutorial)
+                    
                 } label: {
-                    Image(systemName: "questionmark.circle")
+                    Image(systemName: "textformat.size.smaller")
                         .resizable()
                         .foregroundColor(.black)
                 }
@@ -227,4 +236,12 @@ struct TodayView_Previews: PreviewProvider {
             )
         }
     }
+}
+
+// TODO: move appropriate place
+
+private var isKorean: Bool {
+    let locale = Locale.preferredLanguages[0]
+    let languageCode = locale.components(separatedBy: "-")[0]
+    return languageCode == "ko"
 }
