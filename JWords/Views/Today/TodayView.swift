@@ -193,21 +193,26 @@ struct TodayView: View {
         }}
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                if isKorean {
+                HStack {
+                    if isKorean {
+                        Button {
+                            store.send(.showTutorial)
+                        } label: {
+                            Image(systemName: "questionmark.circle")
+                                .resizable()
+                                .foregroundColor(.black)
+                        }
+                    }
                     Button {
-                        store.send(.showTutorial)
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url)
+                        }
                     } label: {
-                        Image(systemName: "questionmark.circle")
+                        Image(systemName: "textformat.size.smaller")
                             .resizable()
                             .foregroundColor(.black)
                     }
-                }
-                Button {
-                    
-                } label: {
-                    Image(systemName: "textformat.size.smaller")
-                        .resizable()
-                        .foregroundColor(.black)
                 }
             }
         }
