@@ -183,6 +183,7 @@
       }
     },
     "Hello World!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -774,7 +775,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wrong words count: %11d"
+            "value" : "Wrong words count: %lld"
           }
         }
       }
