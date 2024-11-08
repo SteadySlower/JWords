@@ -31,11 +31,13 @@ struct HomeList {
     @Reducer(state: .equatable, action: .equatable)
     enum Destination {
         case addSet(AddSet)
+        case toggleDeleteMode
     }
     
     enum Action: Equatable {
         case toAddSet
         case studySetList(StudySetList.Action)
+        case toggleDeleteMode
         
         case destination(PresentationAction<Destination.Action>)
     }
@@ -51,6 +53,8 @@ struct HomeList {
             case .destination(.presented(.addSet(.added(let set)))):
                 state.studySetList.sets.insert(set, at: 0)
                 state.destination = nil
+            case .toggleDeleteMode:
+                state.studySetList.isDeleteMode.toggle()
             default: break
             }
             return .none
@@ -82,17 +86,29 @@ struct HomeView: View {
         }
         .toolbar {
             ToolbarItem {
-                Button {
-                    store.send(.toAddSet)
-                } label: {
-                    Image(systemName: "folder.badge.plus")
-                        .resizable()
-                        .foregroundColor(.black)
+                HStack {
+                    Button {
+                        store.send(.toAddSet)
+                    } label: {
+                        Image(systemName: "folder.badge.plus")
+                            .resizable()
+                            .foregroundColor(.black)
+                        
+                    }
+                    Button {
+                        store.send(.toggleDeleteMode)
+                    } label: {
+                        Image(systemName: "folder.badge.minus")
+                            .resizable()
+                            .foregroundColor(.black)
+                        
+                    }
                 }
             }
         }
     }
 }
+
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {

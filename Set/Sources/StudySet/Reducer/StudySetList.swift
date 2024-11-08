@@ -17,6 +17,7 @@ public struct StudySetList {
     public struct State: Equatable {
         public var sets: [StudySet] = []
         public var isLoading: Bool = false
+        public var isDeleteMode: Bool = false
         var includeClosed: Bool = false
         
         public init() {
