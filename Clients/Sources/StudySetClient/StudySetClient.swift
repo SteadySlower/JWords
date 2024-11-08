@@ -15,6 +15,7 @@ public struct StudySetClient {
     public var insert: (StudySetInput) throws -> StudySet
     public var update: (StudySet, StudySetInput) throws -> StudySet
     public var close: (StudySet) throws -> Void
+    public var delete: (StudySet) throws -> Void
     public var fetch: (Bool) throws -> [StudySet]
     public var countUnits: (StudySet) throws -> Int
 }
@@ -46,6 +47,9 @@ extension StudySetClient: DependencyKey {
         close: { set in
             try cd.closeSet(set)
         },
+        delete: { set in
+            try cd.deleteSet(set)
+        },
         fetch: { includeClosed in
             return try cd.fetchSets(includeClosed: includeClosed)
         },
@@ -60,6 +64,7 @@ extension StudySetClient: TestDependencyKey {
         insert: { input in .init(title: input.title) },
         update: { _, _ in return .init(index: 0) },
         close: { _ in },
+        delete: { _ in },
         fetch: { _ in .mock },
         countUnits: { _ in Int.random(in: 0...100) }
     )
@@ -67,6 +72,7 @@ extension StudySetClient: TestDependencyKey {
         insert: { input in .init(title: input.title) },
         update: { _, _ in return .init(index: 0) },
         close: { _ in },
+        delete: { _ in },
         fetch: { _ in .mock },
         countUnits: { _ in Int.random(in: 0...100) }
     )
