@@ -38,7 +38,13 @@ public struct StudySetListView: View {
                     ForEach(store.sets, id: \.id) { set in
                         StudySetCell(
                             set: set,
-                            onTapped: { store.send(.toStudySet($0)) }
+                            onTapped: { set in
+                                if !store.isDeleteMode {
+                                    store.send(.toStudySet(set))
+                                } else {
+                                    store.send(.toDeleteSet(set))
+                                }
+                            }
                         )
                     }
                 }
@@ -46,6 +52,7 @@ public struct StudySetListView: View {
             }
         }
         .onAppear { store.send(.fetchSets) }
+        .alert($store.scope(state: \.alert, action: \.alert))
     }
 }
 
