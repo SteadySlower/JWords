@@ -73,9 +73,9 @@ public struct StudySetList {
             case .toDeleteSet(let set):
                 state.setDeleteAlert(set)
             case .alert(.presented(.delete(let set))):
-                // TODO: 단어장 삭제
-                print("디버그: \(set.title) 삭제")
+                try! setClient.delete(set)
                 state.isDeleteMode = false
+                fetchSets(&state)
             default: break
             }
             return .none
