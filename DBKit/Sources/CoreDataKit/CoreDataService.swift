@@ -133,6 +133,23 @@ public class CoreDataService {
         }
     }
     
+    public func deleteSet(_ set: StudySet) throws {
+        guard let toDelete = try? context.existingObject(with: set.objectID) as? StudySetMO else {
+            print("디버그: objectID로 set 찾을 수 없음")
+            throw AppError.coreData
+        }
+        
+        context.delete(toDelete)
+        
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+            NSLog("CoreData Error: %s", error.localizedDescription)
+            throw AppError.coreData
+        }
+    }
+    
     public func checkIfExist(_ kanjiText: String) throws -> StudyUnit? {
         
         if kanjiText.isEmpty { return nil }

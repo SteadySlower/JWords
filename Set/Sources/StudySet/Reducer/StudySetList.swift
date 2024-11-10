@@ -17,7 +17,9 @@ public struct StudySetList {
     public struct State: Equatable {
         public var sets: [StudySet] = []
         public var isLoading: Bool = false
+        public var isDeleteMode: Bool = false
         var includeClosed: Bool = false
+        @Presents var alert: AlertState<AlertAction>?
         
         public init() {
             self.sets = []
@@ -28,12 +30,34 @@ public struct StudySetList {
         public mutating func clear() {
             sets = []
         }
+        
+        mutating func setDeleteAlert(_ set: StudySet) {
+            alert = AlertState<AlertAction> {
+                TextState("단어장 삭제")
+            } actions: {
+                ButtonState(role: .destructive, action: .delete(set)) {
+                    TextState("삭제")
+                }
+                ButtonState(role: .cancel) {
+                    TextState("취소")
+                }
+            } message: {
+                TextState("\(set.title) 을(를) 삭제합니다.")
+            }
+        }
+        
     }
     
     public enum Action: Equatable {
         case fetchSets
         case toStudySet(StudySet)
+        case toDeleteSet(StudySet)
         case setIncludeClosed(Bool)
+        case alert(PresentationAction<AlertAction>)
+    }
+    
+    public enum AlertAction: Equatable {
+        case delete(StudySet)
     }
     
     @Dependency(StudySetClient.self) var setClient
@@ -46,10 +70,17 @@ public struct StudySetList {
             case .setIncludeClosed(let bool):
                 state.includeClosed = bool
                 fetchSets(&state)
+            case .toDeleteSet(let set):
+                state.setDeleteAlert(set)
+            case .alert(.presented(.delete(let set))):
+                try! setClient.delete(set)
+                state.isDeleteMode = false
+                fetchSets(&state)
             default: break
             }
             return .none
         }
+        .ifLet(\.$alert, action: \.alert)
     }
     
     private func fetchSets(_ state: inout StudySetList.State) {

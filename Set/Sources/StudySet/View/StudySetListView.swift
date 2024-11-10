@@ -20,6 +20,11 @@ public struct StudySetListView: View {
     
     public var body: some View {
         VStack {
+            if store.isDeleteMode {
+                Text("삭제할 단어장을 골라주세요.\n삭제된 단어장은 복구할 수 없습니다.")
+                    .foregroundColor(.red)
+                    .padding(.top, 10)
+            }
             Picker("닫힌 단어장", selection: $store.includeClosed.sending(\.setIncludeClosed)) {
                 Text("열린 단어장").tag(false)
                 Text("모든 단어장").tag(true)
@@ -33,7 +38,13 @@ public struct StudySetListView: View {
                     ForEach(store.sets, id: \.id) { set in
                         StudySetCell(
                             set: set,
-                            onTapped: { store.send(.toStudySet($0)) }
+                            onTapped: { set in
+                                if !store.isDeleteMode {
+                                    store.send(.toStudySet(set))
+                                } else {
+                                    store.send(.toDeleteSet(set))
+                                }
+                            }
                         )
                     }
                 }
@@ -41,6 +52,7 @@ public struct StudySetListView: View {
             }
         }
         .onAppear { store.send(.fetchSets) }
+        .alert($store.scope(state: \.alert, action: \.alert))
     }
 }
 
